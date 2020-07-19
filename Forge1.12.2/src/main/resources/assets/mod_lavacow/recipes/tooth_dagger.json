@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        " # ",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:sharptooth"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:tooth_dagger"
+    }
+}

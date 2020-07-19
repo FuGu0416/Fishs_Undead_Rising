@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#X#",
+        "#X#",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:sharptooth"
+        },
+        "X": {
+            "item": "minecraft:bone_block"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:bonesword"
+    }
+}

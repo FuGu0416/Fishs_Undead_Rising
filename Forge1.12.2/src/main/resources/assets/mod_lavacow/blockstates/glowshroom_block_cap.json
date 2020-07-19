@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "variant=north_west": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=north": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=north_east": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=west": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=center": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=east": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=south_west": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=south": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=south_east": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=stem": { "model": "mod_lavacow:glowshroom_block_stem" },
+        "variant=all_stem": { "model": "mod_lavacow:glowshroom_block_stem" },
+        "variant=all_outside": { "model": "mod_lavacow:glowshroom_block_cap" },
+        "variant=all_inside": { "model": "brown_mushroom_block_inside_all" },
+        "inventory": [{"model": "mod_lavacow:glowshroom_block_cap"}]
+    }
+}

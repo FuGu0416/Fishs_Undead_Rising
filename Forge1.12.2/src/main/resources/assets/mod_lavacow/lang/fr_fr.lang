@@ -1,0 +1,231 @@
+
+#########
+# ITEMS #
+#########
+
+item.mod_lavacow.netherstew.name=Ragoût du Nether
+item.mod_lavacow.canebeef.name=Boeuf embroché
+item.mod_lavacow.canepork.name=Porc embroché
+item.mod_lavacow.canerottenmeat.name=Chair embrochée
+item.mod_lavacow.fissionpotion.name=Potion de Fission
+item.mod_lavacow.hyphae.name=Hyphe
+tile.glowshroom.name=Champi-lumière
+item.mod_lavacow.parasite_item.name=Parasite
+item.mod_lavacow.parasite_item_cooked.name=Parasite cuit
+item.mod_lavacow.piranha.name=Piranha cru
+item.mod_lavacow.piranha_cooked.name=Piranha cuit
+item.mod_lavacow.cheirolepis.name=Cheirolepis crue
+item.mod_lavacow.cheirolepis_cooked.name=Cheirolepis cuit
+item.mod_lavacow.mousse.name=Viande hachée
+item.mod_lavacow.meatball.name=Boulette de viande
+item.mod_lavacow.sharptooth.name=Croc
+item.mod_lavacow.bonesword.name=Épée en Os
+item.mod_lavacow.intestine.name=Intestins
+item.mod_lavacow.frozenthigh.name=Cuisse gelée
+item.mod_lavacow.poisonspore.name=Spore toxique
+item.mod_lavacow.undyingheart.name=Coeur sans-repos
+item.mod_lavacow.goldenheart.name=Coeur doré
+item.mod_lavacow.moltenbeef.name=Viande brûlante
+item.mod_lavacow.moltenaxe.name=Hache ardente
+item.mod_lavacow.moltenhammer.name=Marteau ardent
+item.mod_lavacow.mootenheart.name=Coeur ardent
+item.mod_lavacow.potion_of_mooten_lava.name=Potion de Lave Enflam-meuh
+item.mod_lavacow.swinemask.name=Masque de porc-stilence
+item.mod_lavacow.plagued_porkchop.name=Côtelette de porc avariée
+item.mod_lavacow.green_bacon_and_eggs.name=Bacon vert & Oeufs
+item.mod_lavacow.pigboarhide.name=Cuir contaminé 
+item.mod_lavacow.scythe_claw.name=Lame de faux
+item.mod_lavacow.reapers_scythe.name=Faux de Azrael
+item.mod_lavacow.famine.name="Famine"
+item.mod_lavacow.mimic_claw.name=Pince de mimicrabe
+item.mod_lavacow.mimic_claw_cooked.name=Pince de mimicrabe cuite
+item.mod_lavacow.silky_sludge.name=Boue velouteuse
+item.mod_lavacow.mossy_stick.name=Bâton gluant
+tile.pileofsludge.name=Tas de boue
+item.mod_lavacow.sludge_wand.name="Pestilence"
+item.mod_lavacow.burntovipositor.name=Ovipositeur brûlant
+item.mod_lavacow.war.name="Guerre"
+item.mod_lavacow.moltenpan.name=Poêle ardente
+item.mod_lavacow.felarmor_helmet.name=Casque ardent
+item.mod_lavacow.felarmor_chestplate.name=Plastron ardent
+item.mod_lavacow.felarmor_leggings.name=Jambières ardentes
+item.mod_lavacow.felarmor_boots.name=Bottes ardentes
+item.mod_lavacow.ptera_wing.name=Aile de Ptera
+item.mod_lavacow.ptera_wing_cooked.name=Aile de Ptera frie
+item.mod_lavacow.poisonstinger.name=Aiguillon venimeux
+item.mod_lavacow.vespa_carapace.name=Carapace de Vespa
+item.mod_lavacow.tooth_dagger.name=Dague Dent 
+item.mod_lavacow.vespa_dagger.name=Piqûre de Guèpe
+item.mod_lavacow.sausage_roll.name=Roulé de saucisse
+item.mod_lavacow.swinearmor_chestplate.name=Tunique de porc-stilence
+item.mod_lavacow.swinearmor_leggings.name=Pantalon de porc-stilence
+item.mod_lavacow.swinearmor_boots.name=Botte de porc-stilence
+item.mod_lavacow.zombiepiranha_item.name=Swarmeur
+item.mod_lavacow.zombiepiranha_item_cooked.name=Swarmeur cuit
+item.mod_lavacow.piranhalauncher.name=Lance-Swarmeur
+item.mod_lavacow.cursed_fabric.name=Tissu maudit
+item.mod_lavacow.cursed_bandage.name=Bandage pour animaux
+item.mod_lavacow.holy_sludge.name=Boue bénie
+item.mod_lavacow.holy_grenade.name=Sainte Grenade
+item.mod_lavacow.feather_black.name=Plume noire
+item.mod_lavacow.shattered_ice.name=Glace brisée
+item.mod_lavacow.halo_necklace.name=Pendentif du Halo
+item.mod_lavacow.dreamcatcher.name=Attrape-rêves
+
+material.mod_lavacow.moltenbeef.name=Viande brûlante
+material.mod_lavacow.vespa_carapace.name=Carapace de Vespa
+material.mod_lavacow.scythe_claw.name=Lame de faux
+
+modifier.mod_lavacow.broodmother.name=Broodmother
+modifier.mod_lavacow.broodmother.desc=§r\nInvoque une larve de vespa en combat ou lorsque un bloc est brisé.
+modifier.mod_lavacow.famine.name=Famine
+modifier.mod_lavacow.famine.desc=§oCavalier de l'Apocalypse§r\nGives Hunger. Restore un point de faim quand une créature vivante est tuée.      
+
+############
+# Entities #
+############
+
+entity.mod_lavacow.lavacow.name=Meuhgma
+entity.mod_lavacow.zombiemushroom.name=Ciuperca
+entity.mod_lavacow.parasite.name=Parasite
+entity.mod_lavacow.foglet.name=Brumelin
+entity.mod_lavacow.zombiefrozen.name=Ingheta
+entity.mod_lavacow.undeadswine.name=Porc corrompu
+entity.mod_lavacow.salamander.name=Salamandre
+entity.mod_lavacow.ithaqua.name=Ithaqua
+entity.mod_lavacow.mimic.name=Mimicrabe
+entity.mod_lavacow.sludgelord.name=Seigneur de la Boue
+entity.mod_lavacow.lilsludge.name=Ptite Boue
+entity.mod_lavacow.raven.name=Corbeau
+entity.mod_lavacow.ptera.name=Ptera
+entity.mod_lavacow.vespa.name=Vespa
+entity.mod_lavacow.scarecrow.name=Épouvantail
+entity.mod_lavacow.vespacocoon.name=Cocon de Vespa
+entity.mod_lavacow.zombiepiranha.name=Swarmeur
+entity.mod_lavacow.piranha.name=Piranha
+entity.mod_lavacow.boneworm.name=Osvermis
+entity.mod_lavacow.raven.seagull=Seagull
+entity.mod_lavacow.pingu.name=Gelguin
+
+##########
+# Sounds #
+##########
+
+entity_parasite_ambient=Parasite se tortille
+entity_parasite_death=Parasite qui meurt
+entity_parasite_hurt=Parasite blessé
+
+entity_foglet_ambient=Brumelin grogne
+entity_foglet_death=Brumelin qui meurt
+entity_foglet_hurt=Brumelin blessé
+
+entity_undeadswine_attack=Porc corrompu renifle
+entity_undeadswine_charge=Porc corrompu charge
+entity_undeadswine_death=Porc corrompu qui meurt
+entity_undeadswine_hurt=Porc corrompu blessé
+
+entity_salamander_ambient=Salamandre grogne
+entity_salamander_death=Salamandre qui meurt
+entity_salamander_hurt=Salamandre blessé
+
+entity_zombiepiranha_attack=Mord
+
+entity_wendigo_ambient=Ithaqua aboie
+entity_wendigo_attack=Ithaqua hurle
+entity_wendigo_death=Ithaqua qui meurt
+entity_wendigo_hurt=Ithaqua blessé
+
+entity_mimic_ambient=Mimicrabe claque ses pinces
+entity_mimic_death=Mimicrabe qui meurt
+entity_mimic_hurt=Mimicrabe blessé
+
+entity_sludgelord_ambient=Seigneur de la Boue grogne
+entity_sludgelord_death=Seigneur de la Boue qui meurt
+entity_sludgelord_hurt=Seigneur de la Boue blessé
+
+entity_lilsludge_ambient=Ptite Boue feule
+entity_lilsludge_death=Ptite Boue qui meurt
+entity_lilsludge_hurt=Ptite Boue blessée
+
+entity_raven_ambient=Corbeau croasse
+entity_raven_death=Corbeau qui meurt
+entity_raven_hurt=Corbeau blessé
+
+entity_ptera_ambient=Ptera cri
+entity_ptera_death=Ptera qui meurt
+entity_ptera_hurt=Ptera blessé
+
+entity_vespa_ambient=Vespa bourdonne
+entity_vespa_death=Vespa qui meurt
+entity_vespa_hurt=Vespa blessé
+
+entity_scarecrow_ambient=Épouvantail ricane
+entity_scarecrow_death=Épouvantail qui meurt
+entity_scarecrow_hurt=Épouvantail blessé
+
+entity_zombiepiranha_ambient=Swarmeur claque des dents
+entity_zombiepiranha_death=Swarmeur qui meurt
+entity_zombiepiranha_hurt=Swarmeur blessé
+
+entity_zombiefrozen_ambient=Ingheta grogne
+entity_zombiefrozen_death=Ingheta qui meurt
+entity_zombiefrozen_hurt=Ingheta blessé
+
+entity_boneworm_ambient=Osvermis grogne
+entity_boneworm_attack=Osvermis crache
+entity_boneworm_death=Osvermis qui meurt
+entity_boneworm_hurt=Osvermis blessé
+
+entity_seagull_ambient=Gelguin chante
+entity_seagull_death=Gelguin qui meurt
+entity_seagull_hurt=Gelguin blessé
+
+entity_pingu_ambient=Penghoul calls
+entity_pingu_death=Penghoul dies
+entity_pingu_hurt=Penghoul blessé
+
+############
+# Tooltips #
+############
+
+tootip.mod_lavacow.bonesword=Fais subir %d%% de vie maximale en dégats supplémentaires à la cible
+tootip.mod_lavacow.canebeef=Donne Régénération(0:08) quand mangé.
+tootip.mod_lavacow.canepork=Donne Régénération(0:08) quand mangé.
+tootip.mod_lavacow.canerottenmeat=Donne Régénération(0:08) quand mangé, les mimicrabes en raffolent.
+tootip.mod_lavacow.netherstew=Donne des effets aléatoires(0:40) quand mangé.
+tootip.mod_lavacow.goldenheart=Donne Régénération and repairs(+1/sec) all equipments when equipped.
+tootip.mod_lavacow.moltenaxe=Brûle le bois coupé.
+tootip.mod_lavacow.moltenhammer=Clic droit pour faire des dégats aux créatures autour du joueur.
+tootip.mod_lavacow.potion_of_mooten_lava=Essayer de faire boire ceci à une vache. :)
+tootip.mod_lavacow.fissionpotion=Transforme un animal en 2.
+tootip.mod_lavacow.green_bacon_and_eggs=Donne Hâte(1:00) quand mangé.
+tootip.mod_lavacow.reapers_scythe=Tranche les ennemis et ignore l'armure.
+tootip.mod_lavacow.famine=Donne Faim. Restore 1 point de faim quand frappe un animal non mort-vivant.      
+tootip.mod_lavacow.frozenthigh=Comestible. Donne Lenteur III(0:04) quand utilisé comme arme.
+tootip.mod_lavacow.sludge_wand=Clic droit invoque une "Ptite Boue"
+tootip.mod_lavacow.war=Lève une guerre entre toi et ton ami avec une maison en bois (Boule de Feu comme munition)
+tootip.mod_lavacow.moltenpan=Utilisé pour des plats exotiques
+tootip.mod_lavacow.intestine=Clic droit pour trouver ce qu'il y'a à l'intérieur
+tootip.mod_lavacow.felarmor=Dégats aux mobs en feu+
+tootip.mod_lavacow.felarmor.l2=Dégats lié au feu-
+tootip.mod_lavacow.swinearmor=Set(2): Porc corrompu deviendra neutre au joueur
+tootip.mod_lavacow.swinearmor.l2=Set(4): Donne au joueur une immunité au poison.
+tootip.mod_lavacow.piranhalauncher=Clic droit lance un Swarmeur. (Swarmeur comme munition)
+tootip.mod_lavacow.cursed_bandage=Soigne de 2 HP votre animal de compagnie
+tootip.mod_lavacow.holy_grenade=Se lance sur la cible et explose. Les mort vivants reçoivent 300%% de dégats et s'enflamment(0:08)
+tootip.mod_lavacow.halo_necklace=Dégats au mort-viants+%d%%
+tootip.mod_lavacow.dreamcatcher=Attrape les créatures cauchemardesques de vos rêves.
+
+message.mod_lavacow.metamorphosis= évolue!
+command.mod_lavacow.sitting= attend
+command.mod_lavacow.following= vous suit
+command.mod_lavacow.wandering= se promène
+itemGroup.mod_lavacow_items=Fish's Undead Rising
+key.mod_lavacow.special=Mount Special Ability
+
+################
+# Enchantments #
+################
+
+enchantment.mod_lavacow.Poisonous=Toxique
+enchantment.mod_lavacow.Lifesteal=Vol de vie

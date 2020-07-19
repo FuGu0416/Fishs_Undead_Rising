@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "###",
+        "   "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:cursed_fabric"
+        }
+    },
+    "result": {
+        "item": "minecraft:paper",
+        "count": 3
+    }
+}

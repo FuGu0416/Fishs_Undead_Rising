@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        " X ",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:poisonstinger"
+        },
+        "X": {
+            "item": "mod_lavacow:vespa_carapace"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:vespa_dagger"
+    }
+}

@@ -1,0 +1,186 @@
+
+#########
+# ITEMS #
+#########
+
+item.mod_lavacow.netherstew.name=Estofado del Nether
+item.mod_lavacow.canebeef.name=Brocheta de vaca
+item.mod_lavacow.canepork.name=Brocheta de cerdo
+item.mod_lavacow.canerottenmeat.name=Brocheta de carne podrida
+item.mod_lavacow.fissionpotion.name=Poción de fisión
+item.mod_lavacow.hyphae.name=Hifas
+tile.glowshroom.name=Hongo luminoso
+item.mod_lavacow.parasite_item.name=Parásito
+item.mod_lavacow.parasite_item_cooked.name=Parásito cocido
+item.mod_lavacow.piranha.name=Piraña
+item.mod_lavacow.piranha_cooked.name=Piraña cocida
+item.mod_lavacow.cheirolepis.name=Cheirolepis
+item.mod_lavacow.cheirolepis_cooked.name=Cheirolepis cocido
+item.mod_lavacow.mousse.name=Carne picada
+item.mod_lavacow.meatball.name=Bola de carne
+item.mod_lavacow.sharptooth.name=Colmillo de Foglet
+item.mod_lavacow.bonesword.name=Espada dentada
+item.mod_lavacow.intestine.name=Intestino
+item.mod_lavacow.frozenthigh.name=Muslo congelado
+item.mod_lavacow.poisonspore.name=Espora venenosa
+item.mod_lavacow.undyingheart.name=Corazón no-muerto
+item.mod_lavacow.goldenheart.name=Corazón dorado
+item.mod_lavacow.moltenbeef.name=Carne ígnea
+item.mod_lavacow.moltenaxe.name=Hacha ígnea
+item.mod_lavacow.moltenhammer.name=Mazo ígneo
+item.mod_lavacow.mootenheart.name=Corazón ígneo
+item.mod_lavacow.potion_of_mooten_lava.name=Poción de Lávaca
+item.mod_lavacow.swinemask.name=Máscara porcina
+item.mod_lavacow.plagued_porkchop.name=Chuleta plagada
+item.mod_lavacow.green_bacon_and_eggs.name=Tocino con huevos misterioso
+item.mod_lavacow.pigboarhide.name=Cuero plagado
+item.mod_lavacow.scythe_claw.name=Garra guadaña
+item.mod_lavacow.reapers_scythe.name=Guadaña de Azrael
+item.mod_lavacow.famine.name="Hambruna"
+item.mod_lavacow.mimic_claw.name=Tenaza de Mimicrab
+item.mod_lavacow.mimic_claw_cooked.name=Tenaza de Mimicrab cocida
+item.mod_lavacow.silky_sludge.name=Lodo suave
+item.mod_lavacow.mossy_stick.name=Palo musgoso
+tile.pileofsludge.name=Pila de lodo
+item.mod_lavacow.sludge_wand.name="Pestilencia"
+item.mod_lavacow.burntovipositor.name=Ovipositor quemado
+item.mod_lavacow.war.name="Guerra"
+item.mod_lavacow.moltenpan.name=Sartén ígnea
+item.mod_lavacow.felarmor_helmet.name=Casco ígneo
+item.mod_lavacow.felarmor_chestplate.name=Pechera ígnea
+item.mod_lavacow.felarmor_leggings.name=Pantalón ígneo
+item.mod_lavacow.felarmor_boots.name=Botas ígneas
+item.mod_lavacow.ptera_wing.name=Ala de Ptera
+item.mod_lavacow.ptera_wing_cooked.name=Ala de Ptera cocida
+item.mod_lavacow.poisonstinger.name=Aguijón venenoso
+item.mod_lavacow.vespa_carapace.name=Caparazón de Vespa
+item.mod_lavacow.tooth_dagger.name=Daga de colmillo
+item.mod_lavacow.vespa_dagger.name=Picadura de avispa
+item.mod_lavacow.sausage_roll.name=Rollo de salchicha
+item.mod_lavacow.swinearmor_chestplate.name=Túnica porcina
+item.mod_lavacow.swinearmor_leggings.name=Pantalón porcino
+item.mod_lavacow.swinearmor_boots.name=Botas porcinas
+
+material.mod_lavacow.moltenbeef.name=Carne ígnea
+material.mod_lavacow.vespa_carapace.name=Caparazón de Vespa
+
+modifier.mod_lavacow.broodmother.name=Madre de cría
+modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
+
+############
+# Entities #
+############
+
+entity.mod_lavacow.lavacow.name=Vaca de lava
+entity.mod_lavacow.zombiemushroom.name=Zombi infectado
+entity.mod_lavacow.parasite.name=Parásito
+entity.mod_lavacow.foglet.name=Foglet
+entity.mod_lavacow.zombiefrozen.name=Zombi helado
+entity.mod_lavacow.undeadswine.name=Jabalí zombi
+entity.mod_lavacow.salamander.name=Salamandra
+entity.mod_lavacow.ithaqua.name=Ithaqua
+entity.mod_lavacow.mimic.name=Mimicrab
+entity.mod_lavacow.sludgelord.name=Lord pantanoso
+entity.mod_lavacow.lilsludge.name=Criaturita del pantano
+entity.mod_lavacow.raven.name=Cuervo
+entity.mod_lavacow.ptera.name=Ptera
+entity.mod_lavacow.vespa.name=Vespa
+entity.mod_lavacow.scarecrow.name=Espantapájaros
+entity.mod_lavacow.vespacocoon.name=Capullo de Vespa
+
+##########
+# Sounds #
+##########
+
+entity_parasite_ambient=Parásito retorciéndose
+entity_parasite_death=Parásito muere
+entity_parasite_hurt=Parásito herido
+
+entity_foglet_ambient=Gemidos de Foglet
+entity_foglet_death=Foglet muere
+entity_foglet_hurt=Foglet herido
+
+entity_undeadswine_attack=Jabalí zombi resopla
+entity_undeadswine_charge=Jabalí zombi resopla
+entity_undeadswine_death=Jabalí zombi muere
+entity_undeadswine_hurt=Jabalí zombi herido
+
+entity_salamander_ambient=Quejido de Salamandra
+entity_salamander_death=Salamandra muere
+entity_salamander_hurt=Salamandra herida
+
+entity_zombiepiranha_attack=Chasquido de Mimicrab
+
+entity_wendigo_ambient=Ithaqua ladra
+entity_wendigo_attack=Ithaqua aulla
+entity_wendigo_death=Ithaqua muere
+entity_wendigo_hurt=Ithaqua es herido
+
+entity_mimic_ambient=Clics de Mimicrab
+entity_mimic_death=Mimicrab muere
+entity_mimic_hurt=Mimicrab herido
+
+entity_sludgelord_ambient=Lord Pantanoso hace eco
+entity_sludgelord_death=Lord Pantanoso muere
+entity_sludgelord_hurt=Lord Pantanoso herido
+
+entity_lilsludge_ambient=Pantanito sisea
+entity_lilsludge_death=Pantanito muere
+entity_lilsludge_hurt=Pantanito herido
+
+entity_raven_ambient=Llamadas de Cuervo
+entity_raven_death=Cuervo muere
+entity_raven_hurt=Cuervo herido
+
+entity_ptera_ambient=Chillido de Ptera
+entity_ptera_death=Ptera muere
+entity_ptera_hurt=Ptera herida
+
+entity_vespa_ambient=Zumbidos de Vespa
+entity_vespa_death=Vespa muere
+entity_vespa_hurt=Vespa herida
+
+entity_scarecrow_ambient=Espantapájaros parlotea
+entity_scarecrow_death=Espantapájaros muere
+entity_scarecrow_hurt=Espantapájaros herido
+
+############
+# Tooltips #
+############
+
+tootip.mod_lavacow.bonesword=Hace un daño extra igual al %d%% de la vida del objetivo.
+tootip.mod_lavacow.canebeef=Da regeneración (0:08) al comerlo.
+tootip.mod_lavacow.canepork=Da regeneración (0:08) al comerlo.
+tootip.mod_lavacow.canerottenmeat=La comida favorita de Mimicrab, da regeneración (0:08) al comerlo.
+tootip.mod_lavacow.netherstew=Da efectos al azar (0:40) al comerlo.
+tootip.mod_lavacow.goldenheart=Da regeneración y repara (+1/sec) todo el equipo al comerlo.
+tootip.mod_lavacow.moltenaxe=Da carbón al cortar troncos.
+tootip.mod_lavacow.moltenhammer=Clic derecho para provocar daño a las criaturas del rededor.
+tootip.mod_lavacow.potion_of_mooten_lava=Probá darle esto a una vaca con resistencia al fuego. :)
+tootip.mod_lavacow.fissionpotion=Divide un animal en dos.
+tootip.mod_lavacow.green_bacon_and_eggs=Da celeridad (1:00) al comerlo.
+tootip.mod_lavacow.reapers_scythe=Ignora la armadura.
+tootip.mod_lavacow.famine=Da hambre constante. Restaura 1 de hambre al golpear criaturas no no-muertas.
+tootip.mod_lavacow.frozenthigh=Es comestible. Al atacar da lentitud III (0:04)
+tootip.mod_lavacow.sludge_wand=Clic derecho para invocar un Lodito a tu servicio.
+tootip.mod_lavacow.war=Empezá una guerra contra tu amigo que construyó una cabaña de madera. (necesito Carga ígnea como munición)
+tootip.mod_lavacow.moltenpan=Usado para cocina especial.
+tootip.mod_lavacow.intestine=Clic derecho para ver qué tiene adentro.
+tootip.mod_lavacow.felarmor=Daño extra a criaturas quemándose.
+tootip.mod_lavacow.felarmor.l2=Reduce el daño de fuego.
+tootip.mod_lavacow.swinearmor=Set(2): El jabalí zombi va a ser neutral al jugador.
+tootip.mod_lavacow.swinearmor.l2=Set(4): Otorga inmunidad al veneno.
+
+message.mod_lavacow.metamorphosis= está evolucionando!
+command.mod_lavacow.sitting= está esperando
+command.mod_lavacow.following= está siguiéndote
+command.mod_lavacow.wandering= está merodeando
+itemGroup.mod_lavacow_items=Fish's Undead Rising
+key.mod_lavacow.special=Mount Special Ability
+
+################
+# Enchantments #
+################
+
+enchantment.mod_lavacow.Poisonous=Ponzoña
+enchantment.mod_lavacow.Lifesteal=Robo de vida

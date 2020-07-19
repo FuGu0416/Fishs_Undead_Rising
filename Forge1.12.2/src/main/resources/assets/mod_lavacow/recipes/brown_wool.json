@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "## ",
+        "## "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:foul_bristle"
+        }
+    },
+    "result": {
+        "item": "minecraft:wool",
+        "data": 12,
+        "count": 1
+    }
+}

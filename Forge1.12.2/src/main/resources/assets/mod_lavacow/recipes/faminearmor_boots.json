@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "# #",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:foul_bristle"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:faminearmor_boots"
+    }
+}

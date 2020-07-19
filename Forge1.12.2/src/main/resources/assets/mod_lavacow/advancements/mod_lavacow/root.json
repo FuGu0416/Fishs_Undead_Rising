@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:undyingheart"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.root.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.root.description"
+        },
+        "background": "mod_lavacow:textures/blocks/glowshroom_block_stem.png",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden" : false
+    },
+    "criteria": {
+        "tick": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

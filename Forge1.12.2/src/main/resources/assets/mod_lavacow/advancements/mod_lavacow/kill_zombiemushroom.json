@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:hyphae"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.kill_zombiemushroom.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.kill_zombiemushroom.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/root",
+    "criteria": {
+        "kill_zombiemushroom": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:zombiemushroom"
+		        }
+		      }
+        }
+    }
+}

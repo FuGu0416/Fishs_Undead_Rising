@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+     "defaults": {
+        "model": "mod_lavacow:bloodtooth_shroom",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{"model": "mod_lavacow:glowshroom_s"}],
+	    "stage=0":[{ }],
+	    "stage=1":[{ }],
+		"age=0": { "model": "mod_lavacow:bloodtooth_shroom" },
+        "age=1": { "model": "mod_lavacow:bloodtooth_shroom" }
+    }
+}

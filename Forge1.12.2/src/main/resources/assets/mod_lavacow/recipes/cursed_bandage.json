@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        "#X#",
+        "D#D"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:cursed_fabric"
+        },
+        "X": {
+            "item": "minecraft:speckled_melon"
+        },
+        "D": {
+			"item": "mod_lavacow:parasite_item"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:cursed_bandage",
+        "count": 8
+    }
+}

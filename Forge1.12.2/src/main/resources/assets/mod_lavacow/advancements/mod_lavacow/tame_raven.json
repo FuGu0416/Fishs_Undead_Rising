@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:feather_black"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.tame_raven.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.tame_raven.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/root",
+    "criteria": {
+        "tamed_raven": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:raven"
+		        }
+		      }
+        }
+    }
+}

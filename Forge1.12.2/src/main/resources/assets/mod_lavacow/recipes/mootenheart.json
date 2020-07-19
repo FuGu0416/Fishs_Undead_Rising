@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " Y ",
+        "#X#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:moltenbeef"
+        },
+        "X": {
+            "item": "mod_lavacow:undyingheart"
+        },
+        "Y": {
+            "item": "minecraft:lava_bucket"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:mootenheart"
+    }
+}

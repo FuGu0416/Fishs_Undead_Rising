@@ -1,0 +1,79 @@
+{
+  "pools": [
+    {
+      
+      "name": "mod_lavacow:pingu",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:dye",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_data",
+              "data": 15
+            },
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "mod_lavacow:feather_black",
+          "weight": 2,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "mod_lavacow:shattered_ice",
+          "weight": 2,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

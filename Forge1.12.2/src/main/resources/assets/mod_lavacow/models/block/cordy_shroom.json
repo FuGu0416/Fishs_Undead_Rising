@@ -1,0 +1,7 @@
+
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "mod_lavacow:blocks/cordy_shroom"
+    }
+}

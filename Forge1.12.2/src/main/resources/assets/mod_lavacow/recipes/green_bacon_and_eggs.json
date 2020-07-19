@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"type": "forge:ore_dict",
+		"ore": "egg"
+    },
+    {
+		"type": "forge:ore_dict",
+		"ore": "egg"
+    },
+    {
+    	"item": "mod_lavacow:moltenpan",
+    	"data": 32767
+    },
+    {
+      "item": "mod_lavacow:plagued_porkchop"
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:green_bacon_and_eggs",
+    "count": 1
+  }
+}

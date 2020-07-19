@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:moltenbeef"
+        },
+        "X": {
+            "item": "mod_lavacow:mootenheart"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:felarmor_chestplate"
+    }
+}

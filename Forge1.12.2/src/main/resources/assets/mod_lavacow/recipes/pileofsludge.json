@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "   ",
+        "YYY"
+    ],
+    "key": {
+        "Y": {
+            "item": "mod_lavacow:silky_sludge"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:pileofsludge",
+        "count": 1
+    }
+}

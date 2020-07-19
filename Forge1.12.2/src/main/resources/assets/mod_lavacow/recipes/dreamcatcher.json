@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "///",
+        "/#/",
+        "YYY"
+    ],
+    "key": {
+    	"/": {
+            "item": "mod_lavacow:mossy_stick"
+        },
+        "#": {
+            "item": "minecraft:web"
+        },
+        "Y": {
+            "item": "mod_lavacow:feather_black"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:dreamcatcher"
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"item": "mod_lavacow:mousse"		
+    },
+    {
+      "item": "mod_lavacow:mimic_claw"
+    },
+    {
+    	"item": "mod_lavacow:moltenpan",
+    	"data": 32767
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:crabcake",
+    "count": 2
+  }
+}

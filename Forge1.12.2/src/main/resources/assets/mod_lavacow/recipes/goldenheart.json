@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+			"type": "forge:ore_dict",
+			"ore": "blockGold"
+        },
+        "X": {
+            "item": "mod_lavacow:undyingheart"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:goldenheart"
+    }
+}

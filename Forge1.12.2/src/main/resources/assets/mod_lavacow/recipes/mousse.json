@@ -1,0 +1,55 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    [
+	    {
+	      "item": "minecraft:fish",
+	      "data": 0
+	    },
+	    {
+	      "item": "minecraft:fish",
+	      "data": 1
+	    },
+	    {
+	      "item": "minecraft:fish",
+	      "data": 2
+	    },
+	    {
+	      "item": "minecraft:fish",
+	      "data": 3
+	    },
+	    {
+	      "item": "minecraft:chicken"
+	    },
+	    {
+	      "item": "minecraft:rabbit"
+	    },
+	    {
+	      "item": "minecraft:rotten_flesh"
+	    },
+	    {
+	      "item": "mod_lavacow:parasite_item"
+	    },
+	    {
+	      "item": "mod_lavacow:piranha"
+	    },
+	    {
+	      "item": "mod_lavacow:zombiepiranha_item"
+	    },
+	    {
+	      "item": "mod_lavacow:cheirolepis"
+	    }
+    ]
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:mousse",
+    "count": 4
+  }
+}

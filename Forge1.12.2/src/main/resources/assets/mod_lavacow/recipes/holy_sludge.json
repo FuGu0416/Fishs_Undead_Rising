@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:silky_sludge"
+        },
+        "X": {
+            "item": "minecraft:sugar"
+        },
+        "D": {
+    		"item": "minecraft:glowstone_dust"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:holy_sludge"
+    }
+}

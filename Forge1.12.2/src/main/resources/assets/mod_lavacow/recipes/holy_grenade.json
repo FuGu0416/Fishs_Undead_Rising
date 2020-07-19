@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:holy_sludge"
+        },
+        "X": {
+            "type": "forge:ore_dict",
+    		"ore": "gemQuartz"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "gunpowder"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:holy_grenade"
+    }
+}

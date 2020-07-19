@@ -1,0 +1,10 @@
+{
+	"variants": { 
+        "facing=north": { "model": "mod_lavacow:scarecrowhead"},
+        "facing=south": { "model": "mod_lavacow:scarecrowhead"},
+        "facing=west":  { "model": "mod_lavacow:scarecrowhead"},
+		"facing=east":  { "model": "mod_lavacow:scarecrowhead"},
+		"facing=up":  { "model": "mod_lavacow:scarecrowhead"},
+		"facing=down":  { "model": "mod_lavacow:scarecrowhead"}
+    }
+}
