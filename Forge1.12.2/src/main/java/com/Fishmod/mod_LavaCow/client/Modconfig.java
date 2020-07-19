@@ -39,6 +39,7 @@ public class Modconfig {
 	public static int pSpawnRate_Pingu;
 	public static int pSpawnRate_Undertaker;
 	public static int pSpawnRate_GhostRay;
+	public static int pSpawnRate_Banshee;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -121,7 +122,10 @@ public class Modconfig {
 	
 	public static double GhostRay_Health;
 	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
+	public static double Banshee_Health;
+	public static double Banshee_Attack;
+	
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
 			"Salamander", "Ithaqua", "Mimicrab", "Sludge Lord", "Lil'Sludge", "Raven", "Ptera", "Vespa", "Scarecrow", /*"Vespa Cocoon",*/ "Swarmer",
 			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Glowshroom"};
 	
@@ -226,6 +230,10 @@ public class Modconfig {
 		
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
+		
+		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
+		Banshee_Health = config.get("Banshee", "banshee health", 20.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(20.0D);
+		Banshee_Attack = config.get("Banshee", "banshee attack", 5.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(5.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
