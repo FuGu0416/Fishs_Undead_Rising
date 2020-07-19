@@ -350,7 +350,9 @@ public class EntityUndertaker extends EntityMob{
                 entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
                 entityvex.setOwnerId(EntityUndertaker.this.getUniqueID());
-                EntityUndertaker.this.world.spawnEntity(entityvex);
+                
+                if(!EntityUndertaker.this.world.isRemote)
+                	EntityUndertaker.this.world.spawnEntity(entityvex);
                 
                 if(EntityUndertaker.this.getAttackingEntity() != null)
                 	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());

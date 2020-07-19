@@ -109,7 +109,7 @@ public class EntityFishTameable extends EntityTameable{
      */
     protected boolean canDespawn()
     {
-        return !this.isTamed();
+        return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }
     
     protected boolean isCommandItem(Item itemIn) {
@@ -210,6 +210,10 @@ public class EntityFishTameable extends EntityTameable{
         if (!this.world.isRemote && !this.isTamed() && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
+        }
+        
+        if (!this.world.isRemote && (this.getOwner() == null || (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
+        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
         }
     }
     

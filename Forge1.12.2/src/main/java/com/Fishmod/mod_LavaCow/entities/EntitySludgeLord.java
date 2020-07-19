@@ -190,10 +190,6 @@ public class EntitySludgeLord extends EntityMob{
      */
     public void onDeath(DamageSource cause) {
        super.onDeath(cause);
-       for(EntityLilSludge C : EntitySludgeLord.this.world.getEntitiesWithinAABB(EntityLilSludge.class, EntitySludgeLord.this.getEntityBoundingBox().grow(16.0D))) {
-    	   if(C.getOwnerId().equals(this.getUniqueID()))
-    		   C.setLimitedLife(0);
-       }
        
        int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
        if(this.canDropLoot())
@@ -338,7 +334,9 @@ public class EntitySludgeLord extends EntityMob{
                 entityvex.setOwnerId(EntitySludgeLord.this.getUniqueID());
                 //entityvex.setTamed(true);
                 entityvex.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
-                EntitySludgeLord.this.world.spawnEntity(entityvex);
+                
+                if(!EntitySludgeLord.this.world.isRemote)
+                	EntitySludgeLord.this.world.spawnEntity(entityvex);
                 
                 //ItemFishCustomWeapon.LavaBurst(EntitySludgeLord.this.world, entityvex.posX, entityvex.posY, entityvex.posZ, 1.0D, EnumParticleTypes.WATER_BUBBLE);
                 //if(EntitySludgeLord.this.getAttackingEntity() != null)
