@@ -9,7 +9,6 @@ item.mod_lavacow.canepork.name=Cane Pork
 item.mod_lavacow.canerottenmeat.name=Cane Rotten Flesh
 item.mod_lavacow.fissionpotion.name=Potion of Fission
 item.mod_lavacow.hyphae.name=Hyphae
-tile.glowshroom.name=Glow Shroom
 item.mod_lavacow.parasite_item.name=Parasite
 item.mod_lavacow.parasite_item_cooked.name=Cooked Parasite
 item.mod_lavacow.piranha.name=Piranha
@@ -41,7 +40,6 @@ item.mod_lavacow.mimic_claw.name=Mimicrab Claw
 item.mod_lavacow.mimic_claw_cooked.name=Baked Mimicrab Claws
 item.mod_lavacow.silky_sludge.name=Silky Sludge
 item.mod_lavacow.mossy_stick.name=Mossy Stick
-tile.pileofsludge.name=Sludge Pile
 item.mod_lavacow.sludge_wand.name="Pestilence"
 item.mod_lavacow.burntovipositor.name=Burnt Ovipositor
 item.mod_lavacow.war.name="War"
@@ -71,11 +69,6 @@ item.mod_lavacow.feather_black.name=Black Feather
 item.mod_lavacow.shattered_ice.name=Shattered Ice
 item.mod_lavacow.halo_necklace.name=Halo Necklace
 item.mod_lavacow.dreamcatcher.name=Dream Catcher
-tile.glowshroom_block_cap.name=Glow Shroom Cap
-tile.glowshroom_block_stem.name=Glow Shroom Stem
-tile.bloodtooth_shroom.name=Bloodtooth
-tile.cordy_shroom.name=Cordyceps
-tile.veil_shroom.name=Veil Shroom
 item.mod_lavacow.undertaker_shovel.name=Midnight Mourne
 item.mod_lavacow.raven_whistle.name=Raven Whistle
 item.mod_lavacow.acidicheart.name=Acidic Heart
@@ -86,9 +79,6 @@ item.mod_lavacow.faminearmor_boots.name=Famine Boots
 item.mod_lavacow.foul_bristle.name=Foul Bristle
 item.mod_lavacow.crabcake.name=Crab Cake
 item.mod_lavacow.ectoplasm.name=Ectoplasm
-tile.scarecrowhead_common.name=Scarecrow Head
-tile.scarecrowhead_straw.name=Scarecrow Head
-tile.scarecrowhead_plague.name=Scarecrow Head
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -97,7 +87,23 @@ material.mod_lavacow.scythe_claw.name=Scythe Claw
 modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
 modifier.mod_lavacow.famine.name=Famine
-modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block.      
+modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block. 
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=Glow Shroom
+tile.mod_lavacow.pileofsludge.name=Sludge Pile
+tile.mod_lavacow.glowshroom_block_cap.name=Glow Shroom Cap
+tile.mod_lavacow.glowshroom_block_stem.name=Glow Shroom Stem
+tile.mod_lavacow.bloodtooth_shroom.name=Bloodtooth
+tile.mod_lavacow.cordy_shroom.name=Cordyceps
+tile.mod_lavacow.veil_shroom.name=Veil Shroom
+tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
+tile.mod_lavacow.tombstone.name=Tombstone
 
 ############
 # Entities #

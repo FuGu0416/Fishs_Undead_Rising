@@ -12,7 +12,6 @@ item.mod_lavacow.canepork.name=甘蔗猪
 item.mod_lavacow.canerottenmeat.name=甘蔗腐肉
 item.mod_lavacow.fissionpotion.name=分裂生殖药水
 item.mod_lavacow.hyphae.name=菌丝根
-tile.glowshroom.name=萤光蕈
 item.mod_lavacow.parasite_item.name=尸蛆
 item.mod_lavacow.parasite_item_cooked.name=炙烧蛆
 item.mod_lavacow.piranha.name=食人鱼
@@ -44,7 +43,6 @@ item.mod_lavacow.mimic_claw.name=拟箱蟹爪
 item.mod_lavacow.mimic_claw_cooked.name=嫩烤蟹爪
 item.mod_lavacow.silky_sludge.name=丝滑软泥
 item.mod_lavacow.mossy_stick.name=苔藓枝节
-tile.pileofsludge.name=软泥滩
 item.mod_lavacow.sludge_wand.name=『恶疫』
 item.mod_lavacow.burntovipositor.name=烧焦输卵管
 item.mod_lavacow.war.name=『战争』
@@ -74,11 +72,6 @@ item.mod_lavacow.feather_black.name=黑色羽毛
 item.mod_lavacow.shattered_ice.name=碎冰
 item.mod_lavacow.halo_necklace.name=辉映项链
 item.mod_lavacow.dreamcatcher.name=捕梦网
-tile.glowshroom_block_cap.name=萤光蕈伞
-tile.glowshroom_block_stem.name=萤光蕈柄
-tile.bloodtooth_shroom.name=血齿蕈
-tile.cordy_shroom.name=虫草蕈
-tile.veil_shroom.name=幕帷蕈
 item.mod_lavacow.undertaker_shovel.name=夜叹
 item.mod_lavacow.raven_whistle.name=渡鸦哨
 item.mod_lavacow.acidicheart.name=酸囊之心
@@ -94,6 +87,22 @@ material.mod_lavacow.vespa_carapace.name=巨蜂壳
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受虫满温暖的怀抱！ §r\n在攻击或破坏方块时概率诞生出巨蜂幼虫
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=萤光蕈
+tile.mod_lavacow.pileofsludge.name=软泥滩
+tile.mod_lavacow.glowshroom_block_cap.name=萤光蕈伞
+tile.mod_lavacow.glowshroom_block_stem.name=萤光蕈柄
+tile.mod_lavacow.bloodtooth_shroom.name=血齿蕈
+tile.mod_lavacow.cordy_shroom.name=虫草蕈
+tile.mod_lavacow.veil_shroom.name=幕帷蕈
+tile.mod_lavacow.scarecrowhead_common.name=稻草人头
+tile.mod_lavacow.scarecrowhead_straw.name=稻草人头
+tile.mod_lavacow.scarecrowhead_plague.name=稻草人头
+tile.mod_lavacow.tombstone.name=墓碑
 
 ############
 # Entities #

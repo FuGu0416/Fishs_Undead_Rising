@@ -12,7 +12,6 @@ item.mod_lavacow.canepork.name=甘蔗豬
 item.mod_lavacow.canerottenmeat.name=甘蔗腐肉
 item.mod_lavacow.fissionpotion.name=分裂生殖藥水
 item.mod_lavacow.hyphae.name=菌絲根
-tile.glowshroom.name=螢光蕈
 item.mod_lavacow.parasite_item.name=屍蛆
 item.mod_lavacow.parasite_item_cooked.name=炙燒蛆
 item.mod_lavacow.piranha.name=食人魚
@@ -44,7 +43,6 @@ item.mod_lavacow.mimic_claw.name=擬箱蟹爪
 item.mod_lavacow.mimic_claw_cooked.name=嫩烤蟹爪
 item.mod_lavacow.silky_sludge.name=絲滑軟泥
 item.mod_lavacow.mossy_stick.name=苔蘚枝節
-tile.pileofsludge.name=軟泥灘
 item.mod_lavacow.sludge_wand.name=『惡疫』
 item.mod_lavacow.burntovipositor.name=燒焦輸卵管
 item.mod_lavacow.war.name=『戰爭』
@@ -74,11 +72,6 @@ item.mod_lavacow.feather_black.name=漆黑之羽
 item.mod_lavacow.shattered_ice.name=碎冰
 item.mod_lavacow.halo_necklace.name=輝映項鏈
 item.mod_lavacow.dreamcatcher.name=捕夢網
-tile.glowshroom_block_cap.name=螢光蕈傘
-tile.glowshroom_block_stem.name=螢光蕈柄
-tile.bloodtooth_shroom.name=血齒蕈
-tile.cordy_shroom.name=蟲草蕈
-tile.veil_shroom.name=幕帷蕈
 item.mod_lavacow.undertaker_shovel.name=夜嘆
 item.mod_lavacow.raven_whistle.name=渡鴉哨
 item.mod_lavacow.acidicheart.name=酸囊之心
@@ -89,15 +82,28 @@ item.mod_lavacow.faminearmor_boots.name=飢荒蹄靴
 item.mod_lavacow.foul_bristle.name=惡臭粗鬃
 item.mod_lavacow.crabcake.name=蟹肉糕
 item.mod_lavacow.ectoplasm.name=靈漿
-tile.scarecrowhead_common.name=稻草人頭
-tile.scarecrowhead_straw.name=稻草人頭
-tile.scarecrowhead_plague.name=稻草人頭
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會誕生出巨蜂幼蟲
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=螢光蕈
+tile.mod_lavacow.pileofsludge.name=軟泥灘
+tile.mod_lavacow.glowshroom_block_cap.name=螢光蕈傘
+tile.mod_lavacow.glowshroom_block_stem.name=螢光蕈柄
+tile.mod_lavacow.bloodtooth_shroom.name=血齒蕈
+tile.mod_lavacow.cordy_shroom.name=蟲草蕈
+tile.mod_lavacow.veil_shroom.name=幕帷蕈
+tile.mod_lavacow.scarecrowhead_common.name=稻草人頭
+tile.mod_lavacow.scarecrowhead_straw.name=稻草人頭
+tile.mod_lavacow.scarecrowhead_plague.name=稻草人頭
+tile.mod_lavacow.tombstone.name=墓碑
 
 ############
 # Entities #

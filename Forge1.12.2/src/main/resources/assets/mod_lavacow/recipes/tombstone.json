@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "XX",
+        "XX",
+        "##"
+    ],
+    "key": {
+        "#": {
+            "type": "forge:ore_dict",
+    		"ore": "vine"
+        },
+        "X": {
+    		"type": "forge:ore_dict",
+    		"ore": "stone"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:tombstone",
+        "count": 4
+    }
+}

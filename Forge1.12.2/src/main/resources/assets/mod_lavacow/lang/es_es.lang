@@ -9,7 +9,6 @@ item.mod_lavacow.canepork.name=Brocheta de cerdo
 item.mod_lavacow.canerottenmeat.name=Brocheta de carne podrida
 item.mod_lavacow.fissionpotion.name=Poción de fisión
 item.mod_lavacow.hyphae.name=Hifas
-tile.glowshroom.name=Hongo luminoso
 item.mod_lavacow.parasite_item.name=Parásito
 item.mod_lavacow.parasite_item_cooked.name=Parásito cocido
 item.mod_lavacow.piranha.name=Piraña
@@ -41,7 +40,6 @@ item.mod_lavacow.mimic_claw.name=Tenaza de Mimicrab
 item.mod_lavacow.mimic_claw_cooked.name=Tenaza de Mimicrab cocida
 item.mod_lavacow.silky_sludge.name=Lodo suave
 item.mod_lavacow.mossy_stick.name=Palo musgoso
-tile.pileofsludge.name=Pila de lodo
 item.mod_lavacow.sludge_wand.name="Pestilencia"
 item.mod_lavacow.burntovipositor.name=Ovipositor quemado
 item.mod_lavacow.war.name="Guerra"
@@ -66,6 +64,22 @@ material.mod_lavacow.vespa_carapace.name=Caparazón de Vespa
 
 modifier.mod_lavacow.broodmother.name=Madre de cría
 modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=Hongo luminoso
+tile.mod_lavacow.pileofsludge.name=Pila de lodo
+tile.mod_lavacow.glowshroom_block_cap.name=Glow Shroom Cap
+tile.mod_lavacow.glowshroom_block_stem.name=Glow Shroom Stem
+tile.mod_lavacow.bloodtooth_shroom.name=Bloodtooth
+tile.mod_lavacow.cordy_shroom.name=Cordyceps
+tile.mod_lavacow.veil_shroom.name=Veil Shroom
+tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
+tile.mod_lavacow.tombstone.name=Tombstone
 
 ############
 # Entities #
