@@ -2,17 +2,15 @@ package com.Fishmod.mod_LavaCow.worldgen;
 
 import java.util.Random;
 
-import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
+import com.Fishmod.mod_LavaCow.blocks.BlockTombStone;
+import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockWall;
-import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -73,11 +71,8 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 			            ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityGhostRay.class));
 			        }
 				}*/
+				worldIn.setBlockState(position.up().west().up(), Modblocks.TOMBSTONE.getDefaultState().withProperty(BlockTombStone.FACING, EnumFacing.WEST), 2);
 				worldIn.setBlockState(position.up().west(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
-				if(rand.nextBoolean())
-					worldIn.setBlockState(position.up().west().up(), Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), 2);
-				else
-					worldIn.setBlockState(position.up().west().up(), Blocks.COBBLESTONE_WALL.getDefaultState(), 2);
 				break;
 			case 1: //EAST
 				if(rand.nextBoolean()) {
@@ -89,11 +84,8 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 			            }
 			        }
 				}
+				worldIn.setBlockState(position.up().north().up(), Modblocks.TOMBSTONE.getDefaultState().withProperty(BlockTombStone.FACING, EnumFacing.NORTH), 2);
 				worldIn.setBlockState(position.up().north(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
-				if(rand.nextBoolean())
-					worldIn.setBlockState(position.up().north().up(), Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), 2);
-				else
-					worldIn.setBlockState(position.up().north().up(), Blocks.COBBLESTONE_WALL.getDefaultState(), 2);
 				break;
 			case 2: //WEST
 				if(rand.nextBoolean()) {
@@ -105,11 +97,8 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 			            }
 			        }
 				}
+				worldIn.setBlockState(position.up().south().up(), Modblocks.TOMBSTONE.getDefaultState().withProperty(BlockTombStone.FACING, EnumFacing.SOUTH), 2);
 				worldIn.setBlockState(position.up().south(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
-				if(rand.nextBoolean())
-					worldIn.setBlockState(position.up().south().up(), Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), 2);
-				else
-					worldIn.setBlockState(position.up().south().up(), Blocks.COBBLESTONE_WALL.getDefaultState(), 2);
 				break;
 			case 3: //SOUTH
 				if(rand.nextBoolean()) {
@@ -121,11 +110,8 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 			            }
 			        }
 				}
+				worldIn.setBlockState(position.up().east().up(), Modblocks.TOMBSTONE.getDefaultState().withProperty(BlockTombStone.FACING, EnumFacing.EAST), 2);
 				worldIn.setBlockState(position.up().east(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
-				if(rand.nextBoolean())
-					worldIn.setBlockState(position.up().east().up(), Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), 2);
-				else
-					worldIn.setBlockState(position.up().east().up(), Blocks.COBBLESTONE_WALL.getDefaultState(), 2);
 				break;
 			default:
 				break;

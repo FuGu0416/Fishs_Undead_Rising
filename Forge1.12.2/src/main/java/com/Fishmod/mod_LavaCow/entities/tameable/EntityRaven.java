@@ -1,11 +1,11 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -309,6 +309,18 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
 
             return super.processInteract(player, hand);
         }
+        else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.isTamed() && this.getOwner().equals(player) && this.getSkin() == 0) {
+        	this.setSkin(3);
+        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i)
+            {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+            }
+        	return true;
+        }
         /*else if (itemstack.getItem() == DEADLY_ITEM)
         {
             if (!player.capabilities.isCreativeMode)
@@ -490,7 +502,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        if (this.isEntityInvulnerable(source))
+        if (this.isEntityInvulnerable(source) || this.getSkin() == 3)
         {
             return false;
         }
