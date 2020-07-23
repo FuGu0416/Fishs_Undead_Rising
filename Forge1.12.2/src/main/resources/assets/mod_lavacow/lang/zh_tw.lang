@@ -256,6 +256,7 @@ tootip.mod_lavacow.undertaker_shovel=右鍵點擊以召喚聽命於玩家的活�
 tootip.mod_lavacow.raven_whistle=右鍵點擊綁定渡鴉，並右鍵點擊命令渡鴉前往該地
 tootip.mod_lavacow.faminearmor=套裝(2)：自身處於飢餓狀態時，造成傷害+2
 tootip.mod_lavacow.faminearmor.l2=套裝(4)：不再能進食，但殺死單位時能+4飽食度+1生命
+tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命

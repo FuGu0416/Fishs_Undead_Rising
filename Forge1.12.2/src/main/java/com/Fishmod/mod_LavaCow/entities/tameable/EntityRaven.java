@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -203,6 +204,9 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
 		            case 2: 
 		            	this.setHeldItem(getActiveHand(), new ItemStack(Items.FISH, 1, 2));
 		                break; 
+		            case 3:
+		            	this.setHeldItem(getActiveHand(), new ItemStack(FishItems.ECTOPLASM));
+		                break;
 		            default: 
 		            	this.setHeldItem(getActiveHand(), new ItemStack(FishItems.FEATHER_BLACK));
 		                break;
@@ -310,6 +314,11 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
             return super.processInteract(player, hand);
         }
         else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.isTamed() && this.getOwner().equals(player) && this.getSkin() == 0) {
+            if (!player.capabilities.isCreativeMode)
+            {
+                itemstack.shrink(1);
+                itemstack.onItemUseFinish(this.world, player);
+            }
         	this.setSkin(3);
         	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
         	for (int i = 0; i < 16; ++i)
@@ -465,6 +474,17 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     public SoundCategory getSoundCategory()
     {
         return SoundCategory.NEUTRAL;
+    }
+    
+    /**
+     * Get this Entity's EnumCreatureAttribute
+     */
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        if(this.getSkin() == 3)
+        	return EnumCreatureAttribute.UNDEAD;
+        else
+        	return EnumCreatureAttribute.UNDEFINED;
     }
 
     /**
