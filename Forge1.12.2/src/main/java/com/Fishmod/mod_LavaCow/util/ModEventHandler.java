@@ -650,12 +650,15 @@ public class ModEventHandler {
                 //System.out.println("OAO" + state.toString());
                 if(state.getMaterial() != Material.LEAVES) {
                 	list.add(B);
-                	
                 }
     		}
     		
     		event.getCollisionBoxesList().clear();
     		event.getCollisionBoxesList().addAll(list);
+    	}
+    	
+    	if(event.getEntity() instanceof EntityRaven && ((EntityRaven) event.getEntity()).getSkin() == 3 && ((EntityRaven) event.getEntity()).isFlying() && event.getEntity().collidedHorizontally) {
+    		event.getCollisionBoxesList().clear();
     	}
     }
     

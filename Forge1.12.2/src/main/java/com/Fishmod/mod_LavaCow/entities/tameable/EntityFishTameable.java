@@ -212,8 +212,8 @@ public class EntityFishTameable extends EntityTameable{
             this.setDead();
         }
         
-        if (!this.world.isRemote && (this.getOwner() == null || (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
-        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
+        if (!this.world.isRemote && (this.getOwner() != null && (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
+        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
         }
     }
     

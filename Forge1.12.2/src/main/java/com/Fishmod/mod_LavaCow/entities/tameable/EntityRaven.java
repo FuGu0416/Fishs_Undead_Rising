@@ -684,6 +684,20 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
 		}
 	}
 	
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender()
+    {
+    	return this.getSkin() == 3 ? 15728880 : super.getBrightnessForRender();
+    }
+
+    /**
+     * Gets how bright this entity is.
+     */
+    public float getBrightness()
+    {
+        return this.getSkin() == 3 ? 1.0F : super.getBrightness();
+    }
+	
 	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
