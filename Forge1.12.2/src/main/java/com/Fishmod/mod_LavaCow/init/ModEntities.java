@@ -336,7 +336,6 @@ public class ModEntities {
 		for(Type C : Type.getAll()) {
 			tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 			tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
-			//tweakEntitySpawn(EntityZombiePiranha.class, EnumCreatureType.MONSTER, 100, 8, 16, C);
 		}
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
 		tweakEntitySpawn(EntityRaven.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Raven, 4, 8, BiomeDictionary.Type.SPOOKY);
@@ -349,8 +348,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityPingu.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Pingu, 4, 8, BiomeDictionary.Type.SNOWY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.DRY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.OCEAN);
-		//tweakEntitySpawn(EntityZombiePiranha.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 8, 16, Type.WET);
-		//tweakEntitySpawn(EntityPiranha.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 8, 16, Type.WET);
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.FOREST);
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.COLD);
     }
     
     private static boolean isInHell(Biome BiomeIn) {
