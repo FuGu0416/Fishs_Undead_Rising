@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.init.ModPotions;
+import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
@@ -29,13 +29,13 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +55,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 	public EntityBanshee(World worldIn)
     {
         super(worldIn);
-        this.setSize(1.0F, 2.0F);
+        this.setSize(0.75F, 2.25F);
     }
 	
     protected void initEntityAI()
@@ -126,6 +126,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
         	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
+        
+        if(this.getSpellTicks() > 5 && this.getSpellTicks() < 10) {
+        	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EntityBanshee.this.posX, EntityBanshee.this.posY + EntityBanshee.this.height, EntityBanshee.this.posZ, 0.0D, 1.0D, 0.0D);
+        }
     }
     
     /**
@@ -217,7 +221,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
-    	if (id == 4) 
+        if (id == 10) {
+        	this.spellTicks = 30;
+        }
+    	else if (id == 4) 
     	{
             this.attackTimer = 5;
         }
@@ -351,26 +358,27 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
+            if (this.spellWarmup == 5)
             {
                 this.castSpell();
-                EntityBanshee.this.playSound(EntityBanshee.this.getSpellSound(), 1.0F, 1.0F);
-                EntityBanshee.this.world.setEntityState(EntityBanshee.this, (byte)11);
+                EntityBanshee.this.playSound(EntityBanshee.this.getSpellSound(), 4.0F, 1.2F);
+                           
             }
         }
 
         protected void castSpell()
         {
         	List<Entity> list = EntityBanshee.this.world.getEntitiesWithinAABBExcludingEntity(EntityBanshee.this, EntityBanshee.this.getEntityBoundingBox().grow(3.0D, 3.0D, 3.0D));
-
+        	EntityBanshee.this.world.setEntityState(EntityBanshee.this, (byte)11);
+        	
         	for (Entity entity1 : list)
         	{
         		if (entity1 instanceof EntityLivingBase)
         		{
         			float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();
                         
-        			if (((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 8 * 20 * (int)local_difficulty, 2));
+        			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
+        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
         		}
         	} 
         }
@@ -387,39 +395,39 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 
         protected int getCastingInterval()
         {
-            return 200;
+            return 160;
         }
 
         @Nullable
         protected SoundEvent getSpellPrepareSound()
         {
-            return SoundEvents.EVOCATION_ILLAGER_PREPARE_ATTACK;
+            return null;
         }
     }
 
     public float getEyeHeight()
     {
-        return 0.6F;
+        return this.height * 0.8F;
     }
     
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_BLAZE_AMBIENT;
+        return FishItems.ENTITY_BANSHEE_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return SoundEvents.ENTITY_BLAZE_HURT;
+        return FishItems.ENTITY_BANSHEE_HURT;
     }
 
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_BLAZE_DEATH;
+        return FishItems.ENTITY_BANSHEE_DEATH;
     }
     
     protected SoundEvent getSpellSound()
     {
-        return SoundEvents.EVOCATION_ILLAGER_CAST_SPELL;
+        return FishItems.ENTITY_BANSHEE_ATTACK;
     }
     
     /**
@@ -453,6 +461,6 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return null;
+        return LootTableHandler.BANSHEE;
     }
 }

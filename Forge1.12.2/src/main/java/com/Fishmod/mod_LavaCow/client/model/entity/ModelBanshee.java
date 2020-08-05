@@ -57,7 +57,7 @@ public class ModelBanshee extends FishModelBase {
         this.Jaw0.addBox(-3.5F, -3.5F, -3.0F, 7, 5, 3, 0.0F);
         this.setRotateAngle(Jaw0, 0.5918411493512771F, 0.0F, 0.0F);
         this.Body_base = new ModelRenderer(this, 19, 15);
-        this.Body_base.setRotationPoint(0.0F, 10.0F, 0.0F);
+        this.Body_base.setRotationPoint(0.0F, 10.0F, 1.0F);
         this.Body_base.addBox(-4.0F, -4.0F, -3.0F, 8, 14, 6, 0.0F);
         this.Body_lower_l = new ModelRenderer(this, 34, 48);
         this.Body_lower_l.mirror = true;
@@ -212,8 +212,8 @@ public class ModelBanshee extends FishModelBase {
     	boolean aggressive = ((IAggressive) entityIn).isAggressive();
     	float j = (float)((EntityBanshee) entityIn).getSpellTicks() / 30.0F;
     	if(((EntityBanshee) entityIn).isSpellcasting()) {
-    		Arm_r_Seg0.rotateAngleX = GradientAnimation(-0.6155776351678833F, 1.1046188995661776F, j);
-    		Arm_l_Seg0.rotateAngleX = GradientAnimation(-0.6155776351678833F, 1.1046188995661776F, j);
+    		Arm_r_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
+    		Arm_l_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.rotateAngleY = 2.111673824703684F;
     		Arm_l_Seg0.rotateAngleY = -2.111673824703684F;
     		Arm_r_Seg0.rotateAngleZ = 1.5627678282146893F;
@@ -224,12 +224,18 @@ public class ModelBanshee extends FishModelBase {
     	else if(aggressive) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);
-    		this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		if(this.Body_base.rotationPointY < 10.0F)
+    			this.Body_base.rotationPointY += 0.17F;
+    		else
+    			this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
     	}
     	else {
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
-    		this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		if(this.Body_base.rotationPointY < 10.0F)
+    			this.Body_base.rotationPointY += 0.17F;
+    		else
+    			this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
     	}
     }
 

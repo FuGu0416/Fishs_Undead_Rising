@@ -431,5 +431,33 @@
 		"category": "entity",
 		"subtitle": "entity_ghostray_death",
 		"sounds": [{"name": "mod_lavacow:entity/ghostray/death","stream": true}]
+	},
+	
+	"entity.banshee.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/ambient","stream": true}]
+	},
+	
+	"entity.banshee.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_attack",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/attack","stream": true}]
+	},
+	
+	"entity.banshee.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/hurt","stream": true}]
+	},
+	
+	"entity.banshee.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_death",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/death","stream": true}]
 	}
 }

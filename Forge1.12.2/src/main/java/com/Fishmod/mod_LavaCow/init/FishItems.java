@@ -199,4 +199,9 @@ public class FishItems {
 	public static final SoundEvent ENTITY_GHOSTRAY_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghostray.ambient")).setRegistryName("entity_ghostray_ambient");
 	public static final SoundEvent ENTITY_GHOSTRAY_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghostray.hurt")).setRegistryName("entity_ghostray_hurt");
 	public static final SoundEvent ENTITY_GHOSTRAY_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghostray.death")).setRegistryName("entity_ghostray_death");
+	
+	public static final SoundEvent ENTITY_BANSHEE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.ambient")).setRegistryName("entity_banshee_ambient");
+	public static final SoundEvent ENTITY_BANSHEE_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.attack")).setRegistryName("entity_banshee_attack");
+	public static final SoundEvent ENTITY_BANSHEE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.hurt")).setRegistryName("entity_banshee_hurt");
+	public static final SoundEvent ENTITY_BANSHEE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.death")).setRegistryName("entity_banshee_death");
 }

@@ -48,6 +48,7 @@ public class LootTableHandler {
 	public static ResourceLocation PINGU = null;
 	public static ResourceLocation GHOSTRAY = null;
 	public static ResourceLocation CEMETERY_CHEST = null;
+	public static ResourceLocation BANSHEE = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static List<Biome.SpawnListEntry> DREAMCATCHER_LIST = Lists.<Biome.SpawnListEntry>newArrayList();
@@ -76,6 +77,7 @@ public class LootTableHandler {
 		PINGU = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "pingu"));
 		GHOSTRAY = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ghostray"));
 		CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "cemetery_chest"));
+		BANSHEE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "banshee"));
 		
 		FISHABLE.put(Modblocks.item_block_glowshroom, 10);
 		FISHABLE.put(FishItems.HYPHAE, 10);

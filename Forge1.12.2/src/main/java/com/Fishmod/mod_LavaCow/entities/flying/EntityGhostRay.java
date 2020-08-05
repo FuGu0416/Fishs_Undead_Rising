@@ -140,7 +140,7 @@ public class EntityGhostRay extends EntityFlyingMob {
 	}
 
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return null;//FishItems.ENTITY_GHOSTRAY_HURT;
+		return FishItems.ENTITY_BANSHEE_HURT;
 	}
 
 	protected SoundEvent getDeathSound() {

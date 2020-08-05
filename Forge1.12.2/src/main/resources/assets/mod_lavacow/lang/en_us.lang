@@ -134,6 +134,7 @@ entity.mod_lavacow.pingu.name=Penghoul
 entity.mod_lavacow.undertaker.name=Undertaker
 entity.mod_lavacow.unburied.name=Unburied
 entity.mod_lavacow.ghostray.name=Ghost Ray
+entity.mod_lavacow.banshee.name=Banshee
 
 ##########
 # Sounds #
@@ -220,6 +221,11 @@ entity_undertaker_hurt=Undertaker hurts
 entity_ghostray_ambient=Ghost Ray sings
 entity_ghostray_death=Ghost Ray dies
 entity_ghostray_hurt=Ghost Ray hurts
+
+entity_banshee_ambient=Banshee whispers
+entity_banshee_attack=Banshee shrieks
+entity_banshee_death=Banshee dies
+entity_banshee_hurt=Wraith hurts
 
 ############
 # Tooltips #
@@ -344,3 +350,7 @@ advancements.mod_lavacow.kill_ptera.title=Vultursaur
 advancements.mod_lavacow.kill_ptera.description=Kill a Ptera
 advancements.mod_lavacow.kill_boneworm.title=The one Re-bone
 advancements.mod_lavacow.kill_boneworm.description=Kill an Osvermis
+advancements.mod_lavacow.kill_ghostray.title=Fish Night
+advancements.mod_lavacow.kill_ghostray.description=Kill a Ghost Ray
+advancements.mod_lavacow.kill_banshee.title=Silent Chills
+advancements.mod_lavacow.kill_banshee.description=Kill a Banshee

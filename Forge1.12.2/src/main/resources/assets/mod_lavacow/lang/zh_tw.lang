@@ -134,6 +134,7 @@ entity.mod_lavacow.pingu.name=冰呪鵝
 entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活屍
 entity.mod_lavacow.ghostray.name=鬼靈鱝
+entity.mod_lavacow.banshee.name=報喪女妖
 
 ##########
 # Sounds #
@@ -220,6 +221,11 @@ entity_undertaker_hurt=送葬者受傷
 entity_ghostray_ambient=鬼靈鱝歌唱聲
 entity_ghostray_death=鬼靈鱝死亡
 entity_ghostray_hurt=鬼靈鱝受傷
+
+entity_banshee_ambient=報喪女妖低語聲
+entity_banshee_attack=報喪女妖尖叫
+entity_banshee_death=報喪女妖死亡
+entity_banshee_hurt=鬼靈受傷
 
 ############
 # Tooltips #
@@ -343,3 +349,7 @@ advancements.mod_lavacow.kill_ptera.title=禿鷲蜥蜴
 advancements.mod_lavacow.kill_ptera.description=殺死一隻翼生獸
 advancements.mod_lavacow.kill_boneworm.title=重生骨蟲子
 advancements.mod_lavacow.kill_boneworm.description=殺死一頭蟄髑
+advancements.mod_lavacow.kill_ghostray.title=魚夜
+advancements.mod_lavacow.kill_ghostray.description=殺死一頭鬼靈鱝
+advancements.mod_lavacow.kill_banshee.title=冷寂
+advancements.mod_lavacow.kill_banshee.description=殺死一頭報喪女妖

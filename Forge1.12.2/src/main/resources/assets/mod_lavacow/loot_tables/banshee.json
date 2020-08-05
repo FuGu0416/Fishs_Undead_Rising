@@ -1,0 +1,54 @@
+{
+  "pools": [
+    {
+      
+      "name": "mod_lavacow:banshee",
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:ectoplasm",
+          "weight": 1,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "mod_lavacow:cursed_fabric",
+          "weight": 1,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
