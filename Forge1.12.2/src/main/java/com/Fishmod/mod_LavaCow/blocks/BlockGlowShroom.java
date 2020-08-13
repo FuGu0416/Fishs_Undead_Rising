@@ -135,7 +135,7 @@ public class BlockGlowShroom extends BlockMushroom{
             }
             else
             {
-                return (this.isGlowshroom || worldIn.getLight(pos) < 13) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+            	return ((worldIn.getWorldTime() > 12000 && this.isGlowshroom) || worldIn.getLight(pos) < 13) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
             }
         }
         else
