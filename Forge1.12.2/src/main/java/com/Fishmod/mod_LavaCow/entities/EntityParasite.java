@@ -137,14 +137,14 @@ public class EntityParasite extends EntitySpider{
         /*if (this.isEvolving && getRidingEntity() != null && this.ticksExisted % 3 == 0 && this.getEntityWorld().isRemote) {
         		mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width * 0.5D, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width * 0.5D, 0.0D, 5.0D, 0.0D, 0.0F, 0.5F, 0.2F);
         }*/
-		/*if(this.getRidingEntity() != null) {
-			Entity entity = this.getRidingEntity();
-			
-			this.dismountRidingEntity();
-			this.startRiding(entity);
-			System.out.println("OXO" + this.posX + " " + this.posY + " " + this.posZ);
-			System.out.println("OAO" + this.getRidingEntity().posX + " " + this.getRidingEntity().posY + " " + this.getRidingEntity().posZ);
-		}*/
+		if(this.getRidingEntity() != null) {
+			//Entity entity = this.getRidingEntity();
+			this.setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, getRidingEntity().rotationYaw, getRidingEntity().rotationPitch);
+			//this.dismountRidingEntity();
+			//this.startRiding(entity);
+			//System.out.println("OXO" + this.posX + " " + this.posY + " " + this.posZ);
+			//System.out.println("OAO" + this.getRidingEntity().posX + " " + this.getRidingEntity().posY + " " + this.getRidingEntity().posZ);
+		}
 			
 		super.onUpdate();
 	}
@@ -306,7 +306,7 @@ public class EntityParasite extends EntitySpider{
     {
     	if (entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || entityIn instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
     		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
-    		this.startRiding(entityIn, false);
+    		this.startRiding(entityIn);
             this.isJumping = false;
             this.navigator.clearPath();
             this.long_live = true;
@@ -375,7 +375,7 @@ public class EntityParasite extends EntitySpider{
         {
         	this.setRiddenId(UUID.fromString(s));
         	EntityPlayer entity = this.world.getPlayerEntityByUUID(this.getRiddenId());
-        	if(entity != null)this.startRiding(entity, false);
+        	if(entity != null)this.startRiding(entity);
         }
 	}
 	

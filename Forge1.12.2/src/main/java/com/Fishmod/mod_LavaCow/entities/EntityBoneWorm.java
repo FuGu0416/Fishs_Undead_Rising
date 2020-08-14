@@ -157,6 +157,7 @@ public class EntityBoneWorm  extends EntityMob{
 			if (this.avoid_cooldown == 0) {
 				this.tasks.addTask(0, this.range_atk);
 				this.tasks.removeTask(this.avoid_player);
+				this.avoid_cooldown = -1;
 			}
 
 			if (this.avoid_cooldown > 0)
