@@ -127,7 +127,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
         	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
         
-        if(this.getSpellTicks() > 5 && this.getSpellTicks() < 10) {
+        if(this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
         	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EntityBanshee.this.posX, EntityBanshee.this.posY + EntityBanshee.this.height, EntityBanshee.this.posZ, 0.0D, 1.0D, 0.0D);
         }
     }
@@ -379,6 +379,8 @@ public class EntityBanshee extends EntityMob implements IAggressive{
                         
         			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
+        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * (int)local_difficulty, 6));
+        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
         		}
         	} 
         }

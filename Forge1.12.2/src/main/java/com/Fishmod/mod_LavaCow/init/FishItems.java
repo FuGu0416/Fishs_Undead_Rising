@@ -118,6 +118,7 @@ public class FishItems {
 	public static final Item CRABCAKE = new ItemFishCustomFood("crabcake", 5, 0.8F, true, 32, false);
 	public static final Item ECTOPLASM = new ItemFishCustom("ectoplasm", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item GHOSTJELLY = new ItemNetherStew("ghostjelly").setRandPotionEffect(null);
+	public static final Item BANSHEE_VOCAL_CORD = new ItemPoisonSpore("banshee_vocal_cord", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
