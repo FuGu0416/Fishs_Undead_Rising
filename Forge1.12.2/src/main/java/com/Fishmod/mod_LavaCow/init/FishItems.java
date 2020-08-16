@@ -152,6 +152,7 @@ public class FishItems {
 	public static final SoundEvent ENTITY_MIMIC_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.mimic.death")).setRegistryName("entity_mimic_death");
 	
 	public static final SoundEvent ENTITY_SLUDGELORD_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.sludgelord.ambient")).setRegistryName("entity_sludgelord_ambient");
+	public static final SoundEvent ENTITY_SLUDGELORD_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.sludgelord.attack")).setRegistryName("entity_sludgelord_attack");
 	public static final SoundEvent ENTITY_SLUDGELORD_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.sludgelord.hurt")).setRegistryName("entity_sludgelord_hurt");
 	public static final SoundEvent ENTITY_SLUDGELORD_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.sludgelord.death")).setRegistryName("entity_sludgelord_death");
 	
@@ -182,6 +183,7 @@ public class FishItems {
 	
 	public static final SoundEvent ENTITY_BONEWORM_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.boneworm.ambient")).setRegistryName("entity_boneworm_ambient");
 	public static final SoundEvent ENTITY_BONEWORM_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.boneworm.attack")).setRegistryName("entity_boneworm_attack");
+	public static final SoundEvent ENTITY_BONEWORM_BURROW = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.boneworm.burrow")).setRegistryName("entity_boneworm_burrow");
 	public static final SoundEvent ENTITY_BONEWORM_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.boneworm.hurt")).setRegistryName("entity_boneworm_hurt");
 	public static final SoundEvent ENTITY_BONEWORM_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.boneworm.death")).setRegistryName("entity_boneworm_death");
 	

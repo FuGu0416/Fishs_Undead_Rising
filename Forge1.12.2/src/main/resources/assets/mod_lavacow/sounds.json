@@ -195,6 +195,13 @@
 		"sounds": ["mod_lavacow:entity/sludgelord/ambient0","mod_lavacow:entity/sludgelord/ambient1"]
 	},
 	
+	"entity.sludgelord.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_sludgelord_attack",
+		"sounds": [{"name": "mod_lavacow:entity/sludgelord/attack","stream": true}]
+	},
+	
 	"entity.sludgelord.hurt":
 	{
 		"category": "entity",
@@ -333,6 +340,13 @@
 		"category": "entity",
 		"subtitle": "entity_boneworm_attack",
 		"sounds": [{"name": "mod_lavacow:entity/boneworm/attack","stream": true}]
+	},
+	
+	"entity.boneworm.burrow":
+	{
+		"category": "entity",
+		"subtitle": "entity_boneworm_burrow",
+		"sounds": [{"name": "mod_lavacow:entity/boneworm/burrow","stream": true}]
 	},
 	
 	"entity.boneworm.hurt":

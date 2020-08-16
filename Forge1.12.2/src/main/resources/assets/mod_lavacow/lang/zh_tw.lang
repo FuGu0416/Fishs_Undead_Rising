@@ -170,6 +170,7 @@ entity_mimic_death=擬箱蟹死亡
 entity_mimic_hurt=擬箱蟹受傷
 
 entity_sludgelord_ambient=古樹軟泥回聲
+entity_sludgelord_attack=古樹軟泥噴吐聲
 entity_sludgelord_death=古樹軟泥死亡
 entity_sludgelord_hurt=古樹軟泥受傷
 
@@ -204,6 +205,7 @@ entity_zombiefrozen_hurt=活屍受傷
 
 entity_boneworm_ambient=蟄髑呼嚕聲
 entity_boneworm_attack=蟄髑噴吐聲
+entity_boneworm_burrow=蟄髑掘土聲
 entity_boneworm_death=蟄髑死亡
 entity_boneworm_hurt=蟄髑受傷
 

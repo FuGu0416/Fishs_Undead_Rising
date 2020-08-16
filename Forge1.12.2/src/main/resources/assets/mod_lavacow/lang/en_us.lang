@@ -170,6 +170,7 @@ entity_mimic_death=Mimicrab dies
 entity_mimic_hurt=Mimicrab hurts
 
 entity_sludgelord_ambient=Sludge Lord echoes
+entity_sludgelord_attack=Sludge Lord vomits
 entity_sludgelord_death=Sludge Lord dies
 entity_sludgelord_hurt=Sludge Lord hurts
 
@@ -204,6 +205,7 @@ entity_zombiefrozen_hurt=Unburied hurts
 
 entity_boneworm_ambient=Osvermis groans
 entity_boneworm_attack=Osvermis spits
+entity_boneworm_burrow=Osvermis digs
 entity_boneworm_death=Osvermis dies
 entity_boneworm_hurt=Osvermis hurts
 

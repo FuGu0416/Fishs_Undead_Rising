@@ -51,7 +51,7 @@ public class EntitySludgeLord extends EntityMob{
     protected void initEntityAI()
     {
         this.tasks.addTask(1, new AICastingApell());
-    	this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, SoundEvents.ENTITY_SLIME_SQUISH, 1, 2, 5.0D, 8.0D, 1.2D, 0.6D, 1.2D));
+    	this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, FishItems.ENTITY_SLUDGELORD_ATTACK, 1, 2, 5.0D, 8.0D, 1.2D, 0.6D, 1.2D));
     	this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
     	this.tasks.addTask(4, new EntitySludgeLord.AIUseSpell());
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));

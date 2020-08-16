@@ -131,9 +131,11 @@ public class EntityBoneWorm  extends EntityMob{
         if(this.LocationFix > 0 && !this.isImmuneToFire) {
         	this.extinguish();
         	this.isImmuneToFire = true;
+        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
         }
         else if(this.LocationFix <= 0 && this.isImmuneToFire) {
         	this.isImmuneToFire = false;
+        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
         }
         
 		if(this.isWalking() && state.isOpaqueCube()) {
