@@ -140,9 +140,7 @@ public class EntityMimic extends EntityFishTameable{
         
         //if(worldIn.getBlockState(new BlockPos(dx, dy, dz).down()).getBlock() == Blocks.COBBLESTONE)is_near_chest = true;
         
-        return this.dimension == DimensionType.OVERWORLD.getId() 
-        		&& is_near_chest 
-        		&& super.getCanSpawnHere();
+        return is_near_chest && super.getCanSpawnHere();
      }
     
     /**

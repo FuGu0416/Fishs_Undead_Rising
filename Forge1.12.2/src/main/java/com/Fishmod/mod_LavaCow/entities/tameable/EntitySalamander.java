@@ -27,12 +27,10 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -141,21 +139,11 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     public float getBrightness() {
        return 1.0F;
     }
-    
-    /*@Override
+        
+    @Override
 	public boolean getCanSpawnHere() {
-		return this.dimension == DimensionType.NETHER.getId() 
-				&& getEntityWorld().checkNoEntityCollision(getEntityBoundingBox()) 
-				&& getEntityWorld().getCollisionBoxes(this, getEntityBoundingBox()).isEmpty() 
-				&& getEntityWorld().isMaterialInBB(getEntityBoundingBox(), Material.LAVA);
-	}*/
-    
-    /*@Override
-	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.NETHER.getId())
-			return super.getCanSpawnHere();
-		else return false;
-	}*/
+		return super.getCanSpawnHere();
+	}
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);

@@ -59,8 +59,7 @@ public class EntityGhostRay extends EntityFlyingMob {
     }
 	
 	public boolean getCanSpawnHere() {
-		return this.dimension == DimensionType.OVERWORLD.getId()
-				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
+		return this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
 				&& super.getCanSpawnHere();
 	}
 	

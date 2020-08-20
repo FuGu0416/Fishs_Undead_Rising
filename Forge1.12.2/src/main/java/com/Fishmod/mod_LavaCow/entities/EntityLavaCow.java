@@ -26,7 +26,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -71,9 +70,7 @@ public class EntityLavaCow extends EntityCow
 	
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return super.getCanSpawnHere();
 	}
 	
     private boolean isWalkingonLand()

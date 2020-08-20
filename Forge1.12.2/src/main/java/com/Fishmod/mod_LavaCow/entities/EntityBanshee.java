@@ -40,7 +40,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -90,9 +89,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     }
 	
 	public boolean getCanSpawnHere() {
-		return this.dimension == DimensionType.OVERWORLD.getId()
-				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
-				&& super.getCanSpawnHere();
+		return super.getCanSpawnHere();
 	}
 	
     protected void entityInit() {

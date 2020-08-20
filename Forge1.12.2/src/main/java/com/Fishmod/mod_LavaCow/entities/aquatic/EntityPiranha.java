@@ -34,7 +34,7 @@ public class EntityPiranha extends EntityZombiePiranha{
             {
                 public boolean apply(@Nullable Entity p_apply_1_)
                 {
-                    return !(p_apply_1_ instanceof EntityTameable);
+                    return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
     }

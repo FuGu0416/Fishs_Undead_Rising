@@ -40,7 +40,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -104,9 +103,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return super.getCanSpawnHere();
 	}
 	
     /**

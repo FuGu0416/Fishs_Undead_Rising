@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
 public class EntityVespaCocoon  extends EntityMob{
@@ -52,9 +51,7 @@ public class EntityVespaCocoon  extends EntityMob{
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+    	return super.getCanSpawnHere();
 	}
 	
     /**
