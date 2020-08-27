@@ -81,6 +81,8 @@ item.mod_lavacow.crabcake.name=Crab Cake
 item.mod_lavacow.ectoplasm.name=Ectoplasm
 item.mod_lavacow.ghostjelly.name=Ghost Jelly
 item.mod_lavacow.banshee_vocal_cord.name=Banshee Vocal Cord
+item.mod_lavacow.weta_jaw.name=Weta Jaw
+item.mod_lavacow.chitin.name=Chitin
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -136,6 +138,7 @@ entity.mod_lavacow.undertaker.name=Undertaker
 entity.mod_lavacow.unburied.name=Unburied
 entity.mod_lavacow.ghostray.name=Ghost Ray
 entity.mod_lavacow.banshee.name=Banshee
+entity.mod_lavacow.weta.name=Emperor Weta
 
 ##########
 # Sounds #
@@ -229,6 +232,10 @@ entity_banshee_ambient=Banshee whispers
 entity_banshee_attack=Banshee shrieks
 entity_banshee_death=Banshee dies
 entity_banshee_hurt=Wraith hurts
+
+entity_weta_ambient=Weta chirps
+entity_weta_death=Weta dies
+entity_weta_hurt=Weta hurts
 
 ############
 # Tooltips #

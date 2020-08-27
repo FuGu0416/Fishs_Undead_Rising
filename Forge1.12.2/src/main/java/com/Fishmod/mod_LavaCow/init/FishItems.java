@@ -119,6 +119,8 @@ public class FishItems {
 	public static final Item ECTOPLASM = new ItemFishCustom("ectoplasm", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item GHOSTJELLY = new ItemNetherStew("ghostjelly").setRandPotionEffect(null);
 	public static final Item BANSHEE_VOCAL_CORD = new ItemPoisonSpore("banshee_vocal_cord", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
+	public static final Item WETA_JAW = new ItemFishCustom("weta_jaw", null, mod_LavaCow.TAB_ITEMS, false);
+	public static final Item CHITIN = new ItemFishCustom("chitin", null, mod_LavaCow.TAB_ITEMS, false);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
@@ -207,4 +209,8 @@ public class FishItems {
 	public static final SoundEvent ENTITY_BANSHEE_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.attack")).setRegistryName("entity_banshee_attack");
 	public static final SoundEvent ENTITY_BANSHEE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.hurt")).setRegistryName("entity_banshee_hurt");
 	public static final SoundEvent ENTITY_BANSHEE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.banshee.death")).setRegistryName("entity_banshee_death");
+	
+	public static final SoundEvent ENTITY_WETA_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.ambient")).setRegistryName("entity_weta_ambient");
+	public static final SoundEvent ENTITY_WETA_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.hurt")).setRegistryName("entity_weta_hurt");
+	public static final SoundEvent ENTITY_WETA_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.death")).setRegistryName("entity_weta_death");
 }

@@ -473,5 +473,26 @@
 		"category": "entity",
 		"subtitle": "entity_banshee_death",
 		"sounds": [{"name": "mod_lavacow:entity/banshee/death","stream": true}]
+	},
+	
+	"entity.weta.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_ambient",
+		"sounds": ["mod_lavacow:entity/weta/ambient"]
+	},
+	
+	"entity.weta.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_hurt",
+		"sounds": ["mod_lavacow:entity/weta/hurt"]
+	},
+	
+	"entity.weta.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_death",
+		"sounds": [{"name": "mod_lavacow:entity/weta/death","stream": true}]
 	}
 }

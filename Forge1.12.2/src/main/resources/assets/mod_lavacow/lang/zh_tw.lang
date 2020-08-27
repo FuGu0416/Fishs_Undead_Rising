@@ -84,6 +84,8 @@ item.mod_lavacow.crabcake.name=蟹肉糕
 item.mod_lavacow.ectoplasm.name=靈漿
 item.mod_lavacow.ghostjelly.name=鬼靈果凍
 item.mod_lavacow.banshee_vocal_cord.name=女妖聲帶
+item.mod_lavacow.weta_jaw.name=沙螽大顎
+item.mod_lavacow.chitin.name=幾丁質
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -136,6 +138,7 @@ entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活屍
 entity.mod_lavacow.ghostray.name=鬼靈鱝
 entity.mod_lavacow.banshee.name=報喪女妖
+entity.mod_lavacow.weta.name=帝沙螽
 
 ##########
 # Sounds #
@@ -229,6 +232,10 @@ entity_banshee_ambient=報喪女妖低語聲
 entity_banshee_attack=報喪女妖尖叫
 entity_banshee_death=報喪女妖死亡
 entity_banshee_hurt=鬼靈受傷
+
+entity_weta_ambient=沙螽唧唧聲
+entity_weta_death=沙螽死亡
+entity_weta_hurt=沙螽受傷
 
 ############
 # Tooltips #

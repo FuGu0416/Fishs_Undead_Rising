@@ -15,6 +15,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
+import com.Fishmod.mod_LavaCow.entities.EntityWeta;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
@@ -289,6 +290,14 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "banshee")
             .tracker(80, 3, false)
             .egg(0xA2A78D, 0x34363A)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityWeta.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "weta"), id++)
+            .name(mod_LavaCow.MODID + "." + "weta")
+            .tracker(80, 3, false)
+            .egg(0x845336, 0xEACAA7)
             .build()
             );
 
@@ -350,6 +359,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.OCEAN);
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.FOREST);
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.COLD);
+		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

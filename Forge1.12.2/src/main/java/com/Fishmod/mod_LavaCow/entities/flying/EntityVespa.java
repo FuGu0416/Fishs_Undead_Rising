@@ -86,7 +86,7 @@ public class EntityVespa extends EntityFlyingMob {
            {
            		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 
-           		((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+           		((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20 * (int)local_difficulty, 0));
            		
            }
 

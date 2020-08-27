@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+		[
+	        {
+	            "item": "mod_lavacow:vespa_carapace"
+	        },	
+			{
+	            "item": "mod_lavacow:mimic_claw"
+	        }		
+		]
+    ],
+    "result": {
+        "item": "mod_lavacow:chitin",
+        "count": 2
+    }
+}

@@ -11,6 +11,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
+import com.Fishmod.mod_LavaCow.entities.EntityWeta;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
@@ -70,7 +71,8 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityUndertaker.class, RenderFactoryEntityUndertaker.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityUnburied.class, RenderFactoryEntityUnburied.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostRay.class, RenderFactoryEntityGhostRay.INSTANCE);
-        RenderingRegistry.registerEntityRenderingHandler(EntityBanshee.class, RenderFactoryEntityWisp.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBanshee.class, RenderFactoryEntityBanshee.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityWeta.class, RenderFactoryEntityWeta.INSTANCE);
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow>
@@ -465,9 +467,9 @@ public class RenderFactories {
         }
     }
     
-    public static class RenderFactoryEntityWisp implements IRenderFactory<EntityBanshee>
+    public static class RenderFactoryEntityBanshee implements IRenderFactory<EntityBanshee>
     {
-        public final static RenderFactoryEntityWisp INSTANCE = new RenderFactoryEntityWisp();
+        public final static RenderFactoryEntityBanshee INSTANCE = new RenderFactoryEntityBanshee();
     
         /* (non-Javadoc)
          * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
@@ -476,6 +478,20 @@ public class RenderFactories {
         public Render<EntityBanshee> createRenderFor(RenderManager manager)
         {
         	return new RenderBanshee(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityWeta implements IRenderFactory<EntityWeta>
+    {
+        public final static RenderFactoryEntityWeta INSTANCE = new RenderFactoryEntityWeta();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityWeta> createRenderFor(RenderManager manager)
+        {
+        	return new RenderWeta(manager);
         }
     }
 }
