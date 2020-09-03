@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.init.ModPotions;
@@ -109,7 +110,7 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     
     @Override
 	public boolean getCanSpawnHere() {
-    	return super.getCanSpawnHere();
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     protected void entityInit() {

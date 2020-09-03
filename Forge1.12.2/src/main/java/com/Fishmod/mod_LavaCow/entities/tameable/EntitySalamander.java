@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -142,7 +143,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         
     @Override
 	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere();
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {

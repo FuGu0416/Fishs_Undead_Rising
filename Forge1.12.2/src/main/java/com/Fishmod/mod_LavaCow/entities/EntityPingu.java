@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
@@ -84,7 +85,8 @@ public class EntityPingu  extends EntityMob{
 	public boolean getCanSpawnHere() {
     	IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
     	
-		return this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
+		return SpawnUtil.isAllowedDimension(this.dimension)
+				&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
     			&& iblockstate.canEntitySpawn(this);
 	}
     

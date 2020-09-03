@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.EntityAvadon;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
@@ -298,6 +299,14 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "weta")
             .tracker(80, 3, false)
             .egg(0x845336, 0xEACAA7)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityAvadon.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "avadon"), id++)
+            .name(mod_LavaCow.MODID + "." + "avadon")
+            .tracker(80, 3, false)
+            .egg(0x222829, 0xAAA48E)
             .build()
             );
 

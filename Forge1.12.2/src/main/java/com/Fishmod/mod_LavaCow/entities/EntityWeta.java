@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.ai.EntityAIDestroyCrops;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -63,6 +64,11 @@ public class EntityWeta extends EntitySpider implements IAggressive{
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
+	
+    @Override
+	public boolean getCanSpawnHere() {
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+	}
 	
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons

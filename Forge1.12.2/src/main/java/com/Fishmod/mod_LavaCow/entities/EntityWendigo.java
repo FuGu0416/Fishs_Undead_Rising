@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.ai.WendigoAITargetItem;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -100,7 +101,7 @@ public class EntityWendigo extends EntityMob{
     
     @Override
 	public boolean getCanSpawnHere() {
-    	return super.getCanSpawnHere();
+    	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     /**

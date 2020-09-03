@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -87,7 +88,7 @@ public class EntityUndertaker extends EntityMob{
     
     @Override
 	public boolean getCanSpawnHere() {
-    	return super.getCanSpawnHere();
+    	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     /**

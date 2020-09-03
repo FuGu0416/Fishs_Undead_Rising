@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -89,7 +90,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     }
 	
 	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere();
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
     protected void entityInit() {

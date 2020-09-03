@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renders;
 
+import com.Fishmod.mod_LavaCow.entities.EntityAvadon;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
@@ -73,6 +74,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostRay.class, RenderFactoryEntityGhostRay.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityBanshee.class, RenderFactoryEntityBanshee.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityWeta.class, RenderFactoryEntityWeta.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityAvadon.class, RenderFactoryEntityAvadon.INSTANCE);
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow>
@@ -492,6 +494,20 @@ public class RenderFactories {
         public Render<EntityWeta> createRenderFor(RenderManager manager)
         {
         	return new RenderWeta(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityAvadon implements IRenderFactory<EntityAvadon>
+    {
+        public final static RenderFactoryEntityAvadon INSTANCE = new RenderFactoryEntityAvadon();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityAvadon> createRenderFor(RenderManager manager)
+        {
+        	return new RenderAvadon(manager);
         }
     }
 }

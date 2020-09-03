@@ -2,11 +2,9 @@ package com.Fishmod.mod_LavaCow.client.model.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
-import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;

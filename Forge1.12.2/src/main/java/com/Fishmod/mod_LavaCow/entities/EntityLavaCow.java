@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -70,7 +71,7 @@ public class EntityLavaCow extends EntityCow
 	
     @Override
 	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere();
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
     private boolean isWalkingonLand()

@@ -15,9 +15,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,11 +55,6 @@ public class EntityGhostRay extends EntityFlyingMob {
     public float getBrightness() {
        return 1.0F;
     }
-	
-	public boolean getCanSpawnHere() {
-		return this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
-				&& super.getCanSpawnHere();
-	}
 	
     protected void entityInit() {
     	super.entityInit();

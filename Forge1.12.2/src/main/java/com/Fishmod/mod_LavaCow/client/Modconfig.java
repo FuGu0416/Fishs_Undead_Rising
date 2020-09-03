@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.client;
 import java.io.File;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -79,6 +80,7 @@ public class Modconfig {
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
+	public static int[] Spawn_AllowList = new int[0];
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -290,6 +292,9 @@ public class Modconfig {
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);
 		
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
+		
+		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
+		
 		if (config.hasChanged())
 			config.save();
 	}

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenCemeterySmall;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenLargeGlowShroom;
@@ -135,7 +136,7 @@ public class BlockGlowShroom extends BlockMushroom{
             }
             else
             {
-            	return ((worldIn.getWorldTime() > 12000 && this.isGlowshroom) || worldIn.getLight(pos) < 13) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+            	return ((SpawnUtil.isDay(worldIn) && this.isGlowshroom) || worldIn.getLight(pos) < 13) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
             }
         }
         else

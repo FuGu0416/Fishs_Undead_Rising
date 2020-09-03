@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -381,7 +382,8 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     {
         return false;
     }
-
+    
+    @Override
     /**
      * Checks if the entity's current position is a valid location to spawn this entity.
      */
@@ -392,7 +394,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
         int k = MathHelper.floor(this.posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
         Block block = this.world.getBlockState(blockpos.down()).getBlock();
-        return block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR && this.world.getLight(blockpos) > 8 && super.getCanSpawnHere();
+        return SpawnUtil.isAllowedDimension(this.dimension) && block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR && this.world.getLight(blockpos) > 8 && super.getCanSpawnHere();
     }
 
     public void fall(float distance, float damageMultiplier)

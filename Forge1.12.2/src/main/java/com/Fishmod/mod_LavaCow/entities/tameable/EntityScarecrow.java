@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -103,7 +104,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     
     @Override
 	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere();
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
     /**
