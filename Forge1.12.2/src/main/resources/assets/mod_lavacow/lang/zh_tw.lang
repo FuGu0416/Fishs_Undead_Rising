@@ -86,6 +86,8 @@ item.mod_lavacow.ghostjelly.name=鬼靈果凍
 item.mod_lavacow.banshee_vocal_cord.name=女妖聲帶
 item.mod_lavacow.weta_jaw.name=沙螽大顎
 item.mod_lavacow.chitin.name=幾丁質
+item.mod_lavacow.ghostbomb.name=鬼靈炸彈
+item.mod_lavacow.sonicbomb.name=音爆彈
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -284,6 +286,8 @@ tootip.mod_lavacow.raven_whistle=右鍵點擊綁定渡鴉，並右鍵點擊命�
 tootip.mod_lavacow.faminearmor=套裝(2)：自身處於飢餓狀態時，造成傷害+2
 tootip.mod_lavacow.faminearmor.l2=套裝(4)：不再能進食，但殺死單位時能+4飽食度+1生命
 tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
+tootip.mod_lavacow.ghostbomb=投向目標地點，造成範圍傷害並賦予漂浮(0:01)
+tootip.mod_lavacow.sonicbomb=投向目標地點，造成範圍傷害並賦予虛弱III(0:04)
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命

@@ -83,6 +83,8 @@ item.mod_lavacow.ghostjelly.name=Ghost Jelly
 item.mod_lavacow.banshee_vocal_cord.name=Banshee Vocal Cord
 item.mod_lavacow.weta_jaw.name=Weta Jaw
 item.mod_lavacow.chitin.name=Chitin
+item.mod_lavacow.ghostbomb.name=Ghost Bomb
+item.mod_lavacow.sonicbomb.name=Sonic Bomb
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -281,6 +283,8 @@ tootip.mod_lavacow.raven_whistle=Right click to bind with a raven and order it t
 tootip.mod_lavacow.faminearmor=Set(2): +2 damage when in Hunger state.
 tootip.mod_lavacow.faminearmor.l2=Set(4): No longer be able to eat, but +4 Hunger +1 Health when killing an entity.
 tootip.mod_lavacow.ghostjelly=Transform your Raven into Ghost Raven.
+tootip.mod_lavacow.ghostbomb=Throw at target location and cause explosion. Entities within also receive Levitate(0:01)
+tootip.mod_lavacow.sonicbomb=Throw at target location and cause explosion. Entities within also receive WeaknessIII(0:04)
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting

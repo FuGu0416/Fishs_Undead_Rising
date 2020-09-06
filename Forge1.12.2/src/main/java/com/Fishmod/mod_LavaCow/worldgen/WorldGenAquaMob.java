@@ -22,7 +22,7 @@ public class WorldGenAquaMob extends WorldGenerator{
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
 		Biome biome = worldIn.getBiome(position);
         
-    	if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)){
+    	if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET) && rand.nextFloat() < 0.1F){
     		if(rand.nextInt(100) < Modconfig.pSpawnRate_ZombiePiranha) {
     			if(worldIn.getBlockState(position.down()).getMaterial() == Material.WATER){
     				for(int i = 0; i < 2 + rand.nextInt(3); i++) {

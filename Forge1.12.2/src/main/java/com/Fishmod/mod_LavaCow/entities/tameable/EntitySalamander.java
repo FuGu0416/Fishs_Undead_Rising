@@ -366,7 +366,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     }
     
     /**
-     * Growing Stage: Nymph → Child → Adult
+     * Growing Stage: Nymph -> Child-> Adult
      */
     public int getGrowingStage() {
        return dataManager.get(GROWING_STAGE).intValue();

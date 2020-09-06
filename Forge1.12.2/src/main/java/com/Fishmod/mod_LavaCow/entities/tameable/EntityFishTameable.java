@@ -252,6 +252,16 @@ public class EntityFishTameable extends EntityTameable{
             return null;
         }
     }
+    
+    @Override
+    /**
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
+     */
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return false;
+    }
 
 	@Override
 	public EntityAgeable createChild(EntityAgeable ageable) {

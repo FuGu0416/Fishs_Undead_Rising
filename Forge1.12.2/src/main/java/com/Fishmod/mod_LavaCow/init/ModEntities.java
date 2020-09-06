@@ -25,9 +25,11 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
@@ -307,6 +309,20 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "avadon")
             .tracker(80, 3, false)
             .egg(0xAAA48E, 0x222829)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityGhostBomb.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "ghostbomb"), id++)
+            .name(mod_LavaCow.MODID + "." + "ghostbomb")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntitySonicBomb.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
+            .name(mod_LavaCow.MODID + "." + "sonicbomb")
+            .tracker(64, 1, true)
             .build()
             );
 

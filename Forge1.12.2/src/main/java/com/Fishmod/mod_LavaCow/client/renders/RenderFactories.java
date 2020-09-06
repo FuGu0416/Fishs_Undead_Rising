@@ -21,9 +21,11 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
@@ -75,6 +77,8 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityBanshee.class, RenderFactoryEntityBanshee.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityWeta.class, RenderFactoryEntityWeta.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityAvadon.class, RenderFactoryEntityAvadon.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostBomb.class, RenderFactoryEntityGhostBomb.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow>
@@ -508,6 +512,34 @@ public class RenderFactories {
         public Render<EntityAvadon> createRenderFor(RenderManager manager)
         {
         	return new RenderAvadon(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityGhostBomb implements IRenderFactory<EntityGhostBomb>
+    {
+        public final static RenderFactoryEntityGhostBomb INSTANCE = new RenderFactoryEntityGhostBomb();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderGhostBomb createRenderFor(RenderManager manager)
+        {
+        	return new RenderGhostBomb(manager, FishItems.GHOSTBOMB);
+        }
+    }
+    
+    public static class RenderFactoryEntitySonicBomb implements IRenderFactory<EntitySonicBomb>
+    {
+        public final static RenderFactoryEntitySonicBomb INSTANCE = new RenderFactoryEntitySonicBomb();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntitySonicBomb> createRenderFor(RenderManager manager)
+        {
+        	return new RenderSonicBomb(manager, FishItems.SONICBOMB);
         }
     }
 }

@@ -121,6 +121,8 @@ public class FishItems {
 	public static final Item BANSHEE_VOCAL_CORD = new ItemPoisonSpore("banshee_vocal_cord", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
 	public static final Item WETA_JAW = new ItemFishCustom("weta_jaw", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item CHITIN = new ItemFishCustom("chitin", null, mod_LavaCow.TAB_ITEMS, false);
+	public static final Item GHOSTBOMB = new ItemHolyGrenade("ghostbomb");
+	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
