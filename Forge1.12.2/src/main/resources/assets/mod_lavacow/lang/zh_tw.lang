@@ -90,11 +90,14 @@ item.mod_lavacow.chitin.name=幾丁質
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
 material.mod_lavacow.scythe_claw.name=鐮刀爪
+material.mod_lavacow.ectoplasm.name=靈漿
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會誕生出巨蜂幼蟲
 modifier.mod_lavacow.famine.name=飢荒
 modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
+modifier.mod_lavacow.unholytouch.name=不潔之觸
+modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
 
 ##########
 # BLOCKS #

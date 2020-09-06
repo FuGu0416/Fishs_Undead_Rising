@@ -87,11 +87,14 @@ item.mod_lavacow.chitin.name=Chitin
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
 material.mod_lavacow.scythe_claw.name=Scythe Claw
+material.mod_lavacow.ectoplasm.name=Ectoplasm
 
 modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block. 
+modifier.mod_lavacow.unholytouch.name=Unholy Touch
+modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entity and applies Weakness 
 
 ##########
 # BLOCKS #
