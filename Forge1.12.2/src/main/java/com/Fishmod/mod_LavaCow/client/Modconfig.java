@@ -42,6 +42,7 @@ public class Modconfig {
 	public static int pSpawnRate_GhostRay;
 	public static int pSpawnRate_Banshee;
 	public static int pSpawnRate_Weta;
+	public static int pSpawnRate_Avadon;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -81,6 +82,9 @@ public class Modconfig {
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
 	public static int[] Spawn_AllowList = new int[0];
+	public static int Avadon_Ability_Num;
+	public static int Avadon_Ability_Max;
+	public static int Avadon_Ability_Cooldown;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -128,7 +132,10 @@ public class Modconfig {
 	public static double Banshee_Health;
 	public static double Banshee_Attack;
 	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
+	public static double Avadon_Health;
+	public static double Avadon_Attack;
+	
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avadon", "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
 			"Salamander", "Ithaqua", "Mimicrab", "Sludge Lord", "Lil'Sludge", "Raven", "Ptera", "Vespa", "Scarecrow", /*"Vespa Cocoon",*/ "Swarmer",
 			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Weta", "Glowshroom"};
 	
@@ -235,10 +242,17 @@ public class Modconfig {
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
 		
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
-		Banshee_Health = config.get("Banshee", "banshee health", 20.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(20.0D);
-		Banshee_Attack = config.get("Banshee", "banshee attack", 5.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(5.0D);
+		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
+		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
 		
 		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
+		
+		pSpawnRate_Avadon = config.get("Avadon", "Aavadon spawn rate", 20, "Set the spawn rate of Avadon [0-100]", 0, 100).getInt(20);
+		Avadon_Health = config.get("Avadon", "avadon health", 30.0D, "Maximum Avadon health [1-1000]", 1, 1000).getDouble(30.0D);
+		Avadon_Attack = config.get("Avadon", "avadon attack", 5.0D, "Avadon strength [1-1000]", 1, 1000).getDouble(5.0D);
+		Avadon_Ability_Num = config.get("Avadon", "avadon summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
+		Avadon_Ability_Max = config.get("Avadon", "avadon summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
+		Avadon_Ability_Cooldown = config.get("Avadon", "avadon summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);

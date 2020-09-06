@@ -306,7 +306,7 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "avadon"), id++)
             .name(mod_LavaCow.MODID + "." + "avadon")
             .tracker(80, 3, false)
-            .egg(0x222829, 0xAAA48E)
+            .egg(0xAAA48E, 0x222829)
             .build()
             );
 
@@ -370,6 +370,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.COLD);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityAvadon.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avadon, 1, 2, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityAvadon.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avadon, 1, 2, BiomeDictionary.Type.SAVANNA);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

@@ -494,5 +494,26 @@
 		"category": "entity",
 		"subtitle": "entity_weta_death",
 		"sounds": [{"name": "mod_lavacow:entity/weta/death","stream": true}]
+	},
+	
+	"entity.avadon.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_avadon_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/avadon/ambient","stream": true}]
+	},
+	
+	"entity.avadon.spell":
+	{
+		"category": "entity",
+		"subtitle": "entity_avadon_spell",
+		"sounds": [{"name": "mod_lavacow:entity/avadon/spell","stream": true}]
+	},
+	
+	"entity.avadon.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_avadon_death",
+		"sounds": [{"name": "mod_lavacow:entity/avadon/death","stream": true}]
 	}
 }

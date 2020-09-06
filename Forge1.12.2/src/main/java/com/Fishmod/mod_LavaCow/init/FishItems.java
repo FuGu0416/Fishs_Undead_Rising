@@ -213,4 +213,8 @@ public class FishItems {
 	public static final SoundEvent ENTITY_WETA_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.ambient")).setRegistryName("entity_weta_ambient");
 	public static final SoundEvent ENTITY_WETA_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.hurt")).setRegistryName("entity_weta_hurt");
 	public static final SoundEvent ENTITY_WETA_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.weta.death")).setRegistryName("entity_weta_death");
+	
+	public static final SoundEvent ENTITY_AVADON_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avadon.ambient")).setRegistryName("entity_avadon_ambient");
+	public static final SoundEvent ENTITY_AVADON_SPELL = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avadon.spell")).setRegistryName("entity_avadon_spell");
+	public static final SoundEvent ENTITY_AVADON_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avadon.death")).setRegistryName("entity_avadon_death");
 }

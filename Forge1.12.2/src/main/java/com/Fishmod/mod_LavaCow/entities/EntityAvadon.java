@@ -1,6 +1,5 @@
 package com.Fishmod.mod_LavaCow.entities;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -12,7 +11,6 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -29,12 +28,11 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -76,16 +74,16 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
+    	this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
     }
     
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Banshee_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Avadon_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Banshee_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.175D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Avadon_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
     }
 	
@@ -123,11 +121,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
         super.onUpdate();
         
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
-        	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
-        
-        if(this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
-        	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EntityAvadon.this.posX, EntityAvadon.this.posY + EntityAvadon.this.height, EntityAvadon.this.posZ, 0.0D, 1.0D, 0.0D);
-        }
+        	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);    
     }
     
     /**
@@ -310,17 +304,23 @@ public class EntityAvadon extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            if (EntityAvadon.this.getAttackTarget() == null)
-            {
-                return false;
-            }
-            else if (EntityAvadon.this.isSpellcasting())
+        	if (EntityAvadon.this.isSpellcasting())
             {
                 return false;
             }
             else
             {
-            	return EntityAvadon.this.ticksExisted >= this.spellCooldown && EntityAvadon.this.getDistance(EntityAvadon.this.getAttackTarget()) < 3.0F;
+                int i = EntityAvadon.this.world.getEntitiesWithinAABB(EntityWeta.class, EntityAvadon.this.getEntityBoundingBox().grow(16.0D)).size();
+                boolean farmlandnearby = false;
+                for(int x = -2; x <= 2; x++)
+                	for(int y = -1; y <= 1; y++)
+                		for(int z = -2; z <= 2; z++)
+                		{
+                			if (EntityAvadon.this.world.getBlockState(new BlockPos(EntityAvadon.this.posX, EntityAvadon.this.posY, EntityAvadon.this.posZ)).getBlock() == Blocks.FARMLAND)
+                				farmlandnearby = true;
+                		}
+                
+            	return EntityAvadon.this.ticksExisted >= this.spellCooldown && farmlandnearby && i < Modconfig.Avadon_Ability_Max;
             }
         }
 
@@ -329,7 +329,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
          */
         public boolean shouldContinueExecuting()
         {
-            return EntityAvadon.this.getAttackTarget() != null && this.spellWarmup > 0;
+            return this.spellWarmup > 0;
         }
 
         /**
@@ -366,21 +366,18 @@ public class EntityAvadon extends EntityMob implements IAggressive{
 
         protected void castSpell()
         {
-        	List<Entity> list = EntityAvadon.this.world.getEntitiesWithinAABBExcludingEntity(EntityAvadon.this, EntityAvadon.this.getEntityBoundingBox().grow(3.0D, 3.0D, 3.0D));
-        	EntityAvadon.this.world.setEntityState(EntityAvadon.this, (byte)11);
-        	
-        	for (Entity entity1 : list)
-        	{
-        		if (entity1 instanceof EntityLivingBase)
-        		{
-        			float local_difficulty = EntityAvadon.this.world.getDifficultyForLocation(new BlockPos(EntityAvadon.this)).getAdditionalDifficulty();
-                        
-        			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityAvadon.this), (float) EntityAvadon.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
-        		}
-        	} 
+            for (int i = 0; i < Modconfig.Avadon_Ability_Num; ++i)
+            {
+                BlockPos blockpos = (new BlockPos(EntityAvadon.this)).add(-2 + EntityAvadon.this.rand.nextInt(5), 1, -2 + EntityAvadon.this.rand.nextInt(5));
+                EntityWeta entityvex = new EntityWeta(EntityAvadon.this.world);
+                entityvex.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+                entityvex.setHealth(entityvex.getMaxHealth());
+                entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                entityvex.onInitialSpawn(EntityAvadon.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                
+                if(!EntityAvadon.this.world.isRemote)
+                	EntityAvadon.this.world.spawnEntity(entityvex);              
+            }
         }
 
         protected int getCastWarmupTime()
@@ -395,7 +392,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
 
         protected int getCastingInterval()
         {
-            return 160;
+        	return Modconfig.Avadon_Ability_Cooldown * 20;
         }
 
         @Nullable
@@ -412,7 +409,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     
     protected SoundEvent getAmbientSound()
     {
-        return FishItems.ENTITY_BANSHEE_AMBIENT;
+        return FishItems.ENTITY_AVADON_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
@@ -422,12 +419,12 @@ public class EntityAvadon extends EntityMob implements IAggressive{
 
     protected SoundEvent getDeathSound()
     {
-        return FishItems.ENTITY_BANSHEE_DEATH;
+        return FishItems.ENTITY_AVADON_DEATH;
     }
     
     protected SoundEvent getSpellSound()
     {
-        return FishItems.ENTITY_BANSHEE_ATTACK;
+        return FishItems.ENTITY_AVADON_SPELL;
     }
     
     /**
@@ -461,6 +458,6 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.BANSHEE;
+        return LootTableHandler.AVADON;
     }
 }

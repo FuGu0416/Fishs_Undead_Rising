@@ -89,9 +89,12 @@ item.mod_lavacow.chitin.name=幾丁質
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
+material.mod_lavacow.scythe_claw.name=鐮刀爪
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會誕生出巨蜂幼蟲
+modifier.mod_lavacow.famine.name=飢荒
+modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
 
 ##########
 # BLOCKS #
@@ -139,6 +142,7 @@ entity.mod_lavacow.unburied.name=活屍
 entity.mod_lavacow.ghostray.name=鬼靈鱝
 entity.mod_lavacow.banshee.name=報喪女妖
 entity.mod_lavacow.weta.name=帝沙螽
+entity.mod_lavacow.avadon.name=艾薇妲
 
 ##########
 # Sounds #
@@ -236,6 +240,10 @@ entity_banshee_hurt=鬼靈受傷
 entity_weta_ambient=沙螽唧唧聲
 entity_weta_death=沙螽死亡
 entity_weta_hurt=沙螽受傷
+
+entity_avadon_ambient=艾薇妲低語聲
+entity_avadon_spell=昆蟲窸窣聲
+entity_avadon_death=艾薇妲死亡
 
 ############
 # Tooltips #
