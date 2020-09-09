@@ -208,6 +208,10 @@ public class EntityParasite extends EntitySpider{
                   }
         	}
         	
+        	if(this.getRidingEntity().isBurning()) {
+        		this.setFire(20);
+        	}
+        	
         	/*if	(this.isEvolving) {
         		this.dismountRidingEntity();
         		this.long_live = false;

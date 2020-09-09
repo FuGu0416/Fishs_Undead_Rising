@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.ai.RavenAITargetItem;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -29,6 +30,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWaterFlying;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityFlyHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityFlying;
 import net.minecraft.entity.passive.EntityTameable;
@@ -80,6 +82,8 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     private float TargetLocationX = -1.0F;
     private float TargetLocationY = -1.0F;
     private float TargetLocationZ = -1.0F;
+    
+    private RavenAITargetItem<EntityItem> AITargetItem;
 	
 	public EntityRaven(World worldIn) {
 		super(worldIn);
@@ -102,7 +106,14 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
         this.tasks.addTask(3, new EntityAIFollowOwnerFlying(this, 1.0D, 5.0F, 1.0F));
         this.tasks.addTask(3, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
         this.tasks.addTask(4, new EntityAIFollow(this, 1.0D, 3.0F, 7.0F));
+        this.applyEntityAI();
     }
+    
+    protected void applyEntityAI()
+    {
+    	this.AITargetItem = new RavenAITargetItem<>(this, EntityItem.class, true);
+    	this.targetTasks.addTask(1, this.AITargetItem);
+	}
     
     protected void applyEntityAttributes()
     {
@@ -283,6 +294,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
 	                {
 	                    this.setTamedBy(player);
 	                    //this.ridingCooldown = 30;
+	                    this.tasks.removeTask(this.AITargetItem);
 	                    this.playTameEffect(true);
 	                    this.world.setEntityState(this, (byte)7);
 	                }
