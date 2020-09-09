@@ -468,11 +468,13 @@ public class ModEventHandler {
     		else if(event.getSource().getTrueSource().getName().equals("Ghost Bomb")) {
     			event.getEntity().motionX = 0;
     			event.getEntity().motionZ = 0;
-    			event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 20, 0));
+    			if(event.getEntityLiving().isNonBoss())
+    				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
     		}
     		else if(event.getSource().getTrueSource().getName().equals("Sonic Bomb")) {
-    			event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20, 2));
+    			if(event.getEntityLiving().isNonBoss())
+    				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		}
     		else
@@ -504,7 +506,7 @@ public class ModEventHandler {
     	}
     	
     	if(event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
-    		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
+    		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
     	event.setAmount(event.getAmount() * effectlevel);
     	
