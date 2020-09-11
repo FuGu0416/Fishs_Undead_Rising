@@ -28,7 +28,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -134,16 +133,8 @@ public class EntityParasite extends EntitySpider{
 	@Override
 	public void onUpdate() {
 		
-        /*if (this.isEvolving && getRidingEntity() != null && this.ticksExisted % 3 == 0 && this.getEntityWorld().isRemote) {
-        		mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width * 0.5D, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width * 0.5D, 0.0D, 5.0D, 0.0D, 0.0F, 0.5F, 0.2F);
-        }*/
 		if(this.getRidingEntity() != null) {
-			//Entity entity = this.getRidingEntity();
 			this.setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, getRidingEntity().rotationYaw, getRidingEntity().rotationPitch);
-			//this.dismountRidingEntity();
-			//this.startRiding(entity);
-			//System.out.println("OXO" + this.posX + " " + this.posY + " " + this.posZ);
-			//System.out.println("OAO" + this.getRidingEntity().posX + " " + this.getRidingEntity().posY + " " + this.getRidingEntity().posZ);
 		}
 			
 		super.onUpdate();
@@ -156,27 +147,12 @@ public class EntityParasite extends EntitySpider{
         {
         	if(!long_live)this.lifespawn--;
         }
-        /*else if(this.isEvolving) {
-        	if (!this.world.isRemote) {
-	        	//this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F);
-	        	EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
-	    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-	    		this.world.spawnEntity(pupa);
-	    		//if(this.getAttackTarget() != null)pupa.setAttackTarget(this.getAttackTarget());
-	        	this.setDead();
-        	}
-        }*/
         else if (this.getSkin() == 2 && this.rand.nextInt(100) < Modconfig.pSpawnRate_Vespa) {
-        	//System.out.println("OXOXOXOXOXOXOXOXO");
         	double d0 = this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         	List<EntityPlayer> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(d0, d0, d0));
 
         	if(!list.isEmpty()) {
             	this.lifespawn = 5 * 20;
-            	/*this.isEvolving = true;
-            	this.setAttackTarget(null);
-            	this.setNoAI(true);
-            	this.world.setEntityState(this, (byte)4);*/
         		
         		if (!this.world.isRemote) {
 		        	EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
@@ -199,23 +175,20 @@ public class EntityParasite extends EntitySpider{
         	
         
         if (getRidingEntity() != null && this.isServerWorld()) {
-        	this.setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, getRidingEntity().rotationYaw, getRidingEntity().rotationPitch);
-        	//this.setRotation(getRidingEntity().rotationYaw, 0F);
-        	if (this.getRidingEntity() instanceof EntityPlayer && ((EntityLivingBase) getRidingEntity()).getActivePotionEffect(MobEffects.HUNGER) == null) {
-        		this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
-                if(this.getRidingEntity() instanceof EntityPlayerMP && ((EntityPlayerMP) this.getRidingEntity()).connection != null) {
-                    ((EntityPlayerMP) this.getRidingEntity()).connection.sendPacket(new SPacketSetPassengers(this.getRidingEntity()));
-                  }
-        	}
-        	
-        	if(this.getRidingEntity().isBurning()) {
-        		this.setFire(20);
-        	}
-        	
-        	/*if	(this.isEvolving) {
+        	Entity mount = this.getRidingEntity();
+
+        	if (((EntityLivingBase) mount).getActivePotionEffect(MobEffects.HUNGER) == null) {
+        		this.dismountEntity(mount);
         		this.dismountRidingEntity();
-        		this.long_live = false;
-        	}*/
+        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        		this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
+        	}        	
+        	else if(this.getRidingEntity().isBurning()) {
+        		this.setFire(20);
+        		this.dismountEntity(mount);
+        		this.dismountRidingEntity();
+        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        	}
         }
         else if (getRidingEntity() == null && this.long_live)
         	this.long_live = false;
@@ -231,7 +204,6 @@ public class EntityParasite extends EntitySpider{
         if (itemstack.isEmpty())
         {
         	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-        	//player.setHeldItem(hand, new ItemStack(FishItems.PARASITE_ITEM, 1));
         	
         	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.PARASITE_ITEM, 1)))
             {
@@ -246,20 +218,6 @@ public class EntityParasite extends EntitySpider{
         }
     }
 	
-    /*public boolean attackEntityAsMob(Entity entityIn)
-    {
-        boolean flag = super.attackEntityAsMob(entityIn);
-        ((EntityLiving)entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
-		Render<Entity> renderer =  Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(EntityZombie.class);
-		
-		if (renderer instanceof RenderLivingBase) {
-			((RenderLivingBase<?>) renderer).addLayer(new LayerParasite(((RenderLivingBase<?>) renderer)));
-		
-		}
-
-        return flag;
-    }*/
-	
 	@Override
 	public double getYOffset() {
 		if (this.getRidingEntity() != null && (this.getRidingEntity() instanceof EntityPlayer || this.getRidingEntity() instanceof EntityZombie))
@@ -270,34 +228,13 @@ public class EntityParasite extends EntitySpider{
 			return super.getYOffset();
 	}
 	
-    /**
-     * Transforms the entity's current yaw with the given Rotation and returns it. This does not have a side-effect.
-     */
-	/*@Override
-    public float getRotatedYaw(Rotation transformRotation)
-    {
-        //float f = MathHelper.wrapDegrees(this.rotationYaw);
-        if (getRidingEntity() != null && getRidingEntity() instanceof EntityPlayer)return getRidingEntity().getRotatedYaw(transformRotation) + 180.0f;        
-        else return super.getRotatedYaw(transformRotation);
-    }*/
-	
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
 		if (super.attackEntityAsMob(entity)) {
 			if ((entity instanceof EntityPlayer || entity instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach/* && !entity.isBeingRidden()*/) {
 				if(entity instanceof EntityPlayer) {
 					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
-					//setPersistanceOnPlayer((EntityPlayer) entity).getCommandSenderEntity().getName());
 				}				
-				/*EntityParasite entityParasite = new EntityParasite(getEntityWorld(), true);
-				entityParasite.setPosition(entity.posX, entity.posY, entity.posZ);
-				entityParasite.startRiding(entity, true);
-				getEntityWorld().spawnEntity(entityParasite);
-				this.setDead();*/
-				//this.long_live = true;
-				//this.startRiding(entity, false);
-	            //this.navigator.clearPath();
-				//this.setPosition(entity.posX, entity.posY + 2.0D, entity.posZ);
 			}
 			
 			if(this.getSkin() == 2)((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 4*20, 0));
@@ -308,17 +245,14 @@ public class EntityParasite extends EntitySpider{
 	
     protected void collideWithEntity(Entity entityIn)
     {
-    	if (entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || entityIn instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
+    	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || entityIn instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
     		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
     		this.startRiding(entityIn);
+    		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));
             this.isJumping = false;
             this.navigator.clearPath();
             this.long_live = true;
             this.setAttackTarget((EntityLivingBase) entityIn);
-            this.setRiddenId(entityIn.getCommandSenderEntity().getUniqueID());
-            if(this.getRidingEntity() instanceof EntityPlayerMP && ((EntityPlayerMP) this.getRidingEntity()).connection != null) {
-                ((EntityPlayerMP) this.getRidingEntity()).connection.sendPacket(new SPacketSetPassengers(this.getRidingEntity()));
-              }
         }
         else
         	super.collideWithEntity(entityIn);
@@ -342,45 +276,16 @@ public class EntityParasite extends EntitySpider{
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
 	
-    @Nullable
-    public UUID getRiddenId()
-    {
-        return (UUID)(this.dataManager.get(RIDING_ENTITY)).orNull();
-    }
-
-    public void setRiddenId(@Nullable UUID p_184754_1_)
-    {
-        this.dataManager.set(RIDING_ENTITY, Optional.fromNullable(p_184754_1_));
-    }
-	
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		nbt.setInteger("Variant", getSkin());
-		
-        if (this.getRiddenId() == null)
-        {
-        	nbt.setString("RiddenUUID", "");
-        }
-        else
-        {
-        	nbt.setString("RiddenUUID", this.getRiddenId().toString());
-        }
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		setSkin(nbt.getInteger("Variant"));
-		
-        String s = nbt.getString("RiddenUUID");
-
-        if (!s.isEmpty())
-        {
-        	this.setRiddenId(UUID.fromString(s));
-        	EntityPlayer entity = this.world.getPlayerEntityByUUID(this.getRiddenId());
-        	if(entity != null)this.startRiding(entity);
-        }
 	}
 	
     /**
@@ -389,15 +294,7 @@ public class EntityParasite extends EntitySpider{
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
-    	/*if (id == 4) 
-    	{
-            this.isEvolving = true;
-            this.lifespawn = 5 * 20;
-        }
-        else
-        {*/
-            super.handleStatusUpdate(id);
-        //}
+    	super.handleStatusUpdate(id);
     }
     
 	@Override
