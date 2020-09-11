@@ -26,7 +26,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +33,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -320,7 +318,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
                 				farmlandnearby = true;
                 		}
                 
-            	return EntityAvadon.this.ticksExisted >= this.spellCooldown && farmlandnearby && i < Modconfig.Avadon_Ability_Max;
+            	return EntityAvadon.this.ticksExisted >= this.spellCooldown && (EntityAvadon.this.isAggressive || farmlandnearby) && i < Modconfig.Avadon_Ability_Max;
             }
         }
 
@@ -376,7 +374,11 @@ public class EntityAvadon extends EntityMob implements IAggressive{
                 entityvex.onInitialSpawn(EntityAvadon.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
                 
                 if(!EntityAvadon.this.world.isRemote)
-                	EntityAvadon.this.world.spawnEntity(entityvex);              
+                	EntityAvadon.this.world.spawnEntity(entityvex);
+                
+                if(EntityAvadon.this.getAttackTarget() != null)
+                	entityvex.setAttackTarget(EntityAvadon.this.getAttackTarget());
+                	
             }
         }
 

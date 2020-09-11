@@ -85,6 +85,7 @@ item.mod_lavacow.weta_jaw.name=Weta Jaw
 item.mod_lavacow.chitin.name=Chitin
 item.mod_lavacow.ghostbomb.name=Ghost Bomb
 item.mod_lavacow.sonicbomb.name=Sonic Bomb
+item.mod_lavacow.weta_hoe.name=Weta Hoe
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace

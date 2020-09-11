@@ -23,6 +23,7 @@ import com.Fishmod.mod_LavaCow.item.ItemPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.item.ItemPoisonSpore;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
+import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -123,6 +124,7 @@ public class FishItems {
 	public static final Item CHITIN = new ItemFishCustom("chitin", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item GHOSTBOMB = new ItemHolyGrenade("ghostbomb");
 	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
+	public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
