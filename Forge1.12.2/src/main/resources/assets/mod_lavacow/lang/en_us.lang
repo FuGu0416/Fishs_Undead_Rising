@@ -286,6 +286,7 @@ tootip.mod_lavacow.faminearmor.l2=Set(4): No longer be able to eat, but +4 Hunge
 tootip.mod_lavacow.ghostjelly=Transform your Raven into Ghost Raven.
 tootip.mod_lavacow.ghostbomb=Throw at target location and cause explosion. Entities within also receive Levitate(0:01)
 tootip.mod_lavacow.sonicbomb=Throw at target location and cause explosion. Entities within also receive WeaknessIII(0:04)
+tootip.mod_lavacow.weta_hoe=When harvesting, also destroy nearby crops or grasses in 3x3 area.
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting

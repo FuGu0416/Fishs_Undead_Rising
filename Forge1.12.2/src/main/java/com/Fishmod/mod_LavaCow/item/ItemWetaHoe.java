@@ -1,16 +1,27 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWetaHoe extends ItemHoe{
 
@@ -60,5 +71,11 @@ public class ItemWetaHoe extends ItemHoe{
         
         return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
     }
+    
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+		list.add(TextFormatting.YELLOW + I18n.format("tootip." + mod_LavaCow.MODID + ".weta_hoe"));
+	}
         
 }

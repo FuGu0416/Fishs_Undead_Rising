@@ -36,7 +36,7 @@ public class EnchantmentLifesteal extends Enchantment {
 	@Override
 	public void onEntityDamaged(EntityLivingBase user, Entity target, int level) {
 		//user.heal(level);
-		user.heal((float)user.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (float)level * 0.15F);
+		user.heal((float)user.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (float)level * 0.5F);
 	}
 
 }

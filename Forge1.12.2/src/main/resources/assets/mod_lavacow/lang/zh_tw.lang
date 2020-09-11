@@ -289,6 +289,7 @@ tootip.mod_lavacow.faminearmor.l2=套裝(4)：不再能進食，但殺死單位�
 tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
 tootip.mod_lavacow.ghostbomb=投向目標地點，造成範圍傷害並賦予漂浮(0:01)
 tootip.mod_lavacow.sonicbomb=投向目標地點，造成範圍傷害並賦予虛弱III(0:04)
+tootip.mod_lavacow.weta_hoe=當收穫農作時，同時也能收成 3x3 範圍內的農作物或草.
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
