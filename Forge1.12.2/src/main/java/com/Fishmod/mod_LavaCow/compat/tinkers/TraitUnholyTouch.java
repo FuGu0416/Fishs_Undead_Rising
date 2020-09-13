@@ -9,7 +9,7 @@ import slimeknights.tconstruct.library.traits.AbstractTrait;
 
 public class TraitUnholyTouch extends AbstractTrait {
 
-	  private static float bonusDamage = 5.0f;
+	  private static float bonusDamage = 2.0f;
 
 	  public TraitUnholyTouch() {
 	    super("mod_lavacow.unholytouch", 0x7af2ff);

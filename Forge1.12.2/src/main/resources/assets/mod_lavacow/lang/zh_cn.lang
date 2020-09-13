@@ -81,12 +81,26 @@ item.mod_lavacow.faminearmor_leggings.name=饥荒腿甲
 item.mod_lavacow.faminearmor_boots.name=饥荒蹄靴
 item.mod_lavacow.foul_bristle.name=恶臭粗鬃
 item.mod_lavacow.crabcake.name=蟹肉糕
+item.mod_lavacow.ectoplasm.name=灵浆
+item.mod_lavacow.ghostjelly.name=鬼灵果冻
+item.mod_lavacow.banshee_vocal_cord.name=女妖声带
+item.mod_lavacow.weta_jaw.name=沙螽大颚
+item.mod_lavacow.chitin.name=几丁质
+item.mod_lavacow.ghostbomb.name=鬼灵炸弹
+item.mod_lavacow.sonicbomb.name=音爆弹
+item.mod_lavacow.weta_hoe.name=沙螽锄
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂壳
+material.mod_lavacow.scythe_claw.name=镰刀爪
+material.mod_lavacow.ectoplasm.name=灵浆
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受虫满温暖的怀抱！ §r\n在攻击或破坏方块时概率诞生出巨蜂幼虫
+modifier.mod_lavacow.famine.name=饥荒
+modifier.mod_lavacow.famine.desc=§o灾厄骑士§r\n赋予饥饿，对非不死族的单位造成伤害或破坏方块时能回复 1 饱食度
+modifier.mod_lavacow.unholytouch.name=不洁之触
+modifier.mod_lavacow.unholytouch.desc=§o对生者充满怨恨！ §r\n对非不死族的单位造成大量伤害并赋予虚弱
 
 ##########
 # BLOCKS #
@@ -131,6 +145,10 @@ entity.mod_lavacow.raven.seagull=海鸥
 entity.mod_lavacow.pingu.name=冰呪鹅
 entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活尸
+entity.mod_lavacow.ghostray.name=鬼灵鲼
+entity.mod_lavacow.banshee.name=报丧女妖
+entity.mod_lavacow.weta.name=帝沙螽
+entity.mod_lavacow.avadon.name=艾薇妲
 
 ##########
 # Sounds #
@@ -213,6 +231,23 @@ entity_undertaker_ambient=送葬者哀嚎声
 entity_undertaker_death=送葬者死亡
 entity_undertaker_hurt=送葬者受伤
 
+entity_ghostray_ambient=鬼灵鲼歌唱声
+entity_ghostray_death=鬼灵鲼死亡
+entity_ghostray_hurt=鬼灵鲼受伤
+
+entity_banshee_ambient=报丧女妖低语声
+entity_banshee_attack=报丧女妖尖叫
+entity_banshee_death=报丧女妖死亡
+entity_banshee_hurt=鬼灵受伤
+
+entity_weta_ambient=沙螽唧唧声
+entity_weta_death=沙螽死亡
+entity_weta_hurt=沙螽受伤
+
+entity_avadon_ambient=艾薇妲低语声
+entity_avadon_spell=昆虫窸窣声
+entity_avadon_death=艾薇妲死亡
+
 ############
 # Tooltips #
 ############
@@ -247,6 +282,10 @@ tootip.mod_lavacow.undertaker_shovel=右键点击以召唤听命于玩家的活�
 tootip.mod_lavacow.raven_whistle=右键点击绑定渡鸦，并右键点击命令渡鸦前往该地
 tootip.mod_lavacow.faminearmor=套装(2)：自身处于饥饿状态时，造成伤害+2
 tootip.mod_lavacow.faminearmor.l2=套装(4)：不再能进食，但杀死单位时能+4饱食度+1生命
+tootip.mod_lavacow.ghostjelly=将你的渡鸦转化为鬼灵渡鸦
+tootip.mod_lavacow.ghostbomb=投向目标地点，造成范围伤害并赋予漂浮(0:01)
+tootip.mod_lavacow.sonicbomb=投向目标地点，造成范围伤害并赋予虚弱III(0:04)
+tootip.mod_lavacow.weta_hoe=当收获农作时，同时也能收成 3x3 范围内的农作物或草.
 
 message.mod_lavacow.metamorphosis=的外型正在变化！
 command.mod_lavacow.sitting=现在于原地待命
@@ -333,3 +372,11 @@ advancements.mod_lavacow.kill_ptera.title=秃鹫蜥蜴
 advancements.mod_lavacow.kill_ptera.description=杀死一只翼生兽
 advancements.mod_lavacow.kill_boneworm.title=重生骨虫子
 advancements.mod_lavacow.kill_boneworm.description=杀死一头蛰髑
+advancements.mod_lavacow.kill_ghostray.title=鱼夜
+advancements.mod_lavacow.kill_ghostray.description=杀死一头鬼灵鲼
+advancements.mod_lavacow.kill_banshee.title=冷寂
+advancements.mod_lavacow.kill_banshee.description=杀死一头报丧女妖
+advancements.mod_lavacow.kill_weta.title=虫穴生还者
+advancements.mod_lavacow.kill_weta.description=杀死一只帝沙螽
+advancements.mod_lavacow.kill_avadon.title=害虫控制
+advancements.mod_lavacow.kill_avadon.description=杀死一头艾薇妲

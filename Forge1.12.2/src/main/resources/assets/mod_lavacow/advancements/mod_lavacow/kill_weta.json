@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "item": "mod_lavacow:banshee_vocal_cord"
+            "item": "mod_lavacow:weta_jaw"
         },
         "title": {
-            "translate": "advancements.mod_lavacow.kill_banshee.title"
+            "translate": "advancements.mod_lavacow.kill_weta.title"
         },
         "description": {
-            "translate": "advancements.mod_lavacow.kill_banshee.description"
+            "translate": "advancements.mod_lavacow.kill_weta.description"
         }
     },
     "parent": "mod_lavacow:mod_lavacow/root",
@@ -16,7 +16,7 @@
             "trigger": "minecraft:player_killed_entity",
 		    "conditions": {
 				"entity": {
-					"type": "mod_lavacow:banshee"
+					"type": "mod_lavacow:weta"
 		        }
 		      }
         }

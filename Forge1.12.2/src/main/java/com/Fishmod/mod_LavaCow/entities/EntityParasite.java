@@ -1,15 +1,11 @@
 package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.List;
-import java.util.UUID;
-
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
-import com.google.common.base.Optional;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -51,7 +47,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityParasite extends EntitySpider{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityParasite.class, DataSerializers.VARINT);
-	private static final DataParameter<Optional<UUID>> RIDING_ENTITY = EntityDataManager.<Optional<UUID>>createKey(EntityParasite.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 	
 	public int lifespawn;
 	private boolean long_live;
@@ -117,7 +112,6 @@ public class EntityParasite extends EntitySpider{
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
-        this.getDataManager().register(RIDING_ENTITY, Optional.absent());
      }
 	
 	@Override
