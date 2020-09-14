@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -41,14 +42,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityAvadon extends EntityMob implements IAggressive{
+public class EntityAvaton extends EntityMob implements IAggressive{
 	
-	private static final DataParameter<Byte> CASTING = EntityDataManager.<Byte>createKey(EntityAvadon.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> CASTING = EntityDataManager.<Byte>createKey(EntityAvaton.class, DataSerializers.BYTE);
 	private boolean isAggressive = false;
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
-	public EntityAvadon(World worldIn)
+	public EntityAvaton(World worldIn)
     {
         super(worldIn);
         this.setSize(0.75F, 2.25F);
@@ -58,7 +59,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new AICastingApell());
-        this.tasks.addTask(3, new EntityAvadon.AIUseSpell());
+        this.tasks.addTask(3, new EntityAvaton.AIUseSpell());
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(5, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -78,10 +79,10 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Avadon_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Avaton_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.175D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Avadon_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Avaton_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
     }
 	
@@ -133,13 +134,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
         {
             --this.spellTicks;
         }
-    	
-    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
-    	{
-    		float f = this.getBrightness();
-    		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
-    	}
-    	
+    	    	
     	super.onLivingUpdate();
     }
     
@@ -258,7 +253,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            return EntityAvadon.this.getSpellTicks() > 0;
+            return EntityAvaton.this.getSpellTicks() > 0;
         }
 
         /**
@@ -267,8 +262,8 @@ public class EntityAvadon extends EntityMob implements IAggressive{
         public void startExecuting()
         {
             super.startExecuting();
-            EntityAvadon.this.setIsCasting(true);
-            EntityAvadon.this.navigator.clearPath();
+            EntityAvaton.this.setIsCasting(true);
+            EntityAvaton.this.navigator.clearPath();
         }
 
         /**
@@ -277,7 +272,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
         public void resetTask()
         {
             super.resetTask();
-            EntityAvadon.this.setIsCasting(false);
+            EntityAvaton.this.setIsCasting(false);
         }
 
         /**
@@ -285,9 +280,9 @@ public class EntityAvadon extends EntityMob implements IAggressive{
          */
         public void updateTask()
         {
-            if (EntityAvadon.this.getAttackTarget() != null)
+            if (EntityAvaton.this.getAttackTarget() != null)
             {
-                EntityAvadon.this.getLookHelper().setLookPositionWithEntity(EntityAvadon.this.getAttackTarget(), (float)EntityAvadon.this.getHorizontalFaceSpeed(), (float)EntityAvadon.this.getVerticalFaceSpeed());
+                EntityAvaton.this.getLookHelper().setLookPositionWithEntity(EntityAvaton.this.getAttackTarget(), (float)EntityAvaton.this.getHorizontalFaceSpeed(), (float)EntityAvaton.this.getVerticalFaceSpeed());
             }
         }
     }
@@ -302,23 +297,23 @@ public class EntityAvadon extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-        	if (EntityAvadon.this.isSpellcasting())
+        	if (EntityAvaton.this.isSpellcasting())
             {
                 return false;
             }
             else
             {
-                int i = EntityAvadon.this.world.getEntitiesWithinAABB(EntityWeta.class, EntityAvadon.this.getEntityBoundingBox().grow(16.0D)).size();
+                int i = EntityAvaton.this.world.getEntitiesWithinAABB(EntityWeta.class, EntityAvaton.this.getEntityBoundingBox().grow(16.0D)).size();
                 boolean farmlandnearby = false;
                 for(int x = -2; x <= 2; x++)
                 	for(int y = -1; y <= 1; y++)
                 		for(int z = -2; z <= 2; z++)
                 		{
-                			if (EntityAvadon.this.world.getBlockState(new BlockPos(EntityAvadon.this.posX, EntityAvadon.this.posY, EntityAvadon.this.posZ)).getBlock() == Blocks.FARMLAND)
+                			if (EntityAvaton.this.world.getBlockState(new BlockPos(EntityAvaton.this.posX, EntityAvaton.this.posY, EntityAvaton.this.posZ)).getBlock() == Blocks.FARMLAND)
                 				farmlandnearby = true;
                 		}
                 
-            	return EntityAvadon.this.ticksExisted >= this.spellCooldown && (EntityAvadon.this.isAggressive || farmlandnearby) && i < Modconfig.Avadon_Ability_Max;
+            	return EntityAvaton.this.ticksExisted >= this.spellCooldown && (EntityAvaton.this.isAggressive || farmlandnearby) && i < Modconfig.Avaton_Ability_Max;
             }
         }
 
@@ -336,14 +331,14 @@ public class EntityAvadon extends EntityMob implements IAggressive{
         public void startExecuting()
         {
             this.spellWarmup = this.getCastWarmupTime();
-            EntityAvadon.this.spellTicks = this.getCastingTime();
-            EntityAvadon.this.world.setEntityState(EntityAvadon.this, (byte)10);
-            this.spellCooldown = EntityAvadon.this.ticksExisted + this.getCastingInterval();
+            EntityAvaton.this.spellTicks = this.getCastingTime();
+            EntityAvaton.this.world.setEntityState(EntityAvaton.this, (byte)10);
+            this.spellCooldown = EntityAvaton.this.ticksExisted + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
 
             if (soundevent != null)
             {
-                EntityAvadon.this.playSound(soundevent, 1.0F, 1.0F);
+                EntityAvaton.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
 
@@ -357,27 +352,28 @@ public class EntityAvadon extends EntityMob implements IAggressive{
             if (this.spellWarmup == 5)
             {
                 this.castSpell();
-                EntityAvadon.this.playSound(EntityAvadon.this.getSpellSound(), 4.0F, 1.2F);
+                EntityAvaton.this.playSound(EntityAvaton.this.getSpellSound(), 4.0F, 1.2F);
                            
             }
         }
 
         protected void castSpell()
         {
-            for (int i = 0; i < Modconfig.Avadon_Ability_Num; ++i)
+            for (int i = 0; i < Modconfig.Avaton_Ability_Num; ++i)
             {
-                BlockPos blockpos = (new BlockPos(EntityAvadon.this)).add(-2 + EntityAvadon.this.rand.nextInt(5), 1, -2 + EntityAvadon.this.rand.nextInt(5));
-                EntityWeta entityvex = new EntityWeta(EntityAvadon.this.world);
+                BlockPos blockpos = (new BlockPos(EntityAvaton.this)).add(-2 + EntityAvaton.this.rand.nextInt(5), 1, -2 + EntityAvaton.this.rand.nextInt(5));
+                EntityWeta entityvex = new EntityWeta(EntityAvaton.this.world);
                 entityvex.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
                 entityvex.setHealth(entityvex.getMaxHealth());
                 entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                entityvex.onInitialSpawn(EntityAvadon.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                entityvex.onInitialSpawn(EntityAvaton.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                entityvex.setOwnerId(EntityAvaton.this.getUniqueID());                             
+
+                if(!EntityAvaton.this.world.isRemote)
+                	EntityAvaton.this.world.spawnEntity(entityvex);
                 
-                if(!EntityAvadon.this.world.isRemote)
-                	EntityAvadon.this.world.spawnEntity(entityvex);
-                
-                if(EntityAvadon.this.getAttackTarget() != null)
-                	entityvex.setAttackTarget(EntityAvadon.this.getAttackTarget());
+                if(EntityAvaton.this.getAttackTarget() != null)
+                	entityvex.setAttackTarget(EntityAvaton.this.getAttackTarget());
                 	
             }
         }
@@ -394,7 +390,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
 
         protected int getCastingInterval()
         {
-        	return Modconfig.Avadon_Ability_Cooldown * 20;
+        	return Modconfig.Avaton_Ability_Cooldown * 20;
         }
 
         @Nullable
@@ -411,7 +407,7 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     
     protected SoundEvent getAmbientSound()
     {
-        return FishItems.ENTITY_AVADON_AMBIENT;
+        return FishItems.ENTITY_AVATON_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
@@ -421,12 +417,12 @@ public class EntityAvadon extends EntityMob implements IAggressive{
 
     protected SoundEvent getDeathSound()
     {
-        return FishItems.ENTITY_AVADON_DEATH;
+        return FishItems.ENTITY_AVATON_DEATH;
     }
     
     protected SoundEvent getSpellSound()
     {
-        return FishItems.ENTITY_AVADON_SPELL;
+        return FishItems.ENTITY_AVATON_SPELL;
     }
     
     /**
@@ -460,6 +456,6 @@ public class EntityAvadon extends EntityMob implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.AVADON;
+        return LootTableHandler.AVATON;
     }
 }

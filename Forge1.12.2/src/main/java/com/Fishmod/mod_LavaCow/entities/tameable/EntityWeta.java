@@ -1,25 +1,33 @@
-package com.Fishmod.mod_LavaCow.entities;
+package com.Fishmod.mod_LavaCow.entities.tameable;
+
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.ai.EntityAIDestroyCrops;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMate;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -27,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityWeta extends EntitySpider implements IAggressive{
+public class EntityWeta extends EntityFishTameable implements IAggressive{
 
 	private boolean isAggressive = false;
 	private int attackTimer = 0;
@@ -42,8 +50,9 @@ public class EntityWeta extends EntitySpider implements IAggressive{
 	protected void initEntityAI()
     {
         this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.WHEAT, false));
+        this.tasks.addTask(3, new EntityAITempt(this, 1.0D, FishItems.CANEPORK, false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));    
         this.tasks.addTask(5, new EntityAIDestroyCrops(this, 1.1D));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
@@ -55,7 +64,9 @@ public class EntityWeta extends EntitySpider implements IAggressive{
 	
     protected void applyEntityAI()
     {
-    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+    	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+    	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
     }
     
 	@Override
@@ -116,6 +127,37 @@ public class EntityWeta extends EntitySpider implements IAggressive{
         {
             return false;
         }
+    }
+    
+    /**
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
+     */
+    public boolean isBreedingItem(ItemStack stack) {
+       Item item = stack.getItem();
+       return item == FishItems.CANEPORK;
+    }
+    
+    /**
+     * Returns true if the mob is currently able to mate with the specified mob.
+     */
+    public boolean canMateWith(EntityAnimal otherAnimal) {
+       if (otherAnimal == this) {
+          return false;
+       } else if (!this.isTamed()) {
+          return false;
+       } else if (!(otherAnimal instanceof EntityWeta)) {
+          return false;
+       } else {
+    	   EntityWeta entitywolf = (EntityWeta)otherAnimal;
+          if (!entitywolf.isTamed()) {
+             return false;
+          } else if (entitywolf.isSitting()) {
+             return false;
+          } else {
+             return this.isInLove() && entitywolf.isInLove();
+          }
+       }
     }
 
 	@Override
@@ -186,4 +228,16 @@ public class EntityWeta extends EntitySpider implements IAggressive{
     protected ResourceLocation getLootTable() {
         return LootTableHandler.WETA;
     }
+    
+	public EntityWeta createChild(EntityAgeable ageable) {
+		EntityWeta entity = new EntityWeta(this.world);
+		UUID uuid = this.getOwnerId();
+		if (uuid != null) {
+			entity.setOwnerId(uuid);
+			entity.setTamed(true);
+			entity.setHealth(this.getMaxHealth());
+		}
+
+		return entity;
+	}
 }

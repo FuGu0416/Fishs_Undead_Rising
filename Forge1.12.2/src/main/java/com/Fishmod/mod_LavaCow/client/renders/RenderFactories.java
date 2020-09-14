@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renders;
 
-import com.Fishmod.mod_LavaCow.entities.EntityAvadon;
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
@@ -12,7 +12,6 @@ import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
-import com.Fishmod.mod_LavaCow.entities.EntityWeta;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
@@ -33,6 +32,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.client.renderer.entity.Render;
@@ -76,7 +76,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostRay.class, RenderFactoryEntityGhostRay.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityBanshee.class, RenderFactoryEntityBanshee.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityWeta.class, RenderFactoryEntityWeta.INSTANCE);
-        RenderingRegistry.registerEntityRenderingHandler(EntityAvadon.class, RenderFactoryEntityAvadon.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityAvaton.class, RenderFactoryEntityAvaton.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostBomb.class, RenderFactoryEntityGhostBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
     }
@@ -501,17 +501,17 @@ public class RenderFactories {
         }
     }
     
-    public static class RenderFactoryEntityAvadon implements IRenderFactory<EntityAvadon>
+    public static class RenderFactoryEntityAvaton implements IRenderFactory<EntityAvaton>
     {
-        public final static RenderFactoryEntityAvadon INSTANCE = new RenderFactoryEntityAvadon();
+        public final static RenderFactoryEntityAvaton INSTANCE = new RenderFactoryEntityAvaton();
     
         /* (non-Javadoc)
          * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
          */
         @Override
-        public Render<EntityAvadon> createRenderFor(RenderManager manager)
+        public Render<EntityAvaton> createRenderFor(RenderManager manager)
         {
-        	return new RenderAvadon(manager);
+        	return new RenderAvaton(manager);
         }
     }
     

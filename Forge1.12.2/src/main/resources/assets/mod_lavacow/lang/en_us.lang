@@ -145,7 +145,7 @@ entity.mod_lavacow.unburied.name=Unburied
 entity.mod_lavacow.ghostray.name=Ghost Ray
 entity.mod_lavacow.banshee.name=Banshee
 entity.mod_lavacow.weta.name=Emperor Weta
-entity.mod_lavacow.avadon.name=Avadon
+entity.mod_lavacow.avaton.name=Avaton
 
 ##########
 # Sounds #
@@ -244,9 +244,9 @@ entity_weta_ambient=Weta chirps
 entity_weta_death=Weta dies
 entity_weta_hurt=Weta hurts
 
-entity_avadon_ambient=Avadon whispers
-entity_avadon_spell=Insect chirps
-entity_avadon_death=Avadon dies
+entity_avaton_ambient=Avaton whispers
+entity_avaton_spell=Insect chirps
+entity_avaton_death=Avaton dies
 
 ############
 # Tooltips #
@@ -380,5 +380,5 @@ advancements.mod_lavacow.kill_banshee.title=Silent Chills
 advancements.mod_lavacow.kill_banshee.description=Kill a Banshee
 advancements.mod_lavacow.kill_weta.title=Insect Pit Survivor
 advancements.mod_lavacow.kill_weta.description=Kill a Weta
-advancements.mod_lavacow.kill_avadon.title=Pest Control
-advancements.mod_lavacow.kill_avadon.description=Kill an Avadon
+advancements.mod_lavacow.kill_avaton.title=Pest Control
+advancements.mod_lavacow.kill_avaton.description=Kill an Avaton

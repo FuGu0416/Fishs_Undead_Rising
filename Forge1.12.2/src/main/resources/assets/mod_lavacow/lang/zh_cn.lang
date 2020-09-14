@@ -148,7 +148,7 @@ entity.mod_lavacow.unburied.name=活尸
 entity.mod_lavacow.ghostray.name=鬼灵鲼
 entity.mod_lavacow.banshee.name=报丧女妖
 entity.mod_lavacow.weta.name=帝沙螽
-entity.mod_lavacow.avadon.name=艾薇妲
+entity.mod_lavacow.avaton.name=艾薇妲
 
 ##########
 # Sounds #
@@ -244,9 +244,9 @@ entity_weta_ambient=沙螽唧唧声
 entity_weta_death=沙螽死亡
 entity_weta_hurt=沙螽受伤
 
-entity_avadon_ambient=艾薇妲低语声
-entity_avadon_spell=昆虫窸窣声
-entity_avadon_death=艾薇妲死亡
+entity_avaton_ambient=艾薇妲低语声
+entity_avaton_spell=昆虫窸窣声
+entity_avaton_death=艾薇妲死亡
 
 ############
 # Tooltips #
@@ -378,5 +378,5 @@ advancements.mod_lavacow.kill_banshee.title=冷寂
 advancements.mod_lavacow.kill_banshee.description=杀死一头报丧女妖
 advancements.mod_lavacow.kill_weta.title=虫穴生还者
 advancements.mod_lavacow.kill_weta.description=杀死一只帝沙螽
-advancements.mod_lavacow.kill_avadon.title=害虫控制
-advancements.mod_lavacow.kill_avadon.description=杀死一头艾薇妲
+advancements.mod_lavacow.kill_avaton.title=害虫控制
+advancements.mod_lavacow.kill_avaton.description=杀死一头艾薇妲

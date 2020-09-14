@@ -496,24 +496,24 @@
 		"sounds": [{"name": "mod_lavacow:entity/weta/death","stream": true}]
 	},
 	
-	"entity.avadon.ambient":
+	"entity.avaton.ambient":
 	{
 		"category": "entity",
-		"subtitle": "entity_avadon_ambient",
-		"sounds": [{"name": "mod_lavacow:entity/avadon/ambient","stream": true}]
+		"subtitle": "entity_avaton_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/ambient","stream": true}]
 	},
 	
-	"entity.avadon.spell":
+	"entity.avaton.spell":
 	{
 		"category": "entity",
-		"subtitle": "entity_avadon_spell",
-		"sounds": [{"name": "mod_lavacow:entity/avadon/spell","stream": true}]
+		"subtitle": "entity_avaton_spell",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/spell","stream": true}]
 	},
 	
-	"entity.avadon.death":
+	"entity.avaton.death":
 	{
 		"category": "entity",
-		"subtitle": "entity_avadon_death",
-		"sounds": [{"name": "mod_lavacow:entity/avadon/death","stream": true}]
+		"subtitle": "entity_avaton_death",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/death","stream": true}]
 	}
 }

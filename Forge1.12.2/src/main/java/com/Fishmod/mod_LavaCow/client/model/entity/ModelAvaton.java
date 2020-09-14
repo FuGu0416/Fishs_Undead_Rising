@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
-import com.Fishmod.mod_LavaCow.entities.EntityAvadon;
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 
 import net.minecraft.client.model.ModelRenderer;
@@ -10,10 +10,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * ModelAvadon - Fish0016054
+ * ModelAvaton - Fish0016054
  * Created using Tabula 7.1.0
  */
-public class ModelAvadon extends FishModelBase {
+public class ModelAvaton extends FishModelBase {
     public ModelRenderer Body_base;
     public ModelRenderer Body_waist;
     public ModelRenderer Body_lower_front;
@@ -35,7 +35,7 @@ public class ModelAvadon extends FishModelBase {
     public ModelRenderer Hair_r;
     public ModelRenderer Bangs;
 
-    public ModelAvadon() {
+    public ModelAvaton() {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.Hair_r = new ModelRenderer(this, 21, 48);
@@ -174,8 +174,8 @@ public class ModelAvadon extends FishModelBase {
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	boolean aggressive = ((IAggressive) entityIn).isAggressive();
-    	float j = (float)((EntityAvadon) entityIn).getSpellTicks() / 30.0F;
-    	if(((EntityAvadon) entityIn).isSpellcasting()) {
+    	float j = (float)((EntityAvaton) entityIn).getSpellTicks() / 30.0F;
+    	if(((EntityAvaton) entityIn).isSpellcasting()) {
     		Arm_r_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.rotateAngleY = 2.111673824703684F;

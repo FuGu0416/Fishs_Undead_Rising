@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.EntityAvadon;
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
@@ -16,7 +16,6 @@ import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
-import com.Fishmod.mod_LavaCow.entities.EntityWeta;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
@@ -37,6 +36,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.EntityLiving;
@@ -304,9 +304,9 @@ public class ModEntities {
             .build(),
             
             EntityEntryBuilder.create()
-            .entity(EntityAvadon.class)
-            .id(new ResourceLocation(mod_LavaCow.MODID, "avadon"), id++)
-            .name(mod_LavaCow.MODID + "." + "avadon")
+            .entity(EntityAvaton.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "avaton"), id++)
+            .name(mod_LavaCow.MODID + "." + "avaton")
             .tracker(80, 3, false)
             .egg(0xAAA48E, 0x222829)
             .build(),
@@ -386,8 +386,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.COLD);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
-		tweakEntitySpawn(EntityAvadon.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avadon, 1, 2, BiomeDictionary.Type.SANDY);
-		tweakEntitySpawn(EntityAvadon.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avadon, 1, 2, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
     }
     
     private static boolean isInHell(Biome BiomeIn) {
