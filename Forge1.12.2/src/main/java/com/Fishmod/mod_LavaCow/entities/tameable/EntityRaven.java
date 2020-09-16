@@ -369,11 +369,13 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
                 }
                 else if (player.getHeldItemMainhand().getItem().equals(Items.STICK)) {
                 	//System.out.println("O_O " + this.isSitting());
-                	this.aiSit.setSitting(!this.isSitting());
+                	
                 	if(this.isSitting()) {
+                		this.aiSit.setSitting(false);
                 		player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
                 	}
                 	else {
+                		this.aiSit.setSitting(true);
                 		player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
                 	}
                 }

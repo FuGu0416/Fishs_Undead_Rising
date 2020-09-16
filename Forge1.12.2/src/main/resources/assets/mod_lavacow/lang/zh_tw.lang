@@ -256,8 +256,8 @@ entity_avaton_death=艾薇妲死亡
 ############
 
 tootip.mod_lavacow.bonesword=對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)
-tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)
-tootip.mod_lavacow.canepork=食用後獲得再生(0:08)
+tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)，也是炎熔螈的最愛
+tootip.mod_lavacow.canepork=食用後獲得再生(0:08)，也是帝沙螽的最愛
 tootip.mod_lavacow.canerottenmeat=食用後獲得再生(0:08)，也是擬箱蟹的最愛
 tootip.mod_lavacow.netherstew=食用後獲得隨機效果(0:40)
 tootip.mod_lavacow.goldenheart=在裝備時賦予再生並修補(+1/秒)裝備物品
@@ -303,8 +303,11 @@ key.mod_lavacow.special=座騎特殊能力
 ################
 
 enchantment.mod_lavacow.Poisonous=劇毒
+enchantment.mod_lavacow.Poisonous.desc=攻擊時能使目標中毒
 enchantment.mod_lavacow.Lifesteal=生命竊取
+enchantment.mod_lavacow.Lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
 enchantment.mod_lavacow.Corrosive=酸蝕性
+enchantment.mod_lavacow.Corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
 
 ##############
 # MobEffects #
