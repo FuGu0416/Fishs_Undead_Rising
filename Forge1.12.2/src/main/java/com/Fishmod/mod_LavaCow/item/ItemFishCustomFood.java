@@ -53,10 +53,11 @@ public class ItemFishCustomFood extends ItemFood {
 	public ItemFishCustomFood setMultiPotionEffect(List<Triple<Potion, Integer, Integer>> list)
     {
 		this.PotionType = 1;
-
-		for (final Triple<Potion, Integer, Integer> item : list) {
-			PotionList.add(item);  
-		}
+		PotionList.clear();
+		if(list != null)
+			for (final Triple<Potion, Integer, Integer> item : list) {
+				PotionList.add(item);  
+			}
         return this;
     }
 	
@@ -64,9 +65,10 @@ public class ItemFishCustomFood extends ItemFood {
     {
 		this.PotionType = 2;
 		PotionList.clear();
-		for (final Triple<Potion, Integer, Integer> item : list) {
-			PotionList.add(item);
-		}
+		if(list != null)
+			for (final Triple<Potion, Integer, Integer> item : list) {
+				PotionList.add(item);
+			}
         return this;
     }
 	
@@ -85,16 +87,17 @@ public class ItemFishCustomFood extends ItemFood {
         		break;
         	case 1:
         		//System.out.println("OXOXOXOXOXOXOXOXO " + PotionList.get(0).getEffectName() + " " + PotionList.get(0).getDuration());
-        		if (!worldIn.isRemote)
+        		if (!worldIn.isRemote && PotionList != null && PotionList.size() > 0)
 	        		for (final Triple<Potion, Integer, Integer> item : PotionList) {
 	        			player.addPotionEffect(new PotionEffect(item.getLeft(), item.getMiddle(), item.getRight()));
 	        		}
         		break;
         	case 2:
-        		int a = Item.itemRand.nextInt(PotionList.size());
         		//System.out.println("OXO " + PotionList.get(a).getLeft() + " " + PotionList.get(a).getMiddle());
-        		if (!worldIn.isRemote)
+        		if (!worldIn.isRemote && PotionList != null && PotionList.size() > 0) {
+            		int a = Item.itemRand.nextInt(PotionList.size());
         			player.addPotionEffect(new PotionEffect(PotionList.get(a).getLeft(), PotionList.get(a).getMiddle(), PotionList.get(a).getRight()));
+        		}
         		break;
         	default:
         		super.onFoodEaten(stack, worldIn, player);

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -27,12 +28,10 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -128,6 +127,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
     @SideOnly(Side.CLIENT)
@@ -141,21 +141,11 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     public float getBrightness() {
        return 1.0F;
     }
-    
-    /*@Override
+        
+    @Override
 	public boolean getCanSpawnHere() {
-		return this.dimension == DimensionType.NETHER.getId() 
-				&& getEntityWorld().checkNoEntityCollision(getEntityBoundingBox()) 
-				&& getEntityWorld().getCollisionBoxes(this, getEntityBoundingBox()).isEmpty() 
-				&& getEntityWorld().isMaterialInBB(getEntityBoundingBox(), Material.LAVA);
-	}*/
-    
-    /*@Override
-	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.NETHER.getId())
-			return super.getCanSpawnHere();
-		else return false;
-	}*/
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+	}
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);
@@ -377,7 +367,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     }
     
     /**
-     * Growing Stage: Nymph → Child → Adult
+     * Growing Stage: Nymph -> Child-> Adult
      */
     public int getGrowingStage() {
        return dataManager.get(GROWING_STAGE).intValue();

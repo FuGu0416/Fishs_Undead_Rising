@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -26,7 +27,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -71,9 +71,7 @@ public class EntityLavaCow extends EntityCow
 	
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
     private boolean isWalkingonLand()

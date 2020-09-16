@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.client;
 import java.io.File;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -39,6 +40,9 @@ public class Modconfig {
 	public static int pSpawnRate_Pingu;
 	public static int pSpawnRate_Undertaker;
 	public static int pSpawnRate_GhostRay;
+	public static int pSpawnRate_Banshee;
+	public static int pSpawnRate_Weta;
+	public static int pSpawnRate_Avaton;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -78,6 +82,10 @@ public class Modconfig {
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
+	public static int[] Spawn_AllowList = new int[0];
+	public static int Avaton_Ability_Num;
+	public static int Avaton_Ability_Max;
+	public static int Avaton_Ability_Cooldown;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -122,9 +130,15 @@ public class Modconfig {
 	
 	public static double GhostRay_Health;
 	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
+	public static double Banshee_Health;
+	public static double Banshee_Attack;
+	
+	public static double Avaton_Health;
+	public static double Avaton_Attack;
+	
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
 			"Salamander", "Ithaqua", "Mimicrab", "Sludge Lord", "Lil'Sludge", "Raven", "Ptera", "Vespa", "Scarecrow", /*"Vespa Cocoon",*/ "Swarmer",
-			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Glowshroom"};
+			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
 		//File configFile = event.getSuggestedConfigurationFile();
@@ -228,6 +242,19 @@ public class Modconfig {
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
 		
+		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
+		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
+		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
+		
+		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
+		
+		pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
+		Avaton_Health = config.get("Avaton", "avaton health", 30.0D, "Maximum Avaton health [1-1000]", 1, 1000).getDouble(30.0D);
+		Avaton_Attack = config.get("Avaton", "avaton attack", 5.0D, "Avaton strength [1-1000]", 1, 1000).getDouble(5.0D);
+		Avaton_Ability_Num = config.get("Avaton", "avaton summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
+		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
+		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
+		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
 		//ModBiomes_spawn = config.get(Configuration.CATEGORY_GENERAL, "spawn mobs at biomes from other mods", false, "Allow Mobs to spawn at biomes from other mods [false/true]").getBoolean(false);
@@ -285,6 +312,9 @@ public class Modconfig {
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);
 		
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
+		
+		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
+		
 		if (config.hasChanged())
 			config.save();
 	}

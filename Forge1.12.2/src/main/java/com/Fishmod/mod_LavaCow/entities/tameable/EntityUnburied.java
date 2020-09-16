@@ -76,6 +76,9 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
+    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
+	  	      return !(this.getOwner() instanceof EntityPlayer);
+	   }));
     	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, 0, true, true, (p_210136_0_) -> {
 	  	      return !(this.getOwner() instanceof EntityPlayer);
   	   }));

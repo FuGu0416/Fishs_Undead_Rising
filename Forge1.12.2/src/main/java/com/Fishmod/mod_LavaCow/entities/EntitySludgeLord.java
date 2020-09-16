@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -24,7 +25,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +32,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,7 +50,7 @@ public class EntitySludgeLord extends EntityMob{
     protected void initEntityAI()
     {
         this.tasks.addTask(1, new AICastingApell());
-    	this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, SoundEvents.ENTITY_SLIME_SQUISH, 1, 2, 5.0D, 8.0D, 1.2D, 0.6D, 1.2D));
+    	this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, FishItems.ENTITY_SLUDGELORD_ATTACK, 1, 2, 5.0D, 8.0D, 1.2D, 0.6D, 1.2D));
     	this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
     	this.tasks.addTask(4, new EntitySludgeLord.AIUseSpell());
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -76,13 +75,12 @@ public class EntitySludgeLord extends EntityMob{
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.19D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.SludgeLord_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     public boolean isSpellcasting()
@@ -190,10 +188,6 @@ public class EntitySludgeLord extends EntityMob{
      */
     public void onDeath(DamageSource cause) {
        super.onDeath(cause);
-       for(EntityLilSludge C : EntitySludgeLord.this.world.getEntitiesWithinAABB(EntityLilSludge.class, EntitySludgeLord.this.getEntityBoundingBox().grow(16.0D))) {
-    	   if(C.getOwnerId().equals(this.getUniqueID()))
-    		   C.setLimitedLife(0);
-       }
        
        int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
        if(this.canDropLoot())
@@ -338,7 +332,9 @@ public class EntitySludgeLord extends EntityMob{
                 entityvex.setOwnerId(EntitySludgeLord.this.getUniqueID());
                 //entityvex.setTamed(true);
                 entityvex.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
-                EntitySludgeLord.this.world.spawnEntity(entityvex);
+                
+                if(!EntitySludgeLord.this.world.isRemote)
+                	EntitySludgeLord.this.world.spawnEntity(entityvex);
                 
                 //ItemFishCustomWeapon.LavaBurst(EntitySludgeLord.this.world, entityvex.posX, entityvex.posY, entityvex.posZ, 1.0D, EnumParticleTypes.WATER_BUBBLE);
                 //if(EntitySludgeLord.this.getAttackingEntity() != null)

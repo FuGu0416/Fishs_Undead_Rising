@@ -109,7 +109,7 @@ public class EntityFishTameable extends EntityTameable{
      */
     protected boolean canDespawn()
     {
-        return !this.isTamed();
+        return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }
     
     protected boolean isCommandItem(Item itemIn) {
@@ -211,6 +211,10 @@ public class EntityFishTameable extends EntityTameable{
         {
             this.setDead();
         }
+        
+        if (!this.world.isRemote && (this.getOwner() != null && (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
+        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
+        }
     }
     
     protected void updateAITasks()
@@ -247,6 +251,16 @@ public class EntityFishTameable extends EntityTameable{
         {
             return null;
         }
+    }
+    
+    @Override
+    /**
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
+     */
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return false;
     }
 
 	@Override

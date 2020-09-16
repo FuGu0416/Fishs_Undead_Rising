@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.client.renders;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -29,5 +30,9 @@ public class RenderBanshee extends RenderLiving<EntityBanshee>{
     
     @Override
 	protected void preRenderCallback(EntityBanshee entity, float partialTickTime) {
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.color(1F, 1F, 1F, 0.85F);
 	}
 }

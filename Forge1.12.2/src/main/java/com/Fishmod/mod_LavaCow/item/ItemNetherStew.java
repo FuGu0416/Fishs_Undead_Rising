@@ -6,6 +6,8 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Lists;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -62,7 +64,7 @@ public class ItemNetherStew extends ItemFishCustomFood
     
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
     {	
-    	if (target instanceof EntityPig && !target.isChild())
+    	if (stack.getItem().equals(FishItems.NETHERSTEW) && target instanceof EntityPig && !target.isChild())
         {
     		if(!playerIn.isCreative()) 
     		{
@@ -91,6 +93,10 @@ public class ItemNetherStew extends ItemFishCustomFood
         	}
             return true;
         }
+    	/*else if(stack.getItem().equals(FishItems.GHOSTJELLY) && target instanceof EntityRaven && ((EntityRaven) target).getOwner().equals(playerIn) && ((EntityRaven) target).getSkin() == 0) {
+    		((EntityRaven) target).setSkin(3);
+    		return true;
+    	}*/
         else
         {   	
         	return super.itemInteractionForEntity(stack, playerIn, target, hand);

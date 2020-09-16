@@ -84,7 +84,7 @@ public class ItemRavenWhistle extends ItemFishCustom {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
     {
-        if(target instanceof EntityRaven && ((EntityRaven) target).getOwnerId().equals(playerIn.getUniqueID())) {
+        if(target instanceof EntityRaven && ((EntityRaven) target).getOwnerId() != null && ((EntityRaven) target).getOwnerId().equals(playerIn.getUniqueID())) {
         	this.OrderEntityID = target.getUniqueID();
         	playerIn.getHeldItem(hand).getTagCompound().setString("OrderName", target.getName());
         	playerIn.getHeldItem(hand).getTagCompound().setInteger("OrderID", target.getEntityId());

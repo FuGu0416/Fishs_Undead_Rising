@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:fireworks"
+        },
+        "X": {
+            "item": "mod_lavacow:ectoplasm"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:ghostbomb"
+    }
+}

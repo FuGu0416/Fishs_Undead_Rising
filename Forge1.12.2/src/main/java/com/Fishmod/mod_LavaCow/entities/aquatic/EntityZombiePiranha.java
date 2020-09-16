@@ -64,7 +64,7 @@ public class EntityZombiePiranha extends EntityAquaMob{
             {
                 public boolean apply(@Nullable Entity p_apply_1_)
                 {
-                    return !(p_apply_1_ instanceof EntityTameable);
+                    return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
         //this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityMob>(this, EntityMob.class, true));
@@ -72,7 +72,7 @@ public class EntityZombiePiranha extends EntityAquaMob{
         {
             public boolean apply(@Nullable Entity p_apply_1_)
             {
-                return !(p_apply_1_ instanceof EntityZombiePiranha || p_apply_1_ instanceof EntityCreeper);
+                return !(p_apply_1_ instanceof EntityZombiePiranha || p_apply_1_ instanceof EntityCreeper) && ((EntityMob)p_apply_1_).getHealth() < ((EntityMob)p_apply_1_).getMaxHealth();
             }
         }));
     }

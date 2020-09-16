@@ -13,15 +13,15 @@ public class FishModelBase extends ModelBase {
 	}
 	
 	protected void SwingX_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {
-		Point.rotateAngleX = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks)); 
+		Point.rotateAngleX = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks + delay)); 
 	}
 	
 	protected void SwingY_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {
-		Point.rotateAngleY = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks)); 
+		Point.rotateAngleY = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks + delay)); 
 	}
 	
 	protected void SwingZ_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {
-		Point.rotateAngleZ = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks)); 
+		Point.rotateAngleZ = Init + (Flip ? -1 : 1) * (Amplitude * MathHelper.sin(Frequency * Ticks + delay)); 
 	}
 	
     protected float GradientAnimation(float AnimStart, float AnimEnd, float TickIn) {

@@ -16,7 +16,8 @@ public class RenderRaven extends RenderLiving<EntityRaven>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven1.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven2.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven2.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven3.png")
 	};
 	
 	static{

@@ -20,8 +20,6 @@ import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
-import com.Fishmod.mod_LavaCow.worldgen.WorldGenAquaMob;
-import com.Fishmod.mod_LavaCow.worldgen.WorldGenCemeterySmall;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
 
 import net.minecraft.block.material.Material;
@@ -48,6 +46,7 @@ import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -468,8 +467,22 @@ public class ModEventHandler {
     	}
     	
     	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityFoglet){
-    		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
+    		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
+    			event.getEntity().setFire(8);
+    		}
+    		else if(event.getSource().getTrueSource().getName().equals("Ghost Bomb")) {
+    			event.getEntity().motionX = 0;
+    			event.getEntity().motionZ = 0;
+    			if(event.getEntityLiving().isNonBoss())
+    				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 20, 0));
+    			event.setAmount(event.getAmount() * 0.20F);
+    		}
+    		else if(event.getSource().getTrueSource().getName().equals("Sonic Bomb")) {
+    			if(event.getEntityLiving().isNonBoss())
+    				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20, 2));
+    			event.setAmount(event.getAmount() * 0.33F);
+    		}
     		else
     			event.setAmount(event.getAmount() * 0.15F);
     	}
@@ -499,7 +512,7 @@ public class ModEventHandler {
     	}
     	
     	if(event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
-    		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
+    		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
     	event.setAmount(event.getAmount() * effectlevel);
     	
@@ -656,12 +669,15 @@ public class ModEventHandler {
                 //System.out.println("OAO" + state.toString());
                 if(state.getMaterial() != Material.LEAVES) {
                 	list.add(B);
-                	
                 }
     		}
     		
     		event.getCollisionBoxesList().clear();
     		event.getCollisionBoxesList().addAll(list);
+    	}
+    	
+    	if(event.getEntity() instanceof EntityRaven && ((EntityRaven) event.getEntity()).getSkin() == 3 && ((EntityRaven) event.getEntity()).isFlying() && event.getEntity().collidedHorizontally) {
+    		event.getCollisionBoxesList().clear();
     	}
     }
     

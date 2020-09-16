@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
@@ -31,7 +32,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -85,10 +85,9 @@ public class EntityPingu  extends EntityMob{
 	public boolean getCanSpawnHere() {
     	IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
     	
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
-	    			&& iblockstate.canEntitySpawn(this);
-		else return false;
+		return SpawnUtil.isAllowedDimension(this.dimension)
+				&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
+    			&& iblockstate.canEntitySpawn(this);
 	}
     
     public boolean canBreatheUnderwater()
