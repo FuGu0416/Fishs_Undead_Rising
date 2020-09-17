@@ -65,7 +65,7 @@ public class Modconfig {
 	public static int BoneSword_Damage;
 	public static int HaloNecklace_Damage;
 	public static String[] Intestine_lt = new String[0];
-	public static String[] Intestine_blacklist = new String[0];
+	public static String[] Intestine_banlist = new String[0];
 	public static int pScarecrow_PlagueDoctor;
 	public static String[] DreamCatcher_spawn = new String[0];
 	public static boolean Shattered_Ice;
@@ -86,6 +86,7 @@ public class Modconfig {
 	public static int Avaton_Ability_Num;
 	public static int Avaton_Ability_Max;
 	public static int Avaton_Ability_Cooldown;
+	public static boolean Suicidal_Minion;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -272,11 +273,11 @@ public class Modconfig {
 								"minecraft:iron_nugget,0.05",
 								"minecraft:diamond,0.01"},
 				"Customize Items and their drop rates for the Intestine. Ex. \"minecraft:slime_ball,0.4\" or \"mod_lavacow:sharptooth,0.1\"");
-		Intestine_blacklist = config.getStringList("mobs that intestine should not drop from", Configuration.CATEGORY_GENERAL,
+		Intestine_banlist = config.getStringList("mobs that intestine should not drop from", Configuration.CATEGORY_GENERAL,
 				new String[] {	"minecraft:blaze",
-					      			"minecraft:slime",
-					      			"minecraft:skeleton"},
-				"Customize the blacklist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
+					      		"minecraft:slime",
+					      		"minecraft:skeleton"},
+				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
 		
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
 		GoldenHeart_bl = config.getStringList("blacklisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "Blacklist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
@@ -297,7 +298,10 @@ public class Modconfig {
 								"mod_lavacow:vespa,20,1,1",
 								"mod_lavacow:scarecrow,20,1,1",
 								"mod_lavacow:boneworm,20,1,1",
-								"mod_lavacow:pingu,40,4,8"},
+								"mod_lavacow:pingu,40,4,8",
+								"mod_lavacow:undertaker,20,1,1",
+								"mod_lavacow:banshee,20,1,1",
+								"mod_lavacow:avaton,20,1,1"},
 				"Customize the Spawn list for the Dreamcatcher. Ex. \"mod_lavacow:foglet,40,1,2\" or \"mod_lavacow:vespa,20,1,1\"");
 		
 		Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Adding new brewing recipe (existing property will be preserved). [false/true]").getBoolean(true);
@@ -314,6 +318,8 @@ public class Modconfig {
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
 		
 		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
+		
+		Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs die when their summoner dies. [false/true]").getBoolean(true);
 		
 		if (config.hasChanged())
 			config.save();

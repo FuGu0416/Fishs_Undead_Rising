@@ -289,7 +289,7 @@ public class ModelScarecrow extends FishModelBase {
 		        	break;
     	}
     	
-        if(!((EntityScarecrow) entityIn).isAIDisabled()) {
+        if(!((EntityScarecrow) entityIn).isSilent()) {
 	    	
         	switch(((EntityScarecrow) entityIn).getSkin()) {
         		case 0:

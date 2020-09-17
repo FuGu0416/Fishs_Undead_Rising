@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.ai.UnburiedAIBreakDoor;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -61,6 +62,7 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new UnburiedAIBreakDoor(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
