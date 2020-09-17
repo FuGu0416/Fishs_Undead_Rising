@@ -1,6 +1,5 @@
 package com.Fishmod.mod_LavaCow.util;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -154,11 +152,7 @@ public class ModEventHandler {
          * Add bonus loot (Intestine) to various entities.
          **/
     	if (event.getEntityLiving() instanceof EntityLiving && (event.getEntityLiving().width > 1.0F || event.getEntityLiving().height > 1.0F) && event.getEntityLiving().getRNG().nextFloat() < 0.01F * (float)Modconfig.General_Intestine) {
-            EntityEntry ee = EntityRegistry.getEntry(event.getEntityLiving().getClass());
-	    
-	    if (ee != null && !(Arrays.asList(Modconfig.Intestine_blacklist).contains(ee.getRegistryName().toString()))) {
-	        event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
-	    }
+            event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
         }
 
     }
