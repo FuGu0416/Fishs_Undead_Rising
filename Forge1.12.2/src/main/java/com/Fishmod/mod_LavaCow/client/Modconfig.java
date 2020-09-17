@@ -85,6 +85,7 @@ public class Modconfig {
 	public static int Avaton_Ability_Num;
 	public static int Avaton_Ability_Max;
 	public static int Avaton_Ability_Cooldown;
+	public static boolean Suicidal_Minion;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -291,7 +292,11 @@ public class Modconfig {
 								"mod_lavacow:vespa,20,1,1",
 								"mod_lavacow:scarecrow,20,1,1",
 								"mod_lavacow:boneworm,20,1,1",
-								"mod_lavacow:pingu,40,4,8"},
+								"mod_lavacow:pingu,40,4,8",
+								"mod_lavacow:undertaker,20,1,1",
+								"mod_lavacow:banshee,20,1,1",
+								"mod_lavacow:avaton,20,1,1"
+								},
 				"Customize the Spawn list for the Dreamcatcher. Ex. \"mod_lavacow:foglet,40,1,2\" or \"mod_lavacow:vespa,20,1,1\"");
 		
 		Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Adding new brewing recipe (existing property will be preserved). [false/true]").getBoolean(true);
@@ -308,6 +313,8 @@ public class Modconfig {
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
 		
 		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
+		
+		Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs die when their summoner dies. [false/true]").getBoolean(true);
 		
 		if (config.hasChanged())
 			config.save();

@@ -52,6 +52,10 @@ public class EntityScarecrow  extends EntityFishTameable{
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
 	
+	private EntityAIMoveTowardsRestriction move;
+	private EntityAIWatchClosest watch;
+	private EntityAILookIdle look;
+	
 	public EntityScarecrow(World worldIn)
     {
         super(worldIn);
@@ -66,15 +70,17 @@ public class EntityScarecrow  extends EntityFishTameable{
 	
     protected void initEntityAI()
     {
-        super.initEntityAI();
+        this.move = new EntityAIMoveTowardsRestriction(this, 1.0D);
+        this.watch = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
+        this.look = new EntityAILookIdle(this);
+    	
+    	super.initEntityAI();
     	this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, false));
-    	//this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        //this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(5, this.move);
+        this.tasks.addTask(8, this.watch);
+        this.tasks.addTask(8, this.look);
         this.applyEntityAI();
     }
 
@@ -127,21 +133,25 @@ public class EntityScarecrow  extends EntityFishTameable{
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
-        //System.out.println("O_O " + this.getEntityWorld().getBlockState(this.getPosition().down()).toString());	
-    	if (!this.isTamed() && !this.world.isRemote)
+        
+    	if (!this.world.isRemote)
         	{
-				/*if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
-					posY -= 1.0D;*/
     			float f = this.getBrightness();
         		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-        		if (this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube() && this.world.isDaytime() && f > 0.5F && !this.isAIDisabled() && this.world.canSeeSky(blockpos)) {
-        			//this.setFire(8);
-        			//this.motionY += 50.0D;
-        			this.setNoAI(true);
+        		if (this.isSitting() || (!this.isTamed() && this.world.isDaytime() && f > 0.5F && !this.isAIDisabled() && this.world.canSeeSky(blockpos))) {
+        	        this.tasks.removeTask(this.move);
+        	        this.tasks.removeTask(this.watch);
+        	        this.tasks.removeTask(this.look);
+        	        if(this.isTamed())
+        	        	this.tasks.removeTask(this.wander);
         			this.setSilent(true);
         		}
-        		else if ((f <= 0.5F || !this.world.canSeeSky(blockpos) || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube()) && this.isAIDisabled()) {
-        			this.setNoAI(false);
+        		else if ((this.isTamed() && !this.isSitting()) || f <= 0.5F || !this.world.canSeeSky(blockpos)) {
+        	        this.tasks.addTask(5, this.move);
+        	        this.tasks.addTask(8, this.watch);
+        	        this.tasks.addTask(8, this.look);
+        	        if(this.isTamed())
+        	        	this.tasks.addTask(7, this.wander);
         			this.setSilent(false);
         		}
         	}
@@ -173,18 +183,11 @@ public class EntityScarecrow  extends EntityFishTameable{
                     }
                 }
         	}
-        		
-        
-            
+        		            
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
             	this.getAttackTarget().setFire(2 * (int)f);
             }
-            
-            /*if (this.getAttackTarget() instanceof EntityLivingBase)
-            {
-                
-            }*/
         }
     	
         super.onLivingUpdate();

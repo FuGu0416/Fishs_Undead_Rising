@@ -22,7 +22,6 @@ import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,13 +48,13 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
 	@Override
 	protected void initEntityAI()
     {
-        this.tasks.addTask(1, new EntityAISwimming(this));
+        super.initEntityAI();
+		this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(3, new EntityAITempt(this, 1.0D, FishItems.CANEPORK, false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));    
         this.tasks.addTask(5, new EntityAIDestroyCrops(this, 1.1D));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
