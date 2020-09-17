@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.util;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -155,9 +156,9 @@ public class ModEventHandler {
     	if (event.getEntityLiving() instanceof EntityLiving && (event.getEntityLiving().width > 1.0F || event.getEntityLiving().height > 1.0F) && event.getEntityLiving().getRNG().nextFloat() < 0.01F * (float)Modconfig.General_Intestine) {
             EntityEntry ee = EntityRegistry.getEntry(event.getEntityLiving().getClass());
 
-		    if (ee != null && !(Arrays.asList(Modconfig.Intestine_banlist).contains(ee.getRegistryName().toString()))) {
-		        event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
-		    }
+		        if (ee != null && !(Arrays.asList(Modconfig.Intestine_banlist).contains(ee.getRegistryName().toString()))) {
+		            event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
+		        }
         }
 
     }
