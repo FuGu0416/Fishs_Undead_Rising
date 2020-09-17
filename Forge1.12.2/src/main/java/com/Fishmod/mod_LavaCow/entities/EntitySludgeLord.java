@@ -64,14 +64,12 @@ public class EntitySludgeLord extends EntityMob{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityCow.class, true));
     }
     
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.SludgeLord_Health);
-        //this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.19D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.SludgeLord_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
@@ -330,15 +328,10 @@ public class EntitySludgeLord extends EntityMob{
                 entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entityvex.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
                 entityvex.setOwnerId(EntitySludgeLord.this.getUniqueID());
-                //entityvex.setTamed(true);
                 entityvex.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
                 
                 if(!EntitySludgeLord.this.world.isRemote)
                 	EntitySludgeLord.this.world.spawnEntity(entityvex);
-                
-                //ItemFishCustomWeapon.LavaBurst(EntitySludgeLord.this.world, entityvex.posX, entityvex.posY, entityvex.posZ, 1.0D, EnumParticleTypes.WATER_BUBBLE);
-                //if(EntitySludgeLord.this.getAttackingEntity() != null)
-                	//entityvex.setAttackTarget(EntitySludgeLord.this.getAttackingEntity());
             }
         }
 

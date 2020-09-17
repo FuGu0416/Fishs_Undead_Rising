@@ -17,8 +17,6 @@ public class Modconfig {
 	
 	public static Configuration config = null;
 	
-	//public static final String GENERAL = "general";
-	
 	public static boolean pGlowshroomGen;
 	public static int pSpawnRate_Lavacow;
 	public static int pSpawnRate_Foglet;
@@ -50,8 +48,6 @@ public class Modconfig {
 	public static boolean Parasite_Plague;
 	public static boolean Wendigo_AnimalAttack;
 	public static boolean Fission_ModEntity;
-	//public static boolean Mimic_noGUI;
-	//public static boolean ModBiomes_spawn;
 	public static boolean Parasite_Attach;
 	public static int UndeadSwine_DropHeart;
 	public static int ZombieMushroom_DropSpore;
@@ -142,7 +138,6 @@ public class Modconfig {
 			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
-		//File configFile = event.getSuggestedConfigurationFile();
 		File configFile = new File(Loader.instance().getConfigDir(), "Fishs_Undead_Rising.cfg");
 		configFolder = configFile.getParentFile();
 		config = new Configuration(configFile);
@@ -187,7 +182,6 @@ public class Modconfig {
 		Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
 		
 		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimic [0-10000]", 0, 10000).getInt(20);
-		//Mimic_noGUI = config.get(Configuration.CATEGORY_GENERAL, "mimicrab open GUI with right-click when sneaking", true, "Right-clicking when sneaking will still open Mimic's GUI [false/true]").getBoolean(true);
 		
 		pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
 		SludgeLord_Health = config.get("Sludge Lord", "sludge lord health", 70.0D, "Maximum Sludge Lord health [1-1000]", 1, 1000).getDouble(70.0D);
@@ -258,7 +252,6 @@ public class Modconfig {
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
-		//ModBiomes_spawn = config.get(Configuration.CATEGORY_GENERAL, "spawn mobs at biomes from other mods", false, "Allow Mobs to spawn at biomes from other mods [false/true]").getBoolean(false);
 		General_Intestine = config.get(Configuration.CATEGORY_GENERAL, "entity drop intestine", 4, "Set the drop rate of Intestine [0-100]", 0, 100).getInt(4);
 		Intestine_lt = config.getStringList("loot table for intestine", Configuration.CATEGORY_GENERAL, 
 				new String[] {	"minecraft:slime_ball,0.4",
@@ -331,77 +324,6 @@ public class Modconfig {
 			syncConfigs();
 		}
 	}
-	
-	/*private static void syncConfig(boolean loadFromConfigFile, boolean readFieldsFromConfig) 
-	{
-		if(loadFromConfigFile)
-			config.load();	
-		
-		Property GlowshroomGen = config.get(GENERAL, "glowshroom generation", true);
-		GlowshroomGen.setLanguageKey("config.mod_lavacow.glowshroomgen");
-		GlowshroomGen.setComment("Generate glowshroom in the overworld [false/true|true]");
-		Property SpawnRate_Lavacow = config.get(GENERAL, "lavacow spawn rate", 100);
-		SpawnRate_Lavacow.setLanguageKey("config.mod_lavacow.spawn.lavacow");
-		SpawnRate_Lavacow.setComment("Set the spawn rate of lavacow [0-100]");
-		SpawnRate_Lavacow.setMinValue(0);
-		SpawnRate_Lavacow.setMaxValue(100);
-		Property SpawnRate_Foglet = config.get(GENERAL, "foglet spawn rate", 100);
-		SpawnRate_Foglet.setLanguageKey("config.mod_lavacow.spawn.foglet");
-		SpawnRate_Foglet.setComment("Set the spawn rate of foglet [0-100]");
-		SpawnRate_Foglet.setMinValue(0);
-		SpawnRate_Foglet.setMaxValue(100);
-		Property SpawnRate_Parasite = config.get(GENERAL, "parasite spawn rate", 100);
-		SpawnRate_Parasite.setLanguageKey("config.mod_lavacow.spawn.parasite");
-		SpawnRate_Parasite.setComment("Set the spawn rate of parasite [0-100]");
-		SpawnRate_Parasite.setMinValue(0);
-		SpawnRate_Parasite.setMaxValue(100);
-		Property SpawnRate_UndeadSwine = config.get(GENERAL, "undeadswine spawn rate", 100);
-		SpawnRate_UndeadSwine.setLanguageKey("config.mod_lavacow.spawn.undeadswine");
-		SpawnRate_UndeadSwine.setComment("Set the spawn rate of undead swine [0-100]");
-		SpawnRate_UndeadSwine.setMinValue(0);
-		SpawnRate_UndeadSwine.setMaxValue(100);
-		Property SpawnRate_ZombieMushroom = config.get(GENERAL, "zombiemushroom spawn rate", 100);
-		SpawnRate_ZombieMushroom.setLanguageKey("config.mod_lavacow.spawn.zombiemushroom");
-		SpawnRate_ZombieMushroom.setComment("Set the spawn rate of cordy [0-100]");
-		SpawnRate_ZombieMushroom.setMinValue(0);
-		SpawnRate_ZombieMushroom.setMaxValue(100);
-		Property SpawnRate_ZombieFrozen = config.get(GENERAL, "zombiefrozen spawn rate", 100);
-		SpawnRate_ZombieFrozen.setLanguageKey("config.mod_lavacow.spawn.zombiefrozen");
-		SpawnRate_ZombieFrozen.setComment("Set the spawn rate of refriger [0-100]");
-		SpawnRate_ZombieFrozen.setMinValue(0);
-		SpawnRate_ZombieFrozen.setMaxValue(100);
-		
-		List<String> propertyOrder = new ArrayList<String>();
-		propertyOrder.add(GlowshroomGen.getName());
-		propertyOrder.add(SpawnRate_Lavacow.getName());
-		propertyOrder.add(SpawnRate_Foglet.getName());
-		propertyOrder.add(SpawnRate_Parasite.getName());
-		propertyOrder.add(SpawnRate_UndeadSwine.getName());
-		propertyOrder.add(SpawnRate_ZombieMushroom.getName());
-		propertyOrder.add(SpawnRate_ZombieFrozen.getName());
-		config.setCategoryPropertyOrder(GENERAL, propertyOrder);
-		
-		if(readFieldsFromConfig) {
-			pGlowshroomGen = GlowshroomGen.getBoolean();
-			pSpawnRate_Lavacow = SpawnRate_Lavacow.getInt();
-			pSpawnRate_Foglet = SpawnRate_Foglet.getInt();
-			pSpawnRate_Parasite = SpawnRate_Parasite.getInt();
-			pSpawnRate_UndeadSwine = SpawnRate_UndeadSwine.getInt();
-			pSpawnRate_ZombieMushroom = SpawnRate_ZombieMushroom.getInt();
-			pSpawnRate_ZombieFrozen = SpawnRate_ZombieFrozen.getInt();
-		}
-		
-		GlowshroomGen.set(pGlowshroomGen);
-		SpawnRate_Lavacow.set(pSpawnRate_Lavacow);	
-		SpawnRate_Foglet.set(pSpawnRate_Foglet);
-		SpawnRate_Parasite.set(pSpawnRate_Parasite);
-		SpawnRate_UndeadSwine.set(pSpawnRate_UndeadSwine);
-		SpawnRate_ZombieMushroom.set(pSpawnRate_ZombieMushroom);
-		SpawnRate_ZombieFrozen.set(pSpawnRate_ZombieFrozen);
-		
-		if(config.hasChanged())
-			config.save();
-	}*/
 }
 
 

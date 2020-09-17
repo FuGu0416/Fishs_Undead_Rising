@@ -99,7 +99,6 @@ public class EntityFishTameable extends EntityTameable{
     public boolean getCanSpawnHere() {
     	
     	IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
-    	//System.out.println("OAO " + this.isValidLightLevel() + " " + this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) + " " + iblockstate.canEntitySpawn(this));
     	return this.isValidLightLevel() 
     			&& this.world.getDifficulty() != EnumDifficulty.PEACEFUL
     			&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
@@ -182,7 +181,6 @@ public class EntityFishTameable extends EntityTameable{
 	            	  this.setTamedBy(player);
 	                 this.navigator.clearPath();
 	                 this.setAttackTarget((EntityLivingBase)null);
-	                 //this.aiSit.setSitting(true);
 	                 this.setHealth(this.getMaxHealth());
 	                 this.playTameEffect(true);
 	                 this.world.setEntityState(this, (byte)7);
@@ -206,7 +204,6 @@ public class EntityFishTameable extends EntityTameable{
     @Override
     public void setTamedBy(EntityPlayer player)
     {
-    	//this.doSitCommand(player);
     	this.doFollowCommand(player);
     	super.setTamedBy(player);
     }
@@ -329,7 +326,6 @@ public class EntityFishTameable extends EntityTameable{
         return !this.isTamed();
     }
 	
-    //@SideOnly(Side.CLIENT)
     static enum State
     {
         SITTING,

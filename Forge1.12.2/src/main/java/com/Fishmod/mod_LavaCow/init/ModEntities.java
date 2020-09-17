@@ -56,7 +56,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModEntities {
 	
 	//public static final EnumCreatureType WATER_MONSTER =  net.minecraftforge.common.util.EnumHelper.addCreatureType("water_monster", IMob.class, 12, Material.WATER, false, true);
-	   // instantiate EntityEntry list
+	// instantiate EntityEntry list
 	private static int id = 0;
     public static final Set<EntityEntry> SET_ENTITIES = ImmutableSet.of(
             EntityEntryBuilder.create()
@@ -65,7 +65,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "lavacow")
             .tracker(80, 3, false)
             .egg(0xFF2724, 0xFFDA24)
-            //.spawn(EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Lavacow, 1, 1, BiomeDictionary.getBiomes(BiomeDictionary.Type.DRY))
             .build(),
             
             EntityEntryBuilder.create()
@@ -74,9 +73,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "zombiemushroom")
             .tracker(80, 3, false)
             .egg(0xBCE0AC, 0x83631D)
-            //.egg(0x228B22, 0xB22222)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.WET))
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.RIVER))
             .build(),
             
             EntityEntryBuilder.create()
@@ -85,7 +81,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "parasite")
             .tracker(80, 3, false)
             .egg(0xAAFFEE, 0xBBFFEE)
-            //.spawn(EnumCreatureType.MONSTER, 0, 0, 0, BiomeDictionary.getBiomes(BiomeDictionary.Type.VOID))
             .build(),
             
             EntityEntryBuilder.create()
@@ -94,8 +89,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "foglet")
             .tracker(80, 3, false)
             .egg(0xCBD3B9, 0x41352F)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.SWAMP))
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.RIVER))
             .build(),
             
             EntityEntryBuilder.create()
@@ -104,8 +97,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "zombiefrozen")
             .tracker(80, 3, false)
             .egg(0xAFE0E2, 0x59484F)
-            //.egg(0x87B2C9, 0xC2F4F0)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieFrozen, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD))
             .build(),
             
             EntityEntryBuilder.create()
@@ -114,7 +105,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "undeadswine")
             .tracker(80, 3, false)
             .egg(0x8A9B8A, 0x3E5C5A)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_UndeadSwine, 4, 8, BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST))
             .build(),
             
             EntityEntryBuilder.create()
@@ -349,11 +339,7 @@ public class ModEntities {
                 registry.register(entityEntry);
             }
            
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityZombiePiranha.class, SpawnPlacementType.IN_WATER);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityPiranha.class, SpawnPlacementType.IN_WATER);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityPtera.class, SpawnPlacementType.IN_AIR);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityVespa.class, SpawnPlacementType.IN_AIR);
-            /*if(!Modconfig.ModBiomes_spawn)*/RegisterEntitySpawn();
+            RegisterEntitySpawn();
         }
     }
     
