@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -78,6 +79,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -125,7 +127,6 @@ public class ModEventHandler {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-                //System.out.println("OAOAOAOAOAOAOAOAOAOAOAO456");
         		EntityParasite entityparasite = new EntityParasite(world);
         		if(passenger != null)entityparasite.setSkin(passenger.getSkin());
         		else if(entity instanceof EntityHusk)entityparasite.setSkin(1);
@@ -152,7 +153,11 @@ public class ModEventHandler {
          * Add bonus loot (Intestine) to various entities.
          **/
     	if (event.getEntityLiving() instanceof EntityLiving && (event.getEntityLiving().width > 1.0F || event.getEntityLiving().height > 1.0F) && event.getEntityLiving().getRNG().nextFloat() < 0.01F * (float)Modconfig.General_Intestine) {
-            event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
+            EntityEntry ee = EntityRegistry.getEntry(event.getEntityLiving().getClass());
+
+		    if (ee != null && !(Arrays.asList(Modconfig.Intestine_banlist).contains(ee.getRegistryName().toString()))) {
+		        event.getEntityLiving().dropItem(FishItems.INTESTINE, 1);
+		    }
         }
 
     }
@@ -331,10 +336,7 @@ public class ModEventHandler {
     	World world = event.getWorld();
     	Biome biome = world.getBiomeForCoordsBody(event.getChunkPos().getBlock(0, 0, 0));
     	Random rand = event.getRand();
-    	BlockPos pos = world.getHeight(event.getChunkPos().getBlock(8, 0, 8));
-		//int x = rand.nextInt(16) + 8;
-		//int z = rand.nextInt(16) + 8;
-		
+    	
     	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) && world.provider.isSurfaceWorld() && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
     		gen.generate(Modblocks.GLOWSHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
@@ -407,15 +409,13 @@ public class ModEventHandler {
     		for(ItemStack item: to_be_removed) {
     			event.getDrops().add(new ItemStack(Items.COAL, item.getCount() + new Random().nextInt(2) + event.getFortuneLevel(), 1));
     			event.getDrops().remove(item);
-    		}
-    		//System.out.println("OAOAOAOAOAOAOAOAOAOAOAO");    		
+    		}  		
     	}
     	
     	if(event.getState().getMaterial() == Material.SAND 
     		&& BiomeDictionary.hasType(event.getWorld().getBiome(event.getPos()), BiomeDictionary.Type.DRY) 
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
-    		) {
-    		//System.out.println("OAOAOAOAOAOAOAOAOAOAOAO");    
+    		) {   
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
     		entityparasite.setSkin(1);
             entityparasite.setLocationAndAngles(event.getPos().getX(), event.getPos().getY()+1.0D, event.getPos().getZ(), 0.0F, 0.0F);
@@ -431,9 +431,6 @@ public class ModEventHandler {
     
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
-        /*if(event.getEntityLiving().isBeingRidden() && event.getEntityLiving().getPassengers().get(0) instanceof EntityRaven && event.getSource().equals(DamageSource.FALL)) {
-        	event.setAmount(0.0F);
-        }*/
     	float effectlevel = 1.0F;
 	    boolean Armor_Famine_lvl = false;
 	    if(event.getSource().getTrueSource() != null)
@@ -497,8 +494,6 @@ public class ModEventHandler {
     		for(int i = 0; i < 9 ; i++)
     			if(((EntityPlayer)event.getSource().getTrueSource()).inventory.getStackInSlot(i).getItem().equals(FishItems.HALO_NECKLACE))
 					have_Necklace = true;
-    		//if(((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.HALO_NECKLACE) || ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemOffhand().getItem().equals(FishItems.HALO_NECKLACE))
-    			//have_Necklace = true;
     		
     		if(have_Necklace)
     			event.setAmount(event.getAmount() * ((float)(100 + Modconfig.HaloNecklace_Damage))/100.0F);
@@ -509,18 +504,13 @@ public class ModEventHandler {
     		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
     	event.setAmount(event.getAmount() * effectlevel);
-    	
-    	/*if(event.getEntityLiving() instanceof EntityPlayer)
-    		System.out.println("OAO " + event.getAmount());*/
     }
     
     @SubscribeEvent
     public void onEFall(LivingFallEvent event) {
         if(Modconfig.Raven_Slowfall && event.getEntityLiving().isBeingRidden()) {
-        	//System.out.println("OAO");
         	for(Entity E : event.getEntityLiving().getPassengers()) {
         		if(E instanceof EntityRaven) {
-        			//System.out.println("QAQ");
         			event.setDistance(0.0F);
         			break;
         		}
@@ -549,20 +539,9 @@ public class ModEventHandler {
     public void onEAttack(LivingAttackEvent event) {
     	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.REAPERS_SCYTHE)) {
     		event.getSource().setDamageBypassesArmor();
-    		//System.out.println("OAOAOAOAOAOAOAOAOAOAOAO");
     	}
     }
-    
-    /*private static BlockPos getRandomChunkPosition(World worldIn, int x, int z)
-    {
-        Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
-        int i = x * 16 + worldIn.rand.nextInt(16);
-        int j = z * 16 + worldIn.rand.nextInt(16);
-        int k = MathHelper.roundUp(chunk.getHeight(new BlockPos(i, 0, j)) + 1, 16);
-        int l = worldIn.rand.nextInt(k > 0 ? k : chunk.getTopFilledSegment() + 16 - 1);
-        return new BlockPos(i, l, j);
-    }*/
-    
+        
     @SubscribeEvent
     public void onEWakeup(PlayerWakeUpEvent event) {
 		ItemStack have_DreamCatcher = null;
@@ -578,14 +557,10 @@ public class ModEventHandler {
 		for(int i = 0; i < 9 ; i++)
 			if(player.inventory.getStackInSlot(i).getItem().equals(FishItems.DREAMCATCHER))
 				have_DreamCatcher = player.inventory.getStackInSlot(i);
-		/*if(player.getHeldItemMainhand().getItem().equals(FishItems.DREAMCATCHER))
-			have_DreamCatcher = player.getHeldItemMainhand();
-		else if(player.getHeldItemOffhand().getItem().equals(FishItems.DREAMCATCHER))
-			have_DreamCatcher = player.getHeldItemOffhand();*/
 		
-		if(!world.isRemote && have_DreamCatcher != null/* && new Random().nextFloat() < 0.4F*/) {
+		if(!world.isRemote && have_DreamCatcher != null) {
 			Biome.SpawnListEntry Result = ((Biome.SpawnListEntry)WeightedRandom.getRandomItem(world.rand, LootTableHandler.DREAMCATCHER_LIST));
-			//System.out.println("OxO " + Result.entityClass.getName());
+
 			Entity entityliving = EntityRegistry.getEntry(Result.entityClass).newInstance(world);
 			int min  = Result.minGroupCount;
 			int max  = Result.maxGroupCount;
@@ -593,53 +568,21 @@ public class ModEventHandler {
 			
 			if(entityliving instanceof EntityLiving) {
 				for(int i = 0; i < new Random().nextInt(MathHelper.abs(max-min) + 1) + min; i++) {
-					/*BlockPos blockpos = getRandomChunkPosition(player.getEntityWorld(), player.chunkCoordX, player.chunkCoordZ);
-					int k1 = blockpos.getX();
-					int l1 = blockpos.getY();
-					int i2 = blockpos.getZ();*/
 					
 					double k1 = player.posX + (world.rand.nextDouble() * 32.0D) - 16.0D;
 					double l1 = player.posY + (world.rand.nextDouble() * 4.0D) - 2.0D;
 					double i2 = player.posZ + (world.rand.nextDouble() * 32.0D) - 16.0D;
 					
 					entityliving.setLocationAndAngles(k1, l1, i2, 0.0F, 0.0F);
-					//ItemFishCustomWeapon.LavaBurst(world, k1, l1, i2, 1.0D, EnumParticleTypes.PORTAL);
-					//System.out.println("OAO " + entityliving.getName() + k1 + " " + (l1 + 0.2F) + " " + i2);
-		            /*for (int i1 = 0; i1 < 8; ++i1)
-		            {
-		                int j = world.rand.nextInt(2) * 2 - 1;
-		                int k = world.rand.nextInt(2) * 2 - 1;
-		                double d0 = k1 + 0.5D + 0.25D * (double)j;
-		                double d1 = (double)(l1 + world.rand.nextFloat());
-		                double d2 = i2 + 0.5D + 0.25D * (double)k;
-		                double d3 = (double)(world.rand.nextFloat() * (float)j);
-		                double d4 = ((double)world.rand.nextFloat() - 0.5D) * 0.125D;
-		                double d5 = (double)(world.rand.nextFloat() * (float)k);
-		                world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
-		            }*/
-					if(((EntityLiving)entityliving).isNotColliding()/* && ((EntityLiving)entityliving).getCanSpawnHere()*/) {
+
+					if(((EntityLiving)entityliving).isNotColliding()) {
 						world.spawnEntity(entityliving);
 						has_spawn = true;
 					}
 				}
 				
 				if(has_spawn) {
-					//player.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
 					world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F) * 0.7F);
-					//ItemFishCustomWeapon.LavaBurst(world, player.posX, player.posY, player.posZ, 1.5D, EnumParticleTypes.PORTAL);
-					
-		            /*for (int i = 0; i < 8; ++i)
-		            {
-		                int j = world.rand.nextInt(2) * 2 - 1;
-		                int k = world.rand.nextInt(2) * 2 - 1;
-		                double d0 = player.posX + 0.5D + 0.25D * (double)j;
-		                double d1 = (double)(player.posY + world.rand.nextFloat());
-		                double d2 = player.posZ + 0.5D + 0.25D * (double)k;
-		                double d3 = (double)(world.rand.nextFloat() * (float)j);
-		                double d4 = ((double)world.rand.nextFloat() - 0.5D) * 0.125D;
-		                double d5 = (double)(world.rand.nextFloat() * (float)k);
-		                world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
-		            }*/
 					
 					if(!player.isCreative())
 						have_DreamCatcher.damageItem(20, event.getEntityLiving());
@@ -659,8 +602,7 @@ public class ModEventHandler {
     		for(AxisAlignedBB B : event.getCollisionBoxesList()) {
     			BlockPos pos = new BlockPos((B.maxX + B.minX) * 0.5D, (B.maxY + B.minY) * 0.5D, (B.maxZ + B.minZ) * 0.5D);
     			IBlockState state = world.getBlockState(pos);
-                //Block blo﻿ck = world.getBlockState(pos).getBlock();
-                //System.out.println("OAO" + state.toString());
+
                 if(state.getMaterial() != Material.LEAVES) {
                 	list.add(B);
                 }
@@ -687,12 +629,10 @@ public class ModEventHandler {
 		
     	if((event.getEntityLiving().isPotionActive(ModMobEffects.SOILED) || Armor_Famine_lvl) && event.getItem().getItem() instanceof ItemFood) {
     		event.setCanceled(true);
-    		//System.out.println("OAO");
     	}
     	
     	if(event.getEntityLiving().isPotionActive(ModMobEffects.SOILED)  && event.getItem().getItem() instanceof ItemPotion) {
     		event.setCanceled(true);
-    		//System.out.println("OAO");
     	}
     }
     
