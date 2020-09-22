@@ -134,27 +134,18 @@ public class EntityScarecrow  extends EntityFishTameable{
             --this.attackTimer;
          }
         
-    	if (!this.world.isRemote)
-        	{
-    			float f = this.getBrightness();
-        		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-        		if (this.isSitting() || (!this.isTamed() && this.world.isDaytime() && f > 0.5F && !this.isAIDisabled() && this.world.canSeeSky(blockpos))) {
-        	        this.tasks.removeTask(this.move);
-        	        this.tasks.removeTask(this.watch);
-        	        this.tasks.removeTask(this.look);
-        	        if(this.isTamed())
-        	        	this.tasks.removeTask(this.wander);
-        			this.setSilent(true);
-        		}
-        		else if ((this.isTamed() && !this.isSitting()) || f <= 0.5F || !this.world.canSeeSky(blockpos)) {
-        	        this.tasks.addTask(5, this.move);
-        	        this.tasks.addTask(8, this.watch);
-        	        this.tasks.addTask(8, this.look);
-        	        if(this.isTamed())
-        	        	this.tasks.addTask(7, this.wander);
-        			this.setSilent(false);
-        		}
-        	}
+    	if (!this.world.isRemote && !this.isTamed()) {
+			float f = this.getBrightness();
+    		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(blockpos)) {
+    			if(this.state != EntityFishTameable.State.SITTING)
+    				this.doSitCommand(null);
+    		}
+    		else if (this.state != EntityFishTameable.State.WANDERING) {
+    			this.doFollowCommand(null);
+    			this.doWanderCommand(null);
+    		}
+    	}
     	
         if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
         	float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
@@ -219,9 +210,22 @@ public class EntityScarecrow  extends EntityFishTameable{
         return flag;*/
     }
     
+    @Override
+    protected void doSitCommand(EntityPlayer playerIn) {
+        this.tasks.removeTask(this.move);
+        this.tasks.removeTask(this.watch);
+        this.tasks.removeTask(this.look);
+        this.setSilent(true);
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
     protected void doFollowCommand(EntityPlayer playerIn) {
-    	super.doFollowCommand(playerIn);
-    	
+        this.tasks.addTask(5, this.move);
+        this.tasks.addTask(8, this.watch);
+        this.tasks.addTask(8, this.look);
+		this.setSilent(false);
+        super.doFollowCommand(playerIn);
     }
     
     /**

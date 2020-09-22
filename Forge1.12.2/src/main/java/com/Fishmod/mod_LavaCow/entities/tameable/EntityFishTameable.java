@@ -125,7 +125,8 @@ public class EntityFishTameable extends EntityTameable{
         this.navigator.clearPath();
 		this.state = EntityFishTameable.State.SITTING;		
 		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 | 1)));
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
     }
     
     protected void doFollowCommand(EntityPlayer playerIn) {
@@ -136,7 +137,8 @@ public class EntityFishTameable extends EntityTameable{
 		this.navigator.clearPath();
 		this.state = EntityFishTameable.State.FOLLOWING;
 		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
     }
     
     protected void doWanderCommand(EntityPlayer playerIn) {
@@ -148,7 +150,8 @@ public class EntityFishTameable extends EntityTameable{
 		this.navigator.clearPath();
 		this.state = EntityFishTameable.State.WANDERING;
 		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
     }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
