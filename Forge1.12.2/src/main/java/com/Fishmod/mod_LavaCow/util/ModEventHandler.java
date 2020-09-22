@@ -217,7 +217,7 @@ public class ModEventHandler {
     		event.setMaterialCost(1);
     		//return;
     	}
-    	else if(ench.getItem() == FishItems.POISONSPORE)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.POISONSPORE)
     	{
     		ench_lvl = 3;
     		event.setOutput(outputStack);
@@ -234,7 +234,7 @@ public class ModEventHandler {
 			}
     		event.setMaterialCost(1);
     	}
-    	else if(ench.getItem() == FishItems.UNDYINGHEART)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.UNDYINGHEART)
     	{
     		ench_lvl = 3;
     		event.setOutput(outputStack);
@@ -251,7 +251,7 @@ public class ModEventHandler {
 			}
     		event.setMaterialCost(1);
     	}
-    	else if(ench.getItem() == FishItems.ACIDICHEART)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.ACIDICHEART)
     	{
     		ench_lvl = 1;
     		event.setOutput(outputStack);

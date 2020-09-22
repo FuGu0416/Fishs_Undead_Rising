@@ -83,6 +83,7 @@ public class Modconfig {
 	public static int Avaton_Ability_Max;
 	public static int Avaton_Ability_Cooldown;
 	public static boolean Suicidal_Minion;
+	public static int DreamCatcher_dur;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -273,7 +274,7 @@ public class Modconfig {
 				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
 		
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
-		GoldenHeart_bl = config.getStringList("blacklisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "Blacklist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
+		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
 		
 		FlyingHeight_limit = config.get(Configuration.CATEGORY_GENERAL, "flying height limit", 16, "Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
@@ -296,6 +297,7 @@ public class Modconfig {
 								"mod_lavacow:banshee,20,1,1",
 								"mod_lavacow:avaton,20,1,1"},
 				"Customize the Spawn list for the Dreamcatcher. Ex. \"mod_lavacow:foglet,40,1,2\" or \"mod_lavacow:vespa,20,1,1\"");
+		DreamCatcher_dur = config.get(Configuration.CATEGORY_GENERAL, "dreamcatcher duribility", 80, "Set the duribility of Dreamcatcher, 0 = Infinite [0-10000]", 0, 10000).getInt(80);
 		
 		Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Adding new brewing recipe (existing property will be preserved). [false/true]").getBoolean(true);
 		Enchantment_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable enchantment", true, "Adding new enchantment (existing property will be preserved). [false/true]").getBoolean(true);

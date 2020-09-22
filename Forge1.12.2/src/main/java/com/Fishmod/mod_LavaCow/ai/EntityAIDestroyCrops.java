@@ -14,11 +14,13 @@ public class EntityAIDestroyCrops extends EntityAIMoveToBlock {
 
 	protected final EntityCreature entity;
 	public int destroyTicks;
+	private boolean isHarvest;
 	
-	public EntityAIDestroyCrops(EntityCreature creature, double speedIn) {
+	public EntityAIDestroyCrops(EntityCreature creature, double speedIn, boolean isHarvestIn) {
 		super(creature, speedIn, 16);
 		this.entity = creature;
 		this.destroyTicks = 0;
+		this.isHarvest = isHarvestIn;
 	}
 	
     /**
@@ -47,8 +49,15 @@ public class EntityAIDestroyCrops extends EntityAIMoveToBlock {
             
             this.destroyTicks++;
             
-            if (this.destroyTicks > 60)
+            if (this.destroyTicks > 60) {
+            	Block block = world.getBlockState(blockpos).getBlock();
+            	
             	world.destroyBlock(blockpos, true);
+            	if(this.isHarvest) {
+            		world.setBlockState(blockpos, block.getDefaultState(), 3);
+            		world.sendBlockBreakProgress(entity.getEntityId(), blockpos, 0);
+            	}
+            }
             else if (this.destroyTicks % 10 == 0)
             	world.sendBlockBreakProgress(entity.getEntityId(), blockpos, this.destroyTicks / 10);	
         }
@@ -64,7 +73,7 @@ public class EntityAIDestroyCrops extends EntityAIMoveToBlock {
             IBlockState iblockstate = worldIn.getBlockState(pos);
             block = iblockstate.getBlock();
 
-            if (block instanceof BlockCrops)
+            if (block instanceof BlockCrops && (!this.isHarvest || ((BlockCrops)block).isMaxAge(iblockstate)))
             {
                 return true;
             }

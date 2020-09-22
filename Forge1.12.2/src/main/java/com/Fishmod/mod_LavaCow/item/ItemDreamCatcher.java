@@ -27,7 +27,7 @@ public class ItemDreamCatcher extends ItemPoisonSpore implements baubles.api.IBa
 	public ItemDreamCatcher(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);
 		this.setMaxStackSize(1);
-		this.setMaxDamage(80);
+		this.setMaxDamage(Modconfig.DreamCatcher_dur);
 	}
 	
 	@Override

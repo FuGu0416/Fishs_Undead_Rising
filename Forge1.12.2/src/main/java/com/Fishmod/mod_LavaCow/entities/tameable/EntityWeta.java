@@ -38,6 +38,7 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
 
 	private boolean isAggressive = false;
 	private int attackTimer = 0;
+	private EntityAIDestroyCrops DestroyCrops;
 	
 	public EntityWeta(World worldIn) {
 		super(worldIn);
@@ -48,13 +49,15 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
 	@Override
 	protected void initEntityAI()
     {
-        super.initEntityAI();
+		this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, false);
+		
+		super.initEntityAI();
 		this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(3, new EntityAITempt(this, 1.0D, FishItems.CANEPORK, false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));    
-        this.tasks.addTask(5, new EntityAIDestroyCrops(this, 1.1D));
+        this.tasks.addTask(5, this.DestroyCrops);
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
@@ -94,6 +97,25 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
         }
     	
     	super.onLivingUpdate();
+    }
+    
+    @Override
+    protected void doSitCommand(EntityPlayer playerIn) {
+    	this.tasks.removeTask(this.DestroyCrops);
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
+    protected void doWanderCommand(EntityPlayer playerIn) {
+    	this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, true);
+    	this.tasks.addTask(5, this.DestroyCrops);
+    	super.doWanderCommand(playerIn);
+    }
+        
+    @Override
+    protected void setupTamedAI()
+    {
+    	this.tasks.removeTask(this.DestroyCrops);
     }
     
     protected void updateAITasks()
