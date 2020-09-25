@@ -263,6 +263,7 @@ public class Modconfig {
 								"minecraft:melon_seeds,0.1",
 								"minecraft:pumpkin_seeds,0.1",
 								"minecraft:clay_ball,0.1",
+								"mod_lavacow:chitin,0.1",
 								"minecraft:gold_nugget,0.05",
 								"minecraft:iron_nugget,0.05",
 								"minecraft:diamond,0.01"},
