@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -44,7 +45,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -127,6 +127,7 @@ public class EntityMimic extends EntityFishTameable{
         
     }
     
+    @Override
     public boolean getCanSpawnHere() {
     	
     	boolean is_near_chest = false;
@@ -140,9 +141,7 @@ public class EntityMimic extends EntityFishTameable{
         
         //if(worldIn.getBlockState(new BlockPos(dx, dy, dz).down()).getBlock() == Blocks.COBBLESTONE)is_near_chest = true;
         
-        return this.dimension == DimensionType.OVERWORLD.getId() 
-        		&& is_near_chest 
-        		&& super.getCanSpawnHere();
+        return SpawnUtil.isAllowedDimension(this.dimension) && is_near_chest && super.getCanSpawnHere();
      }
     
     /**

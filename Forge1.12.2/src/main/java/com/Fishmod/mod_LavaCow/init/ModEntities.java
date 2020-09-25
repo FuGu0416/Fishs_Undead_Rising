@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
@@ -23,9 +24,11 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
@@ -33,6 +36,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.EntityLiving;
@@ -52,7 +56,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModEntities {
 	
 	//public static final EnumCreatureType WATER_MONSTER =  net.minecraftforge.common.util.EnumHelper.addCreatureType("water_monster", IMob.class, 12, Material.WATER, false, true);
-	   // instantiate EntityEntry list
+	// instantiate EntityEntry list
 	private static int id = 0;
     public static final Set<EntityEntry> SET_ENTITIES = ImmutableSet.of(
             EntityEntryBuilder.create()
@@ -61,7 +65,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "lavacow")
             .tracker(80, 3, false)
             .egg(0xFF2724, 0xFFDA24)
-            //.spawn(EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Lavacow, 1, 1, BiomeDictionary.getBiomes(BiomeDictionary.Type.DRY))
             .build(),
             
             EntityEntryBuilder.create()
@@ -70,9 +73,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "zombiemushroom")
             .tracker(80, 3, false)
             .egg(0xBCE0AC, 0x83631D)
-            //.egg(0x228B22, 0xB22222)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.WET))
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.RIVER))
             .build(),
             
             EntityEntryBuilder.create()
@@ -81,7 +81,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "parasite")
             .tracker(80, 3, false)
             .egg(0xAAFFEE, 0xBBFFEE)
-            //.spawn(EnumCreatureType.MONSTER, 0, 0, 0, BiomeDictionary.getBiomes(BiomeDictionary.Type.VOID))
             .build(),
             
             EntityEntryBuilder.create()
@@ -90,8 +89,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "foglet")
             .tracker(80, 3, false)
             .egg(0xCBD3B9, 0x41352F)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.SWAMP))
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.RIVER))
             .build(),
             
             EntityEntryBuilder.create()
@@ -100,8 +97,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "zombiefrozen")
             .tracker(80, 3, false)
             .egg(0xAFE0E2, 0x59484F)
-            //.egg(0x87B2C9, 0xC2F4F0)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieFrozen, 8, 16, BiomeDictionary.getBiomes(BiomeDictionary.Type.COLD))
             .build(),
             
             EntityEntryBuilder.create()
@@ -110,7 +105,6 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "undeadswine")
             .tracker(80, 3, false)
             .egg(0x8A9B8A, 0x3E5C5A)
-            //.spawn(EnumCreatureType.MONSTER, Modconfig.pSpawnRate_UndeadSwine, 4, 8, BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST))
             .build(),
             
             EntityEntryBuilder.create()
@@ -289,6 +283,36 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "banshee")
             .tracker(80, 3, false)
             .egg(0xA2A78D, 0x34363A)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityWeta.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "weta"), id++)
+            .name(mod_LavaCow.MODID + "." + "weta")
+            .tracker(80, 3, false)
+            .egg(0x845336, 0xEACAA7)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityAvaton.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "avaton"), id++)
+            .name(mod_LavaCow.MODID + "." + "avaton")
+            .tracker(80, 3, false)
+            .egg(0xAAA48E, 0x222829)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityGhostBomb.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "ghostbomb"), id++)
+            .name(mod_LavaCow.MODID + "." + "ghostbomb")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntitySonicBomb.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
+            .name(mod_LavaCow.MODID + "." + "sonicbomb")
+            .tracker(64, 1, true)
             .build()
             );
 
@@ -315,11 +339,7 @@ public class ModEntities {
                 registry.register(entityEntry);
             }
            
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityZombiePiranha.class, SpawnPlacementType.IN_WATER);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityPiranha.class, SpawnPlacementType.IN_WATER);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityPtera.class, SpawnPlacementType.IN_AIR);
-            //EntitySpawnPlacementRegistry.setPlacementType(EntityVespa.class, SpawnPlacementType.IN_AIR);
-            /*if(!Modconfig.ModBiomes_spawn)*/RegisterEntitySpawn();
+            RegisterEntitySpawn();
         }
     }
     
@@ -336,7 +356,6 @@ public class ModEntities {
 		for(Type C : Type.getAll()) {
 			tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 			tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
-			//tweakEntitySpawn(EntityZombiePiranha.class, EnumCreatureType.MONSTER, 100, 8, 16, C);
 		}
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
 		tweakEntitySpawn(EntityRaven.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Raven, 4, 8, BiomeDictionary.Type.SPOOKY);
@@ -349,8 +368,12 @@ public class ModEntities {
 		tweakEntitySpawn(EntityPingu.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Pingu, 4, 8, BiomeDictionary.Type.SNOWY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.DRY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.OCEAN);
-		//tweakEntitySpawn(EntityZombiePiranha.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 8, 16, Type.WET);
-		//tweakEntitySpawn(EntityPiranha.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 8, 16, Type.WET);
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.FOREST);
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, BiomeDictionary.Type.COLD);
+		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

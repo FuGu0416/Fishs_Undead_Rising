@@ -26,9 +26,11 @@ public class TinkersCompat {
 	public static final Material MOLTEN_MEAT = new Material("mod_lavacow.moltenbeef", 0XFF542B);
 	public static final Material VESPA_CARAPACE = new Material("mod_lavacow.vespa_carapace", 0X85E214);
 	public static final Material SCYTHE_CLAW = new Material("mod_lavacow.scythe_claw", 0X625E5E);
+	public static final Material ECTOPLASM = new Material("mod_lavacow.ectoplasm", 0X7AF2FF);
 	
 	public static final AbstractTrait BROODMOTHER = new TraitBroodMother();
 	public static final AbstractTrait FAMINE = new TraitFamine();
+	public static final AbstractTrait UNHOLYTOUCH = new TraitUnholyTouch();
 	
 	public static void register() {
         if (!registered) {
@@ -53,6 +55,7 @@ public class TinkersCompat {
                 new ExtraMaterialStats(150),
                 new BowMaterialStats(0.5f, 0.4F, 3.0F));
         MOLTEN_MEAT.addTrait(TinkerTraits.autosmelt, HEAD);
+        MOLTEN_MEAT.addTrait(TinkerTraits.superheat, HEAD);
         MOLTEN_MEAT.addTrait(TinkerTraits.superheat);
         
 		TinkerMaterials.materials.add(VESPA_CARAPACE);
@@ -67,6 +70,7 @@ public class TinkersCompat {
                 new ExtraMaterialStats(100),
                 new BowMaterialStats(1.0f, 1.2F, 1.0F));
         VESPA_CARAPACE.addTrait(BROODMOTHER, HEAD);
+        VESPA_CARAPACE.addTrait(TinkerTraits.poisonous, HEAD);
         VESPA_CARAPACE.addTrait(TinkerTraits.poisonous);
         
 		TinkerMaterials.materials.add(SCYTHE_CLAW);
@@ -81,7 +85,22 @@ public class TinkersCompat {
                 new ExtraMaterialStats(50),
                 new BowMaterialStats(2.0f, 1.0F, -1.0F));
         SCYTHE_CLAW.addTrait(FAMINE, HEAD);
+        SCYTHE_CLAW.addTrait(TinkerTraits.coldblooded, HEAD);
         SCYTHE_CLAW.addTrait(TinkerTraits.coldblooded);
+        
+		TinkerMaterials.materials.add(ECTOPLASM);
+        TinkerRegistry.integrate(ECTOPLASM).preInit();
+        ECTOPLASM.addItem(FishItems.ECTOPLASM, 1, Material.VALUE_Shard);
+        ECTOPLASM.setRepresentativeItem(FishItems.ECTOPLASM);
+        ECTOPLASM.setCraftable(true);
+        ECTOPLASM.setCastable(false);
+        TinkerRegistry.addMaterialStats(ECTOPLASM,
+                new HeadMaterialStats(1000, 12.0f, 0f, HarvestLevels.STONE),
+                new HandleMaterialStats(1.4F, -50),
+                new ExtraMaterialStats(220),
+                new BowMaterialStats(6.5f, 2.5F, -1.0F));
+        ECTOPLASM.addTrait(UNHOLYTOUCH, HEAD);
+        ECTOPLASM.addTrait(UNHOLYTOUCH);
 	}
 	
     protected static boolean isSmelteryLoaded() {

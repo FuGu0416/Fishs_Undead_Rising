@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.ai.UnburiedAIBreakDoor;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -61,6 +62,7 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new UnburiedAIBreakDoor(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
@@ -76,6 +78,9 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
+    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
+	  	      return !(this.getOwner() instanceof EntityPlayer);
+	   }));
     	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, 0, true, true, (p_210136_0_) -> {
 	  	      return !(this.getOwner() instanceof EntityPlayer);
   	   }));

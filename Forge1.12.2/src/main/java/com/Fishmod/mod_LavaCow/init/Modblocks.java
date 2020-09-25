@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.init;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -25,6 +26,7 @@ import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroom;
 import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroomHuge;
 import com.Fishmod.mod_LavaCow.blocks.BlockPileofSludge;
 import com.Fishmod.mod_LavaCow.blocks.BlockScarecrowHead;
+import com.Fishmod.mod_LavaCow.blocks.BlockTombStone;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead_common;
@@ -44,6 +46,7 @@ public class Modblocks {
 	public static final BlockScarecrowHead SCARECROWHEAD_COMMON = new BlockScarecrowHead(0);
 	public static final BlockScarecrowHead SCARECROWHEAD_STRAW = new BlockScarecrowHead(1);
 	public static final BlockScarecrowHead SCARECROWHEAD_PLAGUE = new BlockScarecrowHead(2);
+	public static final BlockTombStone TOMBSTONE = new BlockTombStone();
 	
 	@ObjectHolder("glowshroom")
     public static final ItemBlock item_block_glowshroom = null;
@@ -65,6 +68,8 @@ public class Modblocks {
 	public static final ItemBlock item_scarecrowhead_straw = null;
 	@ObjectHolder("scarecrowhead_plague")
 	public static final ItemBlock item_scarecrowhead_plague = null;
+	@ObjectHolder("tombstone")
+	public static final ItemBlock tombstone = null;
 	
 	@EventBusSubscriber(modid = mod_LavaCow.MODID)
     public static class RegistrationHandler
@@ -162,7 +167,7 @@ public class Modblocks {
 //                + ": " + parBlock.getRegistryName());
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(parBlock), parMetaData,
-                new ModelResourceLocation(mod_LavaCow.MODID + ":" + parBlock.getUnlocalizedName().substring(5), "inventory"));
+                new ModelResourceLocation(parBlock.getRegistryName(), "inventory"));
     }
 
     /**

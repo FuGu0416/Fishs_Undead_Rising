@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -32,8 +34,8 @@ import net.minecraft.world.World;
 public class EntityFishTameable extends EntityTameable{
 	protected static final DataParameter<Float> DATA_HEALTH = EntityDataManager.createKey(EntityFishTameable.class, DataSerializers.FLOAT);
 	protected EntityFishTameable.State state;
-	private EntityAIWanderAvoidWater wander;
-	private EntityAIFollowOwner follow;
+	protected EntityAIWanderAvoidWater wander;
+	protected EntityAIFollowOwner follow;
 	
 	public EntityFishTameable(World worldIn) {
 		super(worldIn);
@@ -97,7 +99,6 @@ public class EntityFishTameable extends EntityTameable{
     public boolean getCanSpawnHere() {
     	
     	IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
-    	//System.out.println("OAO " + this.isValidLightLevel() + " " + this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) + " " + iblockstate.canEntitySpawn(this));
     	return this.isValidLightLevel() 
     			&& this.world.getDifficulty() != EnumDifficulty.PEACEFUL
     			&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
@@ -109,7 +110,7 @@ public class EntityFishTameable extends EntityTameable{
      */
     protected boolean canDespawn()
     {
-        return !this.isTamed();
+        return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }
     
     protected boolean isCommandItem(Item itemIn) {
@@ -117,28 +118,40 @@ public class EntityFishTameable extends EntityTameable{
     }
     
     protected void doSitCommand(EntityPlayer playerIn) {
+    	byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+    	
     	this.tasks.removeTask(this.wander);
         this.isJumping = false;
         this.navigator.clearPath();
-		this.state = EntityFishTameable.State.SITTING;
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
+		this.state = EntityFishTameable.State.SITTING;		
+		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 | 1)));
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
     }
     
     protected void doFollowCommand(EntityPlayer playerIn) {
+    	byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+    	
 		this.follow = new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
 		this.tasks.addTask(6, this.follow);
 		this.navigator.clearPath();
 		this.state = EntityFishTameable.State.FOLLOWING;
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
+		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
     }
     
     protected void doWanderCommand(EntityPlayer playerIn) {
+    	byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+    	
 		this.tasks.removeTask(this.follow);
 		this.wander = new EntityAIWanderAvoidWater(this, 1.0D, 0.0F);
 		this.tasks.addTask(7, this.wander);
 		this.navigator.clearPath();
 		this.state = EntityFishTameable.State.WANDERING;
-		playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
+		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
+		if(playerIn != null)
+			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
     }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
@@ -171,7 +184,6 @@ public class EntityFishTameable extends EntityTameable{
 	            	  this.setTamedBy(player);
 	                 this.navigator.clearPath();
 	                 this.setAttackTarget((EntityLivingBase)null);
-	                 //this.aiSit.setSitting(true);
 	                 this.setHealth(this.getMaxHealth());
 	                 this.playTameEffect(true);
 	                 this.world.setEntityState(this, (byte)7);
@@ -195,7 +207,6 @@ public class EntityFishTameable extends EntityTameable{
     @Override
     public void setTamedBy(EntityPlayer player)
     {
-    	//this.doSitCommand(player);
     	this.doFollowCommand(player);
     	super.setTamedBy(player);
     }
@@ -210,6 +221,10 @@ public class EntityFishTameable extends EntityTameable{
         if (!this.world.isRemote && !this.isTamed() && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
         {
             this.setDead();
+        }
+        
+        if (!this.world.isRemote && Modconfig.Suicidal_Minion && (this.getOwner() != null && (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
+        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
         }
     }
     
@@ -247,6 +262,16 @@ public class EntityFishTameable extends EntityTameable{
         {
             return null;
         }
+    }
+    
+    @Override
+    /**
+     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+     * the animal type)
+     */
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return false;
     }
 
 	@Override
@@ -304,7 +329,6 @@ public class EntityFishTameable extends EntityTameable{
         return !this.isTamed();
     }
 	
-    //@SideOnly(Side.CLIENT)
     static enum State
     {
         SITTING,

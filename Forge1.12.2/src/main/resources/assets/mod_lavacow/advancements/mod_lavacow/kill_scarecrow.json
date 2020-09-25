@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "mod_lavacow:cursed_fabric"
+            "item": "mod_lavacow:scarecrowhead_common"
         },
         "title": {
             "translate": "advancements.mod_lavacow.kill_scarecrow.title"

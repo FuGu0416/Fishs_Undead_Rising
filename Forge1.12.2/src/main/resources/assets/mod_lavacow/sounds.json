@@ -195,6 +195,13 @@
 		"sounds": ["mod_lavacow:entity/sludgelord/ambient0","mod_lavacow:entity/sludgelord/ambient1"]
 	},
 	
+	"entity.sludgelord.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_sludgelord_attack",
+		"sounds": [{"name": "mod_lavacow:entity/sludgelord/attack","stream": true}]
+	},
+	
 	"entity.sludgelord.hurt":
 	{
 		"category": "entity",
@@ -335,6 +342,13 @@
 		"sounds": [{"name": "mod_lavacow:entity/boneworm/attack","stream": true}]
 	},
 	
+	"entity.boneworm.burrow":
+	{
+		"category": "entity",
+		"subtitle": "entity_boneworm_burrow",
+		"sounds": [{"name": "mod_lavacow:entity/boneworm/burrow","stream": true}]
+	},
+	
 	"entity.boneworm.hurt":
 	{
 		"category": "entity",
@@ -431,5 +445,75 @@
 		"category": "entity",
 		"subtitle": "entity_ghostray_death",
 		"sounds": [{"name": "mod_lavacow:entity/ghostray/death","stream": true}]
+	},
+	
+	"entity.banshee.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/ambient","stream": true}]
+	},
+	
+	"entity.banshee.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_attack",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/attack","stream": true}]
+	},
+	
+	"entity.banshee.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/hurt","stream": true}]
+	},
+	
+	"entity.banshee.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_banshee_death",
+		"sounds": [{"name": "mod_lavacow:entity/banshee/death","stream": true}]
+	},
+	
+	"entity.weta.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_ambient",
+		"sounds": ["mod_lavacow:entity/weta/ambient"]
+	},
+	
+	"entity.weta.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_hurt",
+		"sounds": ["mod_lavacow:entity/weta/hurt"]
+	},
+	
+	"entity.weta.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_weta_death",
+		"sounds": [{"name": "mod_lavacow:entity/weta/death","stream": true}]
+	},
+	
+	"entity.avaton.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_avaton_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/ambient","stream": true}]
+	},
+	
+	"entity.avaton.spell":
+	{
+		"category": "entity",
+		"subtitle": "entity_avaton_spell",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/spell","stream": true}]
+	},
+	
+	"entity.avaton.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_avaton_death",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/death","stream": true}]
 	}
 }

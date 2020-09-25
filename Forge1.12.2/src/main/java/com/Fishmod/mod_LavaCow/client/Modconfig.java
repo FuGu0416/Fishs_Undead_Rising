@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.client;
 import java.io.File;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -15,8 +16,6 @@ public class Modconfig {
 	private File configFolder;
 	
 	public static Configuration config = null;
-	
-	//public static final String GENERAL = "general";
 	
 	public static boolean pGlowshroomGen;
 	public static int pSpawnRate_Lavacow;
@@ -39,6 +38,9 @@ public class Modconfig {
 	public static int pSpawnRate_Pingu;
 	public static int pSpawnRate_Undertaker;
 	public static int pSpawnRate_GhostRay;
+	public static int pSpawnRate_Banshee;
+	public static int pSpawnRate_Weta;
+	public static int pSpawnRate_Avaton;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -46,8 +48,6 @@ public class Modconfig {
 	public static boolean Parasite_Plague;
 	public static boolean Wendigo_AnimalAttack;
 	public static boolean Fission_ModEntity;
-	//public static boolean Mimic_noGUI;
-	//public static boolean ModBiomes_spawn;
 	public static boolean Parasite_Attach;
 	public static int UndeadSwine_DropHeart;
 	public static int ZombieMushroom_DropSpore;
@@ -61,6 +61,7 @@ public class Modconfig {
 	public static int BoneSword_Damage;
 	public static int HaloNecklace_Damage;
 	public static String[] Intestine_lt = new String[0];
+	public static String[] Intestine_banlist = new String[0];
 	public static int pScarecrow_PlagueDoctor;
 	public static String[] DreamCatcher_spawn = new String[0];
 	public static boolean Shattered_Ice;
@@ -77,6 +78,12 @@ public class Modconfig {
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
+	public static int[] Spawn_AllowList = new int[0];
+	public static int Avaton_Ability_Num;
+	public static int Avaton_Ability_Max;
+	public static int Avaton_Ability_Cooldown;
+	public static boolean Suicidal_Minion;
+	public static int DreamCatcher_dur;
 	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
@@ -121,12 +128,17 @@ public class Modconfig {
 	
 	public static double GhostRay_Health;
 	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
+	public static double Banshee_Health;
+	public static double Banshee_Attack;
+	
+	public static double Avaton_Health;
+	public static double Avaton_Attack;
+	
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
 			"Salamander", "Ithaqua", "Mimicrab", "Sludge Lord", "Lil'Sludge", "Raven", "Ptera", "Vespa", "Scarecrow", /*"Vespa Cocoon",*/ "Swarmer",
-			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Glowshroom"};
+			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
-		//File configFile = event.getSuggestedConfigurationFile();
 		File configFile = new File(Loader.instance().getConfigDir(), "Fishs_Undead_Rising.cfg");
 		configFolder = configFile.getParentFile();
 		config = new Configuration(configFile);
@@ -171,7 +183,6 @@ public class Modconfig {
 		Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
 		
 		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimic [0-10000]", 0, 10000).getInt(20);
-		//Mimic_noGUI = config.get(Configuration.CATEGORY_GENERAL, "mimicrab open GUI with right-click when sneaking", true, "Right-clicking when sneaking will still open Mimic's GUI [false/true]").getBoolean(true);
 		
 		pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
 		SludgeLord_Health = config.get("Sludge Lord", "sludge lord health", 70.0D, "Maximum Sludge Lord health [1-1000]", 1, 1000).getDouble(70.0D);
@@ -227,9 +238,21 @@ public class Modconfig {
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
 		
+		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
+		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
+		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
+		
+		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
+		
+		pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
+		Avaton_Health = config.get("Avaton", "avaton health", 30.0D, "Maximum Avaton health [1-1000]", 1, 1000).getDouble(30.0D);
+		Avaton_Attack = config.get("Avaton", "avaton attack", 5.0D, "Avaton strength [1-1000]", 1, 1000).getDouble(5.0D);
+		Avaton_Ability_Num = config.get("Avaton", "avaton summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
+		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
+		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
+		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
-		//ModBiomes_spawn = config.get(Configuration.CATEGORY_GENERAL, "spawn mobs at biomes from other mods", false, "Allow Mobs to spawn at biomes from other mods [false/true]").getBoolean(false);
 		General_Intestine = config.get(Configuration.CATEGORY_GENERAL, "entity drop intestine", 4, "Set the drop rate of Intestine [0-100]", 0, 100).getInt(4);
 		Intestine_lt = config.getStringList("loot table for intestine", Configuration.CATEGORY_GENERAL, 
 				new String[] {	"minecraft:slime_ball,0.4",
@@ -244,9 +267,14 @@ public class Modconfig {
 								"minecraft:iron_nugget,0.05",
 								"minecraft:diamond,0.01"},
 				"Customize Items and their drop rates for the Intestine. Ex. \"minecraft:slime_ball,0.4\" or \"mod_lavacow:sharptooth,0.1\"");
+		Intestine_banlist = config.getStringList("mobs that intestine should not drop from", Configuration.CATEGORY_GENERAL,
+				new String[] {	"minecraft:blaze",
+					      		"minecraft:slime",
+					      		"minecraft:skeleton"},
+				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
 		
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
-		GoldenHeart_bl = config.getStringList("blacklisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "Blacklist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
+		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
 		
 		FlyingHeight_limit = config.get(Configuration.CATEGORY_GENERAL, "flying height limit", 16, "Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
@@ -264,8 +292,12 @@ public class Modconfig {
 								"mod_lavacow:vespa,20,1,1",
 								"mod_lavacow:scarecrow,20,1,1",
 								"mod_lavacow:boneworm,20,1,1",
-								"mod_lavacow:pingu,40,4,8"},
+								"mod_lavacow:pingu,40,4,8",
+								"mod_lavacow:undertaker,20,1,1",
+								"mod_lavacow:banshee,20,1,1",
+								"mod_lavacow:avaton,20,1,1"},
 				"Customize the Spawn list for the Dreamcatcher. Ex. \"mod_lavacow:foglet,40,1,2\" or \"mod_lavacow:vespa,20,1,1\"");
+		DreamCatcher_dur = config.get(Configuration.CATEGORY_GENERAL, "dreamcatcher duribility", 80, "Set the duribility of Dreamcatcher, 0 = Infinite [0-10000]", 0, 10000).getInt(80);
 		
 		Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Adding new brewing recipe (existing property will be preserved). [false/true]").getBoolean(true);
 		Enchantment_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable enchantment", true, "Adding new enchantment (existing property will be preserved). [false/true]").getBoolean(true);
@@ -279,6 +311,11 @@ public class Modconfig {
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);
 		
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
+		
+		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
+		
+		Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs die when their summoner dies. [false/true]").getBoolean(true);
+		
 		if (config.hasChanged())
 			config.save();
 	}
@@ -289,77 +326,6 @@ public class Modconfig {
 			syncConfigs();
 		}
 	}
-	
-	/*private static void syncConfig(boolean loadFromConfigFile, boolean readFieldsFromConfig) 
-	{
-		if(loadFromConfigFile)
-			config.load();	
-		
-		Property GlowshroomGen = config.get(GENERAL, "glowshroom generation", true);
-		GlowshroomGen.setLanguageKey("config.mod_lavacow.glowshroomgen");
-		GlowshroomGen.setComment("Generate glowshroom in the overworld [false/true|true]");
-		Property SpawnRate_Lavacow = config.get(GENERAL, "lavacow spawn rate", 100);
-		SpawnRate_Lavacow.setLanguageKey("config.mod_lavacow.spawn.lavacow");
-		SpawnRate_Lavacow.setComment("Set the spawn rate of lavacow [0-100]");
-		SpawnRate_Lavacow.setMinValue(0);
-		SpawnRate_Lavacow.setMaxValue(100);
-		Property SpawnRate_Foglet = config.get(GENERAL, "foglet spawn rate", 100);
-		SpawnRate_Foglet.setLanguageKey("config.mod_lavacow.spawn.foglet");
-		SpawnRate_Foglet.setComment("Set the spawn rate of foglet [0-100]");
-		SpawnRate_Foglet.setMinValue(0);
-		SpawnRate_Foglet.setMaxValue(100);
-		Property SpawnRate_Parasite = config.get(GENERAL, "parasite spawn rate", 100);
-		SpawnRate_Parasite.setLanguageKey("config.mod_lavacow.spawn.parasite");
-		SpawnRate_Parasite.setComment("Set the spawn rate of parasite [0-100]");
-		SpawnRate_Parasite.setMinValue(0);
-		SpawnRate_Parasite.setMaxValue(100);
-		Property SpawnRate_UndeadSwine = config.get(GENERAL, "undeadswine spawn rate", 100);
-		SpawnRate_UndeadSwine.setLanguageKey("config.mod_lavacow.spawn.undeadswine");
-		SpawnRate_UndeadSwine.setComment("Set the spawn rate of undead swine [0-100]");
-		SpawnRate_UndeadSwine.setMinValue(0);
-		SpawnRate_UndeadSwine.setMaxValue(100);
-		Property SpawnRate_ZombieMushroom = config.get(GENERAL, "zombiemushroom spawn rate", 100);
-		SpawnRate_ZombieMushroom.setLanguageKey("config.mod_lavacow.spawn.zombiemushroom");
-		SpawnRate_ZombieMushroom.setComment("Set the spawn rate of cordy [0-100]");
-		SpawnRate_ZombieMushroom.setMinValue(0);
-		SpawnRate_ZombieMushroom.setMaxValue(100);
-		Property SpawnRate_ZombieFrozen = config.get(GENERAL, "zombiefrozen spawn rate", 100);
-		SpawnRate_ZombieFrozen.setLanguageKey("config.mod_lavacow.spawn.zombiefrozen");
-		SpawnRate_ZombieFrozen.setComment("Set the spawn rate of refriger [0-100]");
-		SpawnRate_ZombieFrozen.setMinValue(0);
-		SpawnRate_ZombieFrozen.setMaxValue(100);
-		
-		List<String> propertyOrder = new ArrayList<String>();
-		propertyOrder.add(GlowshroomGen.getName());
-		propertyOrder.add(SpawnRate_Lavacow.getName());
-		propertyOrder.add(SpawnRate_Foglet.getName());
-		propertyOrder.add(SpawnRate_Parasite.getName());
-		propertyOrder.add(SpawnRate_UndeadSwine.getName());
-		propertyOrder.add(SpawnRate_ZombieMushroom.getName());
-		propertyOrder.add(SpawnRate_ZombieFrozen.getName());
-		config.setCategoryPropertyOrder(GENERAL, propertyOrder);
-		
-		if(readFieldsFromConfig) {
-			pGlowshroomGen = GlowshroomGen.getBoolean();
-			pSpawnRate_Lavacow = SpawnRate_Lavacow.getInt();
-			pSpawnRate_Foglet = SpawnRate_Foglet.getInt();
-			pSpawnRate_Parasite = SpawnRate_Parasite.getInt();
-			pSpawnRate_UndeadSwine = SpawnRate_UndeadSwine.getInt();
-			pSpawnRate_ZombieMushroom = SpawnRate_ZombieMushroom.getInt();
-			pSpawnRate_ZombieFrozen = SpawnRate_ZombieFrozen.getInt();
-		}
-		
-		GlowshroomGen.set(pGlowshroomGen);
-		SpawnRate_Lavacow.set(pSpawnRate_Lavacow);	
-		SpawnRate_Foglet.set(pSpawnRate_Foglet);
-		SpawnRate_Parasite.set(pSpawnRate_Parasite);
-		SpawnRate_UndeadSwine.set(pSpawnRate_UndeadSwine);
-		SpawnRate_ZombieMushroom.set(pSpawnRate_ZombieMushroom);
-		SpawnRate_ZombieFrozen.set(pSpawnRate_ZombieFrozen);
-		
-		if(config.hasChanged())
-			config.save();
-	}*/
 }
 
 

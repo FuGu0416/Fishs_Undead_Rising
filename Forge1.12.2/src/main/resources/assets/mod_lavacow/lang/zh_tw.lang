@@ -12,7 +12,6 @@ item.mod_lavacow.canepork.name=甘蔗豬
 item.mod_lavacow.canerottenmeat.name=甘蔗腐肉
 item.mod_lavacow.fissionpotion.name=分裂生殖藥水
 item.mod_lavacow.hyphae.name=菌絲根
-tile.glowshroom.name=螢光蕈
 item.mod_lavacow.parasite_item.name=屍蛆
 item.mod_lavacow.parasite_item_cooked.name=炙燒蛆
 item.mod_lavacow.piranha.name=食人魚
@@ -44,7 +43,6 @@ item.mod_lavacow.mimic_claw.name=擬箱蟹爪
 item.mod_lavacow.mimic_claw_cooked.name=嫩烤蟹爪
 item.mod_lavacow.silky_sludge.name=絲滑軟泥
 item.mod_lavacow.mossy_stick.name=苔蘚枝節
-tile.pileofsludge.name=軟泥灘
 item.mod_lavacow.sludge_wand.name=『惡疫』
 item.mod_lavacow.burntovipositor.name=燒焦輸卵管
 item.mod_lavacow.war.name=『戰爭』
@@ -74,11 +72,6 @@ item.mod_lavacow.feather_black.name=漆黑之羽
 item.mod_lavacow.shattered_ice.name=碎冰
 item.mod_lavacow.halo_necklace.name=輝映項鏈
 item.mod_lavacow.dreamcatcher.name=捕夢網
-tile.glowshroom_block_cap.name=螢光蕈傘
-tile.glowshroom_block_stem.name=螢光蕈柄
-tile.bloodtooth_shroom.name=血齒蕈
-tile.cordy_shroom.name=蟲草蕈
-tile.veil_shroom.name=幕帷蕈
 item.mod_lavacow.undertaker_shovel.name=夜嘆
 item.mod_lavacow.raven_whistle.name=渡鴉哨
 item.mod_lavacow.acidicheart.name=酸囊之心
@@ -89,15 +82,41 @@ item.mod_lavacow.faminearmor_boots.name=飢荒蹄靴
 item.mod_lavacow.foul_bristle.name=惡臭粗鬃
 item.mod_lavacow.crabcake.name=蟹肉糕
 item.mod_lavacow.ectoplasm.name=靈漿
-tile.scarecrowhead_common.name=稻草人頭
-tile.scarecrowhead_straw.name=稻草人頭
-tile.scarecrowhead_plague.name=稻草人頭
+item.mod_lavacow.ghostjelly.name=鬼靈果凍
+item.mod_lavacow.banshee_vocal_cord.name=女妖聲帶
+item.mod_lavacow.weta_jaw.name=沙螽大顎
+item.mod_lavacow.chitin.name=幾丁質
+item.mod_lavacow.ghostbomb.name=鬼靈炸彈
+item.mod_lavacow.sonicbomb.name=音爆彈
+item.mod_lavacow.weta_hoe.name=沙螽鋤
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
+material.mod_lavacow.scythe_claw.name=鐮刀爪
+material.mod_lavacow.ectoplasm.name=靈漿
 
 modifier.mod_lavacow.broodmother.name=育母蜂
 modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會誕生出巨蜂幼蟲
+modifier.mod_lavacow.famine.name=飢荒
+modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
+modifier.mod_lavacow.unholytouch.name=不潔之觸
+modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=螢光蕈
+tile.mod_lavacow.pileofsludge.name=軟泥灘
+tile.mod_lavacow.glowshroom_block_cap.name=螢光蕈傘
+tile.mod_lavacow.glowshroom_block_stem.name=螢光蕈柄
+tile.mod_lavacow.bloodtooth_shroom.name=血齒蕈
+tile.mod_lavacow.cordy_shroom.name=蟲草蕈
+tile.mod_lavacow.veil_shroom.name=幕帷蕈
+tile.mod_lavacow.scarecrowhead_common.name=稻草人頭
+tile.mod_lavacow.scarecrowhead_straw.name=稻草人頭
+tile.mod_lavacow.scarecrowhead_plague.name=稻草人頭
+tile.mod_lavacow.tombstone.name=墓碑
 
 ############
 # Entities #
@@ -127,6 +146,9 @@ entity.mod_lavacow.pingu.name=冰呪鵝
 entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活屍
 entity.mod_lavacow.ghostray.name=鬼靈鱝
+entity.mod_lavacow.banshee.name=報喪女妖
+entity.mod_lavacow.weta.name=帝沙螽
+entity.mod_lavacow.avaton.name=艾薇妲
 
 ##########
 # Sounds #
@@ -161,6 +183,7 @@ entity_mimic_death=擬箱蟹死亡
 entity_mimic_hurt=擬箱蟹受傷
 
 entity_sludgelord_ambient=古樹軟泥回聲
+entity_sludgelord_attack=古樹軟泥噴吐聲
 entity_sludgelord_death=古樹軟泥死亡
 entity_sludgelord_hurt=古樹軟泥受傷
 
@@ -195,6 +218,7 @@ entity_zombiefrozen_hurt=活屍受傷
 
 entity_boneworm_ambient=蟄髑呼嚕聲
 entity_boneworm_attack=蟄髑噴吐聲
+entity_boneworm_burrow=蟄髑掘土聲
 entity_boneworm_death=蟄髑死亡
 entity_boneworm_hurt=蟄髑受傷
 
@@ -214,13 +238,26 @@ entity_ghostray_ambient=鬼靈鱝歌唱聲
 entity_ghostray_death=鬼靈鱝死亡
 entity_ghostray_hurt=鬼靈鱝受傷
 
+entity_banshee_ambient=報喪女妖低語聲
+entity_banshee_attack=報喪女妖尖叫
+entity_banshee_death=報喪女妖死亡
+entity_banshee_hurt=鬼靈受傷
+
+entity_weta_ambient=沙螽唧唧聲
+entity_weta_death=沙螽死亡
+entity_weta_hurt=沙螽受傷
+
+entity_avaton_ambient=艾薇妲低語聲
+entity_avaton_spell=昆蟲窸窣聲
+entity_avaton_death=艾薇妲死亡
+
 ############
 # Tooltips #
 ############
 
 tootip.mod_lavacow.bonesword=對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)
-tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)
-tootip.mod_lavacow.canepork=食用後獲得再生(0:08)
+tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)，也是炎熔螈的最愛
+tootip.mod_lavacow.canepork=食用後獲得再生(0:08)，也是帝沙螽的最愛
 tootip.mod_lavacow.canerottenmeat=食用後獲得再生(0:08)，也是擬箱蟹的最愛
 tootip.mod_lavacow.netherstew=食用後獲得隨機效果(0:40)
 tootip.mod_lavacow.goldenheart=在裝備時賦予再生並修補(+1/秒)裝備物品
@@ -249,6 +286,10 @@ tootip.mod_lavacow.undertaker_shovel=右鍵點擊以召喚聽命於玩家的活�
 tootip.mod_lavacow.raven_whistle=右鍵點擊綁定渡鴉，並右鍵點擊命令渡鴉前往該地
 tootip.mod_lavacow.faminearmor=套裝(2)：自身處於飢餓狀態時，造成傷害+2
 tootip.mod_lavacow.faminearmor.l2=套裝(4)：不再能進食，但殺死單位時能+4飽食度+1生命
+tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
+tootip.mod_lavacow.ghostbomb=投向目標地點，造成範圍傷害並賦予漂浮(0:01)
+tootip.mod_lavacow.sonicbomb=投向目標地點，造成範圍傷害並賦予虛弱III(0:04)
+tootip.mod_lavacow.weta_hoe=當收穫農作時，同時也能收成 3x3 範圍內的農作物或草.
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
@@ -262,8 +303,11 @@ key.mod_lavacow.special=座騎特殊能力
 ################
 
 enchantment.mod_lavacow.Poisonous=劇毒
+enchantment.mod_lavacow.Poisonous.desc=攻擊時能使目標中毒
 enchantment.mod_lavacow.Lifesteal=生命竊取
+enchantment.mod_lavacow.Lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
 enchantment.mod_lavacow.Corrosive=酸蝕性
+enchantment.mod_lavacow.Corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
 
 ##############
 # MobEffects #
@@ -335,3 +379,11 @@ advancements.mod_lavacow.kill_ptera.title=禿鷲蜥蜴
 advancements.mod_lavacow.kill_ptera.description=殺死一隻翼生獸
 advancements.mod_lavacow.kill_boneworm.title=重生骨蟲子
 advancements.mod_lavacow.kill_boneworm.description=殺死一頭蟄髑
+advancements.mod_lavacow.kill_ghostray.title=魚夜
+advancements.mod_lavacow.kill_ghostray.description=殺死一頭鬼靈鱝
+advancements.mod_lavacow.kill_banshee.title=冷寂
+advancements.mod_lavacow.kill_banshee.description=殺死一頭報喪女妖
+advancements.mod_lavacow.kill_weta.title=蟲穴生還者
+advancements.mod_lavacow.kill_weta.description=殺死一隻帝沙螽
+advancements.mod_lavacow.kill_avaton.title=害蟲控制
+advancements.mod_lavacow.kill_avaton.description=殺死一頭艾薇妲

@@ -44,24 +44,21 @@ public class EntityWarSmallFireball extends EntityEnchantableFireBall {
 	        {
 	            if (result.entityHit != null)
 	            {
-	                if (!result.entityHit.isImmuneToFire())
-	                {
-	                    if(this.shootingEntity instanceof EntitySalamander)this.setDamage((float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	                	boolean flag = result.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), this.getDamage());
-		            	
-	                    if (this.knockbackStrength > 0) {
-		                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		                    if (f1 > 0.0F) {
-		                    	result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
-		                    }
-		                 }
-	                    
-	                    if (flag)
-	                    {
-	                        this.applyEnchantments(this.shootingEntity, result.entityHit);
-	                        result.entityHit.setFire(5 + flame);
+                    if(this.shootingEntity instanceof EntitySalamander)this.setDamage((float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                	boolean flag = result.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), this.getDamage());
+	            	
+                    if (this.knockbackStrength > 0) {
+	                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+	                    if (f1 > 0.0F) {
+	                    	result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
 	                    }
-	                }
+	                 }
+                    
+                    if (flag)
+                    {
+                        this.applyEnchantments(this.shootingEntity, result.entityHit);
+                        result.entityHit.setFire(5 + flame);
+                    }
 	            }
 	            else
 	            {

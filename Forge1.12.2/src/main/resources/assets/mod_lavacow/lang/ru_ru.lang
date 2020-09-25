@@ -9,7 +9,6 @@ item.mod_lavacow.canepork.name=Свинина на палочке
 item.mod_lavacow.canerottenmeat.name=Гнилая плоть на палочке
 item.mod_lavacow.fissionpotion.name=Зелье распада
 item.mod_lavacow.hyphae.name=Корешки
-tile.glowshroom.name=Светящийся гриб
 item.mod_lavacow.parasite_item.name=Паразит
 item.mod_lavacow.parasite_item_cooked.name=Приготовленный паразит
 item.mod_lavacow.piranha.name=Пиранья
@@ -41,7 +40,6 @@ item.mod_lavacow.mimic_claw.name=Клешня краба
 item.mod_lavacow.mimic_claw_cooked.name=Приготовленные клешни краба
 item.mod_lavacow.silky_sludge.name=Отходы
 item.mod_lavacow.mossy_stick.name=Замшелая палка
-tile.pileofsludge.name=Куча отходов
 item.mod_lavacow.sludge_wand.name=Мор
 item.mod_lavacow.burntovipositor.name=Сожженная яйцекладка
 item.mod_lavacow.war.name=Разжигатель пламени
@@ -71,11 +69,6 @@ item.mod_lavacow.feather_black.name=Черное перо
 item.mod_lavacow.shattered_ice.name=Треснутый лед
 item.mod_lavacow.halo_necklace.name=Сияющее ожерелье
 item.mod_lavacow.dreamcatcher.name=Ловец снов
-tile.glowshroom_block_cap.name=Шляпка светящегося гриба
-tile.glowshroom_block_stem.name=Ножка светящегося гриба
-tile.bloodtooth_shroom.name=Кровозуб
-tile.cordy_shroom.name=Кордицепс
-tile.veil_shroom.name=Гриб-покров
 item.mod_lavacow.undertaker_shovel.name=Полночная Скорбь
 item.mod_lavacow.raven_whistle.name=Крик Ворона
 item.mod_lavacow.acidicheart.name=Кислотное Сердце
@@ -94,6 +87,22 @@ modifier.mod_lavacow.broodmother.name=Зов Матриарха
 modifier.mod_lavacow.broodmother.desc=Призывает личинку веспы во время боя или добычи блока.
 modifier.mod_lavacow.famine.name=Клинок вечного голода
 modifier.mod_lavacow.famine.desc=Накладывает эффект голода, но восстанавливает 1 ед. сытости при убийстве существ, не являющихся нежитью.
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=Светящийся гриб
+tile.mod_lavacow.pileofsludge.name=Куча отходов
+tile.mod_lavacow.glowshroom_block_cap.name=Шляпка светящегося гриба
+tile.mod_lavacow.glowshroom_block_stem.name=Ножка светящегося гриба
+tile.mod_lavacow.bloodtooth_shroom.name=Кровозуб
+tile.mod_lavacow.cordy_shroom.name=Кордицепс
+tile.mod_lavacow.veil_shroom.name=Гриб-покров
+tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
+tile.mod_lavacow.tombstone.name=Tombstone
 
 ############
 # Entities #

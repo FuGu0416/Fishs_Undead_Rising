@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -36,7 +37,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -84,13 +84,12 @@ public class EntityUndertaker extends EntityMob{
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.21D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+    	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     /**
@@ -350,7 +349,9 @@ public class EntityUndertaker extends EntityMob{
                 entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
                 entityvex.setOwnerId(EntityUndertaker.this.getUniqueID());
-                EntityUndertaker.this.world.spawnEntity(entityvex);
+                
+                if(!EntityUndertaker.this.world.isRemote)
+                	EntityUndertaker.this.world.spawnEntity(entityvex);
                 
                 if(EntityUndertaker.this.getAttackingEntity() != null)
                 	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());

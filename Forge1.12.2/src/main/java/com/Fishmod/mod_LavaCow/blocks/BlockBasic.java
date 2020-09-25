@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.blocks;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -22,7 +24,7 @@ public class BlockBasic extends Block {
     public static Block setBlockName(Block parBlock, String parBlockName)
     {
         parBlock.setRegistryName(parBlockName);
-        parBlock.setUnlocalizedName(parBlockName);
+        parBlock.setUnlocalizedName(mod_LavaCow.MODID + "." + parBlockName);
         return parBlock;
     }
 }

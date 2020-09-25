@@ -1,7 +1,10 @@
 package com.Fishmod.mod_LavaCow.item;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -35,9 +38,21 @@ public class ItemHolyGrenade extends ItemFishCustom{
 
         if (!worldIn.isRemote)
         {
-        	EntityHolyGrenade entitysnowball = new EntityHolyGrenade(worldIn, playerIn);
-            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
-            worldIn.spawnEntity(entitysnowball);
+        	if(itemstack.getItem().equals(FishItems.HOLY_GRENADE)) {
+	        	EntityHolyGrenade entitysnowball = new EntityHolyGrenade(worldIn, playerIn);
+	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+	            worldIn.spawnEntity(entitysnowball);
+        	}
+        	else if(itemstack.getItem().equals(FishItems.GHOSTBOMB)) {
+	        	EntityGhostBomb entitysnowball = new EntityGhostBomb(worldIn, playerIn);
+	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+	            worldIn.spawnEntity(entitysnowball);
+        	}
+        	else if(itemstack.getItem().equals(FishItems.SONICBOMB)) {
+	        	EntitySonicBomb entitysnowball = new EntitySonicBomb(worldIn, playerIn);
+	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+	            worldIn.spawnEntity(entitysnowball);
+        	}
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));

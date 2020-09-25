@@ -1,0 +1,22 @@
+{
+	"parent": "block/cube_all",    
+	"textures": {
+        "particle": "mod_lavacow:blocks/tombstone/tombstone_side",
+        "front": "mod_lavacow:blocks/tombstone/tombstone",
+        "top": "mod_lavacow:blocks/tombstone/tombstone_side",
+        "side": "mod_lavacow:blocks/tombstone/tombstone_side"
+    },
+    "elements": [
+        {   "from": [ 2, 0, 4 ],
+            "to": [ 14, 16, 12 ],
+            "faces": {
+                "down":  { "uv": [ 2, 0, 14, 8 ], "texture": "#top" },
+                "up":    { "uv": [ 2, 0, 14, 8 ], "texture": "#top", "cullface": "up" },
+                "north": { "uv": [ 2, 0, 14, 16 ], "texture": "#side", "cullface": "north" },
+                "south": { "uv": [ 2, 0, 14, 16 ], "texture": "#front", "cullface": "south" },
+                "west":  { "uv": [ 0, 0, 8, 16 ], "texture": "#side", "cullface": "west" },
+                "east":  { "uv": [ 0, 0, 8, 16 ], "texture": "#side", "cullface": "east" }
+            }
+        }
+    ]
+}

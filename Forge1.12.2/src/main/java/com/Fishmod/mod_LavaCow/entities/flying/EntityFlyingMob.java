@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -47,6 +48,13 @@ public class EntityFlyingMob extends EntityMob {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
+	}
+	
+    @Override
+	public boolean getCanSpawnHere() {
+		return SpawnUtil.isAllowedDimension(this.dimension)
+				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
+				&& super.getCanSpawnHere();
 	}
 	
     /**

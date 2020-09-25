@@ -60,7 +60,8 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemBlock(Modblocks.VEIL_SHROOM), Modblocks.VEIL_SHROOM.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_COMMON), Modblocks.SCARECROWHEAD_COMMON.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_STRAW), Modblocks.SCARECROWHEAD_STRAW.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
+                BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
         );        
     }
     

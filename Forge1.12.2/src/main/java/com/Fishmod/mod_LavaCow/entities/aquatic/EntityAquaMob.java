@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.aquatic;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -38,10 +40,7 @@ public class EntityAquaMob extends EntityMob implements IMob {
 	
     @Override
 	public boolean getCanSpawnHere() {
-		//BlockPos blockpos = new BlockPos(this);
-		//System.out.println("O_O throw" + this.world.getBlockState(blockpos).getBlock().getRegistryName());
-		return true;
-		//return this.world.getBlockState(blockpos).getBlock() == Blocks.WATER;// && this.world.getBlockState(blockpos.up()).getBlock() == Blocks.WATER;
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     /**

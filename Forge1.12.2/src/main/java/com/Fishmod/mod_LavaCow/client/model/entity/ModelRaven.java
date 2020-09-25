@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
@@ -80,7 +81,11 @@ public class ModelRaven extends ModelBase {
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) { 
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {         
+    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableNormalize();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         this.wingLeft.render(scale);
         this.wingRight.render(scale);
         this.legLeft.render(scale);
@@ -88,6 +93,8 @@ public class ModelRaven extends ModelBase {
         this.body.render(scale);
         this.legRight.render(scale);
         this.tail.render(scale);
+        GlStateManager.disableBlend();
+        GlStateManager.disableNormalize();
         
         /*GlStateManager.pushMatrix();
         this.head.postRender(0.0625F);

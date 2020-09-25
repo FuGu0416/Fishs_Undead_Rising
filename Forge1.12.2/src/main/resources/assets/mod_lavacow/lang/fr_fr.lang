@@ -9,7 +9,6 @@ item.mod_lavacow.canepork.name=Porc embroché
 item.mod_lavacow.canerottenmeat.name=Chair embrochée
 item.mod_lavacow.fissionpotion.name=Potion de Fission
 item.mod_lavacow.hyphae.name=Hyphe
-tile.glowshroom.name=Champi-lumière
 item.mod_lavacow.parasite_item.name=Parasite
 item.mod_lavacow.parasite_item_cooked.name=Parasite cuit
 item.mod_lavacow.piranha.name=Piranha cru
@@ -41,7 +40,6 @@ item.mod_lavacow.mimic_claw.name=Pince de mimicrabe
 item.mod_lavacow.mimic_claw_cooked.name=Pince de mimicrabe cuite
 item.mod_lavacow.silky_sludge.name=Boue velouteuse
 item.mod_lavacow.mossy_stick.name=Bâton gluant
-tile.pileofsludge.name=Tas de boue
 item.mod_lavacow.sludge_wand.name="Pestilence"
 item.mod_lavacow.burntovipositor.name=Ovipositeur brûlant
 item.mod_lavacow.war.name="Guerre"
@@ -80,6 +78,22 @@ modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§r\nInvoque une larve de vespa en combat ou lorsque un bloc est brisé.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oCavalier de l'Apocalypse§r\nGives Hunger. Restore un point de faim quand une créature vivante est tuée.      
+
+##########
+# BLOCKS #
+##########    
+
+tile.mod_lavacow.glowshroom.name=Champi-lumière
+tile.mod_lavacow.pileofsludge.name=Tas de boue
+tile.mod_lavacow.glowshroom_block_cap.name=Glow Shroom Cap
+tile.mod_lavacow.glowshroom_block_stem.name=Glow Shroom Stem
+tile.mod_lavacow.bloodtooth_shroom.name=Bloodtooth
+tile.mod_lavacow.cordy_shroom.name=Cordyceps
+tile.mod_lavacow.veil_shroom.name=Veil Shroom
+tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
+tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
+tile.mod_lavacow.tombstone.name=Tombstone
 
 ############
 # Entities #

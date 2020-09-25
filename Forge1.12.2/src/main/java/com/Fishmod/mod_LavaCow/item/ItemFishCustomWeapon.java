@@ -149,7 +149,7 @@ public class ItemFishCustomWeapon extends ItemSword{
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		
-		Biome biome = worldIn.getBiomeForCoordsBody(pos);
+		/*Biome biome = worldIn.getBiomeForCoordsBody(pos);
 		for(SpawnListEntry E: biome.getSpawnableList(EnumCreatureType.MONSTER)) {
 			System.out.println(biome.getBiomeName() + ": " + E.entityClass.getName() + " " + E.itemWeight);
 		}
@@ -158,7 +158,7 @@ public class ItemFishCustomWeapon extends ItemSword{
 		}
 		for(SpawnListEntry E: biome.getSpawnableList(EnumCreatureType.WATER_CREATURE)) {
 			System.out.println(biome.getBiomeName() + ": " + E.entityClass.getName() + " " + E.itemWeight);
-		}
+		}*/
 		/*if(player.getHeldItem(hand).getItem() == FishItems.MOLTENHAMMER)
 		{
 			double radius = 4.0D;

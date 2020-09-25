@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
@@ -25,7 +26,6 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -36,7 +36,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -94,9 +93,7 @@ public class EntityBoneWorm  extends EntityMob{
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
     private boolean isWalking() {
@@ -131,9 +128,11 @@ public class EntityBoneWorm  extends EntityMob{
         if(this.LocationFix > 0 && !this.isImmuneToFire) {
         	this.extinguish();
         	this.isImmuneToFire = true;
+        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
         }
         else if(this.LocationFix <= 0 && this.isImmuneToFire) {
         	this.isImmuneToFire = false;
+        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
         }
         
 		if(this.isWalking() && state.isOpaqueCube()) {
@@ -157,6 +156,7 @@ public class EntityBoneWorm  extends EntityMob{
 			if (this.avoid_cooldown == 0) {
 				this.tasks.addTask(0, this.range_atk);
 				this.tasks.removeTask(this.avoid_player);
+				this.avoid_cooldown = -1;
 			}
 
 			if (this.avoid_cooldown > 0)

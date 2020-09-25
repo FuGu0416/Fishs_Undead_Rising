@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -40,7 +41,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,6 +51,10 @@ public class EntityScarecrow  extends EntityFishTameable{
 	private int attackTimer;
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
+	
+	private EntityAIMoveTowardsRestriction move;
+	private EntityAIWatchClosest watch;
+	private EntityAILookIdle look;
 	
 	public EntityScarecrow(World worldIn)
     {
@@ -66,15 +70,17 @@ public class EntityScarecrow  extends EntityFishTameable{
 	
     protected void initEntityAI()
     {
-        super.initEntityAI();
+        this.move = new EntityAIMoveTowardsRestriction(this, 1.0D);
+        this.watch = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
+        this.look = new EntityAILookIdle(this);
+    	
+    	super.initEntityAI();
     	this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, false));
-    	//this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        //this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(5, this.move);
+        this.tasks.addTask(8, this.watch);
+        this.tasks.addTask(8, this.look);
         this.applyEntityAI();
     }
 
@@ -100,13 +106,12 @@ public class EntityScarecrow  extends EntityFishTameable{
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Scarecrow_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
     @Override
 	public boolean getCanSpawnHere() {
-		if(this.dimension == DimensionType.OVERWORLD.getId())
-			return super.getCanSpawnHere();
-		else return false;
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
     /**
@@ -128,24 +133,19 @@ public class EntityScarecrow  extends EntityFishTameable{
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
-        //System.out.println("O_O " + this.getEntityWorld().getBlockState(this.getPosition().down()).toString());	
-    	if (!this.isTamed() && !this.world.isRemote)
-        	{
-				/*if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
-					posY -= 1.0D;*/
-    			float f = this.getBrightness();
-        		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-        		if (this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube() && this.world.isDaytime() && f > 0.5F && !this.isAIDisabled() && this.world.canSeeSky(blockpos)) {
-        			//this.setFire(8);
-        			//this.motionY += 50.0D;
-        			this.setNoAI(true);
-        			this.setSilent(true);
-        		}
-        		else if ((f <= 0.5F || !this.world.canSeeSky(blockpos) || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube()) && this.isAIDisabled()) {
-        			this.setNoAI(false);
-        			this.setSilent(false);
-        		}
-        	}
+        
+    	if (!this.world.isRemote && !this.isTamed()) {
+			float f = this.getBrightness();
+    		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(blockpos)) {
+    			if(this.state != EntityFishTameable.State.SITTING)
+    				this.doSitCommand(null);
+    		}
+    		else if (this.state != EntityFishTameable.State.WANDERING) {
+    			this.doFollowCommand(null);
+    			this.doWanderCommand(null);
+    		}
+    	}
     	
         if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
         	float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
@@ -174,18 +174,11 @@ public class EntityScarecrow  extends EntityFishTameable{
                     }
                 }
         	}
-        		
-        
-            
+        		            
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
             	this.getAttackTarget().setFire(2 * (int)f);
             }
-            
-            /*if (this.getAttackTarget() instanceof EntityLivingBase)
-            {
-                
-            }*/
         }
     	
         super.onLivingUpdate();
@@ -217,9 +210,22 @@ public class EntityScarecrow  extends EntityFishTameable{
         return flag;*/
     }
     
+    @Override
+    protected void doSitCommand(EntityPlayer playerIn) {
+        this.tasks.removeTask(this.move);
+        this.tasks.removeTask(this.watch);
+        this.tasks.removeTask(this.look);
+        this.setSilent(true);
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
     protected void doFollowCommand(EntityPlayer playerIn) {
-    	super.doFollowCommand(playerIn);
-    	
+        this.tasks.addTask(5, this.move);
+        this.tasks.addTask(8, this.watch);
+        this.tasks.addTask(8, this.look);
+		this.setSilent(false);
+        super.doFollowCommand(playerIn);
     }
     
     /**
