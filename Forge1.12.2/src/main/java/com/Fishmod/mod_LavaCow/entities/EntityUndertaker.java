@@ -16,6 +16,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
@@ -58,8 +59,8 @@ public class EntityUndertaker extends EntityMob{
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingApell());
         this.tasks.addTask(2, new EntityUndertaker.AIUseSpell());
-        //this.tasks.addTask(1, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));  
+        if(!Modconfig.SunScreen_Mode)this.tasks.addTask(4, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -131,16 +132,10 @@ public class EntityUndertaker extends EntityMob{
             --this.spellTicks;
         }
         
-        /*for(ItemStack S: this.getHeldEquipment())
-        {
-        	if(S.getItem() instanceof ItemFood && ((ItemFood)S.getItem()).isWolfsFavoriteMeat() && this.rand.nextInt(128) < S.getCount())S.shrink(1);
-        }*/
-        
   	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
   	   	{
   	   		float f = this.getBrightness();
   	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(40);
-  	   		//if (this.isBurning())this.attackEntityFrom(DamageSource.ON_FIRE , 1.0F);
   	   	}   
   	   	
         if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 4D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
@@ -148,8 +143,6 @@ public class EntityUndertaker extends EntityMob{
         	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
             
             float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            //this.setFog_counter = 100;
-            //this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, this.setFog_counter));
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
             	this.getAttackTarget().setFire(2 * (int)f);

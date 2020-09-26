@@ -51,14 +51,11 @@ public class EntityWendigo extends EntityMob{
 	private int jumpTimer;
 	/** 40: Attack with both hands 41: right hand 42: left hand */
 	public byte AttackStance;
-	//private final NonNullList<ItemStack> inventoryHands = NonNullList.withSize(8, ItemStack.EMPTY);
 	
 	public EntityWendigo(World worldIn)
     {
         super(worldIn);
         this.setSize(1.6F, 2.6F);
-        //this.setCanPickUpLoot(true);
-        //this.getHeldEquipment() = NonNullList.withSize(16, ItemStack.EMPTY);
         this.experienceValue = 20;
     }
 	
@@ -129,22 +126,14 @@ public class EntityWendigo extends EntityMob{
             --this.jumpTimer;
          }
         
-        /*for(ItemStack S: this.getHeldEquipment())
-        {
-        	if(S.getItem() instanceof ItemFood && ((ItemFood)S.getItem()).isWolfsFavoriteMeat() && this.rand.nextInt(128) < S.getCount())S.shrink(1);
-        }*/
-        
   	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
   	   	{
   	   		float f = this.getBrightness();
   	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(40);
-  	   		//if (this.isBurning())this.attackEntityFrom(DamageSource.ON_FIRE , 1.0F);
   	   	}   
   	   	
         if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0) {
-            
-            //System.out.println("S" + this.AttackStance);
-            
+                        
             if(this.AttackStance == (byte)40) {
             	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.5F);
             	if(this.getAttackTarget() instanceof EntityPlayer)
@@ -154,8 +143,6 @@ public class EntityWendigo extends EntityMob{
             	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
             
             float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            //this.setFog_counter = 100;
-            //this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, this.setFog_counter));
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
             	this.getAttackTarget().setFire(2 * (int)f);
@@ -172,32 +159,11 @@ public class EntityWendigo extends EntityMob{
 
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        //boolean flag = super.attackEntityAsMob(entityIn);
-        
         this.attackTimer = 20;
         this.AttackStance = (byte)(40 + this.rand.nextInt(3));
         this.world.setEntityState(this, this.AttackStance);
 
         return true;
-        /*if (flag)
-        {
-            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            //this.setFog_counter = 100;
-            //this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, this.setFog_counter));
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-                entityIn.setFire(2 * (int)f);
-            }
-            
-            if (entityIn instanceof EntityLivingBase)
-            {
-                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-
-                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int)local_difficulty, 4));
-            }
-        }
-
-        return flag;*/
     }
     
     /**
@@ -216,8 +182,6 @@ public class EntityWendigo extends EntityMob{
         	{       		
         		isAggressive = true;
         		this.world.setEntityState(this, (byte)11);
-        		//System.out.println("O_O throw");
-        		//setFog_counter = 166;
         	}
         else 
         	{
@@ -232,7 +196,6 @@ public class EntityWendigo extends EntityMob{
     	return isAggressive;
     }
     
-    //@SideOnly(Side.CLIENT)
     public int getAttackTimer() {
        return this.attackTimer;
     }
@@ -257,12 +220,10 @@ public class EntityWendigo extends EntityMob{
     	{
     		this.attackTimer = 20;
     		this.AttackStance = id;
-    		//System.out.println("C" + this.AttackStance);
     	}
     	if (id == 4) 
     	{
             this.attackTimer = 20;
-            //this.AttackStance = this.getAttackStance();
         }
     	if (id == 11)
         {
@@ -287,7 +248,6 @@ public class EntityWendigo extends EntityMob{
  	   private final float leapMotionY;
 
  	   public AIWendigoLeapAtTarget(EntityLiving leapingEntity, float leapMotionYIn) {
- 		  //super(leapingEntity, leapMotionYIn);
  	      this.leaper = leapingEntity;
  	      this.leapMotionY = leapMotionYIn;
  	      this.setMutexBits(5);
@@ -343,17 +303,12 @@ public class EntityWendigo extends EntityMob{
  	      }
 
  	      this.leaper.motionY = (double)this.leapMotionY;
- 	      
-          /*Explosion explosion = new Explosion(this.leaper.world, this.leaper, this.leaper.posX, this.leaper.posY, this.leaper.posZ, 2.0F, false, false);
-          explosion.doExplosionA();
-          explosion.doExplosionB(true);*/
  	   }  	
  	   
        /**
         * Reset the task's internal state. Called when this task is interrupted by another one
         */
        public void resetTask() {
-    	   //this.cooldown = 0;
        }
     }
 
