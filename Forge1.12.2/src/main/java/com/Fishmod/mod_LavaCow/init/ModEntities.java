@@ -354,7 +354,7 @@ public class ModEntities {
         tweakEntitySpawn(EntitySalamander.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Salamander, 4, 8, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityWendigo.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Wendigo, 1, 1, BiomeDictionary.Type.CONIFEROUS);
 		for(Type C : Type.getAll()) {
-			if(!C.equals(Type.NETHER)) {
+			if(!C.equals(Type.NETHER) || !C.equals(Type.END)) {
 				tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
 				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);
