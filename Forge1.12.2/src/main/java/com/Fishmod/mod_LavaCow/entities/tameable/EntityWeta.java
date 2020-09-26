@@ -115,7 +115,8 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
     @Override
     protected void setupTamedAI()
     {
-    	this.tasks.removeTask(this.DestroyCrops);
+    	if(this.isTamed())
+    		this.tasks.removeTask(this.DestroyCrops);
     }
     
     protected void updateAITasks()
