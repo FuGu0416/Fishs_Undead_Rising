@@ -252,8 +252,13 @@ public class EntityFlyingMob extends EntityMob {
             double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            //System.out.print(getHeight().getY());
-            this.parentEntity.getMoveHelper().setMoveTo(d0, Math.min((double)getHeight().getY() + (this.parentEntity.isWet() ? 3.0D : (double)Modconfig.FlyingHeight_limit), d1), d2, 1.0D);
+            
+            if(this.parentEntity.isWet())
+            	d1 = 3.0D;
+            else if(Modconfig.FlyingHeight_limit != 0 && (double)Modconfig.FlyingHeight_limit < d1)
+            	d1 = (double)Modconfig.FlyingHeight_limit;
+            
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
         }
         
         public BlockPos getHeight() {
