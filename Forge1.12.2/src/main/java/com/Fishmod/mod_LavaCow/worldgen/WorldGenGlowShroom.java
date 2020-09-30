@@ -36,7 +36,7 @@ public class WorldGenGlowShroom extends WorldGenerator{
 	            if (worldIn.isAirBlock(blockpos) && worldIn.getLight(blockpos) < 10 /*&& worldIn.provider.isSurfaceWorld()*/ && blockpos.getY() < 70 && glowshroom.canBlockStay(worldIn, blockpos, glowshroom.getDefaultState()) && rand.nextInt(100) < Modconfig.pSpawnRate_Glowshroom)
 	            {
 	            	//System.out.println("OAO");
-	            	worldIn.setBlockState(blockpos, glowshroom.getDefaultState(), 2);
+	            	worldIn.setBlockState(blockpos, glowshroom.withAge(rand.nextInt(2)), 2);
 	            }
 	        }
 	        

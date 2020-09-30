@@ -153,7 +153,7 @@ public class BlockGlowShroom extends BlockMushroom{
         if(this.isGlowshroom)
         	worldgenerator = new WorldGenLargeGlowShroom(Modblocks.GLOWSHROOM_BLOCK_CAP, Modblocks.GLOWSHROOM_BLOCK_STEM);
         
-        worldgenerator = new WorldGenCemeterySmall();
+        //worldgenerator = new WorldGenCemeterySmall();
 
         if (worldgenerator != null && worldgenerator.generate(worldIn, rand, pos))
         {
