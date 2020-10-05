@@ -28,7 +28,7 @@ public class StructureGenerator implements IWorldGenerator {
     	BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
     	Biome biome = world.getBiomeForCoordsBody(pos);
 		
-    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && world.provider.isSurfaceWorld() && rand.nextInt(Modconfig.SpawnRate_Cemetery) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
+    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && world.provider.isSurfaceWorld() && rand.nextInt(Modconfig.SpawnRate_Cemetery + 1) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
     		CEMETERY_SMALL.generate(world, rand, pos);
     	}
     	
