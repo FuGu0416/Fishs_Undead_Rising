@@ -46,7 +46,7 @@ public class EntityFlyingMob extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new AIFlyingAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
 	}
 	

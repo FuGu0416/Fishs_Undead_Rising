@@ -2,9 +2,9 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.UnburiedAIBreakDoor;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -41,7 +41,7 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
     protected void initEntityAI()
     {
         super.initEntityAI();
-        this.tasks.addTask(1, new UnburiedAIBreakDoor(this));
+        this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
     }
     
     @Override

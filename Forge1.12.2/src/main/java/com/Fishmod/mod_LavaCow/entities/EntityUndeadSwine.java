@@ -206,7 +206,7 @@ public class EntityUndeadSwine extends EntityMob{
             entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
             this.world.spawnEntity(entityRider);
-            entityRider.startRiding(this);
+            entityRider.startRiding(this, true);
         }
 
         return livingdata;

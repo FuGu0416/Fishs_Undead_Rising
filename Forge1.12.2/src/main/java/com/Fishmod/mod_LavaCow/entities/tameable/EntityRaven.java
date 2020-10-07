@@ -5,9 +5,9 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.RavenAITargetItem;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -83,7 +83,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     private float TargetLocationY = -1.0F;
     private float TargetLocationZ = -1.0F;
     
-    private RavenAITargetItem<EntityItem> AITargetItem;
+    private EntityAITargetItem<EntityItem> AITargetItem;
 	
 	public EntityRaven(World worldIn) {
 		super(worldIn);
@@ -111,7 +111,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     
     protected void applyEntityAI()
     {
-    	this.AITargetItem = new RavenAITargetItem<>(this, EntityItem.class, true);
+    	this.AITargetItem = new EntityAITargetItem<>(this, EntityItem.class, true);
     	this.targetTasks.addTask(1, this.AITargetItem);
 	}
     

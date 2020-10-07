@@ -1,4 +1,4 @@
-package com.Fishmod.mod_LavaCow.ai;
+package com.Fishmod.mod_LavaCow.entities.ai;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +15,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class RavenAITargetItem<T extends EntityItem> extends EntityAITarget {
+public class EntityAITargetItem<T extends EntityItem> extends EntityAITarget {
     protected final Class<T> targetClass;
     private final int targetChance;
     /** Instance of EntityAINearestAttackableTargetSorter. */
@@ -23,17 +23,17 @@ public class RavenAITargetItem<T extends EntityItem> extends EntityAITarget {
     protected final Predicate <? super EntityItem > targetEntitySelector;
     protected EntityItem targetEntity;
 
-    public RavenAITargetItem(EntityCreature creature, Class<T> classTarget, boolean checkSight)
+    public EntityAITargetItem(EntityCreature creature, Class<T> classTarget, boolean checkSight)
     {
         this(creature, classTarget, checkSight, false);
     }
 
-    public RavenAITargetItem(EntityCreature creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby)
+    public EntityAITargetItem(EntityCreature creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby)
     {
         this(creature, classTarget, 10, checkSight, onlyNearby, (Predicate<? super EntityItem>)null);
     }
 
-    public RavenAITargetItem(EntityCreature creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate <? super T > targetSelector)
+    public EntityAITargetItem(EntityCreature creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate <? super T > targetSelector)
     {
         super(creature, checkSight, onlyNearby);
         this.targetClass = classTarget;

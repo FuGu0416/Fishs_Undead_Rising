@@ -1,4 +1,4 @@
-package com.Fishmod.mod_LavaCow.ai;
+package com.Fishmod.mod_LavaCow.entities.ai;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;

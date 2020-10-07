@@ -1,9 +1,7 @@
-package com.Fishmod.mod_LavaCow.ai;
+package com.Fishmod.mod_LavaCow.entities.ai;
 
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;

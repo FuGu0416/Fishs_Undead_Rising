@@ -131,7 +131,12 @@ public class ModelPtera extends ModelFlyingBase {
     	this.Head.rotateAngleX = headPitch * 0.017453292F;
     	this.Head.rotateAngleY = netHeadYaw * 0.017453292F;
     	
-    	this.Body_Base.rotationPointY = 5.0F * flap;
+    	if(entityIn.getPassengers().isEmpty()) {
+    		this.Body_Base.rotationPointY = 5.0F * flap;
+    	}
+    	else {
+    		this.Body_Base.rotationPointY = 0.0F;
+    	}
     	
     	this.Jaw.rotateAngleX = 0.3F + 0.15F * flap;
     	

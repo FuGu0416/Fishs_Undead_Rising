@@ -6,9 +6,9 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-import com.Fishmod.mod_LavaCow.ai.UnburiedAIBreakDoor;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
@@ -65,7 +65,7 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
     protected void initEntityAI()
     {
         super.initEntityAI();
-        this.tasks.addTask(1, new UnburiedAIBreakDoor(this));
+        this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
     }
     
     /**

@@ -2,9 +2,9 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.WendigoAITargetItem;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -75,7 +75,7 @@ public class EntityWendigo extends EntityMob{
     protected void applyEntityAI()
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-    	this.targetTasks.addTask(2, new WendigoAITargetItem<>(this, EntityItem.class, true));
+    	this.targetTasks.addTask(2, new EntityAIPickupMeat<>(this, EntityItem.class, true));
     	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     	if(Modconfig.Wendigo_AnimalAttack)this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, false, true, new Predicate<Entity>()
         {
