@@ -60,7 +60,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     {
         super(worldIn);
         this.setSize(0.8F, 3.0F);
-        //this.setCanPickUpLoot(true);
     }
 	
     protected void entityInit() {
@@ -96,7 +95,6 @@ public class EntityScarecrow  extends EntityFishTameable{
                 return true;
             }
         }));
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCow>(this, EntityCow.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -153,13 +151,13 @@ public class EntityScarecrow  extends EntityFishTameable{
         	
         	if(this.AttackStance == (byte)4) {
         		this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-        		if (this.getAttackTarget() instanceof EntityLivingBase)
+        		if (this.getAttackTarget() instanceof EntityLivingBase) {
         			if(this.getSkin() != 2)
         				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
         			else
         				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
         		}
-        			
+        	}		
         	else {
                 for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getAttackTarget().getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
                 {
@@ -186,28 +184,11 @@ public class EntityScarecrow  extends EntityFishTameable{
     
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        //boolean flag = super.attackEntityAsMob(entityIn);
-
         this.attackTimer = 15;
         this.AttackStance = this.rand.nextFloat() < 0.4F ? (byte)5 : (byte)4;
         this.world.setEntityState(this, this.AttackStance);
         
         return true;
-        /*if (flag)
-        {
-            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-                entityIn.setFire(2 * (int)f);
-            }
-            
-            if (entityIn instanceof EntityLivingBase)
-            {
-                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 4 * 20 * (int)f, -2));
-            }
-        }
-
-        return flag;*/
     }
     
     @Override
@@ -244,8 +225,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
         super.setEquipmentBasedOnDifficulty(difficulty);
-
-        //this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.REAPERS_SCYTHE));
     }
     
     /**
@@ -290,7 +269,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     	return isAggressive;
     }
     
-    //@SideOnly(Side.CLIENT)
     public int getAttackTimer() {
        return this.attackTimer;
     }

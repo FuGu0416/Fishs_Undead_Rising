@@ -480,7 +480,7 @@ public class ModEventHandler {
     	}
     	
     	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.BONESWORD))
-    		event.setAmount(event.getAmount() + event.getEntityLiving().getMaxHealth() * Math.min((float)Modconfig.BoneSword_DamageCap, ((float)Modconfig.BoneSword_Damage * 0.01F)));
+    		event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
     	
     	if(event.getSource().getTrueSource() != null 
     			&& event.getSource().getTrueSource() instanceof EntityPlayer
