@@ -17,7 +17,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -76,7 +75,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     	super.initEntityAI();
     	this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, this.move);
         this.tasks.addTask(8, this.watch);
         this.tasks.addTask(8, this.look);
@@ -311,6 +309,27 @@ public class EntityScarecrow  extends EntityFishTameable{
     public float getEyeHeight()
     {
         return 2.6F;
+    }
+    
+    /**
+     * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
+     * use in wolves.
+     */
+    public int getVerticalFaceSpeed()
+    {
+        return this.isSilent() ? 0 : super.getVerticalFaceSpeed();
+    }
+
+    public int getHorizontalFaceSpeed()
+    {
+        return this.isSilent() ? 0 : super.getHorizontalFaceSpeed();
+    }
+	
+    @Override
+    public void travel(float strafe, float vertical, float forward)
+    {
+    	if(!this.isSilent() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube())
+    		super.travel(strafe, vertical, forward);
     }
     
 	@Override
