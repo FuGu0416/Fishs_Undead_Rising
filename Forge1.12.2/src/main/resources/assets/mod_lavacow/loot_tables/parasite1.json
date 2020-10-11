@@ -1,0 +1,86 @@
+{
+  "pools": [
+    {
+      "name": "mod_lavacow:parasite",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:string",
+          "weight": 1,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },          
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:slime_ball",
+          "weight": 1,
+          "functions": [
+          	{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },   
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "mod_lavacow:parasite_item",
+          "weight": 2,
+          "functions": [
+          	{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }, 
+            {
+              "function": "furnace_smelt",
+              "conditions": [
+                {
+                  "condition": "entity_properties",
+                  "entity": "this",
+                  "properties": {
+                    "on_fire": true
+                  }
+                }
+              ]
+            },
+			{
+				"function": "set_data",
+				"data": 1
+            }
+          ]
+        },
+        {
+			"type": "empty",
+			"weight": 6
+        }
+      ]
+    }
+  ]
+}

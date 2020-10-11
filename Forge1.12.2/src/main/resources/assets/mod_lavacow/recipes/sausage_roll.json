@@ -7,7 +7,8 @@
     ],
     "key": {
         "#": {
-            "item": "mod_lavacow:parasite_item"
+            "item": "mod_lavacow:parasite_item",
+	    	"data": 32767
         },
         "X": {
 			"item": "mod_lavacow:intestine"

@@ -330,7 +330,16 @@ public class EntityParasite extends EntitySpider{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.PARASITE;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.PARASITE;
+	        case 1: 
+	            return LootTableHandler.PARASITE1;
+	        case 2: 
+	        	return LootTableHandler.PARASITE2;
+	        default: 
+	            return null; 
+	    } 
     }
     
     static class AIParasiteAttack extends EntityAIAttackMelee

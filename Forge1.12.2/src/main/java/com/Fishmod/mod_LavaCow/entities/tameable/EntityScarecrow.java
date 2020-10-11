@@ -383,7 +383,16 @@ public class EntityScarecrow  extends EntityFishTameable{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return this.getSkin()==0 ? LootTableHandler.SCARECROW : LootTableHandler.SCARECROW1;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.SCARECROW;
+	        case 1: 
+	            return LootTableHandler.SCARECROW1;
+	        case 2: 
+	        	return LootTableHandler.SCARECROW2;
+	        default: 
+	            return null; 
+	    }       
     }
     
     /**
