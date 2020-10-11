@@ -199,9 +199,9 @@ public class EntityParasite extends EntitySpider{
         {
         	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         	
-        	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.PARASITE_ITEM, 1)))
+        	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.PARASITE_ITEM, 1, this.getSkin())))
             {
-                player.dropItem(new ItemStack(FishItems.PARASITE_ITEM, 1), false);
+                player.dropItem(new ItemStack(FishItems.PARASITE_ITEM, 1, this.getSkin()), false);
             }
         	this.setDead();
             return true;
