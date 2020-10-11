@@ -20,7 +20,7 @@ public class ItemCursedBandage extends ItemFishCustom {
 	
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
     {	
-    	if (target instanceof EntityTameable && ((EntityTameable)target).isTamed() && ((EntityTameable)target).getOwner().equals(playerIn) && target.getHealth() < target.getMaxHealth())
+    	if (target instanceof EntityTameable && ((EntityTameable)target).isTamed() && ((EntityTameable)target).getOwner() != null && ((EntityTameable)target).getOwner().equals(playerIn) && target.getHealth() < target.getMaxHealth())
         {
     		target.heal(2.0F);
     		if(!playerIn.isCreative())

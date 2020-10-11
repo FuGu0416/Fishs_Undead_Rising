@@ -18,29 +18,114 @@ public class Modconfig {
 	public static Configuration config = null;
 	
 	public static boolean pGlowshroomGen;
+	
 	public static int pSpawnRate_Lavacow;
+	public static double Lavacow_Health;
+	
 	public static int pSpawnRate_Foglet;
+	public static double Foglet_Health;
+	public static double Foglet_Attack;
+	
 	public static int pSpawnRate_Parasite;
+	public static double Parasite_Health;
+	public static double Parasite_Attack;
+	
 	public static int pSpawnRate_UndeadSwine;
+	public static double UndeadSwine_Health;
+	public static double UndeadSwine_Attack;
+	
 	public static int pSpawnRate_ZombieMushroom;
+	public static double ZombieMushroom_Health;
+	public static double ZombieMushroom_Attack;
+	
 	public static int pSpawnRate_ZombieFrozen;
+	public static double ZombieFrozen_Health;
+	public static double ZombieFrozen_Attack;
+	
 	public static int pSpawnRate_Salamander;
+	public static double Salamander_Health;
+	public static double Salamander_Attack;
+	
 	public static int pSpawnRate_Wendigo;
+	public static double Wendigo_Health;
+	public static double Wendigo_Attack;
+	
 	public static int pSpawnRate_Mimic;
+	public static double Mimic_Health;
+	public static double Mimic_Attack;
+	
 	public static int pSpawnRate_SludgeLord;
+	public static double SludgeLord_Health;
+	public static double SludgeLord_Attack;
+	public static int SludgeLord_Ability_Num;
+	public static int SludgeLord_Ability_Max;
+	public static int SludgeLord_Ability_Cooldown;
+	
 	public static int pSpawnRate_Raven;
+	public static double Raven_Health;
+	public static boolean Raven_Perch;
+	public static boolean Raven_Slowfall;
+	
 	public static int pSpawnRate_Ptera;
+	public static double Ptera_Health;
+	public static double Ptera_Attack;
+	
 	public static int pSpawnRate_Vespa;
+	public static double Vespa_Health;
+	public static double Vespa_Attack;
+	
 	public static int pSpawnRate_Scarecrow;
+	public static double Scarecrow_Health;
+	public static double Scarecrow_Attack;
+	
 	public static int pSpawnRate_ZombiePiranha;
+	public static double ZombiePiranha_Health;
+	public static double ZombiePiranha_Attack;
+	
 	public static int pSpawnRate_Piranha;
+	public static double Piranha_Health;
+	public static double Piranha_Attack;
+	
 	public static int pSpawnRate_BoneWorm;
+	public static double BoneWorm_Health;
+	public static double BoneWorm_Attack;
+	
 	public static int pSpawnRate_Pingu;
+	public static double Pingu_Health;
+	public static double Pingu_Attack;
+	
 	public static int pSpawnRate_Undertaker;
+	public static double Undertaker_Health;
+	public static double Undertaker_Attack;
+	public static int Undertaker_Ability_Num;
+	public static int Undertaker_Ability_Max;
+	public static int Undertaker_Ability_Cooldown;
+	
 	public static int pSpawnRate_GhostRay;
+	public static double GhostRay_Health;
+	
 	public static int pSpawnRate_Banshee;
+	public static double Banshee_Health;
+	public static double Banshee_Attack;
+	
 	public static int pSpawnRate_Weta;
+	public static double Weta_Health;
+	public static double Weta_Attack;
+	
 	public static int pSpawnRate_Avaton;
+	public static double Avaton_Health;
+	public static double Avaton_Attack;
+	public static int Avaton_Ability_Num;
+	public static int Avaton_Ability_Max;
+	public static int Avaton_Ability_Cooldown;
+	
+	public static double LilSludge_Health;
+	public static double LilSludge_Attack;
+	public static int LilSludge_Lifespan;
+	
+	public static double Unburied_Health;
+	public static double Unburied_Attack;
+	public static int Unburied_Lifespan;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -68,75 +153,19 @@ public class Modconfig {
 	public static int SludgeWand_Cooldown;
 	public static int Undertaker_Shovel_Cooldown;
 	public static int BoneWorm_DropHeart;
-	public static int Undertaker_Ability_Num;
-	public static int Undertaker_Ability_Max;
-	public static int Undertaker_Ability_Cooldown;
-	public static int SludgeLord_Ability_Num;
-	public static int SludgeLord_Ability_Max;
-	public static int SludgeLord_Ability_Cooldown;
 	public static boolean Tinkers_Compat;
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
 	public static int[] Spawn_AllowList = new int[0];
-	public static int Avaton_Ability_Num;
-	public static int Avaton_Ability_Max;
-	public static int Avaton_Ability_Cooldown;
 	public static boolean Suicidal_Minion;
-	public static int DreamCatcher_dur;
-	
+	public static int DreamCatcher_dur;	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
-	
-	public static double UndeadSwine_Health;
-	public static double UndeadSwine_Attack;
-
-	public static double Salamander_Health;
-	public static double Salamander_Attack;
-
-	public static double Wendigo_Health;
-	public static double Wendigo_Attack;
-
-	public static double SludgeLord_Health;
-	public static double SludgeLord_Attack;
-
-	public static double Scarecrow_Health;
-	public static double Scarecrow_Attack;
-
-	public static double BoneWorm_Health;
-	public static double BoneWorm_Attack;
-	
-	public static double Undertaker_Health;
-	public static double Undertaker_Attack;
-	
-	public static double LilSludge_Health;
-	public static double LilSludge_Attack;
-	public static int LilSludge_Lifespan;
-	
-	public static double Unburied_Health;
-	public static double Unburied_Attack;
-	public static int Unburied_Lifespan;
-	
-	public static boolean Raven_Perch;
-	public static boolean Raven_Slowfall;
-	
-	public static double Ptera_Health;
-	public static double Ptera_Attack;
-	
-	public static double Vespa_Health;
-	public static double Vespa_Attack;
-	
-	public static double GhostRay_Health;
-	
-	public static double Banshee_Health;
-	public static double Banshee_Attack;
-	
-	public static double Avaton_Health;
-	public static double Avaton_Attack;
-	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Moogma", "Mycosis", "Parasite", "Foglet", "Frigid", "Ghost Ray", "Undead Swine",
-			"Salamander", "Ithaqua", "Mimicrab", "Sludge Lord", "Lil'Sludge", "Raven", "Ptera", "Vespa", "Scarecrow", /*"Vespa Cocoon",*/ "Swarmer",
-			"Piranha", "Osvermis", "Pingu", "Undertaker", "Unburied", "Weta", "Glowshroom"};
+		
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
+			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
+			"Vespa", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
 		File configFile = new File(Loader.instance().getConfigDir(), "Fishs_Undead_Rising.cfg");
@@ -153,12 +182,17 @@ public class Modconfig {
 		pSpawnRate_Glowshroom = config.get("Glowshroom", "glowshroom spawn rate", 20, "Set the spawn rate of Glowshroom [0-100]", 0, 100).getInt(20);
 		pSpreadRate_Glowshroom = config.get("Glowshroom", "glowshroom spread rate", 100, "Set the spread rate of Glowshroom [0-100]", 0, 100).getInt(100);
 		
-		pSpawnRate_Lavacow = config.get("Moogma", "lavacow spawn rate", 0, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(0);
+		pSpawnRate_Lavacow = config.get("Moogma", "moogma spawn rate", 0, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(0);
+		Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
 		
 		pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
+		Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);
+		Foglet_Attack = config.get("Foglet", "foglet attack", 2.0D, "Foglet strength [1-1000]", 1, 1000).getDouble(2.0D);
 		pFoglet_SpawnAlly = config.get("Foglet", "foglet call reinforcement", true, "Should Foglet call reinforcement when attacking [false/true]").getBoolean(true);
 		
 		pSpawnRate_Parasite = config.get("Parasite", "parasite spawn rate", 10, "Set the spawn rate of Parasite [0-100]", 0, 100).getInt(10);
+		Parasite_Health = config.get("Parasite", "parasite health", 6.0D, "Maximum Parasite health [1-1000]", 1, 1000).getDouble(6.0D);
+		Parasite_Attack = config.get("Parasite", "parasite attack", 1.0D, "Parasite strength [1-1000]", 1, 1000).getDouble(1.0D);
 		Parasite_SandSpawn = config.get("Parasite", "parasite from sand blocks", 2, "Rate of spawning Parasite when destroying sand blocks in the desert [0-100]", 0, 100).getInt(2);
 		Parasite_Plague = config.get("Parasite", "parasite attacks everything", false, "Should Parasite attack ALL livings [false/true]").getBoolean(false);
 		Parasite_Attach = config.get("Parasite", "parasite attacks by attaching onto target", true, "Parasite will attack their target by attaching on them [false/true]").getBoolean(true);
@@ -168,10 +202,14 @@ public class Modconfig {
 		UndeadSwine_Health = config.get("Undead Swine", "undeadswine health", 50.0D, "Maximum Undead Swine health [1-1000]", 1, 1000).getDouble(50.0D);
 		UndeadSwine_Attack = config.get("Undead Swine", "undeadswine attack", 4.0D, "Undead Swine strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
-		pSpawnRate_ZombieMushroom = config.get("Ciuperca", "zombiemushroom spawn rate", 40, "Set the spawn rate of Ciuperca [0-10000]", 0, 10000).getInt(40);
-		ZombieMushroom_DropSpore =config.get(Configuration.CATEGORY_GENERAL, "zombiemushroom drop spore", 2, "Set the drop rate of Poisonous Spore [0-100]", 0, 100).getInt(2);
+		pSpawnRate_ZombieMushroom = config.get("Mycosis", "mycosis spawn rate", 40, "Set the spawn rate of Mycosis [0-10000]", 0, 10000).getInt(40);
+		ZombieMushroom_Health = config.get("Mycosis", "mycosis health", 20.0D, "Maximum Mycosis health [1-1000]", 1, 1000).getDouble(20.0D);
+		ZombieMushroom_Attack = config.get("Mycosis", "mycosis attack", 3.0D, "Mycosis strength [1-1000]", 1, 1000).getDouble(3.0D);
+		ZombieMushroom_DropSpore =config.get(Configuration.CATEGORY_GENERAL, "drop poisonous spore", 2, "Set the drop rate of Poisonous Spore [0-100]", 0, 100).getInt(2);
 				
-		pSpawnRate_ZombieFrozen = config.get("Ingheta", "zombiefrozen spawn rate", 20, "Set the spawn rate of Ingheta [0-10000]", 0, 10000).getInt(20);
+		pSpawnRate_ZombieFrozen = config.get("Frigid", "frigid spawn rate", 20, "Set the spawn rate of Frigid [0-10000]", 0, 10000).getInt(20);
+		ZombieFrozen_Health = config.get("Frigid", "frigid health", 20.0D, "Maximum Frigid health [1-1000]", 1, 1000).getDouble(30.0D);
+		ZombieFrozen_Attack = config.get("Frigid", "frigid attack", 3.0D, "Frigid strength [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_Salamander = config.get("Salamander", "salamander spawn rate", 30, "Set the spawn rate of Salamander [0-10000]", 0, 10000).getInt(30);
 		Salamander_Health = config.get("Salamander", "salamander health", 60.0D, "Maximum Salamander health [1-1000]", 1, 1000).getDouble(60.0D);
@@ -182,7 +220,9 @@ public class Modconfig {
 		Wendigo_Health = config.get("Ithaqua", "ithaqua health", 60.0D, "Maximum Ithaqua health [1-1000]", 1, 1000).getDouble(60.0D);
 		Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
 		
-		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimic [0-10000]", 0, 10000).getInt(20);
+		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
+		Mimic_Health = config.get("Mimicrab", "mimicrab health", 10.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(10.0D);
+		Mimic_Attack = config.get("Mimicrab", "mimicrab attack", 8.0D, "Mimicrab strength [1-1000]", 1, 1000).getDouble(8.0D);
 		
 		pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
 		SludgeLord_Health = config.get("Sludge Lord", "sludge lord health", 70.0D, "Maximum Sludge Lord health [1-1000]", 1, 1000).getDouble(70.0D);
@@ -196,6 +236,7 @@ public class Modconfig {
 		LilSludge_Attack = config.get("Lil'Sludge", "lil'sludge attack", 3.0D, "Lil'Sludge strength [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_Raven = config.get("Raven", "raven spawn rate", 8, "Set the spawn rate of Raven [0-10000]", 0, 10000).getInt(8);
+		Raven_Health = config.get("Raven", "raven health", 6.0D, "Maximum Raven health [1-1000]", 1, 1000).getDouble(6.0D);
 		Raven_Perch = config.get("Raven", "raven perching", true, "Should tamed Raven perch on owner's head [false/true]").getBoolean(true);
 		Raven_Slowfall = config.get("Raven", "raven slow down falling", true, "Should perching Raven slow down owner's falling speed [false/true]").getBoolean(true);
 		
@@ -213,16 +254,22 @@ public class Modconfig {
 		pScarecrow_PlagueDoctor = config.get("Scarecrow", "plague doctor scarecrow spawn rate", 30, "Set the spawn rate of Plague Doctor Scarecrow when a Raven was killed. [0-100]", 0, 100).getInt(30);
 		
 		pSpawnRate_ZombiePiranha = config.get("Swarmer", "swarmer spawn rate", 40, "Set the spawn rate of Swarmer [0-100]", 0, 100).getInt(40);
+		ZombiePiranha_Health = config.get("Swarmer", "swarmer health", 8.0D, "Maximum Swarmer health [1-1000]", 1, 1000).getDouble(8.0D);
+		ZombiePiranha_Attack = config.get("Swarmer", "swarmer attack", 1.0D, "Swarmer strength [1-1000]", 1, 1000).getDouble(1.0D);
 		Piranha_AnimalAttack = config.get(Configuration.CATEGORY_GENERAL, "piranha attacks animals", true, "Should Piranha and Swarmer attack innocent animals [false/true]").getBoolean(true);
 		
 		pSpawnRate_Piranha = config.get("Piranha", "piranha spawn rate", 80, "Set the spawn rate of Piranha [0-100]", 0, 100).getInt(80);
+		Piranha_Health = config.get("Piranha", "piranha health", 3.0D, "Maximum Piranha health [1-1000]", 1, 1000).getDouble(3.0D);
+		Piranha_Attack = config.get("Piranha", "piranha attack", 1.0D, "Piranha strength [1-1000]", 1, 1000).getDouble(1.0D);
 		
 		pSpawnRate_BoneWorm = config.get("Osvermis", "boneworm spawn rate", 20, "Set the spawn rate of OsVermis [0-100]", 0, 100).getInt(20);
 		BoneWorm_Health = config.get("Osvermis", "boneworm health", 32.0D, "Maximum OsVermis health [1-1000]", 1, 1000).getDouble(32.0D);
 		BoneWorm_Attack = config.get("Osvermis", "boneworm attack", 6.0D, "OsVermis strength [1-1000]", 1, 1000).getDouble(6.0D);
 		BoneWorm_DropHeart = config.get(Configuration.CATEGORY_GENERAL, "boneworm drop heart", 10, "Set the drop rate of Acidic Heart [0-100]", 0, 100).getInt(10);
 		
-		pSpawnRate_Pingu = config.get("Pingu", "pingu spawn rate", 20, "Set the spawn rate of Penghoul [0-100]", 0, 100).getInt(20);
+		pSpawnRate_Pingu = config.get("Penghoul", "penghoul spawn rate", 20, "Set the spawn rate of Penghoul [0-100]", 0, 100).getInt(20);
+		Pingu_Health = config.get("Penghoul", "penghoul health", 10.0D, "Maximum Penghoul health [1-1000]", 1, 1000).getDouble(10.0D);
+		Pingu_Attack = config.get("Penghoul", "penghoul attack", 3.0D, "Penghoul strength [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_Undertaker = config.get("Undertaker", "undertaker spawn rate", 8, "Set the spawn rate of Undertaker [0-100]", 0, 100).getInt(8);
 		Undertaker_Health = config.get("Undertaker", "undertaker health", 40.0D, "Maximum Undertaker health [1-1000]", 1, 1000).getDouble(40.0D);
@@ -243,6 +290,8 @@ public class Modconfig {
 		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
 		
 		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
+		Weta_Health = config.get("Weta", "weta health", 34.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
+		Weta_Attack = config.get("Weta", "weta attack", 7.0D, "Weta strength [1-1000]", 1, 1000).getDouble(1.0D);
 		
 		pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
 		Avaton_Health = config.get("Avaton", "avaton health", 30.0D, "Maximum Avaton health [1-1000]", 1, 1000).getDouble(30.0D);

@@ -18,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
@@ -66,6 +67,13 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
     {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
+    }
+    
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieMushroom_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieMushroom_Attack);
     }
     
     /**

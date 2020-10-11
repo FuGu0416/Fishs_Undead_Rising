@@ -101,7 +101,6 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        //this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityWendigo.class, 16.0F, 0.8D, 1.6D));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwnerFlying(this, 1.0D, 5.0F, 1.0F));
         this.tasks.addTask(3, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
@@ -119,7 +118,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Raven_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.6D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
     }

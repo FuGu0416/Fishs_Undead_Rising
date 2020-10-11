@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
@@ -69,20 +70,12 @@ public class EntityMimic extends EntityFishTameable{
 	
     protected void initEntityAI()
     {
-    	//this.aiSit = new EntityAISit(this);
     	super.initEntityAI();
     	
     	this.tasks.addTask(1, this.aiSit);
-    	//this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-        //this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        //this.tasks.addTask(3, new EntityAITempt(this, 1.25D, Ingredient.fromItems(FishItems.MOUSSE), false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        //this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        //this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-        //this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        //this.tasks.addTask(8, new EntityAILookIdle(this));
         this.applyEntityAI();
     }
 
@@ -91,12 +84,6 @@ public class EntityMimic extends EntityFishTameable{
     	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
-        /*this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, (p_210130_0_) -> {
-            return this.world.getDifficulty() != EnumDifficulty.PEACEFUL;
-         }));*/
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-        //this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
-        //this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, true));
 	}
     
     protected void entityInit() {
@@ -112,17 +99,15 @@ public class EntityMimic extends EntityFishTameable{
         
         if (this.isTamed()) 
         {
-        	//this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
-        	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health * 3.0D);
         	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack * 0.5D);
         } 
         else
         {
-        	//this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
-        	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health);
         	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
-        	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+        	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack);
         }
         
     }
