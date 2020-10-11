@@ -22,6 +22,7 @@ import com.Fishmod.mod_LavaCow.item.ItemNetherStew;
 import com.Fishmod.mod_LavaCow.item.ItemParasite;
 import com.Fishmod.mod_LavaCow.item.ItemPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.item.ItemPoisonSpore;
+import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
@@ -88,7 +89,7 @@ public class FishItems {
 	public static final Item FELARMOR_CHESTPLATE = new ItemFelArmor("felarmor_chestplate", 2, EntityEquipmentSlot.CHEST, 0.5F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item FELARMOR_LEGGINGS = new ItemFelArmor("felarmor_leggings", 2, EntityEquipmentSlot.LEGS, 0.2F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item FELARMOR_BOOTS = new ItemFelArmor("felarmor_boots", 2, EntityEquipmentSlot.FEET, 0.1F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
-	public static final Item PTERA_WING = new ItemFishCustomFood("ptera_wing", 4, 0.1F, true, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 2), 0.8F).setAlwaysEdible();
+	public static final Item PTERA_WING = new ItemPteraWing("ptera_wing", 4, 0.1F, true, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 2), 0.8F).setAlwaysEdible();
 	public static final Item PTERA_WING_COOKED = new ItemFishCustomFood("ptera_wing_cooked", 8, 0.8F, true, 32, false);
 	public static final Item POISONSTINGER = new ItemFishCustom("poisonstinger", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item VESPA_CARAPACE = new ItemFishCustom("vespa_carapace", null, mod_LavaCow.TAB_ITEMS, false);

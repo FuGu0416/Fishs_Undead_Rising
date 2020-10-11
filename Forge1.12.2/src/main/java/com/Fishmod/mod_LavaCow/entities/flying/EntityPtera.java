@@ -179,7 +179,14 @@ public class EntityPtera extends EntityFlyingMob {
 
 	@Nullable
 	protected ResourceLocation getLootTable() {
-		return LootTableHandler.PTERA;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.PTERA;
+	        case 1: 
+	            return LootTableHandler.PTERA1;
+	        default: 
+	            return null; 
+	    } 
 	}
 
 	/**

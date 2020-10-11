@@ -41,7 +41,11 @@ public class ModelRegistryHandler {
     private static void registerModel(Item item) {
     	if(item.equals(FishItems.PARASITE_ITEM)) {
     		for(Integer i = 0; i < 3 ; i++)
-    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(FishItems.PARASITE_ITEM.getRegistryName() + i.toString()));  
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
+    	}
+    	else if(item.equals(FishItems.PTERA_WING)) {
+    		for(Integer i = 0; i < 2 ; i++)
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
     	}
     	else
     		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));  

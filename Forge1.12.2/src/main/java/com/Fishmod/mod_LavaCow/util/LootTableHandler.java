@@ -40,6 +40,7 @@ public class LootTableHandler {
 	public static ResourceLocation MIMIC = null;
 	public static ResourceLocation SLUDGELORD = null;
 	public static ResourceLocation PTERA = null;
+	public static ResourceLocation PTERA1 = null;
 	public static ResourceLocation VESPA = null;
 	public static ResourceLocation SCARECROW = null;
 	public static ResourceLocation SCARECROW1 = null;
@@ -73,6 +74,7 @@ public class LootTableHandler {
 		MIMIC = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "mimic"));
 		SLUDGELORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "sludgelord"));
 		PTERA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera"));
+		PTERA1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera1"));
 		VESPA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "vespa"));
 		SCARECROW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "scarecrow"));
 		SCARECROW1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "scarecrow1"));

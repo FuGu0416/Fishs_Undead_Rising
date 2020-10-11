@@ -20,6 +20,10 @@
 			                  }
 			                }
 			              ]
+			            },
+						{
+							"function": "set_data",
+							"data": 0
 			            }
                     ]
                 }
