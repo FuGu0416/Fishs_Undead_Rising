@@ -74,7 +74,7 @@ public class EntityPtera extends EntityFlyingMob {
     public double getMountedYOffset()
     {
         if(!this.getPassengers().isEmpty())
-        	return -(double)this.getPassengers().get(0).height * 0.85D;
+        	return -(double)this.getPassengers().get(0).height * 0.75D;
         
         return super.getMountedYOffset();
     }
@@ -130,6 +130,7 @@ public class EntityPtera extends EntityFlyingMob {
 	            EntityFoglet entityRider = new EntityFoglet(this.world);
 	            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 	            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
+	            entityRider.setIsHanging(true);
 	            this.world.spawnEntity(entityRider);
 	            entityRider.startRiding(this);	        	
 	        }
