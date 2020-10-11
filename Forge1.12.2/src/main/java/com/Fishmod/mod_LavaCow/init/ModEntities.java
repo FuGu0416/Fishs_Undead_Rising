@@ -354,7 +354,7 @@ public class ModEntities {
         tweakEntitySpawn(EntitySalamander.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Salamander, 4, 8, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityWendigo.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Wendigo, 1, 1, BiomeDictionary.Type.CONIFEROUS);
 		for(Type C : Type.getAll()) {
-			if(!C.equals(Type.NETHER) || !C.equals(Type.END)) {
+			if(!C.equals(Type.NETHER) && !C.equals(Type.END)) {
 				tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
 				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);
@@ -385,6 +385,14 @@ public class ModEntities {
     	return false;
     }
     
+    private static boolean isInEnd(Biome BiomeIn) {
+    	for (Biome biome : BiomeDictionary.getBiomes(Type.END)) {
+    		if(BiomeIn.equals(biome))return true;
+    	}
+    	
+    	return false;
+    }
+    
     private static boolean isInMushroom(Biome BiomeIn) {
     	for (Biome biome : BiomeDictionary.getBiomes(Type.MUSHROOM)) {
     		if(BiomeIn.equals(biome))return true;
@@ -395,7 +403,7 @@ public class ModEntities {
     
     private static void tweakEntitySpawn(Class <? extends EntityLiving > entityClass, EnumCreatureType creatureType, int weight, int min, int max, Type biomes) {
     	for (Biome biome : BiomeDictionary.getBiomes(biomes)) {
-            if (biome != null && weight > 0 && !(isInHell(biome) ^ biomes.equals(Type.NETHER)) && !isInMushroom(biome)) {
+            if (biome != null && weight > 0 && !(isInHell(biome) ^ biomes.equals(Type.NETHER)) && !(isInEnd(biome) ^ biomes.equals(Type.END)) && !isInMushroom(biome)) {
             	EntityRegistry.addSpawn(entityClass, weight, min, max, creatureType, biome);
             }
     	}

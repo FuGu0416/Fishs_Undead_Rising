@@ -10,6 +10,6 @@
 	    "stage=0":[{ }],
 	    "stage=1":[{ }],
 		"age=0": { "model": "mod_lavacow:veil_shroom" },
-        "age=1": { "model": "mod_lavacow:veil_shroom" }
+        "age=1": { "model": "mod_lavacow:veil_shroom_s" }
     }
 }
