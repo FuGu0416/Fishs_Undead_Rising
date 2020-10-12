@@ -44,7 +44,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
  
 @ObjectHolder(mod_LavaCow.MODID)
 public class FishItems {
-	public static final Item NETHERSTEW = new ItemNetherStew("netherstew");
+	public static final Item NETHERSTEW = new ItemNetherStew("netherstew").setRandPotionEffect(ItemNetherStew.Effect_nethersoup);
 	public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item CANEPORK = new ItemFishCustomFood("canepork", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item CANEROTTENMEAT = new ItemFishCustomFood("canerottenmeat", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
@@ -127,7 +127,8 @@ public class FishItems {
 	public static final Item GHOSTBOMB = new ItemHolyGrenade("ghostbomb");
 	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
 	public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
-	
+	public static final Item BONE_STEW = new ItemNetherStew("bonestew").setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
+			
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
 	public static final SoundEvent ENTITY_PARASITE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.death")).setRegistryName("entity_parasite_death");

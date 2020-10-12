@@ -5,12 +5,17 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIPanic;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -34,6 +39,7 @@ public class EntityGhostRay extends EntityFlyingMob {
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
+		this.tasks.addTask(1, new EntityAIPanic(this, 1.0D));
 	}
 	
 	protected void applyEntityAttributes() {
@@ -72,11 +78,17 @@ public class EntityGhostRay extends EntityFlyingMob {
     */
    public void onUpdate() {
       super.onUpdate();
-
-      /*if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
-         this.setDead();
-      }*/
-
+   }
+   
+   /**
+    * Called when the entity is attacked.
+    */
+   public boolean attackEntityFrom(DamageSource source, float amount)
+   {
+       if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase)
+    	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 2));
+       
+	   return super.attackEntityFrom(source, amount);
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
@@ -124,7 +136,7 @@ public class EntityGhostRay extends EntityFlyingMob {
 	}
 	
 	public SoundCategory getSoundCategory() {
-		return SoundCategory.NEUTRAL;//.HOSTILE;
+		return SoundCategory.NEUTRAL;
 	}
 
 	protected SoundEvent getAmbientSound() {

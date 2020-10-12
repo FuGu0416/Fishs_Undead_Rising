@@ -4,7 +4,6 @@ import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * ModelWeta - Fish0416

@@ -59,8 +59,6 @@ public class BlockPileofSludge extends Block
 			entityIn.motionX *= d0;
 			entityIn.motionZ *= d0;
 		}
-		
-		//entityIn.addVelocity(0.0D, 100.0D, 0.0D);
 	}
 
     /**

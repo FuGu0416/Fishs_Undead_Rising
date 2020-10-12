@@ -86,6 +86,7 @@ item.mod_lavacow.chitin.name=Chitin
 item.mod_lavacow.ghostbomb.name=Ghost Bomb
 item.mod_lavacow.sonicbomb.name=Sonic Bomb
 item.mod_lavacow.weta_hoe.name=Weta Hoe
+item.mod_lavacow.bonestew.name=Bone Stew
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -290,6 +291,7 @@ tootip.mod_lavacow.weta_hoe=When harvesting, also destroy nearby crops or grasse
 tootip.mod_lavacow.parasite.0=Common
 tootip.mod_lavacow.parasite.1=Desert
 tootip.mod_lavacow.parasite.2=Jungle
+tootip.mod_lavacow.bonestew=Gives Resistance(0:20) & AbsorptionII(0:20) when eaten
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting

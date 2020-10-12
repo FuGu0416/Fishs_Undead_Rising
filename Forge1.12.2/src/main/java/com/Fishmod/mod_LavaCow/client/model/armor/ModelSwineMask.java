@@ -5,7 +5,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -113,7 +112,7 @@ public class ModelSwineMask extends ModelBiped {
             this.Mask_Base.setRotationPoint(0.0F, 0.0F, 0.0F);
             copyModelAngles(this.bipedHead, this.bipedHeadwear);
         } 
-        else/* if (entity instanceof EntityPlayer)*/ {
+        else {
         	super.setRotationAngles(limbSwing, limbSwingAngle, entityTickTime, rotationYaw, rotationPitch, unitPixel, entity);
         }
 	}
