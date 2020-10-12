@@ -279,7 +279,7 @@ public class EntityFlyingMob extends EntityMob {
         private final EntityFlyingMob parentEntity;
         private int courseChangeCooldown;
 		IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
-		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 1.0D;
+		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 0.1D;
 		
         public FlyingMoveHelper(EntityFlyingMob flyer)
         {
@@ -308,7 +308,7 @@ public class EntityFlyingMob extends EntityMob {
                         this.parentEntity.motionZ += d2 / d3 * entityMoveSpeed;
                         
                         float yaw = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
-    					this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, yaw, 5.0F);
+    					this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, yaw, Movement2RotationAngle(entityMoveSpeed));
                     }
                     else
                     {
@@ -316,6 +316,10 @@ public class EntityFlyingMob extends EntityMob {
                     }
                 }
             }
+        }
+        
+        private float Movement2RotationAngle(double movement) {
+        	return (float) (movement * 1214.2857F - 31.428571428571427F);
         }
 
         /**
