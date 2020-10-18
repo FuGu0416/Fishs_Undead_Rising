@@ -10,6 +10,10 @@
                     "name": "mod_lavacow:ptera_wing",
                     "functions": [
 		                {
+							"function": "set_data",
+							"data": 1
+			            },
+						{
 			              "function": "furnace_smelt",
 			              "conditions": [
 			                {
@@ -20,10 +24,6 @@
 			                  }
 			                }
 			              ]
-			            },
-						{
-							"function": "set_data",
-							"data": 1
 			            }
                     ]
                 }
