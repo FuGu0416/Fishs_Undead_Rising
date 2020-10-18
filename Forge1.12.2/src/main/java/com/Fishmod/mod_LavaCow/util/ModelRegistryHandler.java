@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -36,7 +37,15 @@ public class ModelRegistryHandler {
     }
  
     private static void registerModel(Item item) {
-        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        
+    	if(item.equals(FishItems.PARASITE_ITEM)) {
+    		for(Integer i = 0; i < 3 ; i++)
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
+    	}
+    	else if(item.equals(FishItems.PTERA_WING)) {
+    		for(Integer i = 0; i < 2 ; i++)
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
+    	}
+    	else
+    		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));  
     }
 }

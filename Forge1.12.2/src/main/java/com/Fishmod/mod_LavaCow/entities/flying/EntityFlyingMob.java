@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
@@ -9,22 +11,22 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,7 +48,7 @@ public class EntityFlyingMob extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new AIFlyingAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
 	}
 	
@@ -200,6 +202,12 @@ public class EntityFlyingMob extends EntityMob {
         return false;
     }
     
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+ 	   this.motionY += 0.5D;
+    	
+ 	   return super.onInitialSpawn(difficulty, entityLivingData);
+ 	}
+    
     static class AIRandomFly extends EntityAIBase
     {
         private final EntityFlyingMob parentEntity;
@@ -252,8 +260,13 @@ public class EntityFlyingMob extends EntityMob {
             double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            //System.out.print(getHeight().getY());
-            this.parentEntity.getMoveHelper().setMoveTo(d0, Math.min((double)getHeight().getY() + (this.parentEntity.isWet() ? 3.0D : (double)Modconfig.FlyingHeight_limit), d1), d2, 1.0D);
+            
+            if(this.parentEntity.isWet())
+            	d1 = 3.0D;
+            else if(Modconfig.FlyingHeight_limit != 0 && (double)Modconfig.FlyingHeight_limit < d1)
+            	d1 = (double)Modconfig.FlyingHeight_limit;
+            
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
         }
         
         public BlockPos getHeight() {
@@ -266,7 +279,7 @@ public class EntityFlyingMob extends EntityMob {
         private final EntityFlyingMob parentEntity;
         private int courseChangeCooldown;
 		IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
-		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 1.0D;
+		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 0.1D;
 		
         public FlyingMoveHelper(EntityFlyingMob flyer)
         {
@@ -295,7 +308,7 @@ public class EntityFlyingMob extends EntityMob {
                         this.parentEntity.motionZ += d2 / d3 * entityMoveSpeed;
                         
                         float yaw = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
-    					this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, yaw, 5.0F);
+    					this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, yaw, Movement2RotationAngle(entityMoveSpeed));
                     }
                     else
                     {
@@ -303,6 +316,10 @@ public class EntityFlyingMob extends EntityMob {
                     }
                 }
             }
+        }
+        
+        private float Movement2RotationAngle(double movement) {
+        	return (float) (movement * 1214.2857F - 31.428571428571427F);
         }
 
         /**

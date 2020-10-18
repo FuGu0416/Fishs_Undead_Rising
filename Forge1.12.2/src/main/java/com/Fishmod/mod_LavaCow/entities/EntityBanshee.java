@@ -11,21 +11,21 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +40,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,7 +57,17 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 	public EntityBanshee(World worldIn)
     {
         super(worldIn);
+        this.moveHelper = new EntityBanshee.AIMoveControl(this);
         this.setSize(0.75F, 2.25F);
+    }
+	
+    /**
+     * Tries to move the entity towards the specified location.
+     */
+    public void move(MoverType type, double x, double y, double z)
+    {
+        super.move(type, x, y, z);
+        this.doBlockCollisions();
     }
 	
     protected void initEntityAI()
@@ -63,10 +75,9 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new AICastingApell());
         this.tasks.addTask(3, new EntityBanshee.AIUseSpell());
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(4, new EntityBanshee.AIChargeAttack());
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(5, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(7, new EntityBanshee.AIMoveRandom());
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.applyEntityAI();
@@ -95,6 +106,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 	
     protected void entityInit() {
     	super.entityInit();
+    	this.setNoGravity(true);
     	this.dataManager.register(CASTING, Byte.valueOf((byte)0));
     }
     
@@ -113,6 +125,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     {
         return this.spellTicks;
     }
+    
+    protected boolean isBanshee() {
+    	return true;
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -125,8 +141,8 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
         	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
         
-        if(this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
-        	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EntityBanshee.this.posX, EntityBanshee.this.posY + EntityBanshee.this.height, EntityBanshee.this.posZ, 0.0D, 1.0D, 0.0D);
+        if(this.isBanshee() && this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
+        	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY + this.height, this.posZ, 0.0D, 1.0D, 0.0D);
         }
     }
     
@@ -297,6 +313,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             {
                 EntityBanshee.this.getLookHelper().setLookPositionWithEntity(EntityBanshee.this.getAttackTarget(), (float)EntityBanshee.this.getHorizontalFaceSpeed(), (float)EntityBanshee.this.getVerticalFaceSpeed());
             }
+            
+            if(EntityBanshee.this.getSpellTicks() > 8 && EntityBanshee.this.getSpellTicks() < 13) {
+            	EntityBanshee.this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EntityBanshee.this.posX, EntityBanshee.this.posY + EntityBanshee.this.height, EntityBanshee.this.posZ, 0.0D, 1.0D, 0.0D);
+            }
         }
     }
     
@@ -404,6 +424,173 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             return null;
         }
     }
+    
+    class AIChargeAttack extends EntityAIBase
+    {
+        public AIChargeAttack()
+        {
+            this.setMutexBits(1);
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute()
+        {
+            if (EntityBanshee.this.getAttackTarget() != null && !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0)
+            {
+                return EntityBanshee.this.getDistanceSq(EntityBanshee.this.getAttackTarget()) > 4.0D;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting()
+        {
+            return EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.getAttackTarget() != null && EntityBanshee.this.getAttackTarget().isEntityAlive();
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting()
+        {
+            EntityLivingBase entitylivingbase = EntityBanshee.this.getAttackTarget();
+            Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
+            EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void resetTask()
+        {
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void updateTask()
+        {
+            EntityLivingBase entitylivingbase = EntityBanshee.this.getAttackTarget();
+
+            if (EntityBanshee.this.getEntityBoundingBox().intersects(entitylivingbase.getEntityBoundingBox()))
+            {
+                EntityBanshee.this.attackEntityAsMob(entitylivingbase);
+            }
+            else
+            {
+                double d0 = EntityBanshee.this.getDistanceSq(entitylivingbase);
+
+                if (d0 < 9.0D)
+                {
+                    Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
+                    EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                }
+            }
+        }
+    }
+    
+    class AIMoveControl extends EntityMoveHelper
+    {
+        public AIMoveControl(EntityBanshee Banshee)
+        {
+            super(Banshee);
+        }
+
+        public void onUpdateMoveHelper()
+        {
+            if (this.action == EntityMoveHelper.Action.MOVE_TO)
+            {
+                double d0 = this.posX - EntityBanshee.this.posX;
+                double d1 = this.posY - EntityBanshee.this.posY;
+                double d2 = this.posZ - EntityBanshee.this.posZ;
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                d3 = (double)MathHelper.sqrt(d3);
+
+                if (d3 < EntityBanshee.this.getEntityBoundingBox().getAverageEdgeLength())
+                {
+                    this.action = EntityMoveHelper.Action.WAIT;
+                    EntityBanshee.this.motionX *= 0.5D;
+                    EntityBanshee.this.motionY *= 0.5D;
+                    EntityBanshee.this.motionZ *= 0.5D;
+                }
+                else
+                {
+                    EntityBanshee.this.motionX += d0 / d3 * 0.05D * this.speed;
+                    EntityBanshee.this.motionY += d1 / d3 * 0.05D * this.speed;
+                    EntityBanshee.this.motionZ += d2 / d3 * 0.05D * this.speed;
+
+                    if (EntityBanshee.this.getAttackTarget() == null)
+                    {
+                        EntityBanshee.this.rotationYaw = -((float)MathHelper.atan2(EntityBanshee.this.motionX, EntityBanshee.this.motionZ)) * (180F / (float)Math.PI);
+                        EntityBanshee.this.renderYawOffset = EntityBanshee.this.rotationYaw;
+                    }
+                    else
+                    {
+                        double d4 = EntityBanshee.this.getAttackTarget().posX - EntityBanshee.this.posX;
+                        double d5 = EntityBanshee.this.getAttackTarget().posZ - EntityBanshee.this.posZ;
+                        EntityBanshee.this.rotationYaw = -((float)MathHelper.atan2(d4, d5)) * (180F / (float)Math.PI);
+                        EntityBanshee.this.renderYawOffset = EntityBanshee.this.rotationYaw;
+                    }
+                }
+            }
+        }
+    }
+    
+    class AIMoveRandom extends EntityAIBase
+    {
+        public AIMoveRandom()
+        {
+            this.setMutexBits(1);
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute()
+        {
+            return !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting()
+        {
+            return false;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void updateTask()
+        {
+            BlockPos blockpos = new BlockPos(EntityBanshee.this);
+
+            for (int i = 0; i < 3; ++i)
+            {
+                BlockPos blockpos1 = blockpos.add(EntityBanshee.this.rand.nextInt(15) - 7, EntityBanshee.this.rand.nextInt(11) - 5, EntityBanshee.this.rand.nextInt(15) - 7);
+
+                if (EntityBanshee.this.world.isAirBlock(blockpos1))
+                {
+                    EntityBanshee.this.moveHelper.setMoveTo((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 0.25D);
+
+                    if (EntityBanshee.this.getAttackTarget() == null)
+                    {
+                        EntityBanshee.this.getLookHelper().setLookPosition((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
 
     public float getEyeHeight()
     {
@@ -455,6 +642,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     }
     
     public void fall(float distance, float damageMultiplier)
+    {
+    }
+
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos)
     {
     }
     

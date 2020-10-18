@@ -13,6 +13,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -21,7 +22,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityVespaCocoon  extends EntityMob{
-		
+	
+	private int Lifespan = 8 * 20;
+	
 	public EntityVespaCocoon(World worldIn)
     {
         super(worldIn);
@@ -61,7 +64,7 @@ public class EntityVespaCocoon  extends EntityMob{
     public void onUpdate()
     {
         super.onUpdate();
-        if(this.ticksExisted >= 8 * 20) {
+        if(this.ticksExisted >= Lifespan) {
         	this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F);
         	
         	if (!this.world.isRemote) {
@@ -123,6 +126,18 @@ public class EntityVespaCocoon  extends EntityMob{
         this.prevRotationYawHead = 180.0F;
         return livingdata;
     }
+    
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbt) {
+		super.writeEntityToNBT(nbt);
+		nbt.setInteger("lifespan", Lifespan);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbt) {
+		super.readEntityFromNBT(nbt);
+		Lifespan = nbt.getInteger("lifespan");
+	}
     
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.

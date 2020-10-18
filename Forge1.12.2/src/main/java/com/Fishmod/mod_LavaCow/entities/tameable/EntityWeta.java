@@ -4,9 +4,10 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.EntityAIDestroyCrops;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDestroyCrops;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -75,10 +76,10 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Weta_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Weta_Attack);
     }
 	
     @Override
@@ -115,7 +116,8 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
     @Override
     protected void setupTamedAI()
     {
-    	this.tasks.removeTask(this.DestroyCrops);
+    	if(this.isTamed())
+    		this.tasks.removeTask(this.DestroyCrops);
     }
     
     protected void updateAITasks()

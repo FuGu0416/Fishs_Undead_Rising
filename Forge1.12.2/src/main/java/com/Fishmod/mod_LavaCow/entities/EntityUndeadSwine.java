@@ -18,6 +18,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIEatGrass;
+import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -72,6 +73,7 @@ public class EntityUndeadSwine extends EntityMob{
     	this.tasks.addTask(0, new EntityAISwimming(this));
     	this.tasks.addTask(2, this.entityAICharge);
         this.tasks.addTask(4, this.entityAIEatGrass);
+        if(!Modconfig.SunScreen_Mode)this.tasks.addTask(4, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -82,20 +84,7 @@ public class EntityUndeadSwine extends EntityMob{
     protected void applyEntityAI()
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	/*this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
-  	      	boolean hasMask = false;
-    		for(ItemStack S : p_210136_0_.getArmorInventoryList()) {
-    			if(S.getItem() instanceof ItemSwineArmor && ((ItemSwineArmor)S.getItem()).getSetBonus() >= 2) {
-    				hasMask = true;
-    			}
-    		}
-    		
-    		return p_210136_0_ instanceof EntityPlayer 
-  	    		  && ((EntityLivingBase)p_210136_0_).attackable() 
-  	    		  && !hasMask;
-  	   }));*/
     }
     
     protected void updateAITasks() {
@@ -107,7 +96,6 @@ public class EntityUndeadSwine extends EntityMob{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.UndeadSwine_Health);
-        //this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.UndeadSwine_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
@@ -140,13 +128,7 @@ public class EntityUndeadSwine extends EntityMob{
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
-         
-         /*if(this.entityAICharge.isCharging()) {
-        	 this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2 * Modconfig.UndeadSwine_Attack);
-         }
-         else
-        	 this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.UndeadSwine_Attack);*/
-         
+                  
   	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
   	   	{
   	   		float f = this.getBrightness();
@@ -224,7 +206,7 @@ public class EntityUndeadSwine extends EntityMob{
             entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
             this.world.spawnEntity(entityRider);
-            entityRider.startRiding(this);
+            entityRider.startRiding(this, true);
         }
 
         return livingdata;
@@ -275,23 +257,15 @@ public class EntityUndeadSwine extends EntityMob{
                  this.blaze.attackEntityAsMob(entitylivingbase);
               }
 
-              //this.blaze.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
            } else if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
               double v = 4.0D;
         	  double d1 = v * (entitylivingbase.posX - this.blaze.posX)/d0;
               double d2 = v * (entitylivingbase.posY - this.blaze.posY)/d0;
               double d3 = v * (entitylivingbase.posZ - this.blaze.posZ)/d0;
-              //this.blaze.faceEntity(entitylivingbase, 100.0F, 100.0F);
               if (this.attackTime <= 0) {
                  ++this.attackStep;
                  if (this.attackStep > 20) {
-                    
-                    //this.blaze.playSound(FishItems.ENTITY_UNDEADSWINE_ATTACK, 4.0F, 1.0F);
                     this.blaze.moveHelper.setMoveTo(this.blaze.posX + d1, this.blaze.posY + d2, this.blaze.posZ + d3, 2.0D);
-                    //this.blaze.faceEntity(entitylivingbase, 10.0F, 10.0F);
-                    //this.blaze.addVelocity(d1, Math.min(0,d2), d3);
-                    //this.blaze.getLookHelper().setLookPosition(d1, Math.min(0,d2), d3, 100.0F, 100.0F);
-                    
                  } else if(this.attackStep > 100) {
                 	 this.attackTime = 60;
                 	 this.attackStep = 0;

@@ -6,7 +6,6 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Lists;
 
@@ -26,41 +25,23 @@ import net.minecraft.world.World;
 
 public class ItemNetherStew extends ItemFishCustomFood
 {
-	private static List<Triple<Potion, Integer, Integer>> Effect_nethersoup = Lists.newArrayList(
+	public static List<Triple<Potion, Integer, Integer>> Effect_nethersoup = Lists.newArrayList(
 		    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.STRENGTH, 40*20, 1),
 		    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 40*20, 1),
 		    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.SPEED, 40*20, 1),
 		    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 40*20, 1)
 			);
+	
+	public static List<Triple<Potion, Integer, Integer>> Effect_bonestew = Lists.newArrayList(
+	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 20*20, 1),
+	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 20*20, 0)
+		);
 
 	public ItemNetherStew(String registryName) {
     	super(registryName, 6, 0.6F, false, 32, true);
         this.setAlwaysEdible();
         this.setMaxStackSize(64);
-        
-    	this.setRandPotionEffect(Effect_nethersoup);
     }
-      
-    /*protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player)
-    {
-    	int rng_eat_effect = (int) (Math.random()*4);
-    	switch(rng_eat_effect)
-        {
-        	case 0: 
-        		player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 3*60*20, 1));
-        		break;
-        	case 1:
-        		player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 3*60*20, 0));
-        		break;
-        	case 2:
-        		player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 3*60*20, 2));
-        		break;
-        	case 3:
-        		player.addPotionEffect(new PotionEffect(MobEffects.POISON, 3*60*20, 0));
-        		break;
-        	default:break;
-        }
-    }*/
     
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
     {	
@@ -93,10 +74,6 @@ public class ItemNetherStew extends ItemFishCustomFood
         	}
             return true;
         }
-    	/*else if(stack.getItem().equals(FishItems.GHOSTJELLY) && target instanceof EntityRaven && ((EntityRaven) target).getOwner().equals(playerIn) && ((EntityRaven) target).getSkin() == 0) {
-    		((EntityRaven) target).setSkin(3);
-    		return true;
-    	}*/
         else
         {   	
         	return super.itemInteractionForEntity(stack, playerIn, target, hand);

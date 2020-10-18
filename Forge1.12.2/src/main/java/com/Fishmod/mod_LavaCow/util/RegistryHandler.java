@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.init.ModPotions;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
+import com.Fishmod.mod_LavaCow.item.ItemScarecrowHead;
 import com.Fishmod.mod_LavaCow.item.crafting.RecipePoisonArrow;
 
 import net.minecraft.enchantment.Enchantment;
@@ -15,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -58,9 +58,9 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemBlock(Modblocks.BLOODTOOTH_SHROOM), Modblocks.BLOODTOOTH_SHROOM.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.CORDY_SHROOM), Modblocks.CORDY_SHROOM.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.VEIL_SHROOM), Modblocks.VEIL_SHROOM.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_COMMON), Modblocks.SCARECROWHEAD_COMMON.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_STRAW), Modblocks.SCARECROWHEAD_STRAW.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_COMMON), Modblocks.SCARECROWHEAD_COMMON.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_STRAW), Modblocks.SCARECROWHEAD_STRAW.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
         );        
     }

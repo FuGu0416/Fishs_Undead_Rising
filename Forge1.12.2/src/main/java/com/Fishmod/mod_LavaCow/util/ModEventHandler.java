@@ -1,6 +1,5 @@
 package com.Fishmod.mod_LavaCow.util;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,9 +74,9 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -480,7 +479,7 @@ public class ModEventHandler {
     	}
     	
     	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.BONESWORD))
-    		event.setAmount(event.getAmount() + event.getEntityLiving().getMaxHealth() * Math.min((float)Modconfig.BoneSword_DamageCap, ((float)Modconfig.BoneSword_Damage * 0.01F)));
+    		event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
     	
     	if(event.getSource().getTrueSource() != null 
     			&& event.getSource().getTrueSource() instanceof EntityPlayer

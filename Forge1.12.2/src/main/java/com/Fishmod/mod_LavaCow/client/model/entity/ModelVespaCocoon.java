@@ -4,7 +4,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * ModelVespaCocoon - Fish0016054
@@ -38,9 +37,7 @@ public class ModelVespaCocoon extends ModelBase {
 
     @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) { 
-        
-    	//float f = (0.95f + 0.05f * MathHelper.sin(ageInTicks * 0.05F)) * scale;
-    	
+            	
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();

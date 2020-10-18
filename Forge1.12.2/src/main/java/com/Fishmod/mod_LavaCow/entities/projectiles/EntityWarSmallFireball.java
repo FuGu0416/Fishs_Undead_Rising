@@ -8,6 +8,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -33,6 +34,19 @@ public class EntityWarSmallFireball extends EntityEnchantableFireBall {
 	    public static void registerFixesSmallFireball(DataFixer fixer)
 	    {
 	        EntityFireball.registerFixesFireball(fixer, "WarSmallFireball");
+	    }
+	    
+	    /**
+	     * Called to update the entity's position/logic.
+	     */
+	    public void onUpdate()
+	    {
+            if (world.isRemote && this.ticksExisted < 3) {
+            	this.world.spawnParticle(EnumParticleTypes.LAVA, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+            	this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+            }
+	    	
+	    	super.onUpdate();
 	    }
 
 	    /**

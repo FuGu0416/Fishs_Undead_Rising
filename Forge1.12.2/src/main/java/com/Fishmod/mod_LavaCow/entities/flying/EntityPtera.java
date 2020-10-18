@@ -3,12 +3,17 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDropRider;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityHusk;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -35,6 +40,8 @@ public class EntityPtera extends EntityFlyingMob {
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
+		if(this.world.getDifficulty() == EnumDifficulty.HARD)
+			this.tasks.addTask(1, new EntityAIDropRider(this));
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
 	}
 	
@@ -49,6 +56,27 @@ public class EntityPtera extends EntityFlyingMob {
     protected void entityInit() {
     	super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
+    }
+    
+	@Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+	
+	@Override
+	public boolean shouldRiderSit() {
+		return false;
+	}
+    
+    /**
+     * Returns the Y offset from the entity's position for any entity riding this one.
+     */
+    public double getMountedYOffset()
+    {
+        if(!this.getPassengers().isEmpty())
+        	return -(double)this.getPassengers().get(0).height * 0.75D;
+        
+        return super.getMountedYOffset();
     }
     
     public float getEyeHeight() {
@@ -70,6 +98,45 @@ public class EntityPtera extends EntityFlyingMob {
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
 	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.DRY))
 		   this.setSkin(1);
+	   
+		if(this.world.getDifficulty() == EnumDifficulty.HARD) {
+	        if (this.world.rand.nextInt(100) < 2)
+	        {
+	            EntityCreeper entityRider = new EntityCreeper(this.world);
+	            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+	            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
+	            this.world.spawnEntity(entityRider);
+	            entityRider.startRiding(this);	        	
+	        }
+	        else if (this.world.rand.nextInt(100) < 5)
+	        {
+	            if(this.getSkin() == 0) {
+		        	EntityZombie entityRider = new EntityZombie(this.world);
+		            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+		            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
+		            this.world.spawnEntity(entityRider);
+		            entityRider.startRiding(this);
+	            }
+	            else if(this.getSkin() == 1) {
+		        	EntityHusk entityRider = new EntityHusk(this.world);
+		            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+		            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
+		            this.world.spawnEntity(entityRider);
+		            entityRider.startRiding(this);
+	            }
+	        }
+	        else if (this.world.rand.nextInt(100) < 10 && this.getSkin() == 0)
+	        {
+	            EntityFoglet entityRider = new EntityFoglet(this.world);
+	            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+	            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
+	            entityRider.setIsHanging(true);
+	            this.world.spawnEntity(entityRider);
+	            entityRider.startRiding(this);	        	
+	        }
+		}
+
+	   
 	   return super.onInitialSpawn(difficulty, entityLivingData);
 	}
    
@@ -113,7 +180,14 @@ public class EntityPtera extends EntityFlyingMob {
 
 	@Nullable
 	protected ResourceLocation getLootTable() {
-		return LootTableHandler.PTERA;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.PTERA;
+	        case 1: 
+	            return LootTableHandler.PTERA1;
+	        default: 
+	            return null; 
+	    } 
 	}
 
 	/**

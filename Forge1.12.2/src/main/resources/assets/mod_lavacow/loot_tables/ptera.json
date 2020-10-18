@@ -9,6 +9,10 @@
                     "weight": 1,
                     "name": "mod_lavacow:ptera_wing",
                     "functions": [
+						{
+							"function": "set_data",
+							"data": 0
+			            },
 		                {
 			              "function": "furnace_smelt",
 			              "conditions": [

@@ -5,10 +5,10 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.Modkeys;
@@ -28,10 +28,12 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -62,16 +64,13 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	private boolean isAggressive = false;
 	private EntityFishAIAttackRange range_atk;
 	private EntityAIAvoidEntity<EntityPlayer> avoid_entity;
-	//private EntityAIWanderAvoidWater wander;
-	//private EntityAIFollowOwner follow;
 	private int barrage_CD;
 	
 	public EntitySalamander(World worldIn)
     {
         super(worldIn);
         
-        //if(this.isChild())this.setSize(0.6F, 0.4F);
-        /*else*/ this.setSize(3.5F, 2.6F);
+        this.setSize(3.5F, 2.6F);
         
         this.isImmuneToFire = true;
         this.setPathPriority(PathNodeType.WATER, -1.0F);
@@ -96,19 +95,14 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 8, 5, 2.5D, 1.0D, 2.5D);
     	else
     		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
-    	//this.wander = new EntityAIWanderAvoidWater(this, 1.0D, 0.0F);
-    	//this.follow = new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
-    	//this.aiSit = new EntityAISit(this);
     	
     	this.tasks.addTask(0, new EntityAISwimming(this));
     	this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
     	this.tasks.addTask(4, this.range_atk);
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        //this.tasks.addTask(7, this.wander);
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        //this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityPlayer.class, true));
         this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)
@@ -116,14 +110,13 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
                 return true;
             }
         }));
-        //this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityCow.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityCow.class, true));
     }
     
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
-        //this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
@@ -151,34 +144,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     	ItemStack itemstack = player.getHeldItem(hand);
     	
     	if(this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {    	
-	    	/*if (itemstack.getItem().equals(Items.STICK) && !this.isBeingRidden()) {
-	    		if(this.state.equals(EntityFishTameable.State.WANDERING)) {
-	    			this.tasks.removeTask(this.wander);
-	                this.isJumping = false;
-	                this.navigator.clearPath();
-	    			this.state = EntityFishTameable.State.SITTING;
-	    			player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
-	    		}
-	    		else if(this.state.equals(EntityFishTameable.State.SITTING)) {
-	    			//this.tasks.removeTask(this.follow);
-	    			this.follow = new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
-	    			this.tasks.addTask(6, this.follow);
-	    			this.navigator.clearPath();
-	    			this.state = EntityFishTameable.State.FOLLOWING;
-	    			player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
-	    		}
-	    		else if(this.state.equals(EntityFishTameable.State.FOLLOWING)) {
-	    			this.tasks.removeTask(this.follow);
-	    			this.wander = new EntityAIWanderAvoidWater(this, 1.0D, 0.0F);
-	    			this.tasks.addTask(7, this.wander);
-	    			this.navigator.clearPath();
-	    			this.state = EntityFishTameable.State.WANDERING;
-	    			player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
-	    		}
-	    		
-	    		return true;
-	    	}
-	    	else */if (this.canBeSteered() && itemstack.isEmpty()) {	    		
+	    	if (this.canBeSteered() && itemstack.isEmpty()) {	    		
 	    		if(player.isSneaking()) {
 	    			this.setSaddled(false);
 	    			if(!this.world.isRemote)this.dropItem(Items.SADDLE, 1);
@@ -201,7 +167,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	    		return true;
 	    	}
     	}
-    	//System.out.println("OXO");
     	return super.processInteract(player, hand);
     }
     
@@ -224,7 +189,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
             renderYawOffset = rotationYaw;
             this.rotationYaw = passenger.rotationYaw;
         }
-        //passenger.setPosition(this.posX, this.posY + 1.05F, this.posZ - 0.5F);
     }
     
     @Nullable
@@ -242,7 +206,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     }
     
     public boolean isRidingPlayer(EntityPlayer player) {
-    	//System.out.println(this.getControllingPassenger().getUniqueID() + " Q-Q " + player.getUniqueID());
         return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof EntityPlayer && this.getControllingPassenger().getUniqueID().equals(player.getUniqueID());
     }
     
@@ -288,11 +251,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     @Override
     public void onUpdate() {
     	super.onUpdate();
-    	
-    	/*if (this.isInLava() && this.motionY < 0) {
-    		this.motionY = 0;
-    	}*/
-    	
+    		
     	if (world.isRemote) {
             this.ClientControl();
         }
@@ -304,7 +263,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     	EntityPlayer player = Minecraft.getMinecraft().player;		
 		if (this.barrage_CD == 0 && Modkeys.MOUNT_SPECIAL.isKeyDown() && this.isRidingPlayer(player)) {
 			this.barrage_CD = 80;	
-			//System.out.println(this.getControllingPassenger().getUniqueID() + " Q-Q " + Minecraft.getMinecraft().player.getUniqueID());
 			mod_LavaCow.NETWORK_WRAPPER.sendToServer(new PacketMountSpecial(this.getEntityId(), this.posX, this.posY, this.posZ));
 		}  	
     }
@@ -361,8 +319,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     
     public boolean isAggressive()
     {
-    	//if(this.getAttackTarget() != null)System.out.println("O_O" + this.getAttackTarget().getName());
-    	//else System.out.println("OAO");
     	return isAggressive;
     }
     
@@ -418,15 +374,11 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     private void setChild(boolean isChildIn) {
     	
     	if(isChildIn) {
-	    	//this.setSize(0.6F, 0.4F);
-	    	//this.setScale(1.0F);
 	    	this.experienceValue = 5;
-	    	//this.setGrowingAge(-24000);
 	    	
 	    	this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
 	    	this.tasks.addTask(3, this.avoid_entity);
 	    	this.tasks.removeTask(this.range_atk);
-	    	//System.out.println("OAO");
 	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
 	    	this.tasks.addTask(4, this.range_atk);
 	    	
@@ -447,8 +399,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	        }
     	}
     	else {
-	    	//this.setSize(1.5F, 2.6F);
-	    	//this.setScale(1.0F);
 	    	this.experienceValue = 20;
 	    	
 	    	this.tasks.removeTask(this.avoid_entity);
@@ -460,8 +410,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
 	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);	   
     	}
-    	//this.setHealth((float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
-       //this.getDataManager().set(IS_CHILD, isChildIn);
     }
     
     public void setTamed(boolean tamed) {
@@ -474,7 +422,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     
 	public EntitySalamander createChild(EntityAgeable ageable) {
 		EntitySalamander entity = new EntitySalamander(this.world);
-		//entity.setChild(true);
 		entity.setGrowingAge(-24000);
 		UUID uuid = this.getOwnerId();
 		if (uuid != null) {
@@ -525,7 +472,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
             {
                 float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.6F;
                 if(this.isInLava()) {
-                	//f *= 6.0F;
                 	this.motionX *= 1.5F;
                 	this.motionY += 0.02F;
                 	this.motionZ *= 1.5F;
@@ -555,8 +501,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         }
         else
         {
-            //this.stepHeight = 0.5F;
-            //this.jumpMovementFactor = 0.02F;
             super.travel(strafe, vertical, forward);
         }
     }
@@ -588,7 +532,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
           this.setGrowingAge(-24000);
           this.setChild(true);
        }
-       //System.out.println("OAO");
        return entityLivingData;
     }
     
@@ -667,7 +610,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     }
     
     public void setGrowingAge(int age) {
-    	//this.setChild(age < 0 ? true : false);    	
     	super.setGrowingAge(age);
     }
     
@@ -685,9 +627,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      */
     public void writeEntityToNBT(NBTTagCompound compound) {
        super.writeEntityToNBT(compound);
-       /*if (this.isChild()) {
-          compound.setBoolean("IsBaby", true);
-       }*/
        compound.setBoolean("Saddled", this.canBeSteered());
     }
 
@@ -696,9 +635,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      */
     public void readEntityFromNBT(NBTTagCompound compound) {
        super.readEntityFromNBT(compound);
-       /*if (compound.getBoolean("IsBaby")) {
-          this.setChild(true);
-       }*/
        this.setSaddled(compound.getBoolean("Saddled"));
     }
 }

@@ -35,6 +35,11 @@
             "rotation": [ 75, 45, 0 ],
             "translation": [ -1, -4, 6 ],
             "scale": [ 0.75, 0.75, 0.75 ]
+        },
+        "head": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 18, 10, 18 ],
+            "scale":[ 2.25, 2.25, 2.25 ]
         }
 	}
 }

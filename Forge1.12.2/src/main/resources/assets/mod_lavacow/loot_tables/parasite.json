@@ -57,6 +57,10 @@
                 "min": 0,
                 "max": 1
               }
+            },
+			{
+				"function": "set_data",
+				"data": 0
             }, 
             {
               "function": "furnace_smelt",
@@ -69,10 +73,6 @@
                   }
                 }
               ]
-            },  
-            {
-              "function": "set_count",
-              "count": 1
             }
           ]
         },

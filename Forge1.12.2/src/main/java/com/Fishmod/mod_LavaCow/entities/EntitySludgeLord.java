@@ -2,9 +2,9 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -18,6 +18,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -53,6 +54,7 @@ public class EntitySludgeLord extends EntityMob{
     	this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, FishItems.ENTITY_SLUDGELORD_ATTACK, 1, 2, 5.0D, 8.0D, 1.2D, 0.6D, 1.2D));
     	this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
     	this.tasks.addTask(4, new EntitySludgeLord.AIUseSpell());
+    	if(!Modconfig.SunScreen_Mode)this.tasks.addTask(4, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

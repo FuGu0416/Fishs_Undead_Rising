@@ -29,6 +29,8 @@ public class LootTableHandler {
 	
 	public static ResourceLocation ZOMBIEMUSHROOM = null;
 	public static ResourceLocation PARASITE = null;
+	public static ResourceLocation PARASITE1 = null;
+	public static ResourceLocation PARASITE2 = null;
 	public static ResourceLocation FOGLET = null;
 	public static ResourceLocation ZOMBIEFROZEN = null;
 	public static ResourceLocation UNDEADSWINE = null;
@@ -38,6 +40,7 @@ public class LootTableHandler {
 	public static ResourceLocation MIMIC = null;
 	public static ResourceLocation SLUDGELORD = null;
 	public static ResourceLocation PTERA = null;
+	public static ResourceLocation PTERA1 = null;
 	public static ResourceLocation VESPA = null;
 	public static ResourceLocation SCARECROW = null;
 	public static ResourceLocation SCARECROW1 = null;
@@ -60,6 +63,8 @@ public class LootTableHandler {
 		//System.out.println("12OAOAOAOAOAOAOAOAOAOAOAO");
 		ZOMBIEMUSHROOM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "zombiemushroom"));
 		PARASITE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite"));
+		PARASITE1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite1"));
+		PARASITE2 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite2"));
 		FOGLET = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "foglet"));
 		ZOMBIEFROZEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "zombiefrozen"));
 		UNDEADSWINE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "undeadswine"));
@@ -69,6 +74,7 @@ public class LootTableHandler {
 		MIMIC = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "mimic"));
 		SLUDGELORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "sludgelord"));
 		PTERA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera"));
+		PTERA1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera1"));
 		VESPA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "vespa"));
 		SCARECROW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "scarecrow"));
 		SCARECROW1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "scarecrow1"));

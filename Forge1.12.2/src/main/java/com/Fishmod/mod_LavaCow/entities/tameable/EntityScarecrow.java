@@ -17,7 +17,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -60,7 +59,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     {
         super(worldIn);
         this.setSize(0.8F, 3.0F);
-        //this.setCanPickUpLoot(true);
     }
 	
     protected void entityInit() {
@@ -77,7 +75,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     	super.initEntityAI();
     	this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, this.move);
         this.tasks.addTask(8, this.watch);
         this.tasks.addTask(8, this.look);
@@ -96,7 +93,6 @@ public class EntityScarecrow  extends EntityFishTameable{
                 return true;
             }
         }));
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCow>(this, EntityCow.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -153,13 +149,13 @@ public class EntityScarecrow  extends EntityFishTameable{
         	
         	if(this.AttackStance == (byte)4) {
         		this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-        		if (this.getAttackTarget() instanceof EntityLivingBase)
+        		if (this.getAttackTarget() instanceof EntityLivingBase) {
         			if(this.getSkin() != 2)
         				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
         			else
         				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
         		}
-        			
+        	}		
         	else {
                 for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getAttackTarget().getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
                 {
@@ -186,28 +182,11 @@ public class EntityScarecrow  extends EntityFishTameable{
     
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        //boolean flag = super.attackEntityAsMob(entityIn);
-
         this.attackTimer = 15;
         this.AttackStance = this.rand.nextFloat() < 0.4F ? (byte)5 : (byte)4;
         this.world.setEntityState(this, this.AttackStance);
         
         return true;
-        /*if (flag)
-        {
-            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-                entityIn.setFire(2 * (int)f);
-            }
-            
-            if (entityIn instanceof EntityLivingBase)
-            {
-                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 4 * 20 * (int)f, -2));
-            }
-        }
-
-        return flag;*/
     }
     
     @Override
@@ -244,8 +223,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
         super.setEquipmentBasedOnDifficulty(difficulty);
-
-        //this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.REAPERS_SCYTHE));
     }
     
     /**
@@ -290,7 +267,6 @@ public class EntityScarecrow  extends EntityFishTameable{
     	return isAggressive;
     }
     
-    //@SideOnly(Side.CLIENT)
     public int getAttackTimer() {
        return this.attackTimer;
     }
@@ -333,6 +309,27 @@ public class EntityScarecrow  extends EntityFishTameable{
     public float getEyeHeight()
     {
         return 2.6F;
+    }
+    
+    /**
+     * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
+     * use in wolves.
+     */
+    public int getVerticalFaceSpeed()
+    {
+        return this.isSilent() ? 0 : super.getVerticalFaceSpeed();
+    }
+
+    public int getHorizontalFaceSpeed()
+    {
+        return this.isSilent() ? 0 : super.getHorizontalFaceSpeed();
+    }
+	
+    @Override
+    public void travel(float strafe, float vertical, float forward)
+    {
+    	if(!this.isSilent() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube())
+    		super.travel(strafe, vertical, forward);
     }
     
 	@Override
@@ -386,7 +383,16 @@ public class EntityScarecrow  extends EntityFishTameable{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return this.getSkin()==0 ? LootTableHandler.SCARECROW : LootTableHandler.SCARECROW1;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.SCARECROW;
+	        case 1: 
+	            return LootTableHandler.SCARECROW1;
+	        case 2: 
+	        	return LootTableHandler.SCARECROW2;
+	        default: 
+	            return null; 
+	    }       
     }
     
     /**

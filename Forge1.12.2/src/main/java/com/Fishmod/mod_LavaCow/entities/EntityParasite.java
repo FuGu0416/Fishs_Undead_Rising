@@ -103,10 +103,10 @@ public class EntityParasite extends EntitySpider{
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Parasite_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Parasite_Attack);
     }
 	
     protected void entityInit() {
@@ -199,9 +199,9 @@ public class EntityParasite extends EntitySpider{
         {
         	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         	
-        	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.PARASITE_ITEM, 1)))
+        	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.PARASITE_ITEM, 1, this.getSkin())))
             {
-                player.dropItem(new ItemStack(FishItems.PARASITE_ITEM, 1), false);
+                player.dropItem(new ItemStack(FishItems.PARASITE_ITEM, 1, this.getSkin()), false);
             }
         	this.setDead();
             return true;
@@ -330,7 +330,16 @@ public class EntityParasite extends EntitySpider{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.PARASITE;
+    	switch(this.getSkin()) { 
+	        case 0: 
+	        	return LootTableHandler.PARASITE;
+	        case 1: 
+	            return LootTableHandler.PARASITE1;
+	        case 2: 
+	        	return LootTableHandler.PARASITE2;
+	        default: 
+	            return null; 
+	    } 
     }
     
     static class AIParasiteAttack extends EntityAIAttackMelee

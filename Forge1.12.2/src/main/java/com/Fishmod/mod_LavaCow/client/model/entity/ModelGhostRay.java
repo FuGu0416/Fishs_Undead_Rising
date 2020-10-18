@@ -129,15 +129,11 @@ public class ModelGhostRay extends ModelFlyingBase {
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	float flap = MathHelper.sin(entityIn.ticksExisted * 0.1F);
-    	
     	if(this.state.equals(ModelFlyingBase.State.FLYING)) {
         	this.Body1.rotateAngleX = 0.091106186954104F;
-        	//this.Tail0.rotateAngleX = 0.26F - 0.18F * flap;
         }
         else {
         	this.Body1.rotateAngleX = -0.36267941856442165F;
-        	//this.Tail0.rotateAngleX = -0.18448130193580065F - 0.18F * flap;      	
         }
     }
 }

@@ -6,7 +6,6 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
-import com.Fishmod.mod_LavaCow.worldgen.WorldGenCemeterySmall;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenLargeGlowShroom;
 
 import net.minecraft.block.BlockDirt;
@@ -29,12 +28,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockGlowShroom extends BlockMushroom{
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 1);
 	private boolean isGlowshroom;
-	
-	/*static Block glowshroom;
-	
-	public static void init() {
-		glowshroom = new BlockBasic("glowshroom", Material.PLANTS).setCreativeTab(CreativeTabs.DECORATIONS).setLightLevel(1.0f);
-	}*/
 	
 	@Override
     protected BlockStateContainer createBlockState()
@@ -103,7 +96,6 @@ public class BlockGlowShroom extends BlockMushroom{
 	}
 	
 	public static void spawnParticles(World worldIn, BlockPos pos) {
-	      //double d0 = 0.5625D;
 	      Random random = worldIn.rand;
 
 	      for(EnumFacing enumfacing : EnumFacing.values()) {
@@ -153,8 +145,6 @@ public class BlockGlowShroom extends BlockMushroom{
         if(this.isGlowshroom)
         	worldgenerator = new WorldGenLargeGlowShroom(Modblocks.GLOWSHROOM_BLOCK_CAP, Modblocks.GLOWSHROOM_BLOCK_STEM);
         
-        worldgenerator = new WorldGenCemeterySmall();
-
         if (worldgenerator != null && worldgenerator.generate(worldIn, rand, pos))
         {
             return true;
@@ -176,13 +166,11 @@ public class BlockGlowShroom extends BlockMushroom{
 	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         return this.isGlowshroom;
-    	//return false;
     }
     
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
     	return this.isGlowshroom && (double)rand.nextFloat() < 0.4D;
-    	//return false;
     }
 }

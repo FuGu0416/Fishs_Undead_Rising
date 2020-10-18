@@ -89,6 +89,7 @@ item.mod_lavacow.chitin.name=幾丁質
 item.mod_lavacow.ghostbomb.name=鬼靈炸彈
 item.mod_lavacow.sonicbomb.name=音爆彈
 item.mod_lavacow.weta_hoe.name=沙螽鋤
+item.mod_lavacow.bonestew.name=大骨燉湯
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -290,6 +291,10 @@ tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
 tootip.mod_lavacow.ghostbomb=投向目標地點，造成範圍傷害並賦予漂浮(0:01)
 tootip.mod_lavacow.sonicbomb=投向目標地點，造成範圍傷害並賦予虛弱III(0:04)
 tootip.mod_lavacow.weta_hoe=當收穫農作時，同時也能收成 3x3 範圍內的農作物或草.
+tootip.mod_lavacow.parasite.0=普通
+tootip.mod_lavacow.parasite.1=沙地
+tootip.mod_lavacow.parasite.2=叢林
+tootip.mod_lavacow.bonestew=食用後獲得抗性(0:20)與吸收II(0:20)
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命

@@ -10,19 +10,7 @@
     [
 	    {
 	      "item": "minecraft:fish",
-	      "data": 0
-	    },
-	    {
-	      "item": "minecraft:fish",
-	      "data": 1
-	    },
-	    {
-	      "item": "minecraft:fish",
-	      "data": 2
-	    },
-	    {
-	      "item": "minecraft:fish",
-	      "data": 3
+	      "data": 32767
 	    },
 	    {
 	      "item": "minecraft:chicken"
@@ -34,7 +22,8 @@
 	      "item": "minecraft:rotten_flesh"
 	    },
 	    {
-	      "item": "mod_lavacow:parasite_item"
+	      "item": "mod_lavacow:parasite_item",
+		  "data": 32767
 	    },
 	    {
 	      "item": "mod_lavacow:piranha"

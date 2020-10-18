@@ -13,7 +13,8 @@
             "item": "minecraft:speckled_melon"
         },
         "D": {
-			"item": "mod_lavacow:parasite_item"
+			"item": "mod_lavacow:parasite_item",
+	    	"data": 32767
         }
     },
     "result": {

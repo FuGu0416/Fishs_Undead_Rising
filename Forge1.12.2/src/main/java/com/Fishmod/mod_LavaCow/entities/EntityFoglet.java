@@ -102,9 +102,9 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(16.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Modconfig.Foglet_Health);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Foglet_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
     }
     
@@ -161,22 +161,24 @@ public class EntityFoglet extends EntityMob implements IAggressive{
 	        
 	        this.getLookHelper().setLookPosition(this.posX, 0.0D, this.posZ, 10.0F, 10.0F);
 	        this.getLookHelper().onUpdateLook();*/
-	        if(this.world.canSeeSky(new BlockPos(this.posX, this.posY, this.posZ))) {
-	        	this.setIsHanging(false);
+	        if(!this.isRiding()) {
+		        if(this.world.canSeeSky(new BlockPos(this.posX, this.posY, this.posZ))) {
+		        	this.setIsHanging(false);
+		        }
+		        
+		        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(2.0D, 35.0D, 2.0D));
+		        
+	        	for (Entity entity1 : list)
+	        	{
+	        		if (entity1.posY < this.posY && ((entity1 instanceof EntityPlayer && !((EntityPlayer)entity1).isCreative()) || entity1 instanceof EntityVillager))
+	        		{
+	        			this.setRevengeTarget((EntityLivingBase) entity1);
+	        			this.setIsHanging(false);
+	        			break;
+	        		}
+	        	}  
+		        //this.posY = (double)MathHelper.floor(this.posY) + 1.0D - (double)this.height
 	        }
-	        
-	        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(2.0D, 35.0D, 2.0D));
-	        
-        	for (Entity entity1 : list)
-        	{
-        		if (entity1.posY < this.posY && ((entity1 instanceof EntityPlayer && !((EntityPlayer)entity1).isCreative()) || entity1 instanceof EntityVillager))
-        		{
-        			this.setRevengeTarget((EntityLivingBase) entity1);
-        			this.setIsHanging(false);
-        			break;
-        		}
-        	}  
-	        //this.posY = (double)MathHelper.floor(this.posY) + 1.0D - (double)this.height;
     	}
         
         /*if(this.getRevengeTarget() != null) {

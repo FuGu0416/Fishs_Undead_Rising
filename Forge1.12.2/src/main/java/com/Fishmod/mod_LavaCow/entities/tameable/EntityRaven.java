@@ -5,9 +5,9 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.RavenAITargetItem;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Sets;
 
@@ -22,10 +22,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIFollow;
 import net.minecraft.entity.ai.EntityAIFollowOwnerFlying;
 import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWaterFlying;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -33,7 +31,6 @@ import net.minecraft.entity.ai.EntityFlyHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityFlying;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -66,9 +63,8 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityRaven extends EntityTameable implements EntityFlying{
+public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRaven.class, DataSerializers.VARINT);
-    //private static final Item DEADLY_ITEM = Items.COOKIE;
     private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
     public float flap;
     public float flapSpeed;
@@ -83,7 +79,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     private float TargetLocationY = -1.0F;
     private float TargetLocationZ = -1.0F;
     
-    private RavenAITargetItem<EntityItem> AITargetItem;
+    private EntityAITargetItem<EntityItem> AITargetItem;
 	
 	public EntityRaven(World worldIn) {
 		super(worldIn);
@@ -95,23 +91,20 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
 	
     protected void initEntityAI()
     {
-        this.aiSit = new EntityAISit(this);
+        super.initEntityAI();
+    	this.wander = new EntityAIWanderAvoidWaterFlying(this, 1.0D);
+    	this.follow = new EntityAIFollowOwnerFlying(this, 1.0D, 5.0F, 1.0F);
         
         this.tasks.addTask(0, new AIMovetoTargetLocation());
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        //this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityWendigo.class, 16.0F, 0.8D, 1.6D));
-        this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(3, new EntityAIFollowOwnerFlying(this, 1.0D, 5.0F, 1.0F));
-        this.tasks.addTask(3, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIFollow(this, 1.0D, 3.0F, 7.0F));
         this.applyEntityAI();
     }
     
     protected void applyEntityAI()
     {
-    	this.AITargetItem = new RavenAITargetItem<>(this, EntityItem.class, true);
+    	this.AITargetItem = new EntityAITargetItem<>(this, EntityItem.class, true);
     	this.targetTasks.addTask(1, this.AITargetItem);
 	}
     
@@ -119,7 +112,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Raven_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.6D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
     }
@@ -134,6 +127,14 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
         pathnavigateflying.setCanFloat(true);
         pathnavigateflying.setCanEnterDoors(true);
         return pathnavigateflying;
+    }
+    
+    /**
+     * Determines if an entity can be despawned, used on idle far away entities
+     */
+    protected boolean canDespawn()
+    {
+        return false;
     }
 	
     public float getEyeHeight()
@@ -152,17 +153,13 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
             ((EntityPlayerMP) ridden).connection.sendPacket(new SPacketSetPassengers(ridden));
           }
         
-		//this.setSitting(false);
 		this.ridingCooldown = 30;
-		//this.setScale(1.0F);
     }
     
     public void setTargetLocation(float X, float Y, float Z) {
     	this.TargetLocationX = X;
     	this.TargetLocationY = Y;
     	this.TargetLocationZ = Z;
-    	
-    	//this.moveToBlockPosAndAngles(new BlockPos(X, Y, Z), 0.0F, 0.0F);
     }
 
     /**
@@ -170,16 +167,7 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
      * use this to react to sunlight and start to burn.
      */
     public void onLivingUpdate()
-    {
-    	/*while(this.TargetLocationX != -1.0F && this.TargetLocationY != -1.0F && this.TargetLocationZ != -1.0F) {
-    		this.getMoveHelper().setMoveTo(this.TargetLocationX, this.TargetLocationY, this.TargetLocationZ, 4.0D);
-    		
-    		if(this.getDistance(this.TargetLocationX, this.TargetLocationY, this.TargetLocationZ) <= 0.5D) {
-    			this.TargetLocationX = this.TargetLocationY = this.TargetLocationZ = -1.0F;
-    			break;
-    		}
-    	}*/	
-    	
+    { 	
     	super.onLivingUpdate();
     	
         if (this.jukeboxPosition == null || this.jukeboxPosition.distanceSq(this.posX, this.posY, this.posZ) > 12.0D || this.world.getBlockState(this.jukeboxPosition).getBlock() != Blocks.JUKEBOX)
@@ -273,128 +261,69 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
-
-        if (TAME_ITEMS.contains(itemstack.getItem()))
-        {
-            if(!this.isTamed()) {
-            	
-                if (!player.capabilities.isCreativeMode)
-                {
-                    itemstack.shrink(1);
-                }
-
-                if (!this.isSilent())
-                {
-                    this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-                }
-            	
-            	if (!this.world.isRemote)
+        
+        if(this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {
+        	
+	    	if (itemstack.interactWithEntity(player, this, hand)) {
+	    		return true;
+	    	}
+	    	else if(this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+	        	
+	            if (!player.capabilities.isCreativeMode)
 	            {
-	                if (this.rand.nextInt(5) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player))
-	                {
-	                    this.setTamedBy(player);
-	                    //this.ridingCooldown = 30;
-	                    this.tasks.removeTask(this.AITargetItem);
-	                    this.playTameEffect(true);
-	                    this.world.setEntityState(this, (byte)7);
-	                }
-	                else
-	                {
-	                    this.playTameEffect(false);
-	                    this.world.setEntityState(this, (byte)6);
-	                }
+	                itemstack.shrink(1);
 	            }
+	
+	            if (!this.isSilent())
+	            {
+	                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+	            }
+	        	
+	        	this.heal(2.0F);
+	        	
+	        	return true;
+	        }
+	        else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.getSkin() == 0) {
+	            if (!player.capabilities.isCreativeMode)
+	            {
+	                itemstack.shrink(1);
+	            }
+	        	this.setSkin(3);
+	        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+	        	for (int i = 0; i < 16; ++i)
+	            {
+	                double d0 = new Random().nextGaussian() * 0.02D;
+	                double d1 = new Random().nextGaussian() * 0.02D;
+	                double d2 = new Random().nextGaussian() * 0.02D;
+	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	            }
+	        	
+	        	return true;
+	        }
+	        else if (!this.world.isRemote && itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty())
+	        {     	
+            	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
             	
-            	return true;
-            }
-            else if(this.getHealth() < this.getMaxHealth()) {
-            	
-                if (!player.capabilities.isCreativeMode)
+            	if (!player.inventory.addItemStackToInventory(this.getHeldItemMainhand().copy()))
                 {
-                    itemstack.shrink(1);
-                }
-
-                if (!this.isSilent())
-                {
-                    this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+                    player.dropItem(this.getHeldItemMainhand().copy(), false);
                 }
             	
-            	this.heal(2.0F);
-            	
-            	return true;
-            }
-
-            return super.processInteract(player, hand);
+            	this.getHeldItemMainhand().shrink(this.getHeldItemMainhand().getCount());
+        		
+        		return true;	            
+	        }
         }
-        else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.isTamed() && this.getOwner().equals(player) && this.getSkin() == 0) {
-            if (!player.capabilities.isCreativeMode)
-            {
-                itemstack.shrink(1);
-                itemstack.onItemUseFinish(this.world, player);
-            }
-        	this.setSkin(3);
-        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
-        	for (int i = 0; i < 16; ++i)
-            {
-                double d0 = new Random().nextGaussian() * 0.02D;
-                double d1 = new Random().nextGaussian() * 0.02D;
-                double d2 = new Random().nextGaussian() * 0.02D;
-                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
-            }
-        	return true;
-        }
-        /*else if (itemstack.getItem() == DEADLY_ITEM)
-        {
-            if (!player.capabilities.isCreativeMode)
-            {
-                itemstack.shrink(1);
-            }
-
-            this.addPotionEffect(new PotionEffect(MobEffects.POISON, 900));
-
-            if (player.isCreative() || !this.getIsInvulnerable())
-            {
-                this.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
-            }
-
-            return true;
-        }*/
-        else
-        {     	
-        	if (!this.world.isRemote && !this.isFlying() && this.isTamed() && this.isOwner(player) && player.getActiveHand().equals(hand))
-            {       		
-                if(!this.getHeldItemMainhand().isEmpty()) {
-                	this.entityDropItem(this.getHeldItemMainhand().copy(), 0.4f);
-                	this.getHeldItemMainhand().shrink(this.getHeldItemMainhand().getCount());
-                }
-                else if (player.getHeldItemMainhand().getItem().equals(Items.STICK)) {
-                	//System.out.println("O_O " + this.isSitting());
-                	
-                	if(this.isSitting()) {
-                		this.aiSit.setSitting(false);
-                		player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
-                	}
-                	else {
-                		this.aiSit.setSitting(true);
-                		player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
-                	}
-                }
-                
-                return true;
-                
-            }
-
-            return super.processInteract(player, hand);
-        }
+        
+        return super.processInteract(player, hand);
     }
 
     /**
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
      */
-    public boolean isBreedingItem(ItemStack stack)
-    {
-        return false;
+    public boolean isBreedingItem(ItemStack stack) {
+       return TAME_ITEMS.contains(stack.getItem());
     }
     
     @Override
@@ -408,7 +337,11 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
         int k = MathHelper.floor(this.posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
         Block block = this.world.getBlockState(blockpos.down()).getBlock();
-        return SpawnUtil.isAllowedDimension(this.dimension) && block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR && this.world.getLight(blockpos) > 8 && super.getCanSpawnHere();
+        return SpawnUtil.isAllowedDimension(this.dimension) 
+        		&& block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR 
+        		&& this.world.getLight(blockpos) > 8 
+        		&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
+            	&& this.world.getBlockState((new BlockPos(this)).down()).canEntitySpawn(this);
     }
 
     public void fall(float distance, float damageMultiplier)
@@ -526,8 +459,6 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
             if(entityIn instanceof EntityPlayerMP && ((EntityPlayerMP) entityIn).connection != null) {
                 ((EntityPlayerMP) entityIn).connection.sendPacket(new SPacketSetPassengers(entityIn));
               }
-        	//this.setSitting(true);
-        	//this.setScale(0.1F);
         }
         else
         	super.collideWithEntity(entityIn);
@@ -587,9 +518,6 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
  	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.BEACH)) {
- 		   /*if(this.world.isRemote)
- 			   this.setCustomNameTag(I18n.format("entity.mod_lavacow.seagull.name"));*/
- 		   //this.setCustomNameTag("Seagull");
  		   this.TAME_ITEMS.clear();
  		   this.TAME_ITEMS.add(Items.FISH);
  		   this.setSkin(2);
@@ -609,6 +537,13 @@ public class EntityRaven extends EntityTameable implements EntityFlying{
     
     private boolean isFetching() {
     	return EntityRaven.this.TargetLocationX != -1.0F || EntityRaven.this.TargetLocationY != -1.0F || EntityRaven.this.TargetLocationZ != -1.0F;
+    }
+    
+    @Override
+    public void travel(float strafe, float vertical, float forward)
+    {
+    	if(!this.isSitting() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube())
+    		super.travel(strafe, vertical, forward);
     }
 
     /**

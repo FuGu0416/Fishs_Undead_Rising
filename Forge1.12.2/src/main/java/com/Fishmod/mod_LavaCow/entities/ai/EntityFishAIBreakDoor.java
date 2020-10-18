@@ -1,15 +1,15 @@
-package com.Fishmod.mod_LavaCow.ai;
+package com.Fishmod.mod_LavaCow.entities.ai;
 
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBreakDoor;
 
-public class UnburiedAIBreakDoor extends EntityAIBreakDoor{
+public class EntityFishAIBreakDoor extends EntityAIBreakDoor{
 
     private int knockknockTime;
 	
-	public UnburiedAIBreakDoor(EntityLiving entityIn) {
+	public EntityFishAIBreakDoor(EntityLiving entityIn) {
 		super(entityIn);
 	}
 	

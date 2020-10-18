@@ -131,7 +131,12 @@ public class ModelPtera extends ModelFlyingBase {
     	this.Head.rotateAngleX = headPitch * 0.017453292F;
     	this.Head.rotateAngleY = netHeadYaw * 0.017453292F;
     	
-    	this.Body_Base.rotationPointY = 5.0F * flap;
+    	if(entityIn.getPassengers().isEmpty()) {
+    		this.Body_Base.rotationPointY = 5.0F * flap;
+    	}
+    	else {
+    		this.Body_Base.rotationPointY = 0.0F;
+    	}
     	
     	this.Jaw.rotateAngleX = 0.3F + 0.15F * flap;
     	
@@ -152,8 +157,15 @@ public class ModelPtera extends ModelFlyingBase {
         	this.Body1.rotateAngleX = 0.091106186954104F;
         	this.Tail0.rotateAngleX = 0.26F - 0.18F * flap;
         	
-        	this.leg_r.rotateAngleX = 1.0559241974565694F;
-	        this.leg_l.rotateAngleX = 1.0559241974565694F;
+        	if(entityIn.getPassengers().isEmpty()) {
+	        	this.leg_r.rotateAngleX = 1.0559241974565694F;
+		        this.leg_l.rotateAngleX = 1.0559241974565694F;
+        	}
+        	else {
+        		this.leg_r.rotateAngleX = 0.619591884457987F;
+    	        this.leg_l.rotateAngleX = 0.619591884457987F; 
+        	}
+        		
         }
         else if(this.state.equals(ModelFlyingBase.State.ATTACKING)) {
         	this.Head.rotateAngleX = -0.5235987755982988F * 0.05F * ((EntityFlyingMob)entityIn).getAttackTimer();

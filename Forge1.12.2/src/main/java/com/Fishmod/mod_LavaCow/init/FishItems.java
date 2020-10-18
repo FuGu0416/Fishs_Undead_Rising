@@ -19,8 +19,10 @@ import com.Fishmod.mod_LavaCow.item.ItemIntestine;
 import com.Fishmod.mod_LavaCow.item.ItemMoltenAxe;
 import com.Fishmod.mod_LavaCow.item.ItemMoltenBeef;
 import com.Fishmod.mod_LavaCow.item.ItemNetherStew;
+import com.Fishmod.mod_LavaCow.item.ItemParasite;
 import com.Fishmod.mod_LavaCow.item.ItemPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.item.ItemPoisonSpore;
+import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
@@ -42,13 +44,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
  
 @ObjectHolder(mod_LavaCow.MODID)
 public class FishItems {
-	public static final Item NETHERSTEW = new ItemNetherStew("netherstew");
+	public static final Item NETHERSTEW = new ItemNetherStew("netherstew").setRandPotionEffect(ItemNetherStew.Effect_nethersoup);
 	public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item CANEPORK = new ItemFishCustomFood("canepork", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item CANEROTTENMEAT = new ItemFishCustomFood("canerottenmeat", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item FISSIONPOTION = new ItemFissionPotion("fissionpotion", SoundEvents.ENTITY_SLIME_SQUISH, EnumParticleTypes.VILLAGER_HAPPY, EnumRarity.COMMON, false);
 	public static final Item HYPHAE = new ItemFishCustom("hyphae", null, mod_LavaCow.TAB_ITEMS, false);
-	public static final Item PARASITE_ITEM = new ItemFishCustomFood("parasite_item", 2, 0.3F, false, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 0), 0.3F);
+	public static final Item PARASITE_ITEM = new ItemParasite("parasite_item", 2, 0.3F, false, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 0), 0.3F);
 	public static final Item PARASITE_ITEM_COOKED = new ItemFishCustomFood("parasite_item_cooked", 6, 0.6F, false, 32, false);
 	public static final Item PIRANHA = new ItemFishCustomFood("piranha", 2, 0.1F, false, 32, false);
 	public static final Item PIRANHA_COOKED = new ItemFishCustomFood("piranha_cooked", 6, 0.8F, false, 32, false);
@@ -87,7 +89,7 @@ public class FishItems {
 	public static final Item FELARMOR_CHESTPLATE = new ItemFelArmor("felarmor_chestplate", 2, EntityEquipmentSlot.CHEST, 0.5F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item FELARMOR_LEGGINGS = new ItemFelArmor("felarmor_leggings", 2, EntityEquipmentSlot.LEGS, 0.2F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item FELARMOR_BOOTS = new ItemFelArmor("felarmor_boots", 2, EntityEquipmentSlot.FEET, 0.1F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
-	public static final Item PTERA_WING = new ItemFishCustomFood("ptera_wing", 4, 0.1F, true, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 2), 0.8F).setAlwaysEdible();
+	public static final Item PTERA_WING = new ItemPteraWing("ptera_wing", 4, 0.1F, true, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 2), 0.8F).setAlwaysEdible();
 	public static final Item PTERA_WING_COOKED = new ItemFishCustomFood("ptera_wing_cooked", 8, 0.8F, true, 32, false);
 	public static final Item POISONSTINGER = new ItemFishCustom("poisonstinger", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item VESPA_CARAPACE = new ItemFishCustom("vespa_carapace", null, mod_LavaCow.TAB_ITEMS, false);
@@ -125,7 +127,8 @@ public class FishItems {
 	public static final Item GHOSTBOMB = new ItemHolyGrenade("ghostbomb");
 	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
 	public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
-	
+	public static final Item BONE_STEW = new ItemNetherStew("bonestew").setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
+			
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
 	public static final SoundEvent ENTITY_PARASITE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.death")).setRegistryName("entity_parasite_death");

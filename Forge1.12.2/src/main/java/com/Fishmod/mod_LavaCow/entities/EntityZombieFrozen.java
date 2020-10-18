@@ -2,9 +2,9 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.ai.UnburiedAIBreakDoor;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -41,16 +41,15 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
     protected void initEntityAI()
     {
         super.initEntityAI();
-        this.tasks.addTask(1, new UnburiedAIBreakDoor(this));
+        this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
     }
     
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        //this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        //this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
     }
     
     @Override
