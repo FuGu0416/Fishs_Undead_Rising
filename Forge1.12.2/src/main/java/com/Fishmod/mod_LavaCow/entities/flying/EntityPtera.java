@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDropRider;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -15,10 +16,12 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -93,6 +96,17 @@ public class EntityPtera extends EntityFlyingMob {
          this.setDead();
       }
 
+   }
+   
+   /**
+    * Called when the entity is attacked.
+    */
+   public boolean attackEntityFrom(DamageSource source, float amount)
+   {
+       if(!this.getPassengers().isEmpty())
+    	   this.removePassengers();
+    	   
+	   return super.attackEntityFrom(source, amount);
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {

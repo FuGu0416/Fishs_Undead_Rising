@@ -32,6 +32,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityTameable;
@@ -52,8 +53,10 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -72,6 +75,8 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
+import net.minecraftforge.event.terraingen.WorldTypeEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -414,6 +419,7 @@ public class ModEventHandler {
     	
     	if(event.getState().getMaterial() == Material.SAND 
     		&& BiomeDictionary.hasType(event.getWorld().getBiome(event.getPos()), BiomeDictionary.Type.DRY) 
+    		&& event.getWorld().provider.getDimension() == DimensionType.OVERWORLD.getId()
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
     		) {   
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
@@ -671,6 +677,16 @@ public class ModEventHandler {
      * Mufasa:That's beyond our borders. You must never go there Simba.
      */
     
+    /*@SubscribeEvent
+    public void onBiomeGenInit(InitMapGenEvent event) {    	
+    	if(event.getType() == InitMapGenEvent.EventType.NETHER_BRIDGE) {
+        	MapGenNetherBridge newGen = new MapGenNetherBridge();
+        	newGen.getSpawnList().add(new Biome.SpawnListEntry(EntityWendigo.class, 2, 1, 1));
+        	
+    		event.setNewGen(newGen);
+    	}
+    }*/
+      
     /*@SubscribeEvent
     public void onExplosion(ExplosionEvent event) {
     	if(event.getExplosion().getExplosivePlacedBy() instanceof EntityFoglet) {
