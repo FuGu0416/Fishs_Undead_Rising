@@ -32,13 +32,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -56,7 +57,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -73,10 +73,9 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
-import net.minecraftforge.event.terraingen.InitMapGenEvent;
-import net.minecraftforge.event.terraingen.WorldTypeEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -670,6 +669,39 @@ public class ModEventHandler {
     	if(!event.getEntityLiving().world.isRemote && Armor_Swine_lvl && event.getItem().getItem() instanceof ItemFood) {
     		event.getEntityLiving().curePotionEffects(new ItemStack(Items.MILK_BUCKET));
     	}
+    }
+    
+    @SubscribeEvent
+    public void onPlayerXPPickUp(PlayerPickupXpEvent event) {
+
+        if (!event.getEntityPlayer().world.isRemote) {
+    		if(Loader.isModLoaded("baubles")) {
+    			int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(event.getEntityPlayer(), FishItems.GOLDENHEART);
+    			
+    			if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0) {
+    				event.setCanceled(true);
+    				EntityXPOrb xpOrb = event.getOrb();
+    				EntityPlayer player = event.getEntityPlayer();
+    				ItemStack item = baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot);
+    				
+                    if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
+
+                        player.xpCooldown = 2;
+                        player.onItemPickup(xpOrb, 1);
+                        int i = Math.min(xpOrb.xpValue * 2, item.getItemDamage());
+                        xpOrb.xpValue -= i / 2;
+
+                        item.setItemDamage(item.getItemDamage() - i);
+
+                        if (xpOrb.xpValue > 0) {
+                            player.addExperience(xpOrb.xpValue);
+                        }
+
+                        xpOrb.setDead();
+                    }
+    			}
+            }
+        }
     }
     
     /**
