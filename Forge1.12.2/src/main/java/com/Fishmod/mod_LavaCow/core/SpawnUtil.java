@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.core;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SpawnUtil {
@@ -18,4 +20,9 @@ public class SpawnUtil {
 		
 		return false;
 	}
+	
+	/* Used to determine the relative height */
+    public static BlockPos getHeight(Entity entityIn) {
+    	return entityIn.world.getHeight(entityIn.getPosition());
+    }
 }

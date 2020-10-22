@@ -262,15 +262,11 @@ public class EntityFlyingMob extends EntityMob {
             double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             
             if(this.parentEntity.isWet())
-            	d1 = 3.0D;
+            	d1 = SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D;
             else if(Modconfig.FlyingHeight_limit != 0 && (double)Modconfig.FlyingHeight_limit < d1)
-            	d1 = (double)Modconfig.FlyingHeight_limit;
+            	d1 = (double)(SpawnUtil.getHeight(this.parentEntity).getY() + Modconfig.FlyingHeight_limit);
             
             this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
-        }
-        
-        public BlockPos getHeight() {
-        	return this.parentEntity.world.getHeight(this.parentEntity.getPosition());
         }
     }
     

@@ -671,35 +671,38 @@ public class ModEventHandler {
     	}
     }
     
+    private void MendingBaubles(Item item, EntityXPOrb xpOrb, EntityPlayer player, PlayerPickupXpEvent event) {
+		int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
+		
+		if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0) {
+			event.setCanceled(true);
+			ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(player).getStackInSlot(Heart_Slot);
+			
+            if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
+
+                player.xpCooldown = 2;
+                player.onItemPickup(xpOrb, 1);
+                int i = Math.min(xpOrb.xpValue * 2, itemStack.getItemDamage());
+                xpOrb.xpValue -= i / 2;
+
+                itemStack.setItemDamage(itemStack.getItemDamage() - i);
+
+                if (xpOrb.xpValue > 0) {
+                    player.addExperience(xpOrb.xpValue);
+                }
+
+                xpOrb.setDead();
+            }
+		}
+    }
+    
     @SubscribeEvent
     public void onPlayerXPPickUp(PlayerPickupXpEvent event) {
 
         if (!event.getEntityPlayer().world.isRemote) {
     		if(Loader.isModLoaded("baubles")) {
-    			int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(event.getEntityPlayer(), FishItems.GOLDENHEART);
-    			
-    			if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0) {
-    				event.setCanceled(true);
-    				EntityXPOrb xpOrb = event.getOrb();
-    				EntityPlayer player = event.getEntityPlayer();
-    				ItemStack item = baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot);
-    				
-                    if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
-
-                        player.xpCooldown = 2;
-                        player.onItemPickup(xpOrb, 1);
-                        int i = Math.min(xpOrb.xpValue * 2, item.getItemDamage());
-                        xpOrb.xpValue -= i / 2;
-
-                        item.setItemDamage(item.getItemDamage() - i);
-
-                        if (xpOrb.xpValue > 0) {
-                            player.addExperience(xpOrb.xpValue);
-                        }
-
-                        xpOrb.setDead();
-                    }
-    			}
+    			MendingBaubles(FishItems.GOLDENHEART, event.getOrb(), event.getEntityPlayer(), event);
+    			MendingBaubles(FishItems.DREAMCATCHER, event.getOrb(), event.getEntityPlayer(), event);
             }
         }
     }
