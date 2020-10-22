@@ -385,7 +385,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 
         protected void castSpell()
         {
-        	List<Entity> list = EntityBanshee.this.world.getEntitiesWithinAABBExcludingEntity(EntityBanshee.this, EntityBanshee.this.getEntityBoundingBox().grow(3.0D, 3.0D, 3.0D));
+        	List<Entity> list = EntityBanshee.this.world.getEntitiesWithinAABBExcludingEntity(EntityBanshee.this, EntityBanshee.this.getEntityBoundingBox().grow(Modconfig.Banshee_Ability_Radius, Modconfig.Banshee_Ability_Radius, Modconfig.Banshee_Ability_Radius));
         	EntityBanshee.this.world.setEntityState(EntityBanshee.this, (byte)11);
         	
         	for (Entity entity1 : list)
@@ -397,7 +397,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.MAGIC.setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
+        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage().setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
         		}
         	} 
         }

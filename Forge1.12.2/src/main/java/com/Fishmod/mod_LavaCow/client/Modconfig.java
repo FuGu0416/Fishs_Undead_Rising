@@ -107,6 +107,7 @@ public class Modconfig {
 	public static int pSpawnRate_Banshee;
 	public static double Banshee_Health;
 	public static double Banshee_Attack;
+	public static double Banshee_Ability_Radius;
 	
 	public static int pSpawnRate_Weta;
 	public static double Weta_Health;
@@ -288,6 +289,7 @@ public class Modconfig {
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
 		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
 		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
+		Banshee_Ability_Radius = config.get("Banshee", "banshee scream radius", 3.0D, "Set the effect radius of Banshee scream [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
 		Weta_Health = config.get("Weta", "weta health", 34.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
