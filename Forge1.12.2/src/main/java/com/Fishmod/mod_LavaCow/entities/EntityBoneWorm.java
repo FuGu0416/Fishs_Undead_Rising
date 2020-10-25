@@ -44,7 +44,7 @@ public class EntityBoneWorm  extends EntityMob{
 	
 	private boolean isAggressive = false;
 	public double LocationFix;
-	public int attackTimer;
+	public int attackTimer[] = {0, 0};
 	private EntityFishAIAttackRange range_atk;
 	private EntityAIAvoidEntity<EntityPlayer> avoid_player;
 	private int avoid_cooldown;
@@ -61,10 +61,7 @@ public class EntityBoneWorm  extends EntityMob{
     	this.range_atk = new EntityFishAIAttackRange(this, EntityAcidJet.class, FishItems.ENTITY_BONEWORM_ATTACK, 1, 1, 0.0D, 12.0D, 0.0D, 0.65D, 0.0D);
     	this.avoid_player = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, 10.0F, 1.0D, 1.2D);
     	
-    	//this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, this.range_atk);
-        //this.tasks.addTask(1, this.avoid_player);
-        //this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -97,9 +94,11 @@ public class EntityBoneWorm  extends EntityMob{
 	}
     
     private boolean isWalking() {
-    	//return this.getDistance(this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ) > 0;
     	return (this.posX - this.prevPosX != 0) || (this.posY - this.prevPosY != 0) || (this.posZ - this.prevPosZ != 0);
-    	//return Math.abs(this.limbSwingAmount) > 0.01F; 
+    }
+    
+    private boolean isAttacking() {
+    	return this.isAggressive() || (this.getAttackTimer(0) != 0 && this.getAttackTimer(1) != 0);
     }
     
     /**
@@ -135,13 +134,12 @@ public class EntityBoneWorm  extends EntityMob{
         	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
         }
         
-		if(this.isWalking() && state.isOpaqueCube()) {
+		if(!this.isAttacking() && this.isWalking() && state.isOpaqueCube()) {
 			if(this.LocationFix <= 3.5D)this.LocationFix += 0.5D;
 			if (world.isRemote)
 				for(int i = 0; i < 4; i++)
 					this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, blockId);
 			this.setSize(this.width, Math.max(2.0F - (float)this.LocationFix, 0.5F));
-        	//System.out.println("O_O " + this.LocationFix);
 		}
 		else if(this.LocationFix > 0.0D && state.isOpaqueCube()) {
 			this.LocationFix -= 0.25D;
@@ -149,7 +147,6 @@ public class EntityBoneWorm  extends EntityMob{
 				for(int i = 0; i < 4; i++)
 					this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, blockId);
         	this.setSize(this.width, Math.max(2.0F - (float)this.LocationFix, 0.5F));
-        	//System.out.println("O+O " + this.LocationFix);
 		}
 		
 		if (!this.world.isRemote) {
@@ -172,10 +169,11 @@ public class EntityBoneWorm  extends EntityMob{
     @Override
     public void onLivingUpdate()
     {
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-         }
-    	
+        for(int i = 0 ; i < 2; i++)
+	    	if (this.attackTimer[i] > 0) {
+	            --this.attackTimer[i];
+	         }
+    	        
     	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
         	{
         		float f = this.getBrightness();
@@ -183,9 +181,6 @@ public class EntityBoneWorm  extends EntityMob{
         	}
     	
     	if(this.isWalking())this.extinguish();
-    	/*if (!this.world.isRemote)
-    		if (!getEntityWorld().getBlockState(getPosition().down()).isOpaqueCube() || !getEntityWorld().getBlockState(getPosition().down(2)).isOpaqueCube() || !getEntityWorld().getBlockState(getPosition().down(3)).isOpaqueCube())
-    			this.posY -= 1.0D;*/
     	
         super.onLivingUpdate();
     }
@@ -201,20 +196,17 @@ public class EntityBoneWorm  extends EntityMob{
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-    	//System.out.println("O+O " + this.isWalking() + " " + this.LocationFix + " " + source.getDamageType());
     	if (this.LocationFix > 0)
         {
             return false;
         }
         else
         {
-            //this.setRunning(60);
         	return super.attackEntityFrom(source, amount);
         }
     }
     
     public void setRunning(int CD) {
-    	//this.tasks.addTask(0, this.range_atk);
     	this.tasks.removeTask(this.range_atk);
 		this.tasks.addTask(1, this.avoid_player);
 		this.avoid_cooldown = CD;
@@ -225,6 +217,8 @@ public class EntityBoneWorm  extends EntityMob{
         boolean flag = super.attackEntityAsMob(entityIn);
 
         if (flag) {
+        	this.attackTimer[1] = 16;
+        	this.world.setEntityState(this, (byte)5);
         }
 
         return flag;
@@ -290,8 +284,8 @@ public class EntityBoneWorm  extends EntityMob{
     }
     
     @SideOnly(Side.CLIENT)
-    public int getAttackTimer() {
-       return this.attackTimer;
+    public int getAttackTimer(int i) {
+       return this.attackTimer[i];
     }
     
     /**
@@ -302,9 +296,13 @@ public class EntityBoneWorm  extends EntityMob{
     {
     	if (id == 4) 
     	{
-            this.attackTimer = 15;
+            this.attackTimer[0] = 15;
         }
-    	if (id == 11)
+    	else if (id == 5)
+    	{
+    		this.attackTimer[1] = 16;
+    	}
+    	else if (id == 11)
         {
             this.isAggressive = true;
         }

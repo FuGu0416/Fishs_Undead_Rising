@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
@@ -15,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -46,7 +48,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,14 +61,12 @@ public class EntityMimic extends EntityFishTameable{
 	private boolean isAggressive = false;
 	private int AttackTimer = 40;
 	public NonNullList<ItemStack> inventory;
-	//public TileEntityMimic Tileentitymimic = null;
 	
 	public EntityMimic(World worldIn)
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-        //this.Tileentitymimic = new TileEntityMimic(this);
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
@@ -124,8 +127,6 @@ public class EntityMimic extends EntityFishTameable{
         for(BlockPos C : BlockPos.getAllInBox(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
         	if(this.getEntityWorld().getBlockState(C).getBlock() == Blocks.CHEST)is_near_chest = true;
         
-        //if(worldIn.getBlockState(new BlockPos(dx, dy, dz).down()).getBlock() == Blocks.COBBLESTONE)is_near_chest = true;
-        
         return SpawnUtil.isAllowedDimension(this.dimension) && is_near_chest && super.getCanSpawnHere();
      }
     
@@ -146,7 +147,6 @@ public class EntityMimic extends EntityFishTameable{
         
         if (tamed) 
         {
-        	//this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
@@ -154,7 +154,6 @@ public class EntityMimic extends EntityFishTameable{
         } 
         else
         {
-        	//this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
         	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
         	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
         	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
@@ -165,28 +164,12 @@ public class EntityMimic extends EntityFishTameable{
     {
     	if (!getEntityWorld().isRemote) {
 			for (int i = 0; i < this.inventory.size();i++)
-				/*if (this.inventory.get(i).isEmpty() || this.inventory.get(i).getItem() == itemstackIn.getItem())
-				{
-					int j = this.inventory.get(i).getCount();
-					this.inventory.set(i, new ItemStack(itemstackIn.getItem(), Math.min(itemstackIn.getItem().getItemStackLimit(itemstackIn), itemstackIn.getCount() + j)));
-					itemstackIn.shrink(itemstackIn.getItem().getItemStackLimit(itemstackIn) - j); 
-					if(itemstackIn.getCount() <= 0)return;
-				}*/
 				if (this.inventory.get(i).isEmpty()) {
 					this.inventory.set(i, new ItemStack(Items.EMERALD));
 					this.inventory.set(i, itemstackIn.copy());
 					itemstackIn.shrink(itemstackIn.getCount());
 					return;
-				}
-			
-			/*if(this.getSkin() == this.getVoidSkin()) {
-				for (int i = 0; i < this.inventory.size();i++) {
-					if (!this.inventory.get(i).isEmpty())
-						((EntityPlayer) this.getOwner()).getInventoryEnderChest().addItem(this.inventory.get(i));
-					//this.inventory.get(i).shrink(1);
-				}
-			}*/
-				
+				}			
     	}
     }
     
@@ -219,22 +202,17 @@ public class EntityMimic extends EntityFishTameable{
 			this.posZ = MathHelper.floor(posZ) + 0.55;
 			this.rotationYaw = prevRotationYaw = 0F;
 			this.renderYawOffset = prevRenderYawOffset = 0F;
-			//this.motionX = 0.0D;
-			//this.motionY = 0.0D;
-			//this.motionZ = 0.0D;
 
 			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
 				posY -= 1;
 			this.setSilent(true);
 			this.setAIMoveSpeed(0.0F);
-			//this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
 		}
 		else if(this.getAttackingEntity() != null)
 		{
 			AttackTimer = 200;
 			this.setSilent(false);
 			this.setAIMoveSpeed(0.19F);
-			//this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.19D);
 		}
 		
 		if(!this.isTamed() && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) > this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue()) {
@@ -296,6 +274,10 @@ public class EntityMimic extends EntityFishTameable{
         if (flag) {
         	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_ATTACK, 1.0F, 1.0F);
         	this.applyEnchantments(this, entityIn);
+        	
+        	if(this.getSkin() == 6 && this.rand.nextInt(4) == 0) {
+        		entityIn.setFire(4);
+        	}
         }
 
         return flag;
@@ -361,41 +343,54 @@ public class EntityMimic extends EntityFishTameable{
                        if (!player.capabilities.isCreativeMode) {
                           itemstack.shrink(1);
                        }
-                       //System.out.println(this.dataManager.get(DATA_HEALTH_ID) + " " + this.getMaxHealth());
+
                        this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.4F, 1.0F);
                        this.heal((float)itemfood.getHealAmount(itemstack));
                        return true;
                     }
             	}
                 else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == Items.ENDER_EYE) {
-             	   //System.out.println("O_O 3");
              	   if (!player.capabilities.isCreativeMode) {
                         itemstack.shrink(1);
                      }
              	   this.setSkin(getVoidSkin());
              	   this.setCanPickUpLoot(false);
              	   
- 	       			for (ItemStack is : this.inventory)
- 	    				if (!is.isEmpty()) {
- 	    					this.entityDropItem(is.copy(), 0.2F);
- 	    					is.shrink(is.getCount());
- 	    				}
+	       			for (ItemStack is : this.inventory)
+	    				if (!is.isEmpty()) {
+	    					this.entityDropItem(is.copy(), 0.2F);
+	    					is.shrink(is.getCount());
+	    				}
+ 	       			
+ 		        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+ 		        	for (int i = 0; i < 16; ++i)
+ 		            {
+ 		                double d0 = new Random().nextGaussian() * 0.02D;
+ 		                double d1 = new Random().nextGaussian() * 0.02D;
+ 		                double d2 = new Random().nextGaussian() * 0.02D;
+ 		                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+ 		            }
 
  	       			return true;
                 }
-            	/*else if(!this.world.isRemote && this.isOwner(player)) {
- 	               if (item == Items.STICK) {
- 	            	   this.aiSit.setSitting(!this.isSitting());
- 	            	   this.isJumping = false;
- 	            	   this.navigator.clearPath();
- 	            	   this.setAttackTarget((EntityLivingBase)null);
- 		                   
- 	            	   if(this.isSitting()) player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
- 	            	   else player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
- 	            	   
- 	                   return true;
- 	               }
-            	}*/
+                else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == FishItems.MOOTENHEART) {
+                	if (!player.capabilities.isCreativeMode) {
+                		itemstack.shrink(1);
+                	}
+					this.setSkin(6);
+					this.isImmuneToFire = true;
+              	   
+					this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+					for (int i = 0; i < 16; ++i)
+					{
+					    double d0 = new Random().nextGaussian() * 0.02D;
+					    double d1 = new Random().nextGaussian() * 0.02D;
+					    double d2 = new Random().nextGaussian() * 0.02D;
+					    this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+					}
+
+  	       			return true;
+                 }
             }
 
             if (this.isChild())
@@ -408,72 +403,6 @@ public class EntityMimic extends EntityFishTameable{
             }
         }
         
-        /*System.out.print(itemstack.interactWithEntity(player, this, hand));
-        if(itemstack.interactWithEntity(player, this, hand)) {
-        	
-        	
-        	return true;
-        }
-
-        if (this.isTamed() && hand == player.getActiveHand()) {
-	            if(itemstack.interactWithEntity(player, this, hand)) {
-	            	return true;
-	            }
-	            else if (item instanceof ItemFood) {
-                  ItemFood itemfood = (ItemFood)item;
-                  if (itemfood.isWolfsFavoriteMeat() && this.dataManager.get(DATA_HEALTH_ID) < this.getMaxHealth()) {
-                     if (!player.capabilities.isCreativeMode) {
-                        itemstack.shrink(1);
-                     }
-                     //System.out.println(this.dataManager.get(DATA_HEALTH_ID) + " " + this.getMaxHealth());
-                     this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.4F, 1.0F);
-                     this.heal((float)itemfood.getHealAmount(itemstack));
-                     return true;
-                  }
-
-               }
-               else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == Items.ENDER_EYE) {
-            	   //System.out.println("O_O 3");
-            	   if (!player.capabilities.isCreativeMode) {
-                       itemstack.shrink(1);
-                    }
-            	   this.setSkin(getVoidSkin());
-            	   this.setCanPickUpLoot(false);
-            	   
-	       			for (ItemStack is : this.inventory)
-	    				if (!is.isEmpty())
-	    					this.entityDropItem(is, 0.2F);
-
-	       			return true;
-               }
-               else if(!this.world.isRemote && this.isOwner(player)) {
-	               if (item == Items.STICK) {
-	            	   this.aiSit.setSitting(!this.isSitting());
-	            	   this.isJumping = false;
-	            	   this.navigator.clearPath();
-	            	   this.setAttackTarget((EntityLivingBase)null);
-		                   
-	            	   if(this.isSitting()) player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.following")), true);
-	            	   else player.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.sitting")), true);
-	            	   
-	                   return true;
-	               }
-	               else if(player.isSneaking() && item != FishItems.FISSIONPOTION && (Modconfig.Mimic_noGUI || !player.isSneaking()))
-	               {
-	            	   //System.out.println("O_O 4");
-	            	   if(this.getSkin() == getVoidSkin()) {	
-		            	   player.displayGUIChest(player.getInventoryEnderChest());
-		            	   this.playSound(SoundEvents.BLOCK_ENDERCHEST_OPEN, 1.0F, 1.0F);
-	            	   }
-		               else
-		            	   player.displayGUIChest(new TileEntityMimic(this));
-	
-		               return super.processInteract(player, hand);
-	               }
-               }
-               //else System.out.println("O_O throw");
-        }*/
-        
         if(!this.isTamed() && this.getDistanceSq(player) < 2.0D) {
 	        this.playSound(SoundEvents.BLOCK_CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FishItems.ENTITY_MIMIC_AMBIENT, 0.4F, 1.0F);
@@ -482,6 +411,15 @@ public class EntityMimic extends EntityFishTameable{
 
         return super.processInteract(player, hand);
      }
+    
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+ 	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.NETHER)) {
+ 		   this.setSkin(6);
+ 		   this.isImmuneToFire = true;
+ 	   }
+ 	   
+ 	   return entityLivingData;
+    }
     
     /**
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
@@ -672,9 +610,6 @@ public class EntityMimic extends EntityFishTameable{
 			for (ItemStack is : this.inventory)
 				if (!is.isEmpty())
 					this.entityDropItem(is, 0.2F); 
-			/*if(!this.isTamed()) {
-				this.entityDropItem(LootTableList.CHESTS_JUNGLE_TEMPLE, 0.0F);
-			}	*/			
 		}
 
 		super.onDeath(cause);

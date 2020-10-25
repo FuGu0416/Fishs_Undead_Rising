@@ -22,9 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemHaloNecklace extends ItemPoisonSpore implements baubles.api.IBauble{
+public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBauble{
 
-	public ItemHaloNecklace(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
+	public ItemBaubleTrinket(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(0);
@@ -37,13 +37,16 @@ public class ItemHaloNecklace extends ItemPoisonSpore implements baubles.api.IBa
 	
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
 	{
-		return par2ItemStack.getItem() == FishItems.HOLY_SLUDGE;
+		return false;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+		if(stack.getItem().equals(FishItems.HALO_NECKLACE))
 			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.HaloNecklace_Damage));
+		else if(stack.getItem().equals(FishItems.MOOTENHEART))
+			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.MootenHeart_Damage) + I18n.format("item.mod_lavacow.potion_of_mooten_lava.name"));
 	}
 	
     /**
@@ -66,7 +69,10 @@ public class ItemHaloNecklace extends ItemPoisonSpore implements baubles.api.IBa
     @Override
     @Optional.Method(modid = "baubles")
     public baubles.api.BaubleType getBaubleType(ItemStack arg0) {
-          return baubles.api.BaubleType.AMULET;
+    	if(arg0.getItem().equals(FishItems.HALO_NECKLACE))
+    		return baubles.api.BaubleType.AMULET;
+    	else
+    		return baubles.api.BaubleType.TRINKET;
     }
     
     @Override

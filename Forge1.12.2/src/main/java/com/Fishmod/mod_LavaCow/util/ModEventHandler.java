@@ -12,6 +12,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -57,6 +58,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -76,6 +78,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -460,6 +463,19 @@ public class ModEventHandler {
     		for(ItemStack S : event.getEntityLiving().getEquipmentAndArmor()) {
     			if(S.getItem() instanceof ItemFelArmor)effectlevel -= ((ItemFelArmor)S.getItem()).fireprooflevel;
     		}
+    		
+    		boolean have_Heart = false;
+    		if(Loader.isModLoaded("baubles")) {
+    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1)
+    				have_Heart = true;
+    		}
+    		
+    		for(int i = 0; i < 9 ; i++)
+    			if(((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART))
+					have_Heart = true;
+    		
+    		if(have_Heart)
+    			effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
     	}
     	
     	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityFoglet){
@@ -707,20 +723,20 @@ public class ModEventHandler {
         }
     }
     
+    @SubscribeEvent
+    public void onBiomeGenInit(InitMapGenEvent event) {    	
+    	if(event.getType() == InitMapGenEvent.EventType.NETHER_BRIDGE) {
+        	MapGenNetherBridge newGen = new MapGenNetherBridge();
+        	newGen.getSpawnList().add(new Biome.SpawnListEntry(EntityMimic.class, 1, 1, 1));
+        	
+    		event.setNewGen(newGen);
+    	}
+    }
+    
     /**
      * Young Simba:Everything the light touches... But what about that dark greeny place?
      * Mufasa:That's beyond our borders. You must never go there Simba.
      */
-    
-    /*@SubscribeEvent
-    public void onBiomeGenInit(InitMapGenEvent event) {    	
-    	if(event.getType() == InitMapGenEvent.EventType.NETHER_BRIDGE) {
-        	MapGenNetherBridge newGen = new MapGenNetherBridge();
-        	newGen.getSpawnList().add(new Biome.SpawnListEntry(EntityWendigo.class, 2, 1, 1));
-        	
-    		event.setNewGen(newGen);
-    	}
-    }*/
       
     /*@SubscribeEvent
     public void onExplosion(ExplosionEvent event) {

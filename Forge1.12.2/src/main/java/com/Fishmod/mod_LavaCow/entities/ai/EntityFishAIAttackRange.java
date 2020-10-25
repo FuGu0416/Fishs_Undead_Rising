@@ -162,8 +162,8 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                 ((EntityFireball)shotentity).motionZ = (t3 / t4) * 0.75D;
                 this.shooter.world.spawnEntity(shotentity);
                 
-                if(this.shooter instanceof EntityBoneWorm && ((EntityBoneWorm)this.shooter).attackTimer == 0) {
-                	((EntityBoneWorm)this.shooter).attackTimer = 15;
+                if(this.shooter instanceof EntityBoneWorm && ((EntityBoneWorm)this.shooter).attackTimer[0] == 0) {
+                	((EntityBoneWorm)this.shooter).attackTimer[0] = 15;
                 	this.shooter.world.setEntityState(this.shooter, (byte)4);
                 	((EntityBoneWorm)this.shooter).setRunning(200);
                 }

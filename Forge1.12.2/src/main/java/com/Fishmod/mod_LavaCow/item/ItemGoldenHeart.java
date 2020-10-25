@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemGoldenHeart extends ItemPoisonSpore implements baubles.api.IBauble{
+public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble{
 
 	public ItemGoldenHeart(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);

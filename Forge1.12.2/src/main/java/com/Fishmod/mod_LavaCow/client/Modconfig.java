@@ -163,6 +163,7 @@ public class Modconfig {
 	public static int DreamCatcher_dur;	
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
+	public static int MootenHeart_Damage;
 		
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -367,6 +368,8 @@ public class Modconfig {
 		Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
 		
 		Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs die when their summoner dies. [false/true]").getBoolean(true);
+		
+		MootenHeart_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten heart damage reduction", 20, "Set the fire damage reduction of Molten Heart to X% [0-10000]", 0, 10000).getInt(20);
 		
 		if (config.hasChanged())
 			config.save();

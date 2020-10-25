@@ -1,9 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " Y ",
+        "DYD",
         "#X#",
-        " # "
+        "D#D"
     ],
     "key": {
         "#": {
@@ -14,6 +14,9 @@
         },
         "Y": {
             "item": "minecraft:lava_bucket"
+        },
+        "D": {
+            "item": "minecraft:blaze_powder"
         }
     },
     "result": {

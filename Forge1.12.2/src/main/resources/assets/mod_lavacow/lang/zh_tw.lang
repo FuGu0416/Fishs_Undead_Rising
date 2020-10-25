@@ -295,6 +295,7 @@ tootip.mod_lavacow.parasite.0=普通
 tootip.mod_lavacow.parasite.1=沙地
 tootip.mod_lavacow.parasite.2=叢林
 tootip.mod_lavacow.bonestew=食用後獲得抗性(0:20)與吸收II(0:20)
+tootip.mod_lavacow.mootenheart=受到的火焰傷害-%d%%，且可用於釀造
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
