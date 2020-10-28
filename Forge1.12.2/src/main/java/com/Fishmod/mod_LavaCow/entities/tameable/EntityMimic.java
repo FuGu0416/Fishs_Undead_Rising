@@ -124,8 +124,13 @@ public class EntityMimic extends EntityFishTameable{
         int dz = MathHelper.floor(this.posZ);
         int r = 2;
         
-        for(BlockPos C : BlockPos.getAllInBox(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
-        	if(this.getEntityWorld().getBlockState(C).getBlock() == Blocks.CHEST)is_near_chest = true;
+        for(int i = dx - r; i < dx + r; i++)
+        	for(int j = dy - r; j < dy + r; j++)
+        		for(int k = dz - r; k < dz + r; k++)
+        			if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBlock() == Blocks.CHEST) {
+                		is_near_chest = true;
+                		break;
+        			}
         
         return SpawnUtil.isAllowedDimension(this.dimension) && is_near_chest && super.getCanSpawnHere();
      }

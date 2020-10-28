@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
+import com.Fishmod.mod_LavaCow.entities.EntityUnderminer;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -38,6 +39,7 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -79,6 +81,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityAvaton.class, RenderFactoryEntityAvaton.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostBomb.class, RenderFactoryEntityGhostBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityUnderminer.class, RenderFactoryEntityUnderminer.INSTANCE);
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow>
@@ -540,6 +543,20 @@ public class RenderFactories {
         public Render<EntitySonicBomb> createRenderFor(RenderManager manager)
         {
         	return new RenderSonicBomb(manager, FishItems.SONICBOMB);
+        }
+    }
+    
+    public static class RenderFactoryEntityUnderminer implements IRenderFactory<EntityUnderminer>
+    {
+        public final static RenderFactoryEntityUnderminer INSTANCE = new RenderFactoryEntityUnderminer();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderSkeleton createRenderFor(RenderManager manager)
+        {
+        	return new RenderSkeleton(manager);
         }
     }
 }
