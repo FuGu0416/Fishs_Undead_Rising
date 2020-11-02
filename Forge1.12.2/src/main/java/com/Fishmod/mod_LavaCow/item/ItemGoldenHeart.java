@@ -68,7 +68,7 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
 	    	else if(arg1.getHealth() == arg1.getMaxHealth())
 	    		for(ItemStack item : arg1.getEquipmentAndArmor())
 		        {
-		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0) {
+		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0 && item.getItem().isRepairable() && !item.getHasSubtypes()) {
 		        		item.setItemDamage(java.lang.Math.max(item.getItemDamage()-1, 0));
 		        		flag = true;
 		        	}

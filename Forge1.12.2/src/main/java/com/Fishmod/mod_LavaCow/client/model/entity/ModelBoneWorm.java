@@ -160,18 +160,30 @@ public class ModelBoneWorm extends FishModelBase {
     	float f = (limbSwingAmount < 0.02F) ? 1.0F : 1.5F;
     	int i = ((EntityBoneWorm)entityIn).getAttackTimer(0);
     	int j = ((EntityBoneWorm)entityIn).getAttackTimer(1);
+    	int k = ((EntityBoneWorm)entityIn).diggingTimer[0];
+    	int l = ((EntityBoneWorm)entityIn).diggingTimer[1];    	
     	
-    	if (j > 0.0F) {
+    	if (j > 0) {
     		this.setRotateAngle(Appendage_r0_seg0, -1.2747884856566583F, -0.18203784098300857F, 0.0F);
     		this.setRotateAngle(Appendage_l1_seg0, -1.3203415791337103F, 0.5009094953223726F, 0.0F);
     		this.setRotateAngle(Appendage_r0_seg1, 0.0F, 0.0F, -1.0927506446736497F);
     		this.setRotateAngle(Appendage_l0_seg0, -1.6390387005478748F, 0.31869712141416456F, 0.0F);
     		
-    		if(j > 8.0F) {
-            	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.8196066167365371F, (j - 8.0F)/8.0F);
-            	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.9560913642424937F, (j - 8.0F)/8.0F);
-            	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 1.0471975511965976F, (j - 8.0F)/8.0F);
+    		if(j > 8) {
+            	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.8196066167365371F, ((float)j - 8.0F)/8.0F);
+            	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.9560913642424937F, ((float)j - 8.0F)/8.0F);
+            	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 1.0471975511965976F, ((float)j - 8.0F)/8.0F);
     		}
+    	}
+    	else if (k > 0) {
+        	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
+        	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
+        	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, (float)k / 10.0F);  
+    	}
+    	else if (l > 0) {
+        	this.Body_seg0.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
+        	this.Body_seg1.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
+        	this.Body_seg2.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, (float)l / 10.0F);  
     	}
     	else {
         	this.Body_seg0.rotateAngleX = (i * -0.8F / 15.0F) + 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * ageInTicks));

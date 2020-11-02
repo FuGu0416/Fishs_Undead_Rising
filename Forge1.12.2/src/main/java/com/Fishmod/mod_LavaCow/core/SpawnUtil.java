@@ -21,6 +21,15 @@ public class SpawnUtil {
 		return false;
 	}
 	
+	public static boolean isAllowedDimensionCemetery(int dimensionIn) {
+		for(int i : Modconfig.Spawn_Cemetery_AllowList) {
+			if(i == dimensionIn)
+				return true;
+		}
+		
+		return false;
+	}
+	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
     	return entityIn.world.getHeight(entityIn.getPosition());
