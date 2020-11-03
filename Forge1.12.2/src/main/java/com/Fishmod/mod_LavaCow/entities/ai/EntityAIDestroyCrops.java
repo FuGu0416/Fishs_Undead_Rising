@@ -49,7 +49,7 @@ public class EntityAIDestroyCrops extends EntityAIMoveToBlock {
             
             this.destroyTicks++;
             
-            if (this.destroyTicks > 60) {
+            if (this.destroyTicks > 30) {
             	Block block = world.getBlockState(blockpos).getBlock();
             	
             	world.destroyBlock(blockpos, true);
@@ -83,7 +83,7 @@ public class EntityAIDestroyCrops extends EntityAIMoveToBlock {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         block = iblockstate.getBlock();
 
-        if (block instanceof BlockBush)
+        if (!this.isHarvest && block instanceof BlockBush)
         {
             return true;
         }

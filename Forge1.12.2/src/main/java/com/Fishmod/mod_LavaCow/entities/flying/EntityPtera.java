@@ -95,6 +95,17 @@ public class EntityPtera extends EntityFlyingMob {
 
    }
    
+   /**
+    * Called when the entity is attacked.
+    */
+   public boolean attackEntityFrom(DamageSource source, float amount)
+   {
+       if(!this.getPassengers().isEmpty())
+    	   this.removePassengers();
+    	   
+	   return super.attackEntityFrom(source, amount);
+   }
+   
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
 	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.DRY))
 		   this.setSkin(1);

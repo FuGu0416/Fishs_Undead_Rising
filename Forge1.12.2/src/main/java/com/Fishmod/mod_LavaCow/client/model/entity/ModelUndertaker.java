@@ -225,27 +225,44 @@ public class ModelUndertaker extends FishModelBase {
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	float i = (float)((EntityUndertaker) entityIn).getAttackTimer() / 15.0F;
+    	float i = (float)((EntityUndertaker) entityIn).getAttackTimer();
     	float j = (float)((EntityUndertaker) entityIn).getSpellTicks() / 30.0F;
-    	if(j > 0) {
+    	if(j > 0.0F) {
     		this.Body_chest.rotateAngleX = GradientAnimation(0.4553564018453205F, -0.136659280431156F, j);
     		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-0.5918411493512771F, -1.730144887501979F, j);
     	}
-    	else if(i > 0) {
-    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-2.504198410761464F, -1.0471975511965976F, i);
+    	else if(i > 8.0F) {
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-1.8668041679331349F, -2.321986036853256F, (i - 9.0F)/6.0F);
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-1.8668041679331349F, -2.321986036853256F, (i - 9.0F)/6.0F);
     		
-    		this.Arm_l_Seg2.rotateAngleX = GradientAnimation(-1.4114477660878142F, -0.36425021489121656F, i);
+    		this.Body_chest.rotateAngleX = GradientAnimation(0.4553564018453205F, -0.6373942428283291F, (i - 9.0F)/6.0F);
+    	}
+    	else if(i > 0.0F) {
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-2.321986036853256F, -0.8651597102135892F, i/9.0F);
+    		this.Arm_l_Seg0.rotateAngleY = GradientAnimation(0.0F, 0.5918411493512771F, i/9.0F);
+    		this.Arm_l_Seg0.rotateAngleZ = GradientAnimation(-0.6373942428283291F, -0.31869712141416456F, i/9.0F);
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-2.321986036853256F, -0.8651597102135892F, i/9.0F);
+    		this.Arm_r_Seg0.rotateAngleY = GradientAnimation(0.0F, -0.5918411493512771F, i/9.0F);
+    		this.Arm_r_Seg0.rotateAngleZ = GradientAnimation(0.6373942428283291F, 0.31869712141416456F, i/9.0F);
     		
-    		this.Body_chest.rotateAngleX = 0.4553564018453205F;
-    		this.Arm_r_Seg0.rotateAngleX = -0.5918411493512771F;
-    		//this.postRenderArm(0.0625F, EnumHandSide.LEFT);
+    		this.Arm_l_Seg1.rotateAngleX = GradientAnimation(0.0F, -0.27314402793711257F, i/9.0F);
+    		this.Arm_r_Seg1.rotateAngleX = GradientAnimation(0.0F, -0.27314402793711257F, i/9.0F);
+    		
+    		this.Arm_l_Seg2.rotateAngleX = GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, i/9.0F);
+    		this.Arm_r_Seg2.rotateAngleX = GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, i/9.0F);
+    		
+    		this.Body_chest.rotateAngleX = GradientAnimation(-0.6373942428283291F, 0.5918411493512771F, i/9.0F);
     	}
     	else {
-    		this.Arm_l_Seg0.rotateAngleX = -0.5918411493512771F;
-    		this.Arm_l_Seg2.rotateAngleX = -0.9560913642424937F;
+    		this.setRotateAngle(Arm_l_Seg0, -0.5918411493512771F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg0, -0.5918411493512771F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_l_Seg1, 0.0F, 0.18203784098300857F, -0.10000736613927509F);
+    		this.setRotateAngle(Arm_r_Seg1, 0.0F, -0.18203784098300857F, 0.10000736613927509F);
+    		this.setRotateAngle(Arm_l_Seg2, -0.9560913642424937F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg2, -0.9560913642424937F, 0.0F, 0.0F);
     		
     		this.Body_chest.rotateAngleX = 0.4553564018453205F;
-    		this.Arm_r_Seg0.rotateAngleX = -0.5918411493512771F;
+
     	}
     }
 }

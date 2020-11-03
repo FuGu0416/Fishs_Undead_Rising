@@ -94,9 +94,9 @@ public class EntityAvaton extends EntityBanshee {
                 		{
                 			if (EntityAvaton.this.world.getBlockState(new BlockPos(EntityAvaton.this.posX + x, EntityAvaton.this.posY + y, EntityAvaton.this.posZ + z)).getBlock() == Blocks.FARMLAND)
                 				farmlandnearby = true;
-                		}
+                		}              
                 
-            	return EntityAvaton.this.ticksExisted >= this.spellCooldown && (EntityAvaton.this.isAggressive() || farmlandnearby) && i < Modconfig.Avaton_Ability_Max;
+            	return EntityAvaton.this.ticksExisted >= this.spellCooldown && ((EntityAvaton.this.getAttackTarget() != null && Math.abs(EntityAvaton.this.posY - EntityAvaton.this.getAttackTarget().posY) < 4.0D) || farmlandnearby) && i < Modconfig.Avaton_Ability_Max;
             }
         }
 

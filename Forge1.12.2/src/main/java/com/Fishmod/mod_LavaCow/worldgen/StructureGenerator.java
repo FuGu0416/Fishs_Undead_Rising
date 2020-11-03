@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.worldgen;
 import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
@@ -28,7 +29,7 @@ public class StructureGenerator implements IWorldGenerator {
     	BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
     	Biome biome = world.getBiomeForCoordsBody(pos);
 		
-    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && world.provider.isSurfaceWorld() && rand.nextInt(Modconfig.SpawnRate_Cemetery + 1) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
+    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && SpawnUtil.isAllowedDimensionCemetery(world.provider.getDimension()) && rand.nextInt(Modconfig.SpawnRate_Cemetery + 1) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
     		CEMETERY_SMALL.generate(world, rand, pos);
     	}
     	

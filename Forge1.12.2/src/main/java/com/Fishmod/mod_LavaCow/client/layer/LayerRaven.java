@@ -27,29 +27,24 @@ public class LayerRaven <T extends EntityRaven> implements LayerRenderer<T>{
     public void doRenderLayer(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         if(entitylivingbaseIn.getSkin() != 2) {
-	    	this.spiderRenderer.bindTexture(SPIDER_EYES);
-	
-	        GlStateManager.enableBlend();
-	        //GlStateManager.disableAlpha();
-	        //GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-	
-	        GlStateManager.depthMask(true);
-	
-	        int i = 61680;
-	        int j = i % 65536;
-	        int k = i / 65536;
-	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-	        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-	        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
-	        this.spiderRenderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-	        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
-	        i = entitylivingbaseIn.getBrightnessForRender();
-	        j = i % 65536;
-	        k = i / 65536;
-	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-	        this.spiderRenderer.setLightmap(entitylivingbaseIn);
-	        GlStateManager.disableBlend();
-	        GlStateManager.enableAlpha();
+        	this.spiderRenderer.bindTexture(SPIDER_EYES);
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+            GlStateManager.disableLighting();
+            int i = 61680;
+            int j = i % 65536;
+            int k = i / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
+            GlStateManager.enableLighting();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            this.spiderRenderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            i = entitylivingbaseIn.getBrightnessForRender();
+            j = i % 65536;
+            k = i / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
+            this.spiderRenderer.setLightmap(entitylivingbaseIn);
+            GlStateManager.depthMask(true);
+            GlStateManager.disableBlend();
         }
         
         /*

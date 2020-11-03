@@ -12,6 +12,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -32,12 +33,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -52,8 +55,11 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.structure.MapGenMineshaft;
+import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -70,8 +76,10 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -414,6 +422,7 @@ public class ModEventHandler {
     	
     	if(event.getState().getMaterial() == Material.SAND 
     		&& BiomeDictionary.hasType(event.getWorld().getBiome(event.getPos()), BiomeDictionary.Type.DRY) 
+    		&& event.getWorld().provider.getDimension() == DimensionType.OVERWORLD.getId()
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
     		) {   
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
@@ -455,6 +464,19 @@ public class ModEventHandler {
     		for(ItemStack S : event.getEntityLiving().getEquipmentAndArmor()) {
     			if(S.getItem() instanceof ItemFelArmor)effectlevel -= ((ItemFelArmor)S.getItem()).fireprooflevel;
     		}
+    		
+    		boolean have_Heart = false;
+    		if(Loader.isModLoaded("baubles")) {
+    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1)
+    				have_Heart = true;
+    		}
+    		
+    		for(int i = 0; i < 9 ; i++)
+    			if(((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART))
+					have_Heart = true;
+    		
+    		if(have_Heart)
+    			effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
     	}
     	
     	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityFoglet){
@@ -666,11 +688,57 @@ public class ModEventHandler {
     	}
     }
     
+    private void MendingBaubles(Item item, EntityXPOrb xpOrb, EntityPlayer player, PlayerPickupXpEvent event) {
+		int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
+		
+		if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0) {
+			event.setCanceled(true);
+			ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(player).getStackInSlot(Heart_Slot);
+			
+            if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
+
+                player.xpCooldown = 2;
+                player.onItemPickup(xpOrb, 1);
+                int i = Math.min(xpOrb.xpValue * 2, itemStack.getItemDamage());
+                xpOrb.xpValue -= i / 2;
+
+                itemStack.setItemDamage(itemStack.getItemDamage() - i);
+
+                if (xpOrb.xpValue > 0) {
+                    player.addExperience(xpOrb.xpValue);
+                }
+
+                xpOrb.setDead();
+            }
+		}
+    }
+    
+    @SubscribeEvent
+    public void onPlayerXPPickUp(PlayerPickupXpEvent event) {
+
+        if (!event.getEntityPlayer().world.isRemote) {
+    		if(Loader.isModLoaded("baubles")) {
+    			MendingBaubles(FishItems.GOLDENHEART, event.getOrb(), event.getEntityPlayer(), event);
+    			MendingBaubles(FishItems.DREAMCATCHER, event.getOrb(), event.getEntityPlayer(), event);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void onBiomeGenInit(InitMapGenEvent event) {    	
+    	if(event.getType() == InitMapGenEvent.EventType.NETHER_BRIDGE) {
+        	MapGenNetherBridge newGen = new MapGenNetherBridge();
+        	newGen.getSpawnList().add(new Biome.SpawnListEntry(EntityMimic.class, 1, 1, 1));
+        	
+    		event.setNewGen(newGen);
+    	}
+    }
+    
     /**
      * Young Simba:Everything the light touches... But what about that dark greeny place?
      * Mufasa:That's beyond our borders. You must never go there Simba.
      */
-    
+      
     /*@SubscribeEvent
     public void onExplosion(ExplosionEvent event) {
     	if(event.getExplosion().getExplosivePlacedBy() instanceof EntityFoglet) {

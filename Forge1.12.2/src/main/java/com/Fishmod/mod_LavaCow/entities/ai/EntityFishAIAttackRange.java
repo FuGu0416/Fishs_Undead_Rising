@@ -146,24 +146,21 @@ public class EntityFishAIAttackRange extends EntityAIBase {
              if (this.attackStep > 1) {
                 float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.1F;
 
-                //this.shooter.world.playEvent((EntityPlayer)null, 1018, new BlockPos((int)this.shooter.posX, (int)this.shooter.posY, (int)this.shooter.posZ), 0);
                 this.shooter.playSound(this.sound, 1.0F, 1.0F);
                 double t1 = d1 + this.shooter.getRNG().nextGaussian() * (double)f;
                 double t2 = d2 + (this.curve * d0 / 64.0D);
                 double t3 = d3 + this.shooter.getRNG().nextGaussian() * (double)f;
                 double t4 = (double)MathHelper.sqrt(t1 * t1 + t2 * t2 + t3 * t3);                
-                //System.out.println("OxO " + (t2 - d2) + " | " + d0);
                 Entity shotentity = EntityList.newEntity(this.shot, this.shooter.getEntityWorld());
                 ((EntityFireball)shotentity).shootingEntity = this.shooter;
-                //System.out.println("server " + this.shooter.rotationYaw + " " + this.shooter.rotationPitch);
                 shotentity.setLocationAndAngles(this.shooter.posX + (d1 / t4 * Xoffset), this.shooter.posY + (double)(this.shooter.height / 2.0F) + Yoffset, this.shooter.posZ + (d3 / t4 * Zoffset), this.shooter.rotationYaw, this.shooter.rotationPitch);
                 ((EntityFireball)shotentity).motionX = (t1 / t4) * 0.75D;
                 ((EntityFireball)shotentity).motionY = (t2 / t4) * 0.75D;
                 ((EntityFireball)shotentity).motionZ = (t3 / t4) * 0.75D;
                 this.shooter.world.spawnEntity(shotentity);
                 
-                if(this.shooter instanceof EntityBoneWorm && ((EntityBoneWorm)this.shooter).attackTimer == 0) {
-                	((EntityBoneWorm)this.shooter).attackTimer = 15;
+                if(this.shooter instanceof EntityBoneWorm && ((EntityBoneWorm)this.shooter).attackTimer[0] == 0) {
+                	((EntityBoneWorm)this.shooter).attackTimer[0] = 15;
                 	this.shooter.world.setEntityState(this.shooter, (byte)4);
                 	((EntityBoneWorm)this.shooter).setRunning(200);
                 }
@@ -172,7 +169,6 @@ public class EntityFishAIAttackRange extends EntityAIBase {
 
           this.shooter.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
        } else {
-    	   //this.shooter.setAttackTarget(null);
           this.shooter.getNavigator().clearPath();
           this.shooter.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, this.shooter.getMoveHelper().getSpeed());
        }
@@ -181,8 +177,6 @@ public class EntityFishAIAttackRange extends EntityAIBase {
     }
     
     private double getFollowDistance() {
-        //IAttributeInstance iattributeinstance = this.shooter.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        //return iattributeinstance == null ? 16.0D : iattributeinstance.getValue();
     	return this.range;
      }
 }

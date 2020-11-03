@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemDreamCatcher extends ItemPoisonSpore implements baubles.api.IBauble{
+public class ItemDreamCatcher extends ItemRareLoot implements baubles.api.IBauble{
 
 	public ItemDreamCatcher(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);

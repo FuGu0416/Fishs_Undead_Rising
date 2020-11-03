@@ -2,7 +2,6 @@ package com.Fishmod.mod_LavaCow.client.layer;
 
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -30,30 +29,26 @@ public class LayerGenericGlowing implements LayerRenderer<EntityLiving>{
     	
     	this.Renderer.bindTexture(SPIDER_EYES);
         GlStateManager.enableBlend();
-        //GlStateManager.disableAlpha();
-        //GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-
-        GlStateManager.depthMask(true);
-
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+        GlStateManager.disableLighting();
         int i = 61680;
         int j = i % 65536;
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
+        GlStateManager.enableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
         this.Renderer.getMainModel().render(entitylivingIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
         i = entitylivingIn.getBrightnessForRender();
         j = i % 65536;
         k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
         this.Renderer.setLightmap(entitylivingIn);
+        GlStateManager.depthMask(true);
         GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
     }
 
     public boolean shouldCombineTextures()
     {
-        return false;
+        return true;
     }
 }

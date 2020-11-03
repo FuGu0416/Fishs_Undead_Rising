@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemGoldenHeart extends ItemPoisonSpore implements baubles.api.IBauble{
+public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble{
 
 	public ItemGoldenHeart(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);
@@ -68,7 +68,7 @@ public class ItemGoldenHeart extends ItemPoisonSpore implements baubles.api.IBau
 	    	else if(arg1.getHealth() == arg1.getMaxHealth())
 	    		for(ItemStack item : arg1.getEquipmentAndArmor())
 		        {
-		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0) {
+		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0 && item.getItem().isRepairable() && !item.getHasSubtypes()) {
 		        		item.setItemDamage(java.lang.Math.max(item.getItemDamage()-1, 0));
 		        		flag = true;
 		        	}

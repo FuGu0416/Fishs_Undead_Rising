@@ -213,7 +213,6 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         	}
     }
     
-    @SideOnly(Side.CLIENT)
     public boolean isAggressive()
     {
     	return isAggressive;
@@ -386,7 +385,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 
         protected void castSpell()
         {
-        	List<Entity> list = EntityBanshee.this.world.getEntitiesWithinAABBExcludingEntity(EntityBanshee.this, EntityBanshee.this.getEntityBoundingBox().grow(3.0D, 3.0D, 3.0D));
+        	List<Entity> list = EntityBanshee.this.world.getEntitiesWithinAABBExcludingEntity(EntityBanshee.this, EntityBanshee.this.getEntityBoundingBox().grow(Modconfig.Banshee_Ability_Radius, Modconfig.Banshee_Ability_Radius, Modconfig.Banshee_Ability_Radius));
         	EntityBanshee.this.world.setEntityState(EntityBanshee.this, (byte)11);
         	
         	for (Entity entity1 : list)
@@ -398,7 +397,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
+        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage().setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
         		}
         	} 
         }
@@ -572,10 +571,14 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         public void updateTask()
         {
             BlockPos blockpos = new BlockPos(EntityBanshee.this);
-
+            int y = EntityBanshee.this.rand.nextInt(11) - 5;
+            
+            if(Modconfig.FlyingHeight_limit != 0)
+            	y = Math.min(SpawnUtil.getHeight(EntityBanshee.this).getY() + Modconfig.FlyingHeight_limit, y);
+            
             for (int i = 0; i < 3; ++i)
             {
-                BlockPos blockpos1 = blockpos.add(EntityBanshee.this.rand.nextInt(15) - 7, EntityBanshee.this.rand.nextInt(11) - 5, EntityBanshee.this.rand.nextInt(15) - 7);
+                BlockPos blockpos1 = blockpos.add(EntityBanshee.this.rand.nextInt(15) - 7, y, EntityBanshee.this.rand.nextInt(15) - 7);
 
                 if (EntityBanshee.this.world.isAirBlock(blockpos1))
                 {

@@ -30,11 +30,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemPoisonSpore extends ItemFishCustom{
+public class ItemRareLoot extends ItemFishCustom{
 	
 	private EnumRarity Rarity;
 	
-	public ItemPoisonSpore(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
+	public ItemRareLoot(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
     	super(registryName, null, tab, hasTooltip);
     	this.Rarity = rarity;
         this.setMaxStackSize(64);
