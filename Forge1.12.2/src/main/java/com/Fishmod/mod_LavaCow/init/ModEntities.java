@@ -314,7 +314,7 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
             .name(mod_LavaCow.MODID + "." + "sonicbomb")
             .tracker(64, 1, true)
-            .build(),
+            .build()/*,
             
             EntityEntryBuilder.create()
             .entity(EntityUnderminer.class)
@@ -322,7 +322,7 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "underminer")
             .tracker(80, 3, false)
             .egg(12698049, 4802889)
-            .build()
+            .build()*/
             );
 
     @EventBusSubscriber(modid = mod_LavaCow.MODID)
@@ -367,7 +367,7 @@ public class ModEntities {
 				tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
 				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);
-				tweakEntitySpawn(EntityUnderminer.class, EnumCreatureType.MONSTER, 200, 4, 8, C);
+				//tweakEntitySpawn(EntityUnderminer.class, EnumCreatureType.MONSTER, 200, 4, 8, C);
 			}
 		}
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
