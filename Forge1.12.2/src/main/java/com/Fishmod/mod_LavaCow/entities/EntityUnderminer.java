@@ -10,7 +10,6 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -20,7 +19,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -33,22 +31,11 @@ public class EntityUnderminer extends AbstractSkeleton{
 	
     @Override
     public boolean getCanSpawnHere() {
-    	
-    	boolean is_near_rail = false;
-        int dx = MathHelper.floor(this.posX);
-        int dy = MathHelper.floor(this.getEntityBoundingBox().minY);
-        int dz = MathHelper.floor(this.posZ);
-        int r = 2;
-        
-        for(int i = dx - r; i < dx + r; i++)
-        	for(int j = dy - r; j < dy + r; j++)
-        		for(int k = dz - r; k < dz + r; k++)
-        			if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBlock() == Blocks.RAIL) {
-                		is_near_rail = true;
-                		break;
-        			}
-        	        
-        return SpawnUtil.isAllowedDimension(this.dimension) && !this.world.canSeeSky(new BlockPos(dx, dy, dz)) && is_near_rail && super.getCanSpawnHere();
+    	BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
+        	       
+        return SpawnUtil.isAllowedDimension(this.dimension) 
+        		&& SpawnUtil.isInsideStructure(this.world, "Mineshaft", new BlockPos(this.posX, this.posY, this.posZ)) 
+        		&& !this.world.canSeeSky(pos) && super.getCanSpawnHere();
      }
 	
     @Nullable
