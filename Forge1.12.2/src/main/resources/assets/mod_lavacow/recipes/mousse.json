@@ -1,12 +1,25 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "minecraft:egg"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
+    [
+		{
+			"type": "forge:ore_dict",
+			"ore": "egg"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllegg"
+	    }
+	],
+    [
+		{
+	      "item": "minecraft:sugar"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllsugar"
+	    }
+	],
     [
 	    {
 	      "item": "minecraft:fish",
@@ -22,17 +35,28 @@
 	      "item": "minecraft:rotten_flesh"
 	    },
 	    {
+			"type": "forge:ore_dict",
+			"ore": "listAllchickenraw"
+	    },
+	    {
+			"type": "forge:ore_dict",
+			"ore": "listAllturkeyraw"
+	    },
+	    {
+			"type": "forge:ore_dict",
+			"ore": "listAllrabbitraw"
+	    },
+	    {
+			"type": "forge:ore_dict",
+			"ore": "listAllduckraw"
+	    },
+	    {
 	      "item": "mod_lavacow:parasite_item",
 		  "data": 32767
 	    },
 	    {
-	      "item": "mod_lavacow:piranha"
-	    },
-	    {
-	      "item": "mod_lavacow:zombiepiranha_item"
-	    },
-	    {
-	      "item": "mod_lavacow:cheirolepis"
+			"type": "forge:ore_dict",
+			"ore": "listAllfishraw"
 	    }
     ]
   ],
