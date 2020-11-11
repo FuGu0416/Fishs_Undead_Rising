@@ -211,7 +211,6 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
-        //ItemFishCustomWeapon.LavaBurst(this.world, this.posX, this.posY, this.posZ, 1.0D, EnumParticleTypes.WATER_BUBBLE);
         return livingdata;
     }
     

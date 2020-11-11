@@ -69,7 +69,6 @@ public class EntityLilSludge extends EntityFishTameable{
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
-    	//this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, AbstractSkeleton.class, false));
     }
     
     protected void applyEntityAttributes()
@@ -107,11 +106,7 @@ public class EntityLilSludge extends EntityFishTameable{
     @Override
     public void onLivingUpdate()
     {
-        if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {
-        	
-        	//this.playSound(FishItems.ENTITY_LILSLUDGE_DEATH, 1.0F, 1.0F);
-        	//this.setDead();
-        	
+        if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    	
         	this.attackEntityFrom(DamageSource.STARVE.setDamageIsAbsolute().setDamageBypassesArmor() , (float) Modconfig.LilSludge_Health);
         }
         
@@ -152,7 +147,6 @@ public class EntityLilSludge extends EntityFishTameable{
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
-        //ItemFishCustomWeapon.LavaBurst(this.world, this.posX, this.posY, this.posZ, 1.0D, EnumParticleTypes.WATER_BUBBLE);
         return livingdata;
     }
     

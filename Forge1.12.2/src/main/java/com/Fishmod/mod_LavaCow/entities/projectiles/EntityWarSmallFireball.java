@@ -17,8 +17,6 @@ import net.minecraft.world.World;
 
 public class EntityWarSmallFireball extends EntityEnchantableFireBall {
 	
-	//private float damage = 5.0F;
-	
 	   public EntityWarSmallFireball(World worldIn) {
 	      super(worldIn);
 	   }

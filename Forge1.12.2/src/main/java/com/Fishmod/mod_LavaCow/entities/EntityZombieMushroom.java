@@ -45,9 +45,7 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityZombieMushroom.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	private int attackTimer;
-	//private int gastimer = 0;
 	private Vec3d[] spore_color = {new Vec3d(0.83D, 0.73D, 0.5D), new Vec3d(0.0D, 0.98D, 0.93D)};
-	//public static final ResourceLocation LOOT = new ResourceLocation(mod_LavaCow.MODID, "loottable/zombiemushroom");
 	
     public EntityZombieMushroom(World worldIn)
     {
@@ -59,7 +57,6 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
     @Override
 	protected void entityInit() {
 		super.entityInit();
-		//System.out.println("OAO" + this.getPosition().getY());
 		dataManager.register(SKIN_TYPE, Integer.valueOf(0));
 	}
     
@@ -110,7 +107,6 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
         if(this.ticksExisted % 20 == 0)
         {
         	List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(2.0D, 2.0D, 2.0D));
-        	//List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(3.0D, 3.0D, 3.0D));
 
         	for (Entity entity1 : list)
         	{
@@ -243,14 +239,6 @@ public class EntityZombieMushroom extends EntityZombie implements IAggressive{
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
         super.setEquipmentBasedOnDifficulty(difficulty);
-        
-        /*if(this.rand.nextBoolean())
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-        else
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(FishItems.SWINEMASK));
-        this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(FishItems.SWINEARMOR_CHESTPLATE));
-        this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(FishItems.SWINEARMOR_LEGGINGS));
-        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(FishItems.SWINEARMOR_BOOTS));*/
     }
     
     /**

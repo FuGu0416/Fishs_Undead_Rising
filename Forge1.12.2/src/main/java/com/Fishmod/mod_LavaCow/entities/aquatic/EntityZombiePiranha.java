@@ -67,7 +67,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
                     return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
-        //this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityMob>(this, EntityMob.class, true));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityMob.class, 0, true, true, new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)
@@ -84,11 +83,9 @@ public class EntityZombiePiranha extends EntityAquaMob{
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombiePiranha_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)1.2F);
-        //this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
     
     public boolean getCanSpawnHere() {
-    	//return this.posY < (double) this.world.getSeaLevel() && this.isInWater();
     	return super.getCanSpawnHere();
 	}
     
@@ -115,7 +112,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
     	   private final float leapMotionY;
 
     	   public AIPiranhaLeapAtTarget(EntityLiving leapingEntity, float leapMotionYIn) {
-    		  //super(leapingEntity, leapMotionYIn);
     	      this.leaper = leapingEntity;
     	      this.leapMotionY = leapMotionYIn;
     	      this.setMutexBits(5);
@@ -127,14 +123,12 @@ public class EntityZombiePiranha extends EntityAquaMob{
     	   public boolean shouldExecute() {
     	      this.leapTarget = this.leaper.getAttackTarget();
     	      if (this.leapTarget == null) {
-    	    	  //((EntityZombiePiranha)this.leaper).isLeaping = false;
     	         return false;
     	      } else {
     	         double d0 = this.leaper.getDistanceSq(this.leapTarget);
     	         if (!(d0 < 4.0D) && !(d0 > 24.0D) && this.leaper.isInWater()) {
     	               return true;
     	         } else {
-    	        	 //((EntityZombiePiranha)this.leaper).isLeaping = false;
     	            return false;
     	         }
     	      }
@@ -158,7 +152,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
     	         this.leaper.motionX += d0 / (double)f * 0.5D * (double)0.8F + this.leaper.motionX * (double)0.2F;
     	         this.leaper.motionZ += d1 / (double)f * 0.5D * (double)0.8F + this.leaper.motionZ * (double)0.2F;
     	      }
-    	      //((EntityZombiePiranha)this.leaper).isLeaping = true;
     	      this.leaper.motionY = (double)this.leapMotionY;
     	   }  	   
     }
@@ -169,8 +162,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
     	{       		
         	isAggressive = true;
     		this.world.setEntityState(this, (byte)11);
-    		//System.out.println("O_O throw");
-    		//setFog_counter = 166;
     	}
 	    else 
     	{
@@ -216,7 +207,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
-    	//System.out.println("O_O throw" + this.posX + " " + this.posZ);
     	return super.onInitialSpawn(difficulty, livingdata);
     }
     

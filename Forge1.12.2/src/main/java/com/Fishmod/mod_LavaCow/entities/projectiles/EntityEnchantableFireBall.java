@@ -47,7 +47,7 @@ public class EntityEnchantableFireBall extends EntityFireball {
 	    * Return the motion factor for this projectile. The factor is multiplied by the original motion.
 	    */
 	   protected float getMotionFactor() {
-	      return /*0.8F*/1.0F;
+	      return 1.0F;
 	   }
 
 	   /**

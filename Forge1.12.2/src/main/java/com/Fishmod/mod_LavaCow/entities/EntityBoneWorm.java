@@ -75,7 +75,6 @@ public class EntityBoneWorm  extends EntityMob{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	//this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     }
     
     protected void applyEntityAttributes()
