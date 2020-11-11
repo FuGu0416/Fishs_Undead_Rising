@@ -58,7 +58,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
@@ -187,7 +186,6 @@ public class ModEventHandler {
     	if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == FishItems.PARASITE_ITEM)
     	{
     		ench_lvl = 1;
-    		//outputStack.addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
     		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure"))) 
@@ -200,14 +198,11 @@ public class ModEventHandler {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
 			}
-    		//event.setCost(getEnchantmentCost(Enchantment.getEnchantmentByID(62), 3));
     		event.setMaterialCost(1);
-    		//return;
     	}
     	else if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == Modblocks.item_block_glowshroom)
     	{
     		ench_lvl = 3;
-    		//outputStack.addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
     		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure"))) 
@@ -220,9 +215,7 @@ public class ModEventHandler {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
 			}
-    		//event.setCost(getEnchantmentCost(Enchantment.getEnchantmentByID(62), 3));
     		event.setMaterialCost(1);
-    		//return;
     	}
     	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.POISONSPORE)
     	{
@@ -348,7 +341,6 @@ public class ModEventHandler {
     	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) && world.provider.isSurfaceWorld() && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
     		gen.generate(Modblocks.GLOWSHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
-    		//event.setResult(Event.Result.DENY);
     	}
     	
     	if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
@@ -383,20 +375,7 @@ public class ModEventHandler {
 
         if ((player.world.getTotalWorldTime() & 0x1FL) > 0L) {
             return;
-        }
-        
-        /*if(player.getHeldItemMainhand().getItem() == FishItems.GOLDENHEART || player.getHeldItemOffhand().getItem() == FishItems.GOLDENHEART)
-        {
-        	if(((EntityLivingBase)player).getActivePotionEffect(MobEffects.REGENERATION) == null && player.getHealth() < player.getMaxHealth())
-            	((EntityLivingBase)player).addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0));
-        	else if(player.getHealth() == player.getMaxHealth())
-	        	for(ItemStack item : player.getEquipmentAndArmor())
-		        {
-		        	if(!item.getItem().equals(FishItems.GOLDENHEART) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()))item.setItemDamage(java.lang.Math.max(item.getItemDamage()-1, 0));
-		        }
-        }*/
-        
-        //if (player.motionY < -0.1D)player.motionY *= 0.125D;
+        }       
     }
     
     @SubscribeEvent

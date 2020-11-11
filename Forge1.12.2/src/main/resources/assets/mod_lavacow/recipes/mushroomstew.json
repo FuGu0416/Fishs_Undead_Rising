@@ -4,15 +4,28 @@
     {
       "item": "minecraft:bowl"
     },
-    {
-      "item": "mod_lavacow:glowshroom"
-    },
     [
 	    {
 	      "item": "minecraft:brown_mushroom"
 	    },
 	    {
 	      "item": "minecraft:red_mushroom"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllmushroom"
+	    }
+    ],
+    [
+	    {
+	      "item": "minecraft:brown_mushroom"
+	    },
+	    {
+	      "item": "minecraft:red_mushroom"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllmushroom"
 	    }
     ]
   ],

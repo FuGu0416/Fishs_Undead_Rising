@@ -79,10 +79,31 @@ public class AddRecipes {
 		}
 	    
 	    public static void addOreDictionary() {
-	    	//OreDictionary.registerOre("leather", FishItems.PIGBOARHIDE);
 	    	OreDictionary.registerOre("slimeball", FishItems.SILKY_SLUDGE);
 	    	OreDictionary.registerOre("stickWood", FishItems.MOSSY_STICK);
 	    	OreDictionary.registerOre("feather", FishItems.FEATHER_BLACK);
+	    	OreDictionary.registerOre("listAllfishraw", FishItems.ZOMBIEPIRANHA_ITEM);
+	    	OreDictionary.registerOre("listAllfishcooked", FishItems.ZOMBIEPIRANHA_ITEM_COOKED);
+	    	OreDictionary.registerOre("listAllfishraw", FishItems.PIRANHA);
+	    	OreDictionary.registerOre("listAllfishcooked", FishItems.PIRANHA_COOKED);
+	    	OreDictionary.registerOre("listAllfishraw", FishItems.CHEIROLEPIS);
+	    	OreDictionary.registerOre("listAllfishcooked", FishItems.CHEIROLEPIS_COOKED);
+	    	OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_glowshroom);
+	    	OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_bloodtooth_shroom);
+	    	OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_cordy_shroom);
+	    	OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_veil_shroom);
+	    	OreDictionary.registerOre("toolSkillet", FishItems.MOLTENPAN);
+	    	OreDictionary.registerOre("foodHotwings", FishItems.PTERA_WING_COOKED);
+	    	OreDictionary.registerOre("foodBaconandeggs", FishItems.GREEN_BACON_AND_EGGS);
+	    	OreDictionary.registerOre("foodGreeneggsandham", FishItems.GREEN_BACON_AND_EGGS);
+	    	OreDictionary.registerOre("listAllfishraw", FishItems.ZOMBIEPIRANHA_ITEM);
+	    	OreDictionary.registerOre("foodCrabraw", FishItems.MIMIC_CLAW);
+	    	OreDictionary.registerOre("foodCrabcooked", FishItems.MIMIC_CLAW_COOKED);
+	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PTERA_WING);
+	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.PTERA_WING_COOKED);
+	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.MOLTENBEEF);
+	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PLAGUED_PORKCHOP);
+	    	OreDictionary.registerOre("foodSwedishmeatballs", FishItems.MEATBALL);   	
 	    }
 
 }

@@ -64,7 +64,6 @@ public class EntityVespa extends EntityFlyingMob {
     */
    public void onUpdate() {
       super.onUpdate();
-      //System.out.println(this.moveVertical + " " + this.moveForward);
       if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
          this.setDead();
       }

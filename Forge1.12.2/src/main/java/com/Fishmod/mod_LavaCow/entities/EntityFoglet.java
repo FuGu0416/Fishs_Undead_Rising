@@ -64,7 +64,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
 	private static final DataParameter<Byte> HANGING = EntityDataManager.<Byte>createKey(EntityFoglet.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> CASTING = EntityDataManager.<Byte>createKey(EntityFoglet.class, DataSerializers.BYTE);
 	protected static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute((IAttribute)null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).setDescription("Spawn Reinforcements Chance");
-	//public int setFog_counter = 0;
 	private boolean isAggressive = false;
 	private int attackTimer = 0;
 	protected int spellTicks;
@@ -136,11 +135,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     {
         return this.spellTicks;
     }
-    
-    /*private boolean isWalkingonLand()
-    {
-    	return this.getHealth() < this.getMaxHealth() * 0.5f && !this.isBurning(); //this.setFog_counter > 0 && (this.posX != this.prevPosX || this.posZ != this.prevPosZ) && !this.inWater && this.onGround;
-    }*/
 	
     /**
      * Called to update the entity's position/logic.
@@ -151,16 +145,10 @@ public class EntityFoglet extends EntityMob implements IAggressive{
         super.onUpdate();
         
         if(this.getIsHanging()) {
-        	//this.setIsHanging(true);
-        	//System.out.println("OXOXOXOXOXOXOXOXO");
 	        this.motionX = 0.0D;
 	        this.motionY = 0.0D;
 	        this.motionZ = 0.0D;
-	        /*if(this.getAttackingEntity() != null && this.getAttackingEntity().posY < this.posY && MathHelper.abs((float) (this.getDistance(this.getAttackingEntity()) - (this.posY - this.getAttackingEntity().posY))) < 1.0F)
-	        	this.setIsHanging(false);
-	        
-	        this.getLookHelper().setLookPosition(this.posX, 0.0D, this.posZ, 10.0F, 10.0F);
-	        this.getLookHelper().onUpdateLook();*/
+
 	        if(!this.isRiding()) {
 		        if(this.world.canSeeSky(new BlockPos(this.posX, this.posY, this.posZ))) {
 		        	this.setIsHanging(false);
@@ -177,34 +165,8 @@ public class EntityFoglet extends EntityMob implements IAggressive{
 	        			break;
 	        		}
 	        	}  
-		        //this.posY = (double)MathHelper.floor(this.posY) + 1.0D - (double)this.height
 	        }
-    	}
-        
-        /*if(this.getRevengeTarget() != null) {
-	        System.out.println("O_O1 " + this.getRevengeTarget().posY);
-	        System.out.println("O_O2 " + this.posY);
-	        System.out.println("O_O3 " + this.getRevengeTarget().getName());
-        }
-        else {
-        	System.out.println("O_O null");
-        }*/
-
-        //this.setRotation(0.0F, this.rotationPitch);
-        /*if (this.isWalkingonLand())
-        {
-        	for (int j = 0; j < 6; ++j)
-            {
-                float f1 = this.rand.nextFloat() * this.height * 2.0f;
-                float f2 = this.rand.nextFloat() * this.width * 10.0F;
-                float f3 = this.rand.nextFloat() * this.width * 10.0F;
-                World world = this.world;
-                EnumParticleTypes enumparticletypes = EnumParticleTypes.CLOUD;
-                double d0 = this.posX + (double)f2 - this.width * this.rand.nextFloat() * 8.0f;
-                double d1 = this.posZ + (double)f3 - this.width * this.rand.nextFloat() * 8.0f;
-                world.spawnParticle(enumparticletypes, d0, this.posY + (double)f1, d1, 0.0D, 0.0D, 0.0D);
-            }
-        }*/
+    	}      
     }
 	
     public void fall(float distance, float damageMultiplier) {
@@ -221,13 +183,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     @Override
     public void onLivingUpdate()
     {
-    		//System.out.println("OXOXOXOXOXOXOXOXO" + setFog_counter);
-    		/*for (int i = 0; i < 5; i++)
-    		{
-    			//System.out.println("OXOXOXOXOXOXOXOXO" + setFog_counter);
-    			this.world.spawnParticle(EnumParticleTypes.CLOUD, this.posX + (double)(new Random().nextFloat() * this.width * 10.0F) - (double)this.width * 5.0f, this.posY + (double)(new Random().nextFloat() * this.height * 2.0f), this.posZ + (double)(new Random().nextFloat() * this.width * 10.0F) - (double)this.width * 5.0f, 0.0D, 0.0D, 0.0D);
-    		}*/
-    	//if(this.setFog_counter > 0)this.setFog_counter--;
         if (this.spellTicks > 0)
         {
             --this.spellTicks;
@@ -250,9 +205,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     	if (super.attackEntityFrom(source, amount))
         {
             EntityLivingBase entitylivingbase = this.getAttackTarget();
-            //this.setFog_counter = 60;
-            //System.out.println(amount + "OXOXOXOXOXOXOXOXO" + this.getHealth());
-            //if (this.isWalkingonLand() && this.getHealth() > 0)this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, 3 * 20));
         	
             if (entitylivingbase == null && source.getTrueSource() instanceof EntityLivingBase)
             {
@@ -314,8 +266,7 @@ public class EntityFoglet extends EntityMob implements IAggressive{
         if (flag)
         {
             float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            //this.setFog_counter = 100;
-            //this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, this.setFog_counter));
+
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
                 entityIn.setFire(2 * (int)f);
@@ -361,8 +312,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
         	{       		
         		isAggressive = true;
         		this.world.setEntityState(this, (byte)11);
-        		//System.out.println("O_O throw");
-        		//setFog_counter = 166;
         	}
         else 
         	{
@@ -384,8 +333,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
     @Override
     public boolean isAggressive()
     {
-    	//if(this.getAttackTarget() != null)System.out.println("O_O" + this.getAttackTarget().getName());
-    	//else System.out.println("OAO");
     	return isAggressive;
     }
     
@@ -528,15 +475,6 @@ public class EntityFoglet extends EntityMob implements IAggressive{
             int k = MathHelper.floor(EntityFoglet.this.posZ);
             BlockPos blockpos = new BlockPos(i, j, k);
             
-            //System.out.println("OAO " + EntityFoglet.this.world.getBlockState(blockpos.up(2)).getBlock().getLocalizedName());
-            /*System.out.println("OAO1 " + EntityFoglet.this.world.getBlockState(blockpos.east()).getBlock().getLocalizedName());
-            System.out.println("OAO2 " + EntityFoglet.this.world.getBlockState(blockpos.north()).getBlock().getLocalizedName());
-            System.out.println("OAO3 " + EntityFoglet.this.world.getBlockState(blockpos.south()).getBlock().getLocalizedName());
-            System.out.println("OAO4 " + EntityFoglet.this.world.getBlockState(blockpos.west()).getBlock().getLocalizedName());
-            System.out.println("OAO5 " + EntityFoglet.this.world.getBlockState(blockpos.east().north()).getBlock().getLocalizedName());
-            System.out.println("OAO6 " + EntityFoglet.this.world.getBlockState(blockpos.east().south()).getBlock().getLocalizedName());
-            System.out.println("OAO7 " + EntityFoglet.this.world.getBlockState(blockpos.west().north()).getBlock().getLocalizedName());
-            System.out.println("OAO8 " + EntityFoglet.this.world.getBlockState(blockpos.west().south()).getBlock().getLocalizedName());*/
             TreePos = null;
             
             for(int x = -1 ; x <= 1 ; x++)
@@ -583,17 +521,10 @@ public class EntityFoglet extends EntityMob implements IAggressive{
          */
         public void updateTask()
         {
-        	//EntityFoglet.this.motionX = 0.0D;//0 -1 0F -1 0 90F
-        	//EntityFoglet.this.motionZ = 0.0D;
         	if(EntityFoglet.this.motionY <= 0.0D)EntityFoglet.this.motionY += 0.1D;
         	if(TreePos != null) {
-        		//EntityFoglet.this.setRotation((float) Math.toDegrees(Math.atan(TreePos.getX() / (TreePos.getZ() + 0.0000001D))), EntityFoglet.this.rotationPitch);//.getLookHelper().setLookPosition(TreePos.getX(), TreePos.getY(), TreePos.getZ(), 1.0F, 1.0F);
-        		//EntityFoglet.this.motionX = 0.01D * (TreePos.getX());
-            	//EntityFoglet.this.motionZ = 0.01D * (TreePos.getZ());
             	EntityFoglet.this.renderYawOffset = (TreePos.getX() * 270.0F + (float) Math.toDegrees(Math.atan(TreePos.getZ() / (TreePos.getX() + 0.0000001D)))) % 360.0F;
-        		//System.out.println("OAO " + (float) Math.toDegrees(Math.atan(TreePos.getX() / (TreePos.getZ() + 0.0000001D))) + " " + EntityFoglet.this.rotationPitch);
-        		//System.out.println("O_O " + EntityFoglet.this.rotationYaw + " " + EntityFoglet.this.rotationPitch);
-        	}//EntityFoglet.this.getMoveHelper().setMoveTo(EntityFoglet.this.posX, EntityFoglet.this.posY + 1.0D, EntityFoglet.this.posZ, 1.0D);
+        	}
         }
     }
     

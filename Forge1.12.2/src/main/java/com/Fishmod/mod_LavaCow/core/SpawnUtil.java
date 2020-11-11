@@ -5,6 +5,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 public class SpawnUtil {
 	
@@ -33,5 +34,12 @@ public class SpawnUtil {
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
     	return entityIn.world.getHeight(entityIn.getPosition());
+    }
+    
+    public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+    	if(worldIn.getChunkProvider() instanceof ChunkProviderServer)
+    		return ((ChunkProviderServer)worldIn.getChunkProvider()).isInsideStructure(worldIn, structureName, pos);
+    	
+    	return false;
     }
 }

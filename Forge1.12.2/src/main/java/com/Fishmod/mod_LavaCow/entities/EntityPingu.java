@@ -165,14 +165,12 @@ public class EntityPingu  extends EntityMob{
             });
             
             for(Entity E : list)
-            	//if(((EntityPingu)E).getAttackingEntity() != null)
             		((EntityPingu)E).setAttackTarget((EntityLivingBase) entity);
 
             
         }
         
         return super.attackEntityFrom(source, amount);
-        //return super.attackEntityFrom(source, source.isFireDamage()? 2.0F * amount : amount);
     }
 
     public boolean attackEntityAsMob(Entity entityIn)
@@ -210,8 +208,6 @@ public class EntityPingu  extends EntityMob{
         	{       		
         		isAggressive = true;
         		this.world.setEntityState(this, (byte)11);
-        		//System.out.println("O_O throw");
-        		//setFog_counter = 166;
         	}
         else 
         	{
@@ -223,8 +219,6 @@ public class EntityPingu  extends EntityMob{
     @SideOnly(Side.CLIENT)
     public boolean isAggressive()
     {
-    	//if(this.getAttackTarget() != null)System.out.println("O_O" + this.getAttackTarget().getName());
-    	//else System.out.println("OAO");
     	return isAggressive;
     }
     

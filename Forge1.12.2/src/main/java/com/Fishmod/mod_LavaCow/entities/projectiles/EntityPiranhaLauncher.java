@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 
 public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
 	
-	//private float damage = 4.0F;
-	
 	   public EntityPiranhaLauncher(World worldIn) {
 		   super(worldIn);
 		   this.setDamage(this.getDamage() + 3.0F);

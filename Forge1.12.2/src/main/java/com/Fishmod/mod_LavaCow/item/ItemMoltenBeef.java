@@ -45,4 +45,15 @@ public class ItemMoltenBeef extends ItemFlintAndSteel
     {
         return EnumAction.BLOCK;
     }
+		
+    /**
+     * @return the fuel burn time for this itemStack in a furnace.
+     * Return 0 to make it not act as a fuel.
+     * Return -1 to let the default vanilla logic decide.
+     */
+	@Override
+    public int getItemBurnTime(ItemStack itemStack)
+    {
+        return 16000;
+    }
 }

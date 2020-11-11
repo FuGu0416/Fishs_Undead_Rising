@@ -33,7 +33,7 @@ public class mod_LavaCow {
  
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
-    public static final String VERSION = "1.2.2";
+    public static final String VERSION = "1.2.3";
     public static final String MC_VERSION = "[1.12.2]";
     
     public static final String CLIENT = "com.Fishmod.mod_LavaCow.proxy.ClientProxy";
@@ -57,8 +57,7 @@ public class mod_LavaCow {
         TAB_ITEMS = new CreativeTab(MODID + "_items");
         Modconfig.INSTANCE.loadConfig(event);
         MinecraftForge.EVENT_BUS.register(new RegistryHandler());
-        //NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, PROXY);
-        //BlockGlowShroom.init();
+
         PROXY.preRender();
         PROXY.registerItemAndBlockRenderers();
         
@@ -67,8 +66,6 @@ public class mod_LavaCow {
         
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
         NETWORK_WRAPPER.registerMessage(PacketMountSpecial.class, PacketMountSpecial.class, 0, Side.SERVER);
-        
-        //if(!Modconfig.ModBiomes_spawn)ModEntities.RegisterEntitySpawn();
     }
  
     @EventHandler
@@ -89,7 +86,6 @@ public class mod_LavaCow {
     	PROXY.postInit(event);
     	
     	TinkersCompatBridge.loadTinkersPostInitCompat();
-    	//if(Modconfig.ModBiomes_spawn)ModEntities.RegisterEntitySpawn();
     }
     
 }

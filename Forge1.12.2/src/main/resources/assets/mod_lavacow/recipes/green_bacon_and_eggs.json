@@ -1,14 +1,26 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-		"type": "forge:ore_dict",
-		"ore": "egg"
-    },
-    {
-		"type": "forge:ore_dict",
-		"ore": "egg"
-    },
+    [
+		{
+			"type": "forge:ore_dict",
+			"ore": "egg"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllegg"
+	    }
+	],
+    [
+		{
+			"type": "forge:ore_dict",
+			"ore": "egg"
+	    },
+		{
+			"type": "forge:ore_dict",
+			"ore": "listAllegg"
+	    }
+	],
     {
     	"item": "mod_lavacow:moltenpan",
     	"data": 32767

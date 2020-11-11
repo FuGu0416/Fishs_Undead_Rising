@@ -109,15 +109,7 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
         if (this.rand.nextFloat() < (this.world.getDifficulty() == EnumDifficulty.HARD ? 0.05F : 0.01F))
         {
             this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.FROZENTHIGH));
-        }
-        
-        /*if(this.rand.nextBoolean())
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-        else
-        	this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(FishItems.SWINEMASK));
-        this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(FishItems.SWINEARMOR_CHESTPLATE));
-        this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(FishItems.SWINEARMOR_LEGGINGS));
-        this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(FishItems.SWINEARMOR_BOOTS));*/
+        }   
     }
     
     /**

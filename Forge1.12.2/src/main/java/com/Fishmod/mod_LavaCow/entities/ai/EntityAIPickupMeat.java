@@ -47,7 +47,6 @@ public class EntityAIPickupMeat<T extends EntityItem> extends EntityAITarget {
             @Override
         	public boolean apply(@Nullable EntityItem item)
             {
-            	//return !EntitySelectors.NOT_SPECTATING.apply(p_apply_1_) ? false : EntityAINearestAttackableTarget.this.isSuitableTarget(p_apply_1_, false);
             	return item instanceof EntityItem && !item.getItem().isEmpty() && item.getItem().getItem() instanceof ItemFood && ((ItemFood)item.getItem().getItem()).isWolfsFavoriteMeat();
             }
         };

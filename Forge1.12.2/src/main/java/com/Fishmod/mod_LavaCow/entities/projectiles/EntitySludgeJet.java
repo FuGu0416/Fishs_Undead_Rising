@@ -34,14 +34,10 @@ public class EntitySludgeJet extends EntityFireball {
 	    public void onUpdate() {
 	       super.onUpdate();
 	       if(!this.collided)this.accelerationY -= 0.006f;
-	       //new ParticleSquidInk.Factory().makeParticle(Particles.SQUID_INK, this.world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D).setColor(0.0F, 0.5F, 0.8F);
-	       /*Particle fx = null;
-	       fx = new ParticleSquidInk.Factory().makeParticle(Particles.SQUID_INK, this.world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
-	       fx.setColor(0.0F, 0.5F, 0.8F);*/
+
 	       if(this.getEntityWorld().isRemote)
 	    	   for(int i = 0 ; i < 22 + this.rand.nextInt(12) ; i++) {
 	    		   mod_LavaCow.PROXY.spawnCustomParticle("sludgejet", world, this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D, 0.0F, 0.3F, 0.5F);
-	    		   //world.spawnParticle(EnumParticleTypes.ITEM_CRACK., this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);	    	   
 	    	   }
 	    }
 	   
