@@ -10,7 +10,7 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 //@ObjectHolder(mod_LavaCow.MODID)
 public class ModEnchantments {
 	//public static final EnumEnchantmentType WEAPONS = EnumHelper.addEnchantmentType("weapons", (item)->(item instanceof ItemSword || item instanceof ItemBow));
-	public static final Enchantment POISONOUS = new EnchantmentPoisonous("Poisonous", "poisonous", EnumEnchantmentType.WEAPON);
-	public static final Enchantment LIFESTEAL = new EnchantmentLifesteal("Lifesteal", "lifesteal");
-	public static final Enchantment CORROSIVE = new EnchantmentCorrosive("Corrosive", "corrosive", EnumEnchantmentType.WEAPON);
+	public static final Enchantment POISONOUS = new EnchantmentPoisonous("poisonous", "poisonous", EnumEnchantmentType.WEAPON);
+	public static final Enchantment LIFESTEAL = new EnchantmentLifesteal("lifesteal", "lifesteal");
+	public static final Enchantment CORROSIVE = new EnchantmentCorrosive("corrosive", "corrosive", EnumEnchantmentType.WEAPON);
 }

@@ -308,12 +308,12 @@ key.mod_lavacow.special=座騎特殊能力
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=劇毒
-enchantment.mod_lavacow.Poisonous.desc=攻擊時能使目標中毒
-enchantment.mod_lavacow.Lifesteal=生命竊取
-enchantment.mod_lavacow.Lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
-enchantment.mod_lavacow.Corrosive=酸蝕性
-enchantment.mod_lavacow.Corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
+enchantment.mod_lavacow.poisonous=劇毒
+enchantment.mod_lavacow.poisonous.desc=攻擊時能使目標中毒
+enchantment.mod_lavacow.lifesteal=生命竊取
+enchantment.mod_lavacow.lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
+enchantment.mod_lavacow.corrosive=酸蝕性
+enchantment.mod_lavacow.corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
 
 ##############
 # MobEffects #

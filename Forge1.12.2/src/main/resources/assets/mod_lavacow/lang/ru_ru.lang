@@ -305,12 +305,12 @@ key.mod_lavacow.special=Способность ездового животног
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=Отравление
-enchantment.mod_lavacow.Poisonous.desc=Отравляет цель.
-enchantment.mod_lavacow.Lifesteal=Поглощение жизни
-enchantment.mod_lavacow.Lifesteal.desc=Восстанавливает ваше здоровье за счет здоровья цели.
-enchantment.mod_lavacow.Corrosive=Разложение
-enchantment.mod_lavacow.Corrosive.desc=Ослабляет цель, позволяя наносить ей больше урона.
+enchantment.mod_lavacow.poisonous=Отравление
+enchantment.mod_lavacow.poisonous.desc=Отравляет цель.
+enchantment.mod_lavacow.lifesteal=Поглощение жизни
+enchantment.mod_lavacow.lifesteal.desc=Восстанавливает ваше здоровье за счет здоровья цели.
+enchantment.mod_lavacow.corrosive=Разложение
+enchantment.mod_lavacow.corrosive.desc=Ослабляет цель, позволяя наносить ей больше урона.
 
 ##############
 # MobEffects #

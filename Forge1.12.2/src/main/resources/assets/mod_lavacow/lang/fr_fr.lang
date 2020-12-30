@@ -241,5 +241,5 @@ key.mod_lavacow.special=Mount Special Ability
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=Toxique
-enchantment.mod_lavacow.Lifesteal=Vol de vie
+enchantment.mod_lavacow.poisonous=Toxique
+enchantment.mod_lavacow.lifesteal=Vol de vie

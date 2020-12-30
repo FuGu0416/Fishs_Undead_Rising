@@ -303,12 +303,12 @@ key.mod_lavacow.special=座骑特殊能力
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=剧毒
-enchantment.mod_lavacow.Poisonous.desc=攻击时能使目标中毒
-enchantment.mod_lavacow.Lifesteal=生命窃取
-enchantment.mod_lavacow.Lifesteal.desc=对目标造成伤害时，能回复玩家的生命值
-enchantment.mod_lavacow.Corrosive=酸蚀性
-enchantment.mod_lavacow.Corrosive.desc=攻击时能侵蚀目标，提高它接下来所受到的伤害
+enchantment.mod_lavacow.poisonous=剧毒
+enchantment.mod_lavacow.poisonous.desc=攻击时能使目标中毒
+enchantment.mod_lavacow.lifesteal=生命窃取
+enchantment.mod_lavacow.lifesteal.desc=对目标造成伤害时，能回复玩家的生命值
+enchantment.mod_lavacow.corrosive=酸蚀性
+enchantment.mod_lavacow.corrosive.desc=攻击时能侵蚀目标，提高它接下来所受到的伤害
 
 ##############
 # MobEffects #
