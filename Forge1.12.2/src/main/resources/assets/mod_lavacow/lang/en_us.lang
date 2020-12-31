@@ -318,7 +318,9 @@ enchantment.mod_lavacow.corrosive.desc=Weakens the target, causing it to receive
 ##############
 
 mob_effect.mod_lavacow:corroded=Corroded
+description.mob_effect.mod_lavacow:corroded=Increase income damage.
 mob_effect.mod_lavacow:soiled=Soiled
+description.mob_effect.mod_lavacow:soiled=Prevent from eating or drinking.
 
 ##############
 # Potions #

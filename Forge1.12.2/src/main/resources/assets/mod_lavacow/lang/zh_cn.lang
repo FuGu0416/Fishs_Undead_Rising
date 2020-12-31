@@ -315,7 +315,9 @@ enchantment.mod_lavacow.corrosive.desc=攻击时能侵蚀目标，提高它接�
 ##############
 
 mob_effect.mod_lavacow:corroded=腐蚀
+description.mob_effect.mod_lavacow:corroded=提高所受伤害
 mob_effect.mod_lavacow:soiled=玷污
+description.mob_effect.mod_lavacow:soiled=防止进食或饮用
 
 ##############
 # Potions #
