@@ -57,6 +57,7 @@ public class LootTableHandler {
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static List<Biome.SpawnListEntry> DREAMCATCHER_LIST = Lists.<Biome.SpawnListEntry>newArrayList();
+	public static List<ResourceLocation> PARASITE_HOSTLIST = Lists.<ResourceLocation>newArrayList();
 	
 	public static void addLootTable()
 	{
@@ -111,6 +112,10 @@ public class LootTableHandler {
 				DREAMCATCHER_LIST.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, Integer.parseInt(S_splt[1]), Integer.parseInt(S_splt[2]), Integer.parseInt(S_splt[3])));
 				//System.out.println("O~O " + entityClass.getName());
 			}
+		}
+		
+		for(String S : Modconfig.Parasite_Hostlist) {
+			PARASITE_HOSTLIST.add(new ResourceLocation(S));
 		}
 		
 		/*LOOT_INTESTINE.put(Items.SLIME_BALL, 0.40f);

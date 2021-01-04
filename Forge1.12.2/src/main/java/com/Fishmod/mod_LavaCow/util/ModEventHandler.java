@@ -29,13 +29,12 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityHusk;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
@@ -122,7 +121,7 @@ public class ModEventHandler {
          * Give a chance to spawn horde of Parasites(WIP) when a zombie dies.
          **/
     	if (!world.isRemote && world.provider.isSurfaceWorld()  
-    			&& entity instanceof EntityZombie && entity.ticksExisted >= 60
+    			&& LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && entity.ticksExisted >= 60
     			&& (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
     	{
     		int var2 = 3 + new Random().nextInt(3);
@@ -136,7 +135,7 @@ public class ModEventHandler {
                 
         		EntityParasite entityparasite = new EntityParasite(world);
         		if(passenger != null)entityparasite.setSkin(passenger.getSkin());
-        		else if(entity instanceof EntityHusk)entityparasite.setSkin(1);
+        		else if(BiomeDictionary.hasType(world.getBiome(entity.getPosition()), BiomeDictionary.Type.DRY))entityparasite.setSkin(1);
         		else if(BiomeDictionary.hasType(world.getBiome(entity.getPosition()), BiomeDictionary.Type.JUNGLE))entityparasite.setSkin(2);
         		else entityparasite.setSkin(0);
         		

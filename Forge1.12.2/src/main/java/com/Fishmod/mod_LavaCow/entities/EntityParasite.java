@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -90,13 +91,10 @@ public class EntityParasite extends EntitySpider{
     protected void applyEntityAI()
     {
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityZombie>(this, EntityZombie.class, true));
-        if(Modconfig.Parasite_Plague)
-        	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, (p_210136_0_) -> {
-        	      return p_210136_0_ instanceof EntityLivingBase 
-        	    		  && ((EntityLivingBase)p_210136_0_).attackable() 
-        	    		  && !(p_210136_0_ instanceof EntityParasite || p_210136_0_ instanceof EntityCreeper);
-        	   }));
+    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, (p_210136_0_) -> {
+	  	      return p_210136_0_ instanceof EntityLivingBase && ((EntityLivingBase)p_210136_0_).attackable() 
+	  	    		  && ((Modconfig.Parasite_Plague && !(p_210136_0_ instanceof EntityParasite || p_210136_0_ instanceof EntityCreeper)) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(p_210136_0_)));
+	  	   }));
     }
 
 	@Override
@@ -239,7 +237,7 @@ public class EntityParasite extends EntitySpider{
 	
     protected void collideWithEntity(Entity entityIn)
     {
-    	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || entityIn instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
+    	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
     		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
     		this.startRiding(entityIn);
     		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));
