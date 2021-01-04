@@ -168,7 +168,7 @@ public class EntityParasite extends EntitySpider{
         }
         	
         
-        if (getRidingEntity() != null && this.isServerWorld()) {
+        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityLivingBase && this.isServerWorld()) {
         	Entity mount = this.getRidingEntity();
 
         	if (((EntityLivingBase) mount).getActivePotionEffect(MobEffects.HUNGER) == null) {

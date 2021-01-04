@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
 public class EnchantmentPoisonous extends Enchantment {
@@ -23,6 +24,25 @@ public class EnchantmentPoisonous extends Enchantment {
 	public int getMaxLevel() {
 		return 3;
 	}
+	
+    /**
+     * Determines if this enchantment can be applied to a specific ItemStack.
+     */
+    public boolean canApply(ItemStack stack)
+    {
+        return Modconfig.Enchantment_Enable ? super.canApply(stack) : false;
+    }
+	
+    /**
+     * This applies specifically to applying at the enchanting table. The other method {@link #canApply(ItemStack)}
+     * applies for <i>all possible</i> enchantments.
+     * @param stack
+     * @return
+     */
+    public boolean canApplyAtEnchantingTable(ItemStack stack)
+    {
+        return Modconfig.Enchantment_Enable ? super.canApplyAtEnchantingTable(stack) : false;
+    }
 	
     /**
      * Is this enchantment allowed to be enchanted on books via Enchantment Table

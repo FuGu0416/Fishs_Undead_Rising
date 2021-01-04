@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
@@ -290,7 +289,7 @@ public class EntityUndertaker extends EntityMob{
             }
             else
             {
-                int i = EntityUndertaker.this.world.getEntitiesWithinAABB(EntityLilSludge.class, EntityUndertaker.this.getEntityBoundingBox().grow(16.0D)).size();
+                int i = EntityUndertaker.this.world.getEntitiesWithinAABB(EntityUnburied.class, EntityUndertaker.this.getEntityBoundingBox().grow(16.0D)).size();
             	return EntityUndertaker.this.ticksExisted >= this.spellCooldown && i < Modconfig.Undertaker_Ability_Max;
             }
         }
