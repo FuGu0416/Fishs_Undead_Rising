@@ -39,6 +39,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -129,11 +131,13 @@ public class EntityScarecrow  extends EntityFishTameable{
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
-        
+
+        Vec3d mobVector = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+		BlockPos mobPosition = new BlockPos(mobVector);
+
     	if (!this.world.isRemote && !this.isTamed()) {
 			float f = this.getBrightness();
-    		BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(blockpos)) {
+    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(mobPosition)) {
     			if(this.state != EntityFishTameable.State.SITTING)
     				this.doSitCommand(null);
     		}
@@ -142,39 +146,50 @@ public class EntityScarecrow  extends EntityFishTameable{
     			this.doWanderCommand(null);
     		}
     	}
-    	
-        if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
-        	float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-        	
-        	if(this.AttackStance == (byte)4) {
-        		this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-        		if (this.getAttackTarget() instanceof EntityLivingBase) {
+
+    	// Should always return EntityLivingBase (according to the documentation).
+    	EntityLivingBase target = this.getAttackTarget();
+
+        if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
+        	Vec3d targetVector = new Vec3d(target.posX, target.posY + (double)target.getEyeHeight(), target.posZ);
+    		RayTraceResult rayTrace = this.world.rayTraceBlocks(mobVector, targetVector, false, true, false);
+
+    		// If there's something in the way, we retry from the mob's body.
+    		if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
+    			rayTrace = this.world.rayTraceBlocks(mobVector.subtract(0.0D, (double)this.getEyeHeight(), 0.0D), targetVector, false, true, false);
+    		}
+
+    		if (rayTrace == null || rayTrace.typeOfHit != RayTraceResult.Type.BLOCK) {
+	        	float f = this.world.getDifficultyForLocation(mobPosition).getAdditionalDifficulty();
+	        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+	        	
+	        	if(this.AttackStance == (byte)4) {
+	        		target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
         			if(this.getSkin() != 2)
-        				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
+        				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
         			else
-        				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
-        		}
-        	}		
-        	else {
-                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getAttackTarget().getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
-                {
-                    if (entitylivingbase != this && !this.isOnSameTeam(entitylivingbase))
-                    {
-                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-            			if(this.getSkin() != 2)
-            				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
-            			else
-            				((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
-                    }
-                }
-        	}
-        		            
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-            	this.getAttackTarget().setFire(2 * (int)f);
-            }
+        				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+	        	}		
+	        	else {
+	                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
+	                {
+	                    if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
+	                    {
+	                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+	                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+	            			if(this.getSkin() != 2)
+	            				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
+	            			else
+	            				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+	                    }
+	                }
+	        	}
+	        		            
+	            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
+	            {
+	            	target.setFire(2 * (int)f);
+	            }
+    		}
         }
     	
         super.onLivingUpdate();
