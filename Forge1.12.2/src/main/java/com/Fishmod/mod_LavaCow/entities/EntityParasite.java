@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -169,17 +170,16 @@ public class EntityParasite extends EntitySpider{
         if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityLivingBase && this.isServerWorld()) {
         	Entity mount = this.getRidingEntity();
 
-        	if (((EntityLivingBase) mount).getActivePotionEffect(MobEffects.HUNGER) == null) {
+        	if (((EntityLivingBase) mount).getActivePotionEffect(ModMobEffects.INFESTED) == null) {
         		this.dismountEntity(mount);
-        		this.dismountRidingEntity();
-        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        		this.dismountRidingEntity();     		
         		this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
         	}        	
         	else if(this.getRidingEntity().isBurning()) {
         		this.setFire(20);
         		this.dismountEntity(mount);
         		this.dismountRidingEntity();
-        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        		
         	}
         }
         else if (getRidingEntity() == null && this.long_live)
@@ -225,7 +225,7 @@ public class EntityParasite extends EntitySpider{
 		if (super.attackEntityAsMob(entity)) {
 			if ((entity instanceof EntityPlayer || entity instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach/* && !entity.isBeingRidden()*/) {
 				if(entity instanceof EntityPlayer) {
-					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
+					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 8*20, 0));
 				}				
 			}
 			
@@ -238,7 +238,7 @@ public class EntityParasite extends EntitySpider{
     protected void collideWithEntity(Entity entityIn)
     {
     	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
-    		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
+    		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 8*20, 0));
     		this.startRiding(entityIn);
     		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));
             this.isJumping = false;

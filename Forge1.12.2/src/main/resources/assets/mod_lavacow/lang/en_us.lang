@@ -321,6 +321,8 @@ mob_effect.mod_lavacow:corroded=Corroded
 description.mob_effect.mod_lavacow:corroded=Increase income damage.
 mob_effect.mod_lavacow:soiled=Soiled
 description.mob_effect.mod_lavacow:soiled=Prevent from eating or drinking.
+mob_effect.mod_lavacow:infested=Infested
+description.mob_effect.mod_lavacow:infested=Apply hunger and slowness, also spawn parasites when dead.
 
 ##############
 # Potions #
@@ -334,6 +336,10 @@ potion.effect.mod_lavacow:foulodor=Potion of Foul Odor
 splash_potion.effect.mod_lavacow:foulodor=Splash Potion of Foul Odor
 lingering_potion.effect.mod_lavacow:foulodor=Llingering Potion of Foul Odor
 tipped_arrow.effect.mod_lavacow:foulodor=Arrow of Foul Odor
+potion.effect.mod_lavacow:infestation=Potion of Infestation
+splash_potion.effect.mod_lavacow:infestation=Splash Potion of Infestation
+lingering_potion.effect.mod_lavacow:infestation=Llingering Potion of Infestation
+tipped_arrow.effect.mod_lavacow:infestation=Arrow of Infestation
 
 ################
 # Advancements #

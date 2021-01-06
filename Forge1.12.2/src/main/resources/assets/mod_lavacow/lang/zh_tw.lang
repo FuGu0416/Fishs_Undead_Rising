@@ -323,6 +323,8 @@ mob_effect.mod_lavacow:corroded=腐蝕
 description.mob_effect.mod_lavacow:corroded=提高所受傷害
 mob_effect.mod_lavacow:soiled=玷汙
 description.mob_effect.mod_lavacow:soiled=防止進食或飲用
+mob_effect.mod_lavacow:infested=感染
+description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡時會有屍蛆爬出
 
 ##############
 # Potions #
@@ -336,6 +338,10 @@ potion.effect.mod_lavacow:foulodor=惡臭藥水
 splash_potion.effect.mod_lavacow:foulodor=飛濺 惡臭藥水
 lingering_potion.effect.mod_lavacow:foulodor=滯留 惡臭藥水
 tipped_arrow.effect.mod_lavacow:foulodor=惡臭之箭
+potion.effect.mod_lavacow:infestation=感染藥水
+splash_potion.effect.mod_lavacow:infestation=飛濺 感染藥水
+lingering_potion.effect.mod_lavacow:infestation=滯留 感染藥水
+tipped_arrow.effect.mod_lavacow:infestation=感染之箭
 
 ################
 # Advancements #

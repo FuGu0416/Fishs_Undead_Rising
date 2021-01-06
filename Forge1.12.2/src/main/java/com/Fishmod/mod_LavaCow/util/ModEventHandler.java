@@ -118,11 +118,11 @@ public class ModEventHandler {
 		}
 
     	/**
-         * Give a chance to spawn horde of Parasites(WIP) when a zombie dies.
+         * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isRemote && world.provider.isSurfaceWorld()  
-    			&& LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && entity.ticksExisted >= 60
-    			&& (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
+    	if (!world.isRemote && world.provider.isSurfaceWorld() && entity.ticksExisted >= 60  
+    			&& ((LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
+    			|| event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED)))
     	{
     		int var2 = 3 + new Random().nextInt(3);
     		float var4,var5;
