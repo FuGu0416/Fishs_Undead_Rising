@@ -36,6 +36,16 @@ public class EntityPtera extends EntityFlyingMob {
 		super(worldIn);
 		this.setSize(1.6F, 0.8F);
 	}
+
+    @Override
+    public boolean canBeSteered() {
+        return false;
+    }
+
+    @Override
+    public boolean canPassengerSteer() {
+        return false;
+    }
 	
 	@Override
 	protected void initEntityAI() {
