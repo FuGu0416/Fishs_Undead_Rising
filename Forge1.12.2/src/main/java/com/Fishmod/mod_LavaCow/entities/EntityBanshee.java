@@ -478,20 +478,24 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         {
             EntityLivingBase entitylivingbase = EntityBanshee.this.getAttackTarget();
 
-            if (EntityBanshee.this.getEntityBoundingBox().intersects(entitylivingbase.getEntityBoundingBox()))
-            {
-                EntityBanshee.this.attackEntityAsMob(entitylivingbase);
-            }
-            else
-            {
-                double d0 = EntityBanshee.this.getDistanceSq(entitylivingbase);
-
-                if (d0 < 9.0D)
+            if (entitylivingbase != null) {
+                if (EntityBanshee.this.getEntityBoundingBox().intersects(entitylivingbase.getEntityBoundingBox()))
                 {
-                    Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
-                    EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                    EntityBanshee.this.attackEntityAsMob(entitylivingbase);
+                }
+                else
+                {
+                    double d0 = EntityBanshee.this.getDistanceSq(entitylivingbase);
+
+                    if (d0 < 9.0D)
+                    {
+                        Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
+                        EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                    }
                 }
             }
+
+           super.updateTask();
         }
     }
     
