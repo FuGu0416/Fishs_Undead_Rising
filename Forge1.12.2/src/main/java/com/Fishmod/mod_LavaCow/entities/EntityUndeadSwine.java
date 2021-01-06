@@ -250,32 +250,36 @@ public class EntityUndeadSwine extends EntityMob{
         public void updateTask() {
            --this.attackTime;
            EntityLivingBase entitylivingbase = this.blaze.getAttackTarget();
-           double d0 = this.blaze.getDistance(entitylivingbase);
-           if (d0 < 2.2D) {
-              if (this.attackTime <= 0) {
-                 this.attackTime = 30;
-                 this.blaze.attackEntityAsMob(entitylivingbase);
-              }
 
-           } else if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
-              double v = 4.0D;
-        	  double d1 = v * (entitylivingbase.posX - this.blaze.posX)/d0;
-              double d2 = v * (entitylivingbase.posY - this.blaze.posY)/d0;
-              double d3 = v * (entitylivingbase.posZ - this.blaze.posZ)/d0;
-              if (this.attackTime <= 0) {
-                 ++this.attackStep;
-                 if (this.attackStep > 20) {
-                    this.blaze.moveHelper.setMoveTo(this.blaze.posX + d1, this.blaze.posY + d2, this.blaze.posZ + d3, 2.0D);
-                 } else if(this.attackStep > 100) {
-                	 this.attackTime = 60;
-                	 this.attackStep = 0;
-                 }
-              }
+           if (entitylivingbase != null) {
+               double d0 = this.blaze.getDistance(entitylivingbase);
 
-              this.blaze.getLookHelper().setLookPositionWithEntity(entitylivingbase, 100.0F, 100.0F);
-           } else {
-              this.blaze.getNavigator().clearPath();
-              this.blaze.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
+               if (d0 < 2.2D) {
+                  if (this.attackTime <= 0) {
+                     this.attackTime = 30;
+                     this.blaze.attackEntityAsMob(entitylivingbase);
+                  }
+
+               } else if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
+                  double v = 4.0D;
+            	  double d1 = v * (entitylivingbase.posX - this.blaze.posX)/d0;
+                  double d2 = v * (entitylivingbase.posY - this.blaze.posY)/d0;
+                  double d3 = v * (entitylivingbase.posZ - this.blaze.posZ)/d0;
+                  if (this.attackTime <= 0) {
+                     ++this.attackStep;
+                     if (this.attackStep > 20) {
+                        this.blaze.moveHelper.setMoveTo(this.blaze.posX + d1, this.blaze.posY + d2, this.blaze.posZ + d3, 2.0D);
+                     } else if(this.attackStep > 100) {
+                    	 this.attackTime = 60;
+                    	 this.attackStep = 0;
+                     }
+                  }
+
+                  this.blaze.getLookHelper().setLookPositionWithEntity(entitylivingbase, 100.0F, 100.0F);
+               } else {
+                  this.blaze.getNavigator().clearPath();
+                  this.blaze.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
+               }
            }
 
            super.updateTask();
