@@ -8,7 +8,6 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -146,6 +145,11 @@ public class EntityScarecrow  extends EntityFishTameable{
     			this.doWanderCommand(null);
     		}
     	}
+    	
+    	if(this.isBeingRidden())
+    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
+    	else
+    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 
     	// Should always return EntityLivingBase (according to the documentation).
     	EntityLivingBase target = this.getAttackTarget();
@@ -240,6 +244,21 @@ public class EntityScarecrow  extends EntityFishTameable{
         super.setEquipmentBasedOnDifficulty(difficulty);
     }
     
+    @Override
+    public boolean canBeSteered() {
+        return false;
+    }
+    
+    /**
+     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
+     * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
+     */
+    @Nullable
+    public Entity getControllingPassenger()
+    {
+        return null;
+    }
+    
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
@@ -254,7 +273,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     	{
     		EntityRaven crowpet = new EntityRaven(this.world);
     		crowpet.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-    		crowpet.startRiding(this, false);
+    		crowpet.startRiding(this, true);
     		this.world.spawnEntity(crowpet);
     	}
         
@@ -339,12 +358,21 @@ public class EntityScarecrow  extends EntityFishTameable{
     {
         return this.isSilent() ? 0 : super.getHorizontalFaceSpeed();
     }
+    
+    public void updatePassenger(Entity passenger) {
+        super.updatePassenger(passenger);
+
+        passenger.motionX = 0;
+        passenger.motionY = 0;
+        passenger.motionZ = 0;
+    }
 	
     @Override
     public void travel(float strafe, float vertical, float forward)
     {
-    	if(!this.isSilent() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube())
+    	if(!this.isSilent() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube()) {
     		super.travel(strafe, vertical, forward);
+    	}
     }
     
 	@Override
@@ -438,7 +466,7 @@ public class EntityScarecrow  extends EntityFishTameable{
 
 	    protected double getAttackReachSqr(EntityLivingBase attackTarget)
 	    {
-	        return (double)(this.attacker.width * 9.0F * this.attacker.width * 9.0F + attackTarget.width);
+	        return (double)(this.attacker.width * 3.0F * this.attacker.width * 3.0F + attackTarget.width);
 	    }
     	
     }
