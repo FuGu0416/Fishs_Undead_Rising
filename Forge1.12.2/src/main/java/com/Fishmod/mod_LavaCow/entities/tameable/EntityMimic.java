@@ -74,7 +74,7 @@ public class EntityMimic extends EntityFishTameable{
     protected void initEntityAI()
     {
     	super.initEntityAI();
-    	
+    	this.enablePersistence();
     	this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -114,7 +114,12 @@ public class EntityMimic extends EntityFishTameable{
         }
         
     }
-    
+
+    protected boolean canDespawn()
+    {
+        return !this.isNoDespawnRequired() || super.canDespawn();
+    }
+
     @Override
     public boolean getCanSpawnHere() {
     	
