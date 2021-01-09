@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.layer.LayerMimicChest;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -57,6 +58,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMimic extends EntityFishTameable{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> CHEST_TEXTURE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
 
 	private boolean isAggressive = false;
 	private int AttackTimer = 40;
@@ -91,9 +93,10 @@ public class EntityMimic extends EntityFishTameable{
     
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf((4 + this.rand.nextInt(5)) % 6));
+        this.getDataManager().register(SKIN_TYPE, (4 + this.rand.nextInt(5)) % 6);
+        this.getDataManager().register(CHEST_TEXTURE, this.rand.nextInt(LayerMimicChest.texturePool.size()));
      }
-    
+
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -472,15 +475,25 @@ public class EntityMimic extends EntityFishTameable{
         		this.world.setEntityState(this, (byte)34);
         	}
     }
-    
+
+    public int getChestTexture()
+    {
+        return this.dataManager.get(CHEST_TEXTURE);
+    }
+
+    public void setChestTexture(int chestTexture)
+    {
+        this.dataManager.set(CHEST_TEXTURE, chestTexture);
+    }
+
     public int getSkin()
     {
-        return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+        return this.dataManager.get(SKIN_TYPE);
     }
 
     public void setSkin(int skinType)
     {
-        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+        this.dataManager.set(SKIN_TYPE, skinType);
     }
 	
 	public int getVoidSkin() {
@@ -525,13 +538,15 @@ public class EntityMimic extends EntityFishTameable{
 		if (compound.hasKey("Items"))
 			ItemStackHelper.loadAllItems(compound, inventory);
 		this.setSkin(compound.getInteger("Variant"));
-	}
+		this.setChestTexture(compound.getInteger("Chest"));
+    }
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		ItemStackHelper.saveAllItems(compound, inventory, false);
-		compound.setInteger("Variant", getSkin());
+        compound.setInteger("Variant", getSkin());
+        compound.setInteger("Chest", getChestTexture());
 	}
     
     @Override
