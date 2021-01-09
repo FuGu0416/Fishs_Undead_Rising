@@ -197,16 +197,16 @@ public class ModelMimic extends ModelBase {
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {       
     	this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    	this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
-    	this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing);
+    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
     }
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	if((((EntityMimic)entityIn).isAggressive() || ((EntityMimic)entityIn).isTamed()) && !((EntityMimic)entityIn).isSitting())
         {
-        	this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+        	this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F));
+            this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
+            this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing);
         	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
         	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
         	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
@@ -241,7 +241,7 @@ public class ModelMimic extends ModelBase {
         else
         {
         	if(((EntityMimic)entityIn).isSitting() || entityIn.ticksExisted % 3000.0F > 2976.0F) {
-        		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+        		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F));
             	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
             	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
             	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
@@ -252,7 +252,7 @@ public class ModelMimic extends ModelBase {
             	this.Eye_r.setRotationPoint(0.0F, 0.0F, 0.0F);
             	this.Eye_l.setRotationPoint(0.0F, 0.0F, 0.0F);
         	}
-        	
+
         	this.Chest_Base.rotateAngleY = 0.0F;
         	this.Leg0_r_Seg0.isHidden = true;
         	this.Leg0_l_Seg0.isHidden = true;
@@ -276,6 +276,6 @@ public class ModelMimic extends ModelBase {
         	this.Pincer_r_Seg3.isHidden = true;
         	this.Pincer_l_Seg3.isHidden = true;
         	//this.Pincer_r_Seg0.setRotationPoint(5.0F, 2.0F, 2.0F);
-        }   	
+        }
     }
 }
