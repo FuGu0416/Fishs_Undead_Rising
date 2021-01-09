@@ -253,7 +253,7 @@ public class ModelMimic extends ModelBase {
             	this.Eye_l.setRotationPoint(0.0F, 0.0F, 0.0F);
         	}
 
-        	this.Chest_Base.rotateAngleY = 0.0F;
+        	this.Chest_Base.rotateAngleY = ((EntityMimic) entityIn).rotationAngle;
         	this.Leg0_r_Seg0.isHidden = true;
         	this.Leg0_l_Seg0.isHidden = true;
         	this.Leg0_r_Seg1.isHidden = true;

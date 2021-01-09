@@ -60,6 +60,7 @@ public class EntityMimic extends EntityFishTameable{
 
 	private boolean isAggressive = false;
 	private int AttackTimer = 40;
+	public float rotationAngle = 0.0F;
 	public NonNullList<ItemStack> inventory;
 	
 	public EntityMimic(World worldIn)
@@ -67,6 +68,7 @@ public class EntityMimic extends EntityFishTameable{
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
