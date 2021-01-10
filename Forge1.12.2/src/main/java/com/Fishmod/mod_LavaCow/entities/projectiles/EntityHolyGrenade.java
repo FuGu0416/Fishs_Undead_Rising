@@ -1,9 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
-import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
-
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
@@ -40,7 +38,12 @@ public class EntityHolyGrenade extends EntityThrowable {
 	protected void onImpact(RayTraceResult result) {	
         if (!this.world.isRemote)
         {
-        	this.world.createExplosion(null, this.posX, this.posY, this.posZ, 4.0F, false);
+        	EntityWolf Dummy = new EntityWolf(this.world);
+        	Dummy.setOwnerId(thrower.getUniqueID());
+        	Dummy.setTamed(true);
+        	Dummy.setCustomNameTag("Holy Grenade");
+        	this.world.createExplosion(Dummy, this.posX, this.posY, this.posZ, 4.0F, false);
+        	Dummy.setDead();
         	this.world.playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
         	this.setDead();
         }
