@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
@@ -196,21 +198,36 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	        }
 	        
 	    	if(!this.isSitting() && !this.isRiding() && this.getHeldItemMainhand().isEmpty() && this.ticksExisted % 200 == 0 && this.rand.nextFloat() < 0.02f) {
-	    		
-	    		switch(this.getSkin()) { 
-		            case 1: 
-		            	this.setHeldItem(getActiveHand(), new ItemStack(Items.IRON_NUGGET));
-		            	break; 
-		            case 2: 
-		            	this.setHeldItem(getActiveHand(), new ItemStack(Items.FISH, 1, 2));
-		                break; 
-		            case 3:
-		            	this.setHeldItem(getActiveHand(), new ItemStack(FishItems.ECTOPLASM));
-		                break;
-		            default: 
-		            	this.setHeldItem(getActiveHand(), new ItemStack(FishItems.FEATHER_BLACK));
-		                break;
-		        }
+	    	    Item chosenDrop = null;
+
+	    	    if (this.getSkin() != 2) {
+                    for(Map.Entry<Item, Float> entry : LootTableHandler.LOOT_RAVEN.entrySet()) {
+                        if (this.rand.nextFloat() < entry.getValue()) {
+                            chosenDrop = entry.getKey();
+                            break;
+                        }
+                    }
+                }
+
+	    	    // These are the fallback items in-case no special drop is chosen.
+	    	    if (chosenDrop == null) {
+                    switch(this.getSkin()) {
+                        case 1:
+                            chosenDrop = Items.IRON_NUGGET;
+                            break;
+                        case 2:
+                            chosenDrop = Items.FISH;
+                            break;
+                        case 3:
+                            chosenDrop = FishItems.ECTOPLASM;
+                            break;
+                        default:
+                            chosenDrop = FishItems.FEATHER_BLACK;
+                            break;
+                    }
+                }
+
+	    	    this.setHeldItem(getActiveHand(), new ItemStack(chosenDrop));
 	    	}
         }
         
@@ -527,12 +544,12 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     
     public int getSkin()
     {
-        return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+        return this.dataManager.get(SKIN_TYPE);
     }
 
     public void setSkin(int skinType)
     {
-        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+        this.dataManager.set(SKIN_TYPE, skinType);
     }
     
     private boolean isFetching() {
@@ -629,9 +646,9 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	@Override
 	protected void dropFewItems(boolean recentlyHit, int looting) {
 		if (recentlyHit) {
-			int chance = rand.nextInt(3) + rand.nextInt(1 + looting);
-			for (int amount = 0; amount < chance; ++amount)
-				entityDropItem(new ItemStack(this.getSkin() == 2 ? Items.FEATHER : FishItems.FEATHER_BLACK), 0.0F);
+            int chance = rand.nextInt(3) + rand.nextInt(1 + looting);
+            for (int amount = 0; amount < chance; ++amount)
+                entityDropItem(new ItemStack(this.getSkin() == 2 ? Items.FEATHER : FishItems.FEATHER_BLACK), 0.0F);
 		}
 	}
 	

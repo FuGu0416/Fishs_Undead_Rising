@@ -56,6 +56,7 @@ public class LootTableHandler {
 	public static ResourceLocation AVATON = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
+	public static Map<Item, Float> LOOT_RAVEN = new HashMap<Item, Float>();
 	public static List<Biome.SpawnListEntry> DREAMCATCHER_LIST = Lists.<Biome.SpawnListEntry>newArrayList();
 	public static List<ResourceLocation> PARASITE_HOSTLIST = Lists.<ResourceLocation>newArrayList();
 	
@@ -101,6 +102,14 @@ public class LootTableHandler {
 					LOOT_INTESTINE.put(new ItemStack(item, 1, Integer.parseInt(S_splt[2])), Float.parseFloat(S_splt[1]));
 				else
 					LOOT_INTESTINE.put(new ItemStack(item, 1, 0), Float.parseFloat(S_splt[1]));
+			}
+		}
+
+		for(String S : Modconfig.Raven_Loot) {
+			String[] S_splt = S.split(",");
+			Item item = Item.getByNameOrId(S_splt[0]);
+			if(item != null) {
+				LOOT_RAVEN.put(item, Float.parseFloat(S_splt[1]));
 			}
 		}
 		
