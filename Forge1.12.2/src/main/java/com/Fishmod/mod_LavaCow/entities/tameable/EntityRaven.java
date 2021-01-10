@@ -198,14 +198,25 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	        }
 	        
 	    	if(!this.isSitting() && !this.isRiding() && this.getHeldItemMainhand().isEmpty() && this.ticksExisted % 200 == 0 && this.rand.nextFloat() < 0.02f) {
-	    	    Item chosenDrop = null;
+	    	    ItemStack chosenDrop = null;
+                Map<ItemStack, Float> lootTable;
 
-	    	    if (this.getSkin() != 2) {
-                    for(Map.Entry<Item, Float> entry : LootTableHandler.LOOT_RAVEN.entrySet()) {
-                        if (this.rand.nextFloat() < entry.getValue()) {
-                            chosenDrop = entry.getKey();
-                            break;
-                        }
+                switch (this.getSkin()) {
+                    case 2:
+                        lootTable = LootTableHandler.LOOT_SEAGULL;
+                        break;
+                    case 3:
+                        lootTable = LootTableHandler.LOOT_SPECTRAL_RAVEN;
+                        break;
+                    default:
+                        lootTable = LootTableHandler.LOOT_RAVEN;
+                        break;
+                }
+
+                for(Map.Entry<ItemStack, Float> entry : lootTable.entrySet()) {
+                    if (this.rand.nextFloat() < entry.getValue()) {
+                        chosenDrop = entry.getKey();
+                        break;
                     }
                 }
 
@@ -213,21 +224,21 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	    	    if (chosenDrop == null) {
                     switch(this.getSkin()) {
                         case 1:
-                            chosenDrop = Items.IRON_NUGGET;
+                            chosenDrop = new ItemStack(Items.IRON_NUGGET, 1);
                             break;
                         case 2:
-                            chosenDrop = Items.FISH;
+                            chosenDrop = new ItemStack(Items.FISH, 1);
                             break;
                         case 3:
-                            chosenDrop = FishItems.ECTOPLASM;
+                            chosenDrop = new ItemStack(FishItems.ECTOPLASM, 1);
                             break;
                         default:
-                            chosenDrop = FishItems.FEATHER_BLACK;
+                            chosenDrop = new ItemStack(FishItems.FEATHER_BLACK, 1);
                             break;
                     }
                 }
 
-	    	    this.setHeldItem(getActiveHand(), new ItemStack(chosenDrop));
+	    	    this.setHeldItem(getActiveHand(), new ItemStack(chosenDrop.getItem(), this.rand.nextInt(chosenDrop.getCount()) + 1, chosenDrop.getMetadata()));
 	    	}
         }
         

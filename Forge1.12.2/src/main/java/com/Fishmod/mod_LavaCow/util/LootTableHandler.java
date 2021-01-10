@@ -56,10 +56,39 @@ public class LootTableHandler {
 	public static ResourceLocation AVATON = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
-	public static Map<Item, Float> LOOT_RAVEN = new HashMap<Item, Float>();
+	public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
+	public static Map<ItemStack, Float> LOOT_SEAGULL = new HashMap<ItemStack, Float>();
+	public static Map<ItemStack, Float> LOOT_SPECTRAL_RAVEN = new HashMap<ItemStack, Float>();
 	public static List<Biome.SpawnListEntry> DREAMCATCHER_LIST = Lists.<Biome.SpawnListEntry>newArrayList();
 	public static List<ResourceLocation> PARASITE_HOSTLIST = Lists.<ResourceLocation>newArrayList();
-	
+
+	public static Map<ItemStack, Float> parseLootTable(String[] lootTableConfiguration) {
+		Map<ItemStack, Float> lootTable = new HashMap<ItemStack, Float>();
+
+		for (String line : lootTableConfiguration) {
+			String[] lineSplit = line.split(",");
+			String[] nameSplit = lineSplit[0].split("@");
+			Item item = Item.getByNameOrId(nameSplit[0]);
+
+			if (item != null) {
+				int amount = 1;
+				int meta = 0;
+
+				if (lineSplit.length > 2) {
+					amount = Integer.parseInt(lineSplit[2]);
+				}
+
+				if (nameSplit.length > 1) {
+					meta = Integer.parseInt(nameSplit[1]);
+				}
+
+				lootTable.put(new ItemStack(item, amount, meta), Float.parseFloat(lineSplit[1]));
+			}
+		}
+
+		return lootTable;
+	}
+
 	public static void addLootTable()
 	{
 		//System.out.println("12OAOAOAOAOAOAOAOAOAOAOAO");
@@ -105,14 +134,10 @@ public class LootTableHandler {
 			}
 		}
 
-		for(String S : Modconfig.Raven_Loot) {
-			String[] S_splt = S.split(",");
-			Item item = Item.getByNameOrId(S_splt[0]);
-			if(item != null) {
-				LOOT_RAVEN.put(item, Float.parseFloat(S_splt[1]));
-			}
-		}
-		
+		LootTableHandler.LOOT_RAVEN = LootTableHandler.parseLootTable(Modconfig.Raven_Loot);
+		LootTableHandler.LOOT_SEAGULL = LootTableHandler.parseLootTable(Modconfig.Seagull_Loot);
+		LootTableHandler.LOOT_SPECTRAL_RAVEN = LootTableHandler.parseLootTable(Modconfig.Spectral_Raven_Loot);
+
 		for(String S : Modconfig.DreamCatcher_spawn) {
 			String[] S_splt = S.split(",");
 			Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(S_splt[0]));
