@@ -1,7 +1,6 @@
 package com.Fishmod.mod_LavaCow.compat.quark;
 
-import com.Fishmod.mod_LavaCow.client.layer.LayerMimicChest;
-import net.minecraft.util.ResourceLocation;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,6 +28,6 @@ public class QuarkCompat {
     }
 
     private static void addQuarkMimics() {
-        LayerMimicChest.texturePool.addAll(new ArrayList<String>(Arrays.asList(QUARK_TEXTURES)));
+        EntityMimic.TEXTURE_POOL.addAll(new ArrayList<String>(Arrays.asList(QUARK_TEXTURES)));
     }
 }

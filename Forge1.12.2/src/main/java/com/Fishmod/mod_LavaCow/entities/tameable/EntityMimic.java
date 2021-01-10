@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.client.layer.LayerMimicChest;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -55,11 +54,15 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class EntityMimic extends EntityFishTameable{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
     private static final DataParameter<String> CHEST_TEXTURE = EntityDataManager.<String>createKey(EntityMimic.class, DataSerializers.STRING);
-
+    public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
+            "textures/entity/chest/normal.png"
+    ));
 
     private boolean isAggressive = false;
 	private int AttackTimer = 40;
@@ -95,7 +98,7 @@ public class EntityMimic extends EntityFishTameable{
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, (4 + this.rand.nextInt(5)) % 6);
-        this.getDataManager().register(CHEST_TEXTURE, LayerMimicChest.texturePool.get(this.rand.nextInt(LayerMimicChest.texturePool.size())));
+        this.getDataManager().register(CHEST_TEXTURE, EntityMimic.TEXTURE_POOL.get(this.rand.nextInt(EntityMimic.TEXTURE_POOL.size())));
      }
 
     protected void applyEntityAttributes()
