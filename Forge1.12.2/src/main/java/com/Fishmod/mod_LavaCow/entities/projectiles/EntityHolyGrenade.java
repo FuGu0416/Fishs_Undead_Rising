@@ -33,18 +33,15 @@ public class EntityHolyGrenade extends EntityThrowable {
      */
     protected float getGravityVelocity()
     {
-        return 0.01F;
+        return 0.075F;
     }
 
 	@Override
 	protected void onImpact(RayTraceResult result) {	
         if (!this.world.isRemote)
         {
-        	EntityFoglet Dummy = new EntityFoglet(this.world);
-        	Dummy.setCustomNameTag("Holy Grenade");
-        	this.world.createExplosion(Dummy, this.posX, this.posY, this.posZ, 4.0F, false);
-        	Dummy.setDead();
-        	this.world.playSound((EntityPlayer)null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);         	
+        	this.world.createExplosion(null, this.posX, this.posY, this.posZ, 4.0F, false);
+        	this.world.playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
         	this.setDead();
         }
 	}
