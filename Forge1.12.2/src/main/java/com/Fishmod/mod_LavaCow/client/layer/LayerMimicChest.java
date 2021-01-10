@@ -13,8 +13,8 @@ public class LayerMimicChest implements LayerRenderer<EntityMimic> {
     // problems (since the texture ID would remain the same but the list entries would change).
     // If we eventually need to expand, maybe we can work out something with UUIDs?
     // Oh well! Until we need more textures, this should work.
-    public static ArrayList<ResourceLocation> texturePool = new ArrayList<ResourceLocation>(Arrays.asList(
-            new ResourceLocation("textures/entity/chest/normal.png")
+    public static ArrayList<String> texturePool = new ArrayList<String>(Arrays.asList(
+            "textures/entity/chest/normal.png"
     ));
     private final RenderMimic pigRenderer;
 
@@ -34,14 +34,14 @@ public class LayerMimicChest implements LayerRenderer<EntityMimic> {
         if (entitylivingbaseIn.getSkin() == entitylivingbaseIn.getVoidSkin()) {
             this.pigRenderer.bindTexture(TEXTURE_ENDER);
         } else {
-            int chestTexture = entitylivingbaseIn.getChestTexture();
+            String chestTexture = entitylivingbaseIn.getChestTexture();
 
-            // In the event that Quark compatibility is no longer enabled (or the mod was removed), we reset the chest texture.
-            if (chestTexture >= texturePool.size()) {
-                chestTexture = 0;
+            // In the event that compatibility is no longer enabled (or the mod was removed), we reset the chest texture.
+            if (!texturePool.contains(chestTexture)) {
+                chestTexture = "minecraft:textures/entity/chest/normal.png";
             }
 
-            this.pigRenderer.bindTexture(texturePool.get(chestTexture));
+            this.pigRenderer.bindTexture(new ResourceLocation(chestTexture));
         }
         //this.pigRenderer.bindTexture(entitylivingbaseIn.getSkin() == entitylivingbaseIn.getVoidSkin() ? TEXTURE_ENDER : TEXTURE_NORMAL);
         //this.pigModel.setModelAttributes(this.pigRenderer.getMainModel());

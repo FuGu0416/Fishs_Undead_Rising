@@ -58,9 +58,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMimic extends EntityFishTameable{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> CHEST_TEXTURE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
+    private static final DataParameter<String> CHEST_TEXTURE = EntityDataManager.<String>createKey(EntityMimic.class, DataSerializers.STRING);
 
-	private boolean isAggressive = false;
+
+    private boolean isAggressive = false;
 	private int AttackTimer = 40;
 	public NonNullList<ItemStack> inventory;
 	
@@ -94,7 +95,7 @@ public class EntityMimic extends EntityFishTameable{
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, (4 + this.rand.nextInt(5)) % 6);
-        this.getDataManager().register(CHEST_TEXTURE, this.rand.nextInt(LayerMimicChest.texturePool.size()));
+        this.getDataManager().register(CHEST_TEXTURE, LayerMimicChest.texturePool.get(this.rand.nextInt(LayerMimicChest.texturePool.size())));
      }
 
     protected void applyEntityAttributes()
@@ -476,12 +477,12 @@ public class EntityMimic extends EntityFishTameable{
         	}
     }
 
-    public int getChestTexture()
+    public String getChestTexture()
     {
         return this.dataManager.get(CHEST_TEXTURE);
     }
 
-    public void setChestTexture(int chestTexture)
+    public void setChestTexture(String chestTexture)
     {
         this.dataManager.set(CHEST_TEXTURE, chestTexture);
     }
@@ -538,7 +539,7 @@ public class EntityMimic extends EntityFishTameable{
 		if (compound.hasKey("Items"))
 			ItemStackHelper.loadAllItems(compound, inventory);
 		this.setSkin(compound.getInteger("Variant"));
-		this.setChestTexture(compound.getInteger("Chest"));
+		this.setChestTexture(compound.getString("Chest"));
     }
 
 	@Override
@@ -546,7 +547,7 @@ public class EntityMimic extends EntityFishTameable{
 		super.writeEntityToNBT(compound);
 		ItemStackHelper.saveAllItems(compound, inventory, false);
         compound.setInteger("Variant", getSkin());
-        compound.setInteger("Chest", getChestTexture());
+        compound.setString("Chest", getChestTexture());
 	}
     
     @Override
