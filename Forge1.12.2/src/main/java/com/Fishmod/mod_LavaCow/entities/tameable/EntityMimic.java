@@ -483,16 +483,22 @@ public class EntityMimic extends EntityFishTameable{
     {
         super.updateAITasks();
         this.dataManager.set(DATA_HEALTH, Float.valueOf(this.getHealth()));
-        if((this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58 || (this.AITargetItem.shouldExecute() && this.canPickupItems())))
-        	{       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	}
-        else
-        	{
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+        if (this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58)
+        {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte)11);
+        }
+        else if (this.AITargetItem.shouldExecute() && this.canPickupItems()) {
+            if (!isAggressive && this.rand.nextInt(1000) < 10) {
+                isAggressive = true;
+                this.world.setEntityState(this, (byte)11);
+            }
+        }
+        else if (this.rand.nextInt(1000) < 100)
+        {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte)34);
+        }
     }
     
     public int getSkin()
