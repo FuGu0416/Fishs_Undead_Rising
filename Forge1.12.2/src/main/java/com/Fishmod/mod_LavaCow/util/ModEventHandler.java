@@ -8,7 +8,6 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
@@ -457,7 +456,7 @@ public class ModEventHandler {
     			effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
     	}
     	
-    	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityFoglet){
+    	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityWolf){
     		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
     			event.getEntity().setFire(8);
