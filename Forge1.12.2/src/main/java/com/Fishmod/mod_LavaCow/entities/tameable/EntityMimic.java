@@ -60,6 +60,7 @@ public class EntityMimic extends EntityFishTameable{
 
 	private boolean isAggressive = false;
 	private int AttackTimer = 40;
+	public int IdleTimer;
 	public NonNullList<ItemStack> inventory;
 	
 	public EntityMimic(World worldIn)
@@ -199,7 +200,8 @@ public class EntityMimic extends EntityFishTameable{
     public void onLivingUpdate()
     {
 		super.onLivingUpdate();
-		if(AttackTimer > 0)AttackTimer--;
+		if(this.AttackTimer > 0)this.AttackTimer--;
+		
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
 			this.posX = MathHelper.floor(posX) + 0.5;
@@ -210,6 +212,7 @@ public class EntityMimic extends EntityFishTameable{
 
 			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
 				posY -= 1;
+
 			this.setSilent(true);
 			this.setAIMoveSpeed(0.0F);
 		}
@@ -243,6 +246,19 @@ public class EntityMimic extends EntityFishTameable{
                 this.world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
             }
 		}
+    }
+	
+    /**
+     * Called to update the entity's position/logic.
+     */
+    public void onUpdate() {
+    	super.onUpdate();
+    	
+    	if(this.IdleTimer > 0)
+    		this.IdleTimer--;
+    	
+		if (!this.isAggressive && !this.isTamed() && this.ticksExisted % 100 == 0 && rand.nextInt(5) == 0)
+			this.IdleTimer = 30 + rand.nextInt(30);
     }
 	
 	@Override
