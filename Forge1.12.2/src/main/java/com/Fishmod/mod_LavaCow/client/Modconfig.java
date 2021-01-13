@@ -159,6 +159,7 @@ public class Modconfig {
 	public static int Undertaker_Shovel_Cooldown;
 	public static int BoneWorm_DropHeart;
 	public static boolean Tinkers_Compat;
+	public static boolean Quark_Compat;
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
@@ -393,8 +394,9 @@ public class Modconfig {
 		
 		SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
 		Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
-		
+
 		Tinkers_Compat = config.get(Configuration.CATEGORY_GENERAL, "tinkers compatibility", true, "Adding new materials to Tinkers Construct. [false/true]").getBoolean(true);
+		Quark_Compat = config.get(Configuration.CATEGORY_GENERAL, "quark compatibility", true, "Add additional content that works with Quark. [false/true]").getBoolean(true);
 		SunScreen_Mode = config.get(Configuration.CATEGORY_GENERAL, "sunscreen mode", false, "Mobs in this mod will not burn under daylight. [false/true]").getBoolean(false);
 		
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);

@@ -54,11 +54,17 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class EntityMimic extends EntityFishTameable{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
+    private static final DataParameter<String> CHEST_TEXTURE = EntityDataManager.<String>createKey(EntityMimic.class, DataSerializers.STRING);
+    public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
+            "textures/entity/chest/normal.png"
+    ));
 
-	private boolean isAggressive = false;
+    private boolean isAggressive = false;
 	private int AttackTimer = 40;
 	public int IdleTimer;
 	public NonNullList<ItemStack> inventory;
@@ -92,9 +98,10 @@ public class EntityMimic extends EntityFishTameable{
     
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf((4 + this.rand.nextInt(5)) % 6));
+        this.getDataManager().register(SKIN_TYPE, (4 + this.rand.nextInt(5)) % 6);
+        this.getDataManager().register(CHEST_TEXTURE, EntityMimic.TEXTURE_POOL.get(this.rand.nextInt(EntityMimic.TEXTURE_POOL.size())));
      }
-    
+
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -488,15 +495,25 @@ public class EntityMimic extends EntityFishTameable{
         		this.world.setEntityState(this, (byte)34);
         	}
     }
-    
+
+    public String getChestTexture()
+    {
+        return this.dataManager.get(CHEST_TEXTURE);
+    }
+
+    public void setChestTexture(String chestTexture)
+    {
+        this.dataManager.set(CHEST_TEXTURE, chestTexture);
+    }
+
     public int getSkin()
     {
-        return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+        return this.dataManager.get(SKIN_TYPE);
     }
 
     public void setSkin(int skinType)
     {
-        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+        this.dataManager.set(SKIN_TYPE, skinType);
     }
 	
 	public int getVoidSkin() {
@@ -541,13 +558,15 @@ public class EntityMimic extends EntityFishTameable{
 		if (compound.hasKey("Items"))
 			ItemStackHelper.loadAllItems(compound, inventory);
 		this.setSkin(compound.getInteger("Variant"));
-	}
+		this.setChestTexture(compound.getString("Chest"));
+    }
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		ItemStackHelper.saveAllItems(compound, inventory, false);
-		compound.setInteger("Variant", getSkin());
+        compound.setInteger("Variant", getSkin());
+        compound.setString("Chest", getChestTexture());
 	}
     
     @Override
