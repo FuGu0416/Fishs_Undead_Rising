@@ -96,7 +96,7 @@ public class EntityVespa extends EntityFlyingMob {
    
    public int getSkin()
    {
-       return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+       return this.dataManager.get(SKIN_TYPE).intValue();
    }
 
    public void setSkin(int skinType)

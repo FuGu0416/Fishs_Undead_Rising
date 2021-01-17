@@ -555,7 +555,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     
     public int getSkin()
     {
-        return this.dataManager.get(SKIN_TYPE);
+        return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
     public void setSkin(int skinType)

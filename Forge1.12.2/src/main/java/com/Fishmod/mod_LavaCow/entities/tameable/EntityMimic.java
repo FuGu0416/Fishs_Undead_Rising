@@ -508,7 +508,7 @@ public class EntityMimic extends EntityFishTameable{
 
     public int getSkin()
     {
-        return this.dataManager.get(SKIN_TYPE);
+        return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
     public void setSkin(int skinType)
