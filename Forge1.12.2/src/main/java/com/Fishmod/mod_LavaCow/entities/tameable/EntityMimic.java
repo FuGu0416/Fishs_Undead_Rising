@@ -66,7 +66,7 @@ public class EntityMimic extends EntityFishTameable{
 
     private boolean isAggressive = false;
 	private int AttackTimer = 40;
-	public int IdleTimer;
+	public int IdleTimer, SitTimer;
 	public NonNullList<ItemStack> inventory;
 	
 	public EntityMimic(World worldIn)
@@ -211,6 +211,9 @@ public class EntityMimic extends EntityFishTameable{
 		
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
+			if(!this.isSilent())
+				this.setSitting(true);
+			
 			this.posX = MathHelper.floor(posX) + 0.5;
 			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
@@ -264,13 +267,21 @@ public class EntityMimic extends EntityFishTameable{
     	if(this.IdleTimer > 0)
     		this.IdleTimer--;
     	
+    	if(this.getEntityWorld().isRemote) {
+        	if(this.isSitting() && this.SitTimer > 0)
+        		this.SitTimer--;
+        	
+        	if(!this.isSitting() && this.SitTimer < 20)
+        		this.SitTimer++;
+    	}
+    	
 		if (!this.isAggressive && !this.isTamed() && this.ticksExisted % 100 == 0 && rand.nextInt(5) == 0)
 			this.IdleTimer = 30 + rand.nextInt(30);
     }
 	
 	@Override
     public void travel(float strafe, float vertical, float forward) {
-		if(!isAggressive && !this.isTamed()) {
+		if((!isAggressive && !this.isTamed()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
@@ -313,6 +324,7 @@ public class EntityMimic extends EntityFishTameable{
     
     protected void doSitCommand(EntityPlayer playerIn) {
     	super.doSitCommand(playerIn);
+    	
     	if(!this.world.isRemote)
     		this.aiSit.setSitting(true);
     }
@@ -435,6 +447,8 @@ public class EntityMimic extends EntityFishTameable{
 	        this.playSound(SoundEvents.BLOCK_CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FishItems.ENTITY_MIMIC_AMBIENT, 0.4F, 1.0F);
 	        this.setAttackTarget(player);
+	        
+	        this.setSitting(false);
         }
 
         return super.processInteract(player, hand);
@@ -525,6 +539,11 @@ public class EntityMimic extends EntityFishTameable{
     {
     	return isAggressive;
     }
+	
+	@SideOnly(Side.CLIENT)
+    public int getSitTimer() {
+	       return this.SitTimer;
+	}
     
     /**
      * Handler for {@link World#setEntityState}
