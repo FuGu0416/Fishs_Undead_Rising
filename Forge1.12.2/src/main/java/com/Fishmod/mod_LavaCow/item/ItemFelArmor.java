@@ -32,6 +32,9 @@ public class ItemFelArmor extends ItemArmor {
 	 * Reduced damage from fire
 	 */
 	public float fireprooflevel;
+
+	private ModelFelArmor armorModel;
+	private String armorTexture;
 	
 	public ItemFelArmor(String registryName, int renderIndex, EntityEquipmentSlot slot, float effectlevelIn) {
 		super(ArmorMaterial.DIAMOND, renderIndex, slot);
@@ -40,6 +43,12 @@ public class ItemFelArmor extends ItemArmor {
         setRegistryName(registryName);
         this.effectlevel = effectlevelIn * 0.2F;
         this.fireprooflevel = effectlevelIn * 0.5F;
+
+		if (registryName.equals("felarmor_leggings")) {
+			this.armorTexture = "mod_lavacow:textures/armors/fel/armor_fel_legs.png";
+		} else {
+			this.armorTexture = "mod_lavacow:textures/armors/fel/armor_fel.png";
+		}
 	}
 	
     /**
@@ -58,12 +67,19 @@ public class ItemFelArmor extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		//return super.getArmorModel(entityLiving, itemStack, armorSlot, _default);
-		
-		return new ModelFelArmor(itemStack.getItem().equals(FishItems.FELARMOR_LEGGINGS) ? 0.45F : 0.9F);
+		if (this.armorModel == null) {
+			if (armorSlot == EntityEquipmentSlot.LEGS) {
+				this.armorModel = new ModelFelArmor(0.45F);
+			} else {
+				this.armorModel = new ModelFelArmor(0.9F);
+			}
+		}
+
+		return this.armorModel;
 	}
 
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-		return "mod_lavacow:textures/armors/fel/armor_fel" + (stack.getItem().equals(FishItems.FELARMOR_LEGGINGS) ? "_legs.png" : ".png");
+		return this.armorTexture;
 	}
 
 	@Override
