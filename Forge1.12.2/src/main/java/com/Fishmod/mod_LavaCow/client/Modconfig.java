@@ -151,6 +151,9 @@ public class Modconfig {
 	public static int HaloNecklace_Damage;
 	public static String[] Intestine_lt = new String[0];
 	public static String[] Intestine_banlist = new String[0];
+	public static String[] Raven_Loot = new String[0];
+	public static String[] Seagull_Loot = new String[0];
+	public static String[] Spectral_Raven_Loot = new String[0];
 	public static int pScarecrow_PlagueDoctor;
 	public static String[] DreamCatcher_spawn = new String[0];
 	public static boolean Shattered_Ice;
@@ -158,6 +161,7 @@ public class Modconfig {
 	public static int Undertaker_Shovel_Cooldown;
 	public static int BoneWorm_DropHeart;
 	public static boolean Tinkers_Compat;
+	public static boolean Quark_Compat;
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
@@ -336,7 +340,32 @@ public class Modconfig {
 					      		"minecraft:slime",
 					      		"minecraft:skeleton"},
 				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
-		
+
+		Raven_Loot = config.getStringList("loot table for ravens", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:beetroot_seeds,0.15",
+						"minecraft:wheat_seeds,0.15,2",
+						"minecraft:melon_seeds,0.15",
+						"minecraft:pumpkin_seeds,0.15",
+						"minecraft:gold_nugget,0.1,2",
+						"minecraft:iron_nugget,0.1,2"
+				},
+				"Customize drop rates of the items which ravens can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
+		Seagull_Loot = config.getStringList("loot table for seagulls", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:fish@0,0.15",
+						"minecraft:fish@2,0.15"
+				},
+				"Customize drop rates of the items which seagulls can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
+		Spectral_Raven_Loot = config.getStringList("loot table for spectral ravens", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:gold_nugget,0.15,3",
+						"minecraft:iron_nugget,0.15,3"
+				},
+				"Customize drop rates of the items which spectral ravens can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
 		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
 		
@@ -368,8 +397,9 @@ public class Modconfig {
 		
 		SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
 		Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
-		
+
 		Tinkers_Compat = config.get(Configuration.CATEGORY_GENERAL, "tinkers compatibility", true, "Adding new materials to Tinkers Construct. [false/true]").getBoolean(true);
+		Quark_Compat = config.get(Configuration.CATEGORY_GENERAL, "quark compatibility", true, "Add additional content that works with Quark. [false/true]").getBoolean(true);
 		SunScreen_Mode = config.get(Configuration.CATEGORY_GENERAL, "sunscreen mode", false, "Mobs in this mod will not burn under daylight. [false/true]").getBoolean(false);
 		
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);

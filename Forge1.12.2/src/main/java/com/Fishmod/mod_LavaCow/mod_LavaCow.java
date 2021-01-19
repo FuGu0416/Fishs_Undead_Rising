@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
+import com.Fishmod.mod_LavaCow.compat.QuarkCompatBridge;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;
 import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
 import com.Fishmod.mod_LavaCow.proxy.IProxy;
@@ -62,6 +63,7 @@ public class mod_LavaCow {
         PROXY.registerItemAndBlockRenderers();
         
         TinkersCompatBridge.loadTinkersCompat();
+        QuarkCompatBridge.loadQuarkCompat();
         PROXY.preInit(event);
         
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
