@@ -24,14 +24,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSwineArmor extends ItemArmor {
 	
-	private int set; 
+	private int set;
+	private ModelBiped armorModel;
+	private String armorTexture;
 	
 	public ItemSwineArmor(String registryName, int renderIndex, EntityEquipmentSlot slot, float effectlevelIn) {
 		super(ArmorMaterial.IRON, renderIndex, slot);
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
-        this.set = 0;
+
+		if (registryName.equals("swinemask"))
+			this.armorTexture = "mod_lavacow:textures/armors/swine/swinemask.png";
+		else if (registryName.equals("swinearmor_leggings"))
+			this.armorTexture = "mod_lavacow:textures/armors/swine/armor_swine_legs.png";
+		else
+			this.armorTexture = "mod_lavacow:textures/armors/swine/armor_swine.png";
+
+		this.set = 0;
 	}
 	
 	@Override
@@ -42,31 +52,28 @@ public class ItemSwineArmor extends ItemArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot armorSlot, String type) {
-		if(stack.getItem().equals(FishItems.SWINEMASK))
-			return "mod_lavacow:textures/armors/swine/swinemask.png";
-		else if(stack.getItem().equals(FishItems.SWINEARMOR_LEGGINGS))
-			return "mod_lavacow:textures/armors/swine/armor_swine_legs.png"; 
-		else
-			return "mod_lavacow:textures/armors/swine/armor_swine.png"; 
+		return this.armorTexture;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase player, ItemStack stack, EntityEquipmentSlot armorSlot, ModelBiped modelBiped) {		
-		if(stack.getItem().equals(FishItems.SWINEMASK)) {
-			ModelSwineMask model = new ModelSwineMask(1.0F);
-			model.bipedHead.showModel = false;
-			model.bipedHeadwear.showModel = false;
-			model.bipedBody.showModel = false;
-			model.bipedRightArm.showModel = false;
-			model.bipedLeftArm.showModel = false;
-			model.bipedRightLeg.showModel = false;
-			model.bipedLeftLeg.showModel = false;
-	
-			return model;
+	public ModelBiped getArmorModel(EntityLivingBase player, ItemStack stack, EntityEquipmentSlot armorSlot, ModelBiped modelBiped) {
+		if (this.armorModel == null) {
+			if (armorSlot == EntityEquipmentSlot.HEAD) {
+				this.armorModel = new ModelSwineMask(1.0F);
+				this.armorModel.bipedHead.showModel = false;
+				this.armorModel.bipedHeadwear.showModel = false;
+				this.armorModel.bipedBody.showModel = false;
+				this.armorModel.bipedRightArm.showModel = false;
+				this.armorModel.bipedLeftArm.showModel = false;
+				this.armorModel.bipedRightLeg.showModel = false;
+				this.armorModel.bipedLeftLeg.showModel = false;
+			} else {
+				this.armorModel = super.getArmorModel(player, stack, armorSlot, modelBiped);
+			}
 		}
-		else
-			return super.getArmorModel(player, stack, armorSlot, modelBiped);
+
+		return this.armorModel;
 	}
 
 	@Override
@@ -80,15 +87,12 @@ public class ItemSwineArmor extends ItemArmor {
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		this.set = 0;
-		
-		for(ItemStack E : player.getEquipmentAndArmor()) {
-			if(E.getItem() instanceof ItemSwineArmor)this.set++;
+
+		for(ItemStack armor : player.getArmorInventoryList()) {
+			if (armor.getItem().getClass() == ItemSwineArmor.class) {
+				this.set++;
+			}
 		}
-		
-		/*if(this.getSetBonus() >= 4) {
-			if(player.isPotionActive(MobEffects.POISON))
-				player.removePotionEffect(MobEffects.POISON);
-		}*/
 	}
 	
 	@Override
