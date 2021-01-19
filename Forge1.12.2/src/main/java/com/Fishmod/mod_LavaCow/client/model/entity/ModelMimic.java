@@ -187,9 +187,7 @@ public class ModelMimic extends FishModelBase {
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {       
     	this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    	this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
-    	this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing);
+    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
     }
     
     private void showAllBodyPart(boolean showIn) 
@@ -223,9 +221,9 @@ public class ModelMimic extends FishModelBase {
     	float i = ((float)Entity.getSitTimer()) / 20.0F;
 
     	if(i > 0.0F && i < 1.0F) {
-    		this.showAllBodyPart(false); 
+    		  this.showAllBodyPart(false); 
         	
-    		this.Leg0_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.5918411493512771F, i);
+    		  this.Leg0_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.5918411493512771F, i);
         	this.Leg0_r_Seg0.rotationPointX = GradientAnimation(-6.0F, -5.0F, i);
         	this.Leg0_r_Seg0.rotationPointY = GradientAnimation(4.0F, 3.5F, i);
         	this.Leg0_l_Seg0.rotateAngleZ = GradientAnimation(0.5009094953223726F, -0.5918411493512771F, i);
@@ -264,22 +262,26 @@ public class ModelMimic extends FishModelBase {
     	}
     	else if((Entity.isAggressive() || Entity.isTamed()) && !Entity.isSitting())
         {
-    		this.showAllBodyPart(false); 
-    		
-    		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+    		  this.showAllBodyPart(false); 
+        
+    		  this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+          this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
+          this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing);
+
         	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
         	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
         	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
         	
         	this.Leg0_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
-            this.Leg0_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
-            this.Leg1_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
-            this.Leg1_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
+          this.Leg0_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
+          this.Leg1_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
+          this.Leg1_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
         }
         else
         {
         	if(Entity.isSitting() || Entity.IdleTimer > 0) {
-        		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+        		  this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
+
             	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
             	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
             	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
@@ -290,8 +292,8 @@ public class ModelMimic extends FishModelBase {
             	this.Eye_r.setRotationPoint(0.0F, 0.0F, 0.0F);
             	this.Eye_l.setRotationPoint(0.0F, 0.0F, 0.0F);
         	}
-        	
-        	this.Chest_Base.rotateAngleY = 0.0F;
+      	
+        	this.Chest_Base.rotateAngleY = ((EntityMimic) entityIn).rotationAngle;
         	this.showAllBodyPart(true); 
         }   	
     }

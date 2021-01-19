@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -24,6 +25,7 @@ import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -65,15 +67,19 @@ public class EntityMimic extends EntityFishTameable{
     ));
 
     private boolean isAggressive = false;
-	private int AttackTimer = 40;
-	public int IdleTimer, SitTimer;
+    private int AttackTimer = 40;
+    public float rotationAngle = 0.0F;
+    public int IdleTimer, SitTimer;
+
 	public NonNullList<ItemStack> inventory;
+    private EntityAITargetItem<EntityItem> AITargetItem;
 	
 	public EntityMimic(World worldIn)
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
@@ -81,7 +87,7 @@ public class EntityMimic extends EntityFishTameable{
     protected void initEntityAI()
     {
     	super.initEntityAI();
-    	
+    	this.enablePersistence();
     	this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -91,10 +97,12 @@ public class EntityMimic extends EntityFishTameable{
 
     protected void applyEntityAI()
     {
-    	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
-	}
+        this.AITargetItem = new EntityAITargetItem<>(this, EntityItem.class, true);
+        this.targetTasks.addTask(4, this.AITargetItem);
+    }
     
     protected void entityInit() {
         super.entityInit();
@@ -122,7 +130,12 @@ public class EntityMimic extends EntityFishTameable{
         }
         
     }
-    
+
+    protected boolean canDespawn()
+    {
+        return !this.isNoDespawnRequired() || super.canDespawn();
+    }
+
     @Override
     public boolean getCanSpawnHere() {
     	
@@ -172,7 +185,17 @@ public class EntityMimic extends EntityFishTameable{
         	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
         }
      }
-    
+
+    private boolean canPickupItems() {
+        for (ItemStack stack : this.inventory) {
+            if (stack.isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void hasSpace(ItemStack itemstackIn)
     {
     	if (!getEntityWorld().isRemote) {
@@ -498,16 +521,22 @@ public class EntityMimic extends EntityFishTameable{
     {
         super.updateAITasks();
         this.dataManager.set(DATA_HEALTH, Float.valueOf(this.getHealth()));
-        if((this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58))
-        	{       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	}
-        else 
-        	{
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+        if (this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58)
+        {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte)11);
+        }
+        else if (this.AITargetItem.shouldExecute() && this.canPickupItems()) {
+            if (!isAggressive && this.rand.nextInt(1000) < 10) {
+                isAggressive = true;
+                this.world.setEntityState(this, (byte)11);
+            }
+        }
+        else if (this.rand.nextInt(1000) < 100)
+        {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte)34);
+        }
     }
 
     public String getChestTexture()

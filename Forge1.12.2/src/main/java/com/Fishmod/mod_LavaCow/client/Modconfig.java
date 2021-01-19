@@ -104,6 +104,8 @@ public class Modconfig {
 	
 	public static int pSpawnRate_GhostRay;
 	public static double GhostRay_Health;
+
+	public static int pSpawnRate_DeathMimic;
 	
 	public static int pSpawnRate_Banshee;
 	public static double Banshee_Health;
@@ -237,7 +239,8 @@ public class Modconfig {
 		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
 		Mimic_Health = config.get("Mimicrab", "mimicrab health", 10.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(10.0D);
 		Mimic_Attack = config.get("Mimicrab", "mimicrab attack", 8.0D, "Mimicrab strength [1-1000]", 1, 1000).getDouble(8.0D);
-		
+		pSpawnRate_DeathMimic = config.get("Mimicrab", "mimicrab spawn rate near player death", 250, "Set the spawn rate of Mimicrab near player death [0-1000]", 0, 1000).getInt(250);
+
 		pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
 		SludgeLord_Health = config.get("Sludge Lord", "sludge lord health", 70.0D, "Maximum Sludge Lord health [1-1000]", 1, 1000).getDouble(70.0D);
 		SludgeLord_Attack = config.get("Sludge Lord", "sludge lord attack", 5.0D, "Sludge Lord strength [1-1000]", 1, 1000).getDouble(5.0D);
@@ -298,7 +301,7 @@ public class Modconfig {
 		
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Ghost Ray health [1-1000]", 1, 1000).getDouble(20.0D);
-		
+
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
 		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
 		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);

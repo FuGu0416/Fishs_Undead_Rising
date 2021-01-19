@@ -26,33 +26,27 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -710,7 +704,49 @@ public class ModEventHandler {
     		event.setNewGen(newGen);
     	}
     }
-    
+
+	@SubscribeEvent
+	public void playerDeath(LivingDropsEvent event) {
+		if (event.isCanceled()) {
+			return;
+		}
+
+		Entity entity = event.getEntity();
+		Random random = new Random();
+
+		if (entity.world.isRemote || !(entity instanceof EntityPlayer) || random.nextInt(1000) > Modconfig.pSpawnRate_DeathMimic) {
+			return;
+		}
+
+		EntityPlayer player = (EntityPlayer) entity;
+		AxisAlignedBB boundingBox = new AxisAlignedBB(player.getPosition()).grow(16);
+		List<Entity> nearbyMimics = player.world.getEntitiesWithinAABB(EntityMimic.class, boundingBox);
+
+		if (nearbyMimics.isEmpty()) {
+			int spawnX = MathHelper.floor(player.posX + random.nextInt(8) - 4);
+			int spawnZ = MathHelper.floor(player.posZ + random.nextInt(8) - 4);
+			BlockPos spawn = new BlockPos(spawnX, player.world.getHeight(spawnX, spawnZ), spawnZ);
+
+			// We show some pretty effects to indicate they magically spawned in or something like that.
+			// Alternatively, we could make mimics look like they dug out of the ground?
+			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(player.world, spawnX, spawn.getY(), spawnZ);
+			entityareaeffectcloud.setRadius(5.0F);
+			entityareaeffectcloud.setDuration(20);
+			entityareaeffectcloud.setWaitTime(5);
+			entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
+			entityareaeffectcloud.setParticle(EnumParticleTypes.SPELL);
+			// No matter the value, this still appears as white to me?
+			entityareaeffectcloud.setColor(0x6F5B3C);
+			player.world.spawnEntity(entityareaeffectcloud);
+
+			EntityMimic mobEntity = new EntityMimic(player.world);
+			mobEntity.setPosition(spawn.getX(), spawn.getY(), spawn.getZ());
+			player.world.spawnEntity(mobEntity);
+			mobEntity.onInitialSpawn(player.world.getDifficultyForLocation(new BlockPos(spawn.getX(), spawn.getY(), spawn.getZ())), null);
+			mobEntity.playLivingSound();
+		}
+	}
+
     /**
      * Young Simba:Everything the light touches... But what about that dark greeny place?
      * Mufasa:That's beyond our borders. You must never go there Simba.
