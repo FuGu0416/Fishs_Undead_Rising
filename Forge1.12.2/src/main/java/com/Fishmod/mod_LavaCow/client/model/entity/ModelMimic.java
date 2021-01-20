@@ -258,17 +258,15 @@ public class ModelMimic extends FishModelBase {
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	EntityMimic Entity = (EntityMimic)entityIn;
-    	float i = ((float)Entity.getSitTimer(0)) / 20.0F;
-    	float j = 1.0F - (((float)Entity.getSitTimer(1)) / 20.0F);
+    	float i = ((float)Entity.getSitTimer()) / 20.0F;
     	   	
     	if((Entity.isAggressive() || Entity.isTamed()) && !Entity.isSitting())
-        {
-    		System.out.println(Entity.getUniqueID() + " A " + Entity.getSitTimer(1));
-    		
+        {   		
     		this.hideAllBodyPart(false); 
-    		if(j < 1.0F)
-    			this.toCamouflagePose(j);
-    		else
+    		if(i <= 1.0F)
+    			this.toCamouflagePose(i);
+    		
+    		if(i == 1.0F)
     		{
 	    		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
 	    		this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
@@ -285,15 +283,14 @@ public class ModelMimic extends FishModelBase {
     		}
         }
         else if(Entity.isSitting())
-        {     	
-        	System.out.println(Entity.getUniqueID() + " B " + Entity.getSitTimer(0));
-        	
+        {     	       	
         	this.Chest_Base.rotateAngleY = Entity.rotationAngle;
-        	if(i > 0.0F) {
+        	if(i >= 0.0F) {
         		this.toCamouflagePose(i);
         		this.hideAllBodyPart(false); 
         	}
-        	else
+        	
+        	if(i == 0.0F)
         	{
         		this.hideAllBodyPart(true); 
         		if(Entity.isTamed() || Entity.IdleTimer > 0) {

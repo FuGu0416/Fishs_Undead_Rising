@@ -70,7 +70,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     private boolean isAggressive = false;
     private int AttackTimer = 40;
     public float rotationAngle = 0.0F;
-    public int IdleTimer, SitTimer[] = {0, 0};
+    public int IdleTimer, SitTimer;
 
 	public NonNullList<ItemStack> inventory;
     private EntityAITargetItem<EntityItem> AITargetItem;
@@ -235,11 +235,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 		
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
-			if(!this.isSilent()) {
+			if(!this.isSilent())
 				this.setSitting(true);
-				this.SitTimer[0] = 20;
-	        	this.world.setEntityState(this, (byte)40);
-			}
 			
 			this.posX = MathHelper.floor(posX) + 0.5;
 			this.posY = MathHelper.floor(posY);
@@ -283,8 +280,18 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
                 this.world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
             }
 		}
-    }
 		
+    	if(this.getEntityWorld().isRemote) {
+        	if(this.isSitting() && this.SitTimer > 0) {
+        		this.SitTimer--;
+        	}
+        	
+        	if(!this.isSitting() && this.SitTimer < 20) {
+        		this.SitTimer++;
+        	}
+    	}
+    }
+	
     /**
      * Called to update the entity's position/logic.
      */
@@ -293,20 +300,14 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	
     	if(this.IdleTimer > 0)
     		this.IdleTimer--;
-    	
-        for(int i = 0 ; i < 2; i++) {
-	    	if (this.SitTimer[i] > 0) {
-	            --this.SitTimer[i];
-	         }
-        }
-    	  	
+    	   	
 		if (!this.isAggressive && !this.isTamed() && this.ticksExisted % 100 == 0 && rand.nextInt(5) == 0)
 			this.IdleTimer = 30 + rand.nextInt(30);
     }
 	
 	@Override
     public void travel(float strafe, float vertical, float forward) {
-		if((!isAggressive && !this.isTamed()) || (this.SitTimer[0] != 0 || this.SitTimer[1] != 0)) {
+		if((!isAggressive && !this.isTamed()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
@@ -349,8 +350,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	super.doSitCommand(playerIn);
     	
     	this.setSitting(true);
-    	this.SitTimer[0] = 20;
-    	this.world.setEntityState(this, (byte)40);
     }
     
     protected void doFollowCommand(EntityPlayer playerIn) {
@@ -367,8 +366,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	}
     	
     	this.setSitting(false);
-    	this.SitTimer[1] = 20;
-    	this.world.setEntityState(this, (byte)42);
     }
     
     
@@ -474,8 +471,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 	        this.setAttackTarget(player);
 	        
 	        this.setSitting(false);
-	        this.SitTimer[1] = 20;
-        	this.world.setEntityState(this, (byte)42);
         }
 
         return super.processInteract(player, hand);
@@ -572,9 +567,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	return isAggressive;
     }
 	
-    @SideOnly(Side.CLIENT)
-    public int getSitTimer(int i) {
-       return this.SitTimer[i];
+    public int getSitTimer() {
+       return this.SitTimer;
 	}
     
 	@Override
@@ -599,14 +593,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         else if (id == 34)
         {
             this.isAggressive = false;
-        }
-        else if (id == 40)
-        {
-        	this.SitTimer[0] = 20;
-        }
-        else if (id == 42)
-        {
-        	this.SitTimer[1] = 20;
         }
         else
         {
