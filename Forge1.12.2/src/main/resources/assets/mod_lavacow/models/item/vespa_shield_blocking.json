@@ -1,13 +1,5 @@
 {
     "parent": "builtin/entity",
-	"overrides": [
-		{
-			"predicate": {
-				"blocking": 1
-			},
-			"model": "mod_lavacow:item/vespa_shield_blocking"
-		}
-	],
 	"display": {
         "gui": {
             "rotation": [ -15, -45, 0 ],
@@ -30,13 +22,13 @@
             "scale": [ 1.0, 1.0, 1.0 ]
         },
         "firstperson_righthand": {
-            "rotation": [ -10, 180, 0 ],
-            "translation": [ -8, 15, -28 ],
+            "rotation": [ -10, 180, -10 ],
+            "translation": [ -18, 18, -28 ],
             "scale": [ 1.5, 1.5, 1.5 ]
         },
         "firstperson_lefthand": {
-            "rotation": [ -10, -180, 0 ],
-            "translation": [ 12, 14, -20 ],
+            "rotation": [ -10, -180, -10 ],
+            "translation": [ 4, 18, -20 ],
             "scale": [ 1.25, 1.25, 1.25 ]
         },
         "thirdperson_lefthand": {

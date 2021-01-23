@@ -11,6 +11,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -18,8 +19,11 @@ import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,22 +36,30 @@ public class ItemVespaShield extends ItemShield {
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
 		this.setMaxDamage(504);
+        this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter()
+        {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+            {
+                return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
+            }
+        });
         setRegistryName(registryName);
 	}
 	
 	public String getItemStackDisplayName(ItemStack stack)
     {
-        return I18n.translateToLocal("item.mod_lavacow.vespa_shield.name");
+        return I18n.format("item.mod_lavacow.vespa_shield.name");
     }
 	
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+		list.add(TextFormatting.YELLOW + I18n.format("tootip." + mod_LavaCow.MODID + ".vespa_shield"));
+	}
 
 		
 	/**
@@ -57,10 +69,13 @@ public class ItemVespaShield extends ItemShield {
 	 * @param source
 	 */
 	public void onAttackBlocked(ItemStack stackIn, EntityLivingBase attackedIn, float damageIn, DamageSource sourceIn) {
+		int i = 1 + MathHelper.floor(damageIn);
+		
 		if(!attackedIn.world.isRemote) {			
 			if(sourceIn.getTrueSource() instanceof EntityLivingBase) {
 				sourceIn.getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(attackedIn) , 2.0F);
 				((EntityLivingBase)sourceIn.getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20, 0));
+				stackIn.damageItem(i, attackedIn);
 			}
 		}
 	}
