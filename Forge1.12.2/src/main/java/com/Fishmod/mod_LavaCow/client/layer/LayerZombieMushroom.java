@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
-import com.Fishmod.mod_LavaCow.client.renders.RenderZombieMushroom;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 

@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
-import com.Fishmod.mod_LavaCow.client.renders.RenderMimic;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;

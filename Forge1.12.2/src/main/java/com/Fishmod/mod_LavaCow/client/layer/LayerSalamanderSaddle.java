@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelSalamander;
-import com.Fishmod.mod_LavaCow.client.renders.RenderSalamander;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;

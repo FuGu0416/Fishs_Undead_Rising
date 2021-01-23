@@ -20,6 +20,7 @@ import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
+import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
 
 import net.minecraft.block.material.Material;
@@ -40,13 +41,13 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -530,8 +531,23 @@ public class ModEventHandler {
     
     @SubscribeEvent
     public void onEAttack(LivingAttackEvent event) {
+    	EntityLivingBase attacked = event.getEntityLiving();
+    	
     	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.REAPERS_SCYTHE)) {
     		event.getSource().setDamageBypassesArmor();
+    	}
+    	
+    	for(EnumHand hand : EnumHand.values()) {
+			ItemStack stack = attacked.getHeldItem(hand);
+			if(!stack.isEmpty() && stack.getItem() instanceof ItemVespaShield) {
+				ItemVespaShield shield = (ItemVespaShield)stack.getItem();
+				
+				if(shield.canBlockDamageSource(stack, attacked, hand, event.getSource())) {
+					if(!attacked.world.isRemote) {
+						shield.onAttackBlocked(stack, attacked, event.getAmount(), event.getSource());
+					}
+				}
+			}
     	}
     }
         

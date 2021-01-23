@@ -68,7 +68,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     ));
 
     private boolean isAggressive = false;
-    private int AttackTimer = 40;
+    private int AttackTimer, AggressiveTimer = 40;
     public float rotationAngle = 0.0F;
     public int IdleTimer, SitTimer;
 
@@ -231,8 +231,13 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     public void onLivingUpdate()
     {
 		super.onLivingUpdate();
-		if(this.AttackTimer > 0)this.AttackTimer--;
 		
+		if(this.AggressiveTimer > 0)
+			this.AggressiveTimer--;
+		
+    	if(this.AttackTimer > 0)
+    		this.AttackTimer--;
+    	
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
 			if(!this.isSilent())
@@ -252,7 +257,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 		}
 		else if(this.getAttackingEntity() != null)
 		{
-			AttackTimer = 200;
+			this.AggressiveTimer = 200;
 			this.setSilent(false);
 			this.setAIMoveSpeed(0.19F);
 		}
@@ -337,6 +342,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         if (flag) {
         	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_ATTACK, 1.0F, 1.0F);
         	this.applyEnchantments(this, entityIn);
+        	this.AttackTimer = 5;
+        	this.world.setEntityState(this, (byte)40);
         	
         	if(this.getSkin() == 6 && this.rand.nextInt(4) == 0) {
         		entityIn.setFire(4);
@@ -520,7 +527,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     {
         super.updateAITasks();
         this.dataManager.set(DATA_HEALTH, Float.valueOf(this.getHealth()));
-        if (this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58)
+        if (this.getAttackTarget() != null || this.AggressiveTimer > 0 || this.recentlyHit > 58)
         {
             isAggressive = true;
             this.world.setEntityState(this, (byte)11);
@@ -573,11 +580,12 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     
 	@Override
 	public int getAttackTimer() {
-		return 0;
+		return this.AttackTimer;
 	}
 
 	@Override
 	public void setAttackTimer(int i) {		
+		this.AttackTimer = i;
 	}
     
     /**
@@ -593,6 +601,10 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         else if (id == 34)
         {
             this.isAggressive = false;
+        }
+        else if (id == 40)
+        {
+            this.AttackTimer = 5;
         }
         else
         {

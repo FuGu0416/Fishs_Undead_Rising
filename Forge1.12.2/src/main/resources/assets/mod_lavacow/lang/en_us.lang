@@ -87,6 +87,7 @@ item.mod_lavacow.ghostbomb.name=Ghost Bomb
 item.mod_lavacow.sonicbomb.name=Sonic Bomb
 item.mod_lavacow.weta_hoe.name=Weta Hoe
 item.mod_lavacow.bonestew.name=Bone Stew
+item.mod_lavacow.vespa_shield.name=Vespa Shield
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace

@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class EntityAITargetItem<T extends EntityItem> extends EntityAITarget {
@@ -55,7 +56,7 @@ public class EntityAITargetItem<T extends EntityItem> extends EntityAITarget {
      */
     public boolean shouldExecute()
     {
-        if (!this.taskOwner.getHeldItemMainhand().isEmpty() && this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0)
+        if (!this.taskOwner.getHeldItemMainhand().isEmpty() && this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0 && (this.taskOwner instanceof EntityTameable && ((EntityTameable) this.taskOwner).isSitting()))
         {
             return false;
         }

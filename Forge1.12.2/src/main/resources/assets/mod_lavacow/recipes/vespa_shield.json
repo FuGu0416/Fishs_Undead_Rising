@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "X#X",
+        "X#X",
+        "X#X"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:poisonstinger"
+        },
+        "X": {
+            "item": "mod_lavacow:vespa_carapace"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:vespa_shield"
+    }
+}

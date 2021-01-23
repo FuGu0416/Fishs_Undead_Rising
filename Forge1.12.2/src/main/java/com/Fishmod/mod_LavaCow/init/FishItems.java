@@ -25,6 +25,7 @@ import com.Fishmod.mod_LavaCow.item.ItemRareLoot;
 import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
+import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
 
 import net.minecraft.init.Blocks;
@@ -128,7 +129,8 @@ public class FishItems {
 	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
 	public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
 	public static final Item BONE_STEW = new ItemNetherStew("bonestew").setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
-			
+	public static final Item VESPA_SHIELD = new ItemVespaShield("vespa_shield");
+	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
 	public static final SoundEvent ENTITY_PARASITE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.death")).setRegistryName("entity_parasite_death");

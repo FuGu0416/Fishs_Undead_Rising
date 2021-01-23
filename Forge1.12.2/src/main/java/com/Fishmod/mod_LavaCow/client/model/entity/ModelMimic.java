@@ -187,8 +187,7 @@ public class ModelMimic extends FishModelBase {
      */
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {       
-    	this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
+    	
     }
     
     private void hideAllBodyPart(boolean showIn) 
@@ -259,7 +258,8 @@ public class ModelMimic extends FishModelBase {
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	EntityMimic Entity = (EntityMimic)entityIn;
     	float i = ((float)Entity.getSitTimer()) / 20.0F;
-    	   	
+    	float j = ((float)Entity.getAttackTimer()) / 5.0F;
+
     	if((Entity.isAggressive() || Entity.isTamed()) && !Entity.isSitting())
         {   		
     		this.hideAllBodyPart(false); 
@@ -280,6 +280,17 @@ public class ModelMimic extends FishModelBase {
 	        	this.Leg0_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
 	        	this.Leg1_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
 	        	this.Leg1_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
+    		}
+    		
+    		if(j > 0.0F)
+    		{
+    			this.Pincer_l_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);   	
+    			this.Pincer_r_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);   			
+    		}
+    		else
+    		{
+    	    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
+    	    	this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
     		}
         }
         else if(Entity.isSitting())

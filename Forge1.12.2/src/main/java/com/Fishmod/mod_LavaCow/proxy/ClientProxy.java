@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.proxy;
 
-import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFactories;
+import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -30,8 +31,6 @@ public class ClientProxy implements IProxy {
 	@Override
     public void preInit(FMLPreInitializationEvent event) {
 		RenderFactories.registerEntityRenderers();
-    	//System.out.println("OAOAOAOAOAOAOAOAOAOAOAO");
-		
     }
  
     public void init(FMLInitializationEvent event) {
