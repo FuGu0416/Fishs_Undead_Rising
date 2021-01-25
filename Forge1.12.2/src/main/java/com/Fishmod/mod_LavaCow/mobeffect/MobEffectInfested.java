@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public class MobEffectInfested extends MobEffectMod {
 
 	public MobEffectInfested() {
-		super("infested", true, 132, 244, 248);
+		super("infested", true, 162, 129, 0);
 	}
 	
     @Override

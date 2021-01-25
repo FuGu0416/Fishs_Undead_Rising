@@ -11,6 +11,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
+import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
@@ -118,11 +119,12 @@ public class ModEventHandler {
     			&& ((LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
     			|| event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED)))
     	{
-    		int var2 = 3 + new Random().nextInt(3);
+    		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		EntityParasite passenger = EntityParasite.gotParasite(entity.getPassengers());
-    		
-    		for(int var3 = 0; var3 < var2; ++var3)
+    		if(event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED))
+    			var6 = event.getEntityLiving().getActivePotionEffect(ModMobEffects.INFESTED).getAmplifier();
+    		for(int var3 = var6; var3 < var2 + var6; ++var3)
     		{
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
@@ -130,7 +132,7 @@ public class ModEventHandler {
         		EntityParasite entityparasite = new EntityParasite(world);
         		if(passenger != null)entityparasite.setSkin(passenger.getSkin());
         		else if(BiomeDictionary.hasType(world.getBiome(entity.getPosition()), BiomeDictionary.Type.DRY))entityparasite.setSkin(1);
-        		else if(BiomeDictionary.hasType(world.getBiome(entity.getPosition()), BiomeDictionary.Type.JUNGLE))entityparasite.setSkin(2);
+        		else if(BiomeDictionary.hasType(world.getBiome(entity.getPosition()), BiomeDictionary.Type.JUNGLE) || event.getSource().getTrueSource() instanceof EntityVespa)entityparasite.setSkin(2);
         		else entityparasite.setSkin(0);
         		
                 entityparasite.setLocationAndAngles(entity.posX + (double)var4, entity.posY + 1.0D, entity.posZ + (double)var5, entity.rotationYaw, entity.rotationPitch);

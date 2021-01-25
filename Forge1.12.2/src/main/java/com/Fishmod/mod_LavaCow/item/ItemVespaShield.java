@@ -36,14 +36,6 @@ public class ItemVespaShield extends ItemShield {
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
 		this.setMaxDamage(504);
-        this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter()
-        {
-            @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-            {
-                return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
-            }
-        });
         setRegistryName(registryName);
 	}
 	
