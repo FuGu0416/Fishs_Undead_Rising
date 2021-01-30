@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.proxy;
 
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFactories;
+import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;

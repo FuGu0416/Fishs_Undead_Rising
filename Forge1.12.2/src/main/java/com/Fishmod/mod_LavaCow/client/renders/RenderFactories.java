@@ -1,5 +1,37 @@
-package com.Fishmod.mod_LavaCow.client.renders.entity;
+package com.Fishmod.mod_LavaCow.client.renders;
 
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostBomb;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostRay;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderHolyGrenade;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLavaCow;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLilSludge;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderParasite;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPingu;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPiranhaLauncher;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPtera;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarecrow;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSkeletonKing;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeLord;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSonicBomb;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUnburied;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndeadSwine;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndertaker;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespa;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaCocoon;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWendigo;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWeta;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieFrozen;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombiePiranha;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
@@ -8,6 +40,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
+import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUnderminer;
@@ -83,6 +116,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostBomb.class, RenderFactoryEntityGhostBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityUnderminer.class, RenderFactoryEntityUnderminer.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonKing.class, RenderFactoryEntitySkeletonKing.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
     }
@@ -560,6 +594,21 @@ public class RenderFactories {
         public RenderSkeleton createRenderFor(RenderManager manager)
         {
         	return new RenderSkeleton(manager);
+        }
+    }
+    
+    
+    public static class RenderFactoryEntitySkeletonKing implements IRenderFactory<EntitySkeletonKing>
+    {
+        public final static RenderFactoryEntitySkeletonKing INSTANCE = new RenderFactoryEntitySkeletonKing();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderSkeletonKing createRenderFor(RenderManager manager)
+        {
+        	return new RenderSkeletonKing(manager);
         }
     }
 }

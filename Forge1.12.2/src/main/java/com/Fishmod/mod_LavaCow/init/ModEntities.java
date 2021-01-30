@@ -11,6 +11,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
+import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
@@ -313,15 +314,23 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
             .name(mod_LavaCow.MODID + "." + "sonicbomb")
             .tracker(64, 1, true)
-            .build()/*,
+            .build(),
             
-            EntityEntryBuilder.create()
+            /*EntityEntryBuilder.create()
             .entity(EntityUnderminer.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "underminer"), id++)
             .name(mod_LavaCow.MODID + "." + "underminer")
             .tracker(80, 3, false)
             .egg(12698049, 4802889)
-            .build()*/
+            .build(),*/
+              
+            EntityEntryBuilder.create()
+            .entity(EntitySkeletonKing.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "skeletonking"), id++)
+            .name(mod_LavaCow.MODID + "." + "SkeletonKing")
+            .tracker(80, 3, false)
+            .egg(0x2F2A2A, 0xA2A1A1)
+            .build()
             );
 
     @EventBusSubscriber(modid = mod_LavaCow.MODID)

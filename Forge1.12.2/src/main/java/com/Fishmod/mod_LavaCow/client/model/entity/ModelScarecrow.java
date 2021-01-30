@@ -377,6 +377,7 @@ public class ModelScarecrow extends FishModelBase {
 					 * Normal Attack
 					 * */
 	        		this.Body_upper.rotateAngleX = GradientAnimation(0.0F, 1.1838568316277536F, i);
+	        		this.Head.rotateAngleX = GradientAnimation(entityIn.rotationPitch * 0.017453292F, entityIn.rotationPitch * 0.017453292F - 1.1838568316277536F, i);
 	
 		        	this.arm_l_0.rotateAngleX = GradientAnimation(-3.096039560112741F, -1.2292353921796064F, i);
 		        	this.arm_l_0.rotateAngleZ = GradientAnimation(0.31869712141416456F, 0.4553564018453205F, i);

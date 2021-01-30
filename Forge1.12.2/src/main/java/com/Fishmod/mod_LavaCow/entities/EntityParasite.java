@@ -367,7 +367,7 @@ public class EntityParasite extends EntitySpider{
 
         protected double getAttackReachSqr(EntityLivingBase attackTarget)
         {
-            return (double)(attackTarget.width + 2.0F);
+            return (double)(attackTarget.width + 0.1F);
         }
     }
 
