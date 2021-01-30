@@ -131,6 +131,9 @@ public class Modconfig {
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
 	
+	public static double SkeletonKing_Health;
+	public static double SkeletonKing_Attack;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -174,7 +177,7 @@ public class Modconfig {
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
-			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
+			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
 			"Vespa", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
@@ -317,6 +320,9 @@ public class Modconfig {
 		Avaton_Ability_Num = config.get("Avaton", "avaton summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
 		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
 		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
+		
+		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
+		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 8.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(8.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
