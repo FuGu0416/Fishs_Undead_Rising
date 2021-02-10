@@ -322,8 +322,8 @@ public class ItemFishCustomWeapon extends ItemSword{
 			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
         	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 		}
-        playerIn.getHeldItem(handIn).damageItem(16, playerIn);
-    	return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+
+    	return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 	
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)

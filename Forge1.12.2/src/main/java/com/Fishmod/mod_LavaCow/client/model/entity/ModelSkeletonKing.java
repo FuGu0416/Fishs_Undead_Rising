@@ -1,9 +1,10 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
-
+import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * ModelSkeletonKing - Fish0016054
@@ -67,11 +68,13 @@ public class ModelSkeletonKing extends FishModelBase {
         this.Arm_l_Seg0.mirror = true;
         this.Arm_l_Seg0.setRotationPoint(5.0F, -8.0F, -1.5F);
         this.Arm_l_Seg0.addBox(0.0F, -1.0F, -1.0F, 2, 12, 2, 0.0F);
-        this.setRotateAngle(Arm_l_Seg0, 0.0F, 0.0F, -0.5462880558742251F);
+        //this.setRotateAngle(Arm_l_Seg0, 0.0F, 0.0F, -0.5462880558742251F);
+        this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
         this.Arm_l_Seg1 = new ModelRenderer(this, 45, 21);
         this.Arm_l_Seg1.setRotationPoint(1.0F, 11.0F, 1.0F);
         this.Arm_l_Seg1.addBox(-1.5F, 0.0F, -3.0F, 3, 12, 3, 0.0F);
-        this.setRotateAngle(Arm_l_Seg1, -0.7740535232594852F, 0.0F, 0.0F);
+        //this.setRotateAngle(Arm_l_Seg1, -0.7740535232594852F, 0.0F, 0.0F);
+        this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
         this.weapon_horn_l = new ModelRenderer(this, 110, 52);
         this.weapon_horn_l.setRotationPoint(4.0F, 0.0F, -4.0F);
         this.weapon_horn_l.addBox(0.5F, -3.0F, -3.0F, 3, 6, 6, 0.0F);
@@ -99,6 +102,7 @@ public class ModelSkeletonKing extends FishModelBase {
         this.weapon_handle0 = new ModelRenderer(this, 66, 43);
         this.weapon_handle0.setRotationPoint(-0.5F, 11.0F, 0.0F);
         this.weapon_handle0.addBox(0.0F, -0.5F, -15.0F, 1, 1, 20, 0.0F);
+        this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
         this.Arm_r_Seg1 = new ModelRenderer(this, 45, 21);
         this.Arm_r_Seg1.mirror = true;
         this.Arm_r_Seg1.setRotationPoint(-1.0F, 11.0F, 1.0F);
@@ -132,5 +136,37 @@ public class ModelSkeletonKing extends FishModelBase {
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
         this.Body_base.render(f5);
+    }
+    
+    @Override
+    /**
+     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
+     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+     * "far" arms and legs can swing at most.
+     */
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
+    {
+    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    	this.SwingX_Sin(this.Leg_r_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, true, 0.0F);
+    	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, false, 0.0F);
+    	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, false, 0.3F * (float)Math.PI);
+    	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
+    }
+    
+    @Override
+	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    	EntitySkeletonKing entity = (EntitySkeletonKing) entityIn;
+    	float i = (float)(entity.getAttackTimer());
+    	
+    	if(i > 0.0F) {
+    		
+    	}
+    	else {
+    		this.setRotateAngle(Arm_r_Seg0, 0.0F, 0.0F, 0.5462880558742251F);
+    		this.setRotateAngle(Arm_r_Seg1, -0.7740535232594852F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
+    		this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
+    		this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
+    	}
     }
 }

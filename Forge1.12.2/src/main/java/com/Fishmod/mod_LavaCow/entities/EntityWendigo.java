@@ -43,7 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityWendigo extends EntityMob{
+public class EntityWendigo extends EntityMob implements IAggressive{
 	
 	private boolean isAggressive = false;
 	private int attackTimer;
@@ -199,6 +199,11 @@ public class EntityWendigo extends EntityMob{
     public int getAttackTimer() {
        return this.attackTimer;
     }
+    
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
     
     @SideOnly(Side.CLIENT)
     public void setAttackStance(byte byteIn) {

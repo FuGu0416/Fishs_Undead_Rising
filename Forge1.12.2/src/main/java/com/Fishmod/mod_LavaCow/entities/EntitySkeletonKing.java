@@ -3,6 +3,8 @@ package com.Fishmod.mod_LavaCow.entities;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -14,6 +16,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -24,14 +27,21 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntitySkeletonKing extends EntityMob{
+public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS)).setDarkenSky(false);
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.<BlockPos>createKey(EntitySkeletonKing.class, DataSerializers.BLOCK_POS);
+	private int attackTimer;
+    private Vec3d mobVector;
 	
 	public EntitySkeletonKing(World worldIn) {
 		super(worldIn);
@@ -54,6 +64,7 @@ public class EntitySkeletonKing extends EntityMob{
     {
     	this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -86,6 +97,38 @@ public class EntitySkeletonKing extends EntityMob{
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+		
+        if (this.attackTimer > 0) {
+            --this.attackTimer;
+        }
+        
+        this.mobVector = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+        
+        // Should always return EntityLivingBase (according to the documentation).
+    	EntityLivingBase target = this.getAttackTarget();
+
+        if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
+        	Vec3d targetVector = new Vec3d(target.posX, target.posY + (double)target.getEyeHeight(), target.posZ);
+    		RayTraceResult rayTrace = this.world.rayTraceBlocks(mobVector, targetVector, false, true, false);
+
+    		// If there's something in the way, we retry from the mob's body.
+    		if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
+    			rayTrace = this.world.rayTraceBlocks(mobVector.subtract(0.0D, (double)this.getEyeHeight(), 0.0D), targetVector, false, true, false);
+    		}
+
+    		if (rayTrace == null || rayTrace.typeOfHit != RayTraceResult.Type.BLOCK) {
+	        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+	        	
+                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
+                {
+                    if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
+                    {
+                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                    }
+                }
+    		}
+        }
 	}
 	
 	@Override
@@ -93,6 +136,13 @@ public class EntitySkeletonKing extends EntityMob{
 		//Doesn't take fall damage
 		return 128;
 	}
+
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        this.attackTimer = 30;
+        this.world.setEntityState(this, (byte)4);
+        return true;
+    }
 	
 	@Override
 	protected void updateAITasks() {
@@ -104,6 +154,37 @@ public class EntitySkeletonKing extends EntityMob{
 	public boolean isNonBoss() {
 		return false;
 	}
+	
+	@Override
+	public boolean isAggressive() {
+		return false;
+	}
+
+	@Override
+    public int getAttackTimer() {
+        return this.attackTimer;
+    }
+
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
+	
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id)
+    {
+    	if (id == 4) 
+    	{
+            this.attackTimer = 30;
+        }
+        else
+        {
+            super.handleStatusUpdate(id);
+        }
+    }
 	
 	@Override
 	public void setCustomNameTag(String name) {

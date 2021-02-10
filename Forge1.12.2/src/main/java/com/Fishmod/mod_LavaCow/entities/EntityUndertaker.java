@@ -42,7 +42,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityUndertaker extends EntityMob{
+public class EntityUndertaker extends EntityMob implements IAggressive{
 	
 	private int attackTimer;
 	protected int spellTicks;
@@ -201,9 +201,19 @@ public class EntityUndertaker extends EntityMob{
         return livingdata;
     }
     
+	@Override
+	public boolean isAggressive() {
+		return false;
+	}
+    
     public int getAttackTimer() {
         return this.attackTimer;
-     }
+    }
+
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
     
     /**
      * Handler for {@link World#setEntityState}
