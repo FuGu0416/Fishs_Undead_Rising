@@ -56,7 +56,7 @@ public class EntityAITargetItem<T extends EntityItem> extends EntityAITarget {
      */
     public boolean shouldExecute()
     {
-        if (!this.taskOwner.getHeldItemMainhand().isEmpty() && this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0 && (this.taskOwner instanceof EntityTameable && ((EntityTameable) this.taskOwner).isSitting()))
+        if ((this.taskOwner instanceof EntityTameable && ((EntityTameable) this.taskOwner).isSitting()) || (!this.taskOwner.getHeldItemMainhand().isEmpty() && this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0))
         {
             return false;
         }

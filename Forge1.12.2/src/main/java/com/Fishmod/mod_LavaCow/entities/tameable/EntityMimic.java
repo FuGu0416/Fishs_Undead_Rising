@@ -79,8 +79,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
-        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-        this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
+        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);       
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
@@ -241,15 +240,17 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
-			if(!this.isSilent())
+			if(!this.isSilent()) {
 				this.setSitting(true);
+				this.world.setEntityState(this, (byte)41);
+			}
 			
 			this.posX = MathHelper.floor(posX) + 0.5;
 			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
 			this.rotationYaw = prevRotationYaw = 0F;
-			this.renderYawOffset = prevRenderYawOffset = 0F;
-
+			this.renderYawOffset = prevRenderYawOffset = 0F;		
+			
 			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
 				posY -= 1;
 
@@ -356,7 +357,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     
     protected void doSitCommand(EntityPlayer playerIn) {
     	super.doSitCommand(playerIn);
-    	
+    	this.world.setEntityState(this, (byte)41);
     	this.setSitting(true);
     }
     
@@ -606,6 +607,10 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         else if (id == 40)
         {
             this.AttackTimer = 5;
+        }
+        else if (id == 41)
+        {
+        	this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
         }
         else
         {
