@@ -329,6 +329,7 @@ public class ModelWendigo extends FishModelBase {
         	this.Humerus_r.rotationPointY = 1.0F + (-0.55F  * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.2F * (float)Math.PI)); 
         	this.Humerus_l.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.2F * (float)Math.PI));   
         	
+        	this.setRotateAngle(Chest, -0.5009094953223726F, 0.0F, 0.0F);
         	this.Waist.rotateAngleX = -0.5691518690753509F;       	
         }
     }

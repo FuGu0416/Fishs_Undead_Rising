@@ -225,7 +225,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     }
 	
     /**
-     * Called to update the entity's position/logic.
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
      */
 	@Override
     public void onLivingUpdate()
