@@ -100,6 +100,12 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 		
         if (this.attackTimer > 0) {
             --this.attackTimer;
+            
+            this.motionX = 0.0F;
+            this.motionY = 0.0F;
+            this.motionZ = 0.0F;
+            this.rotationPitch = this.prevRotationPitch;
+            this.rotationYaw = this.prevRotationYaw;
         }
         
         this.mobVector = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
@@ -124,6 +130,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
                     if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
                     {
                         entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                        entitylivingbase.motionY += 0.4000000059604645D;
                         entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                     }
                 }
@@ -139,9 +146,12 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        this.attackTimer = 30;
-        this.world.setEntityState(this, (byte)4);
-        return true;
+    	if (this.attackTimer == 0) {
+	    	this.attackTimer = 30;
+	        this.world.setEntityState(this, (byte)4);
+	        return true;
+    	}
+    	else return false;
     }
 	
 	@Override
