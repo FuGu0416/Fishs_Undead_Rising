@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
@@ -13,9 +12,12 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -26,6 +28,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -35,18 +38,19 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityBoneWorm  extends EntityMob{
+public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
 	
 	private boolean isAggressive = false;
 	public double LocationFix;
 	public int attackTimer[] = {0, 0};
 	public int diggingTimer[] = {0, 0};
-	private EntityFishAIAttackRange range_atk;
+	private EntityAIAttackRanged range_atk;
 	private EntityAIAvoidEntity<EntityPlayer> avoid_player;
 	private int avoid_cooldown;
 	
@@ -59,7 +63,7 @@ public class EntityBoneWorm  extends EntityMob{
 	
     protected void initEntityAI()
     {
-    	this.range_atk = new EntityFishAIAttackRange(this, EntityAcidJet.class, FishItems.ENTITY_BONEWORM_ATTACK, 1, 1, 0.0D, 12.0D, 0.0D, 0.65D, 0.0D);
+    	this.range_atk = new EntityAIAttackRanged(this, 1.0D, 40, 60, 12.0F);
     	this.avoid_player = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, 10.0F, 1.0D, 1.2D);
     	
         this.tasks.addTask(0, this.range_atk);
@@ -75,6 +79,7 @@ public class EntityBoneWorm  extends EntityMob{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+    	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -93,7 +98,7 @@ public class EntityBoneWorm  extends EntityMob{
 		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
-    private boolean isWalking() {
+    private boolean isWalking() {    	
     	return Math.abs(this.posX - this.prevPosX) > 0.05D || Math.abs(this.posY - this.prevPosY) > 0.05D || Math.abs(this.posZ - this.prevPosZ) > 0.05D;
     }
     
@@ -124,16 +129,20 @@ public class EntityBoneWorm  extends EntityMob{
 	        
         }
         
-        if(this.LocationFix > 0 && !this.isImmuneToFire && !this.isDigging()) {
-        	this.extinguish();
-        	this.isImmuneToFire = true;
-        	this.world.setEntityState(this, (byte)6);
-        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
-        }
-        else if(this.LocationFix <= 0 && this.isImmuneToFire && !this.isDigging()) {
-        	this.isImmuneToFire = false;
-        	this.world.setEntityState(this, (byte)7);
-        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
+        if(this.isServerWorld()) {
+	        if(this.LocationFix > 0 && !this.isImmuneToFire && !this.isDigging()) {
+	        	this.extinguish();
+	        	this.isImmuneToFire = true;
+	        	this.diggingTimer[0] = 10;
+	        	this.world.setEntityState(this, (byte)6);
+	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
+	        }
+	        else if(this.LocationFix <= 0 && this.isImmuneToFire && !this.isDigging()) {
+	        	this.isImmuneToFire = false;
+	        	this.diggingTimer[1] = 10;
+	        	this.world.setEntityState(this, (byte)7);
+	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
+	        }
         }
         
 		if(this.isWalking() && state.isOpaqueCube()) {
@@ -180,6 +189,10 @@ public class EntityBoneWorm  extends EntityMob{
 	            --this.diggingTimer[i];
 	         }
         }
+        
+        if (this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget()) && this.getAttackTimer(0) == 7 && this.deathTime <= 0) {
+        	this.spit(this.getAttackTarget());
+        }
     	        
     	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
         	{
@@ -213,6 +226,31 @@ public class EntityBoneWorm  extends EntityMob{
         }
     }
     
+    private void spit(EntityLivingBase target)
+    {
+        EntityAcidJet entitysnowball = new EntityAcidJet(this.world, this);
+        double d0 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D;
+        double d1 = target.posX - this.posX;
+        double d2 = d0 - entitysnowball.posY;
+        double d3 = target.posZ - this.posZ;
+        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+        entitysnowball.shoot(d1, d2 + (double)f, d3, 1.6F, 1.0F);
+        this.playSound(FishItems.ENTITY_BONEWORM_ATTACK, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.world.spawnEntity(entitysnowball);
+        
+    	if(target instanceof EntityPlayer)
+    		this.setRunning(100);
+    }
+    
+    /**
+     * Attack the specified entity using a ranged attack.
+     */
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {           	       
+    	this.attackTimer[0] = 15;
+    	this.world.setEntityState(this, (byte)4);
+    }
+    
     public void setRunning(int CD) {
     	this.tasks.removeTask(this.range_atk);
 		this.tasks.addTask(1, this.avoid_player);
@@ -229,6 +267,12 @@ public class EntityBoneWorm  extends EntityMob{
         }
 
         return flag;
+    }
+    
+    @Override
+    public void travel(float strafe, float vertical, float forward)
+    {
+    	super.travel(strafe, vertical, forward);
     }
     
     /**
@@ -375,4 +419,8 @@ public class EntityBoneWorm  extends EntityMob{
     protected ResourceLocation getLootTable() {
         return LootTableHandler.BONEWORM;
     }
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {	
+	}
 }

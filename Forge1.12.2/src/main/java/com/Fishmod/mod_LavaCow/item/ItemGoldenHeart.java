@@ -28,7 +28,7 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if(stack.getItemDamage() > stack.getMaxDamage())stack.setItemDamage(stack.getMaxDamage());
 		
-		if(entityIn instanceof EntityPlayer && itemSlot >= 0 && itemSlot <= 8){
+		if(entityIn instanceof EntityPlayer && entityIn.ticksExisted % 20 == 0 && itemSlot >= 0 && itemSlot <= 8){
 			ItemGoldenHeart.onTick(stack, (EntityPlayer) entityIn);
 		}
 	}

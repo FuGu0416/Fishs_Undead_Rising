@@ -429,7 +429,7 @@ public class RenderFactories {
         }
     }
     
-    public static class RenderFactoryEntityAcidJet implements IRenderFactory<EntityFireball>
+    public static class RenderFactoryEntityAcidJet implements IRenderFactory<EntityAcidJet>
     {
         public final static RenderFactoryEntityAcidJet INSTANCE = new RenderFactoryEntityAcidJet();
     
@@ -437,7 +437,7 @@ public class RenderFactories {
          * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
          */
         @Override
-        public Render<EntityFireball> createRenderFor(RenderManager manager)
+        public Render<EntityAcidJet> createRenderFor(RenderManager manager)
         {
         	return new RenderAcidJet(manager, FishItems.POISONSPORE);
         }

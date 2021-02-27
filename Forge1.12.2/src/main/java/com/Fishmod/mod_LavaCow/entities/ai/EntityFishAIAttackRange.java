@@ -170,10 +170,10 @@ public class EntityFishAIAttackRange extends EntityAIBase {
               }
 
               this.shooter.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
-           } else {
+           }/* else {
               this.shooter.getNavigator().clearPath();
               this.shooter.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, this.shooter.getMoveHelper().getSpeed());
-           }
+           }*/
        }
 
        super.updateTask();
