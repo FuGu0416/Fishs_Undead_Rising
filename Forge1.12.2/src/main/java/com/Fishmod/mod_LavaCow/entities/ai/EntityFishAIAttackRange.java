@@ -135,7 +135,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                  ++this.attackStep;
                  if (this.attackStep == 1) {
                     this.attackTime = 30;
-                    if(this.shooter instanceof IAggressive && !this.shooter.isChild() && ((IAggressive) this.shooter).getAttackTimer() == 0.0F/* && !((EntitySalamander) this.shooter).isTamed()*/) {
+                    if(this.shooter instanceof IAggressive && !this.shooter.isChild() && ((IAggressive) this.shooter).getAttackTimer() == 0.0F) {
                  	   ((IAggressive) this.shooter).setAttackTimer(80);
                     }
                  } else if (this.attackStep <= (this.shot_times + 1)) {
@@ -159,21 +159,15 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                     ((EntityFireball)shotentity).motionX = (t1 / t4) * 0.75D;
                     ((EntityFireball)shotentity).motionY = (t2 / t4) * 0.75D;
                     ((EntityFireball)shotentity).motionZ = (t3 / t4) * 0.75D;
-                    this.shooter.world.spawnEntity(shotentity);
-                    
-                    if(this.shooter instanceof EntityBoneWorm && ((EntityBoneWorm)this.shooter).attackTimer[0] == 0) {
-                    	((EntityBoneWorm)this.shooter).attackTimer[0] = 15;
-                    	this.shooter.world.setEntityState(this.shooter, (byte)4);
-                    	((EntityBoneWorm)this.shooter).setRunning(200);
-                    }
+                    this.shooter.world.spawnEntity(shotentity);               
                  }
               }
 
               this.shooter.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
-           }/* else {
+           } else {
               this.shooter.getNavigator().clearPath();
               this.shooter.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, this.shooter.getMoveHelper().getSpeed());
-           }*/
+           }
        }
 
        super.updateTask();
