@@ -159,7 +159,6 @@ public class Modconfig {
 	public static String[] Spectral_Raven_Loot = new String[0];
 	public static int pScarecrow_PlagueDoctor;
 	public static String[] DreamCatcher_spawn = new String[0];
-	public static boolean Shattered_Ice;
 	public static int SludgeWand_Cooldown;
 	public static int Undertaker_Shovel_Cooldown;
 	public static int BoneWorm_DropHeart;
@@ -322,7 +321,7 @@ public class Modconfig {
 		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
 		
 		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
-		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 8.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(8.0D);
+		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
@@ -380,8 +379,6 @@ public class Modconfig {
 		BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
 		
 		HaloNecklace_Damage = config.get(Configuration.CATEGORY_GENERAL, "halo necklace bonus damage", 10, "Set the bonus damage of Halo Necklace to X% [0-10000]", 0, 10000).getInt(10);
-		
-		Shattered_Ice = config.get(Configuration.CATEGORY_GENERAL, "allow shattered ice drop", true, "Allow Shattered Ice to drop when an ice block is broken. [false/true]").getBoolean(true);
 		
 		DreamCatcher_spawn = config.getStringList("spawn list for dreamcatcher", Configuration.CATEGORY_GENERAL, 
 				new String[] {	"mod_lavacow:foglet,40,1,2",

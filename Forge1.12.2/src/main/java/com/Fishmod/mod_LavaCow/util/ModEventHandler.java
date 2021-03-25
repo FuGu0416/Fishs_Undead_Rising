@@ -405,11 +405,6 @@ public class ModEventHandler {
             entityparasite.addVelocity(0.0D, 0.4D, 0.0D);
             event.getWorld().spawnEntity(entityparasite);    		
     	}
-    	
-    	if(Modconfig.Shattered_Ice && event.getHarvester() != null && event.getState().getMaterial() == Material.ICE && !event.isSilkTouching()) {
-    			event.getDrops().add(new ItemStack(FishItems.SHATTERED_ICE, new Random().nextInt(4) + event.getFortuneLevel()));
-        	}
-
     }
     
     @SubscribeEvent

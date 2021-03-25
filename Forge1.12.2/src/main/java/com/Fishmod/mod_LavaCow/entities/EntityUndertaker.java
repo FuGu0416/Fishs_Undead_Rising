@@ -161,8 +161,8 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
      */
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.UNDERTAKER_SHOVEL));
-        this.getHeldItemMainhand().attemptDamageItem(this.rand.nextInt(this.getHeldItemMainhand().getMaxDamage()), this.rand, null);
+	   this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.UNDERTAKER_SHOVEL));
+       this.getHeldItemMainhand().attemptDamageItem(this.rand.nextInt(this.getHeldItemMainhand().getMaxDamage()), this.rand, null);
     }
     
     public float getEyeHeight()
@@ -289,7 +289,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            if (EntityUndertaker.this.getAttackTarget() == null)
+            if (EntityUndertaker.this.getAttackTarget() == null || !EntityUndertaker.this.getHeldItemMainhand().getItem().equals(FishItems.UNDERTAKER_SHOVEL))
             {
                 return false;
             }
