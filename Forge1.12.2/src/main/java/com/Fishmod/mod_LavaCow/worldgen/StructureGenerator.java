@@ -33,7 +33,7 @@ public class StructureGenerator implements IWorldGenerator {
     		CEMETERY_SMALL.generate(world, rand, pos);
     	}
     	
-    	if (true) {
+    	if (SpawnUtil.isAllowedDimension(world.provider.getDimension())) {
     		AQUA_MOB.generate(world, rand, pos);
     	}
 		
