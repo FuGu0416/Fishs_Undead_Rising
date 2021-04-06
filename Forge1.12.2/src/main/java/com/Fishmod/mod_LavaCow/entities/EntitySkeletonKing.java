@@ -38,8 +38,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
@@ -51,7 +49,6 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.<BlockPos>createKey(EntitySkeletonKing.class, DataSerializers.BLOCK_POS);
 	private int attackTimer;
 	protected int spellTicks;
-    private Vec3d mobVector;
 	
 	public EntitySkeletonKing(World worldIn) {
 		super(worldIn);
@@ -131,45 +128,34 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         
         if (this.spellTicks > 0) {
             --this.spellTicks;
-        }
-        
-        this.mobVector = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+        }    
         
         // Should always return EntityLivingBase (according to the documentation).
     	EntityLivingBase target = this.getAttackTarget();
         
-        if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
-        	Vec3d targetVector = new Vec3d(target.posX, target.posY + (double)target.getEyeHeight(), target.posZ);
-    		RayTraceResult rayTrace = this.world.rayTraceBlocks(mobVector, targetVector, false, true, false);
-    		IBlockState state = world.getBlockState(new BlockPos(target.posX, target.posY, target.posZ).down());
+        if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
+    		IBlockState state = world.getBlockState(target.getPosition().down());
     		int blockId = Block.getStateId(state);
-    		
-    		// If there's something in the way, we retry from the mob's body.
-    		if (rayTrace != null && rayTrace.typeOfHit == RayTraceResult.Type.BLOCK) {
-    			rayTrace = this.world.rayTraceBlocks(mobVector.subtract(0.0D, (double)this.getEyeHeight(), 0.0D), targetVector, false, true, false);
-    		}
 
-    		if (rayTrace == null || rayTrace.typeOfHit != RayTraceResult.Type.BLOCK) {
-	        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-	        	this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
-	        	
-		        if (state.isOpaqueCube()) {
-		            if (world.isRemote) {
-		            	for(int i = 0; i < 4; i++)
-		            		this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, target.posX + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) this.width, target.posY + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, target.posZ + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
-		            }
-		        }
-		        
-                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(1.0D, 0.25D, 1.0D)))
+        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+        	this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
+        	
+	        if (state.isOpaqueCube()) {
+	            if (world.isRemote) {
+	            	for(int i = 0; i < 4; i++)
+	            		this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, target.posX + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) this.width, target.posY + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, target.posZ + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
+	            }
+	        }
+	        
+            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(1.0D, 0.25D, 1.0D)))
+            {
+                if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
                 {
-                    if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
-                    {
-                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-                        entitylivingbase.motionY += 0.4000000059604645D;
-                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                    }
+                    entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                    entitylivingbase.motionY += 0.4000000059604645D;
+                    entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                 }
-    		}
+            }
         }
 	}
 	

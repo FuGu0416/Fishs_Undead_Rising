@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -122,7 +123,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        
+        		
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
@@ -136,16 +137,19 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
   	   		float f = this.getBrightness();
   	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(40);
   	   	}   
-  	   	
-        if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 4D && this.getAttackTimer() == 5 && this.deathTime <= 0) {
-                 
+  	   	        
+        // Should always return EntityLivingBase (according to the documentation).
+    	EntityLivingBase target = this.getAttackTarget();
+
+        if (target != null && this.getDistanceSq(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
+        	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
+        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);	        	
         	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-            
-            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+        		            
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
             {
-            	this.getAttackTarget().setFire(2 * (int)f);
-            }           
+            	target.setFire(2 * (int)f);
+            }
         }
     }
 	
@@ -289,14 +293,12 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            if (EntityUndertaker.this.getAttackTarget() == null || !EntityUndertaker.this.getHeldItemMainhand().getItem().equals(FishItems.UNDERTAKER_SHOVEL))
-            {
+            if (!EntityUndertaker.this.getHeldItemMainhand().getItem().equals(FishItems.UNDERTAKER_SHOVEL))
+            	return false;
+            else if (EntityUndertaker.this.getAttackTarget() == null)
                 return false;
-            }
-            else if (EntityUndertaker.this.isSpellcasting())
-            {
+            else if (EntityUndertaker.this.isSpellcasting() || EntityUndertaker.this.canEntityBeSeen(EntityUndertaker.this.getAttackTarget()))
                 return false;
-            }
             else
             {
                 int i = EntityUndertaker.this.world.getEntitiesWithinAABB(EntityUnburied.class, EntityUndertaker.this.getEntityBoundingBox().grow(16.0D)).size();

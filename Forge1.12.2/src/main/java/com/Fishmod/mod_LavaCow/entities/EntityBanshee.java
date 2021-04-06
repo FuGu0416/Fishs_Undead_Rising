@@ -94,7 +94,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Banshee_Health);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Banshee_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
@@ -391,13 +391,14 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         	for (Entity entity1 : list)
         	{
         		if (entity1 instanceof EntityLivingBase)
-        		{
-        			float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();
-                        
-        			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)entity1).getActivePotionEffect(MobEffects.WEAKNESS) == null)
+        		{                 
+        			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
+        				float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();
+        				
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage().setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.3F);
+        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 6));
+        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage().setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F);
+        			}
         		}
         	} 
         }
@@ -461,7 +462,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         {
             EntityLivingBase entitylivingbase = EntityBanshee.this.getAttackTarget();
             Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
-            EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+            EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.5D);
         }
 
         /**
@@ -487,10 +488,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
                 {
                     double d0 = EntityBanshee.this.getDistanceSq(entitylivingbase);
 
-                    if (d0 < 9.0D)
+                    if (d0 < 36.0D)
                     {
                         Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
-                        EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                        EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.5D);
                     }
                 }
             }
