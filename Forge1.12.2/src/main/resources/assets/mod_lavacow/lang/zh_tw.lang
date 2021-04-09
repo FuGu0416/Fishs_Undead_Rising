@@ -91,6 +91,8 @@ item.mod_lavacow.sonicbomb.name=音爆彈
 item.mod_lavacow.weta_hoe.name=沙螽鋤
 item.mod_lavacow.bonestew.name=大骨燉湯
 item.mod_lavacow.vespa_shield.name=巨蜂衛盾
+item.mod_lavacow.frozen_dagger.name=冰川刃
+item.mod_lavacow.spectral_dagger.name=鬼靈匕首
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -297,7 +299,9 @@ tootip.mod_lavacow.parasite.1=沙地
 tootip.mod_lavacow.parasite.2=叢林
 tootip.mod_lavacow.bonestew=食用後獲得抗性(0:20)與吸收II(0:20)
 tootip.mod_lavacow.mootenheart=受到的火焰傷害-%d%%，且可用於釀造
-tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害並賦予中毒(0:06).
+tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害並賦予中毒(0:06)
+tootip.mod_lavacow.frozen_dagger=當浸於水中時能逐漸回復耐久度
+tootip.mod_lavacow.spectral_dagger=具有無限耐久度，並對非不死族的單位造成傷害+2
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命

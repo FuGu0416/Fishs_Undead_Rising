@@ -398,6 +398,7 @@ public class ModEventHandler {
     		&& BiomeDictionary.hasType(event.getWorld().getBiome(event.getPos()), BiomeDictionary.Type.DRY) 
     		&& event.getWorld().provider.getDimension() == DimensionType.OVERWORLD.getId()
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
+    		&& Modconfig.pSpawnRate_Parasite > 0
     		) {   
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
     		entityparasite.setSkin(1);
@@ -469,8 +470,13 @@ public class ModEventHandler {
     			event.setAmount(event.getAmount() * 0.15F);
     	}
     	
-    	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.BONESWORD))
-    		event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
+    	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+    		Item heldItem = ((EntityLivingBase)event.getSource().getTrueSource()).getHeldItemMainhand().getItem();
+    		if(heldItem.equals(FishItems.BONESWORD))
+    			event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
+    		else if(heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
+    			event.setAmount(event.getAmount() + 2.0F);
+    	}
     	
     	if(event.getSource().getTrueSource() != null 
     			&& event.getSource().getTrueSource() instanceof EntityPlayer

@@ -434,7 +434,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
        int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
        if(this.canDropLoot()) {
     	   LootTableHandler.dropRareLoot(this, FishItems.UNDYINGHEART, Modconfig.UndeadSwine_DropHeart, ModEnchantments.LIFESTEAL, 3, i);
-    	   LootTableHandler.dropRareLoot(this, this.getHeldItemMainhand(), 4, i);
+    	   //LootTableHandler.dropRareLoot(this, this.getHeldItemMainhand(), 4, i);
        }
     }
     

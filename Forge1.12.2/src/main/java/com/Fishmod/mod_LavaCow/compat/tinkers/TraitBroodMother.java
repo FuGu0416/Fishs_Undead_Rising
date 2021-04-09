@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.compat.tinkers;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 
 import net.minecraft.block.state.IBlockState;
@@ -32,14 +33,14 @@ public class TraitBroodMother extends AbstractTrait {
 
     @Override
     public void afterBlockBreak(ItemStack tool, World world, IBlockState state, BlockPos pos, EntityLivingBase player, boolean wasEffective) {
-        if (wasEffective && !world.isRemote && random.nextFloat() < chance) {
+        if (wasEffective && !world.isRemote && random.nextFloat() < chance && Modconfig.pSpawnRate_Parasite > 0) {
             spawnParasite(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world, null);
         }
     }
 
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
-        if (target.isEntityAlive() && !target.getEntityWorld().isRemote && random.nextFloat() < chance_fight) {
+        if (target.isEntityAlive() && !target.getEntityWorld().isRemote && random.nextFloat() < chance_fight && Modconfig.pSpawnRate_Parasite > 0) {
             spawnParasite(target.posX, target.posY, target.posZ, target.getEntityWorld(), target);
         }
     }

@@ -104,6 +104,9 @@ public class ItemFishCustomWeapon extends ItemSword{
 		if(entityIn instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && isSelected) {
 			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 4));
 		}
+		
+		if(entityIn instanceof EntityLivingBase && stack.getItem() == FishItems.FROZEN_DAGGER && entityIn.isWet() && worldIn.rand.nextInt(50) < 2)
+			stack.setItemDamage(java.lang.Math.max(stack.getItemDamage() - 1, 0));
 	}
 	
 	/**

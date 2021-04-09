@@ -88,6 +88,8 @@ item.mod_lavacow.sonicbomb.name=Sonic Bomb
 item.mod_lavacow.weta_hoe.name=Weta Hoe
 item.mod_lavacow.bonestew.name=Bone Stew
 item.mod_lavacow.vespa_shield.name=Vespa Shield
+item.mod_lavacow.frozen_dagger.name=Frozen Dagger
+item.mod_lavacow.spectral_dagger.name=Spectral Dagger
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -295,6 +297,8 @@ tootip.mod_lavacow.parasite.2=Jungle
 tootip.mod_lavacow.bonestew=Gives Resistance(0:20) & AbsorptionII(0:20) when eaten
 tootip.mod_lavacow.mootenheart=Fire damage to player-%d%%. Can be used to brew 
 tootip.mod_lavacow.vespa_shield=Blocking damage, as well as dealing 2 damage to the attacker and inflicts it with Poison(0:06).
+tootip.mod_lavacow.frozen_dagger=Regenerate durability when in water.
+tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage vs non-undead
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting
