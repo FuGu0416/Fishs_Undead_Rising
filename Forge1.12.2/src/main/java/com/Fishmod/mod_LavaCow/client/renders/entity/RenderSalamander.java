@@ -35,8 +35,20 @@ public class RenderSalamander extends RenderLiving<EntitySalamander>{
     }
     
     @Override
-	protected void preRenderCallback(EntitySalamander entity, float partialTickTime) {
-    	if(!entity.isChild())GlStateManager.scale(3.0F, 3.0F, 3.0F);
-    	else if(!entity.isNymph())GlStateManager.scale(2.0F, 2.0F, 2.0F);
+	protected void preRenderCallback(EntitySalamander entity, float partialTickTime) { 	
+    	switch (entity.getGrowingStage()) {
+			case 0:
+				GlStateManager.scale(1.0F, 1.0F, 1.0F);
+				break;
+			case 1:
+				GlStateManager.scale(1.6F, 1.6F, 1.6F);
+				break;
+			case 2:
+				GlStateManager.scale(2.5F, 2.5F, 2.5F);
+				break;
+			default:
+				GlStateManager.scale(3.0F, 3.0F, 3.0F);
+				break;   			
+		}
 	}
 }

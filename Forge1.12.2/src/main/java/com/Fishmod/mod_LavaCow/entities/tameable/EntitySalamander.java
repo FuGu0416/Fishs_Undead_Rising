@@ -70,7 +70,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     {
         super(worldIn);
         
-        this.setSize(3.5F, 2.6F);
+        this.setSize(3.0F, 2.6F);
         
         this.isImmuneToFire = true;
         this.setPathPriority(PathNodeType.WATER, -1.0F);
@@ -230,22 +230,29 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         }
     	
     	if(this.isServerWorld()) {
-	    	if(this.growingAge < -12000)
+	    	if(this.growingAge < -16000)
 	    		this.setGrowingStage(0);
-	    	else if(this.growingAge < 0) {
+	    	else if(this.growingAge < -8000) {
 	    		this.setGrowingStage(1);
 	    		
-	    		this.setSize(10.0F, 1.5F);
 	    		this.experienceValue = 10;
-	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.50D);
+	    		this.heal(this.getHealth() * (0.15F / 0.25F));
+	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
+	    	}
+	    	else if(this.growingAge < 0) {
+	    		this.setGrowingStage(2);
+	    		
+	    		this.experienceValue = 10;
+	    		this.heal(this.getHealth() * 0.5F);
+	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
 	    	}
 	    	else
 	    		this.setGrowingStage(2);
-    	}
-    	
-    	
+    	}	
     }
     
     @Override
@@ -618,7 +625,24 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      */
     public void setScaleForAge(boolean child)
     {
-        this.setScale(child ? 0.25F : 1.0F);
+    	float scale = 1.0F;
+    	
+    	switch (this.getGrowingStage()) {
+    		case 0:
+    			scale = 0.30F;
+    			break;
+    		case 1:
+    			scale = 0.50F;
+    			break;
+    		case 2:
+    			scale = 0.75F;
+    			break;
+    		default:
+    			scale = 1.0F;
+    			break;   			
+    	}
+    	
+    	this.setScale(scale);
     }
     
     /**
