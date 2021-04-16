@@ -73,7 +73,7 @@ item.mod_lavacow.shattered_ice.name=碎冰
 item.mod_lavacow.halo_necklace.name=輝映項鏈
 item.mod_lavacow.dreamcatcher.name=捕夢網
 item.mod_lavacow.undertaker_shovel.name=夜嘆
-item.mod_lavacow.raven_whistle.name=渡鴉哨
+item.mod_lavacow.raven_whistle.name=鴉哨
 item.mod_lavacow.acidicheart.name=酸囊之心
 item.mod_lavacow.faminearmor_helmet.name=飢荒顱盔
 item.mod_lavacow.faminearmor_chestplate.name=飢荒外套
@@ -308,6 +308,8 @@ command.mod_lavacow.sitting=現在於原地待命
 command.mod_lavacow.following=正在跟隨
 command.mod_lavacow.wandering=進入徘徊狀態
 command.mod_lavacow.whistle=現在為哨子目標
+command.mod_lavacow.whistle_err=離你太遠了
+itemGroup.mod_lavacow_items=Fish的不死崛起
 key.mod_lavacow.special=座騎特殊能力
 
 ################

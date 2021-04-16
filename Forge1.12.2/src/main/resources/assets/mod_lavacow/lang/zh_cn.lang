@@ -90,6 +90,9 @@ item.mod_lavacow.ghostbomb.name=鬼灵炸弹
 item.mod_lavacow.sonicbomb.name=音爆弹
 item.mod_lavacow.weta_hoe.name=沙螽锄
 item.mod_lavacow.bonestew.name=大骨炖汤
+item.mod_lavacow.vespa_shield.name=巨蜂卫盾
+item.mod_lavacow.frozen_dagger.name=冰川刃
+item.mod_lavacow.spectral_dagger.name=鬼灵匕首
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂壳
@@ -291,11 +294,17 @@ tootip.mod_lavacow.parasite.0 =普通
 tootip.mod_lavacow.parasite.1 =沙地
 tootip.mod_lavacow.parasite.2 =丛林
 tootip.mod_lavacow.bonestew =食用后获得抗性（0:20）与吸收II（0:20）
+tootip.mod_lavacow.mootenheart=受到的火焰伤害-%d%%，且可用于酿造
+tootip.mod_lavacow.vespa_shield=格挡伤害，并对攻击者造成2点伤害并赋予中毒(0:06)
+tootip.mod_lavacow.frozen_dagger=当浸于水中时能逐渐回复耐久度
+tootip.mod_lavacow.spectral_dagger=具有无限耐久度，并对非不死族的单位造成伤害+2
 
 message.mod_lavacow.metamorphosis=的外型正在变化！
 command.mod_lavacow.sitting=现在于原地待命
 command.mod_lavacow.following=正在跟随
 command.mod_lavacow.wandering=进入徘徊状态
+command.mod_lavacow.whistle=现在为哨子目标
+command.mod_lavacow.whistle_err=离你太远了
 itemGroup.mod_lavacow_items=Fish的不死崛起
 key.mod_lavacow.special=座骑特殊能力
 
@@ -318,6 +327,8 @@ mob_effect.mod_lavacow:corroded=腐蚀
 description.mob_effect.mod_lavacow:corroded=提高所受伤害
 mob_effect.mod_lavacow:soiled=玷污
 description.mob_effect.mod_lavacow:soiled=防止进食或饮用
+mob_effect.mod_lavacow:infested=感染
+description.mob_effect.mod_lavacow:infested=赋予饥饿与缓慢，且于死亡时会有尸蛆爬出
 
 ##############
 # Potions #
@@ -331,6 +342,10 @@ potion.effect.mod_lavacow:foulodor=恶臭药水
 splash_potion.effect.mod_lavacow:foulodor=飞溅 恶臭药水
 lingering_potion.effect.mod_lavacow:foulodor=滞留 恶臭药水
 tipped_arrow.effect.mod_lavacow:foulodor=恶臭之箭
+potion.effect.mod_lavacow:infestation=感染药水
+splash_potion.effect.mod_lavacow:infestation=飞溅 感染药水
+lingering_potion.effect.mod_lavacow:infestation=滞留 感染药水
+tipped_arrow.effect.mod_lavacow:infestation=感染之箭
 
 ################
 # Advancements #

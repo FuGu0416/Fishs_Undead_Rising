@@ -131,7 +131,7 @@ public class FishItems {
 	public static final Item BONE_STEW = new ItemNetherStew("bonestew").setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
 	public static final Item VESPA_SHIELD = new ItemVespaShield("vespa_shield");
 	public static final Item FROZEN_DAGGER = new ItemFishCustomWeapon("frozen_dagger", ToolMaterial.WOOD, 2.0F, -2.4F, FishItems.SHATTERED_ICE, EnumRarity.COMMON);
-	public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", ToolMaterial.IRON, 1.0F, -2.4F, FishItems.ECTOPLASM, EnumRarity.COMMON).setMaxDamage(0);
+	public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", ToolMaterial.IRON, -1.0F, -2.4F, FishItems.ECTOPLASM, EnumRarity.COMMON).setMaxDamage(0);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");

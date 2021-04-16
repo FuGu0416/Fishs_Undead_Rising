@@ -230,28 +230,42 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         }
     	
     	if(this.isServerWorld()) {
-	    	if(this.growingAge < -16000)
-	    		this.setGrowingStage(0);
+	    	if(this.growingAge < -16000) {
+	    		if(this.getGrowingStage() != 0)
+	    			this.setGrowingStage(0);
+	    	}
 	    	else if(this.growingAge < -8000) {
-	    		this.setGrowingStage(1);
-	    		
-	    		this.experienceValue = 10;
-	    		this.heal(this.getHealth() * (0.15F / 0.25F));
-	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
-	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
+	    		if(this.getGrowingStage() != 1) {
+		    		this.setGrowingStage(1);
+		    		
+		    		this.experienceValue = 10;
+		    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
+		    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
+		    		
+		    		this.heal(this.getHealth() * (0.15F / 0.25F));
+	    		}
 	    	}
 	    	else if(this.growingAge < 0) {
-	    		this.setGrowingStage(2);
-	    		
-	    		this.experienceValue = 10;
-	    		this.heal(this.getHealth() * 0.5F);
-	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
-	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
+	    		if(this.getGrowingStage() != 2) {
+		    		this.setGrowingStage(2);
+		    		
+		    		this.experienceValue = 15;
+		    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
+		    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
+		    		
+		    		this.heal(this.getHealth() * 0.5F);
+	    		}
 	    	}
-	    	else
-	    		this.setGrowingStage(2);
+	    	else {
+	    		if(this.getGrowingStage() != 3) {
+	    			this.setGrowingStage(3);
+	    			
+	    			this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
+	    			this.heal(this.getHealth() * 2.0F / 3.0F);
+	    		}
+	    	}
     	}	
     }
     

@@ -314,7 +314,7 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
             .name(mod_LavaCow.MODID + "." + "sonicbomb")
             .tracker(64, 1, true)
-            .build(),
+            .build()//,
             
             /*EntityEntryBuilder.create()
             .entity(EntityUnderminer.class)
@@ -324,13 +324,13 @@ public class ModEntities {
             .egg(12698049, 4802889)
             .build(),*/
               
-            EntityEntryBuilder.create()
+            /*EntityEntryBuilder.create()
             .entity(EntitySkeletonKing.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "skeletonking"), id++)
             .name(mod_LavaCow.MODID + "." + "SkeletonKing")
             .tracker(80, 3, false)
             .egg(0x2F2A2A, 0xA2A1A1)
-            .build()
+            .build()*/
             );
 
     @EventBusSubscriber(modid = mod_LavaCow.MODID)

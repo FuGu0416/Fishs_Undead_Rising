@@ -66,13 +66,17 @@ public class ItemRavenWhistle extends ItemFishCustom {
         BlockPos pos = worldIn.rayTraceBlocks(vec3d, vec3d2, false, false, true).getBlockPos();
     	
         if(this.OrderEntityID != null) { 	
-        	//System.out.println("OXO" + playerIn.getHeldItem(handIn).getTagCompound().getString("OrderID") + " " + this.OrderEntityID);
         	Entity entity = EntityFishTameable.getEntityByUniqueId(this.OrderEntityID, worldIn);
-        	((EntityRaven) entity).setTargetLocation(pos.getX(), pos.getY(), pos.getZ());
-        	 playerIn.playSound(FishItems.ENTITY_RAVEN_CALL, 1.0F, 1.0F);
-             playerIn.getCooldownTracker().setCooldown(this, 30);
- 			 playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-        	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        	if(playerIn.getDistance(entity) < 16.0F) {
+	        	((EntityRaven) entity).setTargetLocation(pos.getX(), pos.getY(), pos.getZ());
+				playerIn.playSound(FishItems.ENTITY_RAVEN_CALL, 1.0F, 1.0F);
+				playerIn.getCooldownTracker().setCooldown(this, 30);
+				playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+				 
+				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        	} else if(playerIn.isServerWorld()) {
+        		playerIn.sendStatusMessage(new TextComponentTranslation(entity.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.whistle_err")), true);
+        	}
         }
         
     	return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -88,7 +92,7 @@ public class ItemRavenWhistle extends ItemFishCustom {
         	this.OrderEntityID = target.getUniqueID();
         	playerIn.getHeldItem(hand).getTagCompound().setString("OrderName", target.getName());
         	playerIn.getHeldItem(hand).getTagCompound().setInteger("OrderID", target.getEntityId());
-        	//System.out.println("OXO" + stack.getTagCompound().getString("OrderID"));
+
         	if(playerIn.isServerWorld()) {
         		playerIn.sendStatusMessage(new TextComponentTranslation(target.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.whistle")), true);
         	}
