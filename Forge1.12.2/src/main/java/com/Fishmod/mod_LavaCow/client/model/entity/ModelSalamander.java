@@ -300,8 +300,6 @@ public class ModelSalamander extends FishModelBase {
         }
         else
         	this.Body_Base.render(f5);
-        
-        //System.out.println("client " + ((EntitySalamander)entity).isNymph() + ((EntitySalamander)entity).getGrowingStage());
     }
     
     /**
@@ -311,17 +309,22 @@ public class ModelSalamander extends FishModelBase {
      */
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-    	//if(ageInTicks % 20 == 0)
-    	//System.out.println("client " + entityIn.rotationYaw + " " + entityIn.rotationPitch);
+    	EntitySalamander Entity = ((EntitySalamander)entityIn);
     	
-    	if(!((EntitySalamander)entityIn).isNymph())
+    	if(!Entity.isNymph())
     	{
 	    	this.Head.rotateAngleX = headPitch * 0.017453292F;
 	        this.Head.rotateAngleY = netHeadYaw * 0.0003F;
 	        
         	if(this.isChild) {
-        		this.Tooth_l.isHidden = true;
-        		this.Tooth_r.isHidden = true;
+        		if(Entity.getGrowingStage() == 1) {
+	        		this.Tooth_l.isHidden = true;
+	        		this.Tooth_r.isHidden = true;
+        		} else {
+            		this.Tooth_l.isHidden = false;
+            		this.Tooth_r.isHidden = false;
+        		}
+        		
         		this.CannonBase.isHidden = true;
         		this.Cannon1.isHidden = true;
         		this.Cannon2.isHidden = true;
@@ -338,7 +341,7 @@ public class ModelSalamander extends FishModelBase {
     	}
     	else
     	{
-    		if(((EntitySalamander)entityIn).isAggressive()/* && limbSwing == 0*/)
+    		if(Entity.isAggressive()/* && limbSwing == 0*/)
     		{
     			this.Body_Base.rotationPointY = 21.5F;
     			this.Body_Base.rotateAngleX = -0.6829473363053812F;

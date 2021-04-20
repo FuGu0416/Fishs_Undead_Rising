@@ -5,9 +5,11 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -90,13 +92,10 @@ public class EntityParasite extends EntitySpider{
     protected void applyEntityAI()
     {
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityZombie>(this, EntityZombie.class, true));
-        if(Modconfig.Parasite_Plague)
-        	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, (p_210136_0_) -> {
-        	      return p_210136_0_ instanceof EntityLivingBase 
-        	    		  && ((EntityLivingBase)p_210136_0_).attackable() 
-        	    		  && !(p_210136_0_ instanceof EntityParasite || p_210136_0_ instanceof EntityCreeper);
-        	   }));
+    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, (p_210136_0_) -> {
+	  	      return p_210136_0_ instanceof EntityLivingBase && ((EntityLivingBase)p_210136_0_).attackable() 
+	  	    		  && ((Modconfig.Parasite_Plague && !(p_210136_0_ instanceof EntityParasite || p_210136_0_ instanceof EntityCreeper)) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(p_210136_0_)));
+	  	   }));
     }
 
 	@Override
@@ -168,20 +167,19 @@ public class EntityParasite extends EntitySpider{
         }
         	
         
-        if (getRidingEntity() != null && this.isServerWorld()) {
+        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityLivingBase && this.isServerWorld()) {
         	Entity mount = this.getRidingEntity();
 
-        	if (((EntityLivingBase) mount).getActivePotionEffect(MobEffects.HUNGER) == null) {
+        	if (((EntityLivingBase) mount).getActivePotionEffect(ModMobEffects.INFESTED) == null) {
         		this.dismountEntity(mount);
-        		this.dismountRidingEntity();
-        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        		this.dismountRidingEntity();     		
         		this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute() , this.getMaxHealth());
         	}        	
         	else if(this.getRidingEntity().isBurning()) {
         		this.setFire(20);
         		this.dismountEntity(mount);
         		this.dismountRidingEntity();
-        		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(mount));
+        		
         	}
         }
         else if (getRidingEntity() == null && this.long_live)
@@ -227,7 +225,7 @@ public class EntityParasite extends EntitySpider{
 		if (super.attackEntityAsMob(entity)) {
 			if ((entity instanceof EntityPlayer || entity instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach/* && !entity.isBeingRidden()*/) {
 				if(entity instanceof EntityPlayer) {
-					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
+					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 8*20, 0));
 				}				
 			}
 			
@@ -239,8 +237,8 @@ public class EntityParasite extends EntitySpider{
 	
     protected void collideWithEntity(Entity entityIn)
     {
-    	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || entityIn instanceof EntityZombie || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
-    		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 8*20, 0));
+    	if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer)entityIn).isCreative()) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
+    		((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 8*20, 0));
     		this.startRiding(entityIn);
     		this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));
             this.isJumping = false;
@@ -262,7 +260,7 @@ public class EntityParasite extends EntitySpider{
 	
     public int getSkin()
     {
-        return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+        return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
     public void setSkin(int skinType)
@@ -369,7 +367,7 @@ public class EntityParasite extends EntitySpider{
 
         protected double getAttackReachSqr(EntityLivingBase attackTarget)
         {
-            return (double)(attackTarget.width + 2.0F);
+            return (double)(attackTarget.width + 0.1F);
         }
     }
 

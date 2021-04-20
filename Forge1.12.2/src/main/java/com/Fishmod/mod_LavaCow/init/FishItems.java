@@ -25,6 +25,7 @@ import com.Fishmod.mod_LavaCow.item.ItemRareLoot;
 import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
+import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
 
 import net.minecraft.init.Blocks;
@@ -50,7 +51,7 @@ public class FishItems {
 	public static final Item CANEROTTENMEAT = new ItemFishCustomFood("canerottenmeat", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
 	public static final Item FISSIONPOTION = new ItemFissionPotion("fissionpotion", SoundEvents.ENTITY_SLIME_SQUISH, EnumParticleTypes.VILLAGER_HAPPY, EnumRarity.COMMON, false);
 	public static final Item HYPHAE = new ItemFishCustom("hyphae", null, mod_LavaCow.TAB_ITEMS, false);
-	public static final Item PARASITE_ITEM = new ItemParasite("parasite_item", 2, 0.3F, false, 32, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 0), 0.3F);
+	public static final Item PARASITE_ITEM = new ItemParasite("parasite_item", 2, 0.3F, false, 32, false);
 	public static final Item PARASITE_ITEM_COOKED = new ItemFishCustomFood("parasite_item_cooked", 6, 0.6F, false, 32, false);
 	public static final Item PIRANHA = new ItemFishCustomFood("piranha", 2, 0.1F, false, 32, false);
 	public static final Item PIRANHA_COOKED = new ItemFishCustomFood("piranha_cooked", 6, 0.8F, false, 32, false);
@@ -128,7 +129,10 @@ public class FishItems {
 	public static final Item SONICBOMB = new ItemHolyGrenade("sonicbomb");
 	public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
 	public static final Item BONE_STEW = new ItemNetherStew("bonestew").setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
-			
+	public static final Item VESPA_SHIELD = new ItemVespaShield("vespa_shield");
+	public static final Item FROZEN_DAGGER = new ItemFishCustomWeapon("frozen_dagger", ToolMaterial.WOOD, 2.0F, -2.4F, FishItems.SHATTERED_ICE, EnumRarity.COMMON);
+	public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", ToolMaterial.IRON, -1.0F, -2.4F, FishItems.ECTOPLASM, EnumRarity.COMMON).setMaxDamage(0);
+	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
 	public static final SoundEvent ENTITY_PARASITE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.death")).setRegistryName("entity_parasite_death");

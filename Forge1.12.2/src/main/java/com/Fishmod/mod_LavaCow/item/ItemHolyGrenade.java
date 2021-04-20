@@ -40,7 +40,7 @@ public class ItemHolyGrenade extends ItemFishCustom{
         {
         	if(itemstack.getItem().equals(FishItems.HOLY_GRENADE)) {
 	        	EntityHolyGrenade entitysnowball = new EntityHolyGrenade(worldIn, playerIn);
-	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 1.5F, 1.0F);
 	            worldIn.spawnEntity(entitysnowball);
         	}
         	else if(itemstack.getItem().equals(FishItems.GHOSTBOMB)) {
@@ -50,7 +50,7 @@ public class ItemHolyGrenade extends ItemFishCustom{
         	}
         	else if(itemstack.getItem().equals(FishItems.SONICBOMB)) {
 	        	EntitySonicBomb entitysnowball = new EntitySonicBomb(worldIn, playerIn);
-	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+	            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 1.5F, 1.0F);
 	            worldIn.spawnEntity(entitysnowball);
         	}
         }

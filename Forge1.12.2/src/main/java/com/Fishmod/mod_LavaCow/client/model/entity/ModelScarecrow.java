@@ -295,7 +295,7 @@ public class ModelScarecrow extends FishModelBase {
         		case 0:
     		    	this.Head.rotateAngleY = netHeadYaw * 0.017453292F;
     		        this.Head.rotateAngleX = headPitch * 0.017453292F;
-    		        this.Head.rotateAngleZ = 0.0F;
+    		        this.Head.rotateAngleZ = 0.22759093446006054F;
     		        
     		        this.Head.rotationPointY = -1.0F + (-0.15F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));
         			break;
@@ -377,6 +377,7 @@ public class ModelScarecrow extends FishModelBase {
 					 * Normal Attack
 					 * */
 	        		this.Body_upper.rotateAngleX = GradientAnimation(0.0F, 1.1838568316277536F, i);
+	        		this.Head.rotateAngleX = GradientAnimation(entityIn.rotationPitch * 0.017453292F, entityIn.rotationPitch * 0.017453292F - 1.1838568316277536F, i);
 	
 		        	this.arm_l_0.rotateAngleX = GradientAnimation(-3.096039560112741F, -1.2292353921796064F, i);
 		        	this.arm_l_0.rotateAngleZ = GradientAnimation(0.31869712141416456F, 0.4553564018453205F, i);
@@ -400,20 +401,20 @@ public class ModelScarecrow extends FishModelBase {
 	        	}
 	        }
 	        else {
-	        	this.setRotateAngle(Body_upper, 1.1838568316277536F, 0.0F, 0.0F);
+	        	this.setRotateAngle(Body_upper, 1.1838568316277536F, 0.0F, -0.18203784098300857F);
 	        	
 	        	this.setRotateAngle(arm_r_0, -0.36425021489121656F, 0.31869712141416456F, 0.10000736613927509F);
-	        	this.setRotateAngle(arm_r_1, -0.8196066167365371F, -0.22759093446006054F, -0.4553564018453205F);
+	        	this.setRotateAngle(arm_r_1, -2.504198410761464F, -0.22759093446006054F, -0.22759093446006054F);
 	        	this.setRotateAngle(arm_l_0, -0.36425021489121656F, -0.31869712141416456F, -0.10000736613927509F);
-	        	this.setRotateAngle(arm_l_1, -0.8196066167365371F, 0.22759093446006054F, 0.4553564018453205F);
+	        	this.setRotateAngle(arm_l_1, -1.6845917940249266F, 0.22759093446006054F, 0.4553564018453205F);        	
 	        	
 	        	this.arm_r_0.rotationPointY = -6.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI)); 
 	        	this.arm_l_0.rotationPointY = -6.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));        	
 	        	
-	        	this.arm_r_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI)); 
-	        	this.arm_l_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI));
+	        	//this.arm_r_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI)); 
+	        	//this.arm_l_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI));
 	        	
-	        	this.setRotateAngle(scepter_base, 1.8212510744560826F, 0.27314402793711257F, 1.6390387005478748F);
+	        	this.setRotateAngle(scepter_base, 1.3203415791337103F, 0.27314402793711257F, 1.6390387005478748F);
 	        	//this.scepter_base.rotateAngleX = 0.0F;
 	        }
 		}

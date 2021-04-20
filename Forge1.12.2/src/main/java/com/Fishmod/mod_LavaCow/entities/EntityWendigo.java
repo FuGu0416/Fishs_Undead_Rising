@@ -21,6 +21,7 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -43,7 +44,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityWendigo extends EntityMob{
+public class EntityWendigo extends EntityMob implements IAggressive{
 	
 	private boolean isAggressive = false;
 	private int attackTimer;
@@ -63,6 +64,7 @@ public class EntityWendigo extends EntityMob{
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(1, new EntityAIFleeSun(this, 1.0D));
+        this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));  
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -156,6 +158,15 @@ public class EntityWendigo extends EntityMob{
             }
         }
     }
+	
+    /**
+     * Called to update the entity's position/logic.
+     */
+	@Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+    }
 
     public boolean attackEntityAsMob(Entity entityIn)
     {
@@ -199,6 +210,11 @@ public class EntityWendigo extends EntityMob{
     public int getAttackTimer() {
        return this.attackTimer;
     }
+    
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
     
     @SideOnly(Side.CLIENT)
     public void setAttackStance(byte byteIn) {

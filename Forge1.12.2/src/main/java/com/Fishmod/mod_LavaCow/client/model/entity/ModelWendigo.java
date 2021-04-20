@@ -63,7 +63,7 @@ public class ModelWendigo extends FishModelBase {
         this.setRotateAngle(Claw_01_r, -0.091106186954104F, -0.4553564018453205F, 0.0F);
         this.Inside = new ModelRenderer(this, 23, 36);
         this.Inside.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Inside.addBox(-2.5F, -2.0F, -2.5F, 5, 8, 5, 0.0F);
+        this.Inside.addBox(-2.5F, -7.0F, -2.5F, 5, 8, 5, 0.0F);
         this.Arm_fur_r = new ModelRenderer(this, 29, 53);
         this.Arm_fur_r.setRotationPoint(0.0F, 0.0F, -3.3F);
         this.Arm_fur_r.addBox(-1.0F, 0.7F, -4.0F, 2, 3, 8, 0.0F);
@@ -83,9 +83,9 @@ public class ModelWendigo extends FishModelBase {
         this.Arm_fur_l.setRotationPoint(0.0F, 0.0F, -3.3F);
         this.Arm_fur_l.addBox(-1.0F, 0.7F, -4.0F, 2, 3, 8, 0.0F);
         this.Pelvis = new ModelRenderer(this, 46, 44);
-        this.Pelvis.setRotationPoint(0.0F, 7.0F, 0.0F);
+        this.Pelvis.setRotationPoint(0.0F, 8.0F, 1.0F);
         this.Pelvis.addBox(-2.5F, -1.5F, -2.0F, 5, 6, 4, 0.0F);
-        this.setRotateAngle(Pelvis, 0.5009094953223726F, 0.0F, 0.0F);
+        this.setRotateAngle(Pelvis, 1.0927506446736497F, 0.0F, 0.0F);
         this.Vertebra2 = new ModelRenderer(this, 16, 0);
         this.Vertebra2.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Vertebra2.addBox(-0.5F, -4.0F, 2.2F, 1, 1, 1, 0.0F);
@@ -183,12 +183,13 @@ public class ModelWendigo extends FishModelBase {
         this.Arm_r.addBox(-1.0F, -1.3F, -7.3F, 2, 2, 8, 0.0F);
         this.setRotateAngle(Arm_r, 0.5462880558742251F, 0.0F, 0.0F);
         this.Chest = new ModelRenderer(this, 34, 10);
-        this.Chest.setRotationPoint(0.0F, 0.0F, -3.0F);
+        this.Chest.setRotationPoint(0.0F, -7.5F, -1.0F);
         this.Chest.addBox(-4.0F, -3.0F, -3.0F, 8, 6, 7, 0.0F);
+        this.setRotateAngle(Chest, -0.5009094953223726F, 0.0F, 0.0F);
         this.Waist = new ModelRenderer(this, 40, 25);
-        this.Waist.setRotationPoint(0.0F, 2.0F, 1.0F);
-        this.Waist.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, 0.0F);
-        this.setRotateAngle(Waist, 0.5691518690753509F, 0.0F, 0.0F);
+        this.Waist.setRotationPoint(0.0F, -2.0F, 1.0F);
+        this.Waist.addBox(-3.0F, -7.0F, -3.0F, 6, 9, 6, 0.0F);
+        this.setRotateAngle(Waist, -0.5691518690753509F, 0.0F, 0.0F);
         this.Claw_0_r = new ModelRenderer(this, 12, 16);
         this.Claw_0_r.setRotationPoint(0.0F, 0.0F, -2.5F);
         this.Claw_0_r.addBox(-1.0F, -1.5F, -5.0F, 1, 1, 5, 0.0F);
@@ -223,7 +224,7 @@ public class ModelWendigo extends FishModelBase {
         this.Palm_r.addChild(this.Claw_11_r);
         this.Chest.addChild(this.Head);
         this.Arm_l.addChild(this.Arm_fur_l);
-        this.Waist.addChild(this.Pelvis);
+        this.Pelvis.addChild(this.Waist);
         this.Chest.addChild(this.Vertebra2);
         this.Palm_l.addChild(this.Claw_0_l);
         this.Palm_r.addChild(this.Claw_21_r);
@@ -247,7 +248,7 @@ public class ModelWendigo extends FishModelBase {
         this.Chest.addChild(this.Humerus_l);
         this.Palm_l.addChild(this.Claw_21_l);
         this.Humerus_r.addChild(this.Arm_r);
-        this.Chest.addChild(this.Waist);
+        this.Waist.addChild(this.Chest);
         this.Palm_r.addChild(this.Claw_0_r);
         this.Leg_r.addChild(this.Feet_r);
         this.Palm_l.addChild(this.Claw_1_l);
@@ -258,7 +259,7 @@ public class ModelWendigo extends FishModelBase {
 
     @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) { 
-        this.Chest.render(scale);
+        this.Pelvis.render(scale);
     }
     
     /**
@@ -284,28 +285,36 @@ public class ModelWendigo extends FishModelBase {
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	int i = ((EntityWendigo) entityIn).getAttackTimer();
     	byte j = ((EntityWendigo) entityIn).getAttackStance();
-    	//((EntityWendigo) entityIn).setAttackStance(j);
-    	//System.out.println("C" + j);
+
     	if (i > 10) {
     		if (j == (byte)40 || j == (byte)41) {
 	    		this.Humerus_r.rotateAngleX = -0.27314402793711257F;
 	    		this.Humerus_r.rotateAngleY = -0.18203784098300857F + 2.8F * MathHelper.sin((float)Math.PI * 0.125F * (i - 11));
 	    		this.Humerus_r.rotateAngleZ = 1.3203415791337103F;
+	    		this.Chest.rotateAngleY = GradientAnimation(1.1383037381507017F, 0.0F, (i - 10.0F)/10.0F);
     		}
     		
     		if (j == (byte)40 || j == (byte)42) {
 	    		this.Humerus_l.rotateAngleX = -0.27314402793711257F;
 	    		this.Humerus_l.rotateAngleY = 0.18203784098300857F - 2.8F * MathHelper.sin((float)Math.PI * 0.125F * (i - 11));
 	    		this.Humerus_l.rotateAngleZ = -1.3203415791337103F;
+	    		this.Chest.rotateAngleY = GradientAnimation(-1.1383037381507017F, 0.0F, (i - 10.0F)/10.0F);
     		}
+    		
+    		if (j == (byte)40) {
+    			this.Chest.rotateAngleY = 0.0F;
+    			this.Chest.rotateAngleX = GradientAnimation(-1.1383037381507017F, -0.5009094953223726F, (i - 10.0F)/10.0F);
+    		}
+    		
+    		this.Waist.rotateAngleX = GradientAnimation(-0.5691518690753509F, -0.136659280431156F, (i - 10.0F)/10.0F); 		
     	}
     	else if (i > 0) {
     		if (j == (byte)40 || j == (byte)41) {
-	        	this.Humerus_r.rotateAngleX = -0.18203784098300857F;
-	        	//System.out.println("O_O catch " + i + " " + this.triangleWave((float)i/* - ageInTicks*/, 11.0F));  	
+	        	this.Humerus_r.rotateAngleX = -0.18203784098300857F; 	
 	        	this.Humerus_r.rotateAngleY = -0.18203784098300857F;// - 0.8F * this.triangleWave((float)i/* - ageInTicks*/, 11.0F);
 	        	this.Humerus_r.rotateAngleZ = 0.22759093446006054F;
     		}
+    		
         	if (j == (byte)40 || j == (byte)42) {
 	        	this.Humerus_l.rotateAngleX = -0.18203784098300857F;
 	        	this.Humerus_l.rotateAngleY = 0.18203784098300857F;// + 0.8F * this.triangleWave((float)i/* - ageInTicks*/, 11.0F);
@@ -314,13 +323,14 @@ public class ModelWendigo extends FishModelBase {
         }
         else
         {      	
-        	//System.out.println("O_O stop");
         	this.setRotateAngle(Humerus_r, 0.22759093446006054F, -0.18203784098300857F, 0.5918411493512771F);
         	this.setRotateAngle(Humerus_l, 0.22759093446006054F, 0.18203784098300857F, -0.5918411493512771F);
         	
         	this.Humerus_r.rotationPointY = 1.0F + (-0.55F  * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.2F * (float)Math.PI)); 
-        	this.Humerus_l.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.2F * (float)Math.PI));        	
+        	this.Humerus_l.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.2F * (float)Math.PI));   
         	
+        	this.setRotateAngle(Chest, -0.5009094953223726F, 0.0F, 0.0F);
+        	this.Waist.rotateAngleX = -0.5691518690753509F;       	
         }
     }
 }

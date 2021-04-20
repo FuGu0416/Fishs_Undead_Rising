@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelRaven;
-import com.Fishmod.mod_LavaCow.client.renders.RenderRaven;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 
 import net.minecraft.client.Minecraft;

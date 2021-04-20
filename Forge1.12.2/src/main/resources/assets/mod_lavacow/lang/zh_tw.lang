@@ -73,7 +73,7 @@ item.mod_lavacow.shattered_ice.name=碎冰
 item.mod_lavacow.halo_necklace.name=輝映項鏈
 item.mod_lavacow.dreamcatcher.name=捕夢網
 item.mod_lavacow.undertaker_shovel.name=夜嘆
-item.mod_lavacow.raven_whistle.name=渡鴉哨
+item.mod_lavacow.raven_whistle.name=鴉哨
 item.mod_lavacow.acidicheart.name=酸囊之心
 item.mod_lavacow.faminearmor_helmet.name=飢荒顱盔
 item.mod_lavacow.faminearmor_chestplate.name=飢荒外套
@@ -90,6 +90,9 @@ item.mod_lavacow.ghostbomb.name=鬼靈炸彈
 item.mod_lavacow.sonicbomb.name=音爆彈
 item.mod_lavacow.weta_hoe.name=沙螽鋤
 item.mod_lavacow.bonestew.name=大骨燉湯
+item.mod_lavacow.vespa_shield.name=巨蜂衛盾
+item.mod_lavacow.frozen_dagger.name=冰川刃
+item.mod_lavacow.spectral_dagger.name=鬼靈匕首
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -143,7 +146,7 @@ entity.mod_lavacow.zombiepiranha.name=群獵者
 entity.mod_lavacow.piranha.name=食人魚
 entity.mod_lavacow.boneworm.name=蟄髑
 entity.mod_lavacow.raven.seagull=海鷗
-entity.mod_lavacow.pingu.name=冰呪鵝
+entity.mod_lavacow.pingu.name=冰葬鵝
 entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活屍
 entity.mod_lavacow.ghostray.name=鬼靈鱝
@@ -290,37 +293,46 @@ tootip.mod_lavacow.faminearmor.l2=套裝(4)：不再能進食，但殺死單位�
 tootip.mod_lavacow.ghostjelly=將你的渡鴉轉化為鬼靈渡鴉
 tootip.mod_lavacow.ghostbomb=投向目標地點，造成範圍傷害並賦予漂浮(0:01)
 tootip.mod_lavacow.sonicbomb=投向目標地點，造成範圍傷害並賦予虛弱III(0:04)
-tootip.mod_lavacow.weta_hoe=當收穫農作時，同時也能收成 3x3 範圍內的農作物或草.
+tootip.mod_lavacow.weta_hoe=當收穫農作時，同時也能收成 3x3 範圍內的農作物或草
 tootip.mod_lavacow.parasite.0=普通
 tootip.mod_lavacow.parasite.1=沙地
 tootip.mod_lavacow.parasite.2=叢林
 tootip.mod_lavacow.bonestew=食用後獲得抗性(0:20)與吸收II(0:20)
 tootip.mod_lavacow.mootenheart=受到的火焰傷害-%d%%，且可用於釀造
+tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害並賦予中毒(0:06)
+tootip.mod_lavacow.frozen_dagger=當浸於水中時能逐漸回復耐久度
+tootip.mod_lavacow.spectral_dagger=具有無限耐久度，並對非不死族的單位造成傷害+2
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
 command.mod_lavacow.following=正在跟隨
 command.mod_lavacow.wandering=進入徘徊狀態
 command.mod_lavacow.whistle=現在為哨子目標
+command.mod_lavacow.whistle_err=離你太遠了
+itemGroup.mod_lavacow_items=Fish的不死崛起
 key.mod_lavacow.special=座騎特殊能力
 
 ################
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=劇毒
-enchantment.mod_lavacow.Poisonous.desc=攻擊時能使目標中毒
-enchantment.mod_lavacow.Lifesteal=生命竊取
-enchantment.mod_lavacow.Lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
-enchantment.mod_lavacow.Corrosive=酸蝕性
-enchantment.mod_lavacow.Corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
+enchantment.mod_lavacow.poisonous=劇毒
+enchantment.mod_lavacow.poisonous.desc=攻擊時能使目標中毒
+enchantment.mod_lavacow.lifesteal=生命竊取
+enchantment.mod_lavacow.lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
+enchantment.mod_lavacow.corrosive=酸蝕性
+enchantment.mod_lavacow.corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
 
 ##############
 # MobEffects #
 ##############
 
 mob_effect.mod_lavacow:corroded=腐蝕
+description.mob_effect.mod_lavacow:corroded=提高所受傷害
 mob_effect.mod_lavacow:soiled=玷汙
+description.mob_effect.mod_lavacow:soiled=防止進食或飲用
+mob_effect.mod_lavacow:infested=感染
+description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡時會有屍蛆爬出
 
 ##############
 # Potions #
@@ -334,6 +346,10 @@ potion.effect.mod_lavacow:foulodor=惡臭藥水
 splash_potion.effect.mod_lavacow:foulodor=飛濺 惡臭藥水
 lingering_potion.effect.mod_lavacow:foulodor=滯留 惡臭藥水
 tipped_arrow.effect.mod_lavacow:foulodor=惡臭之箭
+potion.effect.mod_lavacow:infestation=感染藥水
+splash_potion.effect.mod_lavacow:infestation=飛濺 感染藥水
+lingering_potion.effect.mod_lavacow:infestation=滯留 感染藥水
+tipped_arrow.effect.mod_lavacow:infestation=感染之箭
 
 ################
 # Advancements #

@@ -54,7 +54,7 @@ public class EntitySludgeJet extends EntityFireball {
 	   protected void onImpact(RayTraceResult result) {
 	      if (!this.world.isRemote && result.entityHit != null && this.shootingEntity != null && result.entityHit instanceof EntityLivingBase) {
 	    	  this.setDamage( (float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	    	  result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(this.shootingEntity), this.getDamage());           		            		            	            		            	
+	    	  result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage());           		            		            	            		            	
 	    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4*20, 3));
 	    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4*20, 1));
 	    	  this.setDead();

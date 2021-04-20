@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDropRider;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -36,6 +37,11 @@ public class EntityPtera extends EntityFlyingMob {
 		super(worldIn);
 		this.setSize(1.6F, 0.8F);
 	}
+
+    @Override
+    public boolean canBeSteered() {
+        return false;
+    }
 	
 	@Override
 	protected void initEntityAI() {
@@ -57,11 +63,6 @@ public class EntityPtera extends EntityFlyingMob {
     	super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
-    
-	@Override
-    public boolean canRiderInteract() {
-        return true;
-    }
 	
 	@Override
 	public boolean shouldRiderSit() {
@@ -82,6 +83,20 @@ public class EntityPtera extends EntityFlyingMob {
     public float getEyeHeight() {
     	return this.height * 0.35F;
     }
+    
+    /**
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
+     */
+    @Override
+    public void onLivingUpdate() {
+    	super.onLivingUpdate();
+    	
+    	if(this.isBeingRidden())
+    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
+    	else
+    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+    }
 
    /**
     * Called to update the entity's position/logic.
@@ -93,6 +108,24 @@ public class EntityPtera extends EntityFlyingMob {
          this.setDead();
       }
 
+   }
+   
+   /**
+    * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
+    * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
+    */
+   @Nullable
+   public Entity getControllingPassenger()
+   {
+       return null;
+   }
+   
+   public void updatePassenger(Entity passenger) {
+       super.updatePassenger(passenger);
+
+       passenger.motionX = 0;
+       passenger.motionY = 0;
+       passenger.motionZ = 0;
    }
    
    /**
@@ -117,7 +150,7 @@ public class EntityPtera extends EntityFlyingMob {
 	            entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 	            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
 	            this.world.spawnEntity(entityRider);
-	            entityRider.startRiding(this);	        	
+	            entityRider.startRiding(this);	   
 	        }
 	        else if (this.world.rand.nextInt(100) < 5)
 	        {
@@ -143,7 +176,7 @@ public class EntityPtera extends EntityFlyingMob {
 	            entityRider.onInitialSpawn(difficulty, (IEntityLivingData)null);
 	            entityRider.setIsHanging(true);
 	            this.world.spawnEntity(entityRider);
-	            entityRider.startRiding(this);	        	
+	            entityRider.startRiding(this);	   
 	        }
 		}
 
@@ -153,7 +186,7 @@ public class EntityPtera extends EntityFlyingMob {
    
    public int getSkin()
    {
-       return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+       return this.dataManager.get(SKIN_TYPE).intValue();
    }
 
    public void setSkin(int skinType)

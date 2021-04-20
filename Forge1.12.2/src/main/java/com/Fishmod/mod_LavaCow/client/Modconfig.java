@@ -29,6 +29,7 @@ public class Modconfig {
 	public static int pSpawnRate_Parasite;
 	public static double Parasite_Health;
 	public static double Parasite_Attack;
+	public static String[] Parasite_Hostlist = new String[0];
 	
 	public static int pSpawnRate_UndeadSwine;
 	public static double UndeadSwine_Health;
@@ -103,6 +104,8 @@ public class Modconfig {
 	
 	public static int pSpawnRate_GhostRay;
 	public static double GhostRay_Health;
+
+	public static int pSpawnRate_DeathMimic;
 	
 	public static int pSpawnRate_Banshee;
 	public static double Banshee_Health;
@@ -128,6 +131,9 @@ public class Modconfig {
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
 	
+	public static double SkeletonKing_Health;
+	public static double SkeletonKing_Attack;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -148,13 +154,16 @@ public class Modconfig {
 	public static int HaloNecklace_Damage;
 	public static String[] Intestine_lt = new String[0];
 	public static String[] Intestine_banlist = new String[0];
+	public static String[] Raven_Loot = new String[0];
+	public static String[] Seagull_Loot = new String[0];
+	public static String[] Spectral_Raven_Loot = new String[0];
 	public static int pScarecrow_PlagueDoctor;
 	public static String[] DreamCatcher_spawn = new String[0];
-	public static boolean Shattered_Ice;
 	public static int SludgeWand_Cooldown;
 	public static int Undertaker_Shovel_Cooldown;
 	public static int BoneWorm_DropHeart;
 	public static boolean Tinkers_Compat;
+	public static boolean Quark_Compat;
 	public static boolean SunScreen_Mode;
 	public static int SpawnRate_Cemetery;
 	public static int BoneSword_DamageCap;
@@ -167,7 +176,7 @@ public class Modconfig {
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
-			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
+			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
 			"Vespa", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
@@ -199,6 +208,12 @@ public class Modconfig {
 		Parasite_SandSpawn = config.get("Parasite", "parasite from sand blocks", 2, "Rate of spawning Parasite when destroying sand blocks in the desert [0-100]", 0, 100).getInt(2);
 		Parasite_Plague = config.get("Parasite", "parasite attacks everything", false, "Should Parasite attack ALL livings [false/true]").getBoolean(false);
 		Parasite_Attach = config.get("Parasite", "parasite attacks by attaching onto target", true, "Parasite will attack their target by attaching on them [false/true]").getBoolean(true);
+		Parasite_Hostlist = config.getStringList("available host for parasite", "Parasite", 
+				new String[] {
+						"minecraft:zombie",
+						"mod_lavacow:zombiefrozen",
+						"mod_lavacow:zombiemushroom"},
+		"Allow Parasite to spawn from listed mob. Ex. \"minecraft:zombie\" or \"mod_lavacow:zombiefrozen\"");
 		
 		pSpawnRate_UndeadSwine = config.get("Undead Swine", "undeadswine spawn rate", 15, "Set the spawn rate of Undead swine [0-10000]", 0, 10000).getInt(15);
 		UndeadSwine_DropHeart = config.get(Configuration.CATEGORY_GENERAL, "drop heart", 10, "Set the drop rate of Undying Heart [0-100]", 0, 100).getInt(10);
@@ -226,7 +241,8 @@ public class Modconfig {
 		pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
 		Mimic_Health = config.get("Mimicrab", "mimicrab health", 10.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(10.0D);
 		Mimic_Attack = config.get("Mimicrab", "mimicrab attack", 8.0D, "Mimicrab strength [1-1000]", 1, 1000).getDouble(8.0D);
-		
+		pSpawnRate_DeathMimic = config.get("Mimicrab", "mimicrab spawn rate near player death", 250, "Set the spawn rate of Mimicrab near player death [0-1000]", 0, 1000).getInt(250);
+
 		pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
 		SludgeLord_Health = config.get("Sludge Lord", "sludge lord health", 70.0D, "Maximum Sludge Lord health [1-1000]", 1, 1000).getDouble(70.0D);
 		SludgeLord_Attack = config.get("Sludge Lord", "sludge lord attack", 5.0D, "Sludge Lord strength [1-1000]", 1, 1000).getDouble(5.0D);
@@ -287,15 +303,15 @@ public class Modconfig {
 		
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Ghost Ray health [1-1000]", 1, 1000).getDouble(20.0D);
-		
+
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
 		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
 		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
 		Banshee_Ability_Radius = config.get("Banshee", "banshee scream radius", 3.0D, "Set the effect radius of Banshee scream [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
-		Weta_Health = config.get("Weta", "weta health", 34.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
-		Weta_Attack = config.get("Weta", "weta attack", 7.0D, "Weta strength [1-1000]", 1, 1000).getDouble(1.0D);
+		Weta_Health = config.get("Weta", "weta health", 12.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
+		Weta_Attack = config.get("Weta", "weta attack", 1.0D, "Weta strength [1-1000]", 1, 1000).getDouble(1.0D);
 		
 		pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
 		Avaton_Health = config.get("Avaton", "avaton health", 30.0D, "Maximum Avaton health [1-1000]", 1, 1000).getDouble(30.0D);
@@ -303,6 +319,9 @@ public class Modconfig {
 		Avaton_Ability_Num = config.get("Avaton", "avaton summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
 		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
 		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
+		
+		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
+		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
@@ -326,7 +345,32 @@ public class Modconfig {
 					      		"minecraft:slime",
 					      		"minecraft:skeleton"},
 				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
-		
+
+		Raven_Loot = config.getStringList("loot table for ravens", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:beetroot_seeds,0.15",
+						"minecraft:wheat_seeds,0.15,2",
+						"minecraft:melon_seeds,0.15",
+						"minecraft:pumpkin_seeds,0.15",
+						"minecraft:gold_nugget,0.1,2",
+						"minecraft:iron_nugget,0.1,2"
+				},
+				"Customize drop rates of the items which ravens can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
+		Seagull_Loot = config.getStringList("loot table for seagulls", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:fish@0,0.15",
+						"minecraft:fish@2,0.15"
+				},
+				"Customize drop rates of the items which seagulls can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
+		Spectral_Raven_Loot = config.getStringList("loot table for spectral ravens", Configuration.CATEGORY_GENERAL,
+				new String[] {
+						"minecraft:gold_nugget,0.15,3",
+						"minecraft:iron_nugget,0.15,3"
+				},
+				"Customize drop rates of the items which spectral ravens can find. Ex. \"minecraft:fish@3,0.4,2\" or \"mod_lavacow:sharptooth,0.1\"");
+
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
 		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
 		
@@ -335,8 +379,6 @@ public class Modconfig {
 		BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
 		
 		HaloNecklace_Damage = config.get(Configuration.CATEGORY_GENERAL, "halo necklace bonus damage", 10, "Set the bonus damage of Halo Necklace to X% [0-10000]", 0, 10000).getInt(10);
-		
-		Shattered_Ice = config.get(Configuration.CATEGORY_GENERAL, "allow shattered ice drop", true, "Allow Shattered Ice to drop when an ice block is broken. [false/true]").getBoolean(true);
 		
 		DreamCatcher_spawn = config.getStringList("spawn list for dreamcatcher", Configuration.CATEGORY_GENERAL, 
 				new String[] {	"mod_lavacow:foglet,40,1,2",
@@ -358,8 +400,9 @@ public class Modconfig {
 		
 		SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
 		Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
-		
+
 		Tinkers_Compat = config.get(Configuration.CATEGORY_GENERAL, "tinkers compatibility", true, "Adding new materials to Tinkers Construct. [false/true]").getBoolean(true);
+		Quark_Compat = config.get(Configuration.CATEGORY_GENERAL, "quark compatibility", true, "Add additional content that works with Quark. [false/true]").getBoolean(true);
 		SunScreen_Mode = config.get(Configuration.CATEGORY_GENERAL, "sunscreen mode", false, "Mobs in this mod will not burn under daylight. [false/true]").getBoolean(false);
 		
 		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);

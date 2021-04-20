@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
@@ -12,6 +13,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,7 +82,8 @@ public class EntityVespa extends EntityFlyingMob {
            		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 
            		((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20 * (int)local_difficulty, 0));
-           		
+           		if(rand.nextInt(5) == 0)
+           			((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 6 * 20 * (int)local_difficulty, 0));
            }
 
            return true;
@@ -96,7 +100,7 @@ public class EntityVespa extends EntityFlyingMob {
    
    public int getSkin()
    {
-       return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+       return this.dataManager.get(SKIN_TYPE).intValue();
    }
 
    public void setSkin(int skinType)

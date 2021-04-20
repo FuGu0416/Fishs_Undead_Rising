@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -24,6 +26,7 @@ import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -54,19 +57,29 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Arrays;
+import java.util.ArrayList;
 
-public class EntityMimic extends EntityFishTameable{
+public class EntityMimic extends EntityFishTameable implements IAggressive{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
+    private static final DataParameter<String> CHEST_TEXTURE = EntityDataManager.<String>createKey(EntityMimic.class, DataSerializers.STRING);
+    public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
+            "textures/entity/chest/normal.png"
+    ));
 
-	private boolean isAggressive = false;
-	private int AttackTimer = 40;
+    private boolean isAggressive = false;
+    private int AttackTimer, AggressiveTimer = 40;
+    public float rotationAngle = 0.0F;
+    public int IdleTimer, SitTimer;
+
 	public NonNullList<ItemStack> inventory;
+    private EntityAITargetItem<EntityItem> AITargetItem;
 	
 	public EntityMimic(World worldIn)
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
-        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);       
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
@@ -74,7 +87,7 @@ public class EntityMimic extends EntityFishTameable{
     protected void initEntityAI()
     {
     	super.initEntityAI();
-    	
+    	this.enablePersistence();
     	this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -84,16 +97,19 @@ public class EntityMimic extends EntityFishTameable{
 
     protected void applyEntityAI()
     {
-    	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
     	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
-	}
+        this.AITargetItem = new EntityAITargetItem<>(this, EntityItem.class, true);
+        this.targetTasks.addTask(4, this.AITargetItem);
+    }
     
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf((4 + this.rand.nextInt(5)) % 6));
+        this.getDataManager().register(SKIN_TYPE, (4 + this.rand.nextInt(5)) % 6);
+        this.getDataManager().register(CHEST_TEXTURE, EntityMimic.TEXTURE_POOL.get(this.rand.nextInt(EntityMimic.TEXTURE_POOL.size())));
      }
-    
+
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -114,7 +130,12 @@ public class EntityMimic extends EntityFishTameable{
         }
         
     }
-    
+
+    protected boolean canDespawn()
+    {
+        return !this.isNoDespawnRequired() || super.canDespawn();
+    }
+
     @Override
     public boolean getCanSpawnHere() {
     	
@@ -164,7 +185,17 @@ public class EntityMimic extends EntityFishTameable{
         	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
         }
      }
-    
+
+    private boolean canPickupItems() {
+        for (ItemStack stack : this.inventory) {
+            if (stack.isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void hasSpace(ItemStack itemstackIn)
     {
     	if (!getEntityWorld().isRemote) {
@@ -193,29 +224,42 @@ public class EntityMimic extends EntityFishTameable{
     }
 	
     /**
-     * Called to update the entity's position/logic.
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
      */
 	@Override
     public void onLivingUpdate()
     {
 		super.onLivingUpdate();
-		if(AttackTimer > 0)AttackTimer--;
+		
+		if(this.AggressiveTimer > 0)
+			this.AggressiveTimer--;
+		
+    	if(this.AttackTimer > 0)
+    		this.AttackTimer--;
+    	
 		if(!getEntityWorld().isRemote && !isAggressive && !this.isTamed())
 		{
+			if(!this.isSilent()) {
+				this.setSitting(true);
+				this.world.setEntityState(this, (byte)41);
+			}
+			
 			this.posX = MathHelper.floor(posX) + 0.5;
 			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
 			this.rotationYaw = prevRotationYaw = 0F;
-			this.renderYawOffset = prevRenderYawOffset = 0F;
-
+			this.renderYawOffset = prevRenderYawOffset = 0F;		
+			
 			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
 				posY -= 1;
+
 			this.setSilent(true);
 			this.setAIMoveSpeed(0.0F);
 		}
 		else if(this.getAttackingEntity() != null)
 		{
-			AttackTimer = 200;
+			this.AggressiveTimer = 200;
 			this.setSilent(false);
 			this.setAIMoveSpeed(0.19F);
 		}
@@ -243,11 +287,34 @@ public class EntityMimic extends EntityFishTameable{
                 this.world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
             }
 		}
+		
+    	if(this.getEntityWorld().isRemote) {
+        	if(this.isSitting() && this.SitTimer > 0) {
+        		this.SitTimer--;
+        	}
+        	
+        	if(!this.isSitting() && this.SitTimer < 20) {
+        		this.SitTimer++;
+        	}
+    	}
+    }
+	
+    /**
+     * Called to update the entity's position/logic.
+     */
+    public void onUpdate() {
+    	super.onUpdate();
+    	
+    	if(this.IdleTimer > 0)
+    		this.IdleTimer--;
+    	   	
+		if (!this.isAggressive && !this.isTamed() && this.ticksExisted % 100 == 0 && rand.nextInt(5) == 0)
+			this.IdleTimer = 30 + rand.nextInt(30);
     }
 	
 	@Override
     public void travel(float strafe, float vertical, float forward) {
-		if(!isAggressive && !this.isTamed()) {
+		if((!isAggressive && !this.isTamed()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
@@ -262,9 +329,7 @@ public class EntityMimic extends EntityFishTameable{
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
     	Entity entity = source.getTrueSource();
-    	if (this.aiSit != null) {
-    		this.aiSit.setSitting(false);
-    	}
+    	this.setSitting(false);
 
     	if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
     		amount = (amount + 1.0F) / 2.0F;
@@ -279,6 +344,8 @@ public class EntityMimic extends EntityFishTameable{
         if (flag) {
         	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_ATTACK, 1.0F, 1.0F);
         	this.applyEnchantments(this, entityIn);
+        	this.AttackTimer = 5;
+        	this.world.setEntityState(this, (byte)40);
         	
         	if(this.getSkin() == 6 && this.rand.nextInt(4) == 0) {
         		entityIn.setFire(4);
@@ -290,8 +357,8 @@ public class EntityMimic extends EntityFishTameable{
     
     protected void doSitCommand(EntityPlayer playerIn) {
     	super.doSitCommand(playerIn);
-    	if(!this.world.isRemote)
-    		this.aiSit.setSitting(true);
+    	this.world.setEntityState(this, (byte)41);
+    	this.setSitting(true);
     }
     
     protected void doFollowCommand(EntityPlayer playerIn) {
@@ -307,8 +374,7 @@ public class EntityMimic extends EntityFishTameable{
   				}
     	}
     	
-    	if(!this.world.isRemote)
-    		this.aiSit.setSitting(false);
+    	this.setSitting(false);
     }
     
     
@@ -412,6 +478,8 @@ public class EntityMimic extends EntityFishTameable{
 	        this.playSound(SoundEvents.BLOCK_CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FishItems.ENTITY_MIMIC_AMBIENT, 0.4F, 1.0F);
 	        this.setAttackTarget(player);
+	        
+	        this.setSitting(false);
         }
 
         return super.processInteract(player, hand);
@@ -461,37 +529,66 @@ public class EntityMimic extends EntityFishTameable{
     {
         super.updateAITasks();
         this.dataManager.set(DATA_HEALTH, Float.valueOf(this.getHealth()));
-        if((this.getAttackTarget() != null || AttackTimer > 0 || this.recentlyHit > 58))
-        	{       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	}
-        else 
-        	{
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+        if (this.getAttackTarget() != null || this.AggressiveTimer > 0 || this.recentlyHit > 58)
+        {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte)11);
+        }
+        else if (this.AITargetItem.shouldExecute() && this.canPickupItems()) {
+            if (!isAggressive && this.rand.nextInt(1000) < 10) {
+                isAggressive = true;
+                this.world.setEntityState(this, (byte)11);
+            }
+        }
+        else if (this.rand.nextInt(1000) < 100)
+        {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte)34);
+        }
     }
-    
+
+    public String getChestTexture()
+    {
+        return this.dataManager.get(CHEST_TEXTURE);
+    }
+
+    public void setChestTexture(String chestTexture)
+    {
+        this.dataManager.set(CHEST_TEXTURE, chestTexture);
+    }
+
     public int getSkin()
     {
-        return ((Integer)this.dataManager.get(SKIN_TYPE)).intValue();
+        return this.dataManager.get(SKIN_TYPE).intValue();
     }
 
     public void setSkin(int skinType)
     {
-        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+        this.dataManager.set(SKIN_TYPE, skinType);
     }
 	
 	public int getVoidSkin() {
 		return 3;//RenderMimic.getVoidSkin();
 	}
     
-	@SideOnly(Side.CLIENT)
     public boolean isAggressive()
     {
     	return isAggressive;
     }
+	
+    public int getSitTimer() {
+       return this.SitTimer;
+	}
+    
+	@Override
+	public int getAttackTimer() {
+		return this.AttackTimer;
+	}
+
+	@Override
+	public void setAttackTimer(int i) {		
+		this.AttackTimer = i;
+	}
     
     /**
      * Handler for {@link World#setEntityState}
@@ -506,6 +603,14 @@ public class EntityMimic extends EntityFishTameable{
         else if (id == 34)
         {
             this.isAggressive = false;
+        }
+        else if (id == 40)
+        {
+            this.AttackTimer = 5;
+        }
+        else if (id == 41)
+        {
+        	this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
         }
         else
         {
@@ -525,13 +630,15 @@ public class EntityMimic extends EntityFishTameable{
 		if (compound.hasKey("Items"))
 			ItemStackHelper.loadAllItems(compound, inventory);
 		this.setSkin(compound.getInteger("Variant"));
-	}
+		this.setChestTexture(compound.getString("Chest"));
+    }
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		ItemStackHelper.saveAllItems(compound, inventory, false);
-		compound.setInteger("Variant", getSkin());
+        compound.setInteger("Variant", getSkin());
+        compound.setString("Chest", getChestTexture());
 	}
     
     @Override

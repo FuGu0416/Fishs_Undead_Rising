@@ -104,6 +104,9 @@ public class ItemFishCustomWeapon extends ItemSword{
 		if(entityIn instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && isSelected) {
 			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 4));
 		}
+		
+		if(entityIn instanceof EntityLivingBase && stack.getItem() == FishItems.FROZEN_DAGGER && entityIn.isWet() && worldIn.rand.nextInt(50) < 2)
+			stack.setItemDamage(java.lang.Math.max(stack.getItemDamage() - 1, 0));
 	}
 	
 	/**
@@ -322,8 +325,8 @@ public class ItemFishCustomWeapon extends ItemSword{
 			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
         	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 		}
-        playerIn.getHeldItem(handIn).damageItem(16, playerIn);
-    	return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+
+    	return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 	
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)

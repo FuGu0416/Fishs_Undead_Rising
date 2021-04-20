@@ -63,6 +63,9 @@ public class AddRecipes {
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_POISON));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.LONG_POISON));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.LONG_POISON));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.INFESTATION));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.INFESTATION));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.INFESTATION));
 	    }
 	    
 	    public static void addTrading() {

@@ -118,6 +118,20 @@ public class EntityFlyingMob extends EntityMob {
         return pathnavigateflying;
 	}
 
+	public Entity getLowestPassenger() {
+        // Learned the hard way: don't trust getLowestRidingEntity.
+        // It will literally return the last entity in the passenger list -- useless.
+        Entity lowestPassenger = null;
+
+        for (Entity passenger: this.getPassengers()) {
+            if (lowestPassenger == null || passenger.getEntityBoundingBox().minY < lowestPassenger.getEntityBoundingBox().minY) {
+                lowestPassenger = passenger;
+            }
+        }
+
+        return lowestPassenger;
+    }
+
     public void travel(float strafe, float vertical, float forward)
     {
 		if (this.isInWeb) {
@@ -127,6 +141,17 @@ public class EntityFlyingMob extends EntityMob {
     	if (this.onGround) {
 			this.getMoveHelper().setMoveTo(this.posX, this.posY + 1, this.posZ, 1.0D);
 		}
+
+    	// If the lowest passenger is colliding with the ground, get them out!
+        Entity lowestPassenger = this.getLowestPassenger();
+
+        if (lowestPassenger != null) {
+            AxisAlignedBB passengerBounds = lowestPassenger.getEntityBoundingBox();
+
+            if (!lowestPassenger.world.getCollisionBoxes(lowestPassenger, passengerBounds).isEmpty()) {
+                this.getMoveHelper().setMoveTo(this.posX, this.posY + lowestPassenger.height, this.posZ, 1.0D);
+            }
+        }
     	
     	if (this.getAttackTarget() != null) {
     		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
@@ -297,7 +322,7 @@ public class EntityFlyingMob extends EntityMob {
                     this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
                     d3 = (double)MathHelper.sqrt(d3);
 
-                    if (this.isNotColliding(this.posX, this.posY, this.posZ, d3))
+                    if (this.isNotColliding(this.posX, this.posY, this.posZ, d3) && this.isNotPassengerColliding(this.posX, this.posY, this.posZ, d3))
                     {
                         this.parentEntity.motionX += d0 / d3 * entityMoveSpeed;
                         this.parentEntity.motionY += d1 / d3 * entityMoveSpeed;
@@ -319,16 +344,45 @@ public class EntityFlyingMob extends EntityMob {
         }
 
         /**
+         * Checks if the lowest passenger's entity bounding box is not colliding with terrain
+         */
+        private boolean isNotPassengerColliding(double x, double y, double z, double distance)
+        {
+            if (this.parentEntity.getPassengers().isEmpty()) {
+                return true;
+            }
+
+            double d0 = (x - this.parentEntity.posX) / distance;
+            double d1 = (y - this.parentEntity.posY) / distance;
+            double d2 = (z - this.parentEntity.posZ) / distance;
+            Entity lowestPassenger = this.parentEntity.getLowestPassenger();
+            AxisAlignedBB axisalignedbb = lowestPassenger.getEntityBoundingBox();
+
+            for (int i = 1; (double)i < distance; ++i)
+            {
+                axisalignedbb = axisalignedbb.offset(d0, d1, d2);
+
+                if (!lowestPassenger.world.getCollisionBoxes(lowestPassenger, axisalignedbb).isEmpty())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        /**
          * Checks if entity bounding box is not colliding with terrain
          */
-        private boolean isNotColliding(double x, double y, double z, double p_179926_7_)
+        private boolean isNotColliding(double x, double y, double z, double distance)
         {
-            double d0 = (x - this.parentEntity.posX) / p_179926_7_;
-            double d1 = (y - this.parentEntity.posY) / p_179926_7_;
-            double d2 = (z - this.parentEntity.posZ) / p_179926_7_;
+            double d0 = (x - this.parentEntity.posX) / distance;
+            double d1 = (y - this.parentEntity.posY) / distance;
+            double d2 = (z - this.parentEntity.posZ) / distance;
             AxisAlignedBB axisalignedbb = this.parentEntity.getEntityBoundingBox();
 
-            for (int i = 1; (double)i < p_179926_7_; ++i)
+            for (int i = 1; (double)i < distance; ++i)
             {
                 axisalignedbb = axisalignedbb.offset(d0, d1, d2);
 

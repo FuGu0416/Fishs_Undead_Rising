@@ -196,5 +196,5 @@ key.mod_lavacow.special=Mount Special Ability
 # Enchantments #
 ################
 
-enchantment.mod_lavacow.Poisonous=Ponzoña
-enchantment.mod_lavacow.Lifesteal=Robo de vida
+enchantment.mod_lavacow.poisonous=Ponzoña
+enchantment.mod_lavacow.lifesteal=Robo de vida

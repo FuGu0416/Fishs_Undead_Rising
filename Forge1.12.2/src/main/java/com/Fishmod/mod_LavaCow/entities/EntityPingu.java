@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -126,11 +127,21 @@ public class EntityPingu  extends EntityMob{
         }
     	
         if(this.getHealth() < this.getMaxHealth() * 0.3F && !this.HPbelow30) {
-        	this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+    		if (this.isServerWorld() && !this.isBurning()) {
+    			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+    			int chance = rand.nextInt(2) + 1;
+    			for (int amount = 0; amount < chance; ++amount)
+    				entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    		}
         	this.HPbelow30 = true;
         }
         else if(this.getHealth() < this.getMaxHealth() * 0.5F && !this.HPbelow50) {
-        	this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+    		if (this.isServerWorld() && !this.isBurning()) {
+    			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+    			int chance = rand.nextInt(2) + 1;
+    			for (int amount = 0; amount < chance; ++amount)
+    				entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    		}
         	this.HPbelow50 = true;
         }
         else if(this.getHealth() >= this.getMaxHealth() * 0.5F && this.HPbelow30 && this.HPbelow50) {
@@ -138,7 +149,8 @@ public class EntityPingu  extends EntityMob{
         	this.HPbelow50 = false;
         }
         
-        
+        if(this.recentlyHit == 0 && this.isWet() && this.rand.nextInt(50) < 2)
+        	this.heal(0.5F);
         
         super.onLivingUpdate();
     }
@@ -250,13 +262,13 @@ public class EntityPingu  extends EntityMob{
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return FishItems.ENTITY_PINGU_AMBIENT;
+        return this.HPbelow50 ? null : FishItems.ENTITY_PINGU_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return FishItems.ENTITY_PINGU_HURT;
+    	return this.HPbelow50 ? null : FishItems.ENTITY_PINGU_HURT;
     }
 
     @Override

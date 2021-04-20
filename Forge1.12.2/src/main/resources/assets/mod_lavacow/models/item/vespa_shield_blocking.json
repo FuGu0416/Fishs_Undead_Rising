@@ -1,0 +1,45 @@
+{
+    "parent": "builtin/entity",
+	"display": {
+        "gui": {
+            "rotation": [ -15, -45, 0 ],
+            "translation": [ -2, 15, 0 ],
+            "scale":[ 0.75, 0.75, 0.75 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 4, 8, 4 ],
+            "scale":[ 0.33, 0.33, 0.33 ]
+        },
+        "fixed": {
+            "rotation": [ -10, 180, 0 ],
+            "translation": [ -6, 11, -10 ],
+            "scale":[ 0.75, 0.75, 0.75 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 14, 15, -5 ],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ -10, 180, -10 ],
+            "translation": [ -18, 18, -28 ],
+            "scale": [ 1.5, 1.5, 1.5 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ -10, -180, -10 ],
+            "translation": [ 4, 18, -20 ],
+            "scale": [ 1.25, 1.25, 1.25 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 14, 15, 10 ],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "blocking": {
+            "rotation": [ -10, 0, 0 ],
+            "translation": [ 16, 10, 12 ],
+            "scale":[ 2.0, 2.0, 2.0 ]
+        }
+	}
+}

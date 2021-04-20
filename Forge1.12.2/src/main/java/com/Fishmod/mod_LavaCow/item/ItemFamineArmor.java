@@ -25,13 +25,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFamineArmor extends ItemArmor {
 	
-	private int set; 	
+	private int set;
+	private ModelFamineArmor armorModel;
+	private String armorTexture;
 	
 	public ItemFamineArmor(String registryName, int renderIndex, EntityEquipmentSlot slot) {
 		super(ArmorMaterial.DIAMOND, renderIndex, slot);
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
+
+		if (registryName.equals("faminearmor_leggings")) {
+			this.armorTexture = "mod_lavacow:textures/armors/famine/armor_famine_legs.png";
+		} else {
+			this.armorTexture = "mod_lavacow:textures/armors/famine/armor_famine.png";
+		}
+
+        this.set = 0;
 	}
 	
     /**
@@ -50,12 +60,19 @@ public class ItemFamineArmor extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		//return super.getArmorModel(entityLiving, itemStack, armorSlot, _default);
-		
-		return new ModelFamineArmor(itemStack.getItem().equals(FishItems.FAMINEARMOR_LEGGINGS) ? 0.45F : 0.9F);
+		if (this.armorModel == null) {
+			if (armorSlot == EntityEquipmentSlot.LEGS) {
+				this.armorModel = new ModelFamineArmor(0.45F);
+			} else {
+				this.armorModel = new ModelFamineArmor(0.9F);
+			}
+		}
+
+		return this.armorModel;
 	}
 
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-		return "mod_lavacow:textures/armors/famine/armor_famine" + (stack.getItem().equals(FishItems.FAMINEARMOR_LEGGINGS) ? "_legs.png" : ".png");
+		return this.armorTexture;
 	}
 	
 	public int getSetBonus() {
@@ -65,11 +82,12 @@ public class ItemFamineArmor extends ItemArmor {
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		this.set = 0;
-		
-		for(ItemStack E : player.getEquipmentAndArmor()) {
-			if(E.getItem() instanceof ItemFamineArmor)this.set++;
+
+		for(ItemStack armor : player.getArmorInventoryList()) {
+			if (armor.getItem().getClass() == ItemFamineArmor.class) {
+				this.set++;
+			}
 		}
-		
 	}
 
 	@Override
