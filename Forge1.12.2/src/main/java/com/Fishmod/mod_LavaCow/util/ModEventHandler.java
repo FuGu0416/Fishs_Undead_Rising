@@ -20,6 +20,7 @@ import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
+import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
@@ -370,7 +371,18 @@ public class ModEventHandler {
 
         if ((player.world.getTotalWorldTime() & 0x1FL) > 0L) {
             return;
-        }       
+        }     
+        
+		ItemStack Heart = null;
+		
+		for(int i = 0; i < 9 ; i++)
+			if(player.inventory.getStackInSlot(i).getItem().equals(FishItems.GOLDENHEART)) {
+				Heart = player.inventory.getStackInSlot(i);
+				break;
+			}
+		
+		if(Heart != null)
+			ItemGoldenHeart.onTick(Heart, player);
     }
     
     @SubscribeEvent

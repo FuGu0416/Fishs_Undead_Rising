@@ -40,10 +40,8 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
 	
 	private static boolean isBlackListed(ItemStack ItemStackIn) {
 		boolean flag = ItemStackIn.getItem().equals(FishItems.GOLDENHEART);
-		//System.out.println(Modconfig.GoldenHeart_bl.length);
 		for(String S : Modconfig.GoldenHeart_bl)
 			if(ItemStackIn.getItem().getRegistryName().toString().equals(S)) {
-				//System.out.println(S + " " + ItemStackIn.getItem().getUnlocalizedName() + " " + ItemStackIn.getItem().getRegistryName().toString());
 				flag = true;
 				break;
 			}
@@ -102,7 +100,7 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
     public void onWornTick(ItemStack stack, EntityLivingBase plr) {
     	if(stack.getItemDamage() > stack.getMaxDamage())stack.setItemDamage(stack.getMaxDamage());
     	if (plr instanceof EntityPlayer && plr.ticksExisted % 20 == 0 && !stack.isEmpty() && stack.getCount() > 0) {
-        ItemGoldenHeart.onTick(stack, (EntityPlayer) plr);
-      }
+	        ItemGoldenHeart.onTick(stack, (EntityPlayer) plr);
+	    }
     }
 }
