@@ -1,6 +1,9 @@
 package com.Fishmod.mod_LavaCow.blocks;
 
+import java.util.Random;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -10,11 +13,13 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,12 +34,46 @@ public class BlockTombStone extends Block{
 		super(Material.ROCK);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.setCreativeTab(mod_LavaCow.TAB_ITEMS);
+		this.setTickRandomly(true);
 	}
 	
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         return enumfacing.getAxis() == EnumFacing.Axis.Z ? X_AXIS_AABB : Z_AXIS_AABB;
+    }
+    
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+    	EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        int i = worldIn.getEntitiesWithinAABB(EntityUnburied.class, (new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).grow(8.0D)).size();
+
+    	if(i < 8 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 0.1F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {
+	        EntityUnburied entityunburied = new EntityUnburied(worldIn);
+	        
+			switch(enumfacing) {
+				case NORTH:
+					entityunburied.moveToBlockPosAndAngles(pos.south(), 0.0F, 0.0F);
+					break;
+				case EAST:
+					entityunburied.moveToBlockPosAndAngles(pos.west(), 0.0F, 0.0F);
+					break;
+				case WEST:
+					entityunburied.moveToBlockPosAndAngles(pos.east(), 0.0F, 0.0F);
+					break;
+				case SOUTH:
+					entityunburied.moveToBlockPosAndAngles(pos.north(), 0.0F, 0.0F);
+					break;
+				default:
+					break;
+			}	
+			
+			entityunburied.onInitialSpawn(worldIn.getDifficultyForLocation(pos), (IEntityLivingData)null);
+
+	        if(!worldIn.isRemote)
+	        	worldIn.spawnEntity(entityunburied);
+        }
     }
     
     /**

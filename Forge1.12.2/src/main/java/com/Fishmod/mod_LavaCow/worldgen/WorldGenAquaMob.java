@@ -23,7 +23,7 @@ public class WorldGenAquaMob extends WorldGenerator{
 		Biome biome = worldIn.getBiome(position);
         
     	if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET) && rand.nextFloat() < 0.1F){
-    		if(rand.nextInt(100) < Modconfig.pSpawnRate_ZombiePiranha) {
+    		if(rand.nextInt(100) < Modconfig.pSpawnRate_ZombiePiranha && worldIn.isAreaLoaded(position.down(), 3)) {
     			if(worldIn.getBlockState(position.down()).getMaterial() == Material.WATER){
     				for(int i = 0; i < 2 + rand.nextInt(3); i++) {
 	    				EntityZombiePiranha fish = new EntityZombiePiranha(worldIn);
@@ -33,7 +33,7 @@ public class WorldGenAquaMob extends WorldGenerator{
     			}
     		}
     		
-    		if(rand.nextInt(100) < Modconfig.pSpawnRate_Piranha) {
+    		if(rand.nextInt(100) < Modconfig.pSpawnRate_Piranha && worldIn.isAreaLoaded(position.down(), 3)) {
     			if(worldIn.getBlockState(position.down()).getMaterial() == Material.WATER){
     				for(int i = 0; i < 2 + rand.nextInt(3); i++) {
 	    				EntityPiranha fish = new EntityPiranha(worldIn);
