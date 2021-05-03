@@ -153,12 +153,12 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
         }
     }
 	
-	   public boolean attackEntityAsMob(Entity entityIn)
-	    {
-	        this.attackTimer = 15;
-	        this.world.setEntityState(this, (byte)4);
-	        return true;
-	    }
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        this.attackTimer = 15;
+        this.world.setEntityState(this, (byte)4);
+        return true;
+    }
 	
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
@@ -297,7 +297,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
             	return false;
             else if (EntityUndertaker.this.getAttackTarget() == null)
                 return false;
-            else if (EntityUndertaker.this.isSpellcasting() || EntityUndertaker.this.canEntityBeSeen(EntityUndertaker.this.getAttackTarget()))
+            else if (EntityUndertaker.this.isSpellcasting() || !EntityUndertaker.this.canEntityBeSeen(EntityUndertaker.this.getAttackTarget()))
                 return false;
             else
             {

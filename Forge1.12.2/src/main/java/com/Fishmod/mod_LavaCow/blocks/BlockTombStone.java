@@ -7,6 +7,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -15,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,6 +37,9 @@ public class BlockTombStone extends Block{
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		this.setTickRandomly(true);
+		this.setHardness(1.5F);
+		this.setResistance(10.0F);
+		this.setSoundType(SoundType.STONE);
 	}
 	
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -49,7 +54,15 @@ public class BlockTombStone extends Block{
     	EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         int i = worldIn.getEntitiesWithinAABB(EntityUnburied.class, (new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).grow(8.0D)).size();
 
-    	if(i < 8 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 0.1F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {
+		if(worldIn.isRemote) {
+            double d3 = (double)((float)pos.getX() + rand.nextFloat());
+            double d4 = (double)((float)pos.getY() + rand.nextFloat());
+            double d5 = (double)((float)pos.getZ() + rand.nextFloat());
+            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d3, d4, d5, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.FLAME, d3, d4, d5, 0.0D, 0.0D, 0.0D);
+		}
+        
+    	if(i < 8 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 1.0F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {           
 	        EntityUnburied entityunburied = new EntityUnburied(worldIn);
 	        
 			switch(enumfacing) {

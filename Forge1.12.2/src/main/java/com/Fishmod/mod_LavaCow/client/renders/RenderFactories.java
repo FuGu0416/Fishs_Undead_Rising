@@ -17,6 +17,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPtera;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSandBurst;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarecrow;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSkeletonKing;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
@@ -58,6 +59,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
@@ -117,6 +119,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityUnderminer.class, RenderFactoryEntityUnderminer.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonKing.class, RenderFactoryEntitySkeletonKing.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySandBurst.class, RenderFactoryEntitySandBurst.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
     }
@@ -596,8 +599,7 @@ public class RenderFactories {
         	return new RenderSkeleton(manager);
         }
     }
-    
-    
+      
     public static class RenderFactoryEntitySkeletonKing implements IRenderFactory<EntitySkeletonKing>
     {
         public final static RenderFactoryEntitySkeletonKing INSTANCE = new RenderFactoryEntitySkeletonKing();
@@ -609,6 +611,20 @@ public class RenderFactories {
         public RenderSkeletonKing createRenderFor(RenderManager manager)
         {
         	return new RenderSkeletonKing(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntitySandBurst implements IRenderFactory<EntitySandBurst>
+    {
+        public final static RenderFactoryEntitySandBurst INSTANCE = new RenderFactoryEntitySandBurst();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderSandBurst createRenderFor(RenderManager manager)
+        {
+        	return new RenderSandBurst(manager);
         }
     }
 }
