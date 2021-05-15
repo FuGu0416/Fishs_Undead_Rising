@@ -90,6 +90,7 @@ item.mod_lavacow.bonestew.name=Bone Stew
 item.mod_lavacow.vespa_shield.name=Vespa Shield
 item.mod_lavacow.frozen_dagger.name=Frozen Dagger
 item.mod_lavacow.spectral_dagger.name=Spectral Dagger
+item.mod_lavacow.kings_crown.name=Stained Crown
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -150,6 +151,7 @@ entity.mod_lavacow.ghostray.name=Ghost Ray
 entity.mod_lavacow.banshee.name=Banshee
 entity.mod_lavacow.weta.name=Emperor Weta
 entity.mod_lavacow.avaton.name=Avaton
+entity.mod_lavacow.skeletonking.name=Skeleton King
 
 ##########
 # Sounds #

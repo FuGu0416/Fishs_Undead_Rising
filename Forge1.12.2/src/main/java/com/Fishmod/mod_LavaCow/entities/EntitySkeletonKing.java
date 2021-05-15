@@ -134,6 +134,14 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         
         if (this.spellTicks > 0) {
             --this.spellTicks;
+            
+            if (EntitySkeletonKing.this.world.isRemote)
+            {
+                for (int i = 0; i < 2; ++i)
+                {
+                	mod_LavaCow.PROXY.spawnCustomParticle("spore", this.world, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, 0.90F, 0.90F, 0.74F);
+                }
+            }
         }    
         
         // Should always return EntityLivingBase (according to the documentation).
@@ -161,15 +169,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
                     entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                 }
             }
-        }
-        
-        if (EntitySkeletonKing.this.world.isRemote)
-        {
-            for (int i = 0; i < 2; ++i)
-            {
-            	mod_LavaCow.PROXY.spawnCustomParticle("spore", this.world, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, 0.90F, 0.90F, 0.74F);
-            }
-        }
+        }   
 	}
 	
 	@Override
@@ -181,7 +181,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     public boolean attackEntityAsMob(Entity entityIn)
     {
     	if (this.attackTimer == 0) {
-	    	this.attackTimer = 30;
+	    	this.attackTimer = 20;
 	        this.world.setEntityState(this, (byte)4);
     	}
 
@@ -222,7 +222,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     {
     	if (id == 4) 
     	{
-            this.attackTimer = 30;
+            this.attackTimer = 20;
         }
     	else if (id == 10) {
     		
@@ -340,7 +340,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             {
                 BlockPos blockpos = (new BlockPos(EntitySkeletonKing.this)).add(-12 + EntitySkeletonKing.this.rand.nextInt(24), 0, -12 + EntitySkeletonKing.this.rand.nextInt(24));
 
-                EntitySandBurst entityevokerfangs = new EntitySandBurst(EntitySkeletonKing.this.world, (double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), 0.0F, 20, EntitySkeletonKing.this);
+                EntitySandBurst entityevokerfangs = new EntitySandBurst(EntitySkeletonKing.this.world, (double)blockpos.getX(), (double)EntitySkeletonKing.this.world.getHeight(blockpos).getY(), (double)blockpos.getZ(), 0.0F, 20, EntitySkeletonKing.this);
                 EntitySkeletonKing.this.world.spawnEntity(entityevokerfangs);
             }
             
@@ -366,7 +366,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         @Nullable
         protected SoundEvent getSpellPrepareSound()
         {
-            return SoundEvents.EVOCATION_ILLAGER_PREPARE_SUMMON;
+            return SoundEvents.BLOCK_END_PORTAL_SPAWN;
         }
     }
     
@@ -402,14 +402,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         public void startExecuting()
         {
             this.spellWarmup = this.getCastWarmupTime();
-            EntitySkeletonKing.this.spellTicks = this.getCastingTime();
             this.spellCooldown = EntitySkeletonKing.this.ticksExisted + this.getCastingInterval();
-            SoundEvent soundevent = this.getSpellPrepareSound();
-            EntitySkeletonKing.this.world.setEntityState(EntitySkeletonKing.this, (byte)10);
-            if (soundevent != null)
-            {
-                EntitySkeletonKing.this.playSound(soundevent, 1.0F, 1.0F);
-            }
         }
 
         /**
@@ -422,21 +415,13 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             if (this.spellWarmup == 0)
             {
                 this.castSpell();
-                EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
         protected void castSpell()
         {
-            /*if (EntitySkeletonKing.this.world.isRemote)
-            {
-                for (int i = 0; i < 16; ++i)
-                {
-                	EntitySkeletonKing.this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, EntitySkeletonKing.this.posX + (EntitySkeletonKing.this.rand.nextDouble() - 0.5D) * (double)EntitySkeletonKing.this.width, EntitySkeletonKing.this.posY + EntitySkeletonKing.this.rand.nextDouble() * (double)EntitySkeletonKing.this.height - 0.25D, EntitySkeletonKing.this.posZ + (EntitySkeletonKing.this.rand.nextDouble() - 0.5D) * (double)EntitySkeletonKing.this.width, (EntitySkeletonKing.this.rand.nextDouble() - 0.5D) * 2.0D, -EntitySkeletonKing.this.rand.nextDouble(), (EntitySkeletonKing.this.rand.nextDouble() - 0.5D) * 2.0D, Block.getStateId(Blocks.SAND.getDefaultState()));
-                }
-            }*/
-            
         	EntitySkeletonKing.this.attemptTeleport(EntitySkeletonKing.this.getAttackTarget().posX, EntitySkeletonKing.this.getAttackTarget().posY, EntitySkeletonKing.this.getAttackTarget().posZ);
+        	EntitySkeletonKing.this.playSound(this.getSpellPrepareSound(), 1.0F, 1.0F);
         }
 
         protected int getCastWarmupTime()
@@ -544,7 +529,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 		while(this.world.getBlockState(position).getBlock() != Blocks.AIR)
 			position = position.up();
 		
-		this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 3);
+		this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 2);
         if (this.world.getBlockState(position).getBlock() instanceof BlockChest) {
             TileEntity tileentity = this.world.getTileEntity(position);
             if (tileentity instanceof TileEntityChest && !tileentity.isInvalid()) {

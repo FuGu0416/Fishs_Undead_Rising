@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
+import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelUnburied;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
@@ -24,6 +25,7 @@ public class RenderUnburied extends RenderLiving<EntityUnburied> {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);
         this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
+        this.addLayer(new LayerGenericHeldItem(this, 0.0F, 0.15F, -0.6F, 1.0F));
         this.addLayer(layerbipedarmor);
     }
     

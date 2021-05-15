@@ -152,23 +152,37 @@ public class ModelSkeletonKing extends FishModelBase {
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	EntitySkeletonKing entity = (EntitySkeletonKing) entityIn;
-    	float i = ((float)(entity.getAttackTimer()) - 5.0F) / 25.0F;
+    	float i = ((float)(entity.getAttackTimer()) - 5.0F) / 15.0F;
+    	float k = (float)(entity.getSpellTicks()) / 30.0F;
     	int j = entity.getAttackTimer();
     	
-    	if(j > 0) {
+    	if(k > 0) {
+    		this.Body_base.rotationPointY = 4.2F;
+    		this.Body_waist.rotateAngleX = GradientAnimation(0.5009094953223726F, -0.31869712141416456F, k);
+    		this.Body_chest.rotateAngleX = GradientAnimation(0.091106186954104F, -0.18203784098300857F, k);   
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(0.091106186954104F, 0.9560913642424937F, k); 
+    		this.Arm_l_Seg1.rotateAngleX = -0.36425021489121656F;
+    		this.weapon_handle0.rotateAngleX = 0.136659280431156F;
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(0.0F, -1.6845917940249266F, k); 
+    		this.Arm_r_Seg0.rotateAngleY = GradientAnimation(0.0F, 0.5462880558742251F, k); 
+    		this.Arm_r_Seg0.rotateAngleZ = GradientAnimation(0.5462880558742251F, 0.136659280431156F, k); 
+    		this.Arm_r_Seg1.rotateAngleX = GradientAnimation(-0.7740535232594852F, -1.3658946726107624F, k); 
+    	}
+    	else if(j > 0) {
     		this.Body_base.rotationPointY = GradientAnimation(4.2F, 15.0F, i);
     		this.Body_waist.rotateAngleX = GradientAnimation(-0.27314402793711257F, 0.6373942428283291F, i);
     		this.Body_chest.rotateAngleX = GradientAnimation(-0.31869712141416456F, 0.27314402793711257F, i);
     		
-    		Arm_r_Seg0.rotateAngleX = GradientAnimation(-3.050486466635689F, -1.1838568316277536F, i); 
-    		Arm_r_Seg0.rotateAngleZ = 0.0F;
-    		Arm_r_Seg1.rotateAngleX = -0.136659280431156F; 
-    		Arm_r_Seg1.rotateAngleZ = -0.5918411493512771F;
-    		Arm_l_Seg0.rotateAngleX = GradientAnimation(-3.141592653589793F, -0.9560913642424937F, i); 
-    		Arm_l_Seg0.rotateAngleZ = 0.0F;
-    		Arm_l_Seg1.rotateAngleX = -0.22759093446006054F;
-    		Arm_l_Seg1.rotateAngleZ = 0.5462880558742251F;
-    		weapon_handle0.rotateAngleX = 0.27314402793711257F;
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-3.050486466635689F, -1.1838568316277536F, i); 
+    		this.Arm_r_Seg0.rotateAngleY = 0.0F;
+    		this.Arm_r_Seg0.rotateAngleZ = 0.0F;
+    		this.Arm_r_Seg1.rotateAngleX = -0.136659280431156F; 
+    		this.Arm_r_Seg1.rotateAngleZ = -0.5918411493512771F;
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-3.141592653589793F, -0.9560913642424937F, i); 
+    		this.Arm_l_Seg0.rotateAngleZ = 0.0F;
+    		this.Arm_l_Seg1.rotateAngleX = -0.22759093446006054F;
+    		this.Arm_l_Seg1.rotateAngleZ = 0.5462880558742251F;
+    		this.weapon_handle0.rotateAngleX = 0.27314402793711257F;
     		
     		this.Leg_r_Seg0.rotateAngleX = GradientAnimation(-0.27314402793711257F, -1.1383037381507017F, i);
     		this.Leg_l_Seg0.rotateAngleX = GradientAnimation(-0.27314402793711257F, -1.1383037381507017F, i);
