@@ -4,13 +4,16 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -36,6 +39,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -51,7 +55,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS)).setDarkenSky(false);
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.<BlockPos>createKey(EntitySkeletonKing.class, DataSerializers.BLOCK_POS);
 	private int attackTimer;
-	protected int spellTicks;
+	protected int spellTicks[] = {0, 0};
 	
 	public EntitySkeletonKing(World worldIn) {
 		super(worldIn);
@@ -64,9 +68,10 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingApell());
-        this.tasks.addTask(2, new EntitySkeletonKing.AIAttackSpell());
-        this.tasks.addTask(3, new EntitySkeletonKing.AIUseSpell());
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(2, new EntitySkeletonKing.AITeleportSpell());
+        this.tasks.addTask(3, new EntitySkeletonKing.AITossSpell());
+        this.tasks.addTask(4, new EntitySkeletonKing.AISummoningSpell());
+        this.tasks.addTask(5, new EntitySkeletonKing.AISkeletonKingAttackMelee(this, 1.0D, false));
         this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -110,12 +115,22 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	
     public boolean isSpellcasting()
     {
-    	return this.spellTicks > 0;
+    	for(int i = 0 ; i < 2; i++) {
+    		if(this.spellTicks[i] > 0)
+    			return true;
+    	}
+
+    	return false;
+    }
+	
+    public boolean isSpellcasting(int i)
+    {
+    	return this.spellTicks[i] > 0;
     }
     
-    public int getSpellTicks()
+    public int getSpellTicks(int i)
     {
-        return this.spellTicks;
+        return this.spellTicks[i];
     }
 	
 	@Override
@@ -130,19 +145,24 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             this.motionZ = 0.0F;
             this.rotationPitch = this.prevRotationPitch;
             this.rotationYaw = this.prevRotationYaw;
+            
+            if(this.attackTimer == 10)
+            	this.playSound(FishItems.ENTITY_SKELETONKING_ATTACK, 1.0F, 1.0F);
         }
         
-        if (this.spellTicks > 0) {
-            --this.spellTicks;
-            
-            if (EntitySkeletonKing.this.world.isRemote)
-            {
-                for (int i = 0; i < 2; ++i)
-                {
-                	mod_LavaCow.PROXY.spawnCustomParticle("spore", this.world, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, 0.90F, 0.90F, 0.74F);
-                }
-            }
-        }    
+        for(int i = 0 ; i < 2; i++) {
+	        if (this.spellTicks[i] > 0) {
+	            --this.spellTicks[i];
+	            
+	            if (EntitySkeletonKing.this.world.isRemote)
+	            {
+	                for (int j = 0; j < 2; ++j)
+	                {
+	                	mod_LavaCow.PROXY.spawnCustomParticle("spore", this.world, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, 0.90F, 0.90F, 0.74F);
+	                }
+	            }
+	        }    
+        }
         
         // Should always return EntityLivingBase (according to the documentation).
     	EntityLivingBase target = this.getAttackTarget();
@@ -151,7 +171,6 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     		IBlockState state = world.getBlockState(target.getPosition().down());
     		int blockId = Block.getStateId(state);
 
-        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         	this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
         	
 	        if (state.isOpaqueCube()) {
@@ -182,7 +201,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     {
     	if (this.attackTimer == 0) {
 	    	this.attackTimer = 20;
-	        this.world.setEntityState(this, (byte)4);
+	        this.world.setEntityState(this, (byte)4);	        
     	}
 
 		return false;
@@ -226,7 +245,11 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         }
     	else if (id == 10) {
     		
-        	this.spellTicks = 30;
+        	this.spellTicks[0] = 30;
+        }
+		else if (id == 11) {
+    		
+        	this.spellTicks[1] = 15;
         }
         else
         {
@@ -246,7 +269,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            return EntitySkeletonKing.this.getSpellTicks() > 0;
+            return EntitySkeletonKing.this.isSpellcasting();
         }
 
         /**
@@ -278,7 +301,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         }
     }
     
-    public class AIUseSpell extends EntityAIBase
+    public class AISummoningSpell extends EntityAIBase
     {
         protected int spellWarmup;
         protected int spellCooldown;
@@ -288,7 +311,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-        	if (EntitySkeletonKing.this.getAttackTarget() == null)
+        	if (EntitySkeletonKing.this.getAttackTarget() == null || EntitySkeletonKing.this.getAttackTimer() > 0)
                 return false;
             else if ((EntitySkeletonKing.this.isSpellcasting() || !EntitySkeletonKing.this.canEntityBeSeen(EntitySkeletonKing.this.getAttackTarget())) && EntitySkeletonKing.this.getDistance(EntitySkeletonKing.this.getAttackTarget()) > 16.0D)
                 return false;
@@ -310,7 +333,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         public void startExecuting()
         {
             this.spellWarmup = this.getCastWarmupTime();
-            EntitySkeletonKing.this.spellTicks = this.getCastingTime();
+            EntitySkeletonKing.this.spellTicks[0] = this.getCastingTime();
             this.spellCooldown = EntitySkeletonKing.this.ticksExisted + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
             EntitySkeletonKing.this.world.setEntityState(EntitySkeletonKing.this, (byte)10);
@@ -366,11 +389,11 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         @Nullable
         protected SoundEvent getSpellPrepareSound()
         {
-            return SoundEvents.BLOCK_END_PORTAL_SPAWN;
+        	return FishItems.ENTITY_SKELETONKING_SPELL_SUMMON;
         }
     }
     
-    public class AIAttackSpell extends EntityAIBase
+    public class AITeleportSpell extends EntityAIBase
     {
         protected int spellWarmup;
         protected int spellCooldown;
@@ -380,9 +403,9 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-        	if (EntitySkeletonKing.this.getAttackTarget() == null)
+        	if (EntitySkeletonKing.this.getAttackTarget() == null || EntitySkeletonKing.this.getAttackTimer() > 0)
                 return false;
-            else if ((EntitySkeletonKing.this.isSpellcasting() || !EntitySkeletonKing.this.canEntityBeSeen(EntitySkeletonKing.this.getAttackTarget())) && EntitySkeletonKing.this.getDistance(EntitySkeletonKing.this.getAttackTarget()) > 16.0D)
+            else if (EntitySkeletonKing.this.isSpellcasting() || EntitySkeletonKing.this.getDistance(EntitySkeletonKing.this.getAttackTarget()) > 16.0D || EntitySkeletonKing.this.getDistance(EntitySkeletonKing.this.getAttackTarget()) < 4.0D)
                 return false;
 
         	return EntitySkeletonKing.this.ticksExisted >= this.spellCooldown;
@@ -436,14 +459,131 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 
         protected int getCastingInterval()
         {
-            return 320;
+            return (EntitySkeletonKing.this.getHealth() >  EntitySkeletonKing.this.getMaxHealth() * 0.5F) ? 320 : 160;
         }
 
         @Nullable
         protected SoundEvent getSpellPrepareSound()
         {
-            return SoundEvents.ENTITY_ENDERMEN_TELEPORT;
+        	return FishItems.ENTITY_SKELETONKING_SPELL_TELEPORT;
         }
+    }
+    
+    public class AITossSpell extends EntityAIBase
+    {
+        protected int spellWarmup;
+        protected int spellCooldown;
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute()
+        {
+        	if (EntitySkeletonKing.this.getAttackTarget() == null || EntitySkeletonKing.this.getHealth() >  EntitySkeletonKing.this.getMaxHealth() * 0.5F || EntitySkeletonKing.this.getAttackTimer() > 0)
+                return false;
+            else if ((EntitySkeletonKing.this.isSpellcasting() || !EntitySkeletonKing.this.canEntityBeSeen(EntitySkeletonKing.this.getAttackTarget())) && EntitySkeletonKing.this.getDistance(EntitySkeletonKing.this.getAttackTarget()) > 16.0D)
+                return false;
+
+        	return EntitySkeletonKing.this.ticksExisted >= this.spellCooldown;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting()
+        {
+            return EntitySkeletonKing.this.getAttackTarget() != null && this.spellWarmup > 0;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting()
+        {
+            this.spellWarmup = this.getCastWarmupTime();
+            EntitySkeletonKing.this.spellTicks[1] = this.getCastingTime();
+            this.spellCooldown = EntitySkeletonKing.this.ticksExisted + this.getCastingInterval();
+            SoundEvent soundevent = this.getSpellPrepareSound();
+            EntitySkeletonKing.this.world.setEntityState(EntitySkeletonKing.this, (byte)11);
+            if (soundevent != null)
+            {
+                EntitySkeletonKing.this.playSound(soundevent, 1.0F, 1.0F);
+            }
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void updateTask()
+        {
+            --this.spellWarmup;
+
+            if (this.spellWarmup == 0)
+            {
+                this.castSpell();
+                EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
+            }
+        }
+
+        protected void castSpell()
+        {
+        	if(EntitySkeletonKing.this.getAttackTarget() == null)
+        		return;
+        	
+        	for(int i = -1; i < 2; i++) {
+	        	EntityAcidJet entitysnowball = new EntityAcidJet(EntitySkeletonKing.this.world, EntitySkeletonKing.this);
+	        	
+	            entitysnowball.shoot(EntitySkeletonKing.this, EntitySkeletonKing.this.rotationPitch, EntitySkeletonKing.this.rotationYaw + (i * 30), 0.0F, 1.6F, 1.0F);
+
+	            EntitySkeletonKing.this.world.spawnEntity(entitysnowball);
+        	}
+        }
+
+        protected int getCastWarmupTime()
+        {
+            return 15;
+        }
+
+        protected int getCastingTime()
+        {
+            return 15;
+        }
+
+        protected int getCastingInterval()
+        {
+            return 120;
+        }
+
+        @Nullable
+        protected SoundEvent getSpellPrepareSound()
+        {
+            return FishItems.ENTITY_SKELETONKING_SPELL_TOSS;
+        }
+    }
+    
+    static class AISkeletonKingAttackMelee extends EntityAIAttackMelee {
+
+		public AISkeletonKingAttackMelee(EntityCreature creature, double speedIn, boolean useLongMemory) {
+			super(creature, speedIn, useLongMemory);
+		}
+		
+	    protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_)
+	    {
+	        double d0 = this.getAttackReachSqr(p_190102_1_);
+
+	        if (p_190102_2_ <= d0 && this.attackTick <= 0)
+	        {
+	            this.attackTick = 60;
+	            this.attacker.swingArm(EnumHand.MAIN_HAND);
+	            this.attacker.attackEntityAsMob(p_190102_1_);
+	        }
+	    }
+
+	    protected double getAttackReachSqr(EntityLivingBase attackTarget)
+	    {
+	        return (double)(this.attacker.width * 3.0F * this.attacker.width * 3.0F + attackTarget.width);
+	    }
+    	
     }
 	
 	@Override
@@ -470,7 +610,8 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.spellTicks = compound.getInteger("SpellTicks");
+        this.spellTicks[0] = compound.getInteger("SpellTicks0");
+        this.spellTicks[1] = compound.getInteger("SpellTicks1");
     }
 
     /**
@@ -479,7 +620,8 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
-        compound.setInteger("SpellTicks", this.spellTicks);
+        compound.setInteger("SpellTicks0", this.spellTicks[0]);
+        compound.setInteger("SpellTicks1", this.spellTicks[1]);
     }
 	
     @Nullable
@@ -500,7 +642,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_SKELETON_DEATH;
+        return FishItems.ENTITY_SKELETONKING_DEATH;
     }
     
     protected SoundEvent getSpellSound()
@@ -526,10 +668,13 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 		BlockPos position = new BlockPos(this.getPosition());
 		super.onDeath(cause);
 		
+		while(this.world.getBlockState(position.down()).getBlock() == Blocks.AIR)
+			position = position.down();
+		
 		while(this.world.getBlockState(position).getBlock() != Blocks.AIR)
 			position = position.up();
 		
-		this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 2);
+		this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 8 | 4 | 2 | 1);
         if (this.world.getBlockState(position).getBlock() instanceof BlockChest) {
             TileEntity tileentity = this.world.getTileEntity(position);
             if (tileentity instanceof TileEntityChest && !tileentity.isInvalid()) {

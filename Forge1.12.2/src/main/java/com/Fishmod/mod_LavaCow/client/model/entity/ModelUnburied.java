@@ -137,14 +137,6 @@ public class ModelUnburied extends FishModelBase {
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
         this.Body_base.render(f5); 
-        
-        /*this.bipedHead.render(f5);
-        this.bipedBody.render(f5);
-        this.bipedRightArm.render(f5);
-        this.bipedLeftArm.render(f5);
-        this.bipedRightLeg.render(f5);
-        this.bipedLeftLeg.render(f5);
-        this.bipedHeadwear.render(f5);*/
     }
     
     public void postRenderArm(float scale, EnumHandSide side)
@@ -165,10 +157,7 @@ public class ModelUnburied extends FishModelBase {
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-    	
-    	//this.Head.postRender(10 * scaleFactor);
-    	
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {   	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	this.SwingX_Sin(this.Jaw0, 0.7285004297824331F, ageInTicks, -0.04F, 0.06F, false, 0.0F);
     	this.SwingX_Sin(this.Jaw1, 0.091106186954104F, ageInTicks, -0.03F, 0.06F, false, 0.0F);
@@ -211,11 +200,5 @@ public class ModelUnburied extends FishModelBase {
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
     	}
-    	
-    	/*if(entityIn instanceof EntityUnburied && ageInTicks < 20) {
-    		float j = 19 - ageInTicks;
-            //System.out.println("OXO " + j);
-    		this.Body_base.rotationPointY = 10.0F + (1.5F * j);
-    	}*/
     }
 }

@@ -515,5 +515,40 @@
 		"category": "entity",
 		"subtitle": "entity_avaton_death",
 		"sounds": [{"name": "mod_lavacow:entity/avaton/death","stream": true}]
+	},
+	
+	"entity.skeletonking.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_attack",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/attack","stream": true}]
+	},
+	
+	"entity.skeletonking.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_death",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/death","stream": true}]
+	},
+
+	"entity.skeletonking.spell_summon":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_spell_summon",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_summon","stream": true}]
+	},
+	
+	"entity.skeletonking.spell_teleport":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_spell_teleport",
+		"sounds": ["mod_lavacow:entity/skeletonking/spell_teleport0","mod_lavacow:entity/skeletonking/spell_teleport1"]
+	},
+	
+	"entity.skeletonking.spell_toss":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_spell_toss",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_toss","stream": true}]
 	}
 }

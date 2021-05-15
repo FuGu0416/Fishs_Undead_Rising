@@ -229,4 +229,10 @@ public class FishItems {
 	public static final SoundEvent ENTITY_AVATON_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.ambient")).setRegistryName("entity_avaton_ambient");
 	public static final SoundEvent ENTITY_AVATON_SPELL = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.spell")).setRegistryName("entity_avaton_spell");
 	public static final SoundEvent ENTITY_AVATON_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.death")).setRegistryName("entity_avaton_death");
+	
+	public static final SoundEvent ENTITY_SKELETONKING_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.attack")).setRegistryName("entity_skeletonking_attack");
+	public static final SoundEvent ENTITY_SKELETONKING_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.death")).setRegistryName("entity_skeletonking_death");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_SUMMON = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_summon")).setRegistryName("entity_skeletonking_spell_summon");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TELEPORT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_teleport")).setRegistryName("entity_skeletonking_spell_teleport");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TOSS = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_toss")).setRegistryName("entity_skeletonking_spell_toss");
 }
