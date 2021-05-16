@@ -25,6 +25,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
@@ -337,6 +338,13 @@ public class ModEntities {
             .entity(EntitySandBurst.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "sandburst"), id++)
             .name(mod_LavaCow.MODID + "." + "sandburst")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityDeathCoil.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "deathcoil"), id++)
+            .name(mod_LavaCow.MODID + "." + "deathcoil")
             .tracker(64, 1, true)
             .build()
             );

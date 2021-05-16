@@ -90,7 +90,7 @@ item.mod_lavacow.bonestew.name=Bone Stew
 item.mod_lavacow.vespa_shield.name=Vespa Shield
 item.mod_lavacow.frozen_dagger.name=Frozen Dagger
 item.mod_lavacow.spectral_dagger.name=Spectral Dagger
-item.mod_lavacow.kings_crown.name=Stained Crown
+item.mod_lavacow.kings_crown.name=King's Crown
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -254,6 +254,12 @@ entity_avaton_ambient=Avaton whispers
 entity_avaton_spell=Insect chirps
 entity_avaton_death=Avaton dies
 
+entity_skeletonking_attack=Skeleton King smashes
+entity_skeletonking_death=Skeleton King dies
+entity_skeletonking_spell_summon=Skeleton King casts a spell
+entity_skeletonking_spell_teleport=Skeleton King teleports
+entity_skeletonking_spell_toss=Skeleton King casts a spell
+
 ############
 # Tooltips #
 ############
@@ -301,6 +307,8 @@ tootip.mod_lavacow.mootenheart=Fire damage to player-%d%%. Can be used to brew
 tootip.mod_lavacow.vespa_shield=Blocking damage, as well as dealing 2 damage to the attacker and inflicts it with Poison(0:06).
 tootip.mod_lavacow.frozen_dagger=Regenerate durability when in water.
 tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage vs non-undead
+tootip.mod_lavacow.kings_crown.0=Stained
+tootip.mod_lavacow.kings_crown.1=Cursed
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting

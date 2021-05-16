@@ -93,6 +93,7 @@ item.mod_lavacow.bonestew.name=大骨燉湯
 item.mod_lavacow.vespa_shield.name=巨蜂衛盾
 item.mod_lavacow.frozen_dagger.name=冰川刃
 item.mod_lavacow.spectral_dagger.name=鬼靈匕首
+item.mod_lavacow.kings_crown.name=王之冠
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -153,6 +154,7 @@ entity.mod_lavacow.ghostray.name=鬼靈鱝
 entity.mod_lavacow.banshee.name=報喪女妖
 entity.mod_lavacow.weta.name=帝沙螽
 entity.mod_lavacow.avaton.name=艾薇妲
+entity.mod_lavacow.skeletonking.name=骷髏王
 
 ##########
 # Sounds #
@@ -255,6 +257,12 @@ entity_avaton_ambient=艾薇妲低語聲
 entity_avaton_spell=昆蟲窸窣聲
 entity_avaton_death=艾薇妲死亡
 
+entity_skeletonking_attack=骷髏王重擊聲
+entity_skeletonking_death=骷髏王死亡
+entity_skeletonking_spell_summon=骷髏王施法聲
+entity_skeletonking_spell_teleport=骷髏王傳送聲
+entity_skeletonking_spell_toss=骷髏王施法聲
+
 ############
 # Tooltips #
 ############
@@ -302,6 +310,8 @@ tootip.mod_lavacow.mootenheart=受到的火焰傷害-%d%%，且可用於釀造
 tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害並賦予中毒(0:06)
 tootip.mod_lavacow.frozen_dagger=當浸於水中時能逐漸回復耐久度
 tootip.mod_lavacow.spectral_dagger=具有無限耐久度，並對非不死族的單位造成傷害+2
+tootip.mod_lavacow.kings_crown.0=被玷汙
+tootip.mod_lavacow.kings_crown.1=受詛咒
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命

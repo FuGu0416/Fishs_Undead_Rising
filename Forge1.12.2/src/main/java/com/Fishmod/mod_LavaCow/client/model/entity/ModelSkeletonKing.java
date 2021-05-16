@@ -96,9 +96,9 @@ public class ModelSkeletonKing extends FishModelBase {
         this.Leg_r_Seg0.setRotationPoint(-2.5F, -1.0F, 0.1F);
         this.Leg_r_Seg0.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(Leg_r_Seg0, -0.27314402793711257F, 0.0F, 0.091106186954104F);
-        this.Crown = new ModelRenderer(this, 28, 36);
+        this.Crown = new ModelRenderer(this, 92, 19);
         this.Crown.setRotationPoint(0.0F, -6.0F, -1.0F);
-        this.Crown.addBox(-4.5F, -3.0F, -4.5F, 9, 3, 9, 0.0F);
+        this.Crown.addBox(-4.5F, -4.0F, -4.5F, 9, 5, 9, 0.0F);
         this.weapon_handle0 = new ModelRenderer(this, 66, 43);
         this.weapon_handle0.setRotationPoint(-0.5F, 11.0F, 0.0F);
         this.weapon_handle0.addBox(0.0F, -0.5F, -15.0F, 1, 1, 20, 0.0F);

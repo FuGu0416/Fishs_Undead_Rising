@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "Y",
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:kings_crown",
+			"data": 0
+        },
+        "Y": {
+            "type": "forge:ore_dict",
+    		"ore": "gemEmerald"
+        }
+    },
+    "result": {
+            "item": "mod_lavacow:kings_crown",
+			"data": 1
+    }
+}

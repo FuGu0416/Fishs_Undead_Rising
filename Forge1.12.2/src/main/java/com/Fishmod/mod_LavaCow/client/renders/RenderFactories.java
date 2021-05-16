@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderDeathCoil;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostBomb;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostRay;
@@ -56,6 +57,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
@@ -120,6 +122,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityUnderminer.class, RenderFactoryEntityUnderminer.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonKing.class, RenderFactoryEntitySkeletonKing.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySandBurst.class, RenderFactoryEntitySandBurst.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDeathCoil.class, RenderFactoryEntityDeathCoil.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
     }
@@ -625,6 +628,20 @@ public class RenderFactories {
         public RenderSandBurst createRenderFor(RenderManager manager)
         {
         	return new RenderSandBurst(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityDeathCoil implements IRenderFactory<EntityDeathCoil>
+    {
+        public final static RenderFactoryEntityDeathCoil INSTANCE = new RenderFactoryEntityDeathCoil();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderDeathCoil createRenderFor(RenderManager manager)
+        {
+        	return new RenderDeathCoil(manager);
         }
     }
 }

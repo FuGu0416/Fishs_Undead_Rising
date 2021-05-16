@@ -40,12 +40,13 @@ public class ModelRegistryHandler {
     	if(item.equals(FishItems.PARASITE_ITEM)) {
     		for(Integer i = 0; i < 3 ; i++)
     			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	}
-    	else if(item.equals(FishItems.PTERA_WING)) {
+    	} else if(item.equals(FishItems.PTERA_WING)) {
     		for(Integer i = 0; i < 2 ; i++)
     			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	}
-    	else
+    	} else if(item.equals(FishItems.KINGS_CROWN)) {
+    		for(Integer i = 0; i < 2 ; i++)
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
+    	} else
     		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));  
     }
 }

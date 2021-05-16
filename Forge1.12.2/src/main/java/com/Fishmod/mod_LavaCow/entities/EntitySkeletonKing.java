@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -234,6 +234,17 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	}
 	
     /**
+     * Called when the entity is attacked.
+     */
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+    	if(source.getDamageType().equals(DamageSource.IN_WALL.damageType)) {
+    		this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)(3.0D + this.rand.nextDouble() * 1.5D), true);
+    	}
+    		
+    	return super.attackEntityFrom(source, amount);
+    }
+	
+    /**
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
@@ -353,7 +364,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             if (this.spellWarmup == 0)
             {
                 this.castSpell();
-                EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
+                //EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
@@ -521,7 +532,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             if (this.spellWarmup == 0)
             {
                 this.castSpell();
-                EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
+                //EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
@@ -531,10 +542,10 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         		return;
         	
         	for(int i = -1; i < 2; i++) {
-	        	EntityAcidJet entitysnowball = new EntityAcidJet(EntitySkeletonKing.this.world, EntitySkeletonKing.this);
+        		EntityDeathCoil entitysnowball = new EntityDeathCoil(EntitySkeletonKing.this.world, EntitySkeletonKing.this);
 	        	
-	            entitysnowball.shoot(EntitySkeletonKing.this, EntitySkeletonKing.this.rotationPitch, EntitySkeletonKing.this.rotationYaw + (i * 30), 0.0F, 1.6F, 1.0F);
-
+	            entitysnowball.shoot(EntitySkeletonKing.this, EntitySkeletonKing.this.rotationPitch, EntitySkeletonKing.this.rotationYaw + (i * 30.0F), 0.0F, 0.75F, 1.0F);
+	            
 	            EntitySkeletonKing.this.world.spawnEntity(entitysnowball);
         	}
         }
