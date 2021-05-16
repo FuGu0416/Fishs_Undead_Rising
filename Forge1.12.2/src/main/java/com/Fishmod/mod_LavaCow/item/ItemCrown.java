@@ -4,12 +4,22 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,7 +29,41 @@ public class ItemCrown extends ItemFishCustom{
 	public ItemCrown(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, null, tab, hasTooltip);
 		this.setHasSubtypes(true);
+		this.setMaxStackSize(1);
 	}
+	
+    /**
+     * Called when a Block is right-clicked with this Item
+     */
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if(player.getHeldItem(hand).getMetadata() == 1 && worldIn.getBlockState(pos).getBlock().equals(Blocks.SKULL)) {
+        	TileEntity tileentity = worldIn.getTileEntity(pos);
+        	
+        	if (tileentity instanceof TileEntitySkull) {
+        		TileEntitySkull tileentityskull = (TileEntitySkull)tileentity;
+        		
+        		if(tileentityskull.getSkullType() == 0) {
+        			if(!player.isCreative())
+    					player.getHeldItem(hand).shrink(1);
+        			
+        			worldIn.destroyBlock(pos, false);
+        			worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ(), true));
+        			
+    				if(!worldIn.isRemote) {
+    		        	EntitySkeletonKing entityskeletonking = new EntitySkeletonKing(worldIn);
+    		        	
+    		        	entityskeletonking.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+    		        	worldIn.spawnEntity(entityskeletonking);
+    	        	}
+    				
+        			return EnumActionResult.PASS;
+        		}
+        	}
+        }
+        
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

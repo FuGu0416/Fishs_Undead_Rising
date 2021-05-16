@@ -48,6 +48,31 @@
           ]
         }
       ]
+    },
+    {
+        "name": "mod_lavacow:boneworm",
+        "rolls": 1,
+        "entries": [
+            {
+                "type": "item",
+                "weight": 1,
+                "name": "mod_lavacow:kings_crown",
+				"functions": [
+					{
+						"function": "set_data",
+						"data": 0
+					}
+          		],
+				"conditions":[
+                    {
+
+                        "condition": "minecraft:random_chance_with_looting",
+                        "chance": 0.02,
+                        "looting_multiplier": 0.01
+                    }
+                ]
+            }
+        ]
     }
   ]
 }
