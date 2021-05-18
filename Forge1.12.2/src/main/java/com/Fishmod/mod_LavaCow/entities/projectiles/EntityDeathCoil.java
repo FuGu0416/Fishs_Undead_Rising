@@ -45,6 +45,8 @@ public class EntityDeathCoil extends EntityThrowable {
     	   for(int i = 0 ; i < 4 + this.rand.nextInt(16) ; i++) {
     		   world.spawnParticle(this.getParticleType(), this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);	    	   
     	   }
+       if(this.ticksExisted >= 10 * 20)
+    	   this.setDead();
     }
 	   
 	/**

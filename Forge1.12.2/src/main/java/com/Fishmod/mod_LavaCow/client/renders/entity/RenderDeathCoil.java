@@ -15,7 +15,7 @@ public class RenderDeathCoil extends Render<EntityDeathCoil>
 {
     private static final ResourceLocation TEXTURES = new ResourceLocation("textures/entity/skeleton/skeleton.png");
     /** The Skeleton's head model. */
-    private final ModelSkeletonHead skeletonHeadModel = new ModelSkeletonHead();
+    private final ModelSkeletonHead skeletonHeadModel = new ModelSkeletonHead(0, 0, 64, 32);
 
     public RenderDeathCoil(RenderManager renderManagerIn)
     {

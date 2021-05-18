@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,13 +25,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemCrown extends ItemFishCustom{
-	
-	public ItemCrown(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
-		super(registryName, null, tab, hasTooltip);
+public class ItemCrown extends ItemFishCustom{    
+	public ItemCrown(String registryName, CreativeTabs tab, boolean hasTooltip) {
+		super(registryName, null, tab, hasTooltip);		
 		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
 	}
+	   
+    /**
+     * Return an item rarity from EnumRarity
+     */
+    public EnumRarity getRarity(ItemStack stack)
+    {
+    	return EnumRarity.UNCOMMON;
+    }   
 	
     /**
      * Called when a Block is right-clicked with this Item
@@ -64,7 +72,7 @@ public class ItemCrown extends ItemFishCustom{
         
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
-
+    
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {

@@ -94,6 +94,7 @@ item.mod_lavacow.vespa_shield.name=巨蜂衛盾
 item.mod_lavacow.frozen_dagger.name=冰川刃
 item.mod_lavacow.spectral_dagger.name=鬼靈匕首
 item.mod_lavacow.kings_crown.name=王之冠
+item.mod_lavacow.skeletonking_crown.name=統御之冠
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼

@@ -91,6 +91,7 @@ item.mod_lavacow.vespa_shield.name=Vespa Shield
 item.mod_lavacow.frozen_dagger.name=Frozen Dagger
 item.mod_lavacow.spectral_dagger.name=Spectral Dagger
 item.mod_lavacow.kings_crown.name=King's Crown
+item.mod_lavacow.skeletonking_crown.name=The Crown of Rule
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
