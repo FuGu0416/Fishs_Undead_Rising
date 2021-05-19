@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -239,16 +240,6 @@ public class EntityFishTameable extends EntityTameable{
         return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)((int)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue()));
     }
     
-    public static EntityLivingBase getEntityByUniqueId(UUID uniqueId, World worldIn){
-        
-    	for(Entity E : worldIn.loadedEntityList) {
-    		if(E instanceof EntityLivingBase && E.getUniqueID().equals(uniqueId))
-    			return (EntityLivingBase) E;
-    	}
-
-        return null;
-    }
-    
     @Override
     @Nullable
     public EntityLivingBase getOwner()
@@ -256,7 +247,7 @@ public class EntityFishTameable extends EntityTameable{
         try
         {
             UUID uuid = this.getOwnerId();
-            return uuid == null ? null : this.getEntityByUniqueId(uuid, this.getEntityWorld());
+            return uuid == null ? null : SpawnUtil.getEntityByUniqueId(uuid, this.getEntityWorld());
         }
         catch (IllegalArgumentException var2)
         {

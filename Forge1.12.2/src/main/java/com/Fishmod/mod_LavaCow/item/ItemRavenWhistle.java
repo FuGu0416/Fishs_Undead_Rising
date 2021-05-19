@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
@@ -66,7 +66,7 @@ public class ItemRavenWhistle extends ItemFishCustom {
         BlockPos pos = worldIn.rayTraceBlocks(vec3d, vec3d2, false, false, true).getBlockPos();
     	
         if(this.OrderEntityID != null) { 	
-        	Entity entity = EntityFishTameable.getEntityByUniqueId(this.OrderEntityID, worldIn);
+        	Entity entity = SpawnUtil.getEntityByUniqueId(this.OrderEntityID, worldIn);
         	if(playerIn.getDistance(entity) < 16.0F) {
 	        	((EntityRaven) entity).setTargetLocation(pos.getX(), pos.getY(), pos.getZ());
 				playerIn.playSound(FishItems.ENTITY_RAVEN_CALL, 1.0F, 1.0F);

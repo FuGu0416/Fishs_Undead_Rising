@@ -313,6 +313,7 @@ tootip.mod_lavacow.frozen_dagger=當浸於水中時能逐漸回復耐久度
 tootip.mod_lavacow.spectral_dagger=具有無限耐久度，並對非不死族的單位造成傷害+2
 tootip.mod_lavacow.kings_crown.0=被玷汙
 tootip.mod_lavacow.kings_crown.1=受詛咒
+tootip.mod_lavacow.skeletonking=強迫周遭的骷髏成為你忠實的奴僕
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
