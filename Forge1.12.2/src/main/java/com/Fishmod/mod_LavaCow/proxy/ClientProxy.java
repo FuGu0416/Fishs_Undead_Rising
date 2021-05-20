@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.proxy;
 
+import com.Fishmod.mod_LavaCow.client.particle.ParticalLocustSwarm;
 import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
@@ -56,6 +57,10 @@ public class ClientProxy implements IProxy {
     		//fx = new ParticleDragonBreath.Factory().createParticle(EnumParticleTypes.DRAGON_BREATH.getParticleID(), world, x, y, z, 0.0D, 0.0D, 0.0D);
 			fx = new ParticleBreaking.Factory().createParticle(EnumParticleTypes.SLIME.getParticleID(), world, x, y, z, vecX, vecY, vecZ, Item.getIdFromItem(FishItems.SILKY_SLUDGE), 0);
 		}
+		
+        if (particleName.equals("locust_swarm")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticalLocustSwarm(world, x, y, z, vecX, vecY, vecZ));
+        }
 		
 		if (fx != null) {
 			fx.setRBGColorF(((float)(Math.random() * 0.20000000298023224D) + 0.8F) * r * f, ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * g * f, ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * b * f);

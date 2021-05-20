@@ -62,7 +62,7 @@ public class BlockTombStone extends Block{
             worldIn.spawnParticle(EnumParticleTypes.FLAME, d3, d4, d5, 0.0D, 0.0D, 0.0D);
 		}
         
-    	if(i < 8 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 1.0F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {           
+    	if(i < 3 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 1.0F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {           
 	        EntityUnburied entityunburied = new EntityUnburied(worldIn);
 	        
 			switch(enumfacing) {

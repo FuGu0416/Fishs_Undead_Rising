@@ -69,6 +69,10 @@ public class EntityAvaton extends EntityBanshee {
     protected boolean isBanshee() {
     	return false;
     }
+    
+    protected String ParticleType() {
+    	return "locust_swarm";
+    }
 	    
     public class AIUseSpell extends EntityAIBase
     {

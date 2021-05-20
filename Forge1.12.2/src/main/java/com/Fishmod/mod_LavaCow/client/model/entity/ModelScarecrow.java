@@ -32,8 +32,6 @@ public class ModelScarecrow extends FishModelBase {
     public ModelRenderer leg_l_2;
     public ModelRenderer leg_r_1;
     public ModelRenderer leg_r_2;
-    //public ModelRenderer arm_l_2;
-    //public ModelRenderer arm_r_2;
     public ModelRenderer scepter_base;
     public ModelRenderer scepter_blade;
     /**
@@ -132,12 +130,6 @@ public class ModelScarecrow extends FishModelBase {
         this.arm_l_0.setRotationPoint(5.0F, -6.0F, -1.0F);
         this.arm_l_0.addBox(-1.0F, -2.0F, -1.0F, 2, 14, 2, 0.0F);
         this.setRotateAngle(arm_l_0, -0.36425021489121656F, -0.31869712141416456F, -0.10000736613927509F);
-        /*this.arm_r_2 = new ModelRenderer(this, 0, 5);
-        this.arm_r_2.setRotationPoint(-0.5F, 10.0F, -0.5F);
-        this.arm_r_2.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
-        this.arm_l_2 = new ModelRenderer(this, 0, 5);
-        this.arm_l_2.setRotationPoint(-0.5F, 10.0F, -0.5F);
-        this.arm_l_2.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);*/
         this.scepter_base = new ModelRenderer(this, 0, 33);
         this.scepter_base.setRotationPoint(0.0F, 10.0F, 0.0F);
         this.scepter_base.addBox(-0.5F, -0.5F, -27.5F, 1, 1, 30, 0.0F);
@@ -211,8 +203,6 @@ public class ModelScarecrow extends FishModelBase {
         this.Body_base.addChild(this.leg_l_0);
         this.Jaw.addChild(this.Jaw_tooth);
         this.Body_upper.addChild(this.arm_l_0);
-        //this.arm_l_1.addChild(this.arm_l_2);
-        //this.arm_r_1.addChild(this.arm_r_2);
         this.arm_l_1.addChild(this.scepter_base);
         this.scepter_base.addChild(this.scepter_blade);
         /**
@@ -310,9 +300,7 @@ public class ModelScarecrow extends FishModelBase {
         		default:
         			break;
         	}
-	    	
-	    	//this.Body_upper.rotateAngleX = 1.03F + (-0.15F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));
-	    	
+	    		    	
 	    	this.leg_r_0.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
 	        this.leg_l_0.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
 	        
@@ -321,9 +309,7 @@ public class ModelScarecrow extends FishModelBase {
 	        this.setRotateAngle(leg_l_1, 0.7740535232594852F, 0.0F, 0.0F);
 	        this.setRotateAngle(leg_l_2, -0.5009094953223726F, 0.0F, 0.0F);
 	        
-	        this.scepter_base.isHidden = false;
-	        //this.Body_base.setRotationPoint(0.0F, 0.0F, 0.0F);
-	        
+	        this.scepter_base.isHidden = false;	        
 	    }
         else {
         	this.setRotateAngle(Head, 0.12F, 0.0F, -0.22759093446006054F);
@@ -342,15 +328,13 @@ public class ModelScarecrow extends FishModelBase {
         	this.setRotateAngle(leg_r_1, 0.0F, 0.0F, 0.0F);
         	this.setRotateAngle(leg_r_2, 0.0F, 0.0F, 0.0F);
         	
-        	this.scepter_base.isHidden = true;
-        	
-        	//this.Body_base.setRotationPoint(0.0F, -1.5F, 0.0F);
+        	this.scepter_base.isHidden = true;     	
         }
     }
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-        float i = ((EntityScarecrow) entityIn).getAttackTimer() / 15.0F;//(float) (Math.log10(((EntityScarecrow) entityIn).getAttackTimer()));//(float)((EntityScarecrow) entityIn).getAttackTimer() * (float)((EntityScarecrow) entityIn).getAttackTimer() / 100.0F;
+        float i = ((EntityScarecrow) entityIn).getAttackTimer() / 15.0F;
         
     	if(((EntityScarecrow) entityIn).getSkin() == 0) {
 	        if(((EntityScarecrow) entityIn).isAggressive())
@@ -360,22 +344,13 @@ public class ModelScarecrow extends FishModelBase {
     	}
         
 	    if(i > 0) {
-	    		//System.out.println(((EntityScarecrow) entityIn).getAttackTimer() + " " + i);
-	        	/*this.arm_r_0.rotateAngleX = GradientAnimation(-1.730144887501979F, -0.8651597102135892F, i);
-	        	this.arm_r_0.rotateAngleY = GradientAnimation(-0.5462880558742251F, 0.31869712141416456F, i);
-	        	
-	        	this.arm_l_0.rotateAngleX = GradientAnimation(-2.86844862565268F, -1.8668041679331349F, i);
-	        	this.arm_l_0.rotateAngleY = GradientAnimation(-0.31869712141416456F, 0.045553093477052F, i);
-	        	this.arm_l_0.rotateAngleZ = GradientAnimation(0.8651597102135892F, -1.1838568316277536F, i);
-	        	
-	        	this.arm_l_1.rotateAngleX = GradientAnimation(-0.8196066167365371F, -0.18203784098300857F, i);*/
 		    	this.setRotateAngle(arm_r_0, -0.36425021489121656F, 0.31869712141416456F, 0.10000736613927509F);
 	        	this.setRotateAngle(arm_r_1, -0.8196066167365371F, -0.22759093446006054F, -0.4553564018453205F);
 	        	
 	        	if(((EntityScarecrow)entityIn).AttackStance == (byte)4) {
 					/*
 					 * Normal Attack
-					 * */
+					 */
 	        		this.Body_upper.rotateAngleX = GradientAnimation(0.0F, 1.1838568316277536F, i);
 	        		this.Head.rotateAngleX = GradientAnimation(entityIn.rotationPitch * 0.017453292F, entityIn.rotationPitch * 0.017453292F - 1.1838568316277536F, i);
 	
@@ -389,7 +364,7 @@ public class ModelScarecrow extends FishModelBase {
 	        	else {
 					/*
 					 * Swipe Attack
-					 * */
+					 */
 	        		this.setRotateAngle(arm_l_0, -0.36425021489121656F, -0.31869712141416456F, -0.40980330836826856F);
 	        		this.setRotateAngle(arm_l_1, -1.6845917940249266F, 0.22759093446006054F, 3.141592653589793F);
 	        		this.setRotateAngle(scepter_base, 1.8212510744560826F, 1.6390387005478748F, 1.6390387005478748F);
@@ -410,12 +385,8 @@ public class ModelScarecrow extends FishModelBase {
 	        	
 	        	this.arm_r_0.rotationPointY = -6.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI)); 
 	        	this.arm_l_0.rotationPointY = -6.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));        	
-	        	
-	        	//this.arm_r_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI)); 
-	        	//this.arm_l_1.rotateAngleX = -1.6845917940249266F/*-0.8196066167365371F*/ + (-0.1F * MathHelper.sin(0.03F * ageInTicks + 0.4F * (float)Math.PI));
-	        	
+	        	        
 	        	this.setRotateAngle(scepter_base, 1.3203415791337103F, 0.27314402793711257F, 1.6390387005478748F);
-	        	//this.scepter_base.rotateAngleX = 0.0F;
 	        }
 		}
 }

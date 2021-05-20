@@ -32,7 +32,7 @@ public class EntityAIGuardingEntity extends EntityAITarget
 
         if (entitylivingbase == null)
         {
-            return false;
+        	return false;
         }
         else
         {

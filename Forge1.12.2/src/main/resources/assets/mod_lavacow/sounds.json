@@ -290,7 +290,7 @@
 	{
 		"category": "entity",
 		"subtitle": "entity_scarecrow_ambient",
-		"sounds": [{"name": "mod_lavacow:entity/scarecrow/ambient","stream": true}]
+		"sounds": ["mod_lavacow:entity/scarecrow/ambient0","mod_lavacow:entity/scarecrow/ambient1","mod_lavacow:entity/scarecrow/ambient2"]
 	},
 	
 	"entity.scarecrow.hurt":
@@ -304,7 +304,7 @@
 	{
 		"category": "entity",
 		"subtitle": "entity_scarecrow_death",
-		"sounds": [{"name": "mod_lavacow:entity/scarecrow/death","stream": true}]
+		"sounds": ["mod_lavacow:entity/scarecrow/death0","mod_lavacow:entity/scarecrow/death1"]
 	},
 	
 	"entity.zombiefrozen.ambient":

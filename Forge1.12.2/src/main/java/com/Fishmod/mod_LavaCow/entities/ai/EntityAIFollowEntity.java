@@ -57,8 +57,8 @@ public class EntityAIFollowEntity extends EntityAIBase
         EntityLivingBase entitylivingbase = SpawnUtil.getEntityByUniqueId(this.ownerID, this.world);
 
         if (entitylivingbase == null)
-        {
-            return false;
+        {        	
+        	return false;
         }
         else if (entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator())
         {

@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,10 +79,16 @@ public class ItemSkeletonKingCrown extends ItemArmor {
 	@Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack){
     	if(player.ticksExisted % 20 == 0) {
+    		boolean modified = false;
+    		
 	    	for (AbstractSkeleton Skeleton : world.getEntitiesWithinAABB(AbstractSkeleton.class, player.getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D)))
 	        {
-	    		if(!Skeleton.hasCustomName()) {
-	    			Skeleton.setCustomNameTag("Bob");
+	    		for (EntityAITasks.EntityAITaskEntry Task : Skeleton.tasks.taskEntries) {
+	    			if (Task.action instanceof EntityAIFollowEntity)
+	    				modified = true;
+	    		}
+	    		
+	    		if(!modified) {
 	    			Skeleton.setAttackTarget(null);
 	    			
 	    			Skeleton.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
@@ -127,7 +134,7 @@ public class ItemSkeletonKingCrown extends ItemArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
-			list.add(TextFormatting.YELLOW + I18n.format("tootip.skeletonking_crown.swinearmor"));
+			list.add(TextFormatting.YELLOW + I18n.format("tootip.mod_lavacow.skeletonking_crown"));
 	}
 
 }

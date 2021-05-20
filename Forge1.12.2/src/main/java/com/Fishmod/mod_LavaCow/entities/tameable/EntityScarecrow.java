@@ -381,7 +381,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return FishItems.ENTITY_SCARECROW_HURT;
+        return SoundEvents.BLOCK_CLOTH_BREAK;
     }
 
     @Override

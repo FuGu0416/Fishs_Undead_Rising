@@ -310,7 +310,7 @@ tootip.mod_lavacow.frozen_dagger=Regenerate durability when in water.
 tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage vs non-undead
 tootip.mod_lavacow.kings_crown.0=Stained
 tootip.mod_lavacow.kings_crown.1=Cursed
-tootip.mod_lavacow.skeletonking=Force nearby skeleton to become your loyal servant.
+tootip.mod_lavacow.skeletonking_crown=Force nearby skeleton to become your loyal servant.
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting
