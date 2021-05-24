@@ -54,6 +54,7 @@ public class LootTableHandler {
 	public static ResourceLocation BANSHEE = null;
 	public static ResourceLocation WETA = null;
 	public static ResourceLocation AVATON = null;
+	public static ResourceLocation SKELETON_KING = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
@@ -119,6 +120,7 @@ public class LootTableHandler {
 		BANSHEE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "banshee"));
 		WETA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "weta"));
 		AVATON = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "avaton"));
+		SKELETON_KING = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "skeleton_king"));
 		
 		FISHABLE.put(Modblocks.item_block_glowshroom, 10);
 		FISHABLE.put(FishItems.HYPHAE, 10);

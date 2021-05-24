@@ -174,6 +174,7 @@ public class Modconfig {
 	public static boolean Enchantment_Enable;
 	public static int MootenHeart_Damage;
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
+	public static int Cemetery_SpawnRate; 
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -416,6 +417,7 @@ public class Modconfig {
 		MootenHeart_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten heart damage reduction", 20, "Set the fire damage reduction of Molten Heart to X% [0-10000]", 0, 10000).getInt(20);
 		
 		Spawn_Cemetery_AllowList = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId()}, "Cemetery are only allowed to spawn in these dimensions' IDs").getIntList();
+		Cemetery_SpawnRate = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawns unburied", 40, "Cemetery spawns Unburied occasionally. [0-100]", 0, 100).getInt(40);
 		
 		if (config.hasChanged())
 			config.save();

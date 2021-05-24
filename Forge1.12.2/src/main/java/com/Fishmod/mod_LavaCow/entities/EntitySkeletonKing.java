@@ -693,7 +693,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             	int i = this.rand.nextInt(((TileEntityChest) tileentity).getSizeInventory());           
                 ((TileEntityChest) tileentity).removeStackFromSlot(i);
                 ((TileEntityChest) tileentity).setInventorySlotContents(i, new ItemStack(FishItems.SKELETONKING_CROWN));
-                ((TileEntityChest) tileentity).setLootTable(LootTableHandler.CEMETERY_CHEST, rand.nextLong());
+                ((TileEntityChest) tileentity).setLootTable(LootTableHandler.SKELETON_KING, rand.nextLong());
             }
         }
     }

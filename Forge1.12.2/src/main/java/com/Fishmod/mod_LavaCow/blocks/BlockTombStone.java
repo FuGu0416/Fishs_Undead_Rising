@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.blocks;
 import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 
 import net.minecraft.block.Block;
@@ -54,7 +55,7 @@ public class BlockTombStone extends Block{
     	EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         int i = worldIn.getEntitiesWithinAABB(EntityUnburied.class, (new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).grow(8.0D)).size();
 
-		if(worldIn.isRemote) {
+		if(!worldIn.isRemote) {
             double d3 = (double)((float)pos.getX() + rand.nextFloat());
             double d4 = (double)((float)pos.getY() + rand.nextFloat());
             double d5 = (double)((float)pos.getZ() + rand.nextFloat());
@@ -62,7 +63,7 @@ public class BlockTombStone extends Block{
             worldIn.spawnParticle(EnumParticleTypes.FLAME, d3, d4, d5, 0.0D, 0.0D, 0.0D);
 		}
         
-    	if(i < 3 && worldIn.isAreaLoaded(pos, 3) && rand.nextFloat() < 1.0F && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {           
+    	if(i < 3 && worldIn.isAreaLoaded(pos, 3) && rand.nextInt(100) < Modconfig.Cemetery_SpawnRate && !worldIn.isDaytime() && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {           
 	        EntityUnburied entityunburied = new EntityUnburied(worldIn);
 	        
 			switch(enumfacing) {

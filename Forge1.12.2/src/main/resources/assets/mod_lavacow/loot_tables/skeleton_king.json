@@ -1,0 +1,71 @@
+{
+  "pools": [
+    {
+      
+      "name": "mod_lavacow:cemetery_chest",
+      "rolls": {
+        "min": 3,
+        "max": 5
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:bone",
+          "weight": 60,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 3,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+            "type": "item",
+            "name": "minecraft:gold_ingot",
+			"weight": 15,
+            "functions": [
+                {
+                    "function": "set_count",
+                    "count": {
+                        "min": 4,
+                        "max": 6
+                    }
+                }
+            ]
+            
+        },
+        {
+            "type": "item",
+            "name": "minecraft:iron_ingot",
+			"weight": 15,
+            "functions": [
+                {
+                    "function": "set_count",
+                    "count": {
+                        "min": 4,
+                        "max": 6
+                    }
+                }
+            ]
+            
+        },
+        {
+	        "type": "item",
+	        "name": "minecraft:book",
+	        "weight": 5,
+            "functions": [
+                {
+                    "function": "enchant_with_levels",
+                    "levels": 30,
+                    "treasure": true
+                }
+            ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -105,6 +105,27 @@ modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
 modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entity and applies Weakness 
 
+###########
+# BANNERS #
+###########    
+
+item.banner.skeletonking.white=White Skeleton King
+item.banner.skeletonking.orange=Orange Skeleton King
+item.banner.skeletonking.magenta=Magenta Skeleton King
+item.banner.skeletonking.lightBlue=Light Blue Skeleton King
+item.banner.skeletonking.yellow=Yellow Skeleton King
+item.banner.skeletonking.lime=Lime Skeleton King
+item.banner.skeletonking.pink=Pink Skeleton King
+item.banner.skeletonking.gray=Gray Skeleton King
+item.banner.skeletonking.silver=Silver Skeleton King
+item.banner.skeletonking.cyan=Cyan Skeleton King
+item.banner.skeletonking.purple=Purple Skeleton King
+item.banner.skeletonking.blue=Blue Skeleton King
+item.banner.skeletonking.brown=Brown Skeleton King
+item.banner.skeletonking.green=Green Skeleton King
+item.banner.skeletonking.red=Red Skeleton King
+item.banner.skeletonking.black=Black Skeleton King
+
 ##########
 # BLOCKS #
 ##########    

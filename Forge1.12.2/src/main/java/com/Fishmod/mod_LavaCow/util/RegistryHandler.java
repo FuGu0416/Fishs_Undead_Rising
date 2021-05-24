@@ -22,12 +22,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
- 
+
 @EventBusSubscriber
 public class RegistryHandler {
 	
 	public static final IRecipe POISON_ARROW = new RecipePoisonArrow().setRegistryName(mod_LavaCow.MODID, "poisonarrow");	  
-	
+	  
     /**
      * Register this mod's {@link Item}s and {@link ItemBlock}s.
      *

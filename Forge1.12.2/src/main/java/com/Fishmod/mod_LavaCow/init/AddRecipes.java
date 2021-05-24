@@ -14,14 +14,17 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class AddRecipes {
+public class AddRecipes {	
+	public static final BannerPattern PATTERN_SKELETONKING = AddRecipes.addBanner("skeletonking", new ItemStack(FishItems.SKELETONKING_CROWN));
 	
 	public static void addRecipies(){
 	       addSmelting();
@@ -107,6 +110,12 @@ public class AddRecipes {
 	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.MOLTENBEEF);
 	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PLAGUED_PORKCHOP);
 	    	OreDictionary.registerOre("foodSwedishmeatballs", FishItems.MEATBALL);   	
+	    }
+	    
+	    public static BannerPattern addBanner(String name, ItemStack craftingStack) {
+	        Class<?>[] classes = {String.class, String.class, ItemStack.class};
+	        Object[] names = {name, "mod_lavacow." + name, craftingStack};
+	        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
 	    }
 
 }

@@ -108,6 +108,27 @@ modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死
 modifier.mod_lavacow.unholytouch.name=不潔之觸
 modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
 
+###########
+# BANNERS #
+###########    
+
+item.banner.skeletonking.white=白色骷髏王
+item.banner.skeletonking.orange=橙色骷髏王
+item.banner.skeletonking.magenta=品紅骷髏王
+item.banner.skeletonking.light_blue=淺藍骷髏王
+item.banner.skeletonking.yellow=黃色骷髏王
+item.banner.skeletonking.lime=淡綠骷髏王
+item.banner.skeletonking.pink=粉色骷髏王
+item.banner.skeletonking.gray=灰色骷髏王
+item.banner.skeletonking.silver=銀色骷髏王
+item.banner.skeletonking.cyan=青色骷髏王
+item.banner.skeletonking.purple=紫色骷髏王
+item.banner.skeletonking.blue=藍色骷髏王
+item.banner.skeletonking.brown=棕色骷髏王
+item.banner.skeletonking.green=綠色骷髏王
+item.banner.skeletonking.red=紅色骷髏王
+item.banner.skeletonking.black=黑色骷髏王
+
 ##########
 # BLOCKS #
 ##########    
