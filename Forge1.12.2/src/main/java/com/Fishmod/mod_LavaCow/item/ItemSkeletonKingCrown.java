@@ -91,7 +91,6 @@ public class ItemSkeletonKingCrown extends ItemArmor {
 	    		if(!modified) {
 	    			Skeleton.setAttackTarget(null);
 	    			
-	    			Skeleton.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
 		        	for (int i = 0; i < 16; ++i)
 		            {
 		                double d0 = new Random().nextGaussian() * 0.02D;

@@ -95,6 +95,7 @@ item.mod_lavacow.frozen_dagger.name=冰川刃
 item.mod_lavacow.spectral_dagger.name=鬼靈匕首
 item.mod_lavacow.kings_crown.name=王之冠
 item.mod_lavacow.skeletonking_crown.name=統御之冠
+item.mod_lavacow.emblem_of_king.name=王之徽紀
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -442,3 +443,5 @@ advancements.mod_lavacow.kill_weta.title=蟲穴生還者
 advancements.mod_lavacow.kill_weta.description=殺死一隻帝沙螽
 advancements.mod_lavacow.kill_avaton.title=害蟲控制
 advancements.mod_lavacow.kill_avaton.description=殺死一頭艾薇妲
+advancements.mod_lavacow.kill_skeletonking.title=吾王萬歲
+advancements.mod_lavacow.kill_skeletonking.description=殺死骷髏王

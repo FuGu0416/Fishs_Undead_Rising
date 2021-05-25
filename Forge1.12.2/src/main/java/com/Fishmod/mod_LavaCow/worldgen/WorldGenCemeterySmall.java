@@ -62,15 +62,6 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 			            }
 			        }
 				}
-				/*else if(rand.nextFloat() < 1.0F) {
-			        worldIn.setBlockState(position, Blocks.MOB_SPAWNER.getDefaultState(), 2);
-			        TileEntity tileentity = worldIn.getTileEntity(position);
-			
-			        if (tileentity instanceof TileEntityMobSpawner)
-			        {
-			            ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityGhostRay.class));
-			        }
-				}*/
 				worldIn.setBlockState(position.up().west().up(), Modblocks.TOMBSTONE.getDefaultState().withProperty(BlockTombStone.FACING, EnumFacing.WEST), 2);
 				worldIn.setBlockState(position.up().west(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
 				break;

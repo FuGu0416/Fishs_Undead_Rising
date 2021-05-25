@@ -11,13 +11,27 @@
         {
           "type": "item",
           "name": "minecraft:bone",
-          "weight": 60,
+          "weight": 50,
           "functions": [
 			{
               "function": "minecraft:set_count",
               "count": {
                 "min": 3,
-                "max": 4
+                "max": 6
+              }
+            }
+          ]
+        },
+		{
+          "type": "item",
+          "name": "mod_lavacow:emblem_of_king",
+          "weight": 50,
+          "functions": [
+			{
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 3
               }
             }
           ]
@@ -25,13 +39,13 @@
         {
             "type": "item",
             "name": "minecraft:gold_ingot",
-			"weight": 15,
+			"weight": 25,
             "functions": [
                 {
                     "function": "set_count",
                     "count": {
-                        "min": 4,
-                        "max": 6
+                        "min": 3,
+                        "max": 4
                     }
                 }
             ]
@@ -45,8 +59,8 @@
                 {
                     "function": "set_count",
                     "count": {
-                        "min": 4,
-                        "max": 6
+                        "min": 3,
+                        "max": 4
                     }
                 }
             ]
@@ -55,7 +69,7 @@
         {
 	        "type": "item",
 	        "name": "minecraft:book",
-	        "weight": 5,
+	        "weight": 8,
             "functions": [
                 {
                     "function": "enchant_with_levels",

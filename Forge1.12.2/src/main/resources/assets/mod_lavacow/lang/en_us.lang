@@ -92,6 +92,7 @@ item.mod_lavacow.frozen_dagger.name=Frozen Dagger
 item.mod_lavacow.spectral_dagger.name=Spectral Dagger
 item.mod_lavacow.kings_crown.name=King's Crown
 item.mod_lavacow.skeletonking_crown.name=The Crown of Rule
+item.mod_lavacow.emblem_of_king.name=Emblem of King
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -439,3 +440,5 @@ advancements.mod_lavacow.kill_weta.title=Insect Pit Survivor
 advancements.mod_lavacow.kill_weta.description=Kill a Weta
 advancements.mod_lavacow.kill_avaton.title=Pest Control
 advancements.mod_lavacow.kill_avaton.description=Kill an Avaton
+advancements.mod_lavacow.kill_skeletonking.title=Long Live the King
+advancements.mod_lavacow.kill_skeletonking.description=Kill the Skeleton King

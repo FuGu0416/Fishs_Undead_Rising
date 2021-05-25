@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class AddRecipes {	
-	public static final BannerPattern PATTERN_SKELETONKING = AddRecipes.addBanner("skeletonking", new ItemStack(FishItems.SKELETONKING_CROWN));
+	public static final BannerPattern PATTERN_SKELETONKING = addBannerPattern("skeletonking", new ItemStack(FishItems.EMBLEM_OF_KING));
 	
 	public static void addRecipies(){
 	       addSmelting();
@@ -112,9 +112,9 @@ public class AddRecipes {
 	    	OreDictionary.registerOre("foodSwedishmeatballs", FishItems.MEATBALL);   	
 	    }
 	    
-	    public static BannerPattern addBanner(String name, ItemStack craftingStack) {
+	    public static BannerPattern addBannerPattern(String name, ItemStack ItemStackIn) {
 	        Class<?>[] classes = {String.class, String.class, ItemStack.class};
-	        Object[] names = {name, "mod_lavacow." + name, craftingStack};
+	        Object[] names = {name, "mod_lavacow." + name, ItemStackIn};
 	        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
 	    }
 
