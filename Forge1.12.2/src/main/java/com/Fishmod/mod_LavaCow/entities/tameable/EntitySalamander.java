@@ -70,8 +70,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     {
         super(worldIn);
         
-        this.setSize(3.0F, 2.6F);
-        
+        this.setSize(2.0F, 1.6F);    
         this.isImmuneToFire = true;
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.setPathPriority(PathNodeType.LAVA, 8.0F);
@@ -183,6 +182,14 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
        return item == FishItems.CANEBEEF;
     }
     
+    /**
+     * Returns the Y offset from the entity's position for any entity riding this one.
+     */
+    public double getMountedYOffset()
+    {
+        return (double)this.height * 1.3D;
+    }
+    
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
@@ -258,7 +265,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 		    		this.heal(this.getHealth() * 0.5F);
 	    		}
 	    	}
-	    	else {
+	    	else {	    		
 	    		if(this.getGrowingStage() != 3) {
 	    			this.setGrowingStage(3);
 	    			
@@ -552,7 +559,10 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
        if (this.world.rand.nextDouble() <= chance_to_spawn_as_child) {
           this.setGrowingAge(-24000);
           this.setChild(true);
+       } else {
+    	   this.setGrowingStage(3);
        }
+       
        return entityLivingData;
     }
     
@@ -666,6 +676,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     public void writeEntityToNBT(NBTTagCompound compound) {
        super.writeEntityToNBT(compound);
        compound.setBoolean("Saddled", this.canBeSteered());
+       compound.setInteger("GrowingStage", this.getGrowingStage());
     }
 
     /**
@@ -674,5 +685,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     public void readEntityFromNBT(NBTTagCompound compound) {
        super.readEntityFromNBT(compound);
        this.setSaddled(compound.getBoolean("Saddled"));
+       this.setGrowingStage(compound.getInteger("GrowingStage"));
     }
 }

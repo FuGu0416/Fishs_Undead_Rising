@@ -2,7 +2,6 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
@@ -153,11 +152,11 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	        if (this.spellTicks[i] > 0) {
 	            --this.spellTicks[i];
 	            
-	            if (EntitySkeletonKing.this.world.isRemote)
+	            if (this.world.isRemote)
 	            {
-	                for (int j = 0; j < 2; ++j)
+	                for (int j = 0; j < 4; ++j)
 	                {
-	                	mod_LavaCow.PROXY.spawnCustomParticle("spore", this.world, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, 0.90F, 0.90F, 0.74F);
+	                    this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, this.rand.nextDouble() * 0.5D, 0.0D);
 	                }
 	            }
 	        }    
