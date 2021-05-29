@@ -175,6 +175,7 @@ public class Modconfig {
 	public static int MootenHeart_Damage;
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
 	public static int Cemetery_SpawnRate; 
+	public static int SpawnRate_Desert_Tomb; 
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -406,7 +407,7 @@ public class Modconfig {
 		Quark_Compat = config.get(Configuration.CATEGORY_GENERAL, "quark compatibility", true, "Add additional content that works with Quark. [false/true]").getBoolean(true);
 		SunScreen_Mode = config.get(Configuration.CATEGORY_GENERAL, "sunscreen mode", false, "Mobs in this mod will not burn under daylight. [false/true]").getBoolean(false);
 		
-		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);
+		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 500, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(500);
 		
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
 		
@@ -418,6 +419,8 @@ public class Modconfig {
 		
 		Spawn_Cemetery_AllowList = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId()}, "Cemetery are only allowed to spawn in these dimensions' IDs").getIntList();
 		Cemetery_SpawnRate = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawns unburied", 40, "Cemetery spawns Unburied occasionally. [0-100]", 0, 100).getInt(40);
+		
+		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [1-10000]", 1, 10000).getInt(750);
 		
 		if (config.hasChanged())
 			config.save();

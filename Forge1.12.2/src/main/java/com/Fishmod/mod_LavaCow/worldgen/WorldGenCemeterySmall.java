@@ -25,21 +25,20 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 	
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		
 		int facing = rand.nextInt(4);
 		for(int i = 0; i < rand.nextInt(5) + 1; i++)
 			switch(facing) {
 				case 0: //NORTH
-					Gen_Cemetery(worldIn, rand, position.north(2 * i).down().down(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeight(position.north(2 * i)).down().down(), facing);
 					break;
 				case 1: //EAST
-					Gen_Cemetery(worldIn, rand, position.east(2 * i).down().down(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeight(position.east(2 * i)).down().down(), facing);
 					break;
 				case 2: //WEST
-					Gen_Cemetery(worldIn, rand, position.west(2 * i).down().down(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeight(position.west(2 * i)).down().down(), facing);
 					break;
 				case 3: //SOUTH
-					Gen_Cemetery(worldIn, rand, position.south(2 * i).down().down(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeight(position.south(2 * i)).down().down(), facing);
 					break;
 				default:
 					break;
