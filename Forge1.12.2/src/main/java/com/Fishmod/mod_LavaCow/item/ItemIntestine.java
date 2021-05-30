@@ -40,9 +40,9 @@ public class ItemIntestine extends ItemFishCustom
     	ItemStack stack = playerIn.getHeldItem(handIn);
     	
     	if (!playerIn.capabilities.isCreativeMode)stack.shrink(1);
+    	playerIn.playSound(SoundEvents.BLOCK_SLIME_HIT, 1.0F, 1.0F);
     	for(Map.Entry<ItemStack, Float> entry : LootTableHandler.LOOT_INTESTINE.entrySet())
     	{
-    		playerIn.playSound(SoundEvents.BLOCK_SLIME_HIT, 1.0F, 1.0F);
     		if(!worldIn.isRemote && Item.itemRand.nextFloat() < entry.getValue()) {
     			ItemStack s = entry.getKey();
     			s.setCount(Item.itemRand.nextInt(2)+1);
