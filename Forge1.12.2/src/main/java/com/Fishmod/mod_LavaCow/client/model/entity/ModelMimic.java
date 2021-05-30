@@ -300,7 +300,7 @@ public class ModelMimic extends FishModelBase {
         		this.toCamouflagePose(i);
         		this.hideAllBodyPart(false); 
         	}
-        	
+
         	if(i == 0.0F)
         	{
         		this.hideAllBodyPart(true); 

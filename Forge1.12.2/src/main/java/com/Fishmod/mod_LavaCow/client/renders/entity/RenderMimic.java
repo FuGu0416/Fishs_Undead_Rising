@@ -18,7 +18,8 @@ public class RenderMimic extends RenderLiving<EntityMimic> {
 			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimicvoid.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic4.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic5.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimicnether.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimicnether.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic6.png")
 	};
 	
 	public static int getVoidSkin() {

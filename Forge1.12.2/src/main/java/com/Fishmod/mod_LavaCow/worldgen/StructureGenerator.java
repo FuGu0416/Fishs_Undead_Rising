@@ -43,7 +43,7 @@ public class StructureGenerator implements IWorldGenerator {
     	}
 		
         if (SpawnUtil.isAllowedDimension(world.provider.getDimension()) && rand.nextInt(Modconfig.SpawnRate_Desert_Tomb + 1) == 0 && world.provider.hasSkyLight() && !world.provider.isNether() && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) && StructureUtil.CanStructureGenonBlock(world, pos.down())) {
-            StructureUtil.GenStructureWithLoot(DESERT_TOMB, LootTableHandler.CEMETERY_CHEST, world, pos.down(10));
+            StructureUtil.GenDesertTomb(DESERT_TOMB, LootTableHandler.DESERT_TOMB_CHEST, world, pos.down(10));
         }
 	}
 	

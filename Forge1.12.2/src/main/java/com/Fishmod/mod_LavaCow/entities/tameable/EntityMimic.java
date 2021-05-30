@@ -14,6 +14,7 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockChest;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,6 +45,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
@@ -149,6 +151,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         	for(int j = dy - r; j < dy + r; j++)
         		for(int k = dz - r; k < dz + r; k++)
         			if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBlock() == Blocks.CHEST) {
+        				this.rotationAngle = this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getValue(BlockChest.FACING).getIndex() - 2;
                 		is_near_chest = true;
                 		break;
         			}
@@ -248,7 +251,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 			this.posX = MathHelper.floor(posX) + 0.5;
 			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
-			this.rotationYaw = prevRotationYaw = 0F;
+			this.rotationYaw = prevRotationYaw = this.rotationAngle;
 			this.renderYawOffset = prevRenderYawOffset = 0F;		
 			
 			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
@@ -357,7 +360,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     
     protected void doSitCommand(EntityPlayer playerIn) {
     	super.doSitCommand(playerIn);
-    	this.world.setEntityState(this, (byte)41);
+    	this.world.setEntityState(this, (byte)(41 + this.rand.nextInt(4)));
     	this.setSitting(true);
     }
     
@@ -377,6 +380,9 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	this.setSitting(false);
     }
     
+    public void doMimicChest(EnumFacing facing) {
+    	this.world.setEntityState(this, (byte)(41 + facing.getIndex() - 2));
+    }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
@@ -610,7 +616,19 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         }
         else if (id == 41)
         {
-        	this.rotationAngle = (this.rand.nextInt(4) * 90) * ((float)Math.PI / 180);
+        	this.rotationAngle = 180.0F * ((float)Math.PI / 180.0F);
+        }
+        else if (id == 42)
+        {
+        	this.rotationAngle = 270.0F * ((float)Math.PI / 180.0F);
+        }
+        else if (id == 43)
+        {
+        	this.rotationAngle = 0.0F * ((float)Math.PI / 180.0F);
+        }
+        else if (id == 44)
+        {
+        	this.rotationAngle = 90.0F * ((float)Math.PI / 180.0F);
         }
         else
         {

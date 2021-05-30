@@ -15,7 +15,6 @@ public class RenderLavaCow extends RenderLiving<EntityLavaCow>  {
 	static{
         System.out.println(LAVACOW_TEXTURES.getResourcePath());
     }
-    //public static final Factory FACTORY = new Factory();
 
     public RenderLavaCow(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelCow(), 0.5F);
@@ -25,14 +24,4 @@ public class RenderLavaCow extends RenderLiving<EntityLavaCow>  {
     protected ResourceLocation getEntityTexture(EntityLavaCow entity) {
         return LAVACOW_TEXTURES;
     }
-    
-    /*public static class Factory implements IRenderFactory<EntityLavaCow> {
-    	
-        @Override
-        public Render<? super EntityLavaCow> createRenderFor(RenderManager manager) {
-        	System.out.println("OAOAOAOAOAOAOAOAOAOAOAO123");
-        	return new RenderLavaCow(manager);
-        }
-
-    }*/
 }

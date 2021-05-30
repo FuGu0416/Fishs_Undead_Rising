@@ -93,13 +93,7 @@ public class ItemFissionPotion extends ItemFishCustom{
     		boolean flag = false;
     		
     		if(!playerIn.world.isRemote) {
-	    		if(stack.getItem().equals(FishItems.FISSIONPOTION)) {
-	    			/*System.out.println("OAO0 "+target.getClass().getName());
-	    			System.out.println("OAO1 "+EntityRegistry.getEntry(target.getClass()));
-	    			System.out.println("OAO2 "+EntityRegistry.getEntry(target.getClass()).getEgg());
-	    			System.out.println("OAO3 "+EntityRegistry.getEntry(target.getClass()).getEgg().spawnedID);
-	    			ResourceLocation eggInfo = EntityRegistry.getEntry(target.getClass()).getEgg().spawnedID;*/
-	    			
+	    		if(stack.getItem().equals(FishItems.FISSIONPOTION)) {	    			
 			    	EntityAgeable parent = (EntityAgeable)target;
 			    	EntityAgeable entityageable = parent.createChild(parent) != null ? parent.createChild(parent) : (EntityAgeable)EntityRegistry.getEntry(target.getClass()).newInstance(parent.world);//ItemMonsterPlacer.spawnCreature(parent.world, eggInfo, parent.posX, parent.posY, parent.posZ);
 			    	entityageable.setGrowingAge(-24000);
@@ -113,8 +107,6 @@ public class ItemFissionPotion extends ItemFishCustom{
 			        	((EntityTameable)entityageable).setTamedBy(playerIn);
 			        entityageable.playLivingSound();
 			        
-			        //this.using_sound = SoundEvents.ENTITY_SLIME_SQUISH;
-			        //this.using_particle = Particles.HAPPY_VILLAGER;
 			        flag = true;
 	    		}
 	    		else if(stack.getItem().equals(FishItems.POTION_OF_MOOTEN_LAVA) && target instanceof EntityCow && !(target instanceof EntityLavaCow)) {

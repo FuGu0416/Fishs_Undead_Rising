@@ -55,6 +55,7 @@ public class LootTableHandler {
 	public static ResourceLocation WETA = null;
 	public static ResourceLocation AVATON = null;
 	public static ResourceLocation SKELETON_KING = null;
+	public static ResourceLocation DESERT_TOMB_CHEST = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
@@ -90,9 +91,9 @@ public class LootTableHandler {
 		return lootTable;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void addLootTable()
 	{
-		//System.out.println("12OAOAOAOAOAOAOAOAOAOAOAO");
 		ZOMBIEMUSHROOM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "zombiemushroom"));
 		PARASITE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite"));
 		PARASITE1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite1"));
@@ -116,11 +117,12 @@ public class LootTableHandler {
 		BONEWORM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "boneworm"));
 		PINGU = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "pingu"));
 		GHOSTRAY = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ghostray"));
-		CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "cemetery_chest"));
+		CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest"));
 		BANSHEE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "banshee"));
 		WETA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "weta"));
 		AVATON = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "avaton"));
 		SKELETON_KING = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "skeleton_king"));
+		DESERT_TOMB_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest"));
 		
 		FISHABLE.put(Modblocks.item_block_glowshroom, 10);
 		FISHABLE.put(FishItems.HYPHAE, 10);
