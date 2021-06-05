@@ -33,6 +33,8 @@ public class ModelUnburied extends FishModelBase {
     public ModelRenderer Jaw1_teeth;
     public ModelRenderer Leg_l_Seg1;
     public ModelRenderer Leg_r_Seg1;
+    public ModelRenderer Arm_l_bandage;
+    public ModelRenderer Arm_r_bandage;
     
     public ModelUnburied() {
     	this(0.0F, 0.0F);
@@ -113,6 +115,14 @@ public class ModelUnburied extends FishModelBase {
         this.Jaw1.setRotationPoint(0.0F, -1.0F, 0.0F);
         this.Jaw1.addBox(-3.0F, 0.0F, -7.8F, 6, 2, 6, 0.0F);
         this.setRotateAngle(Jaw1, 0.091106186954104F, 0.0F, -0.045553093477052F);
+        this.Arm_l_bandage = new ModelRenderer(this, 39, 10);
+        this.Arm_l_bandage.setRotationPoint(1.0F, 7.0F, 1.0F);
+        this.Arm_l_bandage.addBox(-1.0F, 3.0F, 0.0F, 2, 6, 4, 0.0F);
+        this.setRotateAngle(Arm_l_bandage, -0.7740535232594852F, 0.0F, 0.0F);
+        this.Arm_r_bandage = new ModelRenderer(this, 52, 10);
+        this.Arm_r_bandage.setRotationPoint(1.0F, 7.0F, 1.0F);
+        this.Arm_r_bandage.addBox(-3.0F, 2.0F, 0.0F, 2, 6, 4, 0.0F);
+        this.setRotateAngle(Arm_r_bandage, -0.7740535232594852F, 0.0F, 0.0F);
         
         this.Body_base.addChild(this.Leg_r_Seg0);
         this.Leg_r_Seg0.addChild(this.Leg_r_Seg1);
@@ -132,6 +142,8 @@ public class ModelUnburied extends FishModelBase {
         this.Neck1.addChild(this.Head);
         this.Body_base.addChild(this.Body_waist);
         this.Jaw0.addChild(this.Jaw1);
+        this.Arm_r_Seg0.addChild(this.Arm_r_bandage);
+        this.Arm_l_Seg0.addChild(this.Arm_l_bandage);
     }
 
     @Override
@@ -170,13 +182,27 @@ public class ModelUnburied extends FishModelBase {
     	this.SwingX_Sin(this.Arm_l_Seg1, -0.7740535232594852F, ageInTicks, -0.03F, 0.06F, false, 0.0F);
     	
     	this.Body_base.rotationPointZ = 2.0F + (-0.5F  * MathHelper.sin(0.6F * limbSwing)); 
-    	this.Body_base.rotationPointY = 10.0F + (-0.5F  * MathHelper.sin(0.6F * limbSwing)); 
-    	this.SwingZ_Sin(this.Body_base, 0.0F, limbSwing, limbSwingAmount * 0.1F, 0.6F, false, 0.0F);
     	
-    	this.SwingX_Sin(this.Leg_r_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.6F, true, 0.0F);
-    	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.6F, false, 0.0F);
-    	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.6F, false, 0.3F * (float)Math.PI);
-    	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.6F, true, 0.3F * (float)Math.PI);
+    	if(this.isRiding) {
+    		this.Body_base.rotationPointY = 15.0F; 
+    		this.Body_base.rotateAngleZ = 0.0F;
+    		
+    		this.setRotateAngle(Leg_l_Seg0, -1.6845917940249266F, -0.36425021489121656F, -0.091106186954104F);
+    		this.setRotateAngle(Leg_l_Seg1, 1.0927506446736497F, 0.0F, 0.0F);
+    		this.setRotateAngle(Leg_r_Seg0, -1.730144887501979F, 0.18203784098300857F, 0.091106186954104F);
+    		this.setRotateAngle(Leg_r_Seg1, 0.9105382707654417F, 0.0F, 0.0F);
+    	} else {
+    		this.Body_base.rotationPointY = 10.0F + (-0.5F  * MathHelper.sin(0.6F * limbSwing)); 
+    		this.SwingZ_Sin(this.Body_base, 0.0F, limbSwing, limbSwingAmount * 0.1F, 0.6F, false, 0.0F);
+    		
+        	this.SwingX_Sin(this.Leg_r_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.6F, true, 0.0F);
+        	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.6F, false, 0.0F);
+        	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.6F, false, 0.3F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.6F, true, 0.3F * (float)Math.PI);
+  
+            this.Leg_l_Seg0.rotateAngleY = 0.0F;
+            this.Leg_r_Seg0.rotateAngleY = 0.0F;
+    	}
     }
     
     @Override

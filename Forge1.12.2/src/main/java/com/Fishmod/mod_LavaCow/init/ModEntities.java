@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
@@ -347,6 +348,14 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "deathcoil"), id++)
             .name(mod_LavaCow.MODID + "." + "deathcoil")
             .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityMummy.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "mummy"), id++)
+            .name(mod_LavaCow.MODID + "." + "mummy")
+            .tracker(80, 3, false)
+            .egg(0xE9DAAE, 0x9A8157)
             .build()
             );
 
@@ -410,6 +419,7 @@ public class ModEntities {
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 4, 8, BiomeDictionary.Type.SANDY);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

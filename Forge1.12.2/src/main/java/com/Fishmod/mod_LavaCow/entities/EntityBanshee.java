@@ -162,7 +162,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             --this.spellTicks;
         }
     	
-    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
+    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote && this instanceof EntityBanshee)
     	{
     		float f = this.getBrightness();
     		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);

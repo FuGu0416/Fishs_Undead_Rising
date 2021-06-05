@@ -1,13 +1,13 @@
 package com.Fishmod.mod_LavaCow.structure;
 
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -26,7 +26,7 @@ public class DesertTombBlockProcessor implements ITemplateProcessor {
     		EntityList.getKey(EntityAvaton.class), 
     		EntityList.getKey(EntitySpider.class), 
     		EntityList.getKey(EntityCaveSpider.class), 
-    		EntityList.getKey(EntityHusk.class)
+    		EntityList.getKey(EntityMummy.class)
     		};
     
     public DesertTombBlockProcessor(BlockPos pos, PlacementSettings settings, ResourceLocation loot) {

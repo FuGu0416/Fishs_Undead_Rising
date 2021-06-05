@@ -30,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -687,9 +686,6 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
         if (this.world.getBlockState(position).getBlock() instanceof BlockChest) {
             TileEntity tileentity = this.world.getTileEntity(position);
             if (tileentity instanceof TileEntityChest && !tileentity.isInvalid()) {
-            	int i = this.rand.nextInt(((TileEntityChest) tileentity).getSizeInventory());           
-                ((TileEntityChest) tileentity).removeStackFromSlot(i);
-                ((TileEntityChest) tileentity).setInventorySlotContents(i, new ItemStack(FishItems.SKELETONKING_CROWN));
                 ((TileEntityChest) tileentity).setLootTable(LootTableHandler.SKELETON_KING, rand.nextLong());
             }
         }

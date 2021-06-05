@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Modconfig {
 	
 	public static final Modconfig INSTANCE = new Modconfig();
+	@SuppressWarnings("unused")
 	private File configFolder;
 	
 	public static Configuration config = null;
@@ -134,6 +135,10 @@ public class Modconfig {
 	public static double SkeletonKing_Health;
 	public static double SkeletonKing_Attack;
 	
+	public static int pSpawnRate_Mummy;
+	public static double Mummy_Health;
+	public static double Mummy_Attack;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -178,7 +183,7 @@ public class Modconfig {
 	public static int SpawnRate_Desert_Tomb; 
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
-			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
+			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
 			"Vespa", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
@@ -324,6 +329,10 @@ public class Modconfig {
 		
 		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
 		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
+	
+		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);
+		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
+		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);

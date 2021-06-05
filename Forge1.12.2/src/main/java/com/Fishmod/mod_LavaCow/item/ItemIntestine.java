@@ -47,7 +47,6 @@ public class ItemIntestine extends ItemFishCustom
     			ItemStack s = entry.getKey();
     			s.setCount(Item.itemRand.nextInt(2)+1);
     			playerIn.dropItem(s, true);
-    			//playerIn.dropItem(new ItemStack(entry.getKey(), entry.getKey() == Items.DIAMOND ? 1 : Item.itemRand.nextInt(2)+1, entry.getKey() == Items.DYE ? 15 : 0), true);
     		}
     	}
     	return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);

@@ -175,6 +175,7 @@ entity.mod_lavacow.banshee.name=Banshee
 entity.mod_lavacow.weta.name=Emperor Weta
 entity.mod_lavacow.avaton.name=Avaton
 entity.mod_lavacow.skeletonking.name=Skeleton King
+entity.mod_lavacow.mummy.name=Mummy
 
 ##########
 # Sounds #
@@ -331,7 +332,13 @@ tootip.mod_lavacow.vespa_shield=Blocking damage, as well as dealing 2 damage to 
 tootip.mod_lavacow.frozen_dagger=Regenerate durability when in water.
 tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage vs non-undead
 tootip.mod_lavacow.kings_crown.0=Stained
+tootip.mod_lavacow.kings_crown.0.desc0=With a gem most people desired
+tootip.mod_lavacow.kings_crown.0.desc1=Filled with memories from the past
+tootip.mod_lavacow.kings_crown.0.desc2=The king shall ruled his kingdom, once again
 tootip.mod_lavacow.kings_crown.1=Cursed
+tootip.mod_lavacow.kings_crown.1.desc0=A king does not need his body
+tootip.mod_lavacow.kings_crown.1.desc1=As long as the soul is imbued in his crown
+tootip.mod_lavacow.kings_crown.1.desc2=Even a dead corpse can fulfill his ambition
 tootip.mod_lavacow.skeletonking_crown=Force nearby skeleton to become your loyal servant.
 
 message.mod_lavacow.metamorphosis= is evolving!

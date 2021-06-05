@@ -140,23 +140,15 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 
     @Override
     public boolean getCanSpawnHere() {
-    	
-    	boolean is_near_chest = false;
-        int dx = MathHelper.floor(this.posX);
-        int dy = MathHelper.floor(this.getEntityBoundingBox().minY);
-        int dz = MathHelper.floor(this.posZ);
-        int r = 2;
+    	BlockPos NearbyChest = SpawnUtil.isNearBlock(this.world, Blocks.CHEST, new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ), 2);
         
-        for(int i = dx - r; i < dx + r; i++)
-        	for(int j = dy - r; j < dy + r; j++)
-        		for(int k = dz - r; k < dz + r; k++)
-        			if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBlock() == Blocks.CHEST) {
-        				this.rotationAngle = this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getValue(BlockChest.FACING).getIndex() - 2;
-                		is_near_chest = true;
-                		break;
-        			}
-        
-        return SpawnUtil.isAllowedDimension(this.dimension) && is_near_chest && super.getCanSpawnHere();
+    	if(NearbyChest != null) {
+    		this.rotationAngle = this.getEntityWorld().getBlockState(NearbyChest).getValue(BlockChest.FACING).getIndex() - 2;
+    	} else {
+    		return false;
+    	}
+    	       
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
      }
     
     /**
@@ -738,10 +730,13 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 	public void onDeath(DamageSource cause) {
 		if (!getEntityWorld().isRemote) {
 			for (ItemStack is : this.inventory)
-				if (!is.isEmpty())
-					this.entityDropItem(is, 0.2F); 
+				if (!is.isEmpty()) {
+					this.entityDropItem(is, 0.2F);
+				}
 		}
 
+		this.inventory.clear();
+		
 		super.onDeath(cause);
 	}
 }

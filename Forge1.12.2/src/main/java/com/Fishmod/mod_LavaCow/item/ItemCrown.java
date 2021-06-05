@@ -21,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -78,6 +79,10 @@ public class ItemCrown extends ItemFishCustom{
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
 		int i = stack.getMetadata();
 		list.add(I18n.format("tootip.mod_lavacow.kings_crown." + i));
+		list.add("");
+		list.add(TextFormatting.ITALIC + I18n.format("tootip.mod_lavacow.kings_crown." + i + ".desc0"));
+		list.add(TextFormatting.ITALIC + I18n.format("tootip.mod_lavacow.kings_crown." + i + ".desc1"));
+		list.add(TextFormatting.ITALIC + I18n.format("tootip.mod_lavacow.kings_crown." + i + ".desc2"));
 	}
 	
     /**

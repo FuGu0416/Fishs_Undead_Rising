@@ -8,10 +8,8 @@ import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -55,7 +53,6 @@ public class TileEntityScarecrowHeadRenderer extends TileEntitySpecialRenderer<T
     public void renderTile(TileEntityScarecrowHead te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
-		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("mod_lavacow:items/cursed_fabric");
 		if(state == null || (state.getBlock() != Modblocks.SCARECROWHEAD_COMMON && state.getBlock() != Modblocks.SCARECROWHEAD_STRAW && state.getBlock() != Modblocks.SCARECROWHEAD_PLAGUE))
 			return;
     	EnumFacing enumfacing = state.getValue(BlockScarecrowHead.FACING);

@@ -12,6 +12,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderHolyGrenade;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLavaCow;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLilSludge;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMummy;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderParasite;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPingu;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPiranhaLauncher;
@@ -40,6 +41,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
@@ -123,6 +125,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonKing.class, RenderFactoryEntitySkeletonKing.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySandBurst.class, RenderFactoryEntitySandBurst.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityDeathCoil.class, RenderFactoryEntityDeathCoil.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, RenderFactoryEntityMummy.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
     }
@@ -642,6 +645,20 @@ public class RenderFactories {
         public RenderDeathCoil createRenderFor(RenderManager manager)
         {
         	return new RenderDeathCoil(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityMummy implements IRenderFactory<EntityMummy>
+    {
+        public final static RenderFactoryEntityMummy INSTANCE = new RenderFactoryEntityMummy();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityMummy> createRenderFor(RenderManager manager)
+        {
+        	return new RenderMummy(manager);
         }
     }
 }

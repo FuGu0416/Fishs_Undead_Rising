@@ -178,6 +178,7 @@ entity.mod_lavacow.banshee.name=報喪女妖
 entity.mod_lavacow.weta.name=帝沙螽
 entity.mod_lavacow.avaton.name=艾薇妲
 entity.mod_lavacow.skeletonking.name=骷髏王
+entity.mod_lavacow.mummy.name=木乃伊
 
 ##########
 # Sounds #
@@ -334,7 +335,13 @@ tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害�
 tootip.mod_lavacow.frozen_dagger=當浸於水中時能逐漸回復耐久度
 tootip.mod_lavacow.spectral_dagger=具有無限耐久度，並對非不死族的單位造成傷害+2
 tootip.mod_lavacow.kings_crown.0=被玷汙
+tootip.mod_lavacow.kings_crown.0.desc0=鑲入讓人渴望的寶石
+tootip.mod_lavacow.kings_crown.0.desc1=注入過去的古老記憶
+tootip.mod_lavacow.kings_crown.0.desc2=吾王將再次統御王國
 tootip.mod_lavacow.kings_crown.1=受詛咒
+tootip.mod_lavacow.kings_crown.1.desc0=縱使身軀已然逝去
+tootip.mod_lavacow.kings_crown.1.desc1=扺要魂魄存於王冠
+tootip.mod_lavacow.kings_crown.1.desc2=髏髑也能完成征途
 tootip.mod_lavacow.skeletonking_crown=強迫周遭的骷髏成為你忠實的奴僕
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
