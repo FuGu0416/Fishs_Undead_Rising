@@ -3,16 +3,24 @@ package com.Fishmod.mod_LavaCow.structure;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +32,14 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class StructureUtil {
-	
+    private static ResourceLocation[] Desert_Tomb_SpawnEntityID = { 
+    		EntityList.getKey(EntityUnburied.class), 
+    		EntityList.getKey(EntityAvaton.class), 
+    		EntityList.getKey(EntitySpider.class), 
+    		EntityList.getKey(EntityCaveSpider.class), 
+    		EntityList.getKey(EntityMummy.class)
+    		};
+    
     public static boolean CanStructureGenonBlock(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         
@@ -94,6 +109,18 @@ public class StructureUtil {
         			Mimic.doMimicChest(Chestfacing);
         		}
         		i++;
+        	}
+        	
+        	if(entry.getValue().contains("mobspawner")) {
+        		BlockPos blockpos = entry.getKey();
+        		
+        		world.setBlockState(blockpos, Blocks.MOB_SPAWNER.getDefaultState(), 3);
+                TileEntity tileentity = world.getTileEntity(blockpos);
+
+                if (tileentity instanceof TileEntityMobSpawner)
+                {
+                    ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(Desert_Tomb_SpawnEntityID[world.rand.nextInt(Desert_Tomb_SpawnEntityID.length)]);
+                }
         	}
         }
     }

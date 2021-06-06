@@ -46,6 +46,9 @@ public class ModelRegistryHandler {
     	} else if(item.equals(FishItems.KINGS_CROWN)) {
     		for(Integer i = 0; i < 2 ; i++)
     			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
+    	} else if(item.equals(FishItems.CURSED_BANDAGE)) {
+    		for(Integer i = 0; i < 4 ; i++)
+    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
     	} else
     		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));  
     }

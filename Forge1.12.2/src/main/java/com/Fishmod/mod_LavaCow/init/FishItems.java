@@ -137,6 +137,7 @@ public class FishItems {
 	public static final Item KINGS_CROWN = new ItemCrown("kings_crown", mod_LavaCow.TAB_ITEMS, false);
 	public static final Item SKELETONKING_CROWN = new ItemSkeletonKingCrown("skeletonking_crown", 4, EntityEquipmentSlot.HEAD).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item EMBLEM_OF_KING = new ItemRareLoot("emblem_of_king", mod_LavaCow.TAB_ITEMS, EnumRarity.UNCOMMON, false);
+	public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", ToolMaterial.DIAMOND, 3.0F, -2.4F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");

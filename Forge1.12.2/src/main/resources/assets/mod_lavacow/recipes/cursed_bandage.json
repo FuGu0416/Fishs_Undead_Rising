@@ -19,6 +19,7 @@
     },
     "result": {
         "item": "mod_lavacow:cursed_bandage",
+		"data": 0,
         "count": 8
     }
 }

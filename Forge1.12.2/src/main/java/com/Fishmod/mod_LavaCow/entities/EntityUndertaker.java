@@ -40,6 +40,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -349,16 +351,57 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
             for (int i = 0; i < Modconfig.Undertaker_Ability_Num; ++i)
             {
                 BlockPos blockpos = (new BlockPos(EntityUndertaker.this)).add(-6 + EntityUndertaker.this.rand.nextInt(12), 0, -6 + EntityUndertaker.this.rand.nextInt(12));
-                EntityUnburied entityvex = new EntityUnburied(EntityUndertaker.this.world);
-                entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
-                entityvex.setOwnerId(EntityUndertaker.this.getUniqueID());
-                
-                if(!EntityUndertaker.this.world.isRemote)
-                	EntityUndertaker.this.world.spawnEntity(entityvex);
-                
-                if(EntityUndertaker.this.getAttackingEntity() != null)
-                	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                if(EntityUndertaker.this.rand.nextFloat() < 0.15F) {
+                	if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.DRY)) {
+                		
+                    	EntityMummy entityvex = new EntityMummy(EntityUndertaker.this.world);
+                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        
+                        if(!EntityUndertaker.this.world.isRemote)
+                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        
+                        if(EntityUndertaker.this.getAttackingEntity() != null)
+                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        
+                    } else if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.COLD)) {
+                    	
+                    	EntityZombieFrozen entityvex = new EntityZombieFrozen(EntityUndertaker.this.world);
+                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        
+                        if(!EntityUndertaker.this.world.isRemote)
+                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        
+                        if(EntityUndertaker.this.getAttackingEntity() != null)
+                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        
+                    } else if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.WET)) {
+                    	
+                    	EntityZombieMushroom entityvex = new EntityZombieMushroom(EntityUndertaker.this.world);
+                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        
+                        if(!EntityUndertaker.this.world.isRemote)
+                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        
+                        if(EntityUndertaker.this.getAttackingEntity() != null)
+                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        
+                    }                  
+                } else {
+                	
+                	EntityUnburied entityvex = new EntityUnburied(EntityUndertaker.this.world);
+                    entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                    entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    entityvex.setOwnerId(EntityUndertaker.this.getUniqueID());
+                    
+                    if(!EntityUndertaker.this.world.isRemote)
+                    	EntityUndertaker.this.world.spawnEntity(entityvex);
+                    
+                    if(EntityUndertaker.this.getAttackingEntity() != null)
+                    	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());                   
+                }                             
             }
         }
 

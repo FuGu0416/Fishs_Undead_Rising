@@ -18,8 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemParasite extends ItemFishCustomFood{
 
-	public ItemParasite(String registryName, int amount, float saturation, boolean isWolfFood, int duration,
-			boolean hasTooltip) {
+	public ItemParasite(String registryName, int amount, float saturation, boolean isWolfFood, int duration, boolean hasTooltip) {
 		super(registryName, amount, saturation, isWolfFood, duration, hasTooltip);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);

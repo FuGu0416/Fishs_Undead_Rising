@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "YDY"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:scythe_claw"
+        },
+        "Y": {
+            "item": "mod_lavacow:foul_bristle"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "ingotIron"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:beast_claw"
+    }
+}

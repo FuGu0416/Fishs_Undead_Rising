@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        "#X#",
+        "D#D"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:cursed_fabric"
+        },
+        "X": {
+            "item": "mod_lavacow:burntovipositor"
+        },
+        "D": {
+			"item": "mod_lavacow:parasite_item",
+	    	"data": 32767
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:cursed_bandage",
+		"data": 1,
+        "count": 8
+    }
+}
