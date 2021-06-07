@@ -15,7 +15,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
-import com.Fishmod.mod_LavaCow.entities.EntityUnderminer;
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -321,9 +321,9 @@ public class ModEntities {
             .build(),
             
             EntityEntryBuilder.create()
-            .entity(EntityUnderminer.class)
-            .id(new ResourceLocation(mod_LavaCow.MODID, "underminer"), id++)
-            .name(mod_LavaCow.MODID + "." + "underminer")
+            .entity(EntityForsaken.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "forsaken"), id++)
+            .name(mod_LavaCow.MODID + "." + "forsaken")
             .tracker(80, 3, false)
             .egg(12698049, 4802889)
             .build(),

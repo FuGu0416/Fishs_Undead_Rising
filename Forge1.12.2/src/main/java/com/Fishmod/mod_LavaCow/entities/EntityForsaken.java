@@ -2,7 +2,9 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.init.AddRecipes;
 
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -13,7 +15,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -23,9 +29,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
-public class EntityUnderminer extends AbstractSkeleton{
+public class EntityForsaken extends AbstractSkeleton{
 
-	public EntityUnderminer(World worldIn) {
+	public EntityForsaken(World worldIn) {
 		super(worldIn);
 	}
 	
@@ -34,9 +40,18 @@ public class EntityUnderminer extends AbstractSkeleton{
     	BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
         	       
         return SpawnUtil.isAllowedDimension(this.dimension) 
-        		&& SpawnUtil.isInsideStructure(this.world, "Mineshaft", new BlockPos(this.posX, this.posY, this.posZ)) 
+        		//&& SpawnUtil.isInsideStructure(this.world, "Mineshaft", new BlockPos(this.posX, this.posY, this.posZ)) 
         		&& !this.world.canSeeSky(pos) && super.getCanSpawnHere();
-     }
+    }
+    
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Forsaken_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Forsaken_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.4D);
+    }
 	
     @Nullable
     protected ResourceLocation getLootTable()
@@ -89,13 +104,33 @@ public class EntityUnderminer extends AbstractSkeleton{
         }
     }
     
+	/**
+	 * Create a compound tag for the specified pattern and colour.
+	 *
+	 * @param pattern The pattern
+	 * @param color   The colour
+	 * @return The compound tag
+	 */
+	protected NBTTagCompound createPatternTag(BannerPattern pattern, EnumDyeColor color) {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("Pattern", pattern.getHashname());
+		tag.setInteger("Color", color.getDyeDamage());
+		return tag;
+	}
+    
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_PICKAXE));
-        //this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.LEATHER_BOOTS));
+        ItemStack shield = new ItemStack(Items.SHIELD);
+		NBTTagList patternsList = new NBTTagList();
+		shield.getOrCreateSubCompound("BlockEntityTag").setTag("Patterns", patternsList);
+		patternsList.appendTag(createPatternTag(AddRecipes.PATTERN_SKELETONKING, EnumDyeColor.WHITE));
+        shield.getOrCreateSubCompound("BlockEntityTag").setInteger("Base", EnumDyeColor.BLACK.getDyeDamage());
+             
+    	this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, shield);
     }
     
     /**
@@ -106,7 +141,6 @@ public class EntityUnderminer extends AbstractSkeleton{
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
         IEntityLivingData ientitylivingdata = super.onInitialSpawn(difficulty, livingdata);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
         this.setCombatTask();
                 
         return ientitylivingdata;
