@@ -97,6 +97,7 @@ item.mod_lavacow.kings_crown.name=王之冠
 item.mod_lavacow.skeletonking_crown.name=統御之冠
 item.mod_lavacow.emblem_of_king.name=王之徽紀
 item.mod_lavacow.beast_claw.name=蠻獸爪
+item.mod_lavacow.hatred_shard.name=萬軍追憶
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -180,6 +181,7 @@ entity.mod_lavacow.weta.name=帝沙螽
 entity.mod_lavacow.avaton.name=艾薇妲
 entity.mod_lavacow.skeletonking.name=骷髏王
 entity.mod_lavacow.mummy.name=木乃伊
+entity.mod_lavacow.forsaken.name=被遺忘者
 
 ##########
 # Sounds #

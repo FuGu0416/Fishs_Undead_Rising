@@ -57,6 +57,7 @@ public class LootTableHandler {
 	public static ResourceLocation SKELETON_KING = null;
 	public static ResourceLocation DESERT_TOMB_CHEST = null;
 	public static ResourceLocation MUMMY = null;
+	public static ResourceLocation FORSAKEN = null;	
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
@@ -125,6 +126,7 @@ public class LootTableHandler {
 		SKELETON_KING = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "skeleton_king"));
 		DESERT_TOMB_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest"));
 		MUMMY = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "mummy"));
+		FORSAKEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "forsaken"));
 		
 		FISHABLE.put(Modblocks.item_block_glowshroom, 10);
 		FISHABLE.put(FishItems.HYPHAE, 10);

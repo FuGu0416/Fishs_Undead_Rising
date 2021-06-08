@@ -94,6 +94,7 @@ item.mod_lavacow.kings_crown.name=King's Crown
 item.mod_lavacow.skeletonking_crown.name=The Crown of Rule
 item.mod_lavacow.emblem_of_king.name=Emblem of King
 item.mod_lavacow.beast_claw.name=Beast Claw
+item.mod_lavacow.hatred_shard.name=Memory of a Thousand Army
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
@@ -177,6 +178,7 @@ entity.mod_lavacow.weta.name=Emperor Weta
 entity.mod_lavacow.avaton.name=Avaton
 entity.mod_lavacow.skeletonking.name=Skeleton King
 entity.mod_lavacow.mummy.name=Mummy
+entity.mod_lavacow.forsaken.name=Forsaken
 
 ##########
 # Sounds #

@@ -132,6 +132,7 @@ public class Modconfig {
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
 	
+	public static int pSpawnRate_Forsaken;
 	public static double Forsaken_Health;
 	public static double Forsaken_Attack;
 	
@@ -330,7 +331,8 @@ public class Modconfig {
 		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
 		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
 				
-		Forsaken_Health = config.get("Forsaken", "forsaken health", 20.0D, "Maximum Forsaken health [1-1000]", 1, 1000).getDouble(20.0D);
+		pSpawnRate_Forsaken = config.get("Forsaken", "forsaken spawn rate", 10, "Set the spawn rate of Forsaken [0-10000]", 0, 10000).getInt(10);
+		Forsaken_Health = config.get("Forsaken", "forsaken health", 30.0D, "Maximum Forsaken health [1-1000]", 1, 1000).getDouble(30.0D);
 		Forsaken_Attack = config.get("Forsaken", "forsaken attack", 4.0D, "Forsaken strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
 		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);

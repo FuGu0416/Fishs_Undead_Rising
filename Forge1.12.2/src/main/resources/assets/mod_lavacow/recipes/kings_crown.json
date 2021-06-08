@@ -1,8 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "Y",
-        "#"
+        "DYD",
+        "D#D",
+		"DDD"
     ],
     "key": {
         "#": {
@@ -12,6 +13,9 @@
         "Y": {
             "type": "forge:ore_dict",
     		"ore": "gemEmerald"
+        },
+        "D": {
+            "item": "mod_lavacow:hatred_shard"
         }
     },
     "result": {
