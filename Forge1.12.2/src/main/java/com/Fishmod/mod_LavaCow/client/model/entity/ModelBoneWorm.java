@@ -140,24 +140,15 @@ public class ModelBoneWorm extends FishModelBase {
      * and third as in the setRotationAngles method.
      */
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        
-    	float f = (limbSwingAmount < 0.02F) ? 1.0F : 1.5F;
         this.Head_Looking(Head0, -0.8651597102135892F, 0.0F, netHeadYaw, headPitch);
         this.Head_Looking(Head1, -1.3658946726107624F, -0.36425021489121656F, netHeadYaw, headPitch);
-    	
-    	this.Appendage_r0_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * 0.1F * ageInTicks));
-    	this.Appendage_r0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(0.1F * ageInTicks));
-    	this.Appendage_r1_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * 0.1F * ageInTicks + 0.25F * (float)Math.PI));
-    	this.Appendage_r1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(0.1F * ageInTicks + 0.25F * (float)Math.PI));
-    	this.Appendage_l0_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * 0.1F * ageInTicks + 0.50F * (float)Math.PI));
-    	this.Appendage_l0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(0.1F * ageInTicks + 0.50F * (float)Math.PI));
-    	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * 0.1F * ageInTicks + 0.75F * (float)Math.PI));
-    	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(0.1F * ageInTicks + 0.75F * (float)Math.PI));
     }
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	float f = (limbSwingAmount < 0.02F) ? 1.0F : 1.5F;
+    	float g = 0.1F;
+    	float Ticks = entityIn.ticksExisted;
     	int i = ((EntityBoneWorm)entityIn).getAttackTimer(0);
     	int j = ((EntityBoneWorm)entityIn).getAttackTimer(1);
     	int k = ((EntityBoneWorm)entityIn).diggingTimer[0];
@@ -176,19 +167,64 @@ public class ModelBoneWorm extends FishModelBase {
     		}
     	}
     	else if (k > 0) {
+    		f = 3.5F;
+    		g = 0.5F;
+        	this.Appendage_r0_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks));
+        	this.Appendage_r0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks));
+        	this.Appendage_r1_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_r1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_l0_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.75F * (float)Math.PI));
+        	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.75F * (float)Math.PI));
+        	
         	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
         	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
         	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, (float)k / 10.0F);  
     	}
     	else if (l > 0) {
+    		f = 3.5F;
+    		g = 0.5F;
+        	this.Appendage_r0_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks));
+        	this.Appendage_r0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks));
+        	this.Appendage_r1_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_r1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_l0_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.75F * (float)Math.PI));
+        	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.75F * (float)Math.PI));
+        	
         	this.Body_seg0.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
         	this.Body_seg1.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
         	this.Body_seg2.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, (float)l / 10.0F);  
     	}
+    	else if (i > 0) {
+    		this.Appendage_l0_seg0.rotateAngleX = GradientAnimation(-1.6845917940249266F, -1.6390387005478748F, (float)i / 15.0F);
+    		this.Appendage_l0_seg0.rotateAngleY = GradientAnimation(-2.0943951023931953F, 0.31869712141416456F, (float)i / 15.0F);
+    		this.Appendage_l1_seg0.rotateAngleY = GradientAnimation(-1.9577358219620393F, 0.5009094953223726F, (float)i / 15.0F);
+    		
+    		this.Appendage_r0_seg0.rotateAngleX = GradientAnimation(-1.6845917940249266F, -1.6390387005478748F, (float)i / 15.0F);
+    		this.Appendage_r0_seg0.rotateAngleY = GradientAnimation(2.0943951023931953F, -0.31869712141416456F, (float)i / 15.0F);
+    		this.Appendage_r1_seg0.rotateAngleY = GradientAnimation(1.9577358219620393F, -0.5009094953223726F, (float)i / 15.0F);
+    		
+        	this.Body_seg0.rotateAngleX = (i * -0.8F / 15.0F) + 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));
+        	this.Body_seg1.rotateAngleX = (i * -0.8F / 15.0F) + 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));
+        	this.Body_seg2.rotateAngleX = (i * -1.8F / 15.0F) + 0.6829473363053812F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));  
+    	}
     	else {
-        	this.Body_seg0.rotateAngleX = (i * -0.8F / 15.0F) + 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * ageInTicks));
-        	this.Body_seg1.rotateAngleX = (i * -0.8F / 15.0F) + 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * ageInTicks));
-        	this.Body_seg2.rotateAngleX = (i * -1.8F / 15.0F) + 0.6829473363053812F + (f * -0.07F * MathHelper.sin(0.03F * ageInTicks));  
+    		g = 0.1F;
+        	this.Appendage_r0_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks));
+        	this.Appendage_r0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks));
+        	this.Appendage_r1_seg0.rotateAngleY = 0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_r1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.25F * (float)Math.PI));
+        	this.Appendage_l0_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l0_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.50F * (float)Math.PI));
+        	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.75F * (float)Math.PI));
+        	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.75F * (float)Math.PI));
+        	
+        	this.Body_seg0.rotateAngleX = 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));
+        	this.Body_seg1.rotateAngleX = 0.27314402793711257F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));
+        	this.Body_seg2.rotateAngleX = 0.6829473363053812F + (f * -0.07F * MathHelper.sin(0.03F * Ticks));  
     	}
     }
 }

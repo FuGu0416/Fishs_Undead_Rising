@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
@@ -21,6 +22,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityTameable;
@@ -78,6 +80,7 @@ public class EntityZombiePiranha extends EntityAquaMob{
                 return !(p_apply_1_ instanceof EntityZombiePiranha || p_apply_1_ instanceof EntityCreeper) && ((EntityMob)p_apply_1_).getHealth() < ((EntityMob)p_apply_1_).getMaxHealth();
             }
         }));
+    	this.targetTasks.addTask(5, new EntityAIPickupMeat<>(this, EntityItem.class, true));
     }
 
     protected void applyEntityAttributes()

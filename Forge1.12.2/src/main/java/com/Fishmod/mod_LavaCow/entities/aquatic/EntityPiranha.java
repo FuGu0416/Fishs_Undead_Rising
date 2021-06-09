@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.aquatic;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
@@ -12,6 +13,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -39,6 +41,7 @@ public class EntityPiranha extends EntityZombiePiranha{
                     return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
+    	this.targetTasks.addTask(5, new EntityAIPickupMeat<>(this, EntityItem.class, true));
     }
     
     //@Override

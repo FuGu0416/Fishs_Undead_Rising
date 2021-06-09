@@ -9,6 +9,8 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelCrown;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIFollowEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIGuardingEntity;
+import com.Fishmod.mod_LavaCow.init.FishItems;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -70,7 +72,7 @@ public class ItemSkeletonKingCrown extends ItemArmor {
     
 	@Override
 	public boolean getIsRepairable(ItemStack armour, ItemStack material) {
-		return material.getItem() == Items.GOLD_INGOT;
+		return material.getItem() == FishItems.HATRED_SHARD;
 	}
     
     /**

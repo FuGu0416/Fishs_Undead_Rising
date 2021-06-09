@@ -223,7 +223,10 @@ public class Modconfig {
 				new String[] {
 						"minecraft:zombie",
 						"mod_lavacow:zombiefrozen",
-						"mod_lavacow:zombiemushroom"},
+						"mod_lavacow:zombiemushroom",
+						"mod_lavacow:unburied",
+						"mod_lavacow:mummy",
+						},
 		"Allow Parasite to spawn from listed mob. Ex. \"minecraft:zombie\" or \"mod_lavacow:zombiefrozen\"");
 		
 		pSpawnRate_UndeadSwine = config.get("Undead Swine", "undeadswine spawn rate", 15, "Set the spawn rate of Undead swine [0-10000]", 0, 10000).getInt(15);

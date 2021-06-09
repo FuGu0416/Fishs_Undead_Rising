@@ -8,8 +8,11 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
+import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
+import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
@@ -31,6 +34,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
@@ -51,6 +55,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
@@ -60,6 +65,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -383,6 +389,45 @@ public class ModEventHandler {
 		
 		if(Heart != null)
 			ItemGoldenHeart.onTick(Heart, player);
+		
+		if(player.world.getDifficulty() != EnumDifficulty.PEACEFUL && player.world.rand.nextFloat() < 0.1F)
+			for (EntityItem entityItem : player.world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(5.0F, 5.0F, 5.0F))) {
+		    	if(((EntityItem) entityItem).getItem().getItem() instanceof ItemFood && ((ItemFood)((EntityItem) entityItem).getItem().getItem()).isWolfsFavoriteMeat()) {	
+					BlockPos pos = entityItem.getPosition();
+	
+		            if(entityItem.isInWater() && BiomeDictionary.hasType(player.world.getBiome(pos), Type.WET)) {     		            			         	            	
+						for(int i = 0; i < 2 + player.world.rand.nextInt(3); i++) {	    				
+		    				double posX = pos.getX() + ((player.world.rand.nextDouble() * 5.0D) - 2.5D);
+		    				double posY = pos.getY();
+		    				double posZ = pos.getZ() + ((player.world.rand.nextDouble() * 5.0D) - 2.5D);
+		    				
+		    				if(player.world.getBlockState(new BlockPos(posX, posY, posZ)).getMaterial() == Material.WATER) {
+		    					if(SpawnUtil.isDay(player.world)) {
+		    						EntityPiranha fish = new EntityPiranha(player.world);
+		    						
+		    						fish.setPositionAndRotation(posX, posY, posZ, player.world.rand.nextFloat() * 360.0f, 0.0f);
+				    				player.world.spawnEntity(fish);
+				    				
+				    				if(entityItem != null) {
+				    					entityItem.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+				    					entityItem.setDead();
+				    				}	
+		    					} else {
+		    						EntityZombiePiranha fish = new EntityZombiePiranha(player.world);
+			    					
+		    						fish.setPositionAndRotation(posX, posY, posZ, player.world.rand.nextFloat() * 360.0f, 0.0f);
+				    				player.world.spawnEntity(fish);
+				    				
+				    				if(entityItem != null) {
+				    					entityItem.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+				    					entityItem.setDead();
+				    				}		    						
+		    					}
+		    				}
+		    			}
+		            }
+		    	}
+			}
     }
     
     @SubscribeEvent
