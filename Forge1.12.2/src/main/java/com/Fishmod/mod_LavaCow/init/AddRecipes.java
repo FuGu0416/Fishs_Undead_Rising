@@ -79,6 +79,7 @@ public class AddRecipes {
 	    	VillagerRegistry.VillagerProfession butcher=ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:butcher"));
 	    	cleric.getCareer(1).addTrade(1,new TradeHandler.TradeClericLv1());
 	    	cleric.getCareer(1).addTrade(3,new TradeHandler.TradeClericLv3());
+	    	cleric.getCareer(1).addTrade(4,new TradeHandler.TradeClericLv4());
 	    	//farmer.getCareer(1).addTrade(1,new TradeHandler.TradeFishermanLv1());
 	    	farmer.getCareer(1).addTrade(2,new TradeHandler.TradeFishermanLv2());
 	    	butcher.getCareer(0).addTrade(2,new TradeHandler.TradeButcherLv2());
@@ -109,7 +110,8 @@ public class AddRecipes {
 	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.PTERA_WING_COOKED);
 	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.MOLTENBEEF);
 	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PLAGUED_PORKCHOP);
-	    	OreDictionary.registerOre("foodSwedishmeatballs", FishItems.MEATBALL);   	
+	    	OreDictionary.registerOre("foodSwedishmeatballs", FishItems.MEATBALL);   
+	    	OreDictionary.registerOre("paper", FishItems.CURSEWEAVE_CLOTH);
 	    }
 	    
 	    public static BannerPattern addBannerPattern(String name, ItemStack ItemStackIn) {

@@ -64,7 +64,7 @@ item.mod_lavacow.swinearmor_boots.name=疫豬短靴
 item.mod_lavacow.zombiepiranha_item.name=群獵者
 item.mod_lavacow.zombiepiranha_item_cooked.name=烤群獵者
 item.mod_lavacow.piranhalauncher.name=群獵者發射器
-item.mod_lavacow.cursed_fabric.name=咒織布
+item.mod_lavacow.cursed_fabric.name=織布碎塊
 item.mod_lavacow.cursed_bandage.name=寵愛繃帶
 item.mod_lavacow.holy_sludge.name=聖輝軟泥
 item.mod_lavacow.holy_grenade.name=神聖手榴彈
@@ -98,6 +98,7 @@ item.mod_lavacow.skeletonking_crown.name=統御之冠
 item.mod_lavacow.emblem_of_king.name=王之徽紀
 item.mod_lavacow.beast_claw.name=蠻獸爪
 item.mod_lavacow.hatred_shard.name=萬軍追憶
+item.mod_lavacow.curseweave_cloth.name=咒織布
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼

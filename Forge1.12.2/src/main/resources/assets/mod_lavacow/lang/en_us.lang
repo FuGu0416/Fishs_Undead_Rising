@@ -61,7 +61,7 @@ item.mod_lavacow.swinearmor_boots.name=Swine Boots
 item.mod_lavacow.zombiepiranha_item.name=Swarmer
 item.mod_lavacow.zombiepiranha_item_cooked.name=Cooked Swarmer
 item.mod_lavacow.piranhalauncher.name=Swarmer Launcher
-item.mod_lavacow.cursed_fabric.name=Cursed Fabric
+item.mod_lavacow.cursed_fabric.name=Curseweave Fabric
 item.mod_lavacow.cursed_bandage.name=Pet Bandage
 item.mod_lavacow.holy_sludge.name=Holy Sludge
 item.mod_lavacow.holy_grenade.name=Holy Grenade
@@ -95,6 +95,7 @@ item.mod_lavacow.skeletonking_crown.name=The Crown of Rule
 item.mod_lavacow.emblem_of_king.name=Emblem of King
 item.mod_lavacow.beast_claw.name=Beast Claw
 item.mod_lavacow.hatred_shard.name=Memory of a Thousand Army
+item.mod_lavacow.curseweave_cloth.name=Curseweave Cloth
 
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
