@@ -204,6 +204,18 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     	}
     }
     
+    public int containsItem(Item itemIn)
+    {
+    	if (!getEntityWorld().isRemote) {
+			for (int i = 0; i < this.inventory.size();i++)
+				if (this.inventory.get(i).getItem().equals(itemIn)) {
+					return i;
+				}			
+    	}
+    	
+    	return -1;
+    }
+    
     private void EmergencyFood()
     {
     	if (!getEntityWorld().isRemote)
@@ -497,8 +509,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-       Item item = stack.getItem();
-       return item == FishItems.CANEROTTENMEAT;
+       return stack.getItem().equals(FishItems.CANEROTTENMEAT);
     }
     
     /**
@@ -566,7 +577,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     }
 	
 	public int getVoidSkin() {
-		return 3;//RenderMimic.getVoidSkin();
+		return 3;
 	}
     
     public boolean isAggressive()
@@ -728,6 +739,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 	* Called when the mob's health reaches 0.
 	*/
 	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		
 		if (!getEntityWorld().isRemote) {
 			for (ItemStack is : this.inventory)
 				if (!is.isEmpty()) {
@@ -735,8 +748,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 				}
 		}
 
-		this.inventory.clear();
-		
-		super.onDeath(cause);
+		this.inventory.clear();	
 	}
 }

@@ -7,6 +7,7 @@ import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
 import com.Fishmod.mod_LavaCow.compat.QuarkCompatBridge;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;
 import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.proxy.IProxy;
 import com.Fishmod.mod_LavaCow.util.CreativeTab;
 //import com.Fishmod.mod_LavaCow.proxy.ServerProxy;
@@ -68,11 +69,11 @@ public class mod_LavaCow {
         
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
         NETWORK_WRAPPER.registerMessage(PacketMountSpecial.class, PacketMountSpecial.class, 0, Side.SERVER);
+        NETWORK_WRAPPER.registerMessage(PacketParticle.class, PacketParticle.class, 0, Side.CLIENT);
     }
  
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        //logger.info("mod_LavaCow.NAME " + "says hi!");
         MinecraftForge.EVENT_BUS.register(new ModEventHandler());
         MinecraftForge.TERRAIN_GEN_BUS.register(new ModEventHandler());
         MinecraftForge.EVENT_BUS.register(Modconfig.INSTANCE);

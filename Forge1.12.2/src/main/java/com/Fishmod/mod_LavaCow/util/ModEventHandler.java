@@ -26,6 +26,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
 
 import net.minecraft.block.material.Material;
@@ -146,6 +147,26 @@ public class ModEventHandler {
                 world.spawnEntity(entityparasite);
     		}
     	}			
+    	
+    	if (entity instanceof EntityMimic) {
+    		int ItemPos = ((EntityMimic)entity).containsItem(Items.TOTEM_OF_UNDYING);
+    		
+    		if(ItemPos != -1) {
+            	for (int i = 0; i < 5; ++i)
+                {
+                    double d0 = entity.posX + (double)(new Random().nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    double d1 = entity.posY + (double)(new Random().nextFloat() * entity.height);
+                    double d2 = entity.posZ + (double)(new Random().nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.TOTEM, d0, d1, d2));
+                }
+            	entity.playSound(SoundEvents.ITEM_TOTEM_USE, 1.0F, 1.0F);
+    			
+    			event.setCanceled(true);
+    			
+    			((EntityMimic)entity).inventory.get(ItemPos).shrink(1);
+    			event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
+    		}
+    	}
     }
     
     @SubscribeEvent
@@ -456,7 +477,8 @@ public class ModEventHandler {
     		&& event.getWorld().provider.getDimension() == DimensionType.OVERWORLD.getId()
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
     		&& Modconfig.pSpawnRate_Parasite > 0
-    		) {   
+    		) 
+    	{          	
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
     		entityparasite.setSkin(1);
             entityparasite.setLocationAndAngles(event.getPos().getX(), event.getPos().getY()+1.0D, event.getPos().getZ(), 0.0F, 0.0F);

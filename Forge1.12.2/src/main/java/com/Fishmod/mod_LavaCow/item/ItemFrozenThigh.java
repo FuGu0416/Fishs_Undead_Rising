@@ -16,9 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemFrozenThigh extends ItemFishCustomFood
-{	
-	//private final float attackDamage = 5.0f;
-	
+{		
 	public ItemFrozenThigh(String registryName, int amount, float saturation, boolean isWolfFood, int duration) {
     	super(registryName, amount, saturation, isWolfFood, duration, true);
         this.setMaxStackSize(1);

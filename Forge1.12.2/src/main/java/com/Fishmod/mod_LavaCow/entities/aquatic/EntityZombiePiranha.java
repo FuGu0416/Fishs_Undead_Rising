@@ -25,6 +25,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -65,7 +66,9 @@ public class EntityZombiePiranha extends EntityAquaMob{
     
     protected void applyEntityAI() {
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	if(Modconfig.Piranha_AnimalAttack)
+    	
+    	if(Modconfig.Piranha_AnimalAttack) {
+    		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntitySquid>(this, EntitySquid.class, true));
     		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, true, true, new Predicate<Entity>()
             {
                 public boolean apply(@Nullable Entity p_apply_1_)
@@ -73,6 +76,7 @@ public class EntityZombiePiranha extends EntityAquaMob{
                     return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
+    	}
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityMob.class, 0, true, true, new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)

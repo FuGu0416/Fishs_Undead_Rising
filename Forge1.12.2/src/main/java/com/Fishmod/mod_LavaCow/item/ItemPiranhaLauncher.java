@@ -87,7 +87,6 @@ public class ItemPiranhaLauncher extends ItemBow{
 	
 		@Override
 		protected boolean isArrow(ItemStack stack) {
-			//return stack.getItem() == FishItems.ZOMBIEPIRANHA_ITEM;
 			return stack.getItem().getUnlocalizedName().equalsIgnoreCase(this.ammo);
 		}
 		
@@ -101,17 +100,16 @@ public class ItemPiranhaLauncher extends ItemBow{
 			ItemStack stack = playerIn.getHeldItem(handIn);
 		         boolean flag = playerIn.isCreative() || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 		         ItemStack itemstack = this.findAmmo(playerIn);
-		         //System.out.println("\"" + stack.getItem().getUnlocalizedName() + "\" \"" + this.ammo + "\"");
+
 		         if (!itemstack.isEmpty() || flag) {
 		             if (itemstack.isEmpty()) {
-		                //itemstack = new ItemStack(FishItems.ZOMBIEPIRANHA_ITEM);
 		            	 itemstack = new ItemStack(Item.getByNameOrId(this.ammo));
 		             }
 		         }
 		         else return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
 		         
 		         boolean flag1 = playerIn.isCreative() || (this.isArrow(itemstack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0);
-		         /*if(!flag1)*/
+	
 		         if (!worldIn.isRemote) {
 					 Vec3d lookVec = playerIn.getLookVec();
 					 
@@ -175,6 +173,6 @@ public class ItemPiranhaLauncher extends ItemBow{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
-			list.add(TextFormatting.YELLOW/* + "" + TextFormatting.ITALIC*/ + I18n.format(this.Tooltip));
+			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip));
 		}
 }

@@ -107,9 +107,6 @@ public class ModelFoglet extends ModelBase {
             this.leg_l.rotateAngleX = -2.0032889154390916F + MathHelper.cos(ageInTicks * 0.3F + 0.2F * (float)Math.PI) * 0.4F;            
             this.torso.setRotationPoint(-0.0F, 8.0F, -3.0F);
             this.torso.rotateAngleX = 0.5009094953223726F;
-            //this.torso.rotateAngleY = entityIn.rotationYaw * 0.017453292F;
-            //this.setRotateAngle(torso, 0.5009094953223726F, 0.0F, 0.0F);
-            //System.out.println("O_O catch" + this.torso.rotateAngleY);
         }
         else if(((EntityFoglet) entityIn).getIsHanging()) {
             this.head.rotateAngleX = -1.1383037381507017F + headPitch * 0.017453292F;
@@ -117,7 +114,6 @@ public class ModelFoglet extends ModelBase {
             this.setRotateAngle(leg_r, -0.5009094953223726F, 0.0F, 0.0F);
             this.torso.setRotationPoint(-0.0F, 16.0F, 0.0F);
             this.torso.rotateAngleX = -2.86844862565268F;
-            //this.setRotateAngle(torso, -2.86844862565268F, 0.0F, 0.0F);
         }
         else {
             this.head.rotateAngleX = -0.5009094953223726F + headPitch * 0.017453292F;
@@ -125,11 +121,7 @@ public class ModelFoglet extends ModelBase {
 	        this.leg_l.rotateAngleX = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / f;   
 	        this.torso.setRotationPoint(-0.0F, 8.0F, -3.0F);
 	        this.torso.rotateAngleX = 0.5009094953223726F;
-	        //this.setRotateAngle(torso, 0.5009094953223726F, 0.0F, 0.0F);
         }
-        
-        //this.arm_r.rotateAngleX = (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-        //this.arm_l.rotateAngleX = (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
     }
     
     /**

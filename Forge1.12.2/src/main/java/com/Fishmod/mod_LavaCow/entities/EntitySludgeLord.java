@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
@@ -9,6 +10,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
@@ -30,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -324,16 +327,24 @@ public class EntitySludgeLord extends EntityMob{
             for (int i = 0; i < Modconfig.SludgeLord_Ability_Num; ++i)
             {
                 BlockPos blockpos = (new BlockPos(EntitySludgeLord.this)).add(-2 + EntitySludgeLord.this.rand.nextInt(5), 1, -2 + EntitySludgeLord.this.rand.nextInt(5));
-                EntityLilSludge entityvex = new EntityLilSludge(EntitySludgeLord.this.world);
-                entityvex.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-                entityvex.setHealth(entityvex.getMaxHealth());
-                entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                entityvex.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
-                entityvex.setOwnerId(EntitySludgeLord.this.getUniqueID());
-                entityvex.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
+                EntityLilSludge entity = new EntityLilSludge(EntitySludgeLord.this.world);
+                entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+                entity.setHealth(entity.getMaxHealth());
+                entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                entity.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                entity.setOwnerId(EntitySludgeLord.this.getUniqueID());
+                entity.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
                 
                 if(!EntitySludgeLord.this.world.isRemote)
-                	EntitySludgeLord.this.world.spawnEntity(entityvex);
+                	EntitySludgeLord.this.world.spawnEntity(entity);
+                
+                for (int j = 0; j < 24; ++j)
+                {
+                	double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                	double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
+                	double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                	mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+                }
             }
         }
 

@@ -24,10 +24,7 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 	public PacketMountSpecial() {
 	}
 	
-	public PacketMountSpecial(int Id, double posX, double posY, double posZ) {
-		
-		//System.out.println("?_? " + Id);
-		
+	public PacketMountSpecial(int Id, double posX, double posY, double posZ) {		
 		this.Id = Id;
 		this.posX = posX;
 		this.posY = posY;
@@ -47,7 +44,6 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 			entity.world.spawnEntity(entityammo);
 			entity.world.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
    	 	}
-		//System.out.println("O_O " + message.posX + " " + message.posY + " " + message.posZ + entity.getName());
 		
 		return null;
 	}

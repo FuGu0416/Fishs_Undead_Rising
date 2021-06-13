@@ -199,7 +199,6 @@ public class ModelVespa extends ModelFlyingBase {
     	this.Throax_base.rotationPointY = 7.0F + 5.0F * MathHelper.sin(ageInTicks * vibrate_rate);
     	
     	if(this.state.equals(ModelFlyingBase.State.FLYING)) {
-    		//System.out.println("1");
 	    	this.Waist.rotateAngleX = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.rotateAngleX = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen2.rotateAngleX = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
@@ -215,7 +214,6 @@ public class ModelVespa extends ModelFlyingBase {
 	    	this.setRotateAngle(leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);
     	}
     	else if(this.state.equals(ModelFlyingBase.State.ATTACKING)) {
-    		//System.out.println("2");
 	    	this.Waist.rotateAngleX = -0.18F * MathHelper.abs(10 - ((EntityFlyingMob)entityIn).getAttackTimer());
 	    	this.UAbdomen1.rotateAngleX = -0.18F * MathHelper.abs(10 - ((EntityFlyingMob)entityIn).getAttackTimer());
 	    	this.UAbdomen2.rotateAngleX = -0.20F * MathHelper.abs(10 - ((EntityFlyingMob)entityIn).getAttackTimer());
@@ -231,7 +229,6 @@ public class ModelVespa extends ModelFlyingBase {
 	    	this.setRotateAngle(leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
     	}
     	else {
-    		//System.out.println("3");
 	    	this.Waist.rotateAngleX = -0.028F * (10 - this.HoverCounter) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.rotateAngleX = -0.028F * (10 - this.HoverCounter) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen2.rotateAngleX = -0.028F * (10 - this.HoverCounter) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;

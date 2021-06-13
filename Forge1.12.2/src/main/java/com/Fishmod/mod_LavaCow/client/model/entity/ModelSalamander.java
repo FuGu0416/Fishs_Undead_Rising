@@ -388,7 +388,6 @@ public class ModelSalamander extends FishModelBase {
     	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
-    	//if(!entityIn.isChild())System.out.println("OXO " + i + " " + this.Body.rotationPointY);
     	
     	if(i <= Anime_threshold[0] && i > Anime_threshold[1]) {
     		this.Head.rotateAngleZ = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));

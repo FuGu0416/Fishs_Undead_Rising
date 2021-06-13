@@ -41,7 +41,6 @@ public class ItemRavenWhistle extends ItemFishCustom {
     	if (!itemStack.hasTagCompound()) {
 	    	NBTTagCompound nbttagcompound = new NBTTagCompound();
 	        itemStack.setTagCompound(nbttagcompound);
-	        //itemStack.getTagCompound().setString("OrderID", "C");
     	}
     }
     
@@ -50,7 +49,6 @@ public class ItemRavenWhistle extends ItemFishCustom {
         if (!stack.hasTagCompound()) {
             NBTTagCompound nbttagcompound = new NBTTagCompound();         
         	stack.setTagCompound(nbttagcompound);
-        	//stack.getTagCompound().setString("OrderID", "D");
         }
     }
     

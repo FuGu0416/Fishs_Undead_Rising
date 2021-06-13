@@ -149,28 +149,15 @@ public class LootTableHandler {
 		for(String S : Modconfig.DreamCatcher_spawn) {
 			String[] S_splt = S.split(",");
 			Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(S_splt[0]));
-			//Entity entityliving = EntityRegistry.getEntry(entityClass).newInstance(null);
+			
 			if(entityClass != null && S_splt.length == 4 && Integer.parseInt(S_splt[1]) > 0 &&Integer.parseInt(S_splt[2]) > 0 &&Integer.parseInt(S_splt[3]) > 0) {
 				DREAMCATCHER_LIST.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, Integer.parseInt(S_splt[1]), Integer.parseInt(S_splt[2]), Integer.parseInt(S_splt[3])));
-				//System.out.println("O~O " + entityClass.getName());
 			}
 		}
 		
 		for(String S : Modconfig.Parasite_Hostlist) {
 			PARASITE_HOSTLIST.add(new ResourceLocation(S));
 		}
-		
-		/*LOOT_INTESTINE.put(Items.SLIME_BALL, 0.40f);
-		LOOT_INTESTINE.put(Items.DYE, 0.40f);
-		LOOT_INTESTINE.put(FishItems.SHARPTOOTH, 0.10f);
-		LOOT_INTESTINE.put(Items.BEETROOT_SEEDS, 0.10f);
-		LOOT_INTESTINE.put(Items.WHEAT_SEEDS, 0.10f);
-		LOOT_INTESTINE.put(Items.MELON_SEEDS, 0.10f);
-		LOOT_INTESTINE.put(Items.PUMPKIN_SEEDS, 0.10f);
-		LOOT_INTESTINE.put(Items.CLAY_BALL, 0.10f);
-		LOOT_INTESTINE.put(Items.GOLD_NUGGET, 0.05f);
-		LOOT_INTESTINE.put(Items.IRON_NUGGET, 0.05f);
-		LOOT_INTESTINE.put(Items.DIAMOND, 0.01f);*/
 	}
 	
 	public static void dropRareLoot(Entity entityIn, Item itemIn, int chance,@Nullable Enchantment enchantmentIn, int enchantlevel, int looting) {
