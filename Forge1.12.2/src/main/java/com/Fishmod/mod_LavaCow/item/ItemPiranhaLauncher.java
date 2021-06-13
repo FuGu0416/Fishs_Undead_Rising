@@ -131,19 +131,20 @@ public class ItemPiranhaLauncher extends ItemBow{
 					 if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
 						 ((EntityEnchantableFireBall) entityammo).setFlame(true);
 					  }
-					  entityammo.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height), playerIn.posZ + lookVec.z * 1.0D);
-					  worldIn.spawnEntity(entityammo);
-					  stack.damageItem(1, playerIn);
-					  worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
-					  if (!flag1 && !playerIn.isCreative()) {
-					     itemstack.shrink(1);
-					     if (itemstack.isEmpty()) {
-					        playerIn.inventory.deleteStack(itemstack);
-					     }
-					  }
-					  playerIn.getCooldownTracker().setCooldown(this, 20 - (j * 2));
+					 				 
+					 entityammo.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height), playerIn.posZ + lookVec.z * 1.0D);
+					 worldIn.spawnEntity(entityammo);
+					 stack.damageItem(1, playerIn);
+					 worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
+					 if (!flag1 && !playerIn.isCreative()) {
+						itemstack.shrink(1);
+						if (itemstack.isEmpty()) {
+							playerIn.inventory.deleteStack(itemstack);
+						}
+					 }
+					 playerIn.getCooldownTracker().setCooldown(this, 20 - (j * 2));
 					  
-					  return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+					 return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 		         }
 			
 			return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));

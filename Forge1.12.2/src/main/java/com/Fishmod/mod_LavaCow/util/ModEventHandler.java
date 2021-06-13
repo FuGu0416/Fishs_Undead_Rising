@@ -15,6 +15,7 @@ import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
@@ -123,7 +124,7 @@ public class ModEventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isRemote && world.provider.isSurfaceWorld() //&& entity.ticksExisted >= 60  
+    	if (!world.isRemote && world.provider.isSurfaceWorld()
     			&& ((LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
     			|| event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED)))
     	{
@@ -132,7 +133,8 @@ public class ModEventHandler {
     		EntityParasite passenger = EntityParasite.gotParasite(entity.getPassengers());
     		if(event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED))
     			var6 = event.getEntityLiving().getActivePotionEffect(ModMobEffects.INFESTED).getAmplifier();
-    		for(int var3 = var6; var3 < var2 + var6; ++var3)
+    		
+    		for(int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3)
     		{
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
@@ -501,6 +503,24 @@ public class ModEventHandler {
 		
 		if(Armor_Famine_lvl && event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase) event.getSource().getTrueSource()).isPotionActive(MobEffects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
+		}
+		
+		if(event.getSource().getTrueSource() instanceof EntityLilSludge) {
+			EntityLivingBase Owner = ((EntityLilSludge)event.getSource().getTrueSource()).getOwner();
+			
+			event.setAmount(event.getAmount() + ((EntityLilSludge)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
+			
+			if(Owner != null)
+				Owner.heal(event.getAmount() * ((EntityLilSludge)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
+		}
+		
+		if(event.getSource().getTrueSource() instanceof EntityUnburied) {
+			EntityLivingBase Owner = ((EntityUnburied)event.getSource().getTrueSource()).getOwner();
+			
+			event.setAmount(event.getAmount() + ((EntityUnburied)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
+			
+			if(Owner != null)
+				Owner.heal(event.getAmount() * ((EntityUnburied)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
 		}
     	
     	if(event.getEntityLiving().isBurning() && event.getSource().getTrueSource() instanceof EntityPlayer) {   		

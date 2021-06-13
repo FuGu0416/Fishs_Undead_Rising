@@ -25,6 +25,7 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -90,7 +91,7 @@ public class ItemSkeletonKingCrown extends ItemArmor {
 	    		
 	    		if(!modified) {
 	    			Skeleton.setAttackTarget(null);
-	    			
+	    			Skeleton.playSound(SoundEvents.EVOCATION_ILLAGER_CAST_SPELL, 1.0F, 1.0F);
 		        	for (int i = 0; i < 16; ++i)
 		            {
 		                double d0 = new Random().nextGaussian() * 0.02D;

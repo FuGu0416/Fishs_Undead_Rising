@@ -6,12 +6,15 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -30,10 +33,13 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -53,6 +59,15 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
 	protected int spellTicks;
 	private boolean BirthAnimation;
 	private int limitedLifeTicks;
+	private int fire_aspect;
+	private int sharpness;
+	private int knockback;
+	private int bane_of_arthropods;
+	private int smite;
+	private int lifesteal;
+	private int poisonous;
+	private int corrosive;
+	private int unbreaking;
 	
 	public EntityUnburied(World worldIn)
     {
@@ -102,6 +117,16 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     public void setLimitedLife(int limitedLifeTicksIn)
     {
         this.limitedLifeTicks = limitedLifeTicksIn;
+    }
+    
+    public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
+    	return (0.5f * this.sharpness + 0.5f)
+				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
+				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite * 2.5f : 0);
+    }
+    
+    public int getLifestealLevel() {
+    	return this.lifesteal;
     }
     
     public boolean isSpellcasting()
@@ -244,6 +269,25 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
 	        this.world.setEntityState(this, (byte)4);
 	        this.applyEnchantments(this, entityIn);
 	        
+            if(entityIn instanceof EntityLivingBase) {
+	            if(this.fire_aspect > 0)
+	            	entityIn.setFire((this.fire_aspect * 4) - 1);
+	            
+	            if(this.knockback > 0)
+	            	((EntityLivingBase)entityIn).knockBack(this, (float)this.knockback * 0.5F, (this.posX - entityIn.posX)/this.getDistance(entityIn), (this.posZ - entityIn.posZ)/this.getDistance(entityIn));
+	            
+	            if(this.bane_of_arthropods > 0 && (((EntityLivingBase) entityIn).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
+	                int i = 20 + this.rand.nextInt(10 * bane_of_arthropods);
+	                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+	            }
+	            
+	            if(this.poisonous > 0)
+	    			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, this.poisonous - 1));
+	            
+	            if(this.corrosive > 0)
+	            	((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4*20, this.corrosive - 1));
+            }
+            
             return true;
         }
         else
@@ -388,6 +432,43 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+    
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.setLimitedLife(compound.getInteger("LifeTicks"));
+    	this.fire_aspect = compound.getInteger("fire_aspect");
+    	this.sharpness = compound.getInteger("sharpness");
+    	this.knockback = compound.getInteger("knockback");
+    	this.bane_of_arthropods = compound.getInteger("bane_of_arthropods");
+    	this.smite = compound.getInteger("fire_aspect");
+    	this.lifesteal = compound.getInteger("lifesteal");
+    	this.poisonous = compound.getInteger("poisonous");
+    	this.corrosive = compound.getInteger("corrosive");
+    	this.unbreaking = compound.getInteger("unbreaking");   
+    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.LilSludge_Health + ((float)this.unbreaking * 2.0F));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("LifeTicks", this.limitedLifeTicks - this.ticksExisted);
+        compound.setInteger("fire_aspect", this.fire_aspect);
+        compound.setInteger("sharpness", this.sharpness);
+        compound.setInteger("knockback", this.knockback);
+        compound.setInteger("bane_of_arthropods", this.bane_of_arthropods);
+        compound.setInteger("smite", this.smite);
+        compound.setInteger("lifesteal", this.lifesteal);
+        compound.setInteger("poisonous", this.poisonous);
+        compound.setInteger("corrosive", this.corrosive);
+        compound.setInteger("unbreaking", this.unbreaking);      
     }
 
     /**
