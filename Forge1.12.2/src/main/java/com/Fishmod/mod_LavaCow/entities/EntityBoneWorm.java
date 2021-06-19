@@ -133,20 +133,20 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
 	        if(this.LocationFix > 0 && !this.isImmuneToFire && !this.isDigging()) {
 	        	this.extinguish();
 	        	this.isImmuneToFire = true;
-	        	this.diggingTimer[0] = 10;
+	        	this.diggingTimer[0] = 30;
 	        	this.world.setEntityState(this, (byte)6);
 	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
 	        }
 	        else if(this.LocationFix <= 0 && this.isImmuneToFire && !this.isDigging()) {
 	        	this.isImmuneToFire = false;
-	        	this.diggingTimer[1] = 10;
+	        	this.diggingTimer[1] = 20;
 	        	this.world.setEntityState(this, (byte)7);
 	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
 	        }
         }
         
 		if(this.isWalking() && state.isOpaqueCube()) {
-			if(this.LocationFix <= 3.5D)this.LocationFix += 0.25D;
+			if(this.LocationFix <= 3.5D)this.LocationFix += 0.125D;
 			if (world.isRemote)
 				for(int i = 0; i < 4; i++)
 					this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, blockId);
@@ -190,7 +190,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
 	         }
         }
         
-        if (this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget()) && this.getAttackTimer(0) == 7 && this.deathTime <= 0) {
+        if (this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget()) && this.getAttackTimer(0) == 7 && this.deathTime <= 0 && this.LocationFix == 0) {
         	this.spit(this.getAttackTarget());
         }
     	        
@@ -216,7 +216,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-    	if (this.LocationFix > 0)
+    	if (this.LocationFix > 3.0D)
         {
             return false;
         }
@@ -353,11 +353,11 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
     	}
     	else if (id == 6)
     	{
-    		this.diggingTimer[0] = 10;
+    		this.diggingTimer[0] = 30;
     	}    	
     	else if (id == 7)
     	{
-    		this.diggingTimer[1] = 10;
+    		this.diggingTimer[1] = 20;
     	}   	
     	else if (id == 11)
         {

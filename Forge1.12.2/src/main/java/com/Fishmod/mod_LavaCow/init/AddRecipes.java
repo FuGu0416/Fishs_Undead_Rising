@@ -88,6 +88,16 @@ public class AddRecipes {
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.INFESTATION), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_INFESTATION));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.INFESTATION), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_INFESTATION));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.INFESTATION), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_INFESTATION));
+	        
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_FRAGILE));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE), new ItemStack(Items.SUGAR), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_FRAGILE));
 	    }
 	    
 	    public static void addTrading() {

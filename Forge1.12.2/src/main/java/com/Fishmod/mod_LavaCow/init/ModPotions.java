@@ -14,4 +14,7 @@ public class ModPotions {
 	public static final PotionType INFESTATION = new PotionType(mod_LavaCow.MODID + ":infestation", new PotionEffect(ModMobEffects.INFESTED, 1800)).setRegistryName(mod_LavaCow.MODID + ":infestation");
 	public static final PotionType STRONG_INFESTATION = new PotionType(mod_LavaCow.MODID + ":infestation", new PotionEffect(ModMobEffects.INFESTED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_infestation");
 	public static final PotionType LONG_INFESTATION = new PotionType(mod_LavaCow.MODID + ":infestation", new PotionEffect(ModMobEffects.INFESTED, 3600)).setRegistryName(mod_LavaCow.MODID + ":long_infestation");
+	public static final PotionType FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 600)).setRegistryName(mod_LavaCow.MODID + ":fragile");
+	public static final PotionType STRONG_FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_fragile");
+	public static final PotionType LONG_FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_fragile");
 }

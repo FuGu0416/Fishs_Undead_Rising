@@ -178,9 +178,9 @@ public class ModelBoneWorm extends FishModelBase {
         	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.75F * (float)Math.PI));
         	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.75F * (float)Math.PI));
         	
-        	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
-        	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 10.0F);
-        	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, (float)k / 10.0F);  
+        	this.Body_seg0.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 30.0F);
+        	this.Body_seg1.rotateAngleX = GradientAnimation(0.27314402793711257F, 0.0F, (float)k / 30.0F);
+        	this.Body_seg2.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, (float)k / 30.0F);  
     	}
     	else if (l > 0) {
     		f = 3.5F;
@@ -194,9 +194,9 @@ public class ModelBoneWorm extends FishModelBase {
         	this.Appendage_l1_seg0.rotateAngleY = -0.6829473363053812F + (f * -0.16F * MathHelper.sin(f * g * Ticks + 0.75F * (float)Math.PI));
         	this.Appendage_l1_seg1.rotateAngleY = (f * -0.25F * MathHelper.sin(g * Ticks + 0.75F * (float)Math.PI));
         	
-        	this.Body_seg0.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
-        	this.Body_seg1.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 10.0F);
-        	this.Body_seg2.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, (float)l / 10.0F);  
+        	this.Body_seg0.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 20.0F);
+        	this.Body_seg1.rotateAngleX = GradientAnimation(0.0F, 0.27314402793711257F, (float)l / 20.0F);
+        	this.Body_seg2.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, (float)l / 20.0F);  
     	}
     	else if (i > 0) {
     		this.Appendage_l0_seg0.rotateAngleX = GradientAnimation(-1.6845917940249266F, -1.6390387005478748F, (float)i / 15.0F);

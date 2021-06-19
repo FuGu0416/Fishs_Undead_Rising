@@ -563,7 +563,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            return !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0;
+            return !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0 && !EntityBanshee.this.isAggressive();
         }
 
         /**

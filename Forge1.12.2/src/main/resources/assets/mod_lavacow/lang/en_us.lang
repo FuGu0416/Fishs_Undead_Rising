@@ -384,6 +384,8 @@ mob_effect.mod_lavacow:soiled=Soiled
 description.mob_effect.mod_lavacow:soiled=Prevent from eating or drinking.
 mob_effect.mod_lavacow:infested=Infested
 description.mob_effect.mod_lavacow:infested=Apply hunger and slowness, also spawn parasites when dead.
+mob_effect.mod_lavacow:fragile=Fragile
+description.mob_effect.mod_lavacow:fragile=Cause instant death when health is low.
 
 ##############
 # Potions #

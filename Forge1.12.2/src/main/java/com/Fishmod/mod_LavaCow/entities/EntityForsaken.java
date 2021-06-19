@@ -5,13 +5,18 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -19,6 +24,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -170,5 +176,34 @@ public class EntityForsaken extends AbstractSkeleton{
         this.setCombatTask();
                 
         return ientitylivingdata;
+    }
+    
+    public boolean attackEntityAsMob(Entity entityIn)
+    {
+        if (!super.attackEntityAsMob(entityIn))
+        {
+            return false;
+        }
+        else
+        {
+            if (entityIn instanceof EntityLivingBase)
+            {
+                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 2));
+            }
+
+            return true;
+        }
+    }
+    
+    protected EntityArrow getArrow(float p_190726_1_)
+    {
+        EntityArrow entityarrow = super.getArrow(p_190726_1_);
+
+        if (entityarrow instanceof EntityTippedArrow)
+        {
+            ((EntityTippedArrow)entityarrow).addEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 2));
+        }
+        
+        return entityarrow;
     }
 }

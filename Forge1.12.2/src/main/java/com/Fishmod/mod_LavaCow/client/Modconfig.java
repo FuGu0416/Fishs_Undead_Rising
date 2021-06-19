@@ -225,7 +225,7 @@ public class Modconfig {
 						"mod_lavacow:zombiefrozen",
 						"mod_lavacow:zombiemushroom",
 						"mod_lavacow:unburied",
-						"mod_lavacow:mummy",
+						"mod_lavacow:mummy"
 						},
 		"Allow Parasite to spawn from listed mob. Ex. \"minecraft:zombie\" or \"mod_lavacow:zombiefrozen\"");
 		
