@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.core;
 
 import java.util.UUID;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 
 import net.minecraft.block.Block;
@@ -9,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderServer;
 
@@ -71,5 +73,9 @@ public class SpawnUtil {
         			}
 
     	return null;
+    }
+    
+    public static TextComponentTranslation TimeupDeathMessage(Entity entityIn) {
+    	return new TextComponentTranslation("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});
     }
 }

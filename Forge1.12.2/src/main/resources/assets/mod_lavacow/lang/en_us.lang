@@ -466,3 +466,9 @@ advancements.mod_lavacow.kill_skeletonking.title=Long Live the King
 advancements.mod_lavacow.kill_skeletonking.description=Kill the Skeleton King
 advancements.mod_lavacow.kill_mummy.title=Death Is Only The Beginning
 advancements.mod_lavacow.kill_mummy.description=Kill a Mummy
+
+#################
+# Death Message #
+#################
+
+death.mod_lavacow.timeup=%1$s return to dust

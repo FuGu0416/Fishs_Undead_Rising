@@ -473,3 +473,9 @@ advancements.mod_lavacow.kill_skeletonking.title=吾王萬歲
 advancements.mod_lavacow.kill_skeletonking.description=殺死骷髏王
 advancements.mod_lavacow.kill_mummy.title=死亡只是個開始
 advancements.mod_lavacow.kill_mummy.description=殺死一頭木乃伊
+
+#################
+# Death Message #
+#################
+
+death.mod_lavacow.timeup=%1$s的生命消逝於塵土之中

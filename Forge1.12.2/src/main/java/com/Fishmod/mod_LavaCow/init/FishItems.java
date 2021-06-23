@@ -140,6 +140,7 @@ public class FishItems {
 	public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", ToolMaterial.DIAMOND, 3.0F, -2.4F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);	
 	public static final Item CURSEWEAVE_CLOTH = new ItemFishCustom("curseweave_cloth", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", ToolMaterial.IRON, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE);
+	public static final Item SKELETONKING_MACE = new ItemFishCustomWeapon("skeletonking_mace", ToolMaterial.DIAMOND, 8.0F, -3.1F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
@@ -29,6 +31,7 @@ import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
+import com.google.common.base.Predicate;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -36,13 +39,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemFood;
@@ -629,6 +637,32 @@ public class ModEventHandler {
     	
     	if(event.getEntity() != null && event.getEntity() instanceof EntityVillager)
     		((EntityVillager)event.getEntity()).tasks.addTask(1, new EntityAIAvoidEntity<>(((EntityVillager)event.getEntity()), EntityUnburied.class, 8.0F, 0.8D, 0.8D));
+    	
+    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton) {
+    		EntityAIBase remove = null;
+    		
+    	    for(EntityAITaskEntry task : ((AbstractSkeleton)event.getEntity()).targetTasks.taskEntries) {
+    	        if(task.action.getClass().getSimpleName().equals("EntityAINearestAttackableTarget")) {
+    	            remove = task.action;
+    	            break;
+    	        }
+    	    }
+    	    if(remove != null) {
+    	    	((AbstractSkeleton)event.getEntity()).targetTasks.removeTask(remove);
+    	    	((AbstractSkeleton)event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((AbstractSkeleton)event.getEntity()), EntityPlayer.class, 0, false, true, new Predicate<Entity>()
+    	        {
+    	            public boolean apply(@Nullable Entity p_apply_1_)
+    	            {
+    	            	if(p_apply_1_ instanceof EntityPlayer) {
+    	            		EntityPlayer target = (EntityPlayer) p_apply_1_;   	            		
+    	            		return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.SKELETONKING_CROWN));
+    	            	}
+    	            	
+	            		return true;
+    	            }
+    	        }));
+    	    }
+    	}
     }
     
     @SubscribeEvent

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -28,6 +29,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -148,8 +150,13 @@ public class EntityLilSludge extends EntityFishTameable{
     @Override
     public void onLivingUpdate()
     {
-    	if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    	
-        	this.attackEntityFrom(DamageSource.STARVE.setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
+    	if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    		
+            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
+            {
+                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+            }
+            this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
+            this.setDead();
         }
         
     	if (!Modconfig.SunScreen_Mode && !(this.getOwner() instanceof EntityPlayer) && this.world.isDaytime() && !this.world.isRemote)

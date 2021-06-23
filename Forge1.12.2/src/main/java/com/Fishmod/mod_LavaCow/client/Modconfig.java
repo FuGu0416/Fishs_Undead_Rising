@@ -338,7 +338,7 @@ public class Modconfig {
 		Forsaken_Health = config.get("Forsaken", "forsaken health", 30.0D, "Maximum Forsaken health [1-1000]", 1, 1000).getDouble(30.0D);
 		Forsaken_Attack = config.get("Forsaken", "forsaken attack", 4.0D, "Forsaken strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
-		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
+		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 360.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(360.0D);
 		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
 	
 		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);

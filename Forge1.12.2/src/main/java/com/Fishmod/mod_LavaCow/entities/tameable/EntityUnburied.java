@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -32,6 +33,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -195,7 +197,12 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
         }
         
         if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {        	       	
-        	this.attackEntityFrom(DamageSource.STARVE.setDamageIsAbsolute().setDamageBypassesArmor() , (float) Modconfig.Unburied_Health);
+            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
+            {
+                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+            }
+            this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
+            this.setDead();
         }
     	
     	if (!Modconfig.SunScreen_Mode && !(this.getOwner() instanceof EntityPlayer) && this.world.isDaytime() && !this.world.isRemote)
