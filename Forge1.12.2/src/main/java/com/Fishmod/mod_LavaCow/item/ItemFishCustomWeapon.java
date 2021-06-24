@@ -198,6 +198,10 @@ public class ItemFishCustomWeapon extends ItemSword{
 		{
 			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
 		}
+		else if(stack.getItem() == FishItems.SKELETONKING_MACE)
+		{
+        	target.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 4));
+		}
 		
 		stack.damageItem(1, attacker);
         return true;

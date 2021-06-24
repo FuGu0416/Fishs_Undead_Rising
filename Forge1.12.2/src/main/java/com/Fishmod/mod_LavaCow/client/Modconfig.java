@@ -222,6 +222,7 @@ public class Modconfig {
 		Parasite_Hostlist = config.getStringList("available host for parasite", "Parasite", 
 				new String[] {
 						"minecraft:zombie",
+						"minecraft:husk",
 						"mod_lavacow:zombiefrozen",
 						"mod_lavacow:zombiemushroom",
 						"mod_lavacow:unburied",

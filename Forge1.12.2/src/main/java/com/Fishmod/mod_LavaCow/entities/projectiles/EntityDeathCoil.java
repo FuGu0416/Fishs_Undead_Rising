@@ -57,8 +57,8 @@ public class EntityDeathCoil extends EntityThrowable {
 	    	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 	    	this.setDamage( (float) this.getThrower().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
 	    	result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage());
-	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.WITHER, 2 * 20 * (int)local_difficulty, 1));
-	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 3));
+	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.WITHER, 10 * 20 * (int)local_difficulty, 1));
+	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 10 * 20 * (int)local_difficulty, 2));
 	    	this.setDead();
 	    }
     }

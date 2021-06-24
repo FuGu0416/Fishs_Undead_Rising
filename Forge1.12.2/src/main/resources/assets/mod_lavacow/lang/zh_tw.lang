@@ -99,6 +99,7 @@ item.mod_lavacow.emblem_of_king.name=王之徽紀
 item.mod_lavacow.beast_claw.name=蠻獸爪
 item.mod_lavacow.hatred_shard.name=萬軍追憶
 item.mod_lavacow.curseweave_cloth.name=咒織布
+item.mod_lavacow.skeletonking_mace.name=『死亡』
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -356,6 +357,7 @@ tootip.mod_lavacow.kings_crown.1.desc2=髏髑也能完成征途
 tootip.mod_lavacow.skeletonking_crown=強迫周遭的骷髏成為你忠實的奴僕
 tootip.mod_lavacow.beast_claw.desc0=向前跳撲
 tootip.mod_lavacow.beast_claw.desc1=套裝(2)：跳撲同時能賦予力量(0:03)與加速(0:03)
+tootip.mod_lavacow.skeletonking_mace=攻擊同時賦予目標死亡之觸V(0:10)
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
@@ -387,7 +389,7 @@ mob_effect.mod_lavacow:soiled=玷汙
 description.mob_effect.mod_lavacow:soiled=防止進食或飲用
 mob_effect.mod_lavacow:infested=感染
 description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡時會有屍蛆爬出
-mob_effect.mod_lavacow:fragile=脆弱
+mob_effect.mod_lavacow:fragile=死亡之觸
 description.mob_effect.mod_lavacow:fragile=當生命低於一定程度時，立即死亡
 
 ##############
@@ -406,10 +408,10 @@ potion.effect.mod_lavacow:infestation=感染藥水
 splash_potion.effect.mod_lavacow:infestation=飛濺 感染藥水
 lingering_potion.effect.mod_lavacow:infestation=滯留 感染藥水
 tipped_arrow.effect.mod_lavacow:infestation=感染之箭
-potion.effect.mod_lavacow:fragile=脆弱藥水
-splash_potion.effect.mod_lavacow:fragile=飛濺 脆弱藥水
-lingering_potion.effect.mod_lavacow:fragile=滯留 脆弱藥水
-tipped_arrow.effect.mod_lavacow:fragile=脆弱之箭
+potion.effect.mod_lavacow:fragile=死亡之觸藥水
+splash_potion.effect.mod_lavacow:fragile=飛濺 死亡之觸藥水
+lingering_potion.effect.mod_lavacow:fragile=滯留 死亡之觸藥水
+tipped_arrow.effect.mod_lavacow:fragile=死亡之觸之箭
 
 ################
 # Advancements #

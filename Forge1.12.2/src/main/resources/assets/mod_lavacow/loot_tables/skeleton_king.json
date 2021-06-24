@@ -185,103 +185,7 @@
 		                    "treasure": true
 		                }
                     ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:felarmor_helmet",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:felarmor_chestplate",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:felarmor_leggings",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:felarmor_boots",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:vespa_dagger",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:swinearmor_chestplate",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:swinearmor_leggings",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:swinearmor_boots",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
+                },              
                 {
                     "type": "item",
                     "weight": 1,
@@ -331,30 +235,6 @@
                 {
                     "type": "item",
                     "weight": 1,
-                    "name": "mod_lavacow:faminearmor_leggings",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:faminearmor_boots",
-					"functions":[
-		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
-		                    "treasure": true
-		                }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
                     "name": "mod_lavacow:spectral_dagger",
 					"functions":[
 		                {
@@ -368,6 +248,18 @@
                     "type": "item",
                     "weight": 1,
                     "name": "mod_lavacow:beast_claw",
+					"functions":[
+		                {
+		                    "function": "enchant_with_levels",
+		                    "levels": 30,
+		                    "treasure": true
+		                }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "mod_lavacow:skeletonking_mace",
 					"functions":[
 		                {
 		                    "function": "enchant_with_levels",
