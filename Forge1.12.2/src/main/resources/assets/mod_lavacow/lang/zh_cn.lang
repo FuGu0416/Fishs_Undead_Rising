@@ -107,11 +107,11 @@ material.mod_lavacow.scythe_claw.name=镰刀爪
 material.mod_lavacow.ectoplasm.name=灵浆
 
 modifier.mod_lavacow.broodmother.name=育母蜂
-modifier.mod_lavacow.broodmother.desc=§o享受虫满温暖的怀抱！ §r\n在攻击或破坏方块时概率诞生出巨蜂幼虫
+modifier.mod_lavacow.broodmother.desc=§o享受虫们温暖的怀抱！ §r\n在攻击或破坏方块时有概率诞生出巨蜂幼虫
 modifier.mod_lavacow.famine.name=饥荒
-modifier.mod_lavacow.famine.desc=§o灾厄骑士§r\n赋予饥饿，对非不死族的单位造成伤害或破坏方块时能回复 1 饱食度
+modifier.mod_lavacow.famine.desc=§o灾厄骑士§r\n造成饥饿，对非亡灵生物的实体造成伤害或破坏方块时能恢复 1 饥饿值
 modifier.mod_lavacow.unholytouch.name=不洁之触
-modifier.mod_lavacow.unholytouch.desc=§o对生者充满怨恨！ §r\n对非不死族的单位造成大量伤害并赋予虚弱
+modifier.mod_lavacow.unholytouch.desc=§o对生者充满怨恨！ §r\n对非亡灵生物的实体造成大量伤害并使其获得虚弱
 
 ###########
 # BANNERS #
@@ -174,7 +174,7 @@ entity.mod_lavacow.zombiepiranha.name=群猎者
 entity.mod_lavacow.piranha.name=食人鱼
 entity.mod_lavacow.boneworm.name=蛰髑
 entity.mod_lavacow.raven.seagull=海鸥
-entity.mod_lavacow.pingu.name=冰葬鹅
+entity.mod_lavacow.pingu.name=冰呪鹅
 entity.mod_lavacow.undertaker.name=送葬者
 entity.mod_lavacow.unburied.name=活尸
 entity.mod_lavacow.ghostray.name=鬼灵鲼
@@ -189,99 +189,99 @@ entity.mod_lavacow.forsaken.name=被遗忘者
 # Sounds #
 ##########
 
-entity_parasite_ambient=尸蛆骚动声
-entity_parasite_death=尸蛆死亡
-entity_parasite_hurt=尸蛆受伤
+entity_parasite_ambient=尸蛆：骚动
+entity_parasite_death=尸蛆：死亡
+entity_parasite_hurt=尸蛆：受伤
 
-entity_foglet_ambient=雾妖低吼声
-entity_foglet_death=雾妖死亡
-entity_foglet_hurt=雾妖受伤
+entity_foglet_ambient=雾妖：低吼
+entity_foglet_death=雾妖：死亡
+entity_foglet_hurt=雾妖：受伤
 
-entity_undeadswine_attack=疫猪愤怒声
-entity_undeadswine_charge=疫猪愤怒声
-entity_undeadswine_death=疫猪死亡
-entity_undeadswine_hurt=疫猪受伤
+entity_undeadswine_attack=疫猪：攻击
+entity_undeadswine_charge=疫猪：愤怒
+entity_undeadswine_death=疫猪：死亡
+entity_undeadswine_hurt=疫猪：受伤
 
-entity_salamander_ambient=炎熔螈低吼声
-entity_salamander_death=炎熔螈死亡
-entity_salamander_hurt=炎熔螈受伤
+entity_salamander_ambient=炎熔螈：低吼
+entity_salamander_death=炎熔螈：死亡
+entity_salamander_hurt=炎熔螈：受伤
 
-entity_zombiepiranha_attack=拟箱蟹夹击
+entity_zombiepiranha_attack=拟箱蟹：夹击
 
-entity_wendigo_ambient=伊萨库亚吠叫声
-entity_wendigo_attack=伊萨库亚咆啸
-entity_wendigo_death=伊萨库亚死亡
-entity_wendigo_hurt=伊萨库亚受伤
+entity_wendigo_ambient=伊萨库亚：吠叫
+entity_wendigo_attack=伊萨库亚：咆啸
+entity_wendigo_death=伊萨库亚：死亡
+entity_wendigo_hurt=伊萨库亚：受伤
 
-entity_mimic_ambient=拟箱蟹喀喀声
-entity_mimic_death=拟箱蟹死亡
-entity_mimic_hurt=拟箱蟹受伤
+entity_mimic_ambient=拟箱蟹：喀喀
+entity_mimic_death=拟箱蟹：死亡
+entity_mimic_hurt=拟箱蟹：受伤
 
-entity_sludgelord_ambient=古树软泥回声
-entity_sludgelord_death=古树软泥死亡
-entity_sludgelord_hurt=古树软泥受伤
+entity_sludgelord_ambient=古树软泥：回声
+entity_sludgelord_death=古树软泥：死亡
+entity_sludgelord_hurt=古树软泥：受伤
 
-entity_lilsludge_ambient=小树软泥沙沙声
-entity_lilsludge_death=小树软泥死亡
-entity_lilsludge_hurt=小树软泥受伤
+entity_lilsludge_ambient=小树软泥：沙沙
+entity_lilsludge_death=小树软泥：死亡
+entity_lilsludge_hurt=小树软泥：受伤
 
-entity_raven_ambient=渡鸦哑哑声
-entity_raven_death=渡鸦死亡
-entity_raven_hurt=渡鸦受伤
+entity_raven_ambient=渡鸦：哑哑
+entity_raven_death=渡鸦：死亡
+entity_raven_hurt=渡鸦：受伤
 
-entity_ptera_ambient=翼生兽尖啸声
-entity_ptera_death=翼生兽死亡
-entity_ptera_hurt=翼生兽受伤
+entity_ptera_ambient=翼生兽：尖啸
+entity_ptera_death=翼生兽：死亡
+entity_ptera_hurt=翼生兽：受伤
 
-entity_vespa_ambient=巨蜂振翅声
-entity_vespa_death=巨蜂死亡
-entity_vespa_hurt=巨蜂受伤
+entity_vespa_ambient=巨蜂：振翅
+entity_vespa_death=巨蜂：死亡
+entity_vespa_hurt=巨蜂：受伤
 
-entity_scarecrow_ambient=稻草人沙沙声
-entity_scarecrow_death=稻草人死亡
-entity_scarecrow_hurt=稻草人受伤
+entity_scarecrow_ambient=稻草人：沙沙
+entity_scarecrow_death=稻草人：死亡
+entity_scarecrow_hurt=稻草人：受伤
 
-entity_zombiepiranha_ambient=群猎者喀喀声
-entity_zombiepiranha_death=群猎者死亡
-entity_zombiepiranha_hurt=群猎者受伤
+entity_zombiepiranha_ambient=群猎者：喀喀
+entity_zombiepiranha_death=群猎者：死亡
+entity_zombiepiranha_hurt=群猎者：受伤
 
-entity_zombiefrozen_ambient=活尸哀嚎声
-entity_zombiefrozen_death=活尸死亡
-entity_zombiefrozen_hurt=活尸受伤
+entity_zombiefrozen_ambient=活尸：哀嚎
+entity_zombiefrozen_death=活尸：死亡
+entity_zombiefrozen_hurt=活尸：受伤
 
-entity_boneworm_ambient=蛰髑呼噜声
-entity_boneworm_attack=蛰髑喷吐声
-entity_boneworm_death=蛰髑死亡
-entity_boneworm_hurt=蛰髑受伤
+entity_boneworm_ambient=蛰髑：呼噜
+entity_boneworm_attack=蛰髑：喷吐
+entity_boneworm_death=蛰髑：死亡
+entity_boneworm_hurt=蛰髑：受伤
 
-entity_seagull_ambient=海鸥鸣叫声
-entity_seagull_death=海鸥死亡
-entity_seagull_hurt=海鸥受伤
+entity_seagull_ambient=海鸥：鸣叫
+entity_seagull_death=海鸥：死亡
+entity_seagull_hurt=海鸥：受伤
 
-entity_pingu_ambient=冰呪鹅鸣叫声
-entity_pingu_death=冰呪鹅死亡
-entity_pingu_hurt=冰呪鹅受伤
+entity_pingu_ambient=冰呪鹅：鸣叫
+entity_pingu_death=冰呪鹅：死亡
+entity_pingu_hurt=冰呪鹅：受伤
 
-entity_undertaker_ambient=送葬者哀嚎声
-entity_undertaker_death=送葬者死亡
-entity_undertaker_hurt=送葬者受伤
+entity_undertaker_ambient=送葬者：哀嚎
+entity_undertaker_death=送葬者：死亡
+entity_undertaker_hurt=送葬者：受伤
 
-entity_ghostray_ambient=鬼灵鲼歌唱声
-entity_ghostray_death=鬼灵鲼死亡
-entity_ghostray_hurt=鬼灵鲼受伤
+entity_ghostray_ambient=鬼灵鲼：歌唱
+entity_ghostray_death=鬼灵鲼：死亡
+entity_ghostray_hurt=鬼灵鲼：受伤
 
-entity_banshee_ambient=报丧女妖低语声
-entity_banshee_attack=报丧女妖尖叫
-entity_banshee_death=报丧女妖死亡
-entity_banshee_hurt=鬼灵受伤
+entity_banshee_ambient=报丧女妖：低语
+entity_banshee_attack=报丧女妖：尖叫
+entity_banshee_death=报丧女妖：死亡
+entity_banshee_hurt=鬼灵：受伤
 
-entity_weta_ambient=沙螽唧唧声
-entity_weta_death=沙螽死亡
-entity_weta_hurt=沙螽受伤
+entity_weta_ambient=沙螽：唧唧
+entity_weta_death=沙螽：死亡
+entity_weta_hurt=沙螽：受伤
 
-entity_avaton_ambient=艾薇妲低语声
-entity_avaton_spell=昆虫窸窣声
-entity_avaton_death=艾薇妲死亡
+entity_avaton_ambient=艾薇妲：低语
+entity_avaton_spell=昆虫：窸窣
+entity_avaton_death=艾薇妲：死亡
 
 entity_skeletonking_attack=骷髅王：重击
 entity_skeletonking_death=骷髅王：死亡
@@ -294,28 +294,28 @@ entity_skeletonking_spell_toss=骷髅王：施法
 ############
 
 tootip.mod_lavacow.bonesword=对目标额外造成其最大生命值 %d%% 的伤害
-tooltip.mod_lavacow.canebeef=食用后获得再生(0:08)，也是炎熔螈的最爱
-tootip.mod_lavacow.canepork=食用后获得再生(0:08)，也是帝沙螽的最爱
-tootip.mod_lavacow.canerottenmeat=食用后获得再生(0:08)，也是拟箱蟹的最爱
-tootip.mod_lavacow.netherstew=食用后获得随机效果(0:40)
-tootip.mod_lavacow.goldenheart=在装备时赋予再生并修补(+1/秒)装备物品
+tooltip.mod_lavacow.canebeef=食用后获得再生（0:08），也是炎熔螈的最爱
+tootip.mod_lavacow.canepork=食用后获得再生（0:08），也是帝沙螽的最爱
+tootip.mod_lavacow.canerottenmeat=食用后获得再生（0:08），也是拟箱蟹的最爱
+tootip.mod_lavacow.netherstew=食用后获得随机效果（0:40）
+tootip.mod_lavacow.goldenheart=在装备时获得再生并修补（+1 耐久度/秒）装备物品
 tootip.mod_lavacow.moltenaxe=砍下原木时可直接获得木炭
-tootip.mod_lavacow.moltenhammer=右键点击时可对玩家周遭单位造成伤害
+tootip.mod_lavacow.moltenhammer=右击时可对玩家周遭的实体造成伤害
 tootip.mod_lavacow.potion_of_mooten_lava=把这喂给有火焰抗性的牛试试看吧 >.^
 tootip.mod_lavacow.fissionpotion=将动物分裂为两个独立个体
-tootip.mod_lavacow.green_bacon_and_eggs=食用后获得挖掘加速(1:00)
+tootip.mod_lavacow.green_bacon_and_eggs=食用后获得挖掘加速（1:00）
 tootip.mod_lavacow.reapers_scythe=必定为横扫攻击，所造成的伤害无视护甲
-tootip.mod_lavacow.famine=在手持时赋予饥饿，对非不死族的单位造成伤害时能回复 1 饱食度
-tootip.mod_lavacow.frozenthigh=可以食用，攻击能同时赋予目标缓慢III(0:04)
-tootip.mod_lavacow.sludge_wand=右键点击以召唤听命于玩家的小树软泥
-tootip.mod_lavacow.war=掀起你与你那刚建好木屋的朋友之间的一场战争 (需要火焰弹作为弹药)
+tootip.mod_lavacow.famine=手持时造成饥饿，对非亡灵生物的实体造成伤害或破坏方块时能恢复 1 饥饿值
+tootip.mod_lavacow.frozenthigh=可以食用，攻击能同时使目标获得缓慢 III（0:04）
+tootip.mod_lavacow.sludge_wand=右击以召唤听命于玩家的小树软泥
+tootip.mod_lavacow.war=掀起你与你那刚建好木屋的朋友之间的一场战争（需要火焰弹作为弹药）
 tootip.mod_lavacow.moltenpan=用以烹制特殊料理
-tootip.mod_lavacow.intestine=右键点击以拾取肠内物品
-tootip.mod_lavacow.felarmor=对燃烧中的单位造成伤害+
-tootip.mod_lavacow.felarmor.l2=玩家所受到的火焰伤害-
-tootip.mod_lavacow.swinearmor=套装(2)：不再被疫猪视为主动攻击目标
-tootip.mod_lavacow.swinearmor.l2=套装(4)：免疫中毒效果
-tootip.mod_lavacow.piranhalauncher=右键向目标发射一只群猎者！ (需要群猎者作为弹药)
+tootip.mod_lavacow.intestine=右击以拾取肠内物品
+tootip.mod_lavacow.felarmor=对燃烧中的单位造成伤害 +
+tootip.mod_lavacow.felarmor.l2=玩家所受到的火焰伤害 -
+tootip.mod_lavacow.swinearmor=套装（2）：不再被疫猪视为主动攻击目标
+tootip.mod_lavacow.swinearmor.l2=套装（4）：免疫中毒效果
+tootip.mod_lavacow.piranhalauncher=右击向目标发射一只群猎者（需要群猎者作为弹药）
 tootip.mod_lavacow.cursed_bandage.0.desc0=医疗
 tootip.mod_lavacow.cursed_bandage.0.desc1=为你的宠物治疗 2 点生命值
 tootip.mod_lavacow.cursed_bandage.1.desc0=力量
@@ -324,25 +324,25 @@ tootip.mod_lavacow.cursed_bandage.2.desc0=医疗(大)
 tootip.mod_lavacow.cursed_bandage.2.desc1=为你的宠物治疗 6 点生命值
 tootip.mod_lavacow.cursed_bandage.3.desc0=抗性
 tootip.mod_lavacow.cursed_bandage.3.desc1=为你的宠物治疗 2 点生命值，并赋予抗性（3:00）
-tootip.mod_lavacow.holy_grenade=投向目标地点，造成范围伤害，且不死族生物受到 300%% 伤害并赋予燃烧(0:08)
-tooltip.mod_lavacow.halo necklace=对不死族生物伤害+%d%%
+tootip.mod_lavacow.holy_grenade=投向目标地点，造成范围伤害，且亡灵生物受到 300%% 的伤害并获得燃烧（0:08）
+tooltip.mod_lavacow.halo necklace=对亡灵生物伤害 +%d%%
 tooltip.mod_lavacow.dreamcatcher=捕捉弥留于梦境之中的梦魇
-tootip.mod_lavacow.undertaker_shovel=右键点击以召唤听命于玩家的活尸军团
-tootip.mod_lavacow.raven_whistle=右键点击绑定渡鸦，并右键点击命令渡鸦前往该地
-tootip.mod_lavacow.faminearmor=套装(2)：自身处于饥饿状态时，造成伤害+2
-tootip.mod_lavacow.faminearmor.l2=套装(4)：不再能进食，但杀死单位时能+4饱食度+1生命
+tootip.mod_lavacow.undertaker_shovel=右击以召唤听命于玩家的活尸军团
+tootip.mod_lavacow.raven_whistle=右击绑定渡鸦，右击可命令渡鸦前往该地
+tootip.mod_lavacow.faminearmor=套装（2）：自身处于饥饿状态时，造成的伤害 +2
+tootip.mod_lavacow.faminearmor.l2=套装（4）：不再能进食，但杀死实体时能 +4 饥饿值并 +1 生命
 tootip.mod_lavacow.ghostjelly=将你的渡鸦转化为鬼灵渡鸦
-tootip.mod_lavacow.ghostbomb=投向目标地点，造成范围伤害并赋予漂浮(0:01)
-tootip.mod_lavacow.sonicbomb=投向目标地点，造成范围伤害并赋予虚弱III(0:04)
-tootip.mod_lavacow.weta_hoe=当收获农作时，同时也能收成 3x3 范围内的农作物或草.
-tootip.mod_lavacow.parasite.0 =普通
-tootip.mod_lavacow.parasite.1 =沙地
-tootip.mod_lavacow.parasite.2 =丛林
-tootip.mod_lavacow.bonestew =食用后获得抗性（0:20）与吸收II（0:20）
+tootip.mod_lavacow.ghostbomb=投向目标地点，造成范围伤害并使其获得漂浮（0:01）
+tootip.mod_lavacow.sonicbomb=投向目标地点，造成范围伤害并使其获得虚弱 III（0:04）
+tootip.mod_lavacow.weta_hoe=收获作物时同时收获 3x3 范围内的农作物或草。
+tootip.mod_lavacow.parasite.0=普通
+tootip.mod_lavacow.parasite.1=沙地
+tootip.mod_lavacow.parasite.2=丛林
+tootip.mod_lavacow.bonestew =食用后获得抗性（0:20）与吸收 II（0:20）
 tootip.mod_lavacow.mootenheart=受到的火焰伤害-%d%%，且可用于酿造
-tootip.mod_lavacow.vespa_shield=格挡伤害，并对攻击者造成2点伤害并赋予中毒(0:06)
-tootip.mod_lavacow.frozen_dagger=当浸于水中时能逐渐回复耐久度
-tootip.mod_lavacow.spectral_dagger=具有无限耐久度，并对非不死族的单位造成伤害+2
+tootip.mod_lavacow.vespa_shield=格挡伤害、对攻击者造成 2 点伤害并使其获得中毒（0:06）
+tootip.mod_lavacow.frozen_dagger=当浸于水中时能逐渐恢复耐久度
+tootip.mod_lavacow.spectral_dagger=具有无限耐久度，并对非亡灵生物的单位造成伤害 +2
 tootip.mod_lavacow.kings_crown.0=被玷污
 tootip.mod_lavacow.kings_crown.0.desc0=镶入让人渴望的宝石
 tootip.mod_lavacow.kings_crown.0.desc1=注入过去的古老记忆
@@ -362,7 +362,7 @@ command.mod_lavacow.following=正在跟随
 command.mod_lavacow.wandering=进入徘徊状态
 command.mod_lavacow.whistle=现在为哨子目标
 command.mod_lavacow.whistle_err=离你太远了
-itemGroup.mod_lavacow_items=Fish的亡灵崛起
+itemGroup.mod_lavacow_items=Fish 的亡灵崛起
 key.mod_lavacow.special=座骑特殊能力
 
 ################
@@ -372,7 +372,7 @@ key.mod_lavacow.special=座骑特殊能力
 enchantment.mod_lavacow.poisonous=剧毒
 enchantment.mod_lavacow.poisonous.desc=攻击时能使目标中毒
 enchantment.mod_lavacow.lifesteal=生命窃取
-enchantment.mod_lavacow.lifesteal.desc=对目标造成伤害时，能回复玩家的生命值
+enchantment.mod_lavacow.lifesteal.desc=对目标造成伤害时，能恢复玩家的生命值
 enchantment.mod_lavacow.corrosive=酸蚀性
 enchantment.mod_lavacow.corrosive.desc=攻击时能侵蚀目标，提高它接下来所受到的伤害
 
@@ -385,7 +385,7 @@ description.mob_effect.mod_lavacow:corroded=提高所受伤害
 mob_effect.mod_lavacow:soiled=玷污
 description.mob_effect.mod_lavacow:soiled=防止进食或饮用
 mob_effect.mod_lavacow:infested=感染
-description.mob_effect.mod_lavacow:infested=赋予饥饿与缓慢，且于死亡时会有尸蛆爬出
+description.mob_effect.mod_lavacow:infested=产生饥饿与缓慢效果，且死亡时会有尸蛆爬出
 mob_effect.mod_lavacow:fragile=死亡之触
 description.mob_effect.mod_lavacow:fragile=当生命低于一定程度时，立即死亡
 
@@ -394,16 +394,16 @@ description.mob_effect.mod_lavacow:fragile=当生命低于一定程度时，立�
 ##############
 
 potion.effect.mod_lavacow:corrosive=腐蚀药水
-splash_potion.effect.mod_lavacow:corrosive=飞溅 腐蚀药水
-lingering_potion.effect.mod_lavacow:corrosive=滞留 腐蚀药水
+splash_potion.effect.mod_lavacow:corrosive=喷溅型腐蚀药水
+lingering_potion.effect.mod_lavacow:corrosive=滞留型腐蚀药水
 tipped_arrow.effect.mod_lavacow:corrosive=腐蚀之箭
 potion.effect.mod_lavacow:foulodor=恶臭药水
-splash_potion.effect.mod_lavacow:foulodor=飞溅 恶臭药水
-lingering_potion.effect.mod_lavacow:foulodor=滞留 恶臭药水
+splash_potion.effect.mod_lavacow:foulodor=喷溅型恶臭药水
+lingering_potion.effect.mod_lavacow:foulodor=滞留型恶臭药水
 tipped_arrow.effect.mod_lavacow:foulodor=恶臭之箭
 potion.effect.mod_lavacow:infestation=感染药水
-splash_potion.effect.mod_lavacow:infestation=飞溅 感染药水
-lingering_potion.effect.mod_lavacow:infestation=滞留 感染药水
+splash_potion.effect.mod_lavacow:infestation=喷溅型感染药水
+lingering_potion.effect.mod_lavacow:infestation=滞留型感染药水
 tipped_arrow.effect.mod_lavacow:infestation=感染之箭
 potion.effect.mod_lavacow:fragile=死亡之触药水
 splash_potion.effect.mod_lavacow:fragile=喷溅型死亡之触药水
@@ -415,7 +415,7 @@ tipped_arrow.effect.mod_lavacow:fragile=死亡之触之箭
 ################
 
 advancements.mod_lavacow.root.title=厄夜降临
-advancements.mod_lavacow.root.description=进入不死崛起的新世界
+advancements.mod_lavacow.root.description=进入亡灵崛起的新世界
 advancements.mod_lavacow.slimy_tasty.title=黏黏的，但很好吃
 advancements.mod_lavacow.slimy_tasty.description=吃下生的尸蛆
 advancements.mod_lavacow.kill_parasite.title=快把它拿下来！
@@ -426,7 +426,7 @@ advancements.mod_lavacow.kill_zombiemushroom.title=最后生还者
 advancements.mod_lavacow.kill_zombiemushroom.description=杀死一头菌尸
 advancements.mod_lavacow.kill_piranha.title=丛林巡航
 advancements.mod_lavacow.kill_piranha.description=杀死一条食人鱼
-advancements.mod_lavacow.kill_zombiepiranha.title=丛林巡航II：变异鱼王
+advancements.mod_lavacow.kill_zombiepiranha.title=丛林巡航 II：变异鱼王
 advancements.mod_lavacow.kill_zombiepiranha.description=杀死一条群猎者
 advancements.mod_lavacow.kill_undertaker.title=这是我的领地
 advancements.mod_lavacow.kill_undertaker.description=K.O.送葬者
