@@ -3,8 +3,8 @@ package com.Fishmod.mod_LavaCow.message;
 import java.util.Random;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -29,7 +29,7 @@ public class PacketParticle implements IMessage, IMessageHandler<PacketParticle,
 
 	@Override
 	public IMessage onMessage(PacketParticle message, MessageContext ctx) {
-		World world = FMLClientHandler.instance().getWorldClient();
+		WorldClient world = FMLClientHandler.instance().getWorldClient();
 		
 		if (world == null)
 			return null;

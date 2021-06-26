@@ -11,7 +11,7 @@
         },
 		"frame": "challenge"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
+    "parent": "mod_lavacow:mod_lavacow/get_hatred_shard",
     "criteria": {
         "kill_mimic": {
             "trigger": "minecraft:player_killed_entity",

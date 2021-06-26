@@ -472,6 +472,10 @@ advancements.mod_lavacow.kill_skeletonking.title=Long Live the King
 advancements.mod_lavacow.kill_skeletonking.description=Kill the Skeleton King
 advancements.mod_lavacow.kill_mummy.title=Death Is Only The Beginning
 advancements.mod_lavacow.kill_mummy.description=Kill a Mummy
+advancements.mod_lavacow.kill_forsaken.title=I Remember...
+advancements.mod_lavacow.kill_forsaken.description=Kill a Forsaken
+advancements.mod_lavacow.get_hatred_shard.title=In the Depths of Memory
+advancements.mod_lavacow.get_hatred_shard.description=Get Memory of a Thousand Armies
 
 #################
 # Death Message #

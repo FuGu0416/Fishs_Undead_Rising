@@ -138,7 +138,6 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             --this.attackTimer;
             
             this.motionX = 0.0F;
-            //this.motionY = 0.0F;
             this.motionZ = 0.0F;
             this.rotationPitch = this.prevRotationPitch;
             this.rotationYaw = this.prevRotationYaw;

@@ -3,8 +3,8 @@
 	    {      
 	      "name": "mod_lavacow:skeleton_king",
 	      "rolls": {
-	        "min": 4,
-	        "max": 5
+	        "min": 2,
+	        "max": 3
 	      },
 	      "entries": [
 	        {
@@ -84,7 +84,7 @@
             "name": "mod_lavacow:skeleton_king",
  			"rolls": {
  				"min": 2,
- 				"max": 4
+ 				"max": 3
  			},
             "entries": [
                 {
@@ -132,8 +132,7 @@
                     "name": "mod_lavacow:swinemask",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -144,8 +143,7 @@
                     "name": "mod_lavacow:reapers_scythe",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -156,8 +154,7 @@
                     "name": "mod_lavacow:famine",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -168,8 +165,7 @@
                     "name": "mod_lavacow:sludge_wand",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -180,8 +176,7 @@
                     "name": "mod_lavacow:war",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -192,8 +187,7 @@
                     "name": "mod_lavacow:piranhalauncher",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -214,8 +208,7 @@
                     "name": "mod_lavacow:faminearmor_helmet",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -226,8 +219,7 @@
                     "name": "mod_lavacow:faminearmor_chestplate",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -238,8 +230,7 @@
                     "name": "mod_lavacow:spectral_dagger",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -250,8 +241,7 @@
                     "name": "mod_lavacow:beast_claw",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]
@@ -262,8 +252,7 @@
                     "name": "mod_lavacow:skeletonking_mace",
 					"functions":[
 		                {
-		                    "function": "enchant_with_levels",
-		                    "levels": 30,
+		                    "function": "enchant_randomly",
 		                    "treasure": true
 		                }
                     ]

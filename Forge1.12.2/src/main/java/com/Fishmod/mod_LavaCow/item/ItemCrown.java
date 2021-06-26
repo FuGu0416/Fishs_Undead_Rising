@@ -23,6 +23,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,7 +48,13 @@ public class ItemCrown extends ItemFishCustom{
      */
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(player.getHeldItem(hand).getMetadata() == 1 && worldIn.getBlockState(pos).getBlock().equals(Blocks.SKULL)) {
+        if(player.getHeldItem(hand).getMetadata() == 1
+        		&& worldIn.getBlockState(pos).getBlock().equals(Blocks.SKULL)
+        		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.HOT)
+        		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.DRY)
+        		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.SANDY)
+        		) 
+        {
         	TileEntity tileentity = worldIn.getTileEntity(pos);
         	
         	if (tileentity instanceof TileEntitySkull) {

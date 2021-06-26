@@ -475,6 +475,10 @@ advancements.mod_lavacow.kill_skeletonking.title=吾王萬歲
 advancements.mod_lavacow.kill_skeletonking.description=殺死骷髏王
 advancements.mod_lavacow.kill_mummy.title=死亡只是個開始
 advancements.mod_lavacow.kill_mummy.description=殺死一頭木乃伊
+advancements.mod_lavacow.kill_forsaken.title=但我還記得
+advancements.mod_lavacow.kill_forsaken.description=殺死一頭被遺忘者
+advancements.mod_lavacow.get_hatred_shard.title=在那記憶的深處
+advancements.mod_lavacow.get_hatred_shard.description=獲得萬軍追憶
 
 #################
 # Death Message #
