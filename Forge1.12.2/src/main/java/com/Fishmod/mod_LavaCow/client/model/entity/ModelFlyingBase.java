@@ -22,7 +22,6 @@ public class ModelFlyingBase extends ModelBase {
     		EntityFlyingMob entity = (EntityFlyingMob)entitylivingbaseIn;
     	
 	    	if(entity.getAttackTimer() > 0) {
-	    		//System.out.println(entity.getAttackTimer());
 	    		this.state = ModelFlyingBase.State.ATTACKING;
 	    	}
 	    	else if(HoverCounter < 10) {

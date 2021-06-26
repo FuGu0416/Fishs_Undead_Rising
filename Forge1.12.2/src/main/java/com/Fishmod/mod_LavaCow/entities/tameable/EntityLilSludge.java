@@ -4,11 +4,15 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,10 +29,16 @@ import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -39,15 +49,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityLilSludge extends EntityFishTameable{
-	
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityLilSludge.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	private int limitedLifeTicks;
+	private int fire_aspect;
+	private int sharpness;
+	private int knockback;
+	private int bane_of_arthropods;
+	private int smite;
+	private int lifesteal;
+	private int poisonous;
+	private int corrosive;
+	private int unbreaking;
 	
 	public EntityLilSludge(World worldIn)
     {
         super(worldIn);
         this.setSize(1.0F, 2.0F);
         this.limitedLifeTicks = -1;
+    }
+	
+    protected void entityInit() {
+		super.entityInit();
+		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
     }
 	
     protected void initEntityAI()
@@ -86,6 +110,26 @@ public class EntityLilSludge extends EntityFishTameable{
         this.limitedLifeTicks = limitedLifeTicksIn;
     }
     
+    public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
+    	return (0.5f * this.sharpness + 0.5f)
+				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
+				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite * 2.5f : 0);
+    }
+    
+    public int getLifestealLevel() {
+    	return this.lifesteal;
+    }
+    
+    public int getSkin()
+    {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType)
+    {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
     protected boolean isCommandItem(Item itemIn) {
     	return false;
     }
@@ -106,8 +150,13 @@ public class EntityLilSludge extends EntityFishTameable{
     @Override
     public void onLivingUpdate()
     {
-        if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    	
-        	this.attackEntityFrom(DamageSource.STARVE.setDamageIsAbsolute().setDamageBypassesArmor() , (float) Modconfig.LilSludge_Health);
+    	if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    		
+            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
+            {
+                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+            }
+            this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
+            this.setDead();
         }
         
     	if (!Modconfig.SunScreen_Mode && !(this.getOwner() instanceof EntityPlayer) && this.world.isDaytime() && !this.world.isRemote)
@@ -134,6 +183,25 @@ public class EntityLilSludge extends EntityFishTameable{
         if (flag)
         {
             this.applyEnchantments(this, entityIn);
+
+            if(entityIn instanceof EntityLivingBase) {
+	            if(this.fire_aspect > 0)
+	            	entityIn.setFire((this.fire_aspect * 4) - 1);
+	            
+	            if(this.knockback > 0)
+	            	((EntityLivingBase)entityIn).knockBack(this, (float)this.knockback * 0.5F, (this.posX - entityIn.posX)/this.getDistance(entityIn), (this.posZ - entityIn.posZ)/this.getDistance(entityIn));
+	            
+	            if(this.bane_of_arthropods > 0 && (((EntityLivingBase) entityIn).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
+	                int i = 20 + this.rand.nextInt(10 * bane_of_arthropods);
+	                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+	            }
+	            
+	            if(this.poisonous > 0)
+	    			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, this.poisonous - 1));
+	            
+	            if(this.corrosive > 0)
+	            	((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4*20, this.corrosive - 1));
+            }
         }
 
         return flag;
@@ -263,6 +331,17 @@ public class EntityLilSludge extends EntityFishTameable{
     {
         super.readEntityFromNBT(compound);
         this.setLimitedLife(compound.getInteger("LifeTicks"));
+        this.setSkin(compound.getInteger("Variant"));
+    	this.fire_aspect = compound.getInteger("fire_aspect");
+    	this.sharpness = compound.getInteger("sharpness");
+    	this.knockback = compound.getInteger("knockback");
+    	this.bane_of_arthropods = compound.getInteger("bane_of_arthropods");
+    	this.smite = compound.getInteger("fire_aspect");
+    	this.lifesteal = compound.getInteger("lifesteal");
+    	this.poisonous = compound.getInteger("poisonous");
+    	this.corrosive = compound.getInteger("corrosive");
+    	this.unbreaking = compound.getInteger("unbreaking");   
+    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.LilSludge_Health + ((float)this.unbreaking * 2.0F));
     }
 
     /**
@@ -272,6 +351,16 @@ public class EntityLilSludge extends EntityFishTameable{
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("LifeTicks", this.limitedLifeTicks - this.ticksExisted);
+        compound.setInteger("Variant", getSkin());
+        compound.setInteger("fire_aspect", this.fire_aspect);
+        compound.setInteger("sharpness", this.sharpness);
+        compound.setInteger("knockback", this.knockback);
+        compound.setInteger("bane_of_arthropods", this.bane_of_arthropods);
+        compound.setInteger("smite", this.smite);
+        compound.setInteger("lifesteal", this.lifesteal);
+        compound.setInteger("poisonous", this.poisonous);
+        compound.setInteger("corrosive", this.corrosive);
+        compound.setInteger("unbreaking", this.unbreaking);      
     }
 
     /**

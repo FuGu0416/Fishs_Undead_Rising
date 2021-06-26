@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DYD",
+        "D#D",
+		"DDD"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:kings_crown",
+			"data": 0
+        },
+        "Y": {
+            "type": "forge:ore_dict",
+    		"ore": "gemEmerald"
+        },
+        "D": {
+            "item": "mod_lavacow:hatred_shard"
+        }
+    },
+    "result": {
+            "item": "mod_lavacow:kings_crown",
+			"data": 1
+    }
+}

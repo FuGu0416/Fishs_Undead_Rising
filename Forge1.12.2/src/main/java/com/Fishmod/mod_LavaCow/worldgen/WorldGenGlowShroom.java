@@ -24,18 +24,15 @@ public class WorldGenGlowShroom extends WorldGenerator{
     }
 
 	@Override
-	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		//this.glowshroom = Modblocks.GLOWSHROOM;
-		
+	public boolean generate(World worldIn, Random rand, BlockPos position) {	
         if(Modconfig.pGlowshroomGen)
         {
 	        for (int i = 0; i < 64; ++i)
 	        {
 	            BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 	
-	            if (worldIn.isAirBlock(blockpos) && worldIn.getLight(blockpos) < 10 /*&& worldIn.provider.isSurfaceWorld()*/ && blockpos.getY() < 70 && glowshroom.canBlockStay(worldIn, blockpos, glowshroom.getDefaultState()) && rand.nextInt(100) < Modconfig.pSpawnRate_Glowshroom)
+	            if (worldIn.isAirBlock(blockpos) && worldIn.getLight(blockpos) < 10 && blockpos.getY() < 70 && glowshroom.canBlockStay(worldIn, blockpos, glowshroom.getDefaultState()) && rand.nextInt(100) < Modconfig.pSpawnRate_Glowshroom)
 	            {
-	            	//System.out.println("OAO");
 	            	worldIn.setBlockState(blockpos, glowshroom.withAge(rand.nextInt(2)), 2);
 	            }
 	        }

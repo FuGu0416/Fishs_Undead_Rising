@@ -3,6 +3,8 @@ package com.Fishmod.mod_LavaCow.entities.aquatic;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
 
@@ -11,8 +13,11 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -29,7 +34,8 @@ public class EntityPiranha extends EntityZombiePiranha{
     
     @Override
     protected void applyEntityAI() {
-    	if(Modconfig.Piranha_AnimalAttack)
+    	if(Modconfig.Piranha_AnimalAttack) {
+        	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntitySquid>(this, EntitySquid.class, true));
     		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, true, true, new Predicate<Entity>()
             {
                 public boolean apply(@Nullable Entity p_apply_1_)
@@ -37,6 +43,8 @@ public class EntityPiranha extends EntityZombiePiranha{
                     return !(p_apply_1_ instanceof EntityTameable) && ((EntityAgeable)p_apply_1_).getHealth() < ((EntityAgeable)p_apply_1_).getMaxHealth();
                 }
             }));
+    	}
+    	this.targetTasks.addTask(5, new EntityAIPickupMeat<>(this, EntityItem.class, true));
     }
     
     //@Override
@@ -76,5 +84,10 @@ public class EntityPiranha extends EntityZombiePiranha{
      @Nullable
      protected ResourceLocation getLootTable() {
     	 return LootTableHandler.PIRANHA;
+     }
+ 
+     @Override
+     protected Item PickupItem() {
+     	return FishItems.ZOMBIEPIRANHA_ITEM;
      }
 }

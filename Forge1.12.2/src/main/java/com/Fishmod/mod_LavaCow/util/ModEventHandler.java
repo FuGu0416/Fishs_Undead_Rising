@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
+import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
+import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
@@ -20,9 +26,12 @@ import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
+import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
+import com.google.common.base.Predicate;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,12 +39,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemFood;
@@ -50,6 +65,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
@@ -59,6 +75,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -115,7 +132,7 @@ public class ModEventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isRemote && world.provider.isSurfaceWorld() //&& entity.ticksExisted >= 60  
+    	if (!world.isRemote && world.provider.isSurfaceWorld()
     			&& ((LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entity)) && (new Random().nextInt(100) < Modconfig.pSpawnRate_Parasite || EntityParasite.gotParasite(entity.getPassengers()) != null)) 
     			|| event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED)))
     	{
@@ -124,7 +141,8 @@ public class ModEventHandler {
     		EntityParasite passenger = EntityParasite.gotParasite(entity.getPassengers());
     		if(event.getEntityLiving().isPotionActive(ModMobEffects.INFESTED))
     			var6 = event.getEntityLiving().getActivePotionEffect(ModMobEffects.INFESTED).getAmplifier();
-    		for(int var3 = var6; var3 < var2 + var6; ++var3)
+    		
+    		for(int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3)
     		{
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
@@ -139,6 +157,26 @@ public class ModEventHandler {
                 world.spawnEntity(entityparasite);
     		}
     	}			
+    	
+    	if (entity instanceof EntityMimic) {
+    		int ItemPos = ((EntityMimic)entity).containsItem(Items.TOTEM_OF_UNDYING);
+    		
+    		if(ItemPos != -1) {
+            	for (int i = 0; i < 5; ++i)
+                {
+                    double d0 = entity.posX + (double)(new Random().nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    double d1 = entity.posY + (double)(new Random().nextFloat() * entity.height);
+                    double d2 = entity.posZ + (double)(new Random().nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.TOTEM, d0, d1, d2));
+                }
+            	entity.playSound(SoundEvents.ITEM_TOTEM_USE, 1.0F, 1.0F);
+    			
+    			event.setCanceled(true);
+    			
+    			((EntityMimic)entity).inventory.get(ItemPos).shrink(1);
+    			event.getEntityLiving().setHealth(event.getEntityLiving().getMaxHealth());
+    		}
+    	}
     }
     
     @SubscribeEvent
@@ -370,7 +408,57 @@ public class ModEventHandler {
 
         if ((player.world.getTotalWorldTime() & 0x1FL) > 0L) {
             return;
-        }       
+        }     
+        
+		ItemStack Heart = null;
+		
+		for(int i = 0; i < 9 ; i++)
+			if(player.inventory.getStackInSlot(i).getItem().equals(FishItems.GOLDENHEART)) {
+				Heart = player.inventory.getStackInSlot(i);
+				break;
+			}
+		
+		if(Heart != null)
+			ItemGoldenHeart.onTick(Heart, player);
+		
+		if(player.world.getDifficulty() != EnumDifficulty.PEACEFUL && player.world.rand.nextFloat() < 0.1F)
+			for (EntityItem entityItem : player.world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(5.0F, 5.0F, 5.0F))) {
+		    	if(((EntityItem) entityItem).getItem().getItem() instanceof ItemFood && ((ItemFood)((EntityItem) entityItem).getItem().getItem()).isWolfsFavoriteMeat()) {	
+					BlockPos pos = entityItem.getPosition();
+	
+		            if(entityItem.isInWater() && BiomeDictionary.hasType(player.world.getBiome(pos), Type.WET)) {     		            			         	            	
+						for(int i = 0; i < 2 + player.world.rand.nextInt(3); i++) {	    				
+		    				double posX = pos.getX() + ((player.world.rand.nextDouble() * 5.0D) - 2.5D);
+		    				double posY = pos.getY();
+		    				double posZ = pos.getZ() + ((player.world.rand.nextDouble() * 5.0D) - 2.5D);
+		    				
+		    				if(player.world.getBlockState(new BlockPos(posX, posY, posZ)).getMaterial() == Material.WATER) {
+		    					if(SpawnUtil.isDay(player.world)) {
+		    						EntityPiranha fish = new EntityPiranha(player.world);
+		    						
+		    						fish.setPositionAndRotation(posX, posY, posZ, player.world.rand.nextFloat() * 360.0f, 0.0f);
+				    				player.world.spawnEntity(fish);
+				    				
+				    				if(entityItem != null) {
+				    					entityItem.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+				    					entityItem.setDead();
+				    				}	
+		    					} else {
+		    						EntityZombiePiranha fish = new EntityZombiePiranha(player.world);
+			    					
+		    						fish.setPositionAndRotation(posX, posY, posZ, player.world.rand.nextFloat() * 360.0f, 0.0f);
+				    				player.world.spawnEntity(fish);
+				    				
+				    				if(entityItem != null) {
+				    					entityItem.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+				    					entityItem.setDead();
+				    				}		    						
+		    					}
+		    				}
+		    			}
+		            }
+		    	}
+			}
     }
     
     @SubscribeEvent
@@ -399,7 +487,8 @@ public class ModEventHandler {
     		&& event.getWorld().provider.getDimension() == DimensionType.OVERWORLD.getId()
     		&& new Random().nextInt(100) < Modconfig.Parasite_SandSpawn
     		&& Modconfig.pSpawnRate_Parasite > 0
-    		) {   
+    		) 
+    	{          	
     		EntityParasite entityparasite = new EntityParasite(event.getWorld());
     		entityparasite.setSkin(1);
             entityparasite.setLocationAndAngles(event.getPos().getX(), event.getPos().getY()+1.0D, event.getPos().getZ(), 0.0F, 0.0F);
@@ -422,6 +511,24 @@ public class ModEventHandler {
 		
 		if(Armor_Famine_lvl && event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase) event.getSource().getTrueSource()).isPotionActive(MobEffects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
+		}
+		
+		if(event.getSource().getTrueSource() instanceof EntityLilSludge) {
+			EntityLivingBase Owner = ((EntityLilSludge)event.getSource().getTrueSource()).getOwner();
+			
+			event.setAmount(event.getAmount() + ((EntityLilSludge)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
+			
+			if(Owner != null)
+				Owner.heal(event.getAmount() * ((EntityLilSludge)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
+		}
+		
+		if(event.getSource().getTrueSource() instanceof EntityUnburied) {
+			EntityLivingBase Owner = ((EntityUnburied)event.getSource().getTrueSource()).getOwner();
+			
+			event.setAmount(event.getAmount() + ((EntityUnburied)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
+			
+			if(Owner != null)
+				Owner.heal(event.getAmount() * ((EntityUnburied)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
 		}
     	
     	if(event.getEntityLiving().isBurning() && event.getSource().getTrueSource() instanceof EntityPlayer) {   		
@@ -530,6 +637,32 @@ public class ModEventHandler {
     	
     	if(event.getEntity() != null && event.getEntity() instanceof EntityVillager)
     		((EntityVillager)event.getEntity()).tasks.addTask(1, new EntityAIAvoidEntity<>(((EntityVillager)event.getEntity()), EntityUnburied.class, 8.0F, 0.8D, 0.8D));
+    	
+    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton) {
+    		EntityAIBase remove = null;
+    		
+    	    for(EntityAITaskEntry task : ((AbstractSkeleton)event.getEntity()).targetTasks.taskEntries) {
+    	        if(task.action.getClass().getSimpleName().equals("EntityAINearestAttackableTarget")) {
+    	            remove = task.action;
+    	            break;
+    	        }
+    	    }
+    	    if(remove != null) {
+    	    	((AbstractSkeleton)event.getEntity()).targetTasks.removeTask(remove);
+    	    	((AbstractSkeleton)event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((AbstractSkeleton)event.getEntity()), EntityPlayer.class, 0, false, true, new Predicate<Entity>()
+    	        {
+    	            public boolean apply(@Nullable Entity p_apply_1_)
+    	            {
+    	            	if(p_apply_1_ instanceof EntityPlayer) {
+    	            		EntityPlayer target = (EntityPlayer) p_apply_1_;   	            		
+    	            		return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.SKELETONKING_CROWN));
+    	            	}
+    	            	
+	            		return true;
+    	            }
+    	        }));
+    	    }
+    	}
     }
     
     @SubscribeEvent

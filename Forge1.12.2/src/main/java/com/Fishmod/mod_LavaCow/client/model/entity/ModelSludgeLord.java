@@ -232,11 +232,9 @@ public class ModelSludgeLord extends ModelBase {
     	this.Head.rotationPointY = -22.0F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
         this.Jaw.rotateAngleX = 0.15F + 0.11F * MathHelper.sin(0.03F * ageInTicks);
         
-        //this.Waist0.rotationPointY = -1.0F + 3.5F * MathHelper.cos(limbSwing * 0.3F) * 0.7F * limbSwingAmount;
         this.Waist0.rotateAngleY = 0.35F * MathHelper.cos(limbSwing * 0.3F);
         
         this.Arm_l_seg0.rotateAngleX = 0.55F * MathHelper.cos(limbSwing * 0.15F + (float)Math.PI);
-        //this.Arm_l_seg0.rotateAngleZ = -0.55F + 0.55F * MathHelper.cos(limbSwing * 0.15F + (float)Math.PI);
         
         this.Leg_r_seg0.rotateAngleX = -1.593485607070823F + MathHelper.cos(limbSwing * 0.3F) * 0.7F * limbSwingAmount;
         this.Leg_l_seg0.rotateAngleX = -1.593485607070823F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 0.7F * limbSwingAmount;

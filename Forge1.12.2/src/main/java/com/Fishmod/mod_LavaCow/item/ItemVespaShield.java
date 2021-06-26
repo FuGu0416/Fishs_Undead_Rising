@@ -10,18 +10,15 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
@@ -41,7 +38,7 @@ public class ItemVespaShield extends ItemShield {
 	
 	public String getItemStackDisplayName(ItemStack stack)
     {
-        return I18n.format("item.mod_lavacow.vespa_shield.name");
+        return new TextComponentTranslation("item.mod_lavacow.vespa_shield.name").getFormattedText();
     }
 	
     /**

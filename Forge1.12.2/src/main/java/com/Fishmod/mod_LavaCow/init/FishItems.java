@@ -14,6 +14,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFissionPotion;
 import com.Fishmod.mod_LavaCow.item.ItemFrozenThigh;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemBaubleTrinket;
+import com.Fishmod.mod_LavaCow.item.ItemCrown;
 import com.Fishmod.mod_LavaCow.item.ItemHolyGrenade;
 import com.Fishmod.mod_LavaCow.item.ItemIntestine;
 import com.Fishmod.mod_LavaCow.item.ItemMoltenAxe;
@@ -24,6 +25,7 @@ import com.Fishmod.mod_LavaCow.item.ItemPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.item.ItemRareLoot;
 import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
+import com.Fishmod.mod_LavaCow.item.ItemSkeletonKingCrown;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
@@ -110,8 +112,7 @@ public class FishItems {
 	public static final Item FEATHER_BLACK = new ItemFishCustom("feather_black", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item SHATTERED_ICE = new ItemFishCustomFood("shattered_ice", 1, 1.8F, false, 32, false).setItemUseAction(EnumAction.DRINK);
 	public static final Item HALO_NECKLACE = new ItemBaubleTrinket("halo_necklace", mod_LavaCow.TAB_ITEMS, EnumRarity.EPIC, true);
-	public static final Item DREAMCATCHER = new ItemDreamCatcher("dreamcatcher", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
-	public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", ToolMaterial.IRON, 2.0F, -3.0F, FishItems.UNDYINGHEART, EnumRarity.RARE);
+	public static final Item DREAMCATCHER = new ItemDreamCatcher("dreamcatcher", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);	
 	public static final Item RAVEN_WHISTLE = new ItemRavenWhistle("raven_whistle");
 	public static final Item ACIDICHEART = new ItemRareLoot("acidicheart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
 	public static final Item FAMINEARMOR_HELMET = new ItemFamineArmor("faminearmor_helmet", 2, EntityEquipmentSlot.HEAD);
@@ -132,6 +133,14 @@ public class FishItems {
 	public static final Item VESPA_SHIELD = new ItemVespaShield("vespa_shield");
 	public static final Item FROZEN_DAGGER = new ItemFishCustomWeapon("frozen_dagger", ToolMaterial.WOOD, 2.0F, -2.4F, FishItems.SHATTERED_ICE, EnumRarity.COMMON);
 	public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", ToolMaterial.IRON, -1.0F, -2.4F, FishItems.ECTOPLASM, EnumRarity.COMMON).setMaxDamage(0);
+	public static final Item HATRED_SHARD = new ItemFishCustom("hatred_shard", null, mod_LavaCow.TAB_ITEMS, false);
+	public static final Item KINGS_CROWN = new ItemCrown("kings_crown", mod_LavaCow.TAB_ITEMS, false);
+	public static final Item SKELETONKING_CROWN = new ItemSkeletonKingCrown("skeletonking_crown", 4, EntityEquipmentSlot.HEAD).setCreativeTab(mod_LavaCow.TAB_ITEMS);
+	public static final Item EMBLEM_OF_KING = new ItemRareLoot("emblem_of_king", mod_LavaCow.TAB_ITEMS, EnumRarity.UNCOMMON, false);
+	public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", ToolMaterial.DIAMOND, 3.0F, -2.4F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);	
+	public static final Item CURSEWEAVE_CLOTH = new ItemFishCustom("curseweave_cloth", null, mod_LavaCow.TAB_ITEMS, false);
+	public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", ToolMaterial.IRON, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE);
+	public static final Item SKELETONKING_MACE = new ItemFishCustomWeapon("skeletonking_mace", ToolMaterial.DIAMOND, 12.0F, -3.2F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
@@ -228,4 +237,10 @@ public class FishItems {
 	public static final SoundEvent ENTITY_AVATON_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.ambient")).setRegistryName("entity_avaton_ambient");
 	public static final SoundEvent ENTITY_AVATON_SPELL = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.spell")).setRegistryName("entity_avaton_spell");
 	public static final SoundEvent ENTITY_AVATON_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.avaton.death")).setRegistryName("entity_avaton_death");
+	
+	public static final SoundEvent ENTITY_SKELETONKING_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.attack")).setRegistryName("entity_skeletonking_attack");
+	public static final SoundEvent ENTITY_SKELETONKING_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.death")).setRegistryName("entity_skeletonking_death");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_SUMMON = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_summon")).setRegistryName("entity_skeletonking_spell_summon");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TELEPORT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_teleport")).setRegistryName("entity_skeletonking_spell_teleport");
+	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TOSS = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_toss")).setRegistryName("entity_skeletonking_spell_toss");
 }

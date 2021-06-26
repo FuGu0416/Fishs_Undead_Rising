@@ -49,20 +49,16 @@ public class ItemMoltenAxe extends ItemAxe{
 	    */
 	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
 		Material material = state.getMaterial();
-		//List<ItemStack> ores = OreDictionary.getOres("logWood");
-		//List<ItemStack> drops = new ArrayList();
 		
 		if(material == Material.WOOD)
 		{
 			entityLiving.playSound(SoundEvents.BLOCK_FIRE_AMBIENT, 1.0F, 1.0F);
-			//worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			double j = 1.2D;
 			for(int i = 0; i < 16; i++)
 			{
 				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j/2, 0.0D, 0.0D, 0.0D);
 				worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j/2, 0.0D, 0.0D, 0.0D);	
 			}
-			//worldIn.createExplosion(entityLiving, pos.getX(), pos.getY(), pos.getZ(), 1.0f, true);
 		}
 				
 		return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);

@@ -4,19 +4,23 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderDeathCoil;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderForsaken;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostBomb;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostRay;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderHolyGrenade;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLavaCow;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLilSludge;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMummy;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderParasite;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPingu;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPtera;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSandBurst;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarecrow;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSkeletonKing;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
@@ -32,18 +36,21 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWeta;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieFrozen;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombiePiranha;
+import com.Fishmod.mod_LavaCow.client.renders.item.RenderBeastClaw;
+import com.Fishmod.mod_LavaCow.client.renders.item.RenderSkeletonKingMace;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
-import com.Fishmod.mod_LavaCow.entities.EntityUnderminer;
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -55,9 +62,11 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
@@ -73,7 +82,6 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -115,10 +123,15 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityAvaton.class, RenderFactoryEntityAvaton.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostBomb.class, RenderFactoryEntityGhostBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySonicBomb.class, RenderFactoryEntitySonicBomb.INSTANCE);
-        RenderingRegistry.registerEntityRenderingHandler(EntityUnderminer.class, RenderFactoryEntityUnderminer.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityForsaken.class, RenderFactoryEntityForsaken.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonKing.class, RenderFactoryEntitySkeletonKing.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySandBurst.class, RenderFactoryEntitySandBurst.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDeathCoil.class, RenderFactoryEntityDeathCoil.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, RenderFactoryEntityMummy.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
+        FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
+        FishItems.SKELETONKING_MACE.setTileEntityItemStackRenderer(new RenderSkeletonKingMace());
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow>
@@ -583,21 +596,20 @@ public class RenderFactories {
         }
     }
     
-    public static class RenderFactoryEntityUnderminer implements IRenderFactory<EntityUnderminer>
+    public static class RenderFactoryEntityForsaken implements IRenderFactory<EntityForsaken>
     {
-        public final static RenderFactoryEntityUnderminer INSTANCE = new RenderFactoryEntityUnderminer();
+        public final static RenderFactoryEntityForsaken INSTANCE = new RenderFactoryEntityForsaken();
     
         /* (non-Javadoc)
          * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
          */
         @Override
-        public RenderSkeleton createRenderFor(RenderManager manager)
+        public RenderForsaken createRenderFor(RenderManager manager)
         {
-        	return new RenderSkeleton(manager);
+        	return new RenderForsaken(manager);
         }
     }
-    
-    
+      
     public static class RenderFactoryEntitySkeletonKing implements IRenderFactory<EntitySkeletonKing>
     {
         public final static RenderFactoryEntitySkeletonKing INSTANCE = new RenderFactoryEntitySkeletonKing();
@@ -609,6 +621,48 @@ public class RenderFactories {
         public RenderSkeletonKing createRenderFor(RenderManager manager)
         {
         	return new RenderSkeletonKing(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntitySandBurst implements IRenderFactory<EntitySandBurst>
+    {
+        public final static RenderFactoryEntitySandBurst INSTANCE = new RenderFactoryEntitySandBurst();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderSandBurst createRenderFor(RenderManager manager)
+        {
+        	return new RenderSandBurst(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityDeathCoil implements IRenderFactory<EntityDeathCoil>
+    {
+        public final static RenderFactoryEntityDeathCoil INSTANCE = new RenderFactoryEntityDeathCoil();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderDeathCoil createRenderFor(RenderManager manager)
+        {
+        	return new RenderDeathCoil(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityMummy implements IRenderFactory<EntityMummy>
+    {
+        public final static RenderFactoryEntityMummy INSTANCE = new RenderFactoryEntityMummy();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityMummy> createRenderFor(RenderManager manager)
+        {
+        	return new RenderMummy(manager);
         }
     }
 }

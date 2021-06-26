@@ -53,10 +53,10 @@ public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
 	    	  EntityZombiePiranha entityzombie = new EntityZombiePiranha(this.world);
 	    	  entityzombie.setIsAmmo(true);
 	    	  if(result.entityHit != null && result.entityHit instanceof EntityLivingBase) {
-	    		  entityzombie.setPosition(result.entityHit.posX, result.entityHit.posY + result.entityHit.height, result.entityHit.posZ);
-	    		  entityzombie.setAttackTarget((EntityLivingBase) result.entityHit);
-	    		  if(!result.entityHit.isBeingRidden())entityzombie.startRiding(result.entityHit);
+	    		  entityzombie.setPosition(result.entityHit.posX, result.entityHit.posY + result.entityHit.height, result.entityHit.posZ);	    		  
+	    		  entityzombie.startRiding(result.entityHit);
 	    		  this.world.spawnEntity(entityzombie);
+	    		  entityzombie.setAttackTarget((EntityLivingBase) result.entityHit);
 	            if (this.shootingEntity != null) {
 	            	result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage());           		            		            	            	
 	            	if (this.knockbackStrength > 0) {

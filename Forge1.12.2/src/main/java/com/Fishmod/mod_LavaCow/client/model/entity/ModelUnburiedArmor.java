@@ -143,7 +143,5 @@ public class ModelUnburiedArmor extends ModelBiped {
     	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.6F, false);
     	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing + 0.3F * (float)Math.PI, limbSwingAmount * 0.4F, 0.6F, false);
     	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing + 0.3F * (float)Math.PI, limbSwingAmount * 0.4F, 0.6F, true);
-    	
-    	//copyModelAngles(this.bipedHead, this.bipedHeadwear);
     }
 }

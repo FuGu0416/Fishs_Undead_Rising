@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Modconfig {
 	
 	public static final Modconfig INSTANCE = new Modconfig();
+	@SuppressWarnings("unused")
 	private File configFolder;
 	
 	public static Configuration config = null;
@@ -131,8 +132,16 @@ public class Modconfig {
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
 	
+	public static int pSpawnRate_Forsaken;
+	public static double Forsaken_Health;
+	public static double Forsaken_Attack;
+	
 	public static double SkeletonKing_Health;
 	public static double SkeletonKing_Attack;
+	
+	public static int pSpawnRate_Mummy;
+	public static double Mummy_Health;
+	public static double Mummy_Attack;
 	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
@@ -174,9 +183,11 @@ public class Modconfig {
 	public static boolean Enchantment_Enable;
 	public static int MootenHeart_Damage;
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
+	public static int Cemetery_SpawnRate; 
+	public static int SpawnRate_Desert_Tomb; 
 	
-	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
-			"Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
+	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
+			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
 			"Vespa", "Weta", "Glowshroom"};
 	
 	public void loadConfig(FMLPreInitializationEvent event) {
@@ -211,8 +222,12 @@ public class Modconfig {
 		Parasite_Hostlist = config.getStringList("available host for parasite", "Parasite", 
 				new String[] {
 						"minecraft:zombie",
+						"minecraft:husk",
 						"mod_lavacow:zombiefrozen",
-						"mod_lavacow:zombiemushroom"},
+						"mod_lavacow:zombiemushroom",
+						"mod_lavacow:unburied",
+						"mod_lavacow:mummy"
+						},
 		"Allow Parasite to spawn from listed mob. Ex. \"minecraft:zombie\" or \"mod_lavacow:zombiefrozen\"");
 		
 		pSpawnRate_UndeadSwine = config.get("Undead Swine", "undeadswine spawn rate", 15, "Set the spawn rate of Undead swine [0-10000]", 0, 10000).getInt(15);
@@ -319,9 +334,17 @@ public class Modconfig {
 		Avaton_Ability_Num = config.get("Avaton", "avaton summon number", 2, "Set the number of Weta summoned per cast [0-100]", 0, 100).getInt(2);
 		Avaton_Ability_Max = config.get("Avaton", "avaton summon max", 16, "Set the max number of Weta summoned [0-100]", 0, 100).getInt(16);
 		Avaton_Ability_Cooldown = config.get("Avaton", "avaton summon cooldown", 8, "Set the cooldown of summoning Weta [0-100]", 0, 100).getInt(8);
+				
+		pSpawnRate_Forsaken = config.get("Forsaken", "forsaken spawn rate", 10, "Set the spawn rate of Forsaken [0-10000]", 0, 10000).getInt(10);
+		Forsaken_Health = config.get("Forsaken", "forsaken health", 30.0D, "Maximum Forsaken health [1-1000]", 1, 1000).getDouble(30.0D);
+		Forsaken_Attack = config.get("Forsaken", "forsaken attack", 4.0D, "Forsaken strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
-		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 550.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(550.0D);
+		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 360.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(360.0D);
 		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
+	
+		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);
+		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
+		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
@@ -405,7 +428,7 @@ public class Modconfig {
 		Quark_Compat = config.get(Configuration.CATEGORY_GENERAL, "quark compatibility", true, "Add additional content that works with Quark. [false/true]").getBoolean(true);
 		SunScreen_Mode = config.get(Configuration.CATEGORY_GENERAL, "sunscreen mode", false, "Mobs in this mod will not burn under daylight. [false/true]").getBoolean(false);
 		
-		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 1000, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(1000);
+		SpawnRate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn rate", 500, "Spawn rate of Cemetery (higher number = less frequent) [1-10000]", 1, 10000).getInt(500);
 		
 		BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
 		
@@ -416,6 +439,9 @@ public class Modconfig {
 		MootenHeart_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten heart damage reduction", 20, "Set the fire damage reduction of Molten Heart to X% [0-10000]", 0, 10000).getInt(20);
 		
 		Spawn_Cemetery_AllowList = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId()}, "Cemetery are only allowed to spawn in these dimensions' IDs").getIntList();
+		Cemetery_SpawnRate = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawns unburied", 40, "Cemetery spawns Unburied occasionally. [0-100]", 0, 100).getInt(40);
+		
+		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [1-10000]", 1, 10000).getInt(750);
 		
 		if (config.hasChanged())
 			config.save();

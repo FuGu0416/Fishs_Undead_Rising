@@ -189,7 +189,6 @@ public class ModelUndertaker extends FishModelBase {
     
     public void postRenderArm(float scale, EnumHandSide side)
     {
-        //this.getArmForSide(side).postRender(scale);
     	this.Body_base.postRender(scale);
     	this.Body_chest.postRender(scale);
     	this.Arm_l_Seg0.postRender(scale);

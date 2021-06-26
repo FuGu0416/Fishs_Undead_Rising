@@ -85,7 +85,7 @@ public class ModelSalamander extends FishModelBase {
         this.Head.addBox(-2.0F, -1.5F, -4.0F, 4, 2, 4, 0.0F);
         this.LeftArm = new ModelRenderer(this, 0, 9);
         this.LeftArm.mirror = true;
-        this.LeftArm.setRotationPoint(1.5F, 0.0F, 1.0F);
+        this.LeftArm.setRotationPoint(2.0F, 0.0F, 1.3F);
         this.LeftArm.addBox(0.0F, -1.0F, -2.0F, 2, 4, 3, 0.0F);
         this.setRotateAngle(LeftArm, -0.091106186954104F, 0.40980330836826856F, -0.9560913642424937F);
         this.Cannon1 = new ModelRenderer(this, 46, 19);
@@ -107,12 +107,12 @@ public class ModelSalamander extends FishModelBase {
         this.LeftLeg2.setRotationPoint(1.0F, 2.0F, 0.5F);
         this.LeftLeg2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.0F);
         this.setRotateAngle(LeftLeg2, 0.22759093446006054F, 0.0F, 0.5009094953223726F);
-        this.Body2 = new ModelRenderer(this, 44, 0);
+        this.Body2 = new ModelRenderer(this, 42, 0);
         this.Body2.setRotationPoint(0.0F, -2.0F, 1.0F);
-        this.Body2.addBox(-2.0F, -2.0F, -3.0F, 4, 4, 6, 0.0F);
+        this.Body2.addBox(-2.5F, -2.0F, -3.0F, 5, 4, 6, 0.0F);
         this.setRotateAngle(Body2, 0.5918411493512771F, 0.0F, 0.0F);
         this.RightArm = new ModelRenderer(this, 0, 9);
-        this.RightArm.setRotationPoint(-1.5F, 0.0F, 1.0F);
+        this.RightArm.setRotationPoint(-2.0F, 0.0F, 1.3F);
         this.RightArm.addBox(-2.0F, -1.0F, -2.0F, 2, 4, 3, 0.0F);
         this.setRotateAngle(RightArm, 0.091106186954104F, 0.0F, 0.9560913642424937F);
         this.LeftLeg = new ModelRenderer(this, 0, 9);
@@ -131,7 +131,7 @@ public class ModelSalamander extends FishModelBase {
         this.Cannon2 = new ModelRenderer(this, 34, 17);
         this.Cannon2.setRotationPoint(0.0F, 0.0F, -3.0F);
         this.Cannon2.addBox(-1.5F, -2.0F, -3.0F, 3, 3, 3, 0.0F);
-        this.Body3 = new ModelRenderer(this, 24, 0);
+        this.Body3 = new ModelRenderer(this, 22, 0);
         this.Body3.setRotationPoint(0.0F, -2.0F, 5.0F);
         this.Body3.addBox(-2.0F, -2.0F, -3.0F, 4, 4, 6, 0.0F);
         this.setRotateAngle(Body3, -0.18203784098300857F, 0.0F, 0.0F);
@@ -388,7 +388,6 @@ public class ModelSalamander extends FishModelBase {
     	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
-    	//if(!entityIn.isChild())System.out.println("OXO " + i + " " + this.Body.rotationPointY);
     	
     	if(i <= Anime_threshold[0] && i > Anime_threshold[1]) {
     		this.Head.rotateAngleZ = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));

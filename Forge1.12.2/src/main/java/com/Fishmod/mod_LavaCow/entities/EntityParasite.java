@@ -191,7 +191,7 @@ public class EntityParasite extends EntitySpider{
 	@Override
 	public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-        ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack itemstack = player.getHeldItem(player.swingingHand);
 
         if (itemstack.isEmpty())
         {

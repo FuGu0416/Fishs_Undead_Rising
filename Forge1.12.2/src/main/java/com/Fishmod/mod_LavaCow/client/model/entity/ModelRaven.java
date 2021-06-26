@@ -95,15 +95,6 @@ public class ModelRaven extends ModelBase {
         this.tail.render(scale);
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
-        
-        /*GlStateManager.pushMatrix();
-        this.head.postRender(0.0625F);
-        GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-        //GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
-        GlStateManager.translate(0.0F, -0.1F, -0.5F);
-        Minecraft.getMinecraft().getItemRenderer().renderItemSide((EntityLivingBase)entityIn, ((EntityLivingBase) entityIn).getHeldItemMainhand(), ItemCameraTransforms.TransformType.HEAD, true);
-        GlStateManager.popMatrix();*/
     }
     
     /**
@@ -122,7 +113,7 @@ public class ModelRaven extends ModelBase {
      */
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-        float f = 0.0F;//ageInTicks * 0.3F;
+        float f = 0.0F;
         this.head.rotateAngleX = headPitch * 0.017453292F;
         this.head.rotateAngleY = netHeadYaw * 0.017453292F;
         this.head.rotateAngleZ = 0.0F;
@@ -150,10 +141,8 @@ public class ModelRaven extends ModelBase {
                 this.head.rotateAngleZ = MathHelper.sin((float)entityIn.ticksExisted) * 0.4F;
                 this.body.rotationPointX = f1;
                 this.body.rotationPointY = 16.5F + f2;
-                //this.wingLeft.rotateAngleZ = -0.0873F - ageInTicks;
                 this.wingLeft.rotationPointX = 1.5F + f1;
                 this.wingLeft.rotationPointY = 16.94F + f2;
-                //this.wingRight.rotateAngleZ = 0.0873F + ageInTicks;
                 this.wingRight.rotationPointX = -1.5F + f1;
                 this.wingRight.rotationPointY = 16.94F + f2;
                 this.tail.rotationPointX = f1;

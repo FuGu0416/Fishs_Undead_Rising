@@ -9,11 +9,13 @@ import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -25,9 +27,11 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
@@ -314,23 +318,45 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "sonicbomb"), id++)
             .name(mod_LavaCow.MODID + "." + "sonicbomb")
             .tracker(64, 1, true)
-            .build()//,
+            .build(),
             
-            /*EntityEntryBuilder.create()
-            .entity(EntityUnderminer.class)
-            .id(new ResourceLocation(mod_LavaCow.MODID, "underminer"), id++)
-            .name(mod_LavaCow.MODID + "." + "underminer")
+            EntityEntryBuilder.create()
+            .entity(EntityForsaken.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "forsaken"), id++)
+            .name(mod_LavaCow.MODID + "." + "forsaken")
             .tracker(80, 3, false)
             .egg(12698049, 4802889)
-            .build(),*/
+            .build(),
               
-            /*EntityEntryBuilder.create()
+            EntityEntryBuilder.create()
             .entity(EntitySkeletonKing.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "skeletonking"), id++)
-            .name(mod_LavaCow.MODID + "." + "SkeletonKing")
+            .name(mod_LavaCow.MODID + "." + "skeletonking")
             .tracker(80, 3, false)
             .egg(0x2F2A2A, 0xA2A1A1)
-            .build()*/
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntitySandBurst.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "sandburst"), id++)
+            .name(mod_LavaCow.MODID + "." + "sandburst")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityDeathCoil.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "deathcoil"), id++)
+            .name(mod_LavaCow.MODID + "." + "deathcoil")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityMummy.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "mummy"), id++)
+            .name(mod_LavaCow.MODID + "." + "mummy")
+            .tracker(80, 3, false)
+            .egg(0xE9DAAE, 0x9A8157)
+            .build()
             );
 
     @EventBusSubscriber(modid = mod_LavaCow.MODID)
@@ -374,8 +400,7 @@ public class ModEntities {
 			if(!C.equals(Type.NETHER) && !C.equals(Type.END)) {
 				tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
 				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
-				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);
-				//tweakEntitySpawn(EntityUnderminer.class, EnumCreatureType.MONSTER, 20, 4, 8, C);
+				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);			
 			}
 		}
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
@@ -393,6 +418,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityForsaken.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Forsaken, 4, 8, BiomeDictionary.Type.SANDY);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

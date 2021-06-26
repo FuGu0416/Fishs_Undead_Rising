@@ -51,7 +51,7 @@ public class EntityAcidJet extends EntityThrowable {
 	* Called when this EntityFireball hits a block or entity.
 	*/
     protected void onImpact(RayTraceResult result) {
-	    if (!this.world.isRemote && result.entityHit != null && this.getThrower() != null && result.entityHit instanceof EntityLivingBase) {
+	    if (!this.world.isRemote && result.entityHit != null && this.getThrower() != null && result.entityHit instanceof EntityLivingBase && result.entityHit != this.getThrower()) {
 	    	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 	    	this.setDamage( (float) this.getThrower().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
 	    	result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage());

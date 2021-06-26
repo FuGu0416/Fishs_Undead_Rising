@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "DXD",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:curseweave_cloth"
+        },
+        "X": {
+	        "type": "minecraft:item_nbt",
+	        "item": "minecraft:potion",
+	        "nbt": {
+	          "Potion": "minecraft:strength"
+	        }
+        },
+        "D": {
+    		"type": "forge:ore_dict",
+    		"ore": "string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:cursed_bandage",
+		"data": 1,
+        "count": 8
+    }
+}

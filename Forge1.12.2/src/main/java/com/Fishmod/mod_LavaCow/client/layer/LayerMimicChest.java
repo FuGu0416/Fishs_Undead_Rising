@@ -4,8 +4,6 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
-import java.util.Arrays;
-import java.util.ArrayList;
 
 public class LayerMimicChest implements LayerRenderer<EntityMimic> {
     private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("textures/entity/chest/ender.png");

@@ -24,10 +24,7 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 	public PacketMountSpecial() {
 	}
 	
-	public PacketMountSpecial(int Id, double posX, double posY, double posZ) {
-		
-		//System.out.println("?_? " + Id);
-		
+	public PacketMountSpecial(int Id, double posX, double posY, double posZ) {		
 		this.Id = Id;
 		this.posX = posX;
 		this.posY = posY;
@@ -42,12 +39,11 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
    	 	for(int i = 0 ; i < 8 ; i++) {
 			EntitySmallFireball entityammo = new EntitySmallFireball(entity.world, (EntityLivingBase) entity, lookVec.x * (7.0D + new Random().nextGaussian() * 2.0D), lookVec.y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, lookVec.z * (7.0D + new Random().nextGaussian() * 2.0D));
 			entityammo.posX = message.posX + lookVec.x * 2.0D;
-			entityammo.posY = message.posY + (double)(entity.height / 2.0F) + 0.5D;  
+			entityammo.posY = message.posY + (double)(entity.height / 2.0F) + 1.5D;  
 			entityammo.posZ = message.posZ + lookVec.z * 2.0D;
 			entity.world.spawnEntity(entityammo);
 			entity.world.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
    	 	}
-		//System.out.println("O_O " + message.posX + " " + message.posY + " " + message.posZ + entity.getName());
 		
 		return null;
 	}

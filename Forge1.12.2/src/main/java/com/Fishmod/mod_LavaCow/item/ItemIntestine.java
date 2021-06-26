@@ -40,14 +40,13 @@ public class ItemIntestine extends ItemFishCustom
     	ItemStack stack = playerIn.getHeldItem(handIn);
     	
     	if (!playerIn.capabilities.isCreativeMode)stack.shrink(1);
+    	playerIn.playSound(SoundEvents.BLOCK_SLIME_HIT, 1.0F, 1.0F);
     	for(Map.Entry<ItemStack, Float> entry : LootTableHandler.LOOT_INTESTINE.entrySet())
     	{
-    		playerIn.playSound(SoundEvents.BLOCK_SLIME_HIT, 1.0F, 1.0F);
     		if(!worldIn.isRemote && Item.itemRand.nextFloat() < entry.getValue()) {
     			ItemStack s = entry.getKey();
     			s.setCount(Item.itemRand.nextInt(2)+1);
     			playerIn.dropItem(s, true);
-    			//playerIn.dropItem(new ItemStack(entry.getKey(), entry.getKey() == Items.DIAMOND ? 1 : Item.itemRand.nextInt(2)+1, entry.getKey() == Items.DYE ? 15 : 0), true);
     		}
     	}
     	return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);

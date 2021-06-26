@@ -48,7 +48,6 @@ public class ItemFissionPotion extends ItemFishCustom{
 	private EnumRarity Rarity;
 	
 	public ItemFissionPotion(String registryName, SoundEvent soundIn, EnumParticleTypes particleIn, EnumRarity rarity, boolean hasTooltip) {
-		//super();
     	super(registryName, Items.GLASS_BOTTLE, mod_LavaCow.TAB_ITEMS, true);
     	this.setMaxStackSize(1);
     	this.using_sound = soundIn;
@@ -93,13 +92,7 @@ public class ItemFissionPotion extends ItemFishCustom{
     		boolean flag = false;
     		
     		if(!playerIn.world.isRemote) {
-	    		if(stack.getItem().equals(FishItems.FISSIONPOTION)) {
-	    			/*System.out.println("OAO0 "+target.getClass().getName());
-	    			System.out.println("OAO1 "+EntityRegistry.getEntry(target.getClass()));
-	    			System.out.println("OAO2 "+EntityRegistry.getEntry(target.getClass()).getEgg());
-	    			System.out.println("OAO3 "+EntityRegistry.getEntry(target.getClass()).getEgg().spawnedID);
-	    			ResourceLocation eggInfo = EntityRegistry.getEntry(target.getClass()).getEgg().spawnedID;*/
-	    			
+	    		if(stack.getItem().equals(FishItems.FISSIONPOTION)) {	    			
 			    	EntityAgeable parent = (EntityAgeable)target;
 			    	EntityAgeable entityageable = parent.createChild(parent) != null ? parent.createChild(parent) : (EntityAgeable)EntityRegistry.getEntry(target.getClass()).newInstance(parent.world);//ItemMonsterPlacer.spawnCreature(parent.world, eggInfo, parent.posX, parent.posY, parent.posZ);
 			    	entityageable.setGrowingAge(-24000);
@@ -113,8 +106,6 @@ public class ItemFissionPotion extends ItemFishCustom{
 			        	((EntityTameable)entityageable).setTamedBy(playerIn);
 			        entityageable.playLivingSound();
 			        
-			        //this.using_sound = SoundEvents.ENTITY_SLIME_SQUISH;
-			        //this.using_particle = Particles.HAPPY_VILLAGER;
 			        flag = true;
 	    		}
 	    		else if(stack.getItem().equals(FishItems.POTION_OF_MOOTEN_LAVA) && target instanceof EntityCow && !(target instanceof EntityLavaCow)) {
@@ -130,39 +121,22 @@ public class ItemFissionPotion extends ItemFishCustom{
 	    				target.setDead();
 	    			}
 	    			
-	    			//this.using_sound = SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST;
-			        //this.using_particle = Particles.LAVA;
 			        flag = true;
 	    		}
-	    		//else return false;
     		}
     		
     		if(!playerIn.isCreative() && flag) {
     			stack.shrink(1);
-    			//this.onItemUseFinish(stack, target.world, target);
     			playerIn.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
     		}
 	    	
-    		//if(flag) {
-	    		playerIn.playSound(this.using_sound, 1.0F, 1.0F);
-	    		for (int i = 0; i < 5; ++i) {
-	    			double d0 = new Random().nextGaussian() * 0.02D;
-	    			double d1 = new Random().nextGaussian() * 0.02D;
-	    			double d2 = new Random().nextGaussian() * 0.02D;
-	    			playerIn.world.spawnParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.width * 2.0F) - (double)playerIn.width, dy + 1.0D + (double)(new Random().nextFloat() * playerIn.height), dz + (double)(new Random().nextFloat() * playerIn.width * 2.0F) - (double)playerIn.width, d0, d1, d2);
-	    		}
-	    		
-	    		//return true;
-    		//}
-    		
-	    	/*else {
-				EntityParrot parent = (EntityParrot)target;
-				EntityParrot entityparrot = (EntityParrot)EntityList.createEntityByID(105, target.world);
-				entityparrot.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
-				entityparrot.onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), (IEntityLivingData)null);
-				entityparrot.setVariant(parent.getVariant());
-				target.world.spawnEntity(entityparrot);
-			}*/
+    		playerIn.playSound(this.using_sound, 1.0F, 1.0F);
+    		for (int i = 0; i < 5; ++i) {
+    			double d0 = new Random().nextGaussian() * 0.02D;
+    			double d1 = new Random().nextGaussian() * 0.02D;
+    			double d2 = new Random().nextGaussian() * 0.02D;
+    			playerIn.world.spawnParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.width * 2.0F) - (double)playerIn.width, dy + 1.0D + (double)(new Random().nextFloat() * playerIn.height), dz + (double)(new Random().nextFloat() * playerIn.width * 2.0F) - (double)playerIn.width, d0, d1, d2);
+    		}
         }  
     	
         return super.itemInteractionForEntity(stack, playerIn, target, hand);

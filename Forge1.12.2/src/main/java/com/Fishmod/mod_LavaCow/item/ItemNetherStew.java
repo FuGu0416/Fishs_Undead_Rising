@@ -50,8 +50,6 @@ public class ItemNetherStew extends ItemFishCustomFood
     		if(!playerIn.isCreative()) 
     		{
     			stack.shrink(1);
-    			//this.onItemUseFinish(stack, target.world, target);
-    			//playerIn.setHeldItem(hand, new ItemStack(Items.BOWL));
     		}
     		
     		playerIn.playSound(SoundEvents.ENTITY_GENERIC_BURN, 1.0F, 1.0F);
@@ -65,7 +63,6 @@ public class ItemNetherStew extends ItemFishCustomFood
         	
         	if (!playerIn.world.isRemote) 
         	{
-	    		//target.addPotionEffect(new PotionEffect(MobEffects.POISON, 900, 2));
 	    		EntityPigZombie entitypigzombie = new EntityPigZombie(target.world);
 	            entitypigzombie.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
 	            entitypigzombie.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);

@@ -64,7 +64,7 @@ item.mod_lavacow.swinearmor_boots.name=疫猪短靴
 item.mod_lavacow.zombiepiranha_item.name=群猎者
 item.mod_lavacow.zombiepiranha_item_cooked.name=烤群猎者
 item.mod_lavacow.piranhalauncher.name=群猎者发射器
-item.mod_lavacow.cursed_fabric.name=咒织布
+item.mod_lavacow.cursed_fabric.name=织布碎块
 item.mod_lavacow.cursed_bandage.name=宠爱绷带
 item.mod_lavacow.holy_sludge.name=圣辉软泥
 item.mod_lavacow.holy_grenade.name=神圣手雷
@@ -93,6 +93,13 @@ item.mod_lavacow.bonestew.name=大骨炖汤
 item.mod_lavacow.vespa_shield.name=巨蜂卫盾
 item.mod_lavacow.frozen_dagger.name=冰川刃
 item.mod_lavacow.spectral_dagger.name=鬼灵匕首
+item.mod_lavacow.kings_crown.name=王之冠
+item.mod_lavacow.skeletonking_crown.name=统御之冠
+item.mod_lavacow.emblem_of_king.name=王之徽纪
+item.mod_lavacow.beast_claw.name=蛮兽爪
+item.mod_lavacow.hatred_shard.name=万军追忆
+item.mod_lavacow.curseweave_cloth.name=咒织布
+item.mod_lavacow.skeletonking_mace.name=『死亡』
 
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂壳
@@ -105,6 +112,27 @@ modifier.mod_lavacow.famine.name=饥荒
 modifier.mod_lavacow.famine.desc=§o灾厄骑士§r\n造成饥饿，对非亡灵生物的实体造成伤害或破坏方块时能恢复 1 饥饿值
 modifier.mod_lavacow.unholytouch.name=不洁之触
 modifier.mod_lavacow.unholytouch.desc=§o对生者充满怨恨！ §r\n对非亡灵生物的实体造成大量伤害并使其获得虚弱
+
+###########
+# BANNERS #
+###########
+
+item.banner.skeletonking.white=白色骷髅王
+item.banner.skeletonking.orange=橙色骷髅王
+item.banner.skeletonking.magenta=品红骷髅王
+item.banner.skeletonking.light_blue=浅蓝骷髅王
+item.banner.skeletonking.yellow=黄色骷髅王
+item.banner.skeletonking.lime=淡绿骷髅王
+item.banner.skeletonking.pink=粉色骷髅王
+item.banner.skeletonking.gray=灰色骷髅王
+item.banner.skeletonking.silver=银色骷髅王
+item.banner.skeletonking.cyan=青色骷髅王
+item.banner.skeletonking.purple=紫色骷髅王
+item.banner.skeletonking.blue=蓝色骷髅王
+item.banner.skeletonking.brown=棕色骷髅王
+item.banner.skeletonking.green=绿色骷髅王
+item.banner.skeletonking.red=红色骷髅王
+item.banner.skeletonking.black=黑色骷髅王
 
 ##########
 # BLOCKS #
@@ -153,6 +181,9 @@ entity.mod_lavacow.ghostray.name=鬼灵鲼
 entity.mod_lavacow.banshee.name=报丧女妖
 entity.mod_lavacow.weta.name=帝沙螽
 entity.mod_lavacow.avaton.name=艾薇妲
+entity.mod_lavacow.skeletonking.name=骷髅王
+entity.mod_lavacow.mummy.name=木乃伊
+entity.mod_lavacow.forsaken.name=被遗忘者
 
 ##########
 # Sounds #
@@ -252,6 +283,12 @@ entity_avaton_ambient=艾薇妲：低语
 entity_avaton_spell=昆虫：窸窣
 entity_avaton_death=艾薇妲：死亡
 
+entity_skeletonking_attack=骷髅王：重击
+entity_skeletonking_death=骷髅王：死亡
+entity_skeletonking_spell_summon=骷髅王：施法
+entity_skeletonking_spell_teleport=骷髅王：传送
+entity_skeletonking_spell_toss=骷髅王：施法
+
 ############
 # Tooltips #
 ############
@@ -279,6 +316,14 @@ tootip.mod_lavacow.felarmor.l2=玩家所受到的火焰伤害 -
 tootip.mod_lavacow.swinearmor=套装（2）：不再被疫猪视为主动攻击目标
 tootip.mod_lavacow.swinearmor.l2=套装（4）：免疫中毒效果
 tootip.mod_lavacow.piranhalauncher=右击向目标发射一只群猎者（需要群猎者作为弹药）
+tootip.mod_lavacow.cursed_bandage.0.desc0=医疗
+tootip.mod_lavacow.cursed_bandage.0.desc1=为你的宠物治疗 2 点生命值
+tootip.mod_lavacow.cursed_bandage.1.desc0=力量
+tootip.mod_lavacow.cursed_bandage.1.desc1=为你的宠物治疗 2 点生命值，并赋予力量（3:00）
+tootip.mod_lavacow.cursed_bandage.2.desc0=医疗(大)
+tootip.mod_lavacow.cursed_bandage.2.desc1=为你的宠物治疗 6 点生命值
+tootip.mod_lavacow.cursed_bandage.3.desc0=抗性
+tootip.mod_lavacow.cursed_bandage.3.desc1=为你的宠物治疗 2 点生命值，并赋予抗性（3:00）
 tootip.mod_lavacow.holy_grenade=投向目标地点，造成范围伤害，且亡灵生物受到 300%% 的伤害并获得燃烧（0:08）
 tooltip.mod_lavacow.halo necklace=对亡灵生物伤害 +%d%%
 tooltip.mod_lavacow.dreamcatcher=捕捉弥留于梦境之中的梦魇
@@ -298,6 +343,18 @@ tootip.mod_lavacow.mootenheart=受到的火焰伤害-%d%%，且可用于酿造
 tootip.mod_lavacow.vespa_shield=格挡伤害、对攻击者造成 2 点伤害并使其获得中毒（0:06）
 tootip.mod_lavacow.frozen_dagger=当浸于水中时能逐渐恢复耐久度
 tootip.mod_lavacow.spectral_dagger=具有无限耐久度，并对非亡灵生物的单位造成伤害 +2
+tootip.mod_lavacow.kings_crown.0=被玷污
+tootip.mod_lavacow.kings_crown.0.desc0=镶入让人渴望的宝石
+tootip.mod_lavacow.kings_crown.0.desc1=注入过去的古老记忆
+tootip.mod_lavacow.kings_crown.0.desc2=吾王将再次统御王国
+tootip.mod_lavacow.kings_crown.1=受诅咒
+tootip.mod_lavacow.kings_crown.1.desc0=纵使身躯已然逝去
+tootip.mod_lavacow.kings_crown.1.desc1=扺要魂魄存于王冠
+tootip.mod_lavacow.kings_crown.1.desc2=髅髑也能完成征途
+tootip.mod_lavacow.skeletonking_crown=强迫周遭的骷髅成为你忠实的奴仆
+tootip.mod_lavacow.beast_claw.desc0=向前跳扑
+tootip.mod_lavacow.beast_claw.desc1=套装(2)：跳扑同时能赋予力量（0:03）与加速（0:03）
+tootip.mod_lavacow.skeletonking_mace=攻击同时赋予目标死亡之触 V（0:10）
 
 message.mod_lavacow.metamorphosis=的外型正在变化！
 command.mod_lavacow.sitting=现在于原地待命
@@ -329,6 +386,8 @@ mob_effect.mod_lavacow:soiled=玷污
 description.mob_effect.mod_lavacow:soiled=防止进食或饮用
 mob_effect.mod_lavacow:infested=感染
 description.mob_effect.mod_lavacow:infested=产生饥饿与缓慢效果，且死亡时会有尸蛆爬出
+mob_effect.mod_lavacow:fragile=死亡之触
+description.mob_effect.mod_lavacow:fragile=当生命低于一定程度时，立即死亡
 
 ##############
 # Potions #
@@ -346,6 +405,10 @@ potion.effect.mod_lavacow:infestation=感染药水
 splash_potion.effect.mod_lavacow:infestation=喷溅型感染药水
 lingering_potion.effect.mod_lavacow:infestation=滞留型感染药水
 tipped_arrow.effect.mod_lavacow:infestation=感染之箭
+potion.effect.mod_lavacow:fragile=死亡之触药水
+splash_potion.effect.mod_lavacow:fragile=喷溅型死亡之触药水
+lingering_potion.effect.mod_lavacow:fragile=滞留型死亡之触药水
+tipped_arrow.effect.mod_lavacow:fragile=死亡之触之箭
 
 ################
 # Advancements #
@@ -405,3 +468,17 @@ advancements.mod_lavacow.kill_weta.title=虫穴生还者
 advancements.mod_lavacow.kill_weta.description=杀死一只帝沙螽
 advancements.mod_lavacow.kill_avaton.title=害虫控制
 advancements.mod_lavacow.kill_avaton.description=杀死一头艾薇妲
+advancements.mod_lavacow.kill_skeletonking.title=吾王万岁
+advancements.mod_lavacow.kill_skeletonking.description=杀死骷髅王
+advancements.mod_lavacow.kill_mummy.title=死亡只是个开始
+advancements.mod_lavacow.kill_mummy.description=杀死一头木乃伊
+advancements.mod_lavacow.kill_forsaken.title=但我还记得
+advancements.mod_lavacow.kill_forsaken.description=杀死一头被遗忘者
+advancements.mod_lavacow.get_hatred_shard.title=在那记忆的深处
+advancements.mod_lavacow.get_hatred_shard.description=获得万军追忆
+
+#################
+# Death Message #
+#################
+
+death.mod_lavacow.timeup=%1$s的生命消逝于尘土之中

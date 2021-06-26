@@ -107,9 +107,6 @@ public class ModelFoglet extends ModelBase {
             this.leg_l.rotateAngleX = -2.0032889154390916F + MathHelper.cos(ageInTicks * 0.3F + 0.2F * (float)Math.PI) * 0.4F;            
             this.torso.setRotationPoint(-0.0F, 8.0F, -3.0F);
             this.torso.rotateAngleX = 0.5009094953223726F;
-            //this.torso.rotateAngleY = entityIn.rotationYaw * 0.017453292F;
-            //this.setRotateAngle(torso, 0.5009094953223726F, 0.0F, 0.0F);
-            //System.out.println("O_O catch" + this.torso.rotateAngleY);
         }
         else if(((EntityFoglet) entityIn).getIsHanging()) {
             this.head.rotateAngleX = -1.1383037381507017F + headPitch * 0.017453292F;
@@ -117,7 +114,6 @@ public class ModelFoglet extends ModelBase {
             this.setRotateAngle(leg_r, -0.5009094953223726F, 0.0F, 0.0F);
             this.torso.setRotationPoint(-0.0F, 16.0F, 0.0F);
             this.torso.rotateAngleX = -2.86844862565268F;
-            //this.setRotateAngle(torso, -2.86844862565268F, 0.0F, 0.0F);
         }
         else {
             this.head.rotateAngleX = -0.5009094953223726F + headPitch * 0.017453292F;
@@ -125,11 +121,7 @@ public class ModelFoglet extends ModelBase {
 	        this.leg_l.rotateAngleX = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / f;   
 	        this.torso.setRotationPoint(-0.0F, 8.0F, -3.0F);
 	        this.torso.rotateAngleX = 0.5009094953223726F;
-	        //this.setRotateAngle(torso, 0.5009094953223726F, 0.0F, 0.0F);
         }
-        
-        //this.arm_r.rotateAngleX = (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-        //this.arm_l.rotateAngleX = (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
     }
     
     /**
@@ -141,9 +133,6 @@ public class ModelFoglet extends ModelBase {
         EntityFoglet entityfoglet = (EntityFoglet)entitylivingbaseIn;
         boolean isAggressive = entityfoglet.isAggressive();
         
-        //System.out.println("O_O catch" + entityfoglet.getIsClimbing());
-        //System.out.println("OAO " + partialTickTime);
-        //System.out.println("O_O " + MathHelper.sin(partialTickTime * 0.003F));
         if(entityfoglet.getIsHanging()) {
         	this.setRotateAngle(arm_l, 2.86844862565268F, 0.10000736613927509F, 0.22759093446006054F);
             this.setRotateAngle(arm_r, 2.86844862565268F, -0.10000736613927509F, -0.22759093446006054F);
@@ -153,15 +142,13 @@ public class ModelFoglet extends ModelBase {
             this.arm_l.rotateAngleX = -2.0488420089161434F + MathHelper.sin(entityfoglet.ticksExisted * 0.3F) * 0.4F;           
         }
         else if(entityfoglet.isSpellcastingC()) {
-        	//System.out.println("O_O catch");
         	this.arm_r.rotateAngleX = 2.6862362517444724F;
         	this.arm_l.rotateAngleX = 2.6862362517444724F;
         	this.arm_r.rotateAngleZ = -0.9560913642424937F + MathHelper.sin(entityfoglet.ticksExisted * 0.6F) * 0.8196F;
             this.arm_l.rotateAngleZ = 0.9560913642424937F - MathHelper.sin(entityfoglet.ticksExisted * 0.6F) * 0.8196F;
         }
-        else if(isAggressive/*entityfoglet.setFog_counter > 0*/)
+        else if(isAggressive)
         {
-        	//System.out.println("O_O catch" + entityfoglet.setFog_counter);
         	this.arm_r.rotateAngleX = -2.0032889154390916F;
         	this.arm_l.rotateAngleX = -2.0032889154390916F;
         	this.arm_r.rotateAngleZ = 0.10000736613927509F;

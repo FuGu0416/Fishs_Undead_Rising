@@ -8,10 +8,14 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderLilSludge extends RenderLiving<EntityLilSludge>{
-	
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/lilsludge.png");
+	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/lilsludge/lilsludge.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/lilsludge/lilsludge2.png")
+	};
+
 	static{
-        System.out.println(TEXTURES.getResourcePath());
+		for(ResourceLocation texture: TEXTURES)
+			System.out.println(texture.getResourcePath());
     }
 
     public RenderLilSludge(RenderManager rendermanagerIn) {
@@ -20,11 +24,10 @@ public class RenderLilSludge extends RenderLiving<EntityLilSludge>{
     
     @Override
     protected ResourceLocation getEntityTexture(EntityLilSludge entity) {
-        return TEXTURES;
+		return TEXTURES[entity.getSkin()];
     }
     
     @Override
 	protected void preRenderCallback(EntityLilSludge entity, float partialTickTime) {
-    	//if(!entity.isChild())GlStateManager.scale(1.8F, 1.8F, 1.8F);
 	}
 }

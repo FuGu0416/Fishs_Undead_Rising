@@ -68,12 +68,10 @@ public class ModelSkeletonKing extends FishModelBase {
         this.Arm_l_Seg0.mirror = true;
         this.Arm_l_Seg0.setRotationPoint(5.0F, -8.0F, -1.5F);
         this.Arm_l_Seg0.addBox(0.0F, -1.0F, -1.0F, 2, 12, 2, 0.0F);
-        //this.setRotateAngle(Arm_l_Seg0, 0.0F, 0.0F, -0.5462880558742251F);
         this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
         this.Arm_l_Seg1 = new ModelRenderer(this, 45, 21);
         this.Arm_l_Seg1.setRotationPoint(1.0F, 11.0F, 1.0F);
         this.Arm_l_Seg1.addBox(-1.5F, 0.0F, -3.0F, 3, 12, 3, 0.0F);
-        //this.setRotateAngle(Arm_l_Seg1, -0.7740535232594852F, 0.0F, 0.0F);
         this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
         this.weapon_horn_l = new ModelRenderer(this, 110, 52);
         this.weapon_horn_l.setRotationPoint(4.0F, 0.0F, -4.0F);
@@ -96,9 +94,9 @@ public class ModelSkeletonKing extends FishModelBase {
         this.Leg_r_Seg0.setRotationPoint(-2.5F, -1.0F, 0.1F);
         this.Leg_r_Seg0.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(Leg_r_Seg0, -0.27314402793711257F, 0.0F, 0.091106186954104F);
-        this.Crown = new ModelRenderer(this, 28, 36);
+        this.Crown = new ModelRenderer(this, 92, 19);
         this.Crown.setRotationPoint(0.0F, -6.0F, -1.0F);
-        this.Crown.addBox(-4.5F, -3.0F, -4.5F, 9, 3, 9, 0.0F);
+        this.Crown.addBox(-4.5F, -4.0F, -4.5F, 9, 5, 9, 0.0F);
         this.weapon_handle0 = new ModelRenderer(this, 66, 43);
         this.weapon_handle0.setRotationPoint(-0.5F, 11.0F, 0.0F);
         this.weapon_handle0.addBox(0.0F, -0.5F, -15.0F, 1, 1, 20, 0.0F);
@@ -152,23 +150,63 @@ public class ModelSkeletonKing extends FishModelBase {
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	EntitySkeletonKing entity = (EntitySkeletonKing) entityIn;
-    	float i = ((float)(entity.getAttackTimer()) - 5.0F) / 25.0F;
+    	float i = ((float)(entity.getAttackTimer()) - 5.0F) / 15.0F;
+    	float k = (float)(entity.getSpellTicks(0)) / 30.0F;
+    	float l = (float)(entity.getSpellTicks(1)) / 15.0F;
     	int j = entity.getAttackTimer();
     	
-    	if(j > 0) {
+    	if(k > 0) {
+    		this.Body_base.rotationPointY = 4.2F;
+    		this.Body_waist.rotateAngleX = GradientAnimation(0.5009094953223726F, -0.31869712141416456F, k);
+    		this.Body_chest.rotateAngleX = GradientAnimation(0.091106186954104F, -0.18203784098300857F, k);   
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(0.091106186954104F, 0.9560913642424937F, k); 
+    		this.Arm_l_Seg1.rotateAngleX = -0.36425021489121656F;
+    		this.weapon_handle0.rotateAngleX = 0.136659280431156F;
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(0.0F, -1.6845917940249266F, k); 
+    		this.Arm_r_Seg0.rotateAngleY = GradientAnimation(0.0F, 0.5462880558742251F, k); 
+    		this.Arm_r_Seg0.rotateAngleZ = GradientAnimation(0.5462880558742251F, 0.136659280431156F, k); 
+    		this.Arm_r_Seg1.rotateAngleX = GradientAnimation(-0.7740535232594852F, -1.3658946726107624F, k); 
+    		
+        	this.SwingX_Sin(this.Leg_r_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, true, 0.0F);
+        	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, false, 0.0F);
+        	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, false, 0.3F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
+    	}
+    	else if(l > 0) { 		
+    		this.Body_base.rotationPointY = 4.2F;
+    		this.Body_waist.rotateAngleX = 0.136659280431156F;
+    		this.Body_chest.rotateAngleX = 0.0F;
+    		
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(0.7285004297824331F, -0.9560913642424937F, l); 
+    		this.Arm_r_Seg0.rotateAngleY = 0.0F;
+    		this.Arm_r_Seg0.rotateAngleZ = 1.5481070465189704F;
+    		this.Arm_r_Seg1.rotateAngleX = GradientAnimation(-2.1399481958702475F, -0.5918411493512771F, l); 
+    		this.Arm_r_Seg1.rotateAngleY = 0.0F;
+    		this.Arm_r_Seg1.rotateAngleZ = 0.0F;
+    		this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
+    		this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
+    		this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
+    		
+        	this.SwingX_Sin(this.Leg_r_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, true, 0.0F);
+        	this.SwingX_Sin(this.Leg_l_Seg0, -0.27314402793711257F, limbSwing, limbSwingAmount * 0.7F, 0.3F, false, 0.0F);
+        	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, false, 0.3F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
+    	}
+    	else if(j > 0) {
     		this.Body_base.rotationPointY = GradientAnimation(4.2F, 15.0F, i);
     		this.Body_waist.rotateAngleX = GradientAnimation(-0.27314402793711257F, 0.6373942428283291F, i);
     		this.Body_chest.rotateAngleX = GradientAnimation(-0.31869712141416456F, 0.27314402793711257F, i);
     		
-    		Arm_r_Seg0.rotateAngleX = GradientAnimation(-3.050486466635689F, -1.1838568316277536F, i); 
-    		Arm_r_Seg0.rotateAngleZ = 0.0F;
-    		Arm_r_Seg1.rotateAngleX = -0.136659280431156F; 
-    		Arm_r_Seg1.rotateAngleZ = -0.5918411493512771F;
-    		Arm_l_Seg0.rotateAngleX = GradientAnimation(-3.141592653589793F, -0.9560913642424937F, i); 
-    		Arm_l_Seg0.rotateAngleZ = 0.0F;
-    		Arm_l_Seg1.rotateAngleX = -0.22759093446006054F;
-    		Arm_l_Seg1.rotateAngleZ = 0.5462880558742251F;
-    		weapon_handle0.rotateAngleX = 0.27314402793711257F;
+    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-3.050486466635689F, -1.1838568316277536F, i); 
+    		this.Arm_r_Seg0.rotateAngleY = 0.0F;
+    		this.Arm_r_Seg0.rotateAngleZ = 0.0F;
+    		this.Arm_r_Seg1.rotateAngleX = -0.136659280431156F; 
+    		this.Arm_r_Seg1.rotateAngleZ = -0.5918411493512771F;
+    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-3.141592653589793F, -0.9560913642424937F, i); 
+    		this.Arm_l_Seg0.rotateAngleZ = 0.0F;
+    		this.Arm_l_Seg1.rotateAngleX = -0.22759093446006054F;
+    		this.Arm_l_Seg1.rotateAngleZ = 0.5462880558742251F;
+    		this.weapon_handle0.rotateAngleX = 0.27314402793711257F;
     		
     		this.Leg_r_Seg0.rotateAngleX = GradientAnimation(-0.27314402793711257F, -1.1383037381507017F, i);
     		this.Leg_l_Seg0.rotateAngleX = GradientAnimation(-0.27314402793711257F, -1.1383037381507017F, i);

@@ -1,24 +1,29 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "D#D",
-        "#X#",
-        "D#D"
+        "###",
+        "DXD",
+        "###"
     ],
     "key": {
         "#": {
-            "item": "mod_lavacow:cursed_fabric"
+            "item": "mod_lavacow:curseweave_cloth"
         },
         "X": {
-            "item": "minecraft:speckled_melon"
+	        "type": "minecraft:item_nbt",
+	        "item": "minecraft:potion",
+	        "nbt": {
+	          "Potion": "minecraft:healing"
+	        }
         },
         "D": {
-			"item": "mod_lavacow:parasite_item",
-	    	"data": 32767
+    		"type": "forge:ore_dict",
+    		"ore": "string"
         }
     },
     "result": {
         "item": "mod_lavacow:cursed_bandage",
+		"data": 0,
         "count": 8
     }
 }

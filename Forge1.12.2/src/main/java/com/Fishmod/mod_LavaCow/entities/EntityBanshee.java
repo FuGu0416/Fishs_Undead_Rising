@@ -129,6 +129,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     protected boolean isBanshee() {
     	return true;
     }
+    
+    protected String ParticleType() {
+    	return "spore";
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -139,7 +143,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         super.onUpdate();
         
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
-        	mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
+        	mod_LavaCow.PROXY.spawnCustomParticle(this.ParticleType(), this.world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
         
         if(this.isBanshee() && this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
         	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY + this.height, this.posZ, 0.0D, 1.0D, 0.0D);
@@ -158,7 +162,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             --this.spellTicks;
         }
     	
-    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
+    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote && this instanceof EntityBanshee)
     	{
     		float f = this.getBrightness();
     		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
@@ -559,7 +563,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
          */
         public boolean shouldExecute()
         {
-            return !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0;
+            return !EntityBanshee.this.getMoveHelper().isUpdating() && EntityBanshee.this.rand.nextInt(7) == 0 && !EntityBanshee.this.isAggressive();
         }
 
         /**
