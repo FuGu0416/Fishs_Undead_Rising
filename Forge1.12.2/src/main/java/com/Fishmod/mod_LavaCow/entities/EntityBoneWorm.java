@@ -28,7 +28,6 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -79,7 +78,6 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-    	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPig>(this, EntityPig.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -137,7 +135,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
 	        	this.world.setEntityState(this, (byte)6);
 	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
 	        }
-	        else if(this.LocationFix <= 0 && this.isImmuneToFire && !this.isDigging()) {
+	        else if(this.LocationFix <= 1.5D && this.isImmuneToFire && !this.isDigging()) {
 	        	this.isImmuneToFire = false;
 	        	this.diggingTimer[1] = 20;
 	        	this.world.setEntityState(this, (byte)7);

@@ -68,7 +68,7 @@ public class mod_LavaCow {
         PROXY.preInit(event);
         
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
-        NETWORK_WRAPPER.registerMessage(PacketMountSpecial.class, PacketMountSpecial.class, 0, Side.SERVER);
+        NETWORK_WRAPPER.registerMessage(PacketMountSpecial.class, PacketMountSpecial.class, 3, Side.SERVER);
         NETWORK_WRAPPER.registerMessage(PacketParticle.class, PacketParticle.class, 0, Side.CLIENT);
     }
  

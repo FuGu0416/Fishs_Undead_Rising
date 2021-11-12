@@ -11,7 +11,6 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
@@ -42,7 +41,6 @@ public class EntityAvaton extends EntityBanshee {
         this.tasks.addTask(2, new AICastingApell());
         this.tasks.addTask(3, new EntityAvaton.AIUseSpell());
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        if(!Modconfig.SunScreen_Mode)this.tasks.addTask(5, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(7, new EntityBanshee.AIMoveRandom());
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
