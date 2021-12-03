@@ -54,12 +54,12 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
     public static void onTick(ItemStack arg0, EntityPlayer arg1) {
     	boolean flag = false;
     	
-    	if((arg0.getItemDamage() < arg0.getMaxDamage() - 1) || arg0.getMaxDamage() == 0) {
+    	if(Modconfig.GoldenHeart_GrantsRegeneration && ((arg0.getItemDamage() < arg0.getMaxDamage() - 1) || arg0.getMaxDamage() == 0)) {
 	    	if(arg1.getActivePotionEffect(MobEffects.REGENERATION) == null && arg1.getHealth() < arg1.getMaxHealth()) {
 	    		arg1.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0));
 	    		flag = true;
 	    	}
-	    	else if(arg1.getHealth() == arg1.getMaxHealth())
+	    	else if(Modconfig.GoldenHeart_RepairsEquipment && arg1.getHealth() == arg1.getMaxHealth())
 	    		for(ItemStack item : arg1.getEquipmentAndArmor())
 		        {
 		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0 && item.getItem().isRepairable() && !item.getHasSubtypes()) {

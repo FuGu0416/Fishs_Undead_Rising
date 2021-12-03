@@ -155,6 +155,8 @@ public class Modconfig {
 	public static int General_Intestine;
 	public static int GoldenHeart_dur;
 	public static String[] GoldenHeart_bl = new String[0];
+	public static boolean GoldenHeart_GrantsRegeneration;
+	public static boolean GoldenHeart_RepairsEquipment;
 	public static int pSpawnRate_Glowshroom;
 	public static int pSpreadRate_Glowshroom;
 	public static boolean Piranha_AnimalAttack;
@@ -396,7 +398,9 @@ public class Modconfig {
 
 		GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart duribility", 250, "Set the duribility of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
 		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
-		
+		GoldenHeart_GrantsRegeneration = config.get(Configuration.CATEGORY_GENERAL, "golden heart grants regeneration", true, "Enables the Regeneration effect of the Golden Heart. [false/true]").getBoolean(true);
+		GoldenHeart_RepairsEquipment = config.get(Configuration.CATEGORY_GENERAL, "golden heart repairs equipment", true, "Allow the Golden Heart to repair worn equipment. [false/true]").getBoolean(true);
+
 		FlyingHeight_limit = config.get(Configuration.CATEGORY_GENERAL, "flying height limit", 16, "Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
 		BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
