@@ -649,7 +649,7 @@ public class ModEventHandler {
     	    }
     	    if(remove != null) {
     	    	((AbstractSkeleton)event.getEntity()).targetTasks.removeTask(remove);
-    	    	((AbstractSkeleton)event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((AbstractSkeleton)event.getEntity()), EntityPlayer.class, 0, false, true, new Predicate<Entity>()
+    	    	((AbstractSkeleton)event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((AbstractSkeleton)event.getEntity()), EntityPlayer.class, 10, true, false, new Predicate<Entity>()
     	        {
     	            public boolean apply(@Nullable Entity p_apply_1_)
     	            {

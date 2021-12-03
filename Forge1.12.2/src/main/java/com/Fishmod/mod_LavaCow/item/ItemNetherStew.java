@@ -84,7 +84,7 @@ public class ItemNetherStew extends ItemFishCustomFood
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
-        if(!worldIn.isRemote && entityLiving instanceof EntityPlayer)
+        if(!worldIn.isRemote && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
         	((EntityPlayer)entityLiving).inventory.addItemStackToInventory(new ItemStack(Items.BOWL));
     	return super.onItemUseFinish(stack, worldIn, entityLiving);
     }

@@ -140,7 +140,10 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 	@Override
     public void onUpdate()
     {
+        this.noClip = true;
         super.onUpdate();
+        this.noClip = false;
+        this.setNoGravity(true);
         
         if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
         	mod_LavaCow.PROXY.spawnCustomParticle(this.ParticleType(), this.world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.20F, 0.21F, 0.23F);
@@ -162,7 +165,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             --this.spellTicks;
         }
     	
-    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote && this instanceof EntityBanshee)
+    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote && this.isBanshee())
     	{
     		float f = this.getBrightness();
     		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);

@@ -14,14 +14,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LayerGenericHeldItem implements LayerRenderer<EntityLiving>{
-    private final RenderLiving Renderer;
+public class LayerGenericHeldItem<T extends EntityLiving> implements LayerRenderer<T>{
+    private final RenderLiving<T> Renderer;
     private final float translateX;
     private final float translateY;
     private final float translateZ;
     private final float scale;
 
-    public LayerGenericHeldItem(RenderLiving RendererIn, float XIn, float YIn, float ZIn, float scaleIn)
+    public LayerGenericHeldItem(RenderLiving<T> RendererIn, float XIn, float YIn, float ZIn, float scaleIn)
     {
         this.Renderer = RendererIn;
         this.translateX = XIn;
@@ -30,7 +30,7 @@ public class LayerGenericHeldItem implements LayerRenderer<EntityLiving>{
         this.scale = scaleIn;
     }
 
-    public void doRenderLayer(EntityLiving entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {       
         /*
          * Render held item

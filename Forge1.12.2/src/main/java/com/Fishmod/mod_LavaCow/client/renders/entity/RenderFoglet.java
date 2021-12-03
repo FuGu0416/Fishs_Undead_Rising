@@ -24,7 +24,7 @@ public class RenderFoglet extends RenderLiving<EntityFoglet> {
 	
     public RenderFoglet(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelFoglet(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
 
 	@Override

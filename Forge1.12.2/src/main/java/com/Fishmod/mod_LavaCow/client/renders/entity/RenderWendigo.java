@@ -18,7 +18,7 @@ public class RenderWendigo extends RenderLiving<EntityWendigo>{
 
 	public RenderWendigo(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelWendigo(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
     
     @Override

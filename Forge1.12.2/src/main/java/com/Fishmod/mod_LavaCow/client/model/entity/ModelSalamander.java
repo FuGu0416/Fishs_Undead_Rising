@@ -13,6 +13,8 @@ import net.minecraft.util.math.MathHelper;
  * Created using Tabula 7.0.1
  */
 public class ModelSalamander extends FishModelBase {
+	private ModelSalamanderNymph ChildModel = new ModelSalamanderNymph();
+	
     public ModelRenderer Body;
     public ModelRenderer Head;
     public ModelRenderer Body2;
@@ -24,8 +26,10 @@ public class ModelSalamander extends FishModelBase {
     public ModelRenderer CannonBase;
     public ModelRenderer Jaw_upper;
     public ModelRenderer Jaw_lower;
+    public ModelRenderer Tooth_upper;
     public ModelRenderer Tooth_r;
     public ModelRenderer Tooth_l;
+    public ModelRenderer Tooth_lower;
     public ModelRenderer Tail1;
     public ModelRenderer Tail2;
     public ModelRenderer Tail3;
@@ -35,271 +39,145 @@ public class ModelSalamander extends FishModelBase {
     public ModelRenderer LeftLeg2;
     public ModelRenderer Cannon1;
     public ModelRenderer Cannon2;
-    public ModelRenderer Cannon3;
     public ModelRenderer Saddle_base;
-    
-    /**
-     * Child Model
-     */
-    public ModelRenderer Body_Base;
-    public ModelRenderer Head_c;
-    public ModelRenderer Tail0;
-    public ModelRenderer leg0_r0;
-    public ModelRenderer leg0_l0;
-    public ModelRenderer leg1_r0;
-    public ModelRenderer leg1_l0;
-    public ModelRenderer Jaw;
-    public ModelRenderer Tail1_c;
-    public ModelRenderer Tail2_c;
-    public ModelRenderer leg0_r1;
-    public ModelRenderer leg0_l1;
-    public ModelRenderer leg1_r1;
-    public ModelRenderer leg1_l1;
-    public ModelRenderer Head_Gill_l0;
-    public ModelRenderer Head_Gill_l1;
-    public ModelRenderer Head_Gill_l2;
-    public ModelRenderer Head_Gill_r0;
-    public ModelRenderer Head_Gill_r1;
-    public ModelRenderer Head_Gill_r2;
+    public ModelRenderer Cannon3;
 
     public ModelSalamander() {
-        this.textureWidth = 64;
-        this.textureHeight = 32;
-        this.RightLeg2 = new ModelRenderer(this, 39, 0);
-        this.RightLeg2.setRotationPoint(-1.0F, 2.0F, 0.5F);
-        this.RightLeg2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.0F);
-        this.setRotateAngle(RightLeg2, 0.22759093446006054F, 0.0F, -0.5009094953223726F);
-        this.Tail3 = new ModelRenderer(this, 20, 10);
-        this.Tail3.setRotationPoint(0.0F, 0.0F, 3.0F);
-        this.Tail3.addBox(-1.0F, -0.5F, 0.0F, 2, 2, 4, 0.0F);
-        this.setRotateAngle(Tail3, 0.091106186954104F, 0.0F, 0.0F);
-        this.CannonBase = new ModelRenderer(this, 38, 23);
-        this.CannonBase.setRotationPoint(0.0F, -4.0F, 3.5F);
-        this.CannonBase.addBox(-1.0F, -4.0F, -1.0F, 2, 4, 2, 0.0F);
-        this.setRotateAngle(CannonBase, -0.40980330836826856F, 0.0F, 0.0F);
-        this.Jaw_lower = new ModelRenderer(this, 0, 24);
-        this.Jaw_lower.setRotationPoint(0.0F, 0.0F, -1.0F);
-        this.Jaw_lower.addBox(-2.5F, 0.5F, -5.0F, 5, 2, 6, 0.0F);
-        this.Head = new ModelRenderer(this, 0, 0);
-        this.Head.setRotationPoint(0.0F, 0.0F, -3.5F);
-        this.Head.addBox(-2.0F, -1.5F, -4.0F, 4, 2, 4, 0.0F);
-        this.LeftArm = new ModelRenderer(this, 0, 9);
-        this.LeftArm.mirror = true;
-        this.LeftArm.setRotationPoint(2.0F, 0.0F, 1.3F);
-        this.LeftArm.addBox(0.0F, -1.0F, -2.0F, 2, 4, 3, 0.0F);
-        this.setRotateAngle(LeftArm, -0.091106186954104F, 0.40980330836826856F, -0.9560913642424937F);
-        this.Cannon1 = new ModelRenderer(this, 46, 19);
-        this.Cannon1.setRotationPoint(0.0F, -3.0F, 0.0F);
-        this.Cannon1.addBox(-2.0F, -2.5F, -3.0F, 4, 4, 5, 0.0F);
-        this.setRotateAngle(Cannon1, 0.40980330836826856F, 0.0F, 0.0F);
-        this.Cannon3 = new ModelRenderer(this, 29, 25);
-        this.Cannon3.setRotationPoint(0.0F, -0.5F, -3.0F);
-        this.Cannon3.addBox(-1.0F, -1.0F, -5.0F, 2, 2, 5, 0.0F);
-        this.Body = new ModelRenderer(this, 0, 8);
-        this.Body.setRotationPoint(0.0F, 21.0F, -3.6F);
-        this.Body.addBox(-2.0F, -2.0F, -3.5F, 4, 4, 11, 0.0F);
-        this.RightLeg = new ModelRenderer(this, 0, 9);
-        this.RightLeg.setRotationPoint(-2.0F, -1.0F, 6.0F);
-        this.RightLeg.addBox(-2.0F, -1.0F, -1.0F, 2, 4, 3, 0.0F);
-        this.setRotateAngle(RightLeg, -0.22759093446006054F, 0.0F, 0.40980330836826856F);
-        this.LeftLeg2 = new ModelRenderer(this, 39, 0);
+        this.textureWidth = 128;
+        this.textureHeight = 64;
+        this.Tail2 = new ModelRenderer(this, 64, 20);
+        this.Tail2.setRotationPoint(0.0F, -1.0F, 8.0F);
+        this.Tail2.addBox(-3.0F, -2.0F, 0.0F, 6, 6, 8, 0.0F);
+        this.setRotateAngle(Tail2, 0.0911061832922575F, 0.0F, 0.0F);
+        this.Cannon3 = new ModelRenderer(this, 58, 50);
+        this.Cannon3.setRotationPoint(0.0F, -1.0F, -6.0F);
+        this.Cannon3.addBox(-2.0F, -2.0F, -10.0F, 4, 4, 10, 0.0F);
+        this.LeftLeg2 = new ModelRenderer(this, 78, 0);
         this.LeftLeg2.mirror = true;
-        this.LeftLeg2.setRotationPoint(1.0F, 2.0F, 0.5F);
-        this.LeftLeg2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.0F);
-        this.setRotateAngle(LeftLeg2, 0.22759093446006054F, 0.0F, 0.5009094953223726F);
-        this.Body2 = new ModelRenderer(this, 42, 0);
-        this.Body2.setRotationPoint(0.0F, -2.0F, 1.0F);
-        this.Body2.addBox(-2.5F, -2.0F, -3.0F, 5, 4, 6, 0.0F);
-        this.setRotateAngle(Body2, 0.5918411493512771F, 0.0F, 0.0F);
-        this.RightArm = new ModelRenderer(this, 0, 9);
-        this.RightArm.setRotationPoint(-2.0F, 0.0F, 1.3F);
-        this.RightArm.addBox(-2.0F, -1.0F, -2.0F, 2, 4, 3, 0.0F);
-        this.setRotateAngle(RightArm, 0.091106186954104F, 0.0F, 0.9560913642424937F);
-        this.LeftLeg = new ModelRenderer(this, 0, 9);
+        this.LeftLeg2.setRotationPoint(2.0F, 3.5F, 1.0F);
+        this.LeftLeg2.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F);
+        this.setRotateAngle(LeftLeg2, 0.2275909337942703F, 0.0F, 0.500909508638178F);
+        this.Tooth_r = new ModelRenderer(this, 32, 46);
+        this.Tooth_r.setRotationPoint(-4.0F, 2.0F, -9.0F);
+        this.Tooth_r.addBox(-1.0F, -4.0F, -1.0F, 2, 4, 2, 0.0F);
+        this.setRotateAngle(Tooth_r, 0.5604252334680235F, 0.9105382388075086F, 0.0F);
+        this.Saddle_base = new ModelRenderer(this, 88, 60);
+        this.Saddle_base.setRotationPoint(-4.0F, -7.0F, 1.0F);
+        this.Saddle_base.addBox(0.0F, 0.0F, 0.0F, 8, 2, 2, 0.0F);
+        this.RightArm = new ModelRenderer(this, 0, 18);
+        this.RightArm.setRotationPoint(-4.0F, 0.0F, 2.6F);
+        this.RightArm.addBox(-4.0F, -2.0F, -4.0F, 4, 8, 6, 0.0F);
+        this.setRotateAngle(RightArm, 0.0911061832922575F, 0.0F, 0.956091342937205F);
+        this.Tooth_l = new ModelRenderer(this, 32, 46);
+        this.Tooth_l.setRotationPoint(4.0F, 2.0F, -9.0F);
+        this.Tooth_l.addBox(-1.0F, -4.0F, -1.0F, 2, 4, 2, 0.0F);
+        this.setRotateAngle(Tooth_l, 0.5604252334680235F, -0.9093165136574348F, 0.0F);
+        this.Jaw_lower = new ModelRenderer(this, 0, 48);
+        this.Jaw_lower.setRotationPoint(0.0F, 0.0F, -2.0F);
+        this.Jaw_lower.addBox(-5.0F, 1.0F, -10.0F, 10, 4, 12, 0.0F);
+        this.setRotateAngle(Jaw_lower, 0.19547687289441354F, 0.0F, 0.0F);
+        this.LeftArm = new ModelRenderer(this, 0, 18);
+        this.LeftArm.mirror = true;
+        this.LeftArm.setRotationPoint(4.0F, 0.0F, 2.6F);
+        this.LeftArm.addBox(0.0F, -2.0F, -4.0F, 4, 8, 6, 0.0F);
+        this.setRotateAngle(LeftArm, 0.0911061832922575F, 0.0F, -0.956091342937205F);
+        this.RightLeg = new ModelRenderer(this, 0, 18);
+        this.RightLeg.setRotationPoint(-4.0F, -2.0F, 12.0F);
+        this.RightLeg.addBox(-4.0F, -2.0F, -2.0F, 4, 8, 6, 0.0F);
+        this.setRotateAngle(RightLeg, -0.2275909337942703F, 0.0F, 0.4098033003787853F);
+        this.Body2 = new ModelRenderer(this, 84, 0);
+        this.Body2.setRotationPoint(0.0F, -4.0F, 2.0F);
+        this.Body2.addBox(-5.0F, -4.0F, -6.0F, 10, 8, 12, 0.0F);
+        this.setRotateAngle(Body2, 0.591841146688116F, 0.0F, 0.0F);
+        this.Tail1 = new ModelRenderer(this, 92, 20);
+        this.Tail1.setRotationPoint(0.0F, 2.0F, 6.0F);
+        this.Tail1.addBox(-4.0F, -4.0F, 0.0F, 8, 8, 10, 0.0F);
+        this.LeftLeg = new ModelRenderer(this, 0, 18);
         this.LeftLeg.mirror = true;
-        this.LeftLeg.setRotationPoint(2.0F, -1.0F, 6.0F);
-        this.LeftLeg.addBox(0.0F, -1.0F, -1.0F, 2, 4, 3, 0.0F);
-        this.setRotateAngle(LeftLeg, -0.22759093446006054F, 0.0F, -0.40980330836826856F);
-        this.Tooth_r = new ModelRenderer(this, 16, 23);
-        this.Tooth_r.setRotationPoint(-1.8F, 1.0F, -4.5F);
-        this.Tooth_r.addBox(-0.5F, -2.0F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(Tooth_r, 0.5604252228153792F, 0.9105382707654417F, 0.0F);
-        this.Tail2 = new ModelRenderer(this, 32, 10);
-        this.Tail2.setRotationPoint(0.0F, -0.5F, 4.0F);
-        this.Tail2.addBox(-1.5F, -1.0F, 0.0F, 3, 3, 4, 0.0F);
-        this.setRotateAngle(Tail2, 0.091106186954104F, 0.0F, 0.0F);
-        this.Cannon2 = new ModelRenderer(this, 34, 17);
-        this.Cannon2.setRotationPoint(0.0F, 0.0F, -3.0F);
-        this.Cannon2.addBox(-1.5F, -2.0F, -3.0F, 3, 3, 3, 0.0F);
-        this.Body3 = new ModelRenderer(this, 22, 0);
-        this.Body3.setRotationPoint(0.0F, -2.0F, 5.0F);
-        this.Body3.addBox(-2.0F, -2.0F, -3.0F, 4, 4, 6, 0.0F);
-        this.setRotateAngle(Body3, -0.18203784098300857F, 0.0F, 0.0F);
-        this.LeftArm2 = new ModelRenderer(this, 39, 0);
+        this.LeftLeg.setRotationPoint(4.0F, -2.0F, 12.0F);
+        this.LeftLeg.addBox(0.0F, -2.0F, -2.0F, 4, 8, 6, 0.0F);
+        this.setRotateAngle(LeftLeg, -0.2275909337942703F, 0.0F, -0.4098033003787853F);
+        this.Body3 = new ModelRenderer(this, 41, 0);
+        this.Body3.setRotationPoint(0.0F, -4.0F, 10.0F);
+        this.Body3.addBox(-4.5F, -4.0F, -6.0F, 9, 8, 12, 0.0F);
+        this.setRotateAngle(Body3, -0.18203784630933073F, 0.0F, 0.0F);
+        this.Head = new ModelRenderer(this, 0, 0);
+        this.Head.setRotationPoint(0.0F, 0.0F, -7.0F);
+        this.Head.addBox(-4.0F, -3.0F, -8.0F, 8, 4, 8, 0.0F);
+        this.Jaw_upper = new ModelRenderer(this, 30, 0);
+        this.Jaw_upper.setRotationPoint(0.0F, 0.0F, -8.0F);
+        this.Jaw_upper.addBox(-4.0F, -1.0F, -2.0F, 8, 2, 2, 0.0F);
+        this.Cannon1 = new ModelRenderer(this, 92, 38);
+        this.Cannon1.setRotationPoint(0.0F, -6.5F, 0.0F);
+        this.Cannon1.addBox(-4.0F, -5.0F, -6.0F, 8, 8, 10, 0.0F);
+        this.setRotateAngle(Cannon1, 0.4098033003787853F, 0.0F, 0.0F);
+        this.Tail3 = new ModelRenderer(this, 40, 20);
+        this.Tail3.setRotationPoint(0.0F, 0.0F, 6.0F);
+        this.Tail3.addBox(-2.0F, -1.0F, 0.0F, 4, 4, 8, 0.0F);
+        this.setRotateAngle(Tail3, 0.0911061832922575F, 0.0F, 0.0F);
+        this.RightArm2 = new ModelRenderer(this, 78, 0);
+        this.RightArm2.setRotationPoint(-2.0F, 4.0F, -1.0F);
+        this.RightArm2.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F);
+        this.setRotateAngle(RightArm2, -0.0911061832922575F, 0.0F, -0.9536478926370572F);
+        this.Tooth_lower = new ModelRenderer(this, 34, 53);
+        this.Tooth_lower.setRotationPoint(0.0F, 1.0F, -7.0F);
+        this.Tooth_lower.addBox(-4.0F, -1.0F, -2.5F, 8, 1, 6, 0.0F);
+        this.Cannon2 = new ModelRenderer(this, 68, 34);
+        this.Cannon2.setRotationPoint(0.0F, 0.0F, -6.0F);
+        this.Cannon2.addBox(-3.0F, -4.0F, -6.0F, 6, 6, 6, 0.0F);
+        this.Body = new ModelRenderer(this, 0, 16);
+        this.Body.setRotationPoint(0.0F, 17.5F, -8.2F);
+        this.Body.addBox(-4.0F, -4.0F, -7.0F, 8, 8, 22, 0.0F);
+        this.RightLeg2 = new ModelRenderer(this, 78, 0);
+        this.RightLeg2.setRotationPoint(-2.0F, 3.5F, 1.0F);
+        this.RightLeg2.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F);
+        this.setRotateAngle(RightLeg2, 0.2275909337942703F, 0.0F, -0.500909508638178F);
+        this.CannonBase = new ModelRenderer(this, 76, 46);
+        this.CannonBase.setRotationPoint(0.0F, -8.0F, 7.0F);
+        this.CannonBase.addBox(-2.0F, -8.0F, -2.0F, 4, 8, 4, 0.0F);
+        this.setRotateAngle(CannonBase, -0.4098033003787853F, 0.0F, 0.0F);
+        this.Tooth_upper = new ModelRenderer(this, 34, 46);
+        this.Tooth_upper.setRotationPoint(0.0F, 1.5F, 0.0F);
+        this.Tooth_upper.addBox(-3.5F, -0.5F, -2.0F, 7, 1, 6, 0.0F);
+        this.LeftArm2 = new ModelRenderer(this, 78, 0);
         this.LeftArm2.mirror = true;
-        this.LeftArm2.setRotationPoint(1.0F, 2.0F, -0.5F);
-        this.LeftArm2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.0F);
-        this.setRotateAngle(LeftArm2, -0.12775810124598494F, 0.0F, 0.9536479032897017F);
-        this.Tail1 = new ModelRenderer(this, 46, 10);
-        this.Tail1.setRotationPoint(0.0F, 1.0F, 3.0F);
-        this.Tail1.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 5, 0.0F);
-        this.RightArm2 = new ModelRenderer(this, 39, 0);
-        this.RightArm2.setRotationPoint(-1.0F, 2.0F, -0.5F);
-        this.RightArm2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.0F);
-        this.setRotateAngle(RightArm2, -0.12775810124598494F, 0.0F, -0.9536479032897017F);
-        this.Jaw_upper = new ModelRenderer(this, 15, 0);
-        this.Jaw_upper.setRotationPoint(0.0F, 0.0F, -4.0F);
-        this.Jaw_upper.addBox(-2.0F, -0.5F, -1.0F, 4, 1, 1, 0.0F);
-        this.Tooth_l = new ModelRenderer(this, 16, 23);
-        this.Tooth_l.setRotationPoint(2.0F, 1.0F, -4.5F);
-        this.Tooth_l.addBox(-0.5F, -2.0F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(Tooth_l, 0.5604252228153792F, -0.9093165402890457F, 0.0F);
-        this.Saddle_base = new ModelRenderer(this, 44, 30);
-        this.Saddle_base.setRotationPoint(-2.0F, -3.5F, 0.5F);
-        this.Saddle_base.addBox(0.0F, 0.0F, 0.0F, 4, 1, 1, 0.0F);
-        this.RightLeg.addChild(this.RightLeg2);
-        this.Tail2.addChild(this.Tail3);
-        this.Body.addChild(this.CannonBase);
-        this.Head.addChild(this.Jaw_lower);
-        this.Body.addChild(this.Head);
-        this.Body.addChild(this.LeftArm);
-        this.CannonBase.addChild(this.Cannon1);
-        this.Cannon2.addChild(this.Cannon3);
-        this.Body.addChild(this.RightLeg);
-        this.LeftLeg.addChild(this.LeftLeg2);
-        this.Body.addChild(this.Body2);
-        this.Body.addChild(this.RightArm);
-        this.Body.addChild(this.LeftLeg);
-        this.Jaw_lower.addChild(this.Tooth_r);
+        this.LeftArm2.setRotationPoint(2.0F, 4.0F, -1.0F);
+        this.LeftArm2.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F);
+        this.setRotateAngle(LeftArm2, -0.0911061832922575F, 0.0F, 0.9536478926370572F);
         this.Tail1.addChild(this.Tail2);
-        this.Cannon1.addChild(this.Cannon2);
-        this.Body.addChild(this.Body3);
-        this.LeftArm.addChild(this.LeftArm2);
-        this.Body3.addChild(this.Tail1);
-        this.RightArm.addChild(this.RightArm2);
-        this.Head.addChild(this.Jaw_upper);
-        this.Jaw_lower.addChild(this.Tooth_l);
+        this.Cannon2.addChild(this.Cannon3);
+        this.LeftLeg.addChild(this.LeftLeg2);
+        this.Jaw_lower.addChild(this.Tooth_r);
         this.Cannon1.addChild(this.Saddle_base);
-
-        /**
-         * Child Model
-         */
-        this.Body_Base = new ModelRenderer(this, 0, 17);
-        this.Body_Base.setRotationPoint(0.0F, 21.0F, 5.0F);
-        this.Body_Base.addBox(-3.0F, -1.5F, -12.0F, 6, 3, 12, 0.0F);
-        this.setRotateAngle(Body_Base, -0.07103490055616922F, 0.0F, 0.0F);
-        this.leg1_l0 = new ModelRenderer(this, 42, 0);
-        this.leg1_l0.mirror = true;
-        this.leg1_l0.setRotationPoint(2.5F, 0.0F, -2.0F);
-        this.leg1_l0.addBox(0.0F, -0.5F, -1.0F, 1, 3, 2, 0.0F);
-        this.setRotateAngle(leg1_l0, 0.40980330836826856F, 0.0F, -0.40980330836826856F);
-        this.Tail2_c = new ModelRenderer(this, 24, 7);
-        this.Tail2_c.setRotationPoint(0.0F, 0.0F, 5.5F);
-        this.Tail2_c.addBox(-1.5F, -1.0F, 0.0F, 3, 2, 6, 0.0F);
-        this.setRotateAngle(Tail2_c, 0.3312634920285238F, 0.0F, 0.0F);
-        this.Jaw = new ModelRenderer(this, 0, 9);
-        this.Jaw.setRotationPoint(0.0F, 1.0F, 0.0F);
-        this.Jaw.addBox(-2.5F, -0.5F, -7.0F, 5, 1, 7, 0.0F);
-        this.leg1_l1 = new ModelRenderer(this, 43, 5);
-        this.leg1_l1.mirror = true;
-        this.leg1_l1.setRotationPoint(0.0F, 2.5F, 0.0F);
-        this.leg1_l1.addBox(0.0F, -0.5F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(leg1_l1, 0.0F, 0.0F, 0.4553564018453205F);
-        this.Head_c = new ModelRenderer(this, 0, 0);
-        this.Head_c.setRotationPoint(0.0F, 0.0F, -12.0F);
-        this.Head_c.addBox(-2.5F, -1.5F, -7.0F, 5, 2, 7, 0.0F);
-        this.leg0_l0 = new ModelRenderer(this, 42, 0);
-        this.leg0_l0.mirror = true;
-        this.leg0_l0.setRotationPoint(2.5F, 0.0F, -10.0F);
-        this.leg0_l0.addBox(0.0F, -0.5F, -1.0F, 1, 3, 2, 0.0F);
-        this.setRotateAngle(leg0_l0, 0.0F, 0.0F, -0.40980330836826856F);
-        this.leg1_r0 = new ModelRenderer(this, 42, 0);
-        this.leg1_r0.setRotationPoint(-2.5F, 0.0F, -2.0F);
-        this.leg1_r0.addBox(-1.0F, -0.5F, -1.0F, 1, 3, 2, 0.0F);
-        this.setRotateAngle(leg1_r0, 0.40980330836826856F, 0.0F, 0.40980330836826856F);
-        this.leg1_r1 = new ModelRenderer(this, 43, 5);
-        this.leg1_r1.setRotationPoint(0.0F, 2.5F, 0.0F);
-        this.leg1_r1.addBox(-1.0F, -0.5F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(leg1_r1, 0.0F, 0.0F, -0.4553564018453205F);
-        this.leg0_r1 = new ModelRenderer(this, 43, 5);
-        this.leg0_r1.setRotationPoint(0.0F, 2.5F, 0.0F);
-        this.leg0_r1.addBox(-1.0F, -0.5F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(leg0_r1, 0.0F, 0.0F, -0.4553564018453205F);
-        this.Tail1_c = new ModelRenderer(this, 24, 7);
-        this.Tail1_c.setRotationPoint(0.0F, 0.0F, 3.5F);
-        this.Tail1_c.addBox(-1.5F, -1.0F, 0.0F, 3, 2, 6, 0.0F);
-        this.setRotateAngle(Tail1_c, 0.272096830385916F, 0.0F, 0.0F);
-        this.Tail0 = new ModelRenderer(this, 25, 0);
-        this.Tail0.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Tail0.addBox(-2.0F, -1.5F, 0.0F, 4, 3, 4, 0.0F);
-        this.setRotateAngle(Tail0, 0.035430183815484885F, 0.0F, 0.0F);
-        this.leg0_r0 = new ModelRenderer(this, 42, 0);
-        this.leg0_r0.setRotationPoint(-2.5F, 0.0F, -10.0F);
-        this.leg0_r0.addBox(-1.0F, -0.5F, -1.0F, 1, 3, 2, 0.0F);
-        this.setRotateAngle(leg0_r0, 0.0F, 0.0F, 0.40980330836826856F);
-        this.leg0_l1 = new ModelRenderer(this, 43, 5);
-        this.leg0_l1.mirror = true;
-        this.leg0_l1.setRotationPoint(0.0F, 2.5F, 0.0F);
-        this.leg0_l1.addBox(0.0F, -0.5F, -0.5F, 1, 2, 1, 0.0F);
-        this.setRotateAngle(leg0_l1, 0.0F, 0.0F, 0.4553564018453205F);
-        
-        this.Head_Gill_l2 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_l2.mirror = true;
-        this.Head_Gill_l2.setRotationPoint(2.0F, -0.5F, -1.0F);
-        this.Head_Gill_l2.addBox(0.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_l2, 0.18203784098300857F, -0.5918411493512771F, 0.5009094953223726F);
-        this.Head_Gill_l1 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_l1.mirror = true;
-        this.Head_Gill_l1.setRotationPoint(2.0F, -0.6F, -1.0F);
-        this.Head_Gill_l1.addBox(0.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_l1, 0.0F, -0.8196066167365371F, 0.0F);
-        this.Head_Gill_r2 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_r2.setRotationPoint(-2.0F, -0.5F, -1.0F);
-        this.Head_Gill_r2.addBox(-3.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_r2, 0.18203784098300857F, 0.5918411493512771F, -0.5009094953223726F);
-        this.Head_Gill_r1 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_r1.setRotationPoint(-2.0F, -0.6F, -1.0F);
-        this.Head_Gill_r1.addBox(-3.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_r1, 0.0F, 0.8196066167365371F, 0.0F);
-        this.Head_Gill_l0 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_l0.mirror = true;
-        this.Head_Gill_l0.setRotationPoint(1.9F, -0.8F, -1.5F);
-        this.Head_Gill_l0.addBox(0.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_l0, -0.136659280431156F, -0.8651597102135892F, -0.5009094953223726F);
-        this.Head_Gill_r0 = new ModelRenderer(this, 20, 0);
-        this.Head_Gill_r0.setRotationPoint(-1.9F, -0.9F, -1.5F);
-        this.Head_Gill_r0.addBox(-3.0F, -0.5F, -0.5F, 3, 1, 0, 0.0F);
-        this.setRotateAngle(Head_Gill_r0, -0.136659280431156F, 0.8651597102135892F, 0.5009094953223726F);
-        
-        this.Body_Base.addChild(this.leg1_l0);
-        this.Tail1_c.addChild(this.Tail2_c);
-        this.Head_c.addChild(this.Jaw);
-        this.leg1_l0.addChild(this.leg1_l1);
-        this.Body_Base.addChild(this.Head_c);
-        this.Body_Base.addChild(this.leg0_l0);
-        this.Body_Base.addChild(this.leg1_r0);
-        this.leg1_r0.addChild(this.leg1_r1);
-        this.leg0_r0.addChild(this.leg0_r1);
-        this.Tail0.addChild(this.Tail1_c);
-        this.Body_Base.addChild(this.Tail0);
-        this.Body_Base.addChild(this.leg0_r0);
-        this.leg0_l0.addChild(this.leg0_l1);
-        
-        this.Head_c.addChild(this.Head_Gill_l2);
-        this.Head_c.addChild(this.Head_Gill_l1);
-        this.Head_c.addChild(this.Head_Gill_r2);
-        this.Head_c.addChild(this.Head_Gill_r1);
-        this.Head_c.addChild(this.Head_Gill_l0);
-        this.Head_c.addChild(this.Head_Gill_r0);
+        this.Body.addChild(this.RightArm);
+        this.Jaw_lower.addChild(this.Tooth_l);
+        this.Head.addChild(this.Jaw_lower);
+        this.Body.addChild(this.LeftArm);
+        this.Body.addChild(this.RightLeg);
+        this.Body.addChild(this.Body2);
+        this.Body3.addChild(this.Tail1);
+        this.Body.addChild(this.LeftLeg);
+        this.Body.addChild(this.Body3);
+        this.Body.addChild(this.Head);
+        this.Head.addChild(this.Jaw_upper);
+        this.CannonBase.addChild(this.Cannon1);
+        this.Tail2.addChild(this.Tail3);
+        this.RightArm.addChild(this.RightArm2);
+        this.Jaw_lower.addChild(this.Tooth_lower);
+        this.Cannon1.addChild(this.Cannon2);
+        this.RightLeg.addChild(this.RightLeg2);
+        this.Body.addChild(this.CannonBase);
+        this.Jaw_upper.addChild(this.Tooth_upper);
+        this.LeftArm.addChild(this.LeftArm2);
     }
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
         if(!((EntitySalamander)entity).isNymph()) {
         	this.Body.render(f5);
+        } else {
+        	ChildModel.render(entity, f, f1, f2, f3, f4, f5);
         }
-        else
-        	this.Body_Base.render(f5);
     }
     
     /**
@@ -311,74 +189,30 @@ public class ModelSalamander extends FishModelBase {
     {
     	EntitySalamander Entity = ((EntitySalamander)entityIn);
     	
-    	if(!Entity.isNymph())
-    	{
-	    	this.Head.rotateAngleX = headPitch * 0.017453292F;
-	        this.Head.rotateAngleY = netHeadYaw * 0.0003F;
-	        
-        	if(this.isChild) {
-        		if(Entity.getGrowingStage() == 1) {
-	        		this.Tooth_l.isHidden = true;
-	        		this.Tooth_r.isHidden = true;
-        		} else {
-            		this.Tooth_l.isHidden = false;
-            		this.Tooth_r.isHidden = false;
-        		}
-        		
-        		this.CannonBase.isHidden = true;
-        		this.Cannon1.isHidden = true;
-        		this.Cannon2.isHidden = true;
-        		this.Cannon3.isHidden = true;
-        	}
-        	else {
+    	this.Head.rotateAngleX = headPitch * 0.017453292F;
+        this.Head.rotateAngleY = netHeadYaw * 0.0003F;
+        
+    	if(this.isChild) {
+    		if(Entity.getGrowingStage() == 1) {
+        		this.Tooth_l.isHidden = true;
+        		this.Tooth_r.isHidden = true;
+    		} else {
         		this.Tooth_l.isHidden = false;
         		this.Tooth_r.isHidden = false;
-        		this.CannonBase.isHidden = false;
-        		this.Cannon1.isHidden = false;
-        		this.Cannon2.isHidden = false;
-        		this.Cannon3.isHidden = false;
-        	}
+    		}
+    		
+    		this.CannonBase.isHidden = true;
+    		this.Cannon1.isHidden = true;
+    		this.Cannon2.isHidden = true;
+    		this.Cannon3.isHidden = true;
     	}
-    	else
-    	{
-    		if(Entity.isAggressive()/* && limbSwing == 0*/)
-    		{
-    			this.Body_Base.rotationPointY = 21.5F;
-    			this.Body_Base.rotateAngleX = -0.6829473363053812F;
-    	        this.setRotateAngle(Body_Base, -0.6829473363053812F, 0.0F, 0.0F);
-    			
-    	        this.Head_c.rotateAngleX = 0.5462880558742251F + headPitch * 0.017453292F;
-    	        this.Head_c.rotateAngleY = 0.0F;
-    	        this.Jaw.rotateAngleX = 0.50F;
-    	        
-	            this.Head_Gill_l0.rotateAngleY = 0.0F;
-	            this.Head_Gill_l1.rotateAngleY = 0.0F;
-	            this.Head_Gill_l2.rotateAngleY = 0.0F;
-	            this.Head_Gill_r0.rotateAngleY = 0.0F;
-	            this.Head_Gill_r1.rotateAngleY = 0.0F;
-	            this.Head_Gill_r2.rotateAngleY = 0.0F;
-    			
-    			this.Tail0.rotateAngleX = 0.5462880558742251F;
-    		}
-    		else
-    		{
-    			this.Body_Base.rotationPointY = 21.0F;
-    			this.Body_Base.rotateAngleX = -0.07103490055616922F;
-    			this.Head_c.rotateAngleX = headPitch * 0.017453292F;
-	            this.Head_c.rotateAngleY = netHeadYaw * 0.017453292F;
-	            this.Jaw.rotateAngleX = 0.08F - 0.08F * MathHelper.sin(0.03F * ageInTicks);
-	            
-	            this.Head_Gill_l0.rotateAngleY = -0.8651597102135892F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.0F);
-	            this.Head_Gill_l1.rotateAngleY = -0.8196066167365371F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.2F);
-	            this.Head_Gill_l2.rotateAngleY = -0.5918411493512771F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.4F);
-	            this.Head_Gill_r0.rotateAngleY = 0.8651597102135892F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.0F);
-	            this.Head_Gill_r1.rotateAngleY = 0.8196066167365371F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.2F);
-	            this.Head_Gill_r2.rotateAngleY = 0.5918411493512771F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.4F);
-	            
-	            this.Tail0.rotateAngleX = 0.08F + 0.08F * MathHelper.sin(0.06F * ageInTicks);
-	            this.Tail1_c.rotateAngleX = 0.135F + 0.135F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.2F);
-	            this.Tail2_c.rotateAngleX = 0.165F + 0.165F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.4F);
-    		}
+    	else {
+    		this.Tooth_l.isHidden = false;
+    		this.Tooth_r.isHidden = false;
+    		this.CannonBase.isHidden = false;
+    		this.Cannon1.isHidden = false;
+    		this.Cannon2.isHidden = false;
+    		this.Cannon3.isHidden = false;
     	}
     }
     
@@ -395,7 +229,7 @@ public class ModelSalamander extends FishModelBase {
 	        this.RightArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
 	        this.LeftArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
 	        this.Body.rotateAngleX = GradientAnimation(0.0F, -0.18203784098300857F, j * (i - Anime_threshold[1]));
-	        this.Body.rotationPointY = GradientAnimation(21.0F, 19.7F, j * (i - Anime_threshold[1]));
+	        this.Body.rotationPointY = GradientAnimation(17.5F, 16.2F, j * (i - Anime_threshold[1]));
 	        this.Tail1.rotateAngleY = GradientAnimation(0.0F, -0.136659280431156F, j * (i - Anime_threshold[1]));
 	        this.Tail2.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
 	        this.Tail3.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
@@ -406,7 +240,7 @@ public class ModelSalamander extends FishModelBase {
 	        this.RightArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
 	        this.LeftArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
 	        this.Body.rotateAngleX = GradientAnimation(-0.18203784098300857F, 0.0F, k * (i - Anime_threshold[2]));
-	        this.Body.rotationPointY = GradientAnimation(19.7F, 21.0F, k * (i - Anime_threshold[2]));
+	        this.Body.rotationPointY = GradientAnimation(16.2F, 17.5F, k * (i - Anime_threshold[2]));
 	        this.Tail1.rotateAngleY = GradientAnimation(-0.136659280431156F, 0.0F, k * (i - Anime_threshold[2]));
 	        this.Tail2.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
 	        this.Tail3.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
@@ -420,7 +254,7 @@ public class ModelSalamander extends FishModelBase {
 	        this.RightArm.rotateAngleX = 0.091106186954104F;
 	        this.LeftArm.rotateAngleX = 0.091106186954104F;
 	        this.Body.rotateAngleX = 0.0F;
-	        this.Body.rotationPointY = 21.0F;		
+	        this.Body.rotationPointY = 17.5F;	
 	        this.Tail1.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted);
 	        this.Tail2.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.02F);
 	        this.Tail3.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.04F);
@@ -429,27 +263,14 @@ public class ModelSalamander extends FishModelBase {
 	        this.Cannon3.rotationPointZ = -3.0F;
     	}
     	
-    	if(!((EntitySalamander)entityIn).isNymph()) {
-	        this.RightArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        this.LeftArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.RightLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.LeftLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        
-	        this.RightArm.rotateAngleZ = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        this.LeftArm.rotateAngleZ = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.RightLeg.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.LeftLeg.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-    	}
-    	else {
-            this.leg0_r0.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-            this.leg0_l0.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-            this.leg1_r0.rotateAngleX = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-            this.leg1_l0.rotateAngleX = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-            
-            this.leg0_r0.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-            this.leg0_l0.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-            this.leg1_r0.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-            this.leg1_l0.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-    	}
+        this.RightArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+        this.LeftArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+        this.RightLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+        this.LeftLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+        
+        this.RightArm.rotateAngleZ = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+        this.LeftArm.rotateAngleZ = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+        this.RightLeg.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+        this.LeftLeg.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
     }
 }

@@ -18,8 +18,8 @@ public class RenderUndertaker extends RenderLiving<EntityUndertaker>{
 
 	public RenderUndertaker(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUndertaker(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
-        this.addLayer(new LayerGenericHeldItem(this, 0.0F, 0.15F, -0.4F, 1.8F));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
+        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.4F, 1.8F));
     }
     
     @Override

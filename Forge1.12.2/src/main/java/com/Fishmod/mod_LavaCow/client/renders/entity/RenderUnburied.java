@@ -23,9 +23,9 @@ public class RenderUnburied extends RenderLiving<EntityUnburied> {
 
     public RenderUnburied(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
-        this.addLayer(new LayerGenericHeldItem(this, 0.0F, 0.15F, -0.6F, 1.0F));
+        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         this.addLayer(layerbipedarmor);
     }
     
