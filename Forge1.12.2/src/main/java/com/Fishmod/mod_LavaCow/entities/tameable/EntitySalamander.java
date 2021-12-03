@@ -28,12 +28,10 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -109,7 +107,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
                 return true;
             }
         }));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityCow.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -138,6 +135,14 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	public boolean getCanSpawnHere() {
 		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
+    
+    /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnedInChunk() {
+       return 1;
+    }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);
