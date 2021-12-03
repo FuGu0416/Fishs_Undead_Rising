@@ -128,7 +128,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      * Gets how bright this entity is.
      */
     public float getBrightness() {
-       return 1.0F;
+       return 0.25F;
     }
         
     @Override

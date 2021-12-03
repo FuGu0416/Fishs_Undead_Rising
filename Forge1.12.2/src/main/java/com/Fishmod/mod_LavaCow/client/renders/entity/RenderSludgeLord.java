@@ -17,7 +17,7 @@ public class RenderSludgeLord extends RenderLiving<EntitySludgeLord>{
 
     public RenderSludgeLord(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelSludgeLord(), 0.5F);
-    	this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
+    	this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
     
     @Override

@@ -34,8 +34,8 @@ public class RenderZombieMushroom extends RenderLiving<EntityZombieMushroom> {
     public RenderZombieMushroom(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);
         this.addLayer(new LayerZombieMushroom(this));
-        this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
-        this.addLayer(new LayerGenericHeldItem(this, 0.0F, 0.15F, -0.6F, 1.0F));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
+        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
         /*{
             protected void initArmor()

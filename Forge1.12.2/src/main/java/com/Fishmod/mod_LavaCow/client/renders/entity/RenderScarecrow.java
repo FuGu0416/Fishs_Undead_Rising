@@ -17,7 +17,7 @@ public class RenderScarecrow extends RenderLiving<EntityScarecrow>{
 
 	public RenderScarecrow(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelScarecrow(), 0.5F);
-    	this.addLayer(new LayerGenericGlowing(this, TEXTURES_EYE));
+    	this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
     
     @Override

@@ -30,7 +30,7 @@ public class RenderMummy extends RenderLiving<EntityMummy> {
     public RenderMummy(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);
 
-        this.addLayer(new LayerGenericHeldItem(this, 0.0F, 0.15F, -0.6F, 1.0F));
+        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
 
         this.addLayer(layerbipedarmor);
