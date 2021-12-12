@@ -195,7 +195,10 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     {
     	if (!getEntityWorld().isRemote) {
 			for (int i = 0; i < this.inventory.size();i++)
-				if (this.inventory.get(i).isEmpty()) {
+				if (this.inventory.get(i).getItem().equals(itemstackIn.getItem()) && this.inventory.get(i).isStackable() && this.inventory.get(i).getCount() + itemstackIn.getCount() < this.inventory.get(i).getMaxStackSize()) {
+					this.inventory.get(i).setCount(this.inventory.get(i).getCount() + itemstackIn.getCount());
+					itemstackIn.shrink(itemstackIn.getCount());
+				} else if (this.inventory.get(i).isEmpty()) {
 					this.inventory.set(i, new ItemStack(Items.EMERALD));
 					this.inventory.set(i, itemstackIn.copy());
 					itemstackIn.shrink(itemstackIn.getCount());
