@@ -669,10 +669,6 @@ public class ModEventHandler {
     public void onEAttack(LivingAttackEvent event) {
     	EntityLivingBase attacked = event.getEntityLiving();
     	
-    	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer && ((EntityPlayer)event.getSource().getTrueSource()).getHeldItemMainhand().getItem().equals(FishItems.REAPERS_SCYTHE)) {
-    		event.getSource().setDamageBypassesArmor();
-    	}
-    	
     	for(EnumHand hand : EnumHand.values()) {
 			ItemStack stack = attacked.getHeldItem(hand);
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemVespaShield) {

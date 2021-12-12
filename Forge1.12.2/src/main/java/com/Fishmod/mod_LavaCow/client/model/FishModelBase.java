@@ -25,7 +25,8 @@ public class FishModelBase extends ModelBase {
 	}
 	
     protected float GradientAnimation(float AnimStart, float AnimEnd, float TickIn) {
-    	return AnimStart * MathHelper.sin((float)Math.PI * 0.5F * TickIn) + AnimEnd * (1.0F - MathHelper.sin((float)Math.PI * 0.5F * TickIn));
+    	float y = (float) (1.0D / Math.pow(1.2D * TickIn + 1.0D, 4.5D));
+    	return AnimStart * (1.0F - y) + AnimEnd * y;
     }
 	
     /**

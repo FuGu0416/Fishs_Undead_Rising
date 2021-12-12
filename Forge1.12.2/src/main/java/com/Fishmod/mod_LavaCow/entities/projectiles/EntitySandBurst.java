@@ -4,10 +4,13 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
+import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -131,7 +134,8 @@ public class EntitySandBurst extends Entity
             {
                 for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(0.2D, 0.0D, 0.2D)))
                 {
-                    this.damage(entitylivingbase);
+                    if(!(entitylivingbase instanceof EntitySkeletonKing || entitylivingbase instanceof EntityForsaken))
+                    	this.damage(entitylivingbase);
                 }
             }
 
@@ -141,8 +145,15 @@ public class EntitySandBurst extends Entity
                 this.sentSpikeEvent = true;
             }
 
-            if (--this.lifeTicks < 0)
-            {
+            if (--this.lifeTicks < 0) {
+                if(this.rand.nextFloat() < 0.3F) {
+                	EntityForsaken entityvex = new EntityForsaken(this.world);
+                    entityvex.moveToBlockPosAndAngles(this.getPosition(), 0.0F, 0.0F);
+                    entityvex.onInitialSpawn(this.world.getDifficultyForLocation(this.getPosition()), (IEntityLivingData)null);
+                    
+                    if(!this.world.isRemote)
+                    	this.world.spawnEntity(entityvex);  
+                }
                 this.setDead();
             }
         }

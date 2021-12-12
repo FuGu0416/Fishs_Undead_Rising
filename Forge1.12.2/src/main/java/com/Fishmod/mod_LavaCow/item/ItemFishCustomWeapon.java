@@ -81,7 +81,6 @@ public class ItemFishCustomWeapon extends ItemSword{
 	@Override
 	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
 		if(stack.getItem() == FishItems.MOLTENHAMMER || stack.getItem() == FishItems.MOLTENPAN)stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
-		else if(Modconfig.Enchantment_Enable && stack.getItem() == FishItems.REAPERS_SCYTHE)stack.addEnchantment(ModEnchantments.LIFESTEAL, 3);
 		else if(Modconfig.Enchantment_Enable && stack.getItem() == FishItems.VESPA_DAGGER)stack.addEnchantment(ModEnchantments.POISONOUS, 2);
 	}
 	
@@ -100,7 +99,6 @@ public class ItemFishCustomWeapon extends ItemSword{
 		if (!stack.isItemEnchanted())
 		{
 			if(stack.getItem() == FishItems.MOLTENHAMMER || stack.getItem() == FishItems.MOLTENPAN)stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
-			else if(Modconfig.Enchantment_Enable && stack.getItem() == FishItems.REAPERS_SCYTHE)stack.addEnchantment(ModEnchantments.LIFESTEAL, 3);
 			else if(Modconfig.Enchantment_Enable && stack.getItem() == FishItems.VESPA_DAGGER)stack.addEnchantment(ModEnchantments.POISONOUS, 2);
 		}
 		

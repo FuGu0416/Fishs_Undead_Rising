@@ -36,6 +36,7 @@ public class EntityForsaken extends AbstractSkeleton{
 
 	public EntityForsaken(World worldIn) {
 		super(worldIn);
+		this.isImmuneToFire = true;
 	}
 	
     @Override

@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -41,6 +42,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfoServer;
@@ -80,7 +82,8 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     protected void applyEntityAI()
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-    	this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+    	this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    	this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPig.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -142,7 +145,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
             this.rotationPitch = this.prevRotationPitch;
             this.rotationYaw = this.prevRotationYaw;
             
-            if(this.attackTimer == 10)
+            if(this.attackTimer == 20)
             	this.playSound(FishItems.ENTITY_SKELETONKING_ATTACK, 1.0F, 1.0F);
         }
         
@@ -159,24 +162,24 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
 	            }
 	        }    
         }
-        
-        // Should always return EntityLivingBase (according to the documentation).
-    	EntityLivingBase target = this.getAttackTarget();
-        
-        if (target != null && this.getDistanceSq(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
-    		IBlockState state = world.getBlockState(target.getPosition().down());
+       
+        if (this.getAttackTimer() == 18 && this.deathTime <= 0) {
+			double d0 = this.posX + 2.5D * this.getLookVec().normalize().x;
+            double d1 = this.posY;
+            double d2 = this.posZ + 2.5D * this.getLookVec().normalize().z;
+    		IBlockState state = world.getBlockState(new BlockPos(d0, d1, d2).down());
     		int blockId = Block.getStateId(state);
-
-        	this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
-        	
+    		       	
 	        if (state.isOpaqueCube()) {
+	        	this.playSound(state.getBlock().getSoundType(state, world, new BlockPos(d0, d1, d2), this).getBreakSound(), 1, 0.5F);
+	        	
 	            if (world.isRemote) {
-	            	for(int i = 0; i < 4; i++)
-	            		this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, target.posX + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) this.width, target.posY + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, target.posZ + (double) (this.rand.nextFloat() * target.width * 2.0F) - (double) target.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
+	            	for(int i = 0; i < 64; i++)
+	            		this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0 + (this.rand.nextDouble() * 4.0D - 2.0D), d1, d2 + (this.rand.nextDouble() * 4.0D - 2.0D), this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
 	            }
 	        }
 	        
-            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(1.0D, 0.25D, 1.0D)))
+            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.0D, 0.25D, 1.0D)))
             {
                 if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
                 {
@@ -196,7 +199,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     public boolean attackEntityAsMob(Entity entityIn)
     {
     	if (this.attackTimer == 0) {
-	    	this.attackTimer = 20;
+	    	this.attackTimer = 30;
 	        this.world.setEntityState(this, (byte)4);	        
     	}
 
@@ -248,7 +251,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     {
     	if (id == 4) 
     	{
-            this.attackTimer = 20;
+            this.attackTimer = 30;
         }
     	else if (id == 10) {
     		
