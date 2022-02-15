@@ -445,7 +445,7 @@ public class Modconfig {
 		Spawn_Cemetery_AllowList = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId()}, "Cemetery are only allowed to spawn in these dimensions' IDs").getIntList();
 		Cemetery_SpawnRate = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawns unburied", 40, "Cemetery spawns Unburied occasionally. [0-100]", 0, 100).getInt(40);
 		
-		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [1-10000]", 1, 10000).getInt(750);
+		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent, 0 to disable it) [0-10000]", 0, 10000).getInt(750);
 		
 		if (config.hasChanged())
 			config.save();

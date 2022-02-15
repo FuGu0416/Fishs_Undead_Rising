@@ -185,92 +185,99 @@ public class ModelSalamander extends FishModelBase {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {
-    	EntitySalamander Entity = ((EntitySalamander)entityIn);
-    	
-    	this.Head.rotateAngleX = headPitch * 0.017453292F;
-        this.Head.rotateAngleY = netHeadYaw * 0.0003F;
-        
-    	if(this.isChild) {
-    		if(Entity.getGrowingStage() == 1) {
-        		this.Tooth_l.isHidden = true;
-        		this.Tooth_r.isHidden = true;
-    		} else {
-        		this.Tooth_l.isHidden = false;
-        		this.Tooth_r.isHidden = false;
-    		}
-    		
-    		this.CannonBase.isHidden = true;
-    		this.Cannon1.isHidden = true;
-    		this.Cannon2.isHidden = true;
-    		this.Cannon3.isHidden = true;
-    	}
-    	else {
-    		this.Tooth_l.isHidden = false;
-    		this.Tooth_r.isHidden = false;
-    		this.CannonBase.isHidden = false;
-    		this.Cannon1.isHidden = false;
-    		this.Cannon2.isHidden = false;
-    		this.Cannon3.isHidden = false;
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+    	if(!((EntitySalamander)entityIn).isNymph()) {
+	    	EntitySalamander Entity = ((EntitySalamander)entityIn);
+	    	
+	    	this.Head.rotateAngleX = headPitch * 0.017453292F;
+	        this.Head.rotateAngleY = netHeadYaw * 0.0003F;
+	        
+	    	if(this.isChild) {
+	    		if(Entity.getGrowingStage() == 1) {
+	        		this.Tooth_l.isHidden = true;
+	        		this.Tooth_r.isHidden = true;
+	    		} else {
+	        		this.Tooth_l.isHidden = false;
+	        		this.Tooth_r.isHidden = false;
+	    		}
+	    		
+	    		this.CannonBase.isHidden = true;
+	    		this.Cannon1.isHidden = true;
+	    		this.Cannon2.isHidden = true;
+	    		this.Cannon3.isHidden = true;
+	    	}
+	    	else {
+	    		this.Tooth_l.isHidden = false;
+	    		this.Tooth_r.isHidden = false;
+	    		this.CannonBase.isHidden = false;
+	    		this.Cannon1.isHidden = false;
+	    		this.Cannon2.isHidden = false;
+	    		this.Cannon3.isHidden = false;
+	    	}
+    	} else {
+    		ChildModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
     	}
     }
     
     @Override
 	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	float i = (float)((EntitySalamander) entityIn).getAttackTimer() / 80.0F;
-    	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
-    	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
-    	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
-    	
-    	if(i <= Anime_threshold[0] && i > Anime_threshold[1]) {
-    		this.Head.rotateAngleZ = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));
-    		this.Jaw_lower.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, j * (i - Anime_threshold[1]));
-	        this.RightArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
-	        this.LeftArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
-	        this.Body.rotateAngleX = GradientAnimation(0.0F, -0.18203784098300857F, j * (i - Anime_threshold[1]));
-	        this.Body.rotationPointY = GradientAnimation(17.5F, 16.2F, j * (i - Anime_threshold[1]));
-	        this.Tail1.rotateAngleY = GradientAnimation(0.0F, -0.136659280431156F, j * (i - Anime_threshold[1]));
-	        this.Tail2.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
-	        this.Tail3.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
-    	}
-    	else if(i <= Anime_threshold[1] && i > Anime_threshold[2]){
-    		this.Head.rotateAngleZ = GradientAnimation(-0.36425021489121656F, 0.0F, k * (i - Anime_threshold[2]));
-    		this.Jaw_lower.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, k * (i - Anime_threshold[2]));
-	        this.RightArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
-	        this.LeftArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
-	        this.Body.rotateAngleX = GradientAnimation(-0.18203784098300857F, 0.0F, k * (i - Anime_threshold[2]));
-	        this.Body.rotationPointY = GradientAnimation(16.2F, 17.5F, k * (i - Anime_threshold[2]));
-	        this.Tail1.rotateAngleY = GradientAnimation(-0.136659280431156F, 0.0F, k * (i - Anime_threshold[2]));
-	        this.Tail2.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
-	        this.Tail3.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
+    	if(!((EntitySalamander)entityIn).isNymph()) {
+	    	float i = (float)((EntitySalamander) entityIn).getAttackTimer() / 80.0F;
+	    	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
+	    	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
+	    	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
+	    	
+	    	if(i <= Anime_threshold[0] && i > Anime_threshold[1]) {
+	    		this.Head.rotateAngleZ = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));
+	    		this.Jaw_lower.rotateAngleX = GradientAnimation(0.0F, 0.6829473363053812F, j * (i - Anime_threshold[1]));
+		        this.RightArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
+		        this.LeftArm.rotateAngleX = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
+		        this.Body.rotateAngleX = GradientAnimation(0.0F, -0.18203784098300857F, j * (i - Anime_threshold[1]));
+		        this.Body.rotationPointY = GradientAnimation(17.5F, 16.2F, j * (i - Anime_threshold[1]));
+		        this.Tail1.rotateAngleY = GradientAnimation(0.0F, -0.136659280431156F, j * (i - Anime_threshold[1]));
+		        this.Tail2.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
+		        this.Tail3.rotateAngleY = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
+	    	}
+	    	else if(i <= Anime_threshold[1] && i > Anime_threshold[2]){
+	    		this.Head.rotateAngleZ = GradientAnimation(-0.36425021489121656F, 0.0F, k * (i - Anime_threshold[2]));
+	    		this.Jaw_lower.rotateAngleX = GradientAnimation(0.6829473363053812F, 0.0F, k * (i - Anime_threshold[2]));
+		        this.RightArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
+		        this.LeftArm.rotateAngleX = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
+		        this.Body.rotateAngleX = GradientAnimation(-0.18203784098300857F, 0.0F, k * (i - Anime_threshold[2]));
+		        this.Body.rotationPointY = GradientAnimation(16.2F, 17.5F, k * (i - Anime_threshold[2]));
+		        this.Tail1.rotateAngleY = GradientAnimation(-0.136659280431156F, 0.0F, k * (i - Anime_threshold[2]));
+		        this.Tail2.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
+		        this.Tail3.rotateAngleY = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
+		        
+		        this.Cannon2.rotationPointZ = -1.8F + 1.2F * MathHelper.sin(1.0F * entityIn.ticksExisted);
+		        this.Cannon3.rotationPointZ = -1.3F + 1.7F * MathHelper.sin(1.0F * entityIn.ticksExisted);
+	    	}
+	    	else if(!entityIn.isChild() && i <= Anime_threshold[2]){
+	    		this.Head.rotateAngleZ = 0.0F;
+	    		this.Jaw_lower.rotateAngleX = -0.08F + (-0.08F * MathHelper.sin(0.03F * entityIn.ticksExisted));
+		        this.RightArm.rotateAngleX = 0.091106186954104F;
+		        this.LeftArm.rotateAngleX = 0.091106186954104F;
+		        this.Body.rotateAngleX = 0.0F;
+		        this.Body.rotationPointY = 17.5F;	
+		        this.Tail1.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted);
+		        this.Tail2.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.02F);
+		        this.Tail3.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.04F);
+		        
+		        this.Cannon2.rotationPointZ = -3.0F;
+		        this.Cannon3.rotationPointZ = -3.0F;
+	    	}
+	    	
+	        this.RightArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+	        this.LeftArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        this.RightLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        this.LeftLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
 	        
-	        this.Cannon2.rotationPointZ = -1.8F + 1.2F * MathHelper.sin(1.0F * entityIn.ticksExisted);
-	        this.Cannon3.rotationPointZ = -1.3F + 1.7F * MathHelper.sin(1.0F * entityIn.ticksExisted);
+	        this.RightArm.rotateAngleZ = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+	        this.LeftArm.rotateAngleZ = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        this.RightLeg.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        this.LeftLeg.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+    	} else {
+    		ChildModel.setLivingAnimations(entityIn, limbSwing, limbSwingAmount, ageInTicks);
     	}
-    	else if(!entityIn.isChild() && i <= Anime_threshold[2]){
-    		this.Head.rotateAngleZ = 0.0F;
-    		this.Jaw_lower.rotateAngleX = -0.08F + (-0.08F * MathHelper.sin(0.03F * entityIn.ticksExisted));
-	        this.RightArm.rotateAngleX = 0.091106186954104F;
-	        this.LeftArm.rotateAngleX = 0.091106186954104F;
-	        this.Body.rotateAngleX = 0.0F;
-	        this.Body.rotationPointY = 17.5F;	
-	        this.Tail1.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted);
-	        this.Tail2.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.02F);
-	        this.Tail3.rotateAngleY = 0.15F * MathHelper.sin(0.03F * entityIn.ticksExisted + 0.04F);
-	        
-	        this.Cannon2.rotationPointZ = -3.0F;
-	        this.Cannon3.rotationPointZ = -3.0F;
-    	}
-    	
-        this.RightArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        this.LeftArm.rotateAngleX = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.RightLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.LeftLeg.rotateAngleX = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        
-        this.RightArm.rotateAngleZ = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        this.LeftArm.rotateAngleZ = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.RightLeg.rotateAngleZ = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.LeftLeg.rotateAngleZ = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
     }
 }
