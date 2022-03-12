@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "#X",
+        " Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:moltenbeef"
+        },
+        "X": {
+			"tag": "forge:gunpowder"
+        },
+        "Y": {
+			"tag": "forge:rods/blaze"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:moltenaxe"
+    }
+}

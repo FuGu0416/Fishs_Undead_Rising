@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_single_face",
+  "textures": {
+    "texture": "mod_lavacow:block/glowshroom_block_stem"
+  }
+}

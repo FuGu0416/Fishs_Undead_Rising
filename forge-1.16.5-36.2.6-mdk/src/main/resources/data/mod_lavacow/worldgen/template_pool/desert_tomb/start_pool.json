@@ -1,0 +1,15 @@
+{
+  "name": "mod_lavacow:desert_tomb/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "mod_lavacow:desert_tomb",
+        "processors": "mod_lavacow:desert_tomb_processors",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

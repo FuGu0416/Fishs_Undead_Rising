@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+	"item": "mod_lavacow:mousse"
+  },
+  "result": {
+    "item": "mod_lavacow:meatball",
+    "count": 4
+  },
+  "experience": 0.15,
+  "cookingtime": 200
+}

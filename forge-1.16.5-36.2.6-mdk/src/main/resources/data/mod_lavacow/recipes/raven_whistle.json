@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#Y#",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:feather_black"
+        },
+        "Y": {
+            "item": "minecraft:tripwire_hook"
+        },
+        "D": {
+            "item": "mod_lavacow:sharptooth"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:raven_whistle"
+    }
+}

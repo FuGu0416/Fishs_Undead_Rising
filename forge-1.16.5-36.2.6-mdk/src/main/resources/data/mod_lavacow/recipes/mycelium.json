@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "DDD",
+        "DDD"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:hyphae"
+        },
+        "D": {
+			"item": "minecraft:dirt"
+        }
+    },
+    "result": {
+        "item": "minecraft:mycelium",
+        "count": 6
+    }
+}

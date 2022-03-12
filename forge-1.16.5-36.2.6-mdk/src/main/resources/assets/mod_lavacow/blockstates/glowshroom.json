@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "mod_lavacow:block/glowshroom"
+    },
+    "age=1": {
+      "model": "mod_lavacow:block/glowshroom_m"
+    }
+  }
+}

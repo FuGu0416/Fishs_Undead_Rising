@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##X",
+        "# Y",
+        "  Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:scythe_claw"
+        },
+        "X": {
+            "item": "mod_lavacow:hatred_shard"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:reapers_scythe"
+    }
+}

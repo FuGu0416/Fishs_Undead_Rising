@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:arrow"
+        },
+        "X": {
+			"item": "mod_lavacow:poisonspore"
+        }
+    },
+    "result": {
+		"type": "forge:nbt",
+		"item": "minecraft:tipped_arrow",
+		"count": 8,
+		"nbt": "{Potion:\"minecraft:poison\"}"	
+    }
+}

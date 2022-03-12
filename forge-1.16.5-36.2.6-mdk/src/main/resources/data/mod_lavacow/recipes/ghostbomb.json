@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:firework_rocket"
+        },
+        "X": {
+            "item": "mod_lavacow:ectoplasm"
+        },
+        "D": {
+			"tag": "forge:string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:ghostbomb"
+    }
+}

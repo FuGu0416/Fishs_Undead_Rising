@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "  #",
+        "HCD",
+        " //"
+    ],
+    "key": {
+        "#": {
+			"tag": "forge:glass/colorless"
+        },
+        "H": {
+            "item": "mod_lavacow:swarmer_item"
+        },
+        "C": {
+			"tag": "forge:dyes/gray"
+        },
+        "D": {
+            "item": "mod_lavacow:war"
+        },
+        "/": {
+			"tag": "forge:rods/wooden"
+        }
+ 	},
+    "result": {
+        "item": "mod_lavacow:piranhalauncher",
+        "count": 1
+    }
+}

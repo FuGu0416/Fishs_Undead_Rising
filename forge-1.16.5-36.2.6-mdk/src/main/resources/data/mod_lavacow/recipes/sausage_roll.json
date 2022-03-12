@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#X#",
+        " Y "
+    ],
+    "key": {
+        "#": [
+            {
+				"item": "mod_lavacow:parasite_item_common"
+	    	},
+	    	{
+				"item": "mod_lavacow:parasite_item_desert"
+	    	},
+	    	{
+				"item": "mod_lavacow:parasite_item_jungle"
+	    	}
+    	],
+        "X": {
+			"item": "mod_lavacow:intestine"
+        },
+        "Y": {
+	    	"item": "mod_lavacow:moltenpan",
+	    	"data": 32767
+        }
+    },
+    "result": {
+	    "item": "mod_lavacow:sausage_roll",
+	    "count": 5
+    }
+}

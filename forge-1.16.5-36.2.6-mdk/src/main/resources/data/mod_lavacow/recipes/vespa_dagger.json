@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "X",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:poisonstinger"
+        },
+        "X": {
+            "item": "mod_lavacow:vespa_carapace"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:vespa_dagger"
+    }
+}

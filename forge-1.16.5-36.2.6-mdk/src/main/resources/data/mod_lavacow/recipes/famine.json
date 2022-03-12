@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "#",
+        "Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:scythe_claw"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:famine"
+    }
+}

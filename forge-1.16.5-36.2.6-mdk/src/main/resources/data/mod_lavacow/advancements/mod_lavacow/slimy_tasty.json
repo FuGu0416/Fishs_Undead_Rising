@@ -1,0 +1,40 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:parasite_item_common"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.slimy_tasty.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.slimy_tasty.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/kill_parasite",
+    "criteria": {
+        "parasite_item_common": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_common"
+                }
+            }
+        },
+        "parasite_item_desert": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_desert"
+                }
+            }
+        },
+        "parasite_item_jungle": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_jungle"
+                }
+            }
+        }
+    }
+}

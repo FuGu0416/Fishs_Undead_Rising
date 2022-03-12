@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+    	"item": "mod_lavacow:moltenpan",
+    	"data": 32767
+    },
+    {
+		"tag": "forge:crops/nether_wart"
+    },
+    {
+		"tag": "forge:crops/nether_wart"
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:netherstew"
+  }
+}

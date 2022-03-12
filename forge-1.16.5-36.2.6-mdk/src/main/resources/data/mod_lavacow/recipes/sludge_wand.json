@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        " X ",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:silky_sludge"
+        },
+        "X": {
+			"tag": "forge:rods/wooden"
+        },
+        "D": {
+        	"item": "minecraft:vine"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:sludge_wand"
+    }
+}

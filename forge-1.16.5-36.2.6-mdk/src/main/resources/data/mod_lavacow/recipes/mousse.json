@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+		{
+			"tag": "forge:eggs"
+	    }
+	],
+    [
+		{
+            "item": "minecraft:sugar"
+	    }
+	],
+    [
+	    {
+			"tag": "forge:meats"
+	    },
+	    {
+			"tag": "minecraft:fishes"
+	    },
+        {
+			"item": "mod_lavacow:parasite_item_common"
+    	},
+    	{
+			"item": "mod_lavacow:parasite_item_desert"
+    	},
+    	{
+			"item": "mod_lavacow:parasite_item_jungle"
+    	},
+    	{
+			"item": "minecraft:rotten_flesh"
+    	}
+    ]
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:mousse",
+    "count": 4
+  }
+}

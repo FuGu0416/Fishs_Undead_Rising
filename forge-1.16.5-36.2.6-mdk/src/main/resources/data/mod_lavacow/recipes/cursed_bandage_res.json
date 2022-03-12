@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "DXD",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:curseweave_cloth"
+        },
+        "X": {
+            "item": "minecraft:ice"
+        },
+        "D": {
+			"tag": "forge:string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:cursed_bandage_res",
+        "count": 8
+    }
+}

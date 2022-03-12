@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+			"tag": "forge:storage_blocks/gold"
+        },
+        "X": {
+            "item": "mod_lavacow:undyingheart"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:goldenheart"
+    }
+}

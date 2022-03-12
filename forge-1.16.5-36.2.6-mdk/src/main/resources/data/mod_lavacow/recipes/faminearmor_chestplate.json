@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "#X#",
+        "#D#"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:foul_bristle"
+        },
+        "X": {
+            "item": "mod_lavacow:acidicheart"
+        },
+        "D": {
+            "item": "mod_lavacow:intestine"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:faminearmor_chestplate"
+    }
+}

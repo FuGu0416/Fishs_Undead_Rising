@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+	"item": "mod_lavacow:swarmer_item"
+  },
+  "result": "mod_lavacow:swarmer_item_cooked",
+  "experience": 0.15,
+  "cookingtime": 200
+}

@@ -1,0 +1,32 @@
+{
+    "type":"minecraft:entity",
+    "pools":[
+        {
+            "name":"mod_lavacow:lilsludge",
+            "rolls":2,
+            "entries":[
+                {
+                    "type":"item",
+                    "name":"mod_lavacow:silky_sludge",
+                    "weight":1,
+                    "functions":[
+                        {
+                            "function":"minecraft:set_count",
+                            "count":{
+                                "min":0,
+                                "max":1
+                            }
+                        },
+                        {
+                            "function":"looting_enchant",
+                            "count":{
+                                "min":0,
+                                "max":1
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

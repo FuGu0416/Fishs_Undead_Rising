@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"type": "forge:ore_dict",
+		"ore": "sugarcane"
+    },
+    {
+      "item": "minecraft:porkchop"
+    },
+    {
+    	"item": "mod_lavacow:moltenpan",
+    	"data": 32767
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:canepork",
+    "count": 2
+  }
+}

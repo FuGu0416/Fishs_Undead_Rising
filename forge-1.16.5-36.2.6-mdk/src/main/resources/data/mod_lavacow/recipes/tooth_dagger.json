@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:sharptooth"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:tooth_dagger"
+    }
+}

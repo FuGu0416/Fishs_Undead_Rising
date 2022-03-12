@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "DXD",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:curseweave_cloth"
+        },
+        "X": {
+			"type": "forge:nbt",
+			"item": "minecraft:potion",
+			"count": 1,
+			"nbt": "{Potion:\"minecraft:strong_healing\"}"	
+        },
+        "D": {
+			"tag": "forge:string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:cursed_bandage_heal",
+        "count": 8
+    }
+}

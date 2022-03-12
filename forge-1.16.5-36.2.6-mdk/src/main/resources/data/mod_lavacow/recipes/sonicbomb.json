@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:shriek_cord"
+        },
+        "X": {
+            "item": "mod_lavacow:chitin"
+        },
+        "D": {
+			"tag": "forge:string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:sonicbomb",
+        "count": 4
+    }
+}

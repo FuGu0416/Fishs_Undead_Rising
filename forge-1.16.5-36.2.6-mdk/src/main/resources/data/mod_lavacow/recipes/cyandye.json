@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mod_lavacow:glowshroom"
+    }
+  ],
+  
+  "result": {
+    "item": "minecraft:cyan_dye",
+    "count": 2
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        "###",
+        "Y Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:pigboarhide"
+        },
+        "D": {
+            "item": "minecraft:green_stained_glass_pane"
+        },
+        "Y": {
+            "item": "mod_lavacow:sharptooth"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:swinearmor_helmet"
+    }
+}

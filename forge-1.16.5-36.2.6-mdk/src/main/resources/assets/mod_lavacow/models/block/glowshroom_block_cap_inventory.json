@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mod_lavacow:block/glowshroom_block_cap"
+  }
+}

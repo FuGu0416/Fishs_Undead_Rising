@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#X#",
+        "#X#",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:sharptooth"
+        },
+        "X": {
+            "item": "minecraft:bone_block"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:bonesword"
+    }
+}

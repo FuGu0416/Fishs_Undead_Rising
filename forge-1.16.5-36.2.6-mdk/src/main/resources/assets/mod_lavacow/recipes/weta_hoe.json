@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D",
+        " Y",
+        " Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:weta_jaw"
+        },
+        "D": {
+            "item": "mod_lavacow:chitin"
+        },
+        "Y": {
+            "type": "forge:ore_dict",
+    		"ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:weta_hoe"
+    }
+}

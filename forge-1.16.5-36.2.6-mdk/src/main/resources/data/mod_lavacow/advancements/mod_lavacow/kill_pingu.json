@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:shattered_ice"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.kill_pingu.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.kill_pingu.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:pingu"
+		        }
+		      }
+        }
+    }
+}

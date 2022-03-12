@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:potion_of_mooten_lava"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.summon_lavacow.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.summon_lavacow.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/get_fissionpotion",
+    "criteria": {
+        "summon_lavacow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "mod_lavacow:potion_of_mooten_lava"
+                    }
+                ]
+            }
+        }
+    }
+}

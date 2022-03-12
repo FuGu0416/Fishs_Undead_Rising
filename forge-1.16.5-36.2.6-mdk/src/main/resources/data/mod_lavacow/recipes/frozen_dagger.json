@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "#",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:shattered_ice"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:frozen_dagger"
+    }
+}

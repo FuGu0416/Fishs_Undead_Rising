@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+	"item": "mod_lavacow:piranha_item"
+  },
+  "result": "mod_lavacow:piranha_item_cooked",
+  "experience": 0.15,
+  "cookingtime": 200
+}

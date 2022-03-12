@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " DD",
+        "DX#",
+        "  D"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:dispenser"
+        },
+        "X": {
+            "item": "mod_lavacow:burntovipositor"
+        },
+        "D": {
+			"item": "mod_lavacow:moltenbeef"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:war"
+    }
+}

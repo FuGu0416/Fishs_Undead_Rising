@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "mod_lavacow:block/cordy_shroom"
+    },
+    "age=1": {
+      "model": "mod_lavacow:block/cordy_shroom_s"
+    }
+  }
+}

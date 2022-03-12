@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DYD",
+        "D#D",
+		"DDD"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:stained_kings_crown"
+        },
+        "Y": {
+			"tag": "forge:gems/emerald"
+        },
+        "D": {
+            "item": "mod_lavacow:hatred_shard"
+        }
+    },
+    "result": {
+            "item": "mod_lavacow:cursed_kings_crown"
+    }
+}

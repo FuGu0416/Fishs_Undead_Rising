@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": [
+	{
+    	"item": "mod_lavacow:parasite_item_common"
+	},
+	{
+		"item": "mod_lavacow:parasite_item_desert"
+	},
+	{
+		"item": "mod_lavacow:parasite_item_jungle"
+	}
+  ],
+  "result": "mod_lavacow:parasite_item_cooked",
+  "experience": 0.15,
+  "cookingtime": 200
+}

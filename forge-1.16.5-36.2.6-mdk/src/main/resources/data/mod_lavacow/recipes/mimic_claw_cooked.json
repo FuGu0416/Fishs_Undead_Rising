@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+	"item": "mod_lavacow:mimic_claw"
+  },
+  "result": "mod_lavacow:mimic_claw_cooked",
+  "experience": 0.15,
+  "cookingtime": 200
+}

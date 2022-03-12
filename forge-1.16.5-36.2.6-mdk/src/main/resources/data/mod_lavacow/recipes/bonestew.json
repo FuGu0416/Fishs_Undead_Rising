@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+	    {
+	      	"item": "minecraft:bowl"
+	    },
+	    {
+	    	"item": "mod_lavacow:moltenpan",
+	    	"data": 32767
+	    },
+	    {
+			"tag": "forge:bones"
+	    },
+	    {
+			"item": "mod_lavacow:bloodtooth_shroom"
+	    }
+    ],
+
+    "result": {
+        "item": "mod_lavacow:bonestew"
+    }
+}

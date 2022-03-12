@@ -1,0 +1,7 @@
+{
+  "processors": [
+    {
+      "processor_type": "mod_lavacow:desert_tomb_processor"
+    }
+  ]
+}

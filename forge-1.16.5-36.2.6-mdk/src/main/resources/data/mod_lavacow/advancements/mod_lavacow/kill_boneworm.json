@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:acidicheart"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.kill_boneworm.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.kill_boneworm.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:boneworm"
+		        }
+		      }
+        }
+    }
+}

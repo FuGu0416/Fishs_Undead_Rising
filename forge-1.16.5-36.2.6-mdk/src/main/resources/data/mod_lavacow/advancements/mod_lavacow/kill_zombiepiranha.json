@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:swarmer_item"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.kill_zombiepiranha.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.kill_zombiepiranha.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/kill_piranha",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:swarmer"
+		        }
+		      }
+        }
+    }
+}
