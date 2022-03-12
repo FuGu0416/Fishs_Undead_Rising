@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 public class FURItemGroup extends ItemGroup {
 
 	public FURItemGroup() {
-		super(mod_LavaCow.MODID);
+		super(mod_LavaCow.MODID + "_items");
 	}
 
 	@Override

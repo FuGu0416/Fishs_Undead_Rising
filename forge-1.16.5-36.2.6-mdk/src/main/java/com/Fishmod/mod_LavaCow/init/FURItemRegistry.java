@@ -64,9 +64,6 @@ public class FURItemRegistry {
 	);
 	
 	public static final Item NETHERSTEW = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> Effect_netherstew.get(new Random().nextInt(Effect_netherstew.size())), 1F).build()), 1).setRegistryName("mod_lavacow:netherstew");
-	public static final Item CANEBEEF = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.5F).meat().fast().effect(() -> new EffectInstance(Effects.REGENERATION, 8*20, 0), 1F).build()), 32, UseAction.EAT, 1).setRegistryName("mod_lavacow:canebeef");
-	public static final Item CANEPORK = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.5F).meat().fast().effect(() -> new EffectInstance(Effects.REGENERATION, 8*20, 0), 1F).build()), 32, UseAction.EAT, 1).setRegistryName("mod_lavacow:canepork");
-	public static final Item CANEROTTENMEAT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.5F).meat().fast().effect(() -> new EffectInstance(Effects.REGENERATION, 8*20, 0), 1F).build()), 32, UseAction.EAT, 1).setRegistryName("mod_lavacow:canerottenmeat");
 	public static final Item FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");
 	public static final Item HYPHAE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:hyphae");
 	public static final Item PARASITE_COMMON = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 32, UseAction.EAT, 2).setRegistryName("mod_lavacow:parasite_item_common");
@@ -98,7 +95,6 @@ public class FURItemRegistry {
 	public static final Item MIMIC_CLAW = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.CONFUSION, 60*20, 0), 0.3F).build()), 64, UseAction.EAT, 0).setRegistryName("mod_lavacow:mimic_claw");
 	public static final Item MIMIC_CLAW_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:mimic_claw_cooked");
 	public static final Item SILKY_SLUDGE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:silky_sludge");
-	public static final Item MOSSY_STICK = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:mossy_stick");
 	public static final Item SLUDGE_WAND = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
 	public static final Item BURNTOVIPOSITOR = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant()).setRegistryName("mod_lavacow:burntovipositor");
 	public static final Item WAR = new FURRangedItem("mod_lavacow:war", Items.FIRE_CHARGE, FUREntityRegistry.WAR_SMALL_FIREBALL, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(384));
@@ -131,7 +127,6 @@ public class FURItemRegistry {
 	public static final Item HOLY_GRENADE = new FURThrowableItem("mod_lavacow:holy_grenade");
 	public static final Item FEATHER_BLACK = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:feather_black");
 	public static final Item SHATTERED_ICE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(1.8F).build()), 32, UseAction.DRINK, 0).setRegistryName("mod_lavacow:shattered_ice");
-	public static final Item HALO_NECKLACE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:halo_necklace");//new ItemBaubleTrinket("halo_necklace", mod_LavaCow.TAB_ITEMS, EnumRarity.EPIC, true);
 	public static final Item DREAMCATCHER = new DreamCatcherItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(0)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final Item RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().tab(mod_LavaCow.TAB).stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");
 	public static final Item ACIDICHEART = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:acidicheart");
@@ -140,11 +135,9 @@ public class FURItemRegistry {
 	public static final Item FAMINEARMOR_LEGGINGS = new FamineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:faminearmor_leggings");
 	public static final Item FAMINEARMOR_BOOTS = new FamineArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:faminearmor_boots");
 	public static final Item FOUL_BRISTLE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:foul_bristle");
-	public static final Item CRABCAKE = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:crabcake");
 	public static final Item ECTOPLASM = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ectoplasm");
 	public static final Item GHOSTJELLY = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().build()), 1).setRegistryName("mod_lavacow:ghostjelly");
 	public static final Item SHRIEK_CORD = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:shriek_cord");
-	public static final Item WETA_JAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:weta_jaw");
 	public static final Item CHITIN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitin");
 	public static final Item GHOSTBOMB = new FURThrowableItem("mod_lavacow:ghostbomb");
 	public static final Item SONICBOMB = new FURThrowableItem("mod_lavacow:sonicbomb");

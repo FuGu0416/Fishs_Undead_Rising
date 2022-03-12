@@ -45,8 +45,6 @@ public class FURItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if(stack.getItem().equals(FURItemRegistry.MOOTENHEART))
 			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName(), FURConfig.MootenHeart_Damage.get()).withStyle(TextFormatting.YELLOW).append(new TranslationTextComponent("item.mod_lavacow.potion_of_mooten_lava").withStyle(TextFormatting.YELLOW)));
-		else if(stack.getItem().equals(FURItemRegistry.HALO_NECKLACE))
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName(), FURConfig.HaloNecklace_Damage.get()).withStyle(TextFormatting.YELLOW));
 		else if(this.Tooltip == 2)
 			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()));			
 		else if(this.Tooltip == 1)

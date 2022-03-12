@@ -173,7 +173,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
      */
     @Override
     public boolean isFood(ItemStack stack) {
-    	return stack.getItem().equals(FURItemRegistry.CANEBEEF);
+    	return stack.getItem().equals(FURItemRegistry.IMP_HORN);
     }
     
     /**

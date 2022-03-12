@@ -456,11 +456,7 @@ public class EventHandler {
     		/*if(Loader.isModLoaded("baubles")) {
     			if(baubles.api.BaublesApi.isBaubleEquipped((PlayerEntity) event.getSource().getDirectEntity(), FURItemRegistry.HALO_NECKLACE) != -1)
     				have_Necklace = true;
-    		}*/
-    		
-    		for(int i = 0; i < 9 ; i++)
-    			if(((PlayerEntity)event.getSource().getDirectEntity()).inventory.getItem(i).getItem().equals(FURItemRegistry.HALO_NECKLACE))
-					have_Necklace = true;
+    		}*/   		
     		
     		if(have_Necklace)
     			event.setAmount(event.getAmount() * ((float)(100 + FURConfig.HaloNecklace_Damage.get()))/100.0F);
