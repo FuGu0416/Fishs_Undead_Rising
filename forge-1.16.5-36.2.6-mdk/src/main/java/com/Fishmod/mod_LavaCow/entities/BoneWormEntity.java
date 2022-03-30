@@ -10,7 +10,6 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.AcidJetEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -66,8 +65,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 	private AvoidEntityGoal<PlayerEntity> avoid_player;
 	private int avoid_cooldown;
 	
-	public BoneWormEntity(EntityType<? extends BoneWormEntity> p_i48549_1_, World worldIn)
-    {
+	public BoneWormEntity(EntityType<? extends BoneWormEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.LocationFix = 0.0D;
     }
@@ -85,8 +83,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PigEntity.class, true));
@@ -124,8 +121,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         BlockState state = this.level.getBlockState(this.blockPosition().below());
@@ -192,8 +188,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {
+    public void tick() {
         for(int i = 0 ; i < 2; i++) {
 	    	if (this.attackTimer[i] > 0) {
 	            --this.attackTimer[i];
@@ -226,8 +221,8 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     /**
      * Called when the entity is attacked.
      */
-    public boolean hurt(DamageSource source, float amount)
-    {
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
     	if (this.LocationFix > 3.0D)
         {
             return false;
@@ -238,8 +233,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         }
     }
     
-    private void spit(LivingEntity target)
-    {
+    private void spit(LivingEntity target) {
         AcidJetEntity entitysnowball = new AcidJetEntity(FUREntityRegistry.ACIDJET, this, this.level);
         double d0 = target.getY() + (double)target.getEyeHeight() - 1.100000023841858D;
         double d1 = target.getX() - this.getX();
@@ -266,8 +260,8 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 		this.avoid_cooldown = CD;
     }
 
-    public boolean doHurtTarget(Entity entityIn)
-    {
+    @Override
+    public boolean doHurtTarget(Entity entityIn) {
         boolean flag = super.doHurtTarget(entityIn);
 
         if (flag) {
@@ -278,6 +272,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         return flag;
     }
     
+    @Override
 	protected void dropCustomDeathLoot(DamageSource p_213333_1_, int p_213333_2_, boolean p_213333_3_) {
 		super.dropCustomDeathLoot(p_213333_1_, p_213333_2_, p_213333_3_);
         Entity entity = p_213333_1_.getEntity();
@@ -290,13 +285,11 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         }
 	}
 	
-    public int getSkin()
-    {
+    public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
     }
 
-    public void setSkin(int skinType)
-    {
+    public void setSkin(int skinType) {
         this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
         
@@ -324,24 +317,15 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id)
     {
-    	if (id == 4) 
-    	{
+    	if (id == 4) {
             this.attackTimer[0] = 15;
-        }
-    	else if (id == 5)
-    	{
+        } else if (id == 5) {
     		this.attackTimer[1] = 16;
-    	}
-    	else if (id == 6)
-    	{
+    	} else if (id == 6) {
     		this.diggingTimer[0] = 30;
-    	}    	
-    	else if (id == 7)
-    	{
+    	} else if (id == 7) {
     		this.diggingTimer[1] = 20;
-    	}   	
-        else
-        {
+    	} else {
             super.handleEntityEvent(id);
         }
     }
@@ -379,13 +363,12 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         return FURSoundRegistry.BONEWORM_DEATH;
     }
 
-    protected SoundEvent getStepSound()
-    {
+    protected SoundEvent getStepSound() {
         return SoundEvents.SPIDER_STEP;
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
+	@Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 

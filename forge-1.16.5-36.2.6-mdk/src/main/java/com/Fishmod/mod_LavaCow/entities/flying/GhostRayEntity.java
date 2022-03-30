@@ -3,7 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -27,6 +27,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biomes;
 
 public class GhostRayEntity extends FlyingMobEntity {
 	public static final float[] SIZE = {1.0F, 1.4F, 1.8F, 2.2F};
@@ -85,8 +86,9 @@ public class GhostRayEntity extends FlyingMobEntity {
 	}
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {
- 	   if(this.getType() == FUREntityRegistry.SOULRAY)
+    	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
 		   this.setSkin(1);
+    	}
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
@@ -129,7 +131,7 @@ public class GhostRayEntity extends FlyingMobEntity {
 	
 	@Override
 	public int getAmbientSoundInterval() {
-		return 26;
+		return 1000;
 	}
 	
 	public SoundCategory getSoundCategory() {
@@ -147,6 +149,11 @@ public class GhostRayEntity extends FlyingMobEntity {
 	protected SoundEvent getDeathSound() {
 		return FURSoundRegistry.GHOSTRAY_DEATH;
 	}
+	
+    @Override
+    public boolean fireImmune() {
+        return (this.getSkin() == 1) || super.fireImmune();
+    }
 
 	/**
 	* Returns the volume for the sounds this mob makes.

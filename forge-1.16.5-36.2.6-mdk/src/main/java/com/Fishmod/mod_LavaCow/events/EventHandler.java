@@ -97,19 +97,19 @@ public class EventHandler {
      * Example: Spawn swarm of parasites when a zombie dies (10% chance)
      */
     @SubscribeEvent
-    public void onEDeath(LivingDeathEvent event)
-    {
+    public void onEDeath(LivingDeathEvent event) {
     	Entity entity = event.getEntityLiving();
 	    boolean Armor_Famine_lvl = false;
 	    World world = event.getEntityLiving().level;
 	    
-	    if(event.getSource().getDirectEntity() != null)
+	    if(event.getSource().getDirectEntity() != null) {
 			for(ItemStack S : event.getSource().getDirectEntity().getArmorSlots()) {
 				if(S.getItem() instanceof FamineArmorItem && ((FamineArmorItem)S.getItem()).getSetBonus() >= 4) {
 					Armor_Famine_lvl = true;
 					break;
 				}
 			}
+	    }
 		
 		if(Armor_Famine_lvl && event.getSource().getDirectEntity() instanceof PlayerEntity) {
 			((PlayerEntity)event.getSource().getDirectEntity()).heal(1.0F);
@@ -119,18 +119,16 @@ public class EventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isClientSide() && world.dimension() == World.OVERWORLD
-    			&& ((LootTableHandler.PARASITE_HOSTLIST.contains(entity.getType().getRegistryName()) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get() || ParasiteEntity.gotParasite(entity.getPassengers()) != null)) 
-    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)))
-    	{
+    	if (!world.isClientSide() && world.dimension() == World.OVERWORLD && ((LootTableHandler.PARASITE_HOSTLIST.contains(entity.getType().getRegistryName()) 
+    			&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get() || ParasiteEntity.gotParasite(entity.getPassengers()) != null)) 
+    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		ParasiteEntity passenger = ParasiteEntity.gotParasite(entity.getPassengers());
     		if(event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))
     			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
     		
-    		for(int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3)
-    		{
+    		for(int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
@@ -179,17 +177,14 @@ public class EventHandler {
      * Example: Make glow shroom and parasite a good lure
      */
     @SubscribeEvent
-    public void onAnvilUpdate(AnvilUpdateEvent event)
-    {
-        
+    public void onAnvilUpdate(AnvilUpdateEvent event) {        
     	ItemStack tool = event.getLeft();
     	ItemStack ench = event.getRight();
     	ItemStack outputStack = tool.copy();
     	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
     	int ench_lvl = 1;
     	
-    	if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURItemRegistry.PARASITE_COMMON)
-    	{
+    	if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURItemRegistry.PARASITE_COMMON) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
@@ -204,70 +199,50 @@ public class EventHandler {
 				event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
 			}
     		event.setMaterialCost(1);
-    	}
-    	else if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem())
-    	{
+    	} else if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem()) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
-    		if (currentEnchantments.containsKey(Enchantments.FISHING_SPEED))
-    		{
+    		if (currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
 				event.setOutput(event.getLeft().copy());
 				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
+			} else {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
 			}
     		event.setMaterialCost(1);
-    	}
-    	else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE)
-    	{
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) 
-    		{
+    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
 				event.setOutput(event.getLeft().copy());
 				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
+			} else {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
 			}
     		event.setMaterialCost(1);
-    	}
-    	else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART)
-    	{
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) 
-    		{
+    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
 				event.setOutput(event.getLeft().copy());
 				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
+			} else {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
 			}
     		event.setMaterialCost(1);
-    	}
-    	else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART)
-    	{
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(4);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) 
-    		{
+    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
 				event.setOutput(event.getLeft().copy());
 				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
+			} else {
 				event.setOutput(event.getLeft().copy());
 				event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
 			}
@@ -296,11 +271,12 @@ public class EventHandler {
         
 		ItemStack Heart = null;
 		
-		for(int i = 0; i < 9 ; i++)
+		for(int i = 0; i < 9 ; i++) {
 			if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.GOLDENHEART)) {
 				Heart = player.inventory.getItem(i);
 				break;
 			}
+		}
 		
 		if(Heart != null)
 			GoldenHeartItem.onTick(Heart, player);
@@ -422,21 +398,18 @@ public class EventHandler {
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     	}
     	
-    	if(event.getSource().isExplosion() && event.getSource().getDirectEntity() instanceof WolfEntity){
+    	if(event.getSource().isExplosion() && event.getSource().getDirectEntity() instanceof WolfEntity) {
     		if(event.getEntityLiving().getMobType().equals(CreatureAttribute.UNDEAD) && event.getSource().getDirectEntity().getName().getString().equals("Holy Grenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
     			event.getEntityLiving().setSecondsOnFire(8);
-    		}
-    		else if(event.getSource().getDirectEntity().getName().getString().equals("Ghost Bomb")) {
+    		} else if(event.getSource().getDirectEntity().getName().getString().equals("Ghost Bomb")) {
     			event.getEntityLiving().setDeltaMovement(0.0D, event.getEntityLiving().getDeltaMovement().y, 0.0D);
     			event.getEntityLiving().addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		}
-    		else if(event.getSource().getDirectEntity().getName().getString().equals("Sonic Bomb")) {
+    		} else if(event.getSource().getDirectEntity().getName().getString().equals("Sonic Bomb")) {
     			event.getEntityLiving().addEffect(new EffectInstance(Effects.WEAKNESS, 4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
-    		}
-    		else
+    		} else
     			event.setAmount(event.getAmount() * 0.15F);
     	}
     	
@@ -480,13 +453,6 @@ public class EventHandler {
         	}
     	} 
     }
-    
-    /*@SubscribeEvent
-    public void onPLogout(SaveToFile event) {
-    	if(event.getPlayer().isVehicle())
-    		for(Entity E : event.getPlayer().getPassengers())
-    			if(E instanceof RavenEntity || E instanceof ParasiteEntity)E.dismountRidingEntity();
-    }*/
     
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
@@ -538,7 +504,7 @@ public class EventHandler {
 			    		Entity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<PlayerEntity>(Entity, PlayerEntity.class, 10, true, false, (p_213440_0_) -> {
 				            	if(p_213440_0_ instanceof PlayerEntity) {
 				            		PlayerEntity target = (PlayerEntity) p_213440_0_;   	            		
-				            		return !(target.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(Items.DIAMOND_HELMET/*FishItems.SKELETONKING_CROWN*/));
+				            		return !(target.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN));
 				            	}
 				            	
 			            		return true;
@@ -628,31 +594,6 @@ public class EventHandler {
 		}
 			
     }
-    
-    /*@SubscribeEvent
-    public void onCollidBox(GetCollisionBoxesEvent event) {
-    	if((event.getEntityLiving() instanceof WendigoEntity && !event.getEntityLiving().onGround) || event.getEntityLiving() instanceof EntityFlyingMob) {
-    		
-    		List<AxisAlignedBB> list = new ArrayList<>();
-    		World world = event.getWorld();
-    		
-    		for(AxisAlignedBB B : event.getCollisionBoxesList()) {
-    			BlockPos pos = new BlockPos((B.maxX + B.minX) * 0.5D, (B.maxY + B.minY) * 0.5D, (B.maxZ + B.minZ) * 0.5D);
-    			IBlockState state = world.getBlockState(pos);
-
-                if(state.getMaterial() != Material.LEAVES) {
-                	list.add(B);
-                }
-    		}
-    		
-    		event.getCollisionBoxesList().clear();
-    		event.getCollisionBoxesList().addAll(list);
-    	}
-    	
-    	if(event.getEntityLiving() instanceof RavenEntity && ((RavenEntity) event.getEntityLiving()).getSkin() == 3 && ((RavenEntity) event.getEntityLiving()).isFlying() && event.getEntityLiving().collidedHorizontally) {
-    		event.getCollisionBoxesList().clear();
-    	}
-    }*/
     
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {

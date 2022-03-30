@@ -1,20 +1,33 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelCrown;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIFollowEntity;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityAIGuardingEntity;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -49,44 +62,78 @@ public class SkeletonKingCrownItem extends ArmorItem {
     /**
      * Called to tick armor in the armor slot. Override to do something
      */
+	@SuppressWarnings("unchecked")
 	@Override
     public void onArmorTick(ItemStack itemStack, World world, PlayerEntity player){
     	if(player.tickCount % 20 == 0) {
-    		/*boolean modified = false;
-    		
+    		boolean modified = false;
+    			    	
 	    	for (AbstractSkeletonEntity Skeleton : world.getEntitiesOfClass(AbstractSkeletonEntity.class, player.getBoundingBox().inflate(16.0D))) {
-	    		for (EntityAITasks.EntityAITaskEntry Task : Skeleton.tasks.taskEntries) {
-	    			if (Task.action instanceof EntityAIFollowEntity)
-	    				modified = true;
-	    		}
+	    		Field goals;
+	    		Goal remove = null;
 	    		
-	    		if(!modified) {
-	    			Skeleton.setAttackTarget(null);
-	    			Skeleton.playSound(SoundEvents.EVOCATION_ILLAGER_CAST_SPELL, 1.0F, 1.0F);
-		        	for (int i = 0; i < 16; ++i)
-		            {
-		                double d0 = new Random().nextGaussian() * 0.02D;
-		                double d1 = new Random().nextGaussian() * 0.02D;
-		                double d2 = new Random().nextGaussian() * 0.02D;
-		                Skeleton.world.spawnParticle(EnumParticleTypes.SPELL_MOB, Skeleton.posX + (double)(new Random().nextFloat() * Skeleton.width) - (double)Skeleton.width, Skeleton.posY + (double)(new Random().nextFloat() * Skeleton.height), Skeleton.posZ + (double)(new Random().nextFloat() * Skeleton.width) - (double)Skeleton.width, d0, d1, d2);
-		            }
-		        	
-		    		Skeleton.tasks.taskEntries.clear();
-		    		Skeleton.targetTasks.taskEntries.clear();
+				try {
+					goals = Skeleton.targetSelector.getClass().getDeclaredField("availableGoals");
+					goals.setAccessible(true);
+					Set<PrioritizedGoal> goalSet;
+					try {
+						goalSet = (Set<PrioritizedGoal>) goals.get(Skeleton.targetSelector);
+				    	for(PrioritizedGoal task : goalSet) {
+					        if(task.getGoal() instanceof EntityAIFollowEntity) {
+					        	modified = true;     
+					        }
+					        
+					        if(task.getGoal() instanceof NearestAttackableTargetGoal<?>) {
+								Field targetClassField;
+								try {
+									targetClassField = task.getGoal().getClass().getDeclaredField("targetType");
+									targetClassField.setAccessible(true);
+					                Class<?> targetClass;				                
+									try {
+										targetClass = (Class<?>) targetClassField.get(task.getGoal());
+										if(targetClass.equals(PlayerEntity.class) || targetClass.equals(ServerPlayerEntity.class)) {
+						    	            remove = task.getGoal();
+						    	            break;							
+										}   
+									} catch (IllegalArgumentException e) {
+										continue;
+									} catch (IllegalAccessException e) {
+										continue;
+									}
+								} catch (NoSuchFieldException e) {
+									continue;
+								} catch (SecurityException e) {
+									continue;
+								}	      
+					        }
+				    	}
+				    	
+				    	if(!modified && remove != null) {
+			    			Skeleton.setTarget(null);
+			    			Skeleton.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0F, 1.0F);
+				        	for (int i = 0; i < 16; ++i) {
+				                double d0 = new Random().nextGaussian() * 0.02D;
+				                double d1 = new Random().nextGaussian() * 0.02D;
+				                double d2 = new Random().nextGaussian() * 0.02D;
+				                Skeleton.level.addParticle(ParticleTypes.ENTITY_EFFECT, Skeleton.getX() + (double)(new Random().nextFloat() * Skeleton.getBbWidth()) - (double)Skeleton.getBbWidth(), Skeleton.getY() + (double)(new Random().nextFloat() * Skeleton.getBbHeight()), Skeleton.getZ() + (double)(new Random().nextFloat() * Skeleton.getBbWidth()) - (double)Skeleton.getBbWidth(), d0, d1, d2);
+				            }
+				        	
+				    		Skeleton.goalSelector.addGoal(6, new EntityAIFollowEntity(Skeleton, player.getUUID(), 1.0D, 10.0F, 2.0F));
+				    		Skeleton.targetSelector.addGoal(1, new EntityAIGuardingEntity(Skeleton, player.getUUID()));
+				    		Skeleton.targetSelector.removeGoal(remove);
+					    }
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						e1.printStackTrace();
+					}
 
-		    		Skeleton.tasks.addTask(1, new EntityAISwimming(Skeleton));
-		    		Skeleton.tasks.addTask(2, new EntityAIRestrictSun(Skeleton));
-		    		Skeleton.tasks.addTask(3, new EntityAIFleeSun(Skeleton, 1.0D));
-		    		Skeleton.tasks.addTask(6, new EntityAIFollowEntity(Skeleton, player.getUniqueID(), 1.0D, 10.0F, 2.0F));
-		    		Skeleton.tasks.addTask(6, new EntityAIWatchClosest(Skeleton, PlayerEntity.class, 8.0F));
-		    		Skeleton.tasks.addTask(6, new EntityAILookIdle(Skeleton));
-		    		Skeleton.targetTasks.addTask(1, new EntityAIGuardingEntity(Skeleton, player.getUniqueID()));
-		    		Skeleton.targetTasks.addTask(1, new EntityAIHurtByTarget(Skeleton, false, new Class[0]));
-		    		Skeleton.setCombatTask();
-		    		
-		    		break;
-	    		}
-	        }*/
+				} catch (NoSuchFieldException e1) {
+					e1.printStackTrace();
+				} catch (SecurityException e1) {
+					e1.printStackTrace();
+				}   		
+	    	}
     	}
     }
     
