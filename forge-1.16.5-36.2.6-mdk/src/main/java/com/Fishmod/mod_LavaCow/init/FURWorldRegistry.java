@@ -218,7 +218,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.SOUL_SAND_VALLEY)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SOULRAY, FURConfig.pSpawnRate_SoulRay.get(), 1, 1));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, FURConfig.pSpawnRate_GhostRay.get() / 3, 1, 1));
 		}
 		
 		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 

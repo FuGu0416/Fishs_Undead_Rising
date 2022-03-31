@@ -96,7 +96,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Ability_Cooldown;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GhostRay;
-	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_SoulRay;
 	public static final ForgeConfigSpec.ConfigValue<Double> GhostRay_Health;
 
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_DeathMimic;
@@ -353,7 +352,6 @@ public final class FURConfig {
 		
 		BUILDER.push("Ghost Ray");
 		pSpawnRate_GhostRay = BUILDER.comment("Set the spawn rate of Ghost Ray [0-10000]").defineInRange("ghost ray spawn rate", 10, 0, 10000);
-		pSpawnRate_SoulRay = BUILDER.comment("Set the spawn rate of Soul Ray [0-10000]").defineInRange("soul ray spawn rate", 4, 0, 10000);
 		GhostRay_Health = BUILDER.comment("Maximum Ghost Ray health [1-1000]").defineInRange("ghost ray health", 20.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		

@@ -219,7 +219,6 @@ public class FURItemRegistry {
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_undertaker"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNBURIED, 0xD4D9BA, 0x292C32, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_unburied"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostray"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SOULRAY, 0x091213, 0x49FEFF, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_soulray"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_banshee"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WETA, 0x845336, 0xEACAA7, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_weta"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.AVATON, 0xAAA48E, 0x222829, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_avaton"));

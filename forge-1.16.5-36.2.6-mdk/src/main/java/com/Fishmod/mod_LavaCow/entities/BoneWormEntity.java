@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.AcidJetEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.FlameJetEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
@@ -35,6 +36,7 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -234,14 +236,23 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     }
     
     private void spit(LivingEntity target) {
-        AcidJetEntity entitysnowball = new AcidJetEntity(FUREntityRegistry.ACIDJET, this, this.level);
+    	ProjectileItemEntity entitysnowball;
+    	SoundEvent sound;
+        if(this.getSkin() == 1) {
+        	entitysnowball = new FlameJetEntity(FUREntityRegistry.FLAMEJET, this, this.level);
+        	sound = SoundEvents.BLAZE_SHOOT;
+        } else {
+        	entitysnowball = new AcidJetEntity(FUREntityRegistry.ACIDJET, this, this.level);
+        	sound = FURSoundRegistry.BONEWORM_ATTACK;
+        }
+        
         double d0 = target.getY() + (double)target.getEyeHeight() - 1.100000023841858D;
         double d1 = target.getX() - this.getX();
         double d2 = d0 - entitysnowball.getY();
         double d3 = target.getZ() - this.getZ();
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
         entitysnowball.shoot(d1, d2 + (double)f, d3, 1.6F, 1.0F);
-        this.playSound(FURSoundRegistry.BONEWORM_ATTACK, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.playSound(sound, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(entitysnowball);
         
     	if(target instanceof PlayerEntity)

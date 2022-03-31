@@ -28,6 +28,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.PteraEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.AcidJetEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.FlameJetEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.GhostBombEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.HolyGrenadeEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.PiranhaLauncherEntity;
@@ -84,7 +85,6 @@ public class FUREntityRegistry {
 	public static final EntityType<UndertakerEntity> UNDERTAKER = registerEntity(EntityType.Builder.of(UndertakerEntity::new, EntityClassification.MONSTER).sized(1.8F, 2.4F), "undertaker");
 	public static final EntityType<UnburiedEntity> UNBURIED = registerEntity(EntityType.Builder.of(UnburiedEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "unburied");
 	public static final EntityType<GhostRayEntity> GHOSTRAY = registerEntity(EntityType.Builder.of(GhostRayEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.25F), "ghostray");
-	public static final EntityType<GhostRayEntity> SOULRAY = registerEntity(EntityType.Builder.of(GhostRayEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.25F).fireImmune(), "soulray");
 	public static final EntityType<BansheeEntity> BANSHEE = registerEntity(EntityType.Builder.of(BansheeEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F), "banshee");
 	public static final EntityType<WetaEntity> WETA = registerEntity(EntityType.Builder.of(WetaEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS), "weta");
 	public static final EntityType<AvatonEntity> AVATON = registerEntity(EntityType.Builder.of(AvatonEntity::new, EntityClassification.MONSTER).sized(1.25F, 1.5F), "avaton");
@@ -101,6 +101,7 @@ public class FUREntityRegistry {
 	public static final EntityType<SludgeJetEntity> SLUDGEJET = registerEntity(EntityType.Builder.<SludgeJetEntity>of(SludgeJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sludgejet");
 	public static final EntityType<SandBurstEntity> SANDBURST = registerEntity(EntityType.Builder.<SandBurstEntity>of(SandBurstEntity::new, EntityClassification.MISC).sized(0.5F, 0.8F).clientTrackingRange(6).updateInterval(2), "sandburst");
 	public static final EntityType<DeathCoilEntity> DEATHCOIL = registerEntity(EntityType.Builder.<DeathCoilEntity>of(DeathCoilEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "deathcoil");
+	public static final EntityType<FlameJetEntity> FLAMEJET = registerEntity(EntityType.Builder.<FlameJetEntity>of(FlameJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "flamejet");
 	
 	@SuppressWarnings("unchecked")
 	private static final <T extends Entity> EntityType<T> registerEntity(EntityType.Builder<T> builder, String entityName) {
@@ -132,7 +133,6 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(PINGU, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
         EntitySpawnPlacementRegistry.register(UNDERTAKER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndertakerEntity::checkUndertakerSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTRAY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(SOULRAY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(BANSHEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BansheeEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(WETA, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules);
         EntitySpawnPlacementRegistry.register(AVATON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BansheeEntity::checkBansheeSpawnRules);
@@ -187,7 +187,6 @@ public class FUREntityRegistry {
         event.put(UNDERTAKER, UndertakerEntity.createAttributes().build());
         event.put(UNBURIED, UnburiedEntity.createAttributes().build());
         event.put(GHOSTRAY, GhostRayEntity.createAttributes().build());
-        event.put(SOULRAY, GhostRayEntity.createAttributes().build());
         event.put(BANSHEE, BansheeEntity.createAttributes().build());
         event.put(WETA, WetaEntity.createAttributes().build());
         event.put(AVATON, AvatonEntity.createAttributes().build());

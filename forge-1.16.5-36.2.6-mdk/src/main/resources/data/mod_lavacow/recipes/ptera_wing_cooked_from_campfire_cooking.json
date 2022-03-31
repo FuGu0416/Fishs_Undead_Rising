@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smelting",
+  "type": "minecraft:campfire_cooking",
   "ingredient": [
 	{
 		"item": "mod_lavacow:ptera_wing_jungle"
@@ -10,5 +10,5 @@
   ],
   "result": "mod_lavacow:ptera_wing_cooked",
   "experience": 0.35,
-  "cookingtime": 200
+  "cookingtime": 600
 }

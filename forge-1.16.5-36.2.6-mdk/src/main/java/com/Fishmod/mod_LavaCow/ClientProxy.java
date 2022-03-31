@@ -94,7 +94,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNDERTAKER, manager -> new UndertakerRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNBURIED, manager -> new UnburiedRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SOULRAY, manager -> new GhostRayRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BANSHEE, manager -> new BansheeRenderer(manager));      
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WETA, manager -> new WetaRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.AVATON, manager -> new AvatonRenderer(manager));  
@@ -111,6 +110,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
