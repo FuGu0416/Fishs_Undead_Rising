@@ -186,11 +186,6 @@
                     "name": "mod_lavacow:tooth_dagger",
                     "weight": 5
                 },
-                {
-                    "type": "item",
-                    "name": "mod_lavacow:halo_necklace",
-                    "weight": 5
-                },
 		        {
 		          	"type": "minecraft:item",
 		          	"name": "minecraft:book",

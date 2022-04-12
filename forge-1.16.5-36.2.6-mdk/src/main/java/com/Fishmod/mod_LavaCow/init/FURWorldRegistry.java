@@ -80,166 +80,174 @@ public class FURWorldRegistry {
 	
 	public static void onBiomesLoad(BiomeLoadingEvent event) {
 		Biome biome = ForgeRegistries.BIOMES.getValue(event.getName());
-
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(!(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.COLD) && 
-				!(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.DRY))))) {
+		
+		if(biome == null)
+			return;
+		
+		RegistryKey<Biome> biomeKey = SpawnUtil.getRegistryKey(biome);
+		
+		if(biomeKey == null)
+			return;
+		
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(!(BiomeDictionary.getTypes(biomeKey).contains(Type.COLD) && 
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))))) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, GLOWSHROOM_CF);
 		}
 		
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.CRIMSON_FOREST)) {
+		if(biomeKey.equals(Biomes.CRIMSON_FOREST)) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, BLOODTOOTH_SHROOM_CF);
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.MUSHROOM) || 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.WET))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM) || 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.WET))) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, CORDY_SHROOM_CF);
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.MUSHROOM) || 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.FOREST))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM) || 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.FOREST))) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, VEIL_SHROOM_CF);
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD)) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, SMALL_CEMETERY_CF);
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(SpawnUtil.getRegistryKey(biome).equals(Biomes.DESERT) || 
-					SpawnUtil.getRegistryKey(biome).equals(Biomes.DESERT_HILLS) || 
-					SpawnUtil.getRegistryKey(biome).equals(Biomes.DESERT_LAKES))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(biomeKey.equals(Biomes.DESERT) || 
+					biomeKey.equals(Biomes.DESERT_HILLS) || 
+					biomeKey.equals(Biomes.DESERT_LAKES))) {
 			event.getGeneration().addStructureStart(DESERT_TOMB_CF);
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.WET) || 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.RIVER))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.WET) || 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.RIVER))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.MYCOSIS, FURConfig.pSpawnRate_ZombieMushroom.get(), 8, 16));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.WET) || 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.RIVER))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.WET) || 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.RIVER))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.FOGLET, FURConfig.pSpawnRate_Foglet.get(), 8, 16));
 		}
 		
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.CRIMSON_FOREST)) {
+		if(biomeKey.equals(Biomes.CRIMSON_FOREST)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.IMP, FURConfig.pSpawnRate_Imp.get(), 8, 16));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.COLD)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.COLD)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.FRIGID, FURConfig.pSpawnRate_ZombieFrozen.get(), 8, 16));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.FOREST)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.FOREST)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.UNDEADSWINE, FURConfig.pSpawnRate_UndeadSwine.get(), 4, 8));
 		}
 		
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.NETHER_WASTES)) {
+		if(biomeKey.equals(Biomes.NETHER_WASTES)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SALAMANDER, FURConfig.pSpawnRate_Salamander.get(), 4, 8));
 		}
 		
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.SOUL_SAND_VALLEY)) {
+		if(biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SALAMANDER, FURConfig.pSpawnRate_Salamander.get() / 10, 4, 8));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.CONIFEROUS)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.CONIFEROUS)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WENDIGO, FURConfig.pSpawnRate_Wendigo.get(), 1, 1));
 		}
 
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SPOOKY) ||
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.CONIFEROUS)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.SPOOKY) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.CONIFEROUS)) {
 			event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(FUREntityRegistry.RAVEN, FURConfig.pSpawnRate_Raven.get(), 4, 8));
 		}
 
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.BEACH)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				BiomeDictionary.getTypes(biomeKey).contains(Type.BEACH)) {
 			event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SEAGULL, FURConfig.pSpawnRate_Seagull.get(), 4, 8));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.JUNGLE))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PTERA, FURConfig.pSpawnRate_Ptera.get(), 4, 8));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.DRY))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PTERA, FURConfig.pSpawnRate_Ptera.get(), 2, 4));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.JUNGLE))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.VESPA, FURConfig.pSpawnRate_Vespa.get(), 2, 4));
 		}
 
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.PLAINS))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.PLAINS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SCARECROW, FURConfig.pSpawnRate_Scarecrow.get(), 1, 1));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.WET))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.WET))) {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PIRANHA, FURConfig.pSpawnRate_Piranha.get(), 2, 4));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.WET))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.WET))) {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SWARMER, FURConfig.pSpawnRate_Swarmer.get(), 2, 4));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SANDY))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONEWORM, FURConfig.pSpawnRate_BoneWorm.get(), 1, 2));
 		}
 
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.SOUL_SAND_VALLEY)) {
+		if(biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONEWORM, FURConfig.pSpawnRate_BoneWorm.get() / 10, 1, 2));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SNOWY))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SNOWY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PINGU, FURConfig.pSpawnRate_Pingu.get(), 4, 8));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD)) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.UNDERTAKER, FURConfig.pSpawnRate_Undertaker.get(), 1, 1));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.MESA))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.MESA))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, FURConfig.pSpawnRate_GhostRay.get(), 1, 2));
 		}
 		
-		if(SpawnUtil.getRegistryKey(biome).equals(Biomes.SOUL_SAND_VALLEY)) {
+		if(biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, FURConfig.pSpawnRate_GhostRay.get() / 3, 1, 1));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.RARE)) &&
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.HILLS) ||
-				 BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.MOUNTAIN))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.RARE)) &&
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.HILLS) ||
+				 BiomeDictionary.getTypes(biomeKey).contains(Type.MOUNTAIN))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BANSHEE, FURConfig.pSpawnRate_Banshee.get(), 1, 2));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SAVANNA))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SAVANNA))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WETA, FURConfig.pSpawnRate_Weta.get(), 4, 8));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SAVANNA))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SAVANNA))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.AVATON, FURConfig.pSpawnRate_Avaton.get(), 1, 2));
 		}
 		
-		if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(biome)).contains(Type.SANDY))) {
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.FORSAKEN, FURConfig.pSpawnRate_Forsaken.get(), 4, 8));
 		}
 	}

@@ -140,7 +140,7 @@ public class FURWeaponItem extends SwordItem {
 	*/
 	@Override
 	public ActionResultType useOn(ItemUseContext p_195939_1_) {
-		if(!p_195939_1_.getLevel().isClientSide()) {
+		/*if(!p_195939_1_.getLevel().isClientSide()) {
 			Biome biome = p_195939_1_.getLevel().getBiome(p_195939_1_.getClickedPos());
 			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.MONSTER)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
@@ -157,7 +157,7 @@ public class FURWeaponItem extends SwordItem {
 			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_CREATURE)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-		}
+		}*/
 		
 		return super.useOn(p_195939_1_);
 	}

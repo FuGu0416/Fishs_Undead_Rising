@@ -7,8 +7,10 @@ import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import com.mojang.serialization.Codec;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -27,9 +29,10 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 	
 	@Override
 	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {
-		/*if (worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position).below()).getMaterial() != Material.DIRT) {			
+		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position).below());
+		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
 			return false;
-		}*/
+		}
 		
 		int facing = rand.nextInt(4);
 		for(int i = 0; i < rand.nextInt(5) + 1; i++)
