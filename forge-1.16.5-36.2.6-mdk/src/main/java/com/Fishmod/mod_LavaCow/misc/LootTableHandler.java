@@ -58,11 +58,7 @@ public class LootTableHandler {
 		return lootTable;
 	}
 
-	public static void addLootTable()
-	{		
-		FISHABLE.put(FURBlockRegistry.GLOWSHROOM.asItem(), 10);
-		FISHABLE.put(FURItemRegistry.HYPHAE, 10);
-		
+	public static void addLootTable() {				
 		LootTableHandler.LOOT_INTESTINE = LootTableHandler.parseLootTable(FURConfig.Intestine_lt.get());
 		LootTableHandler.LOOT_RAVEN = LootTableHandler.parseLootTable(FURConfig.Raven_Loot.get());
 		LootTableHandler.LOOT_SEAGULL = LootTableHandler.parseLootTable(FURConfig.Seagull_Loot.get());

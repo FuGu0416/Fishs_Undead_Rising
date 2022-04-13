@@ -29,8 +29,7 @@ public class IntestineItem extends FURItem {
     	
     	if (!playerIn.isCreative())stack.shrink(1);
     	playerIn.playSound(SoundEvents.SLIME_BLOCK_HIT, 1.0F, 1.0F);
-    	for(Map.Entry<ItemStack, Float> entry : LootTableHandler.LOOT_INTESTINE.entrySet())
-    	{
+    	for(Map.Entry<ItemStack, Float> entry : LootTableHandler.LOOT_INTESTINE.entrySet()) {
     		if(!worldIn.isClientSide() && Item.random.nextFloat() < entry.getValue()) {
     			ItemStack s = entry.getKey();
     			s.setCount(Item.random.nextInt(2)+1);

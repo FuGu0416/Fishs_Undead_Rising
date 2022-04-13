@@ -1,11 +1,8 @@
 package com.Fishmod.mod_LavaCow.events;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
@@ -37,9 +34,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
@@ -49,7 +43,6 @@ import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
@@ -80,6 +73,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -454,7 +448,6 @@ public class EventHandler {
     	} 
     }
     
-	@SuppressWarnings("unchecked")
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
     	if(FURConfig.Wendigo_AnimalAttack.get() && event.getEntity() != null && event.getEntity() instanceof AgeableEntity && !(event.getEntity() instanceof TameableEntity)) {
@@ -464,64 +457,6 @@ public class EventHandler {
     	if(event.getEntity() != null && event.getEntity() instanceof VillagerEntity)
     		((VillagerEntity)event.getEntity()).goalSelector.addGoal(1, new AvoidEntityGoal<>(((VillagerEntity)event.getEntity()), UnburiedEntity.class, 8.0F, 0.8D, 0.8D));
 
-    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeletonEntity) {
-    		AbstractSkeletonEntity Entity = (AbstractSkeletonEntity)event.getEntity();
-    		Goal remove = null;
-    		Field goals;
-			try {
-				goals = Entity.targetSelector.getClass().getDeclaredField("availableGoals");
-				goals.setAccessible(true);
-				Set<PrioritizedGoal> goalSet;
-				try {
-					goalSet = (Set<PrioritizedGoal>) goals.get(Entity.targetSelector);
-			    	for(PrioritizedGoal task : goalSet) {
-				        if(task.getGoal() instanceof NearestAttackableTargetGoal<?>) {
-							Field targetClassField;
-							try {
-								targetClassField = task.getGoal().getClass().getDeclaredField("targetType");
-								targetClassField.setAccessible(true);
-				                Class<?> targetClass;				                
-								try {
-									targetClass = (Class<?>) targetClassField.get(task.getGoal());
-									if(targetClass.equals(PlayerEntity.class) || targetClass.equals(ServerPlayerEntity.class)) {
-					    	            remove = task.getGoal();
-					    	            break;							
-									}   
-								} catch (IllegalArgumentException e) {
-									continue;
-								} catch (IllegalAccessException e) {
-									continue;
-								}
-							} catch (NoSuchFieldException e) {
-								continue;
-							} catch (SecurityException e) {
-								continue;
-							}	      
-				        }
-			    	}
-			    	if(remove != null) {
-			    		Entity.targetSelector.removeGoal(remove);
-			    		Entity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<PlayerEntity>(Entity, PlayerEntity.class, 10, true, false, (p_213440_0_) -> {
-				            	if(p_213440_0_ instanceof PlayerEntity) {
-				            		PlayerEntity target = (PlayerEntity) p_213440_0_;   	            		
-				            		return !(target.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN));
-				            	}
-				            	
-			            		return true;
-				        }));
-				    }
-				} catch (IllegalArgumentException e1) {
-					e1.printStackTrace();
-				} catch (IllegalAccessException e1) {
-					e1.printStackTrace();
-				}
-
-			} catch (NoSuchFieldException e1) {
-				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				e1.printStackTrace();
-			}   		
-    	}
     }
     
     @SubscribeEvent
@@ -759,5 +694,12 @@ public class EventHandler {
 	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.ACIDICHEART, 30, 4, 20));
 	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 2, 30));
     	}
+    }
+    
+    @SubscribeEvent
+    public void onEVisibility(LivingVisibilityEvent event) {
+        if (event.getLookingEntity() instanceof AbstractSkeletonEntity)
+            if (event.getEntityLiving() instanceof PlayerEntity && event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN))
+                    event.modifyVisibility(0.0D);    	
     }
 }

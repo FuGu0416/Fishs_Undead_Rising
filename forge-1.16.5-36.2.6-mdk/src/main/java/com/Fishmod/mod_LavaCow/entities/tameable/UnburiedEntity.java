@@ -47,6 +47,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.GameRules;
@@ -166,9 +167,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive{
 	            this.playSound(SoundEvents.SAND_BREAK, 1, 0.5F);
 	        }
 	        
-	        this.xo = 0;
-	        this.yo = 0;
-	        this.zo = 0;
+	        this.setDeltaMovement(Vector3d.ZERO);
         }
         
         if(this.isSmoking) {

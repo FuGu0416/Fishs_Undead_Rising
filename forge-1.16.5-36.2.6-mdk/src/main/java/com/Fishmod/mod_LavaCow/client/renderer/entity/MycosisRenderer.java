@@ -35,8 +35,7 @@ public class MycosisRenderer extends MobRenderer<MycosisEntity, UnburiedModel<My
         this.addLayer(new LayerMycosis<>(this));
         this.addLayer(new EyeLayer(this));
         this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
-        //LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
-        //this.addLayer(layerbipedarmor);
+        //this.addLayer(new BipedArmorLayer(this, new UnburiedArmorModel<>(0.5F), new UnburiedArmorModel<>(1.02F)));
     }
     
     @Override

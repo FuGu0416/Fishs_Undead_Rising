@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "mod_lavacow:glowshroom",
+    "mod_lavacow:bloodtooth_shroom",
+    "mod_lavacow:cordy_shroom",
+    "mod_lavacow:veil_shroom"
+  ]
+}

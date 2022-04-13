@@ -30,6 +30,7 @@ import com.Fishmod.mod_LavaCow.events.EventHandler;
 import com.Fishmod.mod_LavaCow.init.FURProcessors;
 import com.Fishmod.mod_LavaCow.init.FURWorldRegistry;
 import com.Fishmod.mod_LavaCow.misc.FURItemGroup;
+import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 
 import java.util.stream.Collectors;
 
@@ -66,6 +67,7 @@ public class mod_LavaCow {
         MinecraftForge.EVENT_BUS.register(new EventHandler());           
         FURWorldRegistry.register();
         ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
+        LootTableHandler.addLootTable();
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
