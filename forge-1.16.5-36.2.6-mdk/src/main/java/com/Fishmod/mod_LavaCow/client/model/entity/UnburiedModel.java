@@ -169,6 +169,15 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
     	this.Arm_l_Seg0.translateAndRotate(p_225599_2_);
     	this.Arm_l_Seg1.translateAndRotate(p_225599_2_);
     }
+    
+    public void copyPropertiesTo(BipedModel<T> p_217148_1_) {
+        super.copyPropertiesTo(p_217148_1_);
+        p_217148_1_.head.copyFrom(this.Head);
+        p_217148_1_.hat.copyFrom(this.Head);
+        p_217148_1_.body.copyFrom(this.Body_chest);
+        p_217148_1_.rightLeg.copyFrom(this.Leg_r_Seg0);
+        p_217148_1_.leftLeg.copyFrom(this.Leg_l_Seg0);
+	}
 
     @Override
     protected ModelRenderer getArm(HandSide side) {
