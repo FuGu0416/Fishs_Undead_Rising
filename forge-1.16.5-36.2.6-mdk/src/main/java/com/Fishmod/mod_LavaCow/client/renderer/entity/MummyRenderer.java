@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.renderer.entity;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
+import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
 import com.Fishmod.mod_LavaCow.entities.MummyEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -25,8 +26,7 @@ public class MummyRenderer extends MobRenderer<MummyEntity, UnburiedModel<MummyE
     public MummyRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn, new UnburiedModel<MummyEntity>(), 0.5F);
         this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
-        //LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
-        //this.addLayer(layerbipedarmor);
+        this.addLayer(new LayerUnburiedArmor<>(this));
     }
     
 	@Override

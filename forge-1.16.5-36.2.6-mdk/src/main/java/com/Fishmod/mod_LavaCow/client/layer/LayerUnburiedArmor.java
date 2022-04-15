@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedArmorModel;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -28,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class LayerUnburiedArmor<T extends LivingEntity, M extends UnburiedModel<T>> extends LayerRenderer<T, M> {
 	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
-	private final BipedModel<T> ArmorModel = new BipedModel<>(1.0F);
+	private final UnburiedArmorModel<T> ArmorModel = new UnburiedArmorModel<>(1.0F);
 	
     public LayerUnburiedArmor(IEntityRenderer<T, M> p_i226039_1_) {
         super(p_i226039_1_);
@@ -76,16 +77,12 @@ public class LayerUnburiedArmor<T extends LivingEntity, M extends UnburiedModel<
 	        	this.getParentModel().Body_chest.translateAndRotate(matrixStackIn);
 	        	this.getParentModel().Neck0.translateAndRotate(matrixStackIn);
 	        	this.getParentModel().Neck1.translateAndRotate(matrixStackIn);
-	        	//this.getParentModel().Head.translateAndRotate(matrixStackIn);	        	
-	        	matrixStackIn.scale(1.1F, 1.1F, 1.1F);
-	        	matrixStackIn.translate(0.0F, 0.4F, -0.185F);
 	            break;
 	        case CHEST:
 	        	this.getParentModel().Body_base.translateAndRotate(matrixStackIn);
 	        	this.getParentModel().Body_waist.translateAndRotate(matrixStackIn);
-	        	this.getParentModel().Body_chest.translateAndRotate(matrixStackIn);
-	        	matrixStackIn.scale(2.0F, 2.0F, 2.0F);
-	        	matrixStackIn.translate(0.0F, -0.85F, 0.0F);
+	        	matrixStackIn.scale(1.1F, 1.1F, 1.1F);
+	        	matrixStackIn.translate(0.0F, -0.15F, -0.1F);
 	            break;
 	        case LEGS:
 	        	this.getParentModel().Body_base.translateAndRotate(matrixStackIn);
@@ -95,6 +92,7 @@ public class LayerUnburiedArmor<T extends LivingEntity, M extends UnburiedModel<
 	        case FEET:
 	        	this.getParentModel().Body_base.translateAndRotate(matrixStackIn);
 	        	matrixStackIn.translate(0.0F, 0.2F, -0.2F);
+	        	matrixStackIn.scale(1.1F, 1.1F, 1.1F);
 	        	matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(30.0F));
 	            break;
 			default:

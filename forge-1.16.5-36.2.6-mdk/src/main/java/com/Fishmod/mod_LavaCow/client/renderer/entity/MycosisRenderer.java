@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerMycosis;
+import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
 import com.Fishmod.mod_LavaCow.entities.MycosisEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -35,7 +36,7 @@ public class MycosisRenderer extends MobRenderer<MycosisEntity, UnburiedModel<My
         this.addLayer(new LayerMycosis<>(this));
         this.addLayer(new EyeLayer(this));
         this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
-        //this.addLayer(new BipedArmorLayer(this, new UnburiedArmorModel<>(0.5F), new UnburiedArmorModel<>(1.02F)));
+        this.addLayer(new LayerUnburiedArmor<>(this));
     }
     
     @Override
