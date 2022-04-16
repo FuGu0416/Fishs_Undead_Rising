@@ -162,7 +162,11 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
         int dy = MathHelper.floor(this.getBoundingBox().minY);
         int dz = MathHelper.floor(this.getZ());
         int r = 4;
-        
+
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.ZombieMushroom_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.ZombieMushroom_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
         for(BlockPos C : BlockPos.betweenClosed(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
         	if(worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM
         	|| worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM_BLOCK_STEM

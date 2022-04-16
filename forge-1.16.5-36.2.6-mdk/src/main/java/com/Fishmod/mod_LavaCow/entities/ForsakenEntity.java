@@ -126,7 +126,11 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         patternsList.add(createPatternTag(FURItemRegistry.PATTERN_SKELETONKING, DyeColor.WHITE));
 		shield.getOrCreateTagElement("BlockEntityTag").put("Patterns", patternsList);		
         shield.getOrCreateTagElement("BlockEntityTag").putInt("Base", DyeColor.BLACK.getId());    
-        
+ 
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Forsaken_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Forsaken_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
         switch(this.getRandom().nextInt(4)) {
         	case 0:
         		this.setItemSlot(EquipmentSlotType.OFFHAND, shield);

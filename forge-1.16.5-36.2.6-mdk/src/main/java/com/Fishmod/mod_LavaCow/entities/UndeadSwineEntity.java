@@ -200,7 +200,10 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.UndeadSwine_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.UndeadSwine_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
         if (this.getRandom().nextInt(100) == 0)
         {
             SkeletonEntity entityRider = EntityType.SKELETON.create(this.level);

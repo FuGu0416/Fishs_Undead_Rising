@@ -182,6 +182,10 @@ public class PinguEntity extends MonsterEntity implements ISemiAquatic {
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Pingu_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Pingu_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
         int i = p_213386_1_.getEntitiesOfClass(PinguEntity.class, this.getBoundingBox().inflate(16.0D)).size();        
     	if (i < 4 + this.getRandom().nextInt(4) && (p_213386_3_.equals(SpawnReason.CHUNK_GENERATION) || p_213386_3_.equals(SpawnReason.NATURAL)) && !this.level.isClientSide) {
     		PinguEntity crowpet = FUREntityRegistry.PINGU.create(this.level);

@@ -476,6 +476,10 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {   	
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
  		   this.setSkin(6); 	 
     	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : LootTables.SIMPLE_DUNGEON);

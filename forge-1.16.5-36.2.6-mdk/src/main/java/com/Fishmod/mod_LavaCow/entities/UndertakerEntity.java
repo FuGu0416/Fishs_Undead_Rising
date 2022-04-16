@@ -196,7 +196,11 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive{
      */
 	@Nullable
 	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.populateDefaultEquipmentSlots(difficulty);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Undertaker_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+		this.populateDefaultEquipmentSlots(difficulty);
         this.populateDefaultEquipmentEnchantments(difficulty);
         
         return livingdata;

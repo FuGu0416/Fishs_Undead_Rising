@@ -83,7 +83,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-        /*if(!Modconfig.SunScreen_Mode)*/this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
+        if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -99,7 +99,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, TurtleEntity.class, 10, true, false, TurtleEntity.BABY_ON_LAND_SELECTOR));
     }
     
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
+    public static AttributeModifierMap.MutableAttribute createAttributes() {    	
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
@@ -252,12 +252,18 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
- 	   if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+    	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
  		   this.setSkin(1);
  		   this.goalSelector.addGoal(1, new AIClimbimgTree());
  	   } else if(this.getType().equals(FUREntityRegistry.IMP)) {
  		  this.setSkin(2);
  	   }
+ 	   
+
  	   
  	   return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}

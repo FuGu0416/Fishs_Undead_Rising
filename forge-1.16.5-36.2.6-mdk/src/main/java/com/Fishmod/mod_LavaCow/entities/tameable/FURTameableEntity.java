@@ -50,6 +50,7 @@ public class FURTameableEntity extends TameableEntity {
 		this.state = FURTameableEntity.State.WANDERING;
 	}
 	
+	@Override
 	protected void registerGoals() {
     	this.wander = new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
     	this.follow = new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);

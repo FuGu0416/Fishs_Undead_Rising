@@ -86,6 +86,9 @@ public class GhostRayEntity extends FlyingMobEntity {
 	}
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GhostRay_Health.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
 		   this.setSkin(1);
     	}

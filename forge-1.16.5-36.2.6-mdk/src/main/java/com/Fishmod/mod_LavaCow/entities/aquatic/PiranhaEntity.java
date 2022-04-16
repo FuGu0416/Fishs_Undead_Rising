@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.aquatic;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
@@ -7,7 +9,9 @@ import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
@@ -16,9 +20,12 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 public class PiranhaEntity extends SwarmerEntity {
@@ -50,6 +57,20 @@ public class PiranhaEntity extends SwarmerEntity {
 
     public int getMaxSchoolSize() {
         return 12;
+    }
+    
+    /**
+     * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
+     */
+    @Nullable
+    @Override
+    public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Piranha_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Piranha_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
     /**

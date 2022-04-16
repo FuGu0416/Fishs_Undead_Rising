@@ -63,8 +63,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
 	private LookAtGoal watch;
 	private LookRandomlyGoal look;
 	
-	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> p_i48549_1_, World worldIn)
-    {
+	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
     }
 	
@@ -135,8 +134,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
     	
     	if (!this.level.isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick()) {
-    			if(this.state != FURTameableEntity.State.SITTING)
-    				this.doSitCommand(null);
+    			this.doSitCommand(null);
     		} else if (this.state != FURTameableEntity.State.WANDERING) {
     			this.doFollowCommand(null);
     			this.doWanderCommand(null);
@@ -241,7 +239,10 @@ public class ScarecrowEntity  extends FURTameableEntity {
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-        
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarecrow_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	if (this.random.nextFloat() < 0.00625F * FURConfig.pSpawnRate_Raven.get() && !this.level.isClientSide) {
     		RavenEntity crowpet = FUREntityRegistry.RAVEN.create(this.level);
     		crowpet.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
@@ -377,6 +378,10 @@ public class ScarecrowEntity  extends FURTameableEntity {
            super(p_i46676_1_, 1.0D, true);
         }
 
+        public boolean canUse() {
+        	return !this.mob.isSilent() && super.canUse();
+        }
+        
         protected double getAttackReachSqr(LivingEntity p_179512_1_) {
             return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + p_179512_1_.getBbWidth());
         }

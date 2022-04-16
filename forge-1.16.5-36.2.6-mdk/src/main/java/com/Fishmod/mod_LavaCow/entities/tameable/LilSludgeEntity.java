@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
@@ -12,9 +14,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
@@ -43,7 +47,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -193,7 +199,7 @@ public class LilSludgeEntity extends FURTameableEntity {
 	            if(this.poisonous > 0)
 	    			((LivingEntity)entityIn).addEffect(new EffectInstance(Effects.POISON, 8*20, this.poisonous - 1));
 	            
-	            if(this.corrosive > 0);
+	            if(this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, this.corrosive - 1));
             }
         }
@@ -209,6 +215,20 @@ public class LilSludgeEntity extends FURTameableEntity {
        return true;
     }
 	
+    /**
+     * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
+     */
+    @Nullable
+    @Override
+    public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.LilSludge_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    }	
+    
 	@Override
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
         return 0.6F;

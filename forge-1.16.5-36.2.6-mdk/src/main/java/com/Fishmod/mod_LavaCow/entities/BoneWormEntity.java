@@ -344,7 +344,11 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-       if(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.BoneWorm_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.BoneWorm_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+    	if(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
     	   this.setSkin(1);
        }
           

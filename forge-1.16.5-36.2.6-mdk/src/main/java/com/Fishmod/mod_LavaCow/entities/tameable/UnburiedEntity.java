@@ -295,6 +295,10 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	@Nullable
 	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);       
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
         this.populateDefaultEquipmentSlots(difficulty);        
         return livingdata;
     }    

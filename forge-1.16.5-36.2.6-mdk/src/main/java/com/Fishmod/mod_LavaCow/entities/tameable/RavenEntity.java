@@ -529,12 +529,16 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Raven_Health.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	if(this.getType().equals(FUREntityRegistry.SEAGULL)) {
  		   this.TAME_ITEMS.clear();
  		   this.TAME_ITEMS.add(Items.TROPICAL_FISH);
  		   this.setSkin(2);
- 	   }
- 	   return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+ 	   	}
+    	
+ 	   	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
     
     public int getSkin() {
