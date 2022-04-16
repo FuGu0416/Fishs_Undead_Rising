@@ -1,5 +1,8 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,22 +24,22 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
 		return par2ItemStack.getItem().equals(Items.GOLD_INGOT);
 	}
 	
-	/*private static boolean isBlackListed(ItemStack ItemStackIn) {
-		boolean flag = ItemStackIn.getItem().equals(FishItems.GOLDENHEART);
-		for(String S : Modconfig.GoldenHeart_bl)
+	private static boolean isBlackListed(ItemStack ItemStackIn) {
+		boolean flag = ItemStackIn.getItem().equals(FURItemRegistry.GOLDENHEART);
+		for(String S : FURConfig.GoldenHeart_bl.get())
 			if(ItemStackIn.getItem().getRegistryName().toString().equals(S)) {
 				flag = true;
 				break;
 			}
 			
 		return flag;
-	}*/
+	}
 
 	@Override
     public void inventoryTick(ItemStack stack, World WorldIn, Entity EntityIn, int itemSlot, boolean isSelected) {
 		if(stack.getDamageValue() > stack.getMaxDamage())
 			stack.setDamageValue(stack.getMaxDamage());
-		
+
 		if(EntityIn instanceof PlayerEntity && itemSlot < 9 && EntityIn.tickCount % 20 == 0)
 			onTick(stack, (PlayerEntity)EntityIn);
     }
@@ -48,8 +51,8 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
      */
     public static void onTick(ItemStack stack, PlayerEntity PlayerIn) {
     	boolean flag = false;
-    	
-    	if(stack.isDamaged() || stack.getMaxDamage() == 0) {
+
+    	if((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) {
 	    	if(!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt()) {
 	    		PlayerIn.addEffect(new EffectInstance(Effects.REGENERATION, 8 * 20, 0));
 	    		flag = true;
@@ -57,7 +60,7 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
 	    	else if(PlayerIn.getHealth() == PlayerIn.getMaxHealth())
 	    		for(ItemStack item : PlayerIn.getAllSlots())
 		        {
-		        	if(/*!isBlackListed(item) &&*/ item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {
+		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {
 		        		item.setDamageValue(java.lang.Math.max(item.getDamageValue() - 1, 0));
 		        		flag = true;
 		        	}

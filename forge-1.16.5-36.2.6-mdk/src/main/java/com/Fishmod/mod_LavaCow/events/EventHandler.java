@@ -565,30 +565,42 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onActiveItemUseTick(LivingEntityUseItemEvent.Tick event) {
-	    boolean Armor_Swine_lvl = false;
+	    int Armor_Swine_lvl = 0;
+		
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof SwineArmorItem && ((SwineArmorItem)S.getItem()).getSetBonus() >= 2) {
-				Armor_Swine_lvl = true;
-				break;
+			if(S.getItem() instanceof SwineArmorItem) {
+				Armor_Swine_lvl++;
+			}
+		}
+
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof SwineArmorItem) {
+				((SwineArmorItem)S.getItem()).setSetBonus(Armor_Swine_lvl);
 			}
 		}
     	
-    	if(Armor_Swine_lvl && event.getItem().getItem().isEdible()) {
+    	if((Armor_Swine_lvl >= 2) && event.getItem().getItem().isEdible()) {
     		event.setDuration((int) (event.getDuration() * 0.8F));
     	}
     }
     
     @SubscribeEvent
     public void onActiveItemUseFinish(LivingEntityUseItemEvent.Finish event) {
-	    boolean Armor_Swine_lvl = false;
+	    int Armor_Swine_lvl = 0;
+		
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof SwineArmorItem && ((SwineArmorItem)S.getItem()).getSetBonus() >= 4) {
-				Armor_Swine_lvl = true;
-				break;
+			if(S.getItem() instanceof SwineArmorItem) {
+				Armor_Swine_lvl++;
+			}
+		}
+
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof SwineArmorItem) {
+				((SwineArmorItem)S.getItem()).setSetBonus(Armor_Swine_lvl);
 			}
 		}
     	
-    	if(!event.getEntityLiving().level.isClientSide() && Armor_Swine_lvl && event.getItem().isEdible()) {
+    	if(!event.getEntityLiving().level.isClientSide() && (Armor_Swine_lvl >= 4) && event.getItem().isEdible()) {
     		event.getEntityLiving().curePotionEffects(new ItemStack(Items.MILK_BUCKET));
     	}
     }

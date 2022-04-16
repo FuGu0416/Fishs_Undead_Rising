@@ -79,6 +79,10 @@ public class SwineArmorItem extends ArmorItem {
 		return this.set;
 	}
 	
+	public void setSetBonus(int setIn) {
+		this.set = setIn;
+	}
+	
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

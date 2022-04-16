@@ -17,6 +17,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -43,6 +44,7 @@ public class VespaEntity extends FlyingMobEntity {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, true).setUnseenMemoryTicks(160));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
