@@ -224,10 +224,13 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
         ItemStack itemstack1 = ((LivingEntity) entityIn).getOffhandItem();
         
     	if (i > 0) {
-    		if(itemstack != null)
-    			this.Arm_l_Seg0.xRot = GradientAnimation(-3.141592653589793F, -1.3203415791337103F, i);
-    		if(itemstack1 != null)
-    			this.Arm_r_Seg0.xRot = GradientAnimation(-3.141592653589793F, -1.3203415791337103F, i);
+    		if(!itemstack.isEmpty()) {
+    			this.Arm_l_Seg0.xRot = GradientAnimation(-3.141592653589793F, -1.8212510744560826F, i);
+    		}
+    		
+    		if(!itemstack1.isEmpty()) {
+    			this.Arm_r_Seg0.xRot = GradientAnimation(-3.141592653589793F, -1.9577358219620393F, i);
+    		}
     	} else if (aggressive) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);

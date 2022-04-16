@@ -69,6 +69,10 @@ public class FamineArmorItem extends ArmorItem {
 	public int getSetBonus() {
 		return this.set;
 	}
+	
+	public void setSetBonus(int setIn) {
+		this.set = setIn;
+	}
 
 	@Override
     @OnlyIn(Dist.CLIENT)

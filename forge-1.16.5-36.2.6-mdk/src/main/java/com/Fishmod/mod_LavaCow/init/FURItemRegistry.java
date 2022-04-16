@@ -11,6 +11,7 @@ import com.Fishmod.mod_LavaCow.item.CrownItem;
 import com.Fishmod.mod_LavaCow.item.CursedBandageItem;
 import com.Fishmod.mod_LavaCow.item.DreamCatcherItem;
 import com.Fishmod.mod_LavaCow.item.FURItem;
+import com.Fishmod.mod_LavaCow.item.FURItemTier;
 import com.Fishmod.mod_LavaCow.item.FURRangedItem;
 import com.Fishmod.mod_LavaCow.item.FURThrowableItem;
 import com.Fishmod.mod_LavaCow.item.FURWeaponItem;
@@ -144,7 +145,7 @@ public class FURItemRegistry {
 	public static final Item BONE_STEW = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(Effects.ABSORPTION, 20*20, 1), 1.0F).effect(() -> new EffectInstance(Effects.DAMAGE_RESISTANCE, 20*20, 0), 1.0F).build()), 1).setRegistryName("mod_lavacow:bonestew");
 	public static final Item VESPA_SHIELD = new VespaShieldItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties()).durability(504).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:vespa_shield");
 	public static final Item FROZEN_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:frozen_dagger", ItemTier.WOOD, 2, -2.4F, FURItemRegistry.SHATTERED_ICE);
-	public static final Item SPECTRAL_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON).durability(0), "mod_lavacow:spectral_dagger", ItemTier.IRON, -1, -2.4F, FURItemRegistry.ECTOPLASM);
+	public static final Item SPECTRAL_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:spectral_dagger", FURItemTier.SPECTRAL, -1, -2.4F, FURItemRegistry.ECTOPLASM);
 	public static final Item HATRED_SHARD = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:hatred_shard");
 	public static final Item STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("mod_lavacow:stained_kings_crown");
 	public static final Item CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("mod_lavacow:cursed_kings_crown");

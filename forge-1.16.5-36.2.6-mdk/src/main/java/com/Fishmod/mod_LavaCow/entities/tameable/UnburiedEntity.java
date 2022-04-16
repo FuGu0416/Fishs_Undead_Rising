@@ -72,15 +72,13 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	private int unbreaking;
 	private boolean isSmoking = false;
 	
-	public UnburiedEntity(EntityType<? extends UnburiedEntity> p_i48549_1_, World worldIn)
-    {
+	public UnburiedEntity(EntityType<? extends UnburiedEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         BirthAnimation = true;
         this.limitedLifeTicks = -1;
     }
 	
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
     	//this.goalSelector.addGoal(1, new EntityFishAIBreakDoor(this));
     	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
     	this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
@@ -90,12 +88,11 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)));
-    	//this.targetSelector.addGoal(4, new AICopyOwnerTarget(this));
+    	this.targetSelector.addGoal(4, new AICopyOwnerTarget(this));
     	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_210136_0_) -> {
 	  	      return !(this.getOwner() instanceof PlayerEntity);
 	   }));
@@ -116,8 +113,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         		.add(Attributes.ARMOR, 2.0D);
     }
     
-    public void setLimitedLife(int limitedLifeTicksIn)
-    {
+    public void setLimitedLife(int limitedLifeTicksIn) {
         this.limitedLifeTicks = limitedLifeTicksIn;
     }
     
@@ -131,14 +127,12 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     	return this.lifesteal;
     }
     
-    public boolean isSpellcasting()
-    {
+    public boolean isSpellcasting() {
     	return this.spellTicks > 0;
     }
     
     @OnlyIn(Dist.CLIENT)
-    public int getSpellTicks()
-    {
+    public int getSpellTicks() {
         return this.spellTicks;
     }
         
@@ -150,8 +144,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         BlockState state = this.level.getBlockState(this.getOnPos().below());
         
         if (this.isSpellcasting()) {
@@ -193,8 +186,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {           	
+    public void tick() {           	
         if(this.BirthAnimation) {
 	    	this.spellTicks = 20;
 	    	this.level.broadcastEntityEvent(this, (byte)32);
@@ -250,10 +242,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     @Override
     protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_) {
         super.populateDefaultEquipmentSlots(p_180481_1_);
-        this.setItemSlot(EquipmentSlotType.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-        this.setItemSlot(EquipmentSlotType.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-        this.setItemSlot(EquipmentSlotType.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-        this.setItemSlot(EquipmentSlotType.FEET, new ItemStack(Items.DIAMOND_BOOTS));
+
         if (this.random.nextFloat() < (this.level.getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F)) {
            int i = this.random.nextInt(3);
            if (i == 0) {
@@ -262,7 +251,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
               this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
            }
         }
-
     }
     
     public void setDefaultEquipment(DifficultyInstance p_180481_1_) {
@@ -270,13 +258,11 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     }
     
 	@Override
-    public boolean doHurtTarget(Entity entityIn)
-    {
-        if (super.doHurtTarget(entityIn))
-        {
+    public boolean doHurtTarget(Entity entityIn) {
+        if (super.doHurtTarget(entityIn)) {
         	this.attackTimer = 5;
 	        this.level.broadcastEntityEvent(this, (byte)4);
-	        
+
             if(entityIn instanceof LivingEntity) {
 	            if(this.fire_aspect > 0)
 	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
@@ -292,14 +278,12 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	            if(this.poisonous > 0)
 	    			((LivingEntity)entityIn).addEffect(new EffectInstance(Effects.POISON, 8*20, this.poisonous - 1));
 	            
-	            if(this.corrosive > 0);
+	            if(this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, this.corrosive - 1));
             }
             
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -329,21 +313,14 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id)
-    {
+    public void handleEntityEvent(byte id) {
     	if (id == 32) {
         	this.spellTicks = 20;
-        }
-    	else if (id == 4) 
-    	{
+        } else if (id == 4) {
             this.attackTimer = 5;
-        }
-    	else if (id == 11) 
-    	{
+        } else if (id == 11) {
             this.isSmoking = true;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -359,36 +336,31 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return this.owner != null && this.owner instanceof MobEntity && ((MobEntity) this.owner).isAggressive() && this.canAttack(((MobEntity) this.owner).getTarget(), this.copyOwnerTargeting);
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             UnburiedEntity.this.setTarget(((MobEntity) this.owner).getTarget());
             super.start();
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.UNBURIED_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.UNBURIED_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.UNBURIED_DEATH;
     }
     
@@ -433,8 +405,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public CreatureAttribute getMobType()
-    {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
         

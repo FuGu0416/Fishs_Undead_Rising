@@ -25,7 +25,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -55,8 +54,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo.Spawners;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -267,13 +264,11 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
         }
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTENHAMMER)
-		{
+        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTENHAMMER) {
 			double radius = 4.0D;
 
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
-			for(Entity entity1 : list)
-			{
+			for(Entity entity1 : list) {
 				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity/* && Modconfig.MoltenHammer_PVP*/))
 				{
 					entity1.setSecondsOnFire(2 * fire_aspect);
@@ -281,7 +276,8 @@ public class FURWeaponItem extends SwordItem {
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
 					
-					((LivingEntity)entity1).setDeltaMovement((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1));
+					if(knockback > 0)
+						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
 					
 		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD)))
 		            {
@@ -306,8 +302,7 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.BEAST_CLAW && playerIn.isOnGround())
-		{
+        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.BEAST_CLAW && playerIn.isOnGround()) {
         	Vector3d lookVec = playerIn.getLookAngle();
         	
         	if(playerIn.getOffhandItem().getItem() == FURItemRegistry.BEAST_CLAW && playerIn.getMainHandItem().getItem() == FURItemRegistry.BEAST_CLAW) {
@@ -315,7 +310,7 @@ public class FURWeaponItem extends SwordItem {
         		playerIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 0));
         	}
         	
-        	playerIn.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D);
+        	playerIn.setDeltaMovement(playerIn.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D));
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
     			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
     		});
@@ -324,8 +319,7 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL)
-		{
+        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL) {
             for (int i = 0; i < 4; ++i)
             {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));

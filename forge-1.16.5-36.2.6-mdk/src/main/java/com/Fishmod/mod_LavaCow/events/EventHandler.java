@@ -93,19 +93,22 @@ public class EventHandler {
     @SubscribeEvent
     public void onEDeath(LivingDeathEvent event) {
     	Entity entity = event.getEntityLiving();
-	    boolean Armor_Famine_lvl = false;
 	    World world = event.getEntityLiving().level;
-	    
-	    if(event.getSource().getDirectEntity() != null) {
-			for(ItemStack S : event.getSource().getDirectEntity().getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem && ((FamineArmorItem)S.getItem()).getSetBonus() >= 4) {
-					Armor_Famine_lvl = true;
-					break;
-				}
-			}
-	    }
+	    int Armor_Famine_lvl = 0;
 		
-		if(Armor_Famine_lvl && event.getSource().getDirectEntity() instanceof PlayerEntity) {
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				Armor_Famine_lvl++;
+			}
+		}
+
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
+			}
+		}
+		
+		if((Armor_Famine_lvl >= 4) && event.getSource().getDirectEntity() instanceof PlayerEntity) {
 			((PlayerEntity)event.getSource().getDirectEntity()).heal(1.0F);
 			((PlayerEntity)event.getSource().getDirectEntity()).getFoodData().eat(4, 0.0F);
 		}
@@ -336,16 +339,21 @@ public class EventHandler {
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
     	float effectlevel = 1.0F;
-	    boolean Armor_Famine_lvl = false;
-	    if(event.getSource().getDirectEntity() != null)
-			for(ItemStack S : event.getSource().getDirectEntity().getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem && ((FamineArmorItem)S.getItem()).getSetBonus() >= 2) {
-					Armor_Famine_lvl = true;
-					break;
-				}
-			}
+	    int Armor_Famine_lvl = 0;
 		
-		if(Armor_Famine_lvl && event.getSource().getDirectEntity() instanceof LivingEntity && ((LivingEntity) event.getSource().getDirectEntity()).hasEffect(Effects.HUNGER)) {
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				Armor_Famine_lvl++;
+			}
+		}
+
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
+			}
+		}
+		
+		if((Armor_Famine_lvl >= 2) && event.getSource().getDirectEntity() instanceof LivingEntity && ((LivingEntity) event.getSource().getDirectEntity()).hasEffect(Effects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
 		}
 		
@@ -532,15 +540,21 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
-	    boolean Armor_Famine_lvl = false;
+	    int Armor_Famine_lvl = 0;
+	
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem && ((FamineArmorItem)S.getItem()).getSetBonus() >= 4) {
-				Armor_Famine_lvl = true;
-				break;
+			if(S.getItem() instanceof FamineArmorItem) {
+				Armor_Famine_lvl++;
+			}
+		}
+
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
 			}
 		}
 		
-    	if((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || Armor_Famine_lvl) && event.getItem().isEdible()) {
+    	if((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || (Armor_Famine_lvl >= 4)) && event.getItem().isEdible()) {
     		event.setCanceled(true);
     	}
     	
