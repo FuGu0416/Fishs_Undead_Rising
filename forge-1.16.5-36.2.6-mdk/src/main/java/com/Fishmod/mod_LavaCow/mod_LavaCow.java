@@ -64,10 +64,9 @@ public class mod_LavaCow {
         // Register ourselves for server and other game events we are interested in
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);           
-        MinecraftForge.EVENT_BUS.register(new EventHandler());           
-        FURWorldRegistry.register();
+        MinecraftForge.EVENT_BUS.register(new EventHandler());                   
         ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
-        LootTableHandler.addLootTable();
+
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
@@ -94,6 +93,8 @@ public class mod_LavaCow {
     	event.enqueueWork(() -> {
     		FURWorldRegistry.setupStructures();
     		FURProcessors.registerProcessors();
+            FURWorldRegistry.register();
+            LootTableHandler.addLootTable();
         });
         PROXY.initNetwork();
     }
@@ -122,16 +123,5 @@ public class mod_LavaCow {
     public void onServerStarting(FMLServerStartingEvent event) {
         // do something when the server starts
         LOGGER.info("HELLO from server starting");
-    }
-
-    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-    // Event bus for receiving Registry Events)
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            // register a new block here
-            LOGGER.info("HELLO from Register Block");
-        }
     }
 }

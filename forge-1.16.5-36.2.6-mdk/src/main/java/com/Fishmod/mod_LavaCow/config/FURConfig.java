@@ -204,8 +204,8 @@ public final class FURConfig {
 				Lists.newArrayList(
 						"minecraft:zombie",
 						"minecraft:husk",
-						"mod_lavacow:zombiefrozen",
-						"mod_lavacow:zombiemushroom",
+						"mod_lavacow:frigid",
+						"mod_lavacow:mycosis",
 						"mod_lavacow:unburied",
 						"mod_lavacow:mummy"), 
 				o -> o instanceof String);
