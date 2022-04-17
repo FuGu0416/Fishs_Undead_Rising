@@ -19,6 +19,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
 import com.Fishmod.mod_LavaCow.item.GoldenHeartItem;
@@ -52,6 +53,7 @@ import net.minecraft.item.PotionItem;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -73,6 +75,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -99,12 +102,6 @@ public class EventHandler {
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
-			}
-		}
-
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
 			}
 		}
 		
@@ -340,21 +337,24 @@ public class EventHandler {
     public void onEDamage(LivingDamageEvent event) {
     	float effectlevel = 1.0F;
 	    int Armor_Famine_lvl = 0;
-		
+	    int Armor_Chitin_lvl = 0;
+	    
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
 			}
-		}
-
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
+			
+			if(S.getItem() instanceof ChitinArmorItem) {
+				Armor_Chitin_lvl++;
 			}
 		}
 		
 		if((Armor_Famine_lvl >= 2) && event.getSource().getDirectEntity() instanceof LivingEntity && ((LivingEntity) event.getSource().getDirectEntity()).hasEffect(Effects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
+		}
+
+		if((Armor_Chitin_lvl >= 2) && event.getSource().equals(DamageSource.FALL)) {
+			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
 		if(event.getSource().getDirectEntity() instanceof LilSludgeEntity) {
@@ -547,12 +547,6 @@ public class EventHandler {
 				Armor_Famine_lvl++;
 			}
 		}
-
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				((FamineArmorItem)S.getItem()).setSetBonus(Armor_Famine_lvl);
-			}
-		}
 		
     	if((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || (Armor_Famine_lvl >= 4)) && event.getItem().isEdible()) {
     		event.setCanceled(true);
@@ -572,12 +566,6 @@ public class EventHandler {
 				Armor_Swine_lvl++;
 			}
 		}
-
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof SwineArmorItem) {
-				((SwineArmorItem)S.getItem()).setSetBonus(Armor_Swine_lvl);
-			}
-		}
     	
     	if((Armor_Swine_lvl >= 2) && event.getItem().getItem().isEdible()) {
     		event.setDuration((int) (event.getDuration() * 0.8F));
@@ -591,12 +579,6 @@ public class EventHandler {
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof SwineArmorItem) {
 				Armor_Swine_lvl++;
-			}
-		}
-
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof SwineArmorItem) {
-				((SwineArmorItem)S.getItem()).setSetBonus(Armor_Swine_lvl);
 			}
 		}
     	
@@ -727,5 +709,20 @@ public class EventHandler {
         if (event.getLookingEntity() instanceof AbstractSkeletonEntity)
             if (event.getEntityLiving() instanceof PlayerEntity && event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN))
                     event.modifyVisibility(0.0D);    	
+    }
+    
+    @SubscribeEvent
+    public void onEJump(LivingJumpEvent event) {
+	    int Armor_Chitin_lvl = 0;
+	    
+		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {			
+			if(S.getItem() instanceof ChitinArmorItem) {
+				Armor_Chitin_lvl++;
+			}
+		}   
+		
+		if(Armor_Chitin_lvl >= 4 && event.getEntity() instanceof LivingEntity) {
+			event.getEntityLiving().addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 0));
+		}
     }
 }

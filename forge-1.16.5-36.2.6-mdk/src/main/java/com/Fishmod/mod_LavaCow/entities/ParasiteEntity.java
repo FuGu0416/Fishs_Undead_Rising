@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -28,6 +29,7 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,6 +86,10 @@ public class ParasiteEntity extends SpiderEntity {
     {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
+	  	      return p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() 
+	  	    		  && ((!(p_210136_0_ instanceof ParasiteEntity || p_210136_0_ instanceof CreeperEntity)) || LootTableHandler.PARASITE_HOSTLIST.contains(p_210136_0_.getType().getRegistryName()));
+	  	   }));
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {

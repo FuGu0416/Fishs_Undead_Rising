@@ -9,8 +9,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
-import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.google.common.collect.Lists;
 
 import net.minecraft.enchantment.Enchantment;

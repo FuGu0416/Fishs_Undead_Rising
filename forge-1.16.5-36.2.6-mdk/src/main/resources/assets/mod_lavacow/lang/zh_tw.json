@@ -94,7 +94,11 @@
 	"item.mod_lavacow.piranha_bucket": "食人魚桶",
 	"item.mod_lavacow.swarmer_bucket": "群獵者桶",
 	"item.mod_lavacow.imp_horn": "小鬼角",
-	
+	"item.mod_lavacow.chitinarmor_helmet": "甲殼頭盔",
+	"item.mod_lavacow.chitinarmor_chestplate": "甲殼胸甲",
+	"item.mod_lavacow.chitinarmor_leggings": "甲殼護腿",
+	"item.mod_lavacow.chitinarmor_boots": "甲殼靴子",
+		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -365,7 +369,9 @@
 	"tootip.mod_lavacow:beast_claw.desc0": "向前跳撲",
 	"tootip.mod_lavacow:beast_claw.desc1": "套裝(2)：跳撲同時能賦予力量(0:03)與加速(0:03)",
 	"tootip.mod_lavacow:skeletonking_mace": "攻擊同時賦予目標死亡之觸V(0:10)",
-
+	"tootip.mod_lavacow:chitinarmor": "套裝(2)：掉落傷害-50%%",
+	"tootip.mod_lavacow:chitinarmor.l2": "套裝(4)：跳躍時能賦予速度(0:03)",
+	
 	"message.mod_lavacow.metamorphosis": "的外型正在變化！",
 	"command.mod_lavacow.sitting": "現在於原地待命",
 	"command.mod_lavacow.following": "正在跟隨",

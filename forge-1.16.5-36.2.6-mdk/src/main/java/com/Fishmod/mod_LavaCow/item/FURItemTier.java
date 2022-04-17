@@ -12,7 +12,7 @@ public enum FURItemTier implements IItemTier {
 	SPECTRAL(2, 0, 6.0F, 2.0F, 14, () -> {
 	      return Ingredient.of(FURItemRegistry.ECTOPLASM);
 	});
-
+	
 	private final int level;
 	private final int uses;
 	private final float speed;

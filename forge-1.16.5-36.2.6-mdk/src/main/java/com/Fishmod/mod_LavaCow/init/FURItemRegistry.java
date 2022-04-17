@@ -7,6 +7,7 @@ import java.util.Random;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.CrownItem;
 import com.Fishmod.mod_LavaCow.item.CursedBandageItem;
 import com.Fishmod.mod_LavaCow.item.DreamCatcherItem;
@@ -158,6 +159,10 @@ public class FURItemRegistry {
 	public static final Item PIRANHA_BUCKET = new FishBucketItem(() -> FUREntityRegistry.PIRANHA, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:piranha_bucket");
 	public static final Item SWARMER_BUCKET = new FishBucketItem(() -> FUREntityRegistry.SWARMER, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:swarmer_bucket");
 	public static final Item IMP_HORN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:imp_horn");
+	public static final Item CHITINARMOR_HELMET = new ChitinArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_helmet");
+	public static final Item CHITINARMOR_CHESTPLATE = new ChitinArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_chestplate");
+	public static final Item CHITINARMOR_LEGGINGS = new ChitinArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_leggings");
+	public static final Item CHITINARMOR_BOOTS = new ChitinArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_boots");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
 

@@ -24,8 +24,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SwineArmorItem extends ArmorItem {
-	
-	private int set;
 	private BipedModel<?> armorModel;
 	private String armorTexture;
 	
@@ -38,8 +36,6 @@ public class SwineArmorItem extends ArmorItem {
 			this.armorTexture = "mod_lavacow:textures/armors/swine/armor_swine_legs.png";
 		else
 			this.armorTexture = "mod_lavacow:textures/armors/swine/armor_swine.png";
-
-		this.set = 0;
 	}
 	
 	@Override
@@ -60,7 +56,6 @@ public class SwineArmorItem extends ArmorItem {
 		if (this.armorModel == null) {
 			if (armorSlot == EquipmentSlotType.HEAD) {
 				this.armorModel = new ModelSwineMask<>(1.0F, this.armorTexture);
-				//this.armorModel.head.visible = false;
 				this.armorModel.hat.visible = false;
 				this.armorModel.body.visible = false;
 				this.armorModel.rightArm.visible = false;
@@ -73,14 +68,6 @@ public class SwineArmorItem extends ArmorItem {
 		}
 
 		return (E) this.armorModel;
-	}
-	
-	public int getSetBonus() {
-		return this.set;
-	}
-	
-	public void setSetBonus(int setIn) {
-		this.set = setIn;
 	}
 	
 	@Override

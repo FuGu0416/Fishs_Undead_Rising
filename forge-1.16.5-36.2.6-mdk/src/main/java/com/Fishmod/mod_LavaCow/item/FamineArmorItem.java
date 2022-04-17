@@ -24,8 +24,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FamineArmorItem extends ArmorItem {
-	
-	private int set;
 	private ModelFamineArmor<?> armorModel;
 	private String armorTexture;
 	
@@ -37,8 +35,6 @@ public class FamineArmorItem extends ArmorItem {
 		} else {
 			this.armorTexture = "mod_lavacow:textures/armors/famine/armor_famine.png";
 		}
-
-        this.set = 0;
 	}
 		
 	@Override
@@ -64,14 +60,6 @@ public class FamineArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		return this.armorTexture;
-	}
-	
-	public int getSetBonus() {
-		return this.set;
-	}
-	
-	public void setSetBonus(int setIn) {
-		this.set = setIn;
 	}
 
 	@Override

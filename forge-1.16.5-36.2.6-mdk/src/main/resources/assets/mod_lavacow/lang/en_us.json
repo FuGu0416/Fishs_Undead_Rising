@@ -93,7 +93,11 @@
 	"item.mod_lavacow.piranha_bucket": "Bucket of Piranha",
 	"item.mod_lavacow.swarmer_bucket": "Bucket of Swarmer",
 	"item.mod_lavacow.imp_horn": "Imp Horn",
-
+	"item.mod_lavacow.chitinarmor_helmet": "Chitin Helmet",
+	"item.mod_lavacow.chitinarmor_chestplate": "Chitin Chestplate",
+	"item.mod_lavacow.chitinarmor_leggings": "Chitin Leggings",
+	"item.mod_lavacow.chitinarmor_boots": "Chitin Boots",
+	
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
 	"item.mod_lavacow.spawn_egg_parasite": "Parasite Spawn Egg",
@@ -361,7 +365,9 @@
 	"tootip.mod_lavacow:beast_claw.desc0": "Pouncing forward.",
 	"tootip.mod_lavacow:beast_claw.desc1": "Set(2): Also gives Strength(0:03) & Haste(0:03) after pouncing",
 	"tootip.mod_lavacow:skeletonking_mace": "Inflicts target with DeathtouchV(0:10).",
-
+	"tootip.mod_lavacow:chitinarmor": "Set(2): Falling damage -50%%.",
+	"tootip.mod_lavacow:chitinarmor.l2": "Set(4): Gives Speed(0:03) after jumping.",
+	
 	"message.mod_lavacow.metamorphosis": " is evolving!",
 	"command.mod_lavacow.sitting": " is waiting",
 	"command.mod_lavacow.following": " is following",
