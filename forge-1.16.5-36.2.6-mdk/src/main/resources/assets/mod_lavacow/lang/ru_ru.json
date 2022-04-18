@@ -361,12 +361,11 @@
 	"tootip.mod_lavacow:beast_claw.desc1": "Set(2): Also gives Strength(0:03) & Haste(0:03) after pouncing",
 	"tootip.mod_lavacow:skeletonking_mace": "Inflicts target with DeathtouchV(0:10).",
 
-	"message.mod_lavacow.metamorphosis": " эволюционирует!",
-	"command.mod_lavacow.sitting": " ждет.",
-	"command.mod_lavacow.following": " следует за вами.",
-	"command.mod_lavacow.wandering": " бродит.",
-	"command.mod_lavacow.whistle": " свистит.",
-	"command.mod_lavacow.whistle_err": " is too far away.",
+	"command.mod_lavacow.sitting": "%s ждет.",
+	"command.mod_lavacow.following": "%s следует за вами.",
+	"command.mod_lavacow.wandering": "%s бродит.",
+	"command.mod_lavacow.whistle": "%s свистит.",
+	"command.mod_lavacow.whistle_err": "%s is too far away.",
 	"itemGroup.mod_lavacow_items": "Нашествие чумы",
 	"key.mod_lavacow.special": "Способность ездового животного",
 

@@ -51,7 +51,7 @@ public class RavenWhistleItem extends FURItem {
 				 
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getItemInHand(handIn));
         	} else if (!playerIn.level.isClientSide()) {
-        		playerIn.displayClientMessage(new TranslationTextComponent(entity.getName().getString()).append(new TranslationTextComponent("command.mod_lavacow.whistle_err")), true);
+        		playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.whistle_err", entity.getName()), true);
         	}
         }
         
@@ -69,7 +69,7 @@ public class RavenWhistleItem extends FURItem {
         	playerIn.getItemInHand(hand).getOrCreateTagElement("OrderID").putUUID("OrderID", target.getUUID());
 
         	if(!playerIn.level.isClientSide()) {
-        		playerIn.displayClientMessage(new TranslationTextComponent(target.getName().getString()).append(new TranslationTextComponent("command.mod_lavacow.whistle")), true);
+        		playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.whistle", target.getName()), true);
         	}
         	
         	return ActionResultType.SUCCESS;

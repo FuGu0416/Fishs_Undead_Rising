@@ -368,12 +368,11 @@
 	"tootip.mod_lavacow:chitinarmor": "Set(2): Falling damage -50%%.",
 	"tootip.mod_lavacow:chitinarmor.l2": "Set(4): Gives Speed(0:03) after jumping.",
 	
-	"message.mod_lavacow.metamorphosis": " is evolving!",
-	"command.mod_lavacow.sitting": " is waiting",
-	"command.mod_lavacow.following": " is following",
-	"command.mod_lavacow.wandering": " is wandering",
-	"command.mod_lavacow.whistle": " is now the whistle target",
-	"command.mod_lavacow.whistle_err": " is too far away.",
+	"command.mod_lavacow.sitting": "%s is waiting",
+	"command.mod_lavacow.following": "%s is following",
+	"command.mod_lavacow.wandering": "%s is wandering",
+	"command.mod_lavacow.whistle": "%s is now the whistle target",
+	"command.mod_lavacow.whistle_err": "%s is too far away.",
 	"itemGroup.mod_lavacow_items": "Fish's Undead Rising",
 	"key.mod_lavacow.special": "Mount Special Ability",
 

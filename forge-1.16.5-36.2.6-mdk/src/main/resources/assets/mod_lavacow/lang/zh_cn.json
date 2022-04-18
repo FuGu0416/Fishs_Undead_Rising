@@ -368,12 +368,11 @@
 	"tooltip.mod_lavacow:chitinarmor": "套装(2):掉落伤害-50%%",	
 	"tooltip.mod_lavacow:chitinarmor.l2": "套装(4):跳跃时能赋予速度(0:03)",
 	
-	"message.mod_lavacow.metamorphosis": "的外型正在变化！",
-	"command.mod_lavacow.sitting": "现在于原地待命",
-	"command.mod_lavacow.following": "正在跟随",
-	"command.mod_lavacow.wandering": "进入徘徊状态",
-	"command.mod_lavacow.whistle": "现在为哨子目标",
-	"command.mod_lavacow.whistle_err": "离你太远了",
+	"command.mod_lavacow.sitting": "%s现在于原地待命",
+	"command.mod_lavacow.following": "%s正在跟随",
+	"command.mod_lavacow.wandering": "%s进入徘徊状态",
+	"command.mod_lavacow.whistle": "%s现在为哨子目标",
+	"command.mod_lavacow.whistle_err": "%s离你太远了",
 	"itemGroup.mod_lavacow_items": "Fish的不死崛起",
 	"key.mod_lavacow.special": "座骑特殊能力",
 

@@ -359,12 +359,11 @@
 	"tootip.mod_lavacow:beast_claw.desc1": "Set(2): Also gives Strength(0:03) & Haste(0:03) after pouncing",
 	"tootip.mod_lavacow:skeletonking_mace": "Inflicts target with DeathtouchV(0:10).",
 
-	"message.mod_lavacow.metamorphosis": " está evolucionando!",
-	"command.mod_lavacow.sitting": " está esperando",
-	"command.mod_lavacow.following": " está siguiéndote",
-	"command.mod_lavacow.wandering": " está merodeando",
-	"command.mod_lavacow.whistle": " is now the whistle target",
-	"command.mod_lavacow.whistle_err": " is too far away.",
+	"command.mod_lavacow.sitting": "%s está esperando",
+	"command.mod_lavacow.following": "%s está siguiéndote",
+	"command.mod_lavacow.wandering": "%s está merodeando",
+	"command.mod_lavacow.whistle": "%s is now the whistle target",
+	"command.mod_lavacow.whistle_err": "%s is too far away.",
 	"itemGroup.mod_lavacow_items": "Fish's Undead Rising",
 	"key.mod_lavacow.special": "Mount Special Ability",
 

@@ -99,7 +99,7 @@ public class FURTameableEntity extends TameableEntity {
 		this.state = FURTameableEntity.State.SITTING;		
 		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 1));
 		if(playerIn != null)
-			playerIn.displayClientMessage(new TranslationTextComponent(this.getName() + "command.mod_lavacow.sitting"), true);
+			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.sitting", this.getName()), true);
     }
     
     public void doFollowCommand(PlayerEntity playerIn) {
@@ -111,7 +111,7 @@ public class FURTameableEntity extends TameableEntity {
 		this.state = FURTameableEntity.State.FOLLOWING;
 		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
 		if(playerIn != null)
-			playerIn.displayClientMessage(new TranslationTextComponent(this.getName() + "command.mod_lavacow.following"), true);
+			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.following", this.getName()), true);
     }
     
     public void doWanderCommand(PlayerEntity playerIn) {
@@ -124,7 +124,7 @@ public class FURTameableEntity extends TameableEntity {
 		this.state = FURTameableEntity.State.WANDERING;
 		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
 		if(playerIn != null)
-			playerIn.displayClientMessage(new TranslationTextComponent(this.getName() + "command.mod_lavacow.wandering"), true);
+			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.wandering", this.getName()), true);
     }
     
     protected int TameRate(ItemStack stack) {
