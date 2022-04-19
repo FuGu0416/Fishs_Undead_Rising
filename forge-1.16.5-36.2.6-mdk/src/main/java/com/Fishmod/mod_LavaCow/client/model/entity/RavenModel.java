@@ -129,25 +129,29 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> {
                 this.tail.y = 21.07F + f2;
                 return;
             }
-            this.beak2.xRot = 0.0F;
             this.wingLeft.zRot = -0.0873F;
             this.wingRight.zRot = 0.0873F;
             this.legLeft.xRot += MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
             this.legRight.xRot += MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        }
-        else {
+        } else {
 	        this.head.y = 15.69F + f;
-	        if(entityIn.getMainHandItem().isEmpty())
-	        	this.beak2.xRot = 0.3662880558742251F;
 	        this.tail.xRot = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
 	        this.tail.y = 21.07F + f;
 	        this.body.y = 16.5F + f;
-	        this.wingLeft.zRot = -0.0873F - ageInTicks;
-	        this.wingLeft.y = 16.94F + f;
+        	this.wingLeft.zRot = -0.0873F - ageInTicks;
+	        this.wingLeft.y = 16.94F + f;	  
 	        this.wingRight.zRot = 0.0873F + ageInTicks;
 	        this.wingRight.y = 16.94F + f;
 	        this.legLeft.y = 22.0F + f;
 	        this.legRight.y = 22.0F + f;
+        }
+        
+        if(entityIn.callTimer > 0 && entityIn.getMainHandItem().isEmpty()) {
+        	this.beak1.xRot = -0.18F;
+        	this.beak2.xRot = 0.18F;
+        } else {
+        	this.beak1.xRot = 0.0F;
+        	this.beak2.xRot = 0.0F;
         }
     }
 

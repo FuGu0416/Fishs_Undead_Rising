@@ -52,8 +52,8 @@ public class FURTameableEntity extends TameableEntity {
 	
 	@Override
 	protected void registerGoals() {
-    	this.wander = new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
-    	this.follow = new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);
+    	this.wander = this.wanderGoal();
+    	this.follow = this.followGoal();
     	this.aiSit = new SitGoal(this);    	
     	this.goalSelector.addGoal(7, this.wander);
 	}
@@ -105,7 +105,7 @@ public class FURTameableEntity extends TameableEntity {
     public void doFollowCommand(PlayerEntity playerIn) {
     	byte b0 = this.entityData.get(DATA_FLAGS_ID);
     	
-		this.follow = new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);
+		this.follow = this.followGoal();
 		this.goalSelector.addGoal(6, this.follow);
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.FOLLOWING;
@@ -118,13 +118,21 @@ public class FURTameableEntity extends TameableEntity {
     	byte b0 = this.entityData.get(DATA_FLAGS_ID);
     	
 		this.goalSelector.removeGoal(this.follow);
-		this.wander = new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
+		this.wander = this.wanderGoal();
 		this.goalSelector.addGoal(7, this.wander);
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.WANDERING;
 		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
 		if(playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.wandering", this.getName()), true);
+    }
+    
+    protected WaterAvoidingRandomWalkingGoal wanderGoal() {
+    	return new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
+    }
+    
+    protected FollowOwnerGoal followGoal() {
+    	return new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);
     }
     
     protected int TameRate(ItemStack stack) {
@@ -176,10 +184,9 @@ public class FURTameableEntity extends TameableEntity {
     }
     
     @Override
-    public void tame(PlayerEntity player)
-    {
-    	this.doFollowCommand(null);
+    public void tame(PlayerEntity player) {   	
     	super.tame(player);
+    	this.doSitCommand(player);
     }
     
     /**

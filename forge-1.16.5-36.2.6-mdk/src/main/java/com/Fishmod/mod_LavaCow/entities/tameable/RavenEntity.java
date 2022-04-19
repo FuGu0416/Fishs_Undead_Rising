@@ -38,6 +38,7 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
@@ -85,6 +86,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     private boolean partyParrot;
     private BlockPos jukebox;
     private int ridingCooldown;
+    public int callTimer;
     
     private float TargetLocationX = -1.0F;
     private float TargetLocationY = -1.0F;
@@ -103,20 +105,26 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	
     @Override
     protected void registerGoals() {
-        super.registerGoals();
-    	this.wander = new WaterAvoidingRandomFlyingGoal(this, 1.0D);
-    	this.follow = new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true);
-        
+        super.registerGoals();       
         this.goalSelector.addGoal(0, new AIMovetoTargetLocation());
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+        this.goalSelector.addGoal(8, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
         this.applyEntityAI();
     }
     
-    protected void applyEntityAI()
-    {
+    @Override
+    protected WaterAvoidingRandomWalkingGoal wanderGoal() {
+    	return new WaterAvoidingRandomFlyingGoal(this, 1.0D);
+    }
+    
+    @Override
+    protected FollowOwnerGoal followGoal() {
+    	return new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true);
+    }
+    
+    protected void applyEntityAI() {
     	this.AITargetItem = new EntityAITargetItem<>(this, ItemEntity.class, true);
     	this.targetSelector.addGoal(1, this.AITargetItem);
 	}
@@ -167,15 +175,23 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     	this.TargetLocationY = Y;
     	this.TargetLocationZ = Z;
     }
+    
+    @Override
+    public void rideTick() {
+    	super.rideTick();
+    }
 
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void aiStep()
-    { 	
+    public void aiStep() { 	
     	super.aiStep();
+    	
+    	if (this.callTimer > 0 ) {
+    		this.callTimer--;
+    	}
     	
         if (this.jukebox == null || !this.jukebox.closerThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukebox).is(Blocks.JUKEBOX)) {
             this.partyParrot = false;
@@ -190,10 +206,10 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        	
 	        	if(FURConfig.Raven_Slowfall.get() && !this.getVehicle().isOnGround() && this.getVehicle().getDeltaMovement().y < 0.0D && 
 	        			!this.getVehicle().isNoGravity() && !((PlayerEntity)this.getVehicle()).isFallFlying()) {
-	        		this.getVehicle().setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
+	        		((LivingEntity) this.getVehicle()).addEffect(new EffectInstance(Effects.SLOW_FALLING, 3 * 20, 0));
 	        	}
 	        	
-	        	if(this.getVehicle().isCrouching() || this.getVehicle().isInWater()) {
+	        	if(this.ridingCooldown == 0 && (this.getVehicle().isCrouching() || this.getVehicle().isInWater())) {
 	        		this.SetDismount(this.getVehicle());
 	        	}
 	        }
@@ -245,8 +261,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         
         if(this.canPickUpLoot() && !this.getMainHandItem().isEmpty()) {
         	this.setCanPickUpLoot(false);
-        }
-        else if(!this.canPickUpLoot() && this.getMainHandItem().isEmpty())
+        } else if (!this.canPickUpLoot() && this.getMainHandItem().isEmpty())
         	this.setCanPickUpLoot(true);
              
         this.calculateFlapping();
@@ -277,7 +292,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     private void calculateFlapping() {
         this.oFlap = this.flap;
         this.oFlapSpeed = this.flapSpeed;
-        this.flapSpeed = (float)((double)this.flapSpeed + (double)(!this.onGround && !this.isPassenger() ? 4 : -1) * 0.3D);
+        this.flapSpeed = (float)((double)this.flapSpeed + (double)(!this.onGround ? 4 : -1) * 0.3D);
         this.flapSpeed = MathHelper.clamp(this.flapSpeed, 0.0F, 1.0F);
         if (!this.onGround && this.flapping < 1.0F) {
            this.flapping = 1.0F;
@@ -298,9 +313,11 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         
         if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {
         	
-	    	/*if (itemstack.interactLivingEntity(player, this, hand) == ActionResultType.PASS) {
-	    		return ActionResultType.PASS;
-	    	} else */if(this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+        	if (player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
+                this.startRiding(player);
+                this.ridingCooldown = 30;
+                return ActionResultType.SUCCESS;
+            } if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 	        	
 	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
@@ -314,14 +331,12 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        	
 	        	return ActionResultType.sidedSuccess(this.level.isClientSide);
 	        } else if (itemstack.getItem() == FURItemRegistry.GHOSTJELLY && this.getSkin() == 0) {
-	            if (!player.isCreative())
-	            {
+	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
 	            }
 	        	this.setSkin(3);
 	        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
-	        	for (int i = 0; i < 16; ++i)
-	            {
+	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
@@ -332,8 +347,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        } else if (!this.level.isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {     	
             	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
             	
-            	if (!player.inventory.add(this.getMainHandItem().copy()))
-                {
+            	if (!player.inventory.add(this.getMainHandItem().copy())) {
                     player.spawnAtLocation(this.getMainHandItem().copy());
                 }
             	
@@ -431,6 +445,12 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         else
         	return FURSoundRegistry.RAVEN_DEATH;
     }
+    
+    @Override 
+    public void playAmbientSound() {
+    	super.playAmbientSound();
+    	this.callTimer = 10;
+    }
 
     @Override
     protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
@@ -472,24 +492,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public boolean isPushable() {
         return true;
 	}
-
-    @Override
-    public void push(Entity entityIn) {
-        if(FURConfig.Raven_Perch.get() && entityIn instanceof LivingEntity
-        		&& this.isOwnedBy((LivingEntity) entityIn) 
-        		&& !entityIn.isVehicle() 
-        		&& !entityIn.isCrouching() 
-        		&& !this.isInSittingPose() 
-        		&& this.ridingCooldown == 0) {
-        	this.startRiding(entityIn, false);
-            this.setJumping(false);
-            this.getNavigation().stop();
-            this.setTarget(null);
-        }
-        else
-        	super.push(entityIn);
-    }
-
+    
     /**
      * Called when the entity is attacked.
      */
@@ -607,8 +610,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             super.start();
             RavenEntity.this.getNavigation().stop();
             RavenEntity.this.setInSittingPose(false);
@@ -617,8 +619,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
-        public void stop()
-        {
+        public void stop() {
             super.stop();
             RavenEntity.this.TargetLocationX = RavenEntity.this.TargetLocationY = RavenEntity.this.TargetLocationZ = -1.0F;
             RavenEntity.this.getNavigation().stop();
@@ -628,8 +629,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
         	RavenEntity.this.getMoveControl().setWantedPosition(RavenEntity.this.TargetLocationX, RavenEntity.this.TargetLocationY, RavenEntity.this.TargetLocationZ, 1.5D);
         }
     }
@@ -645,8 +645,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     	return this.getSkin() == 2 ? new ResourceLocation("mod_lavacow", "entities/seagull") : super.getDefaultLootTable();
     }
 
-    public boolean isFlying()
-    {
+    public boolean isFlying() {
         return (!this.isOnGround() && !this.isPassenger()) || (this.getVehicle() != null && !this.getVehicle().isOnGround() && this.getVehicle().getDeltaMovement().y < 0.0D);
     }
     
