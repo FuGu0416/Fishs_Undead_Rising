@@ -402,7 +402,9 @@
 	"effect.mod_lavacow.strong_fragile": "死亡之觸 II",
 	"effect.mod_lavacow.long_fragile": "死亡之觸",
 	"description.effect.mod_lavacow:fragile": "當生命低於一定程度時，立即死亡",
-
+	"effect.mod_lavacow.fear": "恐懼",
+	"description.effect.mod_lavacow:fear": "賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄",
+	
 	"item.minecraft.potion.effect.corrosive": "腐蝕藥水",
 	"item.minecraft.splash_potion.effect.corrosive": "飛濺 腐蝕藥水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滯留 腐蝕藥水",

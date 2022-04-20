@@ -78,7 +78,7 @@ public class FURTameableEntity extends TameableEntity {
 
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
-		return !(this.isTame() && this.getOwner() instanceof PlayerEntity) && super.removeWhenFarAway(p_213397_1_);
+		return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
 	}
 	
 	@Override

@@ -29,7 +29,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,8 +61,7 @@ public class ParasiteEntity extends SpiderEntity {
 	public int lifespawn;
 	private boolean long_live;
 	
-	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, World worldIn)
-    {
+	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.long_live = false;
         this.lifespawn = 16*20;//Can live for only 16secs, poor little one:(
@@ -71,8 +69,7 @@ public class ParasiteEntity extends SpiderEntity {
     }
 	
 	@Override
-	protected void registerGoals()
-    {
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
 		this.goalSelector.addGoal(4, new ParasiteEntity.AttackGoal(this));
@@ -82,13 +79,12 @@ public class ParasiteEntity extends SpiderEntity {
         this.applyEntityAI();
     }
 	
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
 	  	      return p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() 
-	  	    		  && ((!(p_210136_0_ instanceof ParasiteEntity || p_210136_0_ instanceof CreeperEntity)) || LootTableHandler.PARASITE_HOSTLIST.contains(p_210136_0_.getType().getRegistryName()));
+	  	    		  && LootTableHandler.PARASITE_HOSTLIST.contains(p_210136_0_.getType().getRegistryName());
 	  	   }));
     }
     
@@ -117,17 +113,8 @@ public class ParasiteEntity extends SpiderEntity {
     	return livingdata;
     }
 	
-    /**
-     * Called to update the entity's position/logic.
-     */
 	@Override
-	public void aiStep() {			
-		super.aiStep();
-	}
-	
-	@Override
-	public void tick()
-    {
+	public void tick() {
         if (this.lifespawn > 0) {
         	if(!long_live)this.lifespawn--;
         } else if (this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pSpawnRate_Vespa.get()) {
@@ -143,31 +130,25 @@ public class ParasiteEntity extends SpiderEntity {
 		    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
 		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
 		    		this.level.addFreshEntity(pupa);
-        		}
-        		
+        		}     		
         		this.remove();
-
-        	}
-        	else
+        	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         } else {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         }
         	     
-        if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity && !this.level.isClientSide()) {
+        if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity && this.getVehicle().isAlive() && !this.level.isClientSide()) {
         	Entity mount = this.getVehicle();
-
-        	if (this.tickCount % 20 == 0) {
-        		this.doHurtTarget(mount);
-        	}
         	
         	if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED)) {
         		this.stopRiding();   		
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
-        	}        	
-        	else if(this.getVehicle().isOnFire()) {
+        	} else if (mount.isAlive() && mount.isOnFire()) {
         		this.setRemainingFireTicks(20);
         		this.stopRiding();        		
+        	} else if (mount.isAlive() && this.tickCount % 20 == 0) {
+        		this.doHurtTarget(mount);
         	}
         } else if (getVehicle() == null && this.long_live)
         	this.long_live = false;
@@ -191,21 +172,18 @@ public class ParasiteEntity extends SpiderEntity {
                 }
                 this.entityData.set(ATTACHED_BLK, closestDirection);
             }
-        }
-        
+        }      
         super.tick();
     }
 	
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        
-        if (itemstack.isEmpty())
-        {
+
+        if (itemstack.isEmpty()) {
         	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
         	
-        	if (!player.inventory.add(new ItemStack(ParasiteDrop[this.getSkin()])))
-            {
+        	if (!player.inventory.add(new ItemStack(ParasiteDrop[this.getSkin()]))) {
                 player.spawnAtLocation(new ItemStack(ParasiteDrop[this.getSkin()]));
             }
         	this.remove();
@@ -229,37 +207,37 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
-			if ((entity instanceof PlayerEntity || entity instanceof ZombieEntity) && FURConfig.Parasite_Attach.get() && !entity.isVehicle()) {
-				if(entity instanceof PlayerEntity) {
-					((LivingEntity) entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
-				}				
-			}
-			
-			if(this.getSkin() == 2)((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, 4*20, 0));
+			((LivingEntity) entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+			if(this.getSkin() == 2)
+				((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, 4*20, 0));
 			return true;
 		}
 		return false;
 	}
 	
 	@Override
-    public void push(Entity entityIn)
-    {
-    	if (!this.level.isClientSide && (entityIn instanceof MobEntity || ((entityIn instanceof PlayerEntity && !((PlayerEntity)entityIn).isCreative())/* || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague*/)) /*&& Modconfig.Parasite_Attach*/ && !(entityIn instanceof ParasiteEntity)) {
+    public void push(Entity entityIn) {		
+		if (entityIn instanceof LivingEntity && LootTableHandler.PARASITE_HOSTLIST.contains(entityIn.getType().getRegistryName()) && FURConfig.Parasite_Attach.get()) {
     		((LivingEntity) entityIn).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
     		this.startRiding(entityIn);
-    		//this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));
-            this.setJumping(false);
-            this.getNavigation().stop();
             this.long_live = true;
-        }
-        else
+        } else
         	super.push(entityIn);
     }
 	
+	@Override
+	public void playerTouch(PlayerEntity playerIn) {
+		super.playerTouch(playerIn);
+		if (!playerIn.isCreative() && FURConfig.Parasite_Attach.get()) {
+			playerIn.addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+    		this.startRiding(playerIn);
+            this.long_live = true;
+        } 	
+	}
+	
 	public static ParasiteEntity gotParasite(List<Entity> listIn) {
 		for(Entity C : listIn)
-			if(C instanceof ParasiteEntity)return (ParasiteEntity)C;
-		
+			if(C instanceof ParasiteEntity)return (ParasiteEntity)C;		
 		return null;
 	}
 	
@@ -304,20 +282,17 @@ public class ParasiteEntity extends SpiderEntity {
 	}
 	
 	@Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.PARASITE_AMBIENT;
     }
 	
 	@Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.PARASITE_HURT;
     }
 
 	@Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.PARASITE_DEATH;
     }
 	
@@ -363,5 +338,4 @@ public class ParasiteEntity extends SpiderEntity {
            return (double)(0.1F + p_179512_1_.getBbWidth());
         }
      }
-
 }

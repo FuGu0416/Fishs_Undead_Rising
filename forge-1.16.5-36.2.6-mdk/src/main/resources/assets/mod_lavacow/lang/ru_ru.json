@@ -391,7 +391,9 @@
 	"effect.mod_lavacow.strong_fragile": "Deathtouch II",
 	"effect.mod_lavacow.long_fragile": "Deathtouch",
 	"description.effect.mod_lavacow:fragile": "Cause instant death when health is low.",
-
+	"effect.mod_lavacow.fear": "Fear",
+	"description.effect.mod_lavacow:fear": "Apply weakness and slowness, non-player entities will flee aimlessly instead.",
+	
 	"item.minecraft.potion.effect.corrosive": "Зелье разложения",
 	"item.minecraft.splash_potion.effect.corrosive": "Взрывное зелье разложения",
 	"item.minecraft.lingering_potion.effect.corrosive": "Туманное зелье разложение",

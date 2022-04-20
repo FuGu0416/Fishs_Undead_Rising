@@ -165,9 +165,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 		this.setPos(ridden.getX(), ridden.getY() + ridden.getBbHeight()/2 - 0.35F, ridden.getZ());
         this.setJumping(false);
         this.getNavigation().stop();
-        this.setTarget(null);
-        
-		this.ridingCooldown = 30;
+        this.setTarget(null);       
     }
     
     public void setTargetLocation(float X, float Y, float Z) {
@@ -199,7 +197,8 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         }
         
         if(!this.isFetching() && this.isTame()) {
-        	if(this.ridingCooldown > 0)this.ridingCooldown--;
+        	if(this.ridingCooldown > 0)
+        		this.ridingCooldown--;
         	
 	        if (this.isPassenger() && this.getVehicle() instanceof PlayerEntity) {
 	        	this.setRot(this.getVehicle().yRot, 0F);
@@ -313,9 +312,9 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         
         if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {
         	
-        	if (player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
+        	if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
                 this.startRiding(player);
-                this.ridingCooldown = 30;
+                this.ridingCooldown = 20;
                 return ActionResultType.SUCCESS;
             } if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 	        	
