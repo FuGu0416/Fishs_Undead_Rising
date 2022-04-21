@@ -36,15 +36,13 @@ import net.minecraft.world.World;
 
 public class AvatonEntity extends BansheeEntity {
 	
-	public AvatonEntity(EntityType<? extends AvatonEntity> p_i48549_1_, World worldIn)
-    {
+	public AvatonEntity(EntityType<? extends AvatonEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.setPathfindingMalus(PathNodeType.WATER, 8.0F);
     }
 	
     @Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
     	this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new AvatonEntity.AIUseSpell());
@@ -56,8 +54,7 @@ public class AvatonEntity extends BansheeEntity {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
@@ -96,28 +93,22 @@ public class AvatonEntity extends BansheeEntity {
         return false;
 	}
 	    
-    public class AIUseSpell extends Goal
-    {
+    public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
-        	if (AvatonEntity.this.isSpellcasting())
-            {
+        public boolean canUse() {
+        	if (AvatonEntity.this.isSpellcasting()) {
                 return false;
-            }
-            else
-            {
+            } else {
                 int i = AvatonEntity.this.level.getEntitiesOfClass(WetaEntity.class, AvatonEntity.this.getBoundingBox().inflate(16.0D)).size();
                 boolean farmlandnearby = false;
                 for(int x = -2; x <= 2; x++)
                 	for(int y = -3; y <= 3; y++)
-                		for(int z = -2; z <= 2; z++)
-                		{
+                		for(int z = -2; z <= 2; z++) {
                 			if (AvatonEntity.this.level.getBlockState(new BlockPos(AvatonEntity.this.getX() + x, AvatonEntity.this.getY() + y, AvatonEntity.this.getZ() + z)).getBlock() == Blocks.FARMLAND)
                 				farmlandnearby = true;
                 		}              
@@ -129,24 +120,21 @@ public class AvatonEntity extends BansheeEntity {
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             AvatonEntity.this.spellTicks = this.getCastingTime();
             AvatonEntity.this.level.broadcastEntityEvent(AvatonEntity.this, (byte)10);
             this.spellCooldown = AvatonEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
 
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 AvatonEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -154,22 +142,17 @@ public class AvatonEntity extends BansheeEntity {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 5)
-            {
+            if (this.spellWarmup == 5) {
                 this.castSpell();
-                AvatonEntity.this.playSound(AvatonEntity.this.getSpellSound(), 4.0F, 1.2F);
-                           
+                AvatonEntity.this.playSound(AvatonEntity.this.getSpellSound(), 4.0F, 1.2F);                         
             }
         }
 
-        protected void castSpell()
-        {
-            for (int i = 0; i < FURConfig.Avaton_Ability_Num.get(); ++i)
-            {
+        protected void castSpell() {
+            for (int i = 0; i < FURConfig.Avaton_Ability_Num.get(); ++i) {
                 BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(5), 1, -2 + AvatonEntity.this.getRandom().nextInt(5));
                 WetaEntity entityvex = FUREntityRegistry.WETA.create(AvatonEntity.this.level);
                 entityvex.moveTo(blockpos, 0.0F, 0.0F);
@@ -179,50 +162,44 @@ public class AvatonEntity extends BansheeEntity {
                 	AvatonEntity.this.level.addFreshEntity(entityvex);
                 
                 if(AvatonEntity.this.getTarget() != null)
-                	entityvex.setTarget(AvatonEntity.this.getTarget());
-                	
+                	entityvex.setTarget(AvatonEntity.this.getTarget());                	
             }
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 20;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 30;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
         	return FURConfig.Avaton_Ability_Cooldown.get() * 20;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
             return null;
         }
     }
     
-    protected SoundEvent getAmbientSound()
-    {
+    @Override
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.AVATON_AMBIENT;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.BANSHEE_HURT;
     }
 
-    protected SoundEvent getDeathSound()
-    {
+    @Override
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.AVATON_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
+    protected SoundEvent getSpellSound() {
         return FURSoundRegistry.AVATON_SPELL;
     }
 }

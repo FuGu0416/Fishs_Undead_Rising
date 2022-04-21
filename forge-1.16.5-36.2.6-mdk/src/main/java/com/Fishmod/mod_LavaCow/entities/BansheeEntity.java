@@ -10,6 +10,8 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -28,6 +30,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -59,8 +62,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
-	public BansheeEntity(EntityType<? extends BansheeEntity> p_i48549_1_, World worldIn)
-    {
+	public BansheeEntity(EntityType<? extends BansheeEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.moveControl = new BansheeEntity.AIMoveControl(this);
     }
@@ -75,12 +77,12 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     }
 	
 	@Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new BansheeEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new BansheeEntity.AIChargeAttack());
+        this.goalSelector.addGoal(3, new BansheeEntity.AIChargeAttack());  
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new BansheeEntity.AIMoveRandom());
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -88,8 +90,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
@@ -113,19 +114,16 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         this.getEntityData().define(CASTING, Byte.valueOf((byte)0));
     }
     
-    public boolean isSpellcasting()
-    {
+    public boolean isSpellcasting() {
     	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
     }
     
     @OnlyIn(Dist.CLIENT)
-    public boolean isSpellcastingC()
-    {
+    public boolean isSpellcastingC() {
     	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
     }
     
-    public int getSpellTicks()
-    {
+    public int getSpellTicks() {
         return this.spellTicks;
     }
     
@@ -137,8 +135,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         if(this.tickCount % 2 == 0)
@@ -157,8 +154,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {
+    public void tick() {
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
@@ -171,7 +167,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     		this.setSecondsOnFire(8);
         }
     	
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
+    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D || this.getTarget()== null);
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
@@ -202,25 +198,21 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
 	public void setAttackTimer(int i) {
 		this.attackTimer = i;
 	}
-	
-    public boolean doHurtTarget(Entity par1Entity)
-    {
-        if (super.doHurtTarget(par1Entity)) {
-        	this.attackTimer = 20;
-        	this.level.broadcastEntityEvent(this, (byte)4);
-        	
-        	return true;
-        }
-        
+    
+    @Override
+    public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
         return false;
-    }
+	}
+
+    @Override
+	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
+	}
 	
     /**
      * Handler for {@link World#setEntityState}
      */
     @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id)
-    {
+    public void handleEntityEvent(byte id) {
         if (id == 10) {
         	this.spellTicks = 30;
         } else if (id == 4) {
@@ -230,40 +222,32 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         }
     }
     
-    public void setIsCasting(boolean isHanging)
-    {
+    public void setIsCasting(boolean isHanging) {
         byte b0 = ((Byte)this.getEntityData().get(CASTING)).byteValue();
 
-        if (isHanging)
-        {
+        if (isHanging) {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 | 1)));
-        }
-        else
-        {
+        } else {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
     
-    public class AICastingApell extends Goal
-    {
-        public AICastingApell()
-        {
+    public class AICastingApell extends Goal {
+        public AICastingApell() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return BansheeEntity.this.getSpellTicks() > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             super.start();
             BansheeEntity.this.setIsCasting(true);
             BansheeEntity.this.navigation.stop();
@@ -281,8 +265,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
-            if (BansheeEntity.this.getTarget() != null)
-            {
+            if (BansheeEntity.this.getTarget() != null) {
                 BansheeEntity.this.getLookControl().setLookAt(BansheeEntity.this.getTarget(), (float)BansheeEntity.this.getMaxHeadYRot(), (float)BansheeEntity.this.getMaxHeadXRot());
             }
             
@@ -292,26 +275,19 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         }
     }
     
-    public class AIUseSpell extends Goal
-    {
+    public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
-            if (BansheeEntity.this.getTarget() == null)
-            {
+        public boolean canUse() {
+            if (BansheeEntity.this.getTarget() == null) {
                 return false;
-            }
-            else if (BansheeEntity.this.isSpellcasting())
-            {
+            } else if (BansheeEntity.this.isSpellcasting()) {
                 return false;
-            }
-            else
-            {
+            } else {
             	return BansheeEntity.this.tickCount >= this.spellCooldown && BansheeEntity.this.distanceTo(BansheeEntity.this.getTarget()) < 3.0F;
             }
         }
@@ -319,24 +295,21 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return BansheeEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             BansheeEntity.this.spellTicks = this.getCastingTime();
             BansheeEntity.this.level.broadcastEntityEvent(BansheeEntity.this, (byte)10);
             this.spellCooldown = BansheeEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
 
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 BansheeEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -344,78 +317,61 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 5)
-            {
+            if (this.spellWarmup == 5) {
                 this.castSpell();
-                BansheeEntity.this.playSound(BansheeEntity.this.getSpellSound(), 4.0F, 1.2F);
-                           
+                BansheeEntity.this.playSound(BansheeEntity.this.getSpellSound(), 4.0F, 1.2F);                        
             }
         }
 
-        protected void castSpell()
-        {
+        protected void castSpell() {
         	List<Entity> list = BansheeEntity.this.level.getEntities(BansheeEntity.this, BansheeEntity.this.getBoundingBox().inflate(FURConfig.Banshee_Ability_Radius.get()));
         	BansheeEntity.this.level.broadcastEntityEvent(BansheeEntity.this, (byte)11);
         	
-        	for (Entity entity1 : list)
-        	{
-        		if (entity1 instanceof LivingEntity)
-        		{                 
+        	for (Entity entity1 : list) {
+        		if (entity1 instanceof LivingEntity) {                 
         			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {
         				float local_difficulty = BansheeEntity.this.level.getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
         				((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2));       				
-        				//((LivingEntity)entity1).addEffect(new EffectInstance(Effects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
-        				//((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 2 * 20 * (int)local_difficulty, 6));
-        				//((LivingEntity)entity1).hurt(DamageSource.mobAttack(BansheeEntity.this).setMagic().bypassArmor(), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F);
+        				((LivingEntity)entity1).hurt(DamageSource.mobAttack(BansheeEntity.this).setMagic().bypassArmor(), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F);
         			}
         		}
         	} 
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 20;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 30;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return 320;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
             return null;
         }
     }
     
     class AIChargeAttack extends Goal {
     	
-        public AIChargeAttack()
-        {
+        public AIChargeAttack() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
-            if (BansheeEntity.this.getTarget() != null && !BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getRandom().nextInt(7) == 0)
-            {
+        public boolean canUse() {
+            if (BansheeEntity.this.getTarget() != null && !BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getRandom().nextInt(7) == 0) {
                 return BansheeEntity.this.distanceToSqr(BansheeEntity.this.getTarget()) > 4.0D;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -423,16 +379,14 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getTarget() != null && BansheeEntity.this.getTarget().isAlive();
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             LivingEntity LivingEntity = BansheeEntity.this.getTarget();
             Vector3d vec3d = LivingEntity.getEyePosition(1.0F);
             BansheeEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.5D);
@@ -441,15 +395,13 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
-        public void stop()
-        {
+        public void stop() {
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             LivingEntity livingentity = BansheeEntity.this.getTarget();
             if (BansheeEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                BansheeEntity.this.doHurtTarget(livingentity);
@@ -458,15 +410,17 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
                if (d0 < 9.0D) {
                   Vector3d vector3d = livingentity.getEyePosition(1.0F);
                   BansheeEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
+                  if(BansheeEntity.this.attackTimer == 0) {
+	   	               BansheeEntity.this.attackTimer = 20;
+	   	               BansheeEntity.this.level.broadcastEntityEvent(BansheeEntity.this, (byte)4);
+                  }
                }
             }
         }
     }
     
-    class AIMoveControl extends MovementController
-    {
-        public AIMoveControl(BansheeEntity Banshee)
-        {
+    class AIMoveControl extends MovementController {
+        public AIMoveControl(BansheeEntity Banshee) {
             super(Banshee);
         }
 
@@ -490,39 +444,33 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
                       BansheeEntity.this.yBodyRot = BansheeEntity.this.yRot;
                    }
                 }
-
             }
         }
     }
     
-    class AIMoveRandom extends Goal
-    {
-        public AIMoveRandom()
-        {
+    class AIMoveRandom extends Goal {
+        public AIMoveRandom() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return !BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getRandom().nextInt(7) == 0 && !BansheeEntity.this.isAggressive();
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return false;
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {            
+        public void tick() {            
             BlockPos blockpos = BansheeEntity.this.blockPosition();
             int y = BansheeEntity.this.getRandom().nextInt(11) - 5;
            
@@ -546,23 +494,22 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         return p_213348_2_.height * 0.8F;
     }
     
-    protected SoundEvent getAmbientSound()
-    {
+    @Override
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.BANSHEE_AMBIENT;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.BANSHEE_HURT;
     }
 
-    protected SoundEvent getDeathSound()
-    {
+    @Override
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.BANSHEE_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
+    protected SoundEvent getSpellSound() {
         return FURSoundRegistry.BANSHEE_ATTACK;
     }
 

@@ -463,8 +463,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	}
 
     @Override
-    protected boolean makeFlySound()
-    {
+    protected boolean makeFlySound() {
         return true;
     }
 

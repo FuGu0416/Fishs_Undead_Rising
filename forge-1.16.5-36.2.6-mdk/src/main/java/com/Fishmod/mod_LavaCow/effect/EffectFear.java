@@ -23,7 +23,7 @@ public class EffectFear extends Effect {
         	mob.setTarget(null);
         	mob.setLastHurtByMob(null);
         	if(vec != null) {
-        		mob.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.5D);
+        		mob.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.0D);
         	}
         }
     }
