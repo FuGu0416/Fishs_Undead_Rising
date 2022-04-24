@@ -93,7 +93,6 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
