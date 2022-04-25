@@ -48,6 +48,11 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
+    @Override
+    protected boolean isSunBurnTick() {
+    	return !FURConfig.SunScreen_Mode.get() && super.isSunBurnTick();
+    }
+    
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return AbstractSkeletonEntity.createAttributes()
         		.add(Attributes.MAX_HEALTH, FURConfig.Forsaken_Health.get())

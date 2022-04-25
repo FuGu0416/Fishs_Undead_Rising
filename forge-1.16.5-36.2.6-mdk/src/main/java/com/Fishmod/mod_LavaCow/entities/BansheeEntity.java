@@ -33,7 +33,6 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -137,11 +136,12 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     public void aiStep() {
         super.aiStep();
         
-        if(this.tickCount % 2 == 0)
-        	this.level.addParticle(this.ParticleType(), 
-        			this.getX() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 
-        			this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), 
-        			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);       	
+        if(this.tickCount % 2 == 0) {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            this.level.addParticle(this.ParticleType(), this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
+        }     	
         
         if(this.getType() == FUREntityRegistry.BANSHEE && this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
         	this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY() + this.getBbHeight(), this.getZ(), 0.0D, 1.0D, 0.0D);
@@ -166,7 +166,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     		this.setSecondsOnFire(8);
         }
     	
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D || this.getTarget()== null);
+    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);

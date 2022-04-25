@@ -10,6 +10,8 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -482,7 +484,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     	
     	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
  		   this.setSkin(6); 	 
-    	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : LootTables.SIMPLE_DUNGEON);
+    	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : this.getSkin() == 7 ? LootTableHandler.DESERT_TOMB_CHEST : LootTables.SIMPLE_DUNGEON);
     	for (int i = 0; i < this.inventory.getContainerSize();i++) {
     		if (this.getRandom().nextFloat() >= 0.05F) {
     			this.inventory.removeItem(i, 3);
@@ -498,7 +500,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
            LootTable loottable = this.level.getServer().getLootTables().get(lootTable);
 
            lootTable = null;
-           LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.level)).withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(this.blockPosition())).withOptionalRandomSeed(lootTableSeed).withLuck(-10.0F);
+           LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.level)).withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(this.blockPosition())).withOptionalRandomSeed(lootTableSeed).withLuck(-5.0F);
 
            loottable.fill(this.inventory, lootcontext$builder.create(LootParameterSets.CHEST));
         }

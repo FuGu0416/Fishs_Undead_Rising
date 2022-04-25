@@ -9,7 +9,8 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelCrown;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIFollowEntity;
-import com.Fishmod.mod_LavaCow.entities.ai.EntityAIGuardingEntity;
+import com.Fishmod.mod_LavaCow.entities.ai.SkeletonOwnerHurtByTargetGoal;
+import com.Fishmod.mod_LavaCow.entities.ai.SkeletonOwnerHurtTargetGoal;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
@@ -111,15 +112,17 @@ public class SkeletonKingCrownItem extends ArmorItem {
 				    	if(!modified && remove != null) {
 			    			Skeleton.setTarget(null);
 			    			Skeleton.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0F, 1.0F);
-				        	for (int i = 0; i < 16; ++i) {
-				                double d0 = new Random().nextGaussian() * 0.02D;
-				                double d1 = new Random().nextGaussian() * 0.02D;
-				                double d2 = new Random().nextGaussian() * 0.02D;
-				                Skeleton.level.addParticle(ParticleTypes.ENTITY_EFFECT, Skeleton.getX() + (double)(new Random().nextFloat() * Skeleton.getBbWidth()) - (double)Skeleton.getBbWidth(), Skeleton.getY() + (double)(new Random().nextFloat() * Skeleton.getBbHeight()), Skeleton.getZ() + (double)(new Random().nextFloat() * Skeleton.getBbWidth()) - (double)Skeleton.getBbWidth(), d0, d1, d2);
+			    			
+				            for(int i = 0; i < 16; ++i) {
+				                double d0 = Item.random.nextGaussian() * 0.02D;
+				                double d1 = Item.random.nextGaussian() * 0.02D;
+				                double d2 = Item.random.nextGaussian() * 0.02D;
+				                player.level.addParticle(ParticleTypes.ENTITY_EFFECT, Skeleton.getRandomX(1.0D), Skeleton.getRandomY() + 1.0D, Skeleton.getRandomZ(1.0D), d0, d1, d2);
 				            }
 				        	
 				    		Skeleton.goalSelector.addGoal(6, new EntityAIFollowEntity(Skeleton, player.getUUID(), 1.0D, 10.0F, 2.0F));
-				    		Skeleton.targetSelector.addGoal(1, new EntityAIGuardingEntity(Skeleton, player.getUUID()));
+				    		Skeleton.targetSelector.addGoal(1, new SkeletonOwnerHurtByTargetGoal(Skeleton, player.getUUID()));
+				    		Skeleton.targetSelector.addGoal(2, new SkeletonOwnerHurtTargetGoal(Skeleton, player.getUUID()));
 				    		Skeleton.targetSelector.removeGoal(remove);
 					    }
 					} catch (IllegalArgumentException e1) {

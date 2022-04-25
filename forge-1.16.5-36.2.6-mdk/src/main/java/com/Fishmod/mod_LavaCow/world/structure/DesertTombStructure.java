@@ -61,10 +61,10 @@ public class DesertTombStructure extends Structure<NoFeatureConfig> {
 			this.pieces.add(desert_tomb_piece);
             this.calculateBoundingBox();
             
-            System.out.println("House at " +
+            /*System.out.println("House at " +
                     this.pieces.get(0).getBoundingBox().x0 + " " +
                     this.pieces.get(0).getBoundingBox().y0 + " " +
-                    this.pieces.get(0).getBoundingBox().z0);
+                    this.pieces.get(0).getBoundingBox().z0);*/
 		}
     }
 }

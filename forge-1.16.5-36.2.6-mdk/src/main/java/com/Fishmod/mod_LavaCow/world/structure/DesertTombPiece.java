@@ -29,37 +29,40 @@ public class DesertTombPiece extends ScatteredStructurePiece {
 	}
 
 	@Override
-	public boolean postProcess(ISeedReader p_230383_1_, StructureManager p_230383_2_, ChunkGenerator p_230383_3_,
-			Random rand, MutableBoundingBox p_230383_5_, ChunkPos p_230383_6_, BlockPos p_230383_7_) {
-		BlockPos pos;
-        int GenMimic = rand.nextInt(2);
-        int l = 0;		
-
-		for(int j = p_230383_5_.y1 ; j >= p_230383_5_.y0; j--)
-			for(int i = p_230383_5_.x0 + 7 ; i <= p_230383_5_.x1 + 7; i++)			
-				for(int k = p_230383_5_.z0 - 7 ; k <= p_230383_5_.z1 - 7; k++) {
-					pos = new BlockPos(i, j, k);
-					if(p_230383_1_.getBlockState(pos).getBlock() == Blocks.CHEST) {
-						if (GenMimic == l) {	
-							Direction Chestfacing = p_230383_1_.getBlockState(pos).getValue(ChestBlock.FACING);
-							p_230383_1_.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-							
-							MimicEntity Mimic = FUREntityRegistry.MIMIC.create(p_230383_1_.getLevel());
-							Mimic.setPersistenceRequired();
-							Mimic.moveTo((double)i + 0.5D, (double)j, (double)k + 0.5D, 0.0F, 0.0F);							
-							Mimic.finalizeSpawn(p_230383_1_, p_230383_1_.getCurrentDifficultyAt(new BlockPos(i, j, k)), SpawnReason.STRUCTURE, (ILivingEntityData)null, (CompoundNBT)null);
-							Mimic.setSkin(7);					
-							Mimic.inventory.setItem(0, new ItemStack(FURItemRegistry.GHOSTJELLY/* FishItems.KINGS_CROWN*/, 1));
-							Mimic.doMimicChest(Chestfacing);						
-							p_230383_1_.addFreshEntityWithPassengers(Mimic);
-							break;
+	public boolean postProcess(ISeedReader p_230383_1_, StructureManager p_230383_2_, ChunkGenerator p_230383_3_, Random rand, MutableBoundingBox p_230383_5_, ChunkPos p_230383_6_, BlockPos p_230383_7_) {
+		if (!this.updateAverageGroundHeight(p_230383_1_, p_230383_5_, -9)) {
+			return false;
+		} else {
+			BlockPos pos;
+	        int GenMimic = rand.nextInt(4);
+	        int l = 0;		
+	        
+			for(int j = p_230383_5_.y1 ; j >= p_230383_5_.y0; j--)
+				for(int i = p_230383_5_.x0 + 7 ; i <= p_230383_5_.x1 + 7; i++)			
+					for(int k = p_230383_5_.z0 - 7 ; k <= p_230383_5_.z1 - 7; k++) {
+						pos = new BlockPos(i, j, k);
+						if(p_230383_1_.getBlockState(pos).getBlock() == Blocks.CHEST) {				            
+							if (GenMimic > l) {	
+								Direction Chestfacing = p_230383_1_.getBlockState(pos).getValue(ChestBlock.FACING);
+								p_230383_1_.removeBlock(pos, false);
+								
+								MimicEntity Mimic = FUREntityRegistry.MIMIC.create(p_230383_1_.getLevel());
+								Mimic.setPersistenceRequired();
+								Mimic.moveTo((double)i + 0.5D, (double)j, (double)k + 0.5D, 0.0F, 0.0F);							
+								Mimic.finalizeSpawn(p_230383_1_, p_230383_1_.getCurrentDifficultyAt(new BlockPos(i, j, k)), SpawnReason.STRUCTURE, (ILivingEntityData)null, (CompoundNBT)null);
+								Mimic.setSkin(7);					
+								Mimic.inventory.setItem(0, new ItemStack(FURItemRegistry.STAINED_KINGS_CROWN, 1));
+								Mimic.doMimicChest(Chestfacing);						
+								p_230383_1_.addFreshEntityWithPassengers(Mimic);
+								break;
+							}
+							l++;
 						}
-						l++;
+	
 					}
-
-				}
-
-		return true;
+	
+			return true;
+		}
 	}
 
 }
