@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.world.structure;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.util.ResourceLocation;
@@ -49,22 +50,31 @@ public class DesertTombStructure extends Structure<NoFeatureConfig> {
 		@Override
 		public void generatePieces(DynamicRegistries dynamicRegistries, ChunkGenerator chunkGenerator, TemplateManager templateManagerIn, 
 				int x, int z, Biome biomeIn, NoFeatureConfig featureConfig) {
-			BlockPos blockpos = new BlockPos((x << 4) + 7, chunkGenerator.getBaseHeight((x << 4) + 7, (z << 4) + 7, Heightmap.Type.WORLD_SURFACE_WG) - 9, (z << 4) + 7);
-		
-            JigsawManager.addPieces(dynamicRegistries,
-                    new VillageConfig(() -> dynamicRegistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                    		.get(new ResourceLocation(mod_LavaCow.MODID, "desert_tomb/start_pool")),
-                            10), AbstractVillagePiece::new, chunkGenerator, templateManagerIn,
-                    blockpos, this.pieces, this.random, false, false);
-            
-			DesertTombPiece desert_tomb_piece = new DesertTombPiece(this.random, (x << 4) + 7, (z << 4) + 7);
-			this.pieces.add(desert_tomb_piece);
-            this.calculateBoundingBox();
-            
-            /*System.out.println("House at " +
-                    this.pieces.get(0).getBoundingBox().x0 + " " +
-                    this.pieces.get(0).getBoundingBox().y0 + " " +
-                    this.pieces.get(0).getBoundingBox().z0);*/
+			if(FURConfig.SpawnRate_Desert_Tomb.get() > 0) {
+	            int k = (x << 4) + 7;
+	            int l = (z << 4) + 7;
+	            int i1 = chunkGenerator.getBaseHeight(k - 7, l - 7, Heightmap.Type.WORLD_SURFACE_WG);
+	            int j1 = chunkGenerator.getBaseHeight(k + 7, l - 7, Heightmap.Type.WORLD_SURFACE_WG);
+	            int k1 = chunkGenerator.getBaseHeight(k - 7, l + 7, Heightmap.Type.WORLD_SURFACE_WG);
+	            int l1 = chunkGenerator.getBaseHeight(k + 7, l + 7, Heightmap.Type.WORLD_SURFACE_WG);
+	            int i2 = Math.min(Math.min(i1, j1), Math.min(k1, l1));
+				BlockPos blockpos = new BlockPos(k, i2 - 9, l);
+			
+	            JigsawManager.addPieces(dynamicRegistries,
+	                    new VillageConfig(() -> dynamicRegistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
+	                    		.get(new ResourceLocation(mod_LavaCow.MODID, "desert_tomb/start_pool")),
+	                            10), AbstractVillagePiece::new, chunkGenerator, templateManagerIn,
+	                    blockpos, this.pieces, this.random, false, false);
+	            
+				DesertTombPiece desert_tomb_piece = new DesertTombPiece(this.random, (x << 4) + 7, (z << 4) + 7);
+				this.pieces.add(desert_tomb_piece);
+	            this.calculateBoundingBox();
+	            
+	            /*System.out.println("House at " +
+	                    this.pieces.get(0).getBoundingBox().x0 + " " +
+	                    this.pieces.get(0).getBoundingBox().y0 + " " +
+	                    this.pieces.get(0).getBoundingBox().z0);*/
+			}
 		}
     }
 }

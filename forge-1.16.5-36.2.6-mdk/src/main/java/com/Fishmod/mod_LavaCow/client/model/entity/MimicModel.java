@@ -285,7 +285,7 @@ public class MimicModel<T extends MimicEntity> extends FURBaseModel<T> {
     	    	this.Pincer_r_Seg0.y = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
     		}
         } else if (Entity.isInSittingPose()) {     	       	
-        	this.Chest_Base.yRot = Entity.rotationAngle;
+        	//this.Chest_Base.yRot = Entity.rotationAngle;
         	if(i >= 0.0F) {
         		this.toCamouflagePose(i);
         		this.showAllBodyPart(true); 

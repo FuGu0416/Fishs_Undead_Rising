@@ -14,7 +14,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
@@ -50,7 +49,11 @@ public class DesertTombProcessor extends StructureProcessor {
         }
  
         if (infoIn2.state.getBlock() == Blocks.CHEST) {
-        	LockableLootTileEntity.setLootTable(worldReader, rand, infoIn2.pos, LootTableHandler.DESERT_TOMB_CHEST);
+            CompoundNBT tag = new CompoundNBT();
+            tag.putString("LootTable", LootTableHandler.DESERT_TOMB_CHEST.toString());
+            tag.putLong("LootTableSeed", rand.nextLong());
+            
+            return new Template.BlockInfo(infoIn2.pos, infoIn2.state, tag);    	
         }
         
         if (infoIn2.state.getBlock() == Blocks.CUT_SANDSTONE || infoIn2.state.getBlock() == Blocks.CHISELED_SANDSTONE) {

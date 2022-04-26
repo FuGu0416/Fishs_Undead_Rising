@@ -476,7 +476,7 @@ public final class FURConfig {
 		Spawn_Cemetery_AllowList = BUILDER.comment("Cemetery are only allowed to spawn in these dimensions' IDs").defineList("cemetery spawn allow dimensions", 
 				Lists.newArrayList(Dimension.OVERWORLD.location().toString()), o -> o instanceof String);
 		Cemetery_SpawnRate = BUILDER.comment("Cemetery spawns Unburied occasionally. [0-100]").defineInRange("cemetery spawns unburied", 40, 0, 100);		
-		SpawnRate_Desert_Tomb = BUILDER.comment("Spawn rate of Desert Tomb [1-10000]").defineInRange("desert tomb spawn rate", 5, 0, 10000);
+		SpawnRate_Desert_Tomb = BUILDER.comment("Spawn rate of Desert Tomb, 0 = Disabled [1-10000]").defineInRange("desert tomb spawn rate", 5, 0, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("General");

@@ -62,7 +62,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 		switch(facing) {
 			case 0: //NORTH
 				if(rand.nextBoolean()) {
-					worldIn.setBlock(position, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.EAST), 2);
+					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
 				worldIn.setBlock(position.above().west().above(), FURBlockRegistry.TOMBSTONE.defaultBlockState().setValue(TombStoneBlock.FACING, Direction.WEST), 2);
@@ -70,7 +70,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				break;
 			case 1: //EAST
 				if(rand.nextBoolean()) {
-					worldIn.setBlock(position, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH), 3);
+					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
 				worldIn.setBlock(position.above().north().above(), FURBlockRegistry.TOMBSTONE.defaultBlockState().setValue(TombStoneBlock.FACING, Direction.NORTH), 2);
@@ -78,7 +78,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				break;
 			case 2: //WEST
 				if(rand.nextBoolean()) {
-					worldIn.setBlock(position, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH), 3);
+					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
 				worldIn.setBlock(position.above().south().above(), FURBlockRegistry.TOMBSTONE.defaultBlockState().setValue(TombStoneBlock.FACING, Direction.SOUTH), 2);
@@ -86,7 +86,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				break;
 			case 3: //SOUTH
 				if(rand.nextBoolean()) {
-					worldIn.setBlock(position, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST), 3);
+					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
 				worldIn.setBlock(position.above().east().above(), FURBlockRegistry.TOMBSTONE.defaultBlockState().setValue(TombStoneBlock.FACING, Direction.EAST), 2);

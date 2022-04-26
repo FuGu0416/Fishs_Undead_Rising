@@ -5,7 +5,6 @@ import java.util.Random;
 import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.ILivingEntityData;
@@ -35,14 +34,20 @@ public class DesertTombPiece extends ScatteredStructurePiece {
 		} else {
 			BlockPos pos;
 	        int GenMimic = rand.nextInt(4);
-	        int l = 0;		
+	        int l = 1;		
+
+	        for(int k1 = 0; k1 < this.width; ++k1) {
+	            for(int j = 0; j < this.depth; ++j) {
+	               this.fillColumnDown(p_230383_1_, Blocks.SAND.defaultBlockState(), k1, -8, j, p_230383_5_);
+	            }
+	        }
 	        
 			for(int j = p_230383_5_.y1 ; j >= p_230383_5_.y0; j--)
 				for(int i = p_230383_5_.x0 + 7 ; i <= p_230383_5_.x1 + 7; i++)			
 					for(int k = p_230383_5_.z0 - 7 ; k <= p_230383_5_.z1 - 7; k++) {
 						pos = new BlockPos(i, j, k);
-						if(p_230383_1_.getBlockState(pos).getBlock() == Blocks.CHEST) {				            
-							if (GenMimic > l) {	
+						if(p_230383_1_.getBlockState(pos).getBlock() == Blocks.CHEST) {						
+							if (GenMimic < l) {	
 								Direction Chestfacing = p_230383_1_.getBlockState(pos).getValue(ChestBlock.FACING);
 								p_230383_1_.removeBlock(pos, false);
 								
@@ -58,7 +63,6 @@ public class DesertTombPiece extends ScatteredStructurePiece {
 							}
 							l++;
 						}
-	
 					}
 	
 			return true;

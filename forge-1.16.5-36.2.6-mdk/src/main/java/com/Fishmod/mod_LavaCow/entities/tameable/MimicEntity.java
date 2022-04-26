@@ -388,7 +388,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         
         if (itemstack.getItem() instanceof SpawnEggItem) {
             return super.mobInteract(player, hand);
-        } else if(this.isTame()) {
+        } else if (this.isTame() && this.getOwner().equals(player)) {
         	if (player.isCrouching()) {
         		if(!this.level.isClientSide()) {
         			if(this.getSkin() == getVoidSkin()) {	
