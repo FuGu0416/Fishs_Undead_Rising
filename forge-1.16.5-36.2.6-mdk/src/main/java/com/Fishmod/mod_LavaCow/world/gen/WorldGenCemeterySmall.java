@@ -3,13 +3,13 @@ package com.Fishmod.mod_LavaCow.world.gen;
 import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.block.TombStoneBlock;
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Direction;
@@ -22,15 +22,14 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
     
-    public WorldGenCemeterySmall(Codec<NoFeatureConfig> p_i232004_1_)
-    {
+    public WorldGenCemeterySmall(Codec<NoFeatureConfig> p_i232004_1_) {
         super(p_i232004_1_);
     }
 	
 	@Override
 	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {
 		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position).below());
-		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
+		if (!FURConfig.Generate_Cemetery.get() && blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
 			return false;
 		}
 		

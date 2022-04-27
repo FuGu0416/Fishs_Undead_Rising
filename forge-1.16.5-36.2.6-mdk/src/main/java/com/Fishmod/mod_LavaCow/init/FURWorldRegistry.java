@@ -69,12 +69,12 @@ public class FURWorldRegistry {
 		CORDY_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:cordy_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.CORDY_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));		
 		VEIL_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:veil_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.VEIL_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));				
 		HUGE_GLOWSHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:huge_glowshroom", HUGE_GLOWSHROOM.configured(new BigMushroomFeatureConfig(new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.defaultBlockState()), new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.defaultBlockState()), 3)));
-		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.configured(IFeatureConfig.NONE).chance(FURConfig.Cemetery_SpawnRate.get()));		
+		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.configured(IFeatureConfig.NONE).chance(FURConfig.SpawnRate_Cemetery.get()));		
 	}
 	
 	public static void setupStructures() {
         putStructureOnAList(DESERT_TOMB.get());
-        addStructureSeperation(DimensionSettings.OVERWORLD, DESERT_TOMB.get(), new StructureSeparationSettings(Math.max(FURConfig.SpawnRate_Desert_Tomb.get(), 2), Math.max(FURConfig.SpawnRate_Desert_Tomb.get() / 2, 1), 214748364));	
+        addStructureSeperation(DimensionSettings.OVERWORLD, DESERT_TOMB.get(), new StructureSeparationSettings(Math.max((1000 - FURConfig.SpawnRate_Desert_Tomb.get()), 2), Math.max((1000 - FURConfig.SpawnRate_Desert_Tomb.get()) / 2, 1), 214748364));	
         DESERT_TOMB_CF = Registry.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, "mod_lavacow:desert_tomb", DESERT_TOMB.get().configured(IFeatureConfig.NONE));
 	}
 	

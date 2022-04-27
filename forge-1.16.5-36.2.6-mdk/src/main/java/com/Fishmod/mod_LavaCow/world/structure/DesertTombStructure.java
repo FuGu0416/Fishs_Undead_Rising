@@ -50,7 +50,7 @@ public class DesertTombStructure extends Structure<NoFeatureConfig> {
 		@Override
 		public void generatePieces(DynamicRegistries dynamicRegistries, ChunkGenerator chunkGenerator, TemplateManager templateManagerIn, 
 				int x, int z, Biome biomeIn, NoFeatureConfig featureConfig) {
-			if(FURConfig.SpawnRate_Desert_Tomb.get() > 0) {
+			if(FURConfig.Generate_Desert_Tomb.get()) {
 	            int k = (x << 4) + 7;
 	            int l = (z << 4) + 7;
 	            int i1 = chunkGenerator.getBaseHeight(k - 7, l - 7, Heightmap.Type.WORLD_SURFACE_WG);

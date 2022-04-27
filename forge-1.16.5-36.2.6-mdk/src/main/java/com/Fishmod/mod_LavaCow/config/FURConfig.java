@@ -160,7 +160,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DreamCatcher_spawn;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeWand_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Shovel_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Tinkers_Compat;
+	//public static final ForgeConfigSpec.ConfigValue<Boolean> Tinkers_Compat;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Quark_Compat;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> SunScreen_Mode;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SpawnRate_Cemetery;
@@ -176,6 +176,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> SpawnRate_Desert_Tomb; 
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusVillagerTrades; 
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades; 
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
 	
 	static {
 		BUILDER.push("Glowshroom");
@@ -472,18 +474,20 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Structure");
+		Generate_Cemetery = BUILDER.comment("Generate Cemetery in the Overworld. [false/true]").define("generate cemetery", true);
 		SpawnRate_Cemetery = BUILDER.comment("Spawn rate of Cemetery [1-10000]").defineInRange("cemetery spawn rate", 500, 0, 10000);
 		Spawn_Cemetery_AllowList = BUILDER.comment("Cemetery are only allowed to spawn in these dimensions' IDs").defineList("cemetery spawn allow dimensions", 
 				Lists.newArrayList(Dimension.OVERWORLD.location().toString()), o -> o instanceof String);
-		Cemetery_SpawnRate = BUILDER.comment("Cemetery spawns Unburied occasionally. [0-100]").defineInRange("cemetery spawns unburied", 40, 0, 100);		
-		SpawnRate_Desert_Tomb = BUILDER.comment("Spawn rate of Desert Tomb, 0 = Disabled [1-10000]").defineInRange("desert tomb spawn rate", 5, 0, 10000);
+		Cemetery_SpawnRate = BUILDER.comment("Cemetery spawns Unburied occasionally. [0-100]").defineInRange("cemetery spawns unburied", 40, 0, 100);	
+		Generate_Desert_Tomb = BUILDER.comment("Generate Desert Tomb in the Overworld. [false/true]").define("generate desert tomb", true);
+		SpawnRate_Desert_Tomb = BUILDER.comment("Spawn rate of Desert Tomb [1-1000]").defineInRange("desert tomb spawn rate", 500, 0, 1000);
 		BUILDER.pop();
 		
 		BUILDER.push("General");
 		FlyingHeight_limit = BUILDER.comment("Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]").defineInRange("flying height limit", 16, 0, 100);		
 		Potion_Enable = BUILDER.comment("Adding new brewing recipe (existing property will be preserved). [false/true]").define("enable brewing recipe", true);
 		Enchantment_Enable = BUILDER.comment("Adding new enchantment (existing property will be preserved). [false/true]").define("enable enchantment", true);
-		Tinkers_Compat = BUILDER.comment("Adding new materials to Tinkers Construct. [false/true]").define("tinkers compatibility", false);
+		//Tinkers_Compat = BUILDER.comment("Adding new materials to Tinkers Construct. [false/true]").define("tinkers compatibility", false);
 		Quark_Compat = BUILDER.comment("Add additional content that works with Quark. [false/true]").define("quark compatibility", false);
 		SunScreen_Mode = BUILDER.comment("Mobs in this mod will not burn under daylight. [false/true]").define("sunscreen mode", false);	
 		Spawn_AllowList = BUILDER.comment("All mobs are only allowed to spawn in these dimensions' IDs").defineList("mob spawn allow dimensions", 
