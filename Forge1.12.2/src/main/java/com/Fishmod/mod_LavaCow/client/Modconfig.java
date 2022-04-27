@@ -187,6 +187,8 @@ public class Modconfig {
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
 	public static int Cemetery_SpawnRate; 
 	public static int SpawnRate_Desert_Tomb; 
+	public static boolean Generate_Cemetery;
+	public static boolean Generate_Desert_Tomb; 
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -444,8 +446,10 @@ public class Modconfig {
 		
 		Spawn_Cemetery_AllowList = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId()}, "Cemetery are only allowed to spawn in these dimensions' IDs").getIntList();
 		Cemetery_SpawnRate = config.get(Configuration.CATEGORY_GENERAL, "cemetery spawns unburied", 40, "Cemetery spawns Unburied occasionally. [0-100]", 0, 100).getInt(40);
+		Generate_Cemetery = config.get(Configuration.CATEGORY_GENERAL, "generate cemetery", true, "Generate Cemetery in the Overworld. [false/true]").getBoolean(true);
 		
-		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent, 0 to disable it) [0-10000]", 0, 10000).getInt(750);
+		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [0-10000]", 0, 10000).getInt(750);
+		Generate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "generate desert tomb", true, "Generate Desert Tomb in the Overworld. [false/true]").getBoolean(true);
 		
 		if (config.hasChanged())
 			config.save();

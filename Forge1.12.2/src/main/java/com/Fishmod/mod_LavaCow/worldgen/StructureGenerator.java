@@ -34,7 +34,7 @@ public class StructureGenerator implements IWorldGenerator {
     	BlockPos pos = world.getHeight(new BlockPos(x, 0, z));
     	Biome biome = world.getBiomeForCoordsBody(pos);
 		
-    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && SpawnUtil.isAllowedDimensionCemetery(world.provider.getDimension()) && rand.nextInt(Modconfig.SpawnRate_Cemetery + 1) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
+    	if (Modconfig.Generate_Cemetery && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS) && SpawnUtil.isAllowedDimensionCemetery(world.provider.getDimension()) && rand.nextInt(Modconfig.SpawnRate_Cemetery + 1) == 0 && world.getBlockState(pos.down()).isOpaqueCube() && isSolidGround(pos.down(), world)) {
     		CEMETERY_SMALL.generate(world, rand, pos);
     	}
     	
@@ -42,8 +42,14 @@ public class StructureGenerator implements IWorldGenerator {
     		AQUA_MOB.generate(world, rand, pos);
     	}
 		
-        if (SpawnUtil.isAllowedDimension(world.provider.getDimension()) && Modconfig.SpawnRate_Desert_Tomb > 0 && rand.nextInt(Modconfig.SpawnRate_Desert_Tomb + 1) == 0 && world.provider.hasSkyLight() && !world.provider.isNether() && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) && StructureUtil.CanStructureGenonBlock(world, pos.down())) {
-            StructureUtil.GenDesertTomb(DESERT_TOMB, LootTableHandler.DESERT_TOMB_CHEST, world, pos.down(10));
+        if (Modconfig.Generate_Desert_Tomb && SpawnUtil.isAllowedDimension(world.provider.getDimension()) && rand.nextInt(Modconfig.SpawnRate_Desert_Tomb + 1) == 0 && world.provider.hasSkyLight() && !world.provider.isNether() && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) && StructureUtil.CanStructureGenonBlock(world, pos.down())) {
+            int i1 = world.getHeight(new BlockPos(x - 7, 0, z - 7)).getY();
+            int j1 = world.getHeight(new BlockPos(x + 7, 0, z - 7)).getY();
+            int k1 = world.getHeight(new BlockPos(x - 7, 0, z + 7)).getY();
+            int l1 = world.getHeight(new BlockPos(x + 7, 0, z + 7)).getY();
+            int i2 = Math.min(Math.min(i1, j1), Math.min(k1, l1));
+			BlockPos blockpos = new BlockPos(x, i2 - 9, z);            
+        	StructureUtil.GenDesertTomb(DESERT_TOMB, LootTableHandler.DESERT_TOMB_CHEST, world, blockpos);
         }
 	}
 	

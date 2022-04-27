@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.util;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,6 +50,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -638,13 +640,32 @@ public class ModEventHandler {
     	if(event.getEntity() != null && event.getEntity() instanceof EntityVillager)
     		((EntityVillager)event.getEntity()).tasks.addTask(1, new EntityAIAvoidEntity<>(((EntityVillager)event.getEntity()), EntityUnburied.class, 8.0F, 0.8D, 0.8D));
     	
-    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton) {
+    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && !(event.getEntity() instanceof IEntityOwnable)) {
     		EntityAIBase remove = null;
     		
     	    for(EntityAITaskEntry task : ((AbstractSkeleton)event.getEntity()).targetTasks.taskEntries) {
     	        if(task.action.getClass().getSimpleName().equals("EntityAINearestAttackableTarget")) {
-    	            remove = task.action;
-    	            break;
+					Field targetClassField;
+					try {
+						targetClassField = task.action.getClass().getDeclaredField("targetClass");
+						targetClassField.setAccessible(true);
+	                    Class<?> targetClass;
+						try {
+							targetClass = (Class<?>) targetClassField.get(task.action);
+							if(targetClass.equals(EntityPlayer.class) || targetClass.equals(EntityPlayerMP.class)) {
+			    	            remove = task.action;
+			    	            break;							
+							}   
+						} catch (IllegalArgumentException e) {
+							continue;
+						} catch (IllegalAccessException e) {
+							continue;
+						}
+					} catch (NoSuchFieldException e) {
+						continue;
+					} catch (SecurityException e) {
+						continue;
+					}	      
     	        }
     	    }
     	    if(remove != null) {
