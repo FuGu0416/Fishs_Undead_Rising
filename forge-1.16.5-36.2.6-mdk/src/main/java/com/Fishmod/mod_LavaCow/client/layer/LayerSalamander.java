@@ -35,7 +35,7 @@ public class LayerSalamander<T extends SalamanderEntity, M extends SalamanderMod
 	public RenderType renderType(T p_225628_4_) {
 		ResourceLocation texture;
 		
-		if(p_225628_4_.isBaby()) {
+		if(p_225628_4_.isNymph()) {
 			texture = TEXTURES_GLOW[p_225628_4_.getSkin() + 2];
 		} else texture = TEXTURES_GLOW[p_225628_4_.getSkin()];
 		

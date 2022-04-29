@@ -48,6 +48,7 @@ public class GhostRayEntity extends FlyingMobEntity {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.03D)
         		.add(Attributes.MAX_HEALTH, FURConfig.GhostRay_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, 0.0D)
         		.add(Attributes.FLYING_SPEED, 0.03D);
     }
 
