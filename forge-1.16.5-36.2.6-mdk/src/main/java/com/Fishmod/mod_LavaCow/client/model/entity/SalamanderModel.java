@@ -195,7 +195,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     	SalamanderEntity Entity = ((SalamanderEntity)entityIn);
-    	float i = (float)((SalamanderEntity) entityIn).getAttackTimer() / 80.0F;
+    	float i = Entity.getAttackTimer() / 80.0F;
     	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);

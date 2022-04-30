@@ -90,7 +90,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 		this.entityData.define(SADDLED, Boolean.valueOf(false));
 		this.entityData.define(ATTACK_TIMER, Integer.valueOf(0));
-		this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
+		this.entityData.define(GROWING_STAGE, Integer.valueOf(-1));
 	}
 	
     @Override
@@ -299,7 +299,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
         switch(i) {
 	        case 0:
 		    	this.xpReward = 5;
-		    	
 		    	this.avoid_entity = new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.8D, 1.6D);
 		    	this.goalSelector.addGoal(3, this.avoid_entity);
 		    	this.goalSelector.removeGoal(this.range_atk);
@@ -405,16 +404,13 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	            float f = controller.xxa * 0.5F;
 	            float f1 = controller.zza;
 	
-	            if (this.isControlledByLocalInstance())
-	            {
+	            if (this.isControlledByLocalInstance()) {
 	                if(this.isInLava()) {
 	                	this.setDeltaMovement(this.getDeltaMovement().x * 1.5F, this.getDeltaMovement().y + 0.02F, this.getDeltaMovement().z * 1.5F);
 	                }
 	                this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
 	                super.travel(new Vector3d((double)f, p_213352_1_.y, (double)f1));
-	            }
-	            else
-	            {
+	            } else {
 	            	this.setDeltaMovement(Vector3d.ZERO);
 	            }
 	
@@ -440,16 +436,16 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
        switch(this.level.getDifficulty()) {
 	       case PEACEFUL:
 	    	   chance_to_spawn_as_child = 0.85F;
-	  			break;
+	    	   break;
 	       case EASY:
 	    	   chance_to_spawn_as_child = 0.8F;
-	  			break;
+	    	   break;
 	       case NORMAL:
 	    	   chance_to_spawn_as_child = 0.5F;
-	  			break;
+	    	   break;
 	       case HARD:
 	    	   chance_to_spawn_as_child = 0.15F;
-       			break;
+	    	   break;
        		default:
        			break;
        }
@@ -528,6 +524,16 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     protected ResourceLocation getDefaultLootTable() {
     	return this.isBaby() ? new ResourceLocation("mod_lavacow", "entities/salamanderlesser") : super.getDefaultLootTable();
     }
+    
+    @Override
+    protected boolean shouldDropExperience() {
+        return true;
+	}
+
+    @Override
+	protected boolean shouldDropLoot() {
+    	return true;
+	}
     
     /**
      * "Sets the scale for an ageable entity according to the boolean parameter, which says if it's a child."

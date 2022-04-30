@@ -475,7 +475,7 @@
 	"advancements.mod_lavacow.kill_scarecrow.description": "Kill a Scarecrow",
 	"advancements.mod_lavacow.tame_raven.title": "Raven, not Crow",
 	"advancements.mod_lavacow.tame_raven.description": "Tame a Raven",
-	"advancements.mod_lavacow.tame_salamander.title": "Beef is Good",
+	"advancements.mod_lavacow.tame_salamander.title": "Slippery Catch",
 	"advancements.mod_lavacow.tame_salamander.description": "Tame a Salamander",
 	"advancements.mod_lavacow.kill_pingu.title": "Let's Kick Some Ice",
 	"advancements.mod_lavacow.kill_pingu.description": "Kill a Penghoul",
@@ -499,6 +499,8 @@
 	"advancements.mod_lavacow.kill_forsaken.description": "Kill a Forsaken",
 	"advancements.mod_lavacow.get_hatred_shard.title": "In the Depths of Memory",
 	"advancements.mod_lavacow.get_hatred_shard.description": "Get Memory of a Thousand Armies",
-
+	"advancements.mod_lavacow.kill_imp.title": "Evil Monkey",
+	"advancements.mod_lavacow.kill_imp.description": "Kill a Imp",
+	
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

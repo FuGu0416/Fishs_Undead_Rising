@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.ai;
 
+import java.util.EnumSet;
+
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -39,6 +41,7 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
        this.Xoffset = 0.0D;
        this.Yoffset = 0.0D;
        this.Zoffset = 0.0D;
+       this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
     
     public EntityFishAIAttackRange(CreatureEntity shooterIn, EntityType<T> shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn) {
@@ -52,6 +55,7 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
         this.Xoffset = 0.0D;
         this.Yoffset = 0.0D;
         this.Zoffset = 0.0D;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
      }
     
     public EntityFishAIAttackRange(CreatureEntity shooterIn, EntityType<T> shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn, double XIn, double YIn, double ZIn) {
@@ -65,6 +69,7 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
         this.Xoffset = XIn;
         this.Yoffset = YIn;
         this.Zoffset = ZIn;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
      }
     
     public EntityFishAIAttackRange(CreatureEntity shooterIn, EntityType<T> shotIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
@@ -78,6 +83,7 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
         this.Xoffset = XIn;
         this.Yoffset = YIn;
         this.Zoffset = ZIn;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
      }
 
 	/**
@@ -94,12 +100,14 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
      */
     public void start() {
        this.attackStep = 0;
+       this.shooter.setAggressive(true);
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void stop() {
+    	this.shooter.setAggressive(false);
     }
 
     /**

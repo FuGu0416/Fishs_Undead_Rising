@@ -168,7 +168,7 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
 			
 	        this.Head.xRot = 0.5462880558742251F + headPitch * 0.017453292F;
 	        this.Head.yRot = 0.0F;
-	        this.Jaw.xRot = 0.50F;
+        	this.Jaw.xRot = 0.5F;
 	        
             this.Head_Gill_l0.yRot = 0.0F;
             this.Head_Gill_l1.yRot = 0.0F;

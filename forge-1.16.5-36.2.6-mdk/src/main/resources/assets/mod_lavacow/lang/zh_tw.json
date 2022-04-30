@@ -488,7 +488,7 @@
 	"advancements.mod_lavacow.kill_scarecrow.description": "殺死一隻稻草人",
 	"advancements.mod_lavacow.tame_raven.title": "是渡鴉，不是烏鴉",
 	"advancements.mod_lavacow.tame_raven.description": "馴服一隻渡鴉",
-	"advancements.mod_lavacow.tame_salamander.title": "牛肉，好吃",
+	"advancements.mod_lavacow.tame_salamander.title": "滑溜的收穫",
 	"advancements.mod_lavacow.tame_salamander.description": "馴服一頭炎熔螈",
 	"advancements.mod_lavacow.kill_pingu.title": "來破冰吧！",
 	"advancements.mod_lavacow.kill_pingu.description": "殺死一隻冰葬鵝",
@@ -512,6 +512,8 @@
 	"advancements.mod_lavacow.kill_forsaken.description": "殺死一頭被遺忘者",
 	"advancements.mod_lavacow.get_hatred_shard.title": "在那記憶的深處",
 	"advancements.mod_lavacow.get_hatred_shard.description": "獲得萬軍追憶",
-
+	"advancements.mod_lavacow.kill_imp.title": "壞猴子",
+	"advancements.mod_lavacow.kill_imp.description": "殺死一隻小鬼",
+	
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }
