@@ -27,7 +27,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,7 +86,6 @@ public class EntityBanshee extends EntityMob implements IAggressive{
     {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
     }
     
     protected void applyEntityAttributes()
@@ -140,7 +138,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
 	@Override
     public void onUpdate()
     {
-        this.noClip = true;
+        this.noClip = (this.posY > SpawnUtil.getHeight(this).getY() + 0.5D && this.getAttackTarget()== null);
         super.onUpdate();
         this.noClip = false;
         this.setNoGravity(true);

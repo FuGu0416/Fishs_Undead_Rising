@@ -82,7 +82,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 		super.entityInit();
 		this.dataManager.register(SADDLED, Boolean.valueOf(false));
 		this.dataManager.register(ATTACK_TIMER, Integer.valueOf(0));
-		this.dataManager.register(GROWING_STAGE, Integer.valueOf(0));
+		this.dataManager.register(GROWING_STAGE, Integer.valueOf(-1));
 	}
 	
     protected void initEntityAI()
