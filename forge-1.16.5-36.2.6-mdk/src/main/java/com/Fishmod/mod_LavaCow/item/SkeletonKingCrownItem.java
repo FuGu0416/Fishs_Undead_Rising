@@ -2,7 +2,6 @@ package com.Fishmod.mod_LavaCow.item;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nullable;

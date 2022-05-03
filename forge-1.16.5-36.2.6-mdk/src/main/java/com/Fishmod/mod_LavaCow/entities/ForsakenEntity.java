@@ -50,7 +50,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
     
     @Override
     protected boolean isSunBurnTick() {
-    	return !FURConfig.SunScreen_Mode.get() && super.isSunBurnTick();
+    	return false;
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {

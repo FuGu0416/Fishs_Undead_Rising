@@ -17,11 +17,11 @@ public class EmeraldForItemsTrade implements VillagerTrades.ITrade {
     private final int villagerXp;
     private final float priceMultiplier;
 
-    public EmeraldForItemsTrade(IItemProvider p_i50539_1_, int p_i50539_2_, int p_i50539_3_, int p_i50539_4_) {
-       this.item = p_i50539_1_.asItem();
-       this.cost = p_i50539_2_;
-       this.maxUses = p_i50539_3_;
-       this.villagerXp = p_i50539_4_;
+    public EmeraldForItemsTrade(IItemProvider itemIn, int costIn, int maxUsesIn, int villagerXpIn) {
+       this.item = itemIn.asItem();
+       this.cost = costIn;
+       this.maxUses = maxUsesIn;
+       this.villagerXp = villagerXpIn;
        this.priceMultiplier = 0.05F;
     }
 

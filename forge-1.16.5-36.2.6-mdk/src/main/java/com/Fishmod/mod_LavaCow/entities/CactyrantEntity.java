@@ -53,12 +53,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
-public class UndertakerEntity extends MonsterEntity implements IAggressive {
+public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	
 	private int attackTimer;
 	protected int spellTicks;
 	
-	public UndertakerEntity(EntityType<? extends UndertakerEntity> p_i48549_1_, World worldIn) {
+	public CactyrantEntity(EntityType<? extends CactyrantEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
 		this.xpReward = 12;
 	}
@@ -67,7 +67,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     protected void registerGoals()
     {
         this.goalSelector.addGoal(1, new AICastingApell());
-        this.goalSelector.addGoal(2, new UndertakerEntity.AIUseSpell());
+        this.goalSelector.addGoal(2, new CactyrantEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false));  
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
@@ -95,7 +95,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
-    public static boolean checkUndertakerSpawnRules(EntityType<? extends UndertakerEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+    public static boolean checkCactyrantSpawnRules(EntityType<? extends CactyrantEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
@@ -169,7 +169,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     
 	@Override
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
-        return p_213348_2_.height * 0.75F;
+        return p_213348_2_.height * 0.85F;
     }
     
     /**
@@ -247,7 +247,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
          */
         public boolean canUse()
         {
-            return UndertakerEntity.this.getSpellTicks() > 0;
+            return CactyrantEntity.this.getSpellTicks() > 0;
         }
 
         /**
@@ -256,7 +256,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         public void start()
         {
             super.start();
-            UndertakerEntity.this.getNavigation().stop();
+            CactyrantEntity.this.getNavigation().stop();
         }
 
         /**
@@ -272,9 +272,9 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
          */
         public void tick()
         {
-            if (UndertakerEntity.this.getTarget() != null)
+            if (CactyrantEntity.this.getTarget() != null)
             {
-                UndertakerEntity.this.getLookControl().setLookAt(UndertakerEntity.this.getTarget(), (float)UndertakerEntity.this.getMaxHeadYRot(), (float)UndertakerEntity.this.getMaxHeadXRot());
+                CactyrantEntity.this.getLookControl().setLookAt(CactyrantEntity.this.getTarget(), (float)CactyrantEntity.this.getMaxHeadYRot(), (float)CactyrantEntity.this.getMaxHeadXRot());
             }
         }
     }
@@ -289,16 +289,16 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
          */
         public boolean canUse()
         {
-            if (!UndertakerEntity.this.getMainHandItem().getItem().equals(FURItemRegistry.UNDERTAKER_SHOVEL))
+            if (!CactyrantEntity.this.getMainHandItem().getItem().equals(FURItemRegistry.UNDERTAKER_SHOVEL))
             	return false;
-            else if (UndertakerEntity.this.getTarget() == null)
+            else if (CactyrantEntity.this.getTarget() == null)
                 return false;
-            else if (UndertakerEntity.this.isSpellcasting() || !UndertakerEntity.this.canSee(UndertakerEntity.this.getTarget()))
+            else if (CactyrantEntity.this.isSpellcasting() || !CactyrantEntity.this.canSee(CactyrantEntity.this.getTarget()))
                 return false;
             else
             {
-                int i = UndertakerEntity.this.level.getEntitiesOfClass(UnburiedEntity.class, UndertakerEntity.this.getBoundingBox().inflate(16.0D)).size();
-            	return UndertakerEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Undertaker_Ability_Max.get();
+                int i = CactyrantEntity.this.level.getEntitiesOfClass(UnburiedEntity.class, CactyrantEntity.this.getBoundingBox().inflate(16.0D)).size();
+            	return CactyrantEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Undertaker_Ability_Max.get();
             }
         }
 
@@ -307,7 +307,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
          */
         public boolean canContinueToUse()
         {
-            return UndertakerEntity.this.getTarget() != null && this.spellWarmup > 0;
+            return CactyrantEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
@@ -316,13 +316,13 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         public void start()
         {
             this.spellWarmup = this.getCastWarmupTime();
-            UndertakerEntity.this.spellTicks = this.getCastingTime();
-            this.spellCooldown = UndertakerEntity.this.tickCount + this.getCastingInterval();
+            CactyrantEntity.this.spellTicks = this.getCastingTime();
+            this.spellCooldown = CactyrantEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
-            UndertakerEntity.this.level.broadcastEntityEvent(UndertakerEntity.this, (byte)10);
+            CactyrantEntity.this.level.broadcastEntityEvent(CactyrantEntity.this, (byte)10);
             if (soundevent != null)
             {
-                UndertakerEntity.this.playSound(soundevent, 1.0F, 1.0F);
+                CactyrantEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
 
@@ -336,7 +336,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
             if (this.spellWarmup == 0)
             {
                 this.castSpell();
-                UndertakerEntity.this.playSound(UndertakerEntity.this.getSpellSound(), 1.0F, 1.0F);
+                CactyrantEntity.this.playSound(CactyrantEntity.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
@@ -344,53 +344,53 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         {
             for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i)
             {
-                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
-                if(UndertakerEntity.this.getRandom().nextFloat() < 0.15F) {
-                	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.DRY)) {
+                BlockPos blockpos = CactyrantEntity.this.blockPosition().offset(-6 + CactyrantEntity.this.getRandom().nextInt(12), 0, -6 + CactyrantEntity.this.getRandom().nextInt(12));
+                if(CactyrantEntity.this.getRandom().nextFloat() < 0.15F) {
+                	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(CactyrantEntity.this.level.getBiome(CactyrantEntity.this.blockPosition()))).contains(Type.DRY)) {
                 		
-                    	MummyEntity entityvex = FUREntityRegistry.MUMMY.create(UndertakerEntity.this.level);
+                    	MummyEntity entityvex = FUREntityRegistry.MUMMY.create(CactyrantEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
                         
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
+                        if(!CactyrantEntity.this.level.isClientSide())
+                        	CactyrantEntity.this.level.addFreshEntity(entityvex);
                         
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
+                        if(CactyrantEntity.this.getTarget() != null)
+                        	entityvex.setTarget(CactyrantEntity.this.getTarget());
                         
-                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.COLD)) {
+                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(CactyrantEntity.this.level.getBiome(CactyrantEntity.this.blockPosition()))).contains(Type.COLD)) {
                     	
-                    	FrigidEntity entityvex = FUREntityRegistry.FRIGID.create(UndertakerEntity.this.level);
+                    	FrigidEntity entityvex = FUREntityRegistry.FRIGID.create(CactyrantEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
                         
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
+                        if(!CactyrantEntity.this.level.isClientSide())
+                        	CactyrantEntity.this.level.addFreshEntity(entityvex);
                         
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
+                        if(CactyrantEntity.this.getTarget() != null)
+                        	entityvex.setTarget(CactyrantEntity.this.getTarget());
                         
-                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.WET)) {
+                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(CactyrantEntity.this.level.getBiome(CactyrantEntity.this.blockPosition()))).contains(Type.WET)) {
                     	
-                    	MycosisEntity entityvex = FUREntityRegistry.MYCOSIS.create(UndertakerEntity.this.level);
+                    	MycosisEntity entityvex = FUREntityRegistry.MYCOSIS.create(CactyrantEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
                         
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
+                        if(!CactyrantEntity.this.level.isClientSide())
+                        	CactyrantEntity.this.level.addFreshEntity(entityvex);
                         
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
+                        if(CactyrantEntity.this.getTarget() != null)
+                        	entityvex.setTarget(CactyrantEntity.this.getTarget());
                         
                     }                  
                 } else {
                 	
-                	UnburiedEntity entityvex = FUREntityRegistry.UNBURIED.create(UndertakerEntity.this.level);
+                	UnburiedEntity entityvex = FUREntityRegistry.UNBURIED.create(CactyrantEntity.this.level);
                     entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                    entityvex.setOwnerUUID(UndertakerEntity.this.getUUID());
+                    entityvex.setOwnerUUID(CactyrantEntity.this.getUUID());
                     
-                    if(!UndertakerEntity.this.level.isClientSide())
-                    	UndertakerEntity.this.level.addFreshEntity(entityvex);
+                    if(!CactyrantEntity.this.level.isClientSide())
+                    	CactyrantEntity.this.level.addFreshEntity(entityvex);
                     
-                    if(UndertakerEntity.this.getTarget() != null)
-                    	entityvex.setTarget(UndertakerEntity.this.getTarget());                   
+                    if(CactyrantEntity.this.getTarget() != null)
+                    	entityvex.setTarget(CactyrantEntity.this.getTarget());                   
                 }                             
             }
         }
