@@ -202,11 +202,19 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
+    	float j = (float)entityIn.getSpellTicks() / 20.0F;
+    	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	this.Body_base.y = 18.5F - 0.5F * MathHelper.sin(limbSwing * 1.2F);
     	this.SwingX_Sin(this.Leg0_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.0F);
     	this.SwingX_Sin(this.Leg1_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.33F * (float)Math.PI);
     	this.SwingX_Sin(this.Leg2_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.67F * (float)Math.PI);
+    	
+    	if(j > 0.0F) {
+    		this.Body_Seg1.yRot = (float) (Math.PI * 10.0F * (1.0F - j));
+    	} else {
+    		this.Body_Seg1.yRot = 0.0F;
+    	}
     }
 
 	@Override

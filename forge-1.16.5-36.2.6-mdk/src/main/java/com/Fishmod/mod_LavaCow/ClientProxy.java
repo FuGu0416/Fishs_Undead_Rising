@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.client.renderer.FURItemstackRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.BoneWormRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.DeathCoilRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.FogletRenderer;
@@ -113,6 +114,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTUS_THORN, manager -> new CactusThornRenderer(manager));
         
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
