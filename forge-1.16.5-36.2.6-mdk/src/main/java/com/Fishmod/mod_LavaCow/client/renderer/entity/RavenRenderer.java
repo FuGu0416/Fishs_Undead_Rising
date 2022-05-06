@@ -14,8 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class RavenRenderer extends MobRenderer<RavenEntity, RavenModel<RavenEntity>> {
-	
+public class RavenRenderer extends MobRenderer<RavenEntity, RavenModel<RavenEntity>> {	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven1.png"),

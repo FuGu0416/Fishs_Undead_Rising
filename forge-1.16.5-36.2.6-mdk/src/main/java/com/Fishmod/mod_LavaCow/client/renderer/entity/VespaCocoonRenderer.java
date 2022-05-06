@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class VespaCocoonRenderer extends MobRenderer<VespaCocoonEntity, VespaCocoonModel<VespaCocoonEntity>>  {
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/vespa_cocoon.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/vespa_cocoon.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }

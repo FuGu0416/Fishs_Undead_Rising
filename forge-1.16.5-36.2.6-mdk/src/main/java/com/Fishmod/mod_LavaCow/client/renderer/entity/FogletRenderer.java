@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FogletRenderer extends MobRenderer<FogletEntity, FogletModel<FogletEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/foglet/foglet_eyes.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/foglet/foglet_eyes.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/foglet/foglet.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/foglet/foglet2.png"),

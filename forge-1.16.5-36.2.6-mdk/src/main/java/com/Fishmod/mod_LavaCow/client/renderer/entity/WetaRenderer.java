@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class WetaRenderer extends MobRenderer<WetaEntity, WetaModel<WetaEntity>> {
-	
+public class WetaRenderer extends MobRenderer<WetaEntity, WetaModel<WetaEntity>> {	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png")

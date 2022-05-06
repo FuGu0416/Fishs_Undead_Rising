@@ -9,11 +9,14 @@ import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * ModelCacti - Fish0016054
  * Created using Tabula 7.1.0
  */
+@OnlyIn(Dist.CLIENT)
 public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> implements IHasArm, IHasHead {
     public ModelRenderer Body_base;
     public ModelRenderer Leg0_Seg0;
@@ -202,18 +205,93 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
-    	float j = (float)entityIn.getSpellTicks() / 20.0F;
+    	float spl = (float)entityIn.getSpellTicks() / 20.0F;
+    	float i = (float)entityIn.getAttackTimer() / 15.0F;  
+    	float Anime_threshold[] = {1.0F, 0.7F, 0.25F};
+    	float Anime_ctrl;
+    	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
+    	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
+    	float l = 1.0F / (Anime_threshold[2]);
     	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
-    	this.Body_base.y = 18.5F - 0.5F * MathHelper.sin(limbSwing * 1.2F);
-    	this.SwingX_Sin(this.Leg0_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.0F);
-    	this.SwingX_Sin(this.Leg1_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.33F * (float)Math.PI);
-    	this.SwingX_Sin(this.Leg2_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.67F * (float)Math.PI);
     	
-    	if(j > 0.0F) {
-    		this.Body_Seg1.yRot = (float) (Math.PI * 10.0F * (1.0F - j));
+    	if(entityIn.isCamouflaging()) {
+    		this.Body_base.y = 25.0F;
+    		this.Leg0_Seg0.xRot = 0.0F;
+    		this.Leg1_Seg0.xRot = 0.0F;
+    		this.Leg2_Seg0.xRot = 0.0F;
     	} else {
+    		this.Body_base.y = 19.5F - 0.5F * MathHelper.sin(limbSwing * 1.2F);
+        	this.SwingX_Sin(this.Leg0_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.0F);
+        	this.SwingX_Sin(this.Leg1_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.33F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg2_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.67F * (float)Math.PI);
+    	}
+    	   	
+    	this.Head_Flower0.visible = false;
+    	this.Limb0_Fruit0.visible = false;
+    	this.Limb0_Fruit1.visible = false;
+    	this.Limb0_Fruit2.visible = false;
+    	this.Limb1_Fruit0.visible = false;
+    	this.Limb1_Fruit1.visible = false;
+    	
+    	if(spl > 0.0F) {
+    		this.Body_Seg1.xRot = 0.0F;
+    		this.Body_Seg1.yRot = (float) (Math.PI * 10.0F * (1.0F - spl));
+    		this.Body_Seg2.xRot = 0.0F;
+    		this.Body_Seg2.yRot = 0.0F;
+    		this.Limb0_Seg0.yRot = 0.0F;
+    		this.Limb0_Seg1.xRot = 0.0F;
+    		this.Limb0_Seg1.zRot = 0.27314402793711257F;
+    		this.Limb1_Seg0.yRot = 3.141592653589793F;
+    		this.Limb1_Seg0.zRot = 0.22759093446006054F;	
+    	} else if (i > Anime_threshold[1]) {
+    		Anime_ctrl = j * (i - Anime_threshold[1]);
+    		this.Body_Seg1.xRot = 0.0F;
+    		this.Body_Seg1.yRot = GradientAnimation_s(0.0F, -0.5082398928281348F, Anime_ctrl);
+    		this.Body_Seg2.xRot = 0.0F;
+    		this.Body_Seg2.yRot = GradientAnimation_s(0.0F, -0.23457224414434488F, Anime_ctrl);
+    		this.Limb0_Seg0.yRot = 0.0F;
+    		this.Limb0_Seg1.xRot = 0.0F;
+    		this.Limb0_Seg1.zRot = GradientAnimation_s(0.27314402793711257F, 0.5077162820683115F, Anime_ctrl);
+    		this.Limb1_Seg0.yRot = 3.141592653589793F;
+    		this.Limb1_Seg0.zRot = GradientAnimation_s(0.22759093446006054F, -0.3979350561389017F, Anime_ctrl);	    		   		
+    	} else if (i > Anime_threshold[2]) {
+    		Anime_ctrl = k * (i - Anime_threshold[2]);    		
+    		this.Body_Seg1.xRot = GradientAnimation(0.0F, 0.6257005102083563F, Anime_ctrl);
+    		this.Body_Seg1.yRot = GradientAnimation(-0.5082398928281348F, 0.19547687289441354F, Anime_ctrl);
+    		this.Body_Seg2.xRot = GradientAnimation(0.0F, 0.6255260065779288F, Anime_ctrl);
+    		this.Body_Seg2.yRot = GradientAnimation(-0.23457224414434488F, 0.23457224414434488F, Anime_ctrl);
+    		this.Limb0_Seg0.yRot = GradientAnimation(0.0F, 0.7037167490777915F, Anime_ctrl);
+    		this.Limb0_Seg1.xRot = GradientAnimation(0.0F, 0.7428121536172365F, Anime_ctrl);
+    		this.Limb0_Seg1.zRot = 0.5077162820683115F;
+    		this.Limb1_Seg0.yRot = GradientAnimation(3.141592653589793F, -3.141592653589793F, Anime_ctrl);
+    		this.Limb1_Seg0.zRot = -0.3979350561389017F;	 
+    	} else if (i > 0.0F) {
+    		Anime_ctrl = l * i;
+        	this.setRotateAngle(Limb0_Seg0, 0.0F, 0.0F, -0.27314402793711257F);
+        	this.setRotateAngle(Limb0_Seg1, 0.0F, 0.0F, 0.27314402793711257F);
+        	this.setRotateAngle(Limb1_Seg0, 0.0F, 3.141592653589793F, 0.22759093446006054F);
+        	this.setRotateAngle(Limb1_Seg1, 0.0F, 0.0F, 0.22759093446006054F);
+        	
+    		this.Body_Seg1.xRot = GradientAnimation_s(0.6257005102083563F, 0.0F, Anime_ctrl);
+    		this.Body_Seg1.yRot = GradientAnimation_s(0.19547687289441354F, 0.0F, Anime_ctrl);
+    		this.Body_Seg2.xRot = GradientAnimation_s(0.6255260065779288F, 0.0F, Anime_ctrl);
+    		this.Body_Seg2.yRot = GradientAnimation_s(0.23457224414434488F, 0.0F, Anime_ctrl);
+    		this.Limb0_Seg0.yRot = GradientAnimation_s(0.7037167490777915F, 0.0F, Anime_ctrl);
+    		this.Limb0_Seg1.xRot = GradientAnimation_s(0.7428121536172365F, 0.0F, Anime_ctrl);
+    		this.Limb0_Seg1.zRot = GradientAnimation_s(0.5077162820683115F, 0.27314402793711257F, Anime_ctrl);
+    		this.Limb1_Seg0.yRot = GradientAnimation_s(-3.141592653589793F, 3.141592653589793F, Anime_ctrl);
+    		this.Limb1_Seg0.zRot = GradientAnimation_s(-0.3979350561389017F, 0.22759093446006054F, Anime_ctrl);	 
+    	} else {
+    		this.Body_Seg1.xRot = 0.0F;
     		this.Body_Seg1.yRot = 0.0F;
+    		this.Body_Seg2.xRot = 0.0F;
+    		this.Body_Seg2.yRot = 0.0F;
+    		this.Limb0_Seg0.yRot = 0.0F;
+    		this.Limb0_Seg1.xRot = 0.0F;
+    		this.Limb0_Seg1.zRot = 0.27314402793711257F;
+    		this.Limb1_Seg0.yRot = 3.141592653589793F;
+    		this.Limb1_Seg0.zRot = 0.22759093446006054F;	    		
     	}
     }
 

@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FrigidRenderer extends MobRenderer<FrigidEntity, UnburiedModel<FrigidEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied1_eyes.png");
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied1.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied1_eyes.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied1.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }

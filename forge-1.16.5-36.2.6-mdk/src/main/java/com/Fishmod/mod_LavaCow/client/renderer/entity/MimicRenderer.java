@@ -19,7 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class MimicRenderer extends MobRenderer<MimicEntity, MimicModel<MimicEntity>> {
-	//private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/mimic/mimic2.png"),

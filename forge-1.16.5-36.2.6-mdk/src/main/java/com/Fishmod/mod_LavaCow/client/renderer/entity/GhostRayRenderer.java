@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class GhostRayRenderer extends MobRenderer<GhostRayEntity, GhostRayModel<GhostRayEntity>> {
-	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray2.png")

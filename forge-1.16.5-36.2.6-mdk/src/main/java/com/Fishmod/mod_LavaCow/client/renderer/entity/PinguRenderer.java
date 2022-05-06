@@ -13,8 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class PinguRenderer extends MobRenderer<PinguEntity, PinguModel<PinguEntity>> {
-	
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/pingu.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/pingu.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }

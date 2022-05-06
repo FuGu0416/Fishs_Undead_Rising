@@ -20,7 +20,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ParasiteRenderer extends MobRenderer<ParasiteEntity, ParasiteModel<ParasiteEntity>> {
-	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite1.png"),

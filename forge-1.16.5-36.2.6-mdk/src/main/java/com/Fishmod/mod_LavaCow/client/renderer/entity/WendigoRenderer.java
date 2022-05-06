@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class WendigoRenderer extends MobRenderer<WendigoEntity, WendigoModel<WendigoEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/wendigo_eyes.png");
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/wendigo.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/wendigo_eyes.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/wendigo.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }

@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BoneWormRenderer extends MobRenderer<BoneWormEntity, BoneWormModel<BoneWormEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm_glow.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm_glow.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm1.png")

@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class MycosisRenderer extends MobRenderer<MycosisEntity, UnburiedModel<MycosisEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied3_eyes.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied3_eyes.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied2.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied3.png")

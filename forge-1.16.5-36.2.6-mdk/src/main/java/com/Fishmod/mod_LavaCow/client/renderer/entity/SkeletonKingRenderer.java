@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SkeletonKingRenderer extends MobRenderer<SkeletonKingEntity, SkeletonKingModel<SkeletonKingEntity>> {
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
 	
 	static{
         System.out.println(TEXTURES.getPath());

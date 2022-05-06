@@ -134,6 +134,11 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Mummy;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Attack;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cactyrant;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Cactyrant_Ability_Cooldown;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -394,6 +399,13 @@ public final class FURConfig {
 		pSpawnRate_Mummy = BUILDER.comment("Set the spawn rate of Mummy [0-10000]").defineInRange("mummy spawn rate", 40, 0, 10000);
 		Mummy_Health = BUILDER.comment("Maximum Mummy health [1-1000]").defineInRange("mummy health", 24.0D, 1.0D, 1000.0D);
 		Mummy_Attack = BUILDER.comment("Mummy strength [1-1000]").defineInRange("mummy attack", 4.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+
+		BUILDER.push("Cactyrant");
+		pSpawnRate_Cactyrant = BUILDER.comment("Set the spawn rate of Cactyrant [0-10000]").defineInRange("cactyrant spawn rate", 8, 0, 10000);
+		Cactyrant_Health = BUILDER.comment("Maximum Cactyrant health [1-1000]").defineInRange("cactyrant health", 60.0D, 1.0D, 1000.0D);
+		Cactyrant_Attack = BUILDER.comment("Cactyrant strength [1-1000]").defineInRange("cactyrant attack", 6.0D, 1.0D, 1000.0D);
+		Cactyrant_Ability_Cooldown = BUILDER.comment("Set the cooldown of thorn barrage [0-100]").defineInRange("cactyrant summon cooldown", 3, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

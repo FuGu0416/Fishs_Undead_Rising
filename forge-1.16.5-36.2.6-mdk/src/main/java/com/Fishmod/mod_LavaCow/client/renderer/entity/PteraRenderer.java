@@ -7,8 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class PteraRenderer extends MobRenderer<PteraEntity, PteraModel<PteraEntity>> {
-	
+public class PteraRenderer extends MobRenderer<PteraEntity, PteraModel<PteraEntity>> {	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera1.png"),

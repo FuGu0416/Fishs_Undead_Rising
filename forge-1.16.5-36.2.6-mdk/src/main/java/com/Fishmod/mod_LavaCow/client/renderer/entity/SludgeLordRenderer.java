@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SludgeLordRenderer extends MobRenderer<SludgeLordEntity, SludgeLordModel<SludgeLordEntity>> {
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow.png");
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }

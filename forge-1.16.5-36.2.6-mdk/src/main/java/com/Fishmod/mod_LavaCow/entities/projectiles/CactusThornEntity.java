@@ -35,7 +35,7 @@ public class CactusThornEntity extends AbstractArrowEntity {
 
 	@Override
 	protected ItemStack getPickupItem() {
-		return new ItemStack(FURItemRegistry.POISONSTINGER);
+		return new ItemStack(FURItemRegistry.CACTUS_THORN);
 	}
 	
     @Override

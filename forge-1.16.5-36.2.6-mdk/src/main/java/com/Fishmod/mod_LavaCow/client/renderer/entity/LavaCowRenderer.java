@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LavaCowRenderer extends MobRenderer<LavaCowEntity, CowModel<LavaCowEntity>>  {
-	private static ResourceLocation LAVACOW_TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/lavacow.png");
+	private static final ResourceLocation LAVACOW_TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/lavacow.png");
 	static{
         System.out.println(LAVACOW_TEXTURES.getPath());
     }

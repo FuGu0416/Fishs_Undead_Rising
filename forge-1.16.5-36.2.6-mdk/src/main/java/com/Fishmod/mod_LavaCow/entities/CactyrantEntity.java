@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -28,8 +27,12 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -42,10 +45,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class CactyrantEntity extends MonsterEntity implements IAggressive {
-	
+public class CactyrantEntity extends MonsterEntity implements IAggressive {	
+	private static final DataParameter<Boolean> DATA_IS_CAMOUFLAGING = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.BOOLEAN);
 	private int attackTimer;
 	protected int spellTicks;
+	private WaterAvoidingRandomWalkingGoal move;
+	private LookAtGoal watch;
+	private LookRandomlyGoal look;
 	
 	public CactyrantEntity(EntityType<? extends CactyrantEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -54,27 +60,39 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	
     @Override
     protected void registerGoals() {
+        this.move = new WaterAvoidingRandomWalkingGoal(this, 1.0D);
+        this.watch = new LookAtGoal(this, PlayerEntity.class, 8.0F);
+        this.look = new LookRandomlyGoal(this);
+        
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new CactyrantEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false));  
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, this.move);
+        this.goalSelector.addGoal(8, this.watch);
+        this.goalSelector.addGoal(8, this.look);
         this.applyEntityAI();
     }
 
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, true, (p_210136_0_) -> {
+	  	      return !this.isSilent();
+	  	   }));
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PigEntity.class, true));
     }
+    
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_IS_CAMOUFLAGING, false);
+	}
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.21D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.19D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Undertaker_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Undertaker_Attack.get())
-        		.add(Attributes.ARMOR, 3.0D)
+        		.add(Attributes.MAX_HEALTH, FURConfig.Cactyrant_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Cactyrant_Attack.get())
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -82,12 +100,12 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    @Override
-    public int getMaxSpawnClusterSize() {
-       return 1;
+    public boolean isCamouflaging() {
+       return this.entityData.get(DATA_IS_CAMOUFLAGING);
+    }
+
+    public void setCamouflaging(boolean p_175454_1_) {
+       this.entityData.set(DATA_IS_CAMOUFLAGING, p_175454_1_);
     }
     
     public boolean isSpellcasting() {
@@ -113,10 +131,24 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
-               
-		if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
-			this.setSecondsOnFire(40);
-		} 
+ 
+        if(!this.level.isClientSide()) {
+	        if (this.level.isDay() && this.getTarget() == null) {
+	        	if(!this.isCamouflaging()) {
+		            this.goalSelector.removeGoal(this.move);
+		            this.goalSelector.removeGoal(this.watch);
+		            this.goalSelector.removeGoal(this.look);
+		            this.setSilent(true);
+		            this.setCamouflaging(true);
+	        	}
+	        } else if (this.isCamouflaging()) {
+	            this.goalSelector.addGoal(5, this.move);
+	            this.goalSelector.addGoal(8, this.watch);
+	            this.goalSelector.addGoal(8, this.look);
+	            this.setSilent(false);
+	            this.setCamouflaging(false);
+	        }
+        }
   	   	        
         if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {
         	float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
@@ -128,10 +160,21 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         }
     }
 	
+	@Override
     public boolean doHurtTarget(Entity entityIn) {
         this.attackTimer = 15;
         this.level.broadcastEntityEvent(this, (byte)4);
         return true;
+    }
+	
+	/**
+	* Called when the entity is attacked.
+	*/
+    @Override
+	public boolean hurt(DamageSource source, float amount) {
+    	if(source.getEntity() != null && source.getDirectEntity() != null && source.getEntity().equals(source.getDirectEntity()))
+    		source.getEntity().hurt(DamageSource.CACTUS, 1.0F);
+    	return super.hurt(source, amount);
     }
     
 	@Override
@@ -305,7 +348,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         }
 
         protected int getCastingInterval() {
-            return 60;//FURConfig.Undertaker_Ability_Cooldown.get() * 20;
+            return FURConfig.Cactyrant_Ability_Cooldown.get() * 20;
         }
 
         @Nullable

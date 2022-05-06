@@ -15,8 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SalamanderRenderer extends MobRenderer<SalamanderEntity, SalamanderModel<SalamanderEntity>> {
-		
+public class SalamanderRenderer extends MobRenderer<SalamanderEntity, SalamanderModel<SalamanderEntity>> {		
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander1.png")

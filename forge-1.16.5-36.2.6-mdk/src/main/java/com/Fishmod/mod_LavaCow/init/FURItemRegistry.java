@@ -163,6 +163,7 @@ public class FURItemRegistry {
 	public static final Item CHITINARMOR_CHESTPLATE = new ChitinArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_chestplate");
 	public static final Item CHITINARMOR_LEGGINGS = new ChitinArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_leggings");
 	public static final Item CHITINARMOR_BOOTS = new ChitinArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_boots");
+	public static final Item CACTUS_THORN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactus_thorn");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
 
