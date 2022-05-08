@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
+import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -29,11 +30,15 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -47,6 +52,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CactyrantEntity extends MonsterEntity implements IAggressive {	
 	private static final DataParameter<Boolean> DATA_IS_CAMOUFLAGING = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.INT);
 	private int attackTimer;
 	protected int spellTicks;
 	private WaterAvoidingRandomWalkingGoal move;
@@ -85,6 +91,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_IS_CAMOUFLAGING, false);
+        this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
 	}
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -97,8 +104,17 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     }
     
     public static boolean checkCactyrantSpawnRules(EntityType<? extends CactyrantEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.canSeeSky(p_223316_3_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
+ 
+    @Override
+    public void onSyncedDataUpdated(DataParameter<?> p_184206_1_) {
+        if (GROWING_STAGE.equals(p_184206_1_)) {
+           this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(p_184206_1_);
+	}
     
     public boolean isCamouflaging() {
        return this.entityData.get(DATA_IS_CAMOUFLAGING);
@@ -106,6 +122,18 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 
     public void setCamouflaging(boolean p_175454_1_) {
        this.entityData.set(DATA_IS_CAMOUFLAGING, p_175454_1_);
+    }
+    
+    /**
+     * Growing Stage: Normal -> Flowering-> Fruited
+     */
+    public int getGrowingStage() {
+       return this.getEntityData().get(GROWING_STAGE).intValue();
+    }
+    
+    public void setGrowingStage(int i) {
+        this.getEntityData().set(GROWING_STAGE, i);
+        this.refreshDimensions();
     }
     
     public boolean isSpellcasting() {
@@ -148,6 +176,22 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	            this.setSilent(false);
 	            this.setCamouflaging(false);
 	        }
+	        
+	        if(this.getGrowingStage() == 2) {
+	        	// Full grown
+	        } else if(this.tickCount > 20 * 60 * 20) {
+	        	if(this.getGrowingStage() != 2) {
+	        		this.setGrowingStage(2);
+	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+	        		this.level.broadcastEntityEvent(this, (byte)14);
+	        	}
+	        } else if(this.tickCount > 10 * 60 * 20) {
+	        	if(this.getGrowingStage() != 1) {
+	        		this.setGrowingStage(1);
+	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+	        		this.level.broadcastEntityEvent(this, (byte)14);
+	        	}
+	        }
         }
   	   	        
         if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {
@@ -172,8 +216,9 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	*/
     @Override
 	public boolean hurt(DamageSource source, float amount) {
-    	if(source.getEntity() != null && source.getDirectEntity() != null && source.getEntity().equals(source.getDirectEntity()))
-    		source.getEntity().hurt(DamageSource.CACTUS, 1.0F);
+    	if(source.getEntity() != null && source.getDirectEntity() != null && source.getEntity().equals(source.getDirectEntity()) && !source.isProjectile())
+    		if(source instanceof EntityDamageSource && !((EntityDamageSource) source).isThorns())
+    			source.getEntity().hurt(DamageSource.thorns(this), 1.0F);
     	return super.hurt(source, amount);
     }
     
@@ -189,6 +234,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.spellTicks = compound.getInt("SpellTicks");
+        this.setGrowingStage(compound.getInt("GrowingStage"));
     }
 
     /**
@@ -198,6 +244,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpellTicks", this.spellTicks);
+        compound.putInt("GrowingStage", this.getGrowingStage());
     }
     
     /**
@@ -206,8 +253,8 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
      */
 	@Nullable
 	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Undertaker_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
     	this.setHealth(this.getMaxHealth());
         
         return livingdata;
@@ -221,6 +268,16 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	public void setAttackTimer(int i) {
 		this.attackTimer = i;
 	}
+	
+	@OnlyIn(Dist.CLIENT)
+	protected void addParticlesAroundSelf(IParticleData p_213718_1_) {
+		for(int i = 0; i < 5; ++i) {
+			double d0 = this.random.nextGaussian() * 0.02D;
+			double d1 = this.random.nextGaussian() * 0.02D;
+			double d2 = this.random.nextGaussian() * 0.02D;
+			this.level.addParticle(p_213718_1_, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
+		}
+	}
     
     /**
      * Handler for {@link World#setEntityState}
@@ -232,6 +289,8 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
             this.attackTimer = 15;
         } else if (id == 10) {
         	this.spellTicks = 20;
+        } else if (id == 14) {
+            this.addParticlesAroundSelf(ParticleTypes.FALLING_NECTAR);
         } else {
             super.handleEntityEvent(id);
         }
@@ -379,6 +438,21 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     protected void playStepSound(BlockPos pos, BlockState state) {
     	this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
 	}
+	
+    /**
+     * Called when the mob's health reaches 0.
+     */
+    @Override
+    public void die(DamageSource cause) {
+       super.die(cause);
+       
+       int looting = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getDirectEntity(), cause);
+       int chance = this.random.nextInt(5) + this.random.nextInt(1 + looting);
+       if(!this.level.isClientSide() && this.getGrowingStage() == 2) {			
+			for (int amount = 0; amount <= chance; ++amount)
+				this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT), 0.0F);
+       }
+    }
     
     /**
      * Entity won't drop items or experience points if this returns false

@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.effect.EffectFear;
 import com.Fishmod.mod_LavaCow.effect.EffectFragile;
 import com.Fishmod.mod_LavaCow.effect.EffectInfested;
 import com.Fishmod.mod_LavaCow.effect.EffectSoiled;
+import com.Fishmod.mod_LavaCow.effect.EffectThorned;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -33,6 +34,7 @@ public class FUREffectRegistry {
 	public static final Effect INFESTED = new EffectInfested().addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	public static final Effect FRAGILE = new EffectFragile();
 	public static final Effect FEAR = new EffectFear().addAttributeModifier(Attributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", -4.0D, AttributeModifier.Operation.ADDITION).addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)-0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL);
+	public static final Effect THORNED = new EffectThorned();
 	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 600)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
 	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
 	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");

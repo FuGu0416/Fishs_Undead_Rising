@@ -54,6 +54,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -440,6 +441,10 @@ public class EventHandler {
     	
     	if(event.getEntityLiving().hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
+
+    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.THORNED) && event.getSource().getEntity() != null && event.getSource().getDirectEntity() != null && event.getSource().getEntity().equals(event.getSource().getDirectEntity()))
+    		if(event.getSource() instanceof EntityDamageSource && !((EntityDamageSource) event.getSource()).isThorns())
+    			event.getSource().getEntity().hurt(DamageSource.thorns(event.getEntityLiving()), 1.0F + event.getEntityLiving().getEffect(FUREffectRegistry.THORNED).getAmplifier());
     	
     	event.setAmount(event.getAmount() * effectlevel);
     }

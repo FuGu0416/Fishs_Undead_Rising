@@ -227,12 +227,33 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
         	this.SwingX_Sin(this.Leg2_Seg0, 0.0F, limbSwing, limbSwingAmount * 0.7F, 1.2F, false, 0.67F * (float)Math.PI);
     	}
     	   	
-    	this.Head_Flower0.visible = false;
-    	this.Limb0_Fruit0.visible = false;
-    	this.Limb0_Fruit1.visible = false;
-    	this.Limb0_Fruit2.visible = false;
-    	this.Limb1_Fruit0.visible = false;
-    	this.Limb1_Fruit1.visible = false;
+    	switch(entityIn.getGrowingStage()) {
+	    	case 0:
+    	    	this.Head_Flower0.visible = false;
+    	    	this.Limb0_Fruit0.visible = false;
+    	    	this.Limb0_Fruit1.visible = false;
+    	    	this.Limb0_Fruit2.visible = false;
+    	    	this.Limb1_Fruit0.visible = false;
+    	    	this.Limb1_Fruit1.visible = false;
+	    		break;
+	    	case 1:
+    	    	this.Head_Flower0.visible = true;
+    	    	this.Limb0_Fruit0.visible = false;
+    	    	this.Limb0_Fruit1.visible = false;
+    	    	this.Limb0_Fruit2.visible = false;
+    	    	this.Limb1_Fruit0.visible = false;
+    	    	this.Limb1_Fruit1.visible = false;
+	    		break;
+	    	case 2:
+    		default:
+    	    	this.Head_Flower0.visible = true;
+    	    	this.Limb0_Fruit0.visible = true;
+    	    	this.Limb0_Fruit1.visible = true;
+    	    	this.Limb0_Fruit2.visible = true;
+    	    	this.Limb1_Fruit0.visible = true;
+    	    	this.Limb1_Fruit1.visible = true;
+    			break;
+    	}
     	
     	if(spl > 0.0F) {
     		this.Body_Seg1.xRot = 0.0F;

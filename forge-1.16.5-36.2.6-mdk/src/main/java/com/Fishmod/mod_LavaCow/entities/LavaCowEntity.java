@@ -139,8 +139,7 @@ public class LavaCowEntity extends CowEntity
      * the animal type)
      */
 	@Override
-    public boolean isFood(ItemStack stack)
-    {
+    public boolean isFood(ItemStack stack) {
 		return stack.getItem() == Items.BLAZE_POWDER;
     }
 }

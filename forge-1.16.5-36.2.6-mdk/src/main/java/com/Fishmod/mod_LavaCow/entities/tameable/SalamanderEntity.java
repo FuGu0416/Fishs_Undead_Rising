@@ -270,6 +270,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		}	
     }
     
+    @Override
     public void onSyncedDataUpdated(DataParameter<?> p_184206_1_) {
         if (GROWING_STAGE.equals(p_184206_1_)) {
            this.refreshDimensions();

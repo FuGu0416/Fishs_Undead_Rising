@@ -164,6 +164,7 @@ public class FURItemRegistry {
 	public static final Item CHITINARMOR_LEGGINGS = new ChitinArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_leggings");
 	public static final Item CHITINARMOR_BOOTS = new ChitinArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_boots");
 	public static final Item CACTUS_THORN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactus_thorn");
+	public static final Item CACTUS_FRUIT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 0), 1.0F).build()), 32, UseAction.EAT, 2).setRegistryName("mod_lavacow:cactus_fruit");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
 
