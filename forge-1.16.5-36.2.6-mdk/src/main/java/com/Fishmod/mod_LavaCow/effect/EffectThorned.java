@@ -8,7 +8,7 @@ import net.minecraft.potion.EffectType;
 public class EffectThorned extends Effect {
 
 	public EffectThorned() {
-        super(EffectType.BENEFICIAL, 0xD9ED92);
+        super(EffectType.BENEFICIAL, 0xD0EF63);
         this.setRegistryName(mod_LavaCow.MODID, "thorned");
 	}
 }

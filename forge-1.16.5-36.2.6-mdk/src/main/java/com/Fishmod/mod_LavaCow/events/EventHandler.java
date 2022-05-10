@@ -441,10 +441,14 @@ public class EventHandler {
     	
     	if(event.getEntityLiving().hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
-
-    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.THORNED) && event.getSource().getEntity() != null && event.getSource().getDirectEntity() != null && event.getSource().getEntity().equals(event.getSource().getDirectEntity()))
-    		if(event.getSource() instanceof EntityDamageSource && !((EntityDamageSource) event.getSource()).isThorns())
+    	
+    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.THORNED)) {
+    		if(event.getSource() == DamageSource.CACTUS || event.getSource() == DamageSource.SWEET_BERRY_BUSH || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).isThorns())) {
+    			event.setCanceled(true);
+    		} else if(event.getSource().getEntity() != null && event.getSource().getDirectEntity() != null && event.getSource().getEntity().equals(event.getSource().getDirectEntity())) {
     			event.getSource().getEntity().hurt(DamageSource.thorns(event.getEntityLiving()), 1.0F + event.getEntityLiving().getEffect(FUREffectRegistry.THORNED).getAmplifier());
+    		}
+    	}
     	
     	event.setAmount(event.getAmount() * effectlevel);
     }

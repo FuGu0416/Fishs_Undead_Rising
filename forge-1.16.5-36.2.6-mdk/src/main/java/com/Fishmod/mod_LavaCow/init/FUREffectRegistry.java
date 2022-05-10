@@ -35,17 +35,20 @@ public class FUREffectRegistry {
 	public static final Effect FRAGILE = new EffectFragile();
 	public static final Effect FEAR = new EffectFear().addAttributeModifier(Attributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", -4.0D, AttributeModifier.Operation.ADDITION).addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)-0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	public static final Effect THORNED = new EffectThorned();
-	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 600)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
-	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
-	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
-	public static final Potion FOULODOR_POTION = new Potion(new EffectInstance(SOILED, 600)).setRegistryName(mod_LavaCow.MODID + ":foulodor");
-	public static final Potion LONG_FOULODOR_POTION = new Potion(new EffectInstance(SOILED, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_foulodor");
+	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
+	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
+	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
+	public static final Potion FOULODOR_POTION = new Potion(new EffectInstance(SOILED, 900)).setRegistryName(mod_LavaCow.MODID + ":foulodor");
+	public static final Potion LONG_FOULODOR_POTION = new Potion(new EffectInstance(SOILED, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_foulodor");
 	public static final Potion INFESTATION_POTION = new Potion(new EffectInstance(INFESTED, 1800)).setRegistryName(mod_LavaCow.MODID + ":infestation");
 	public static final Potion STRONG_INFESTATION_POTION = new Potion(new EffectInstance(INFESTED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_infestation");
 	public static final Potion LONG_INFESTATION_POTION = new Potion(new EffectInstance(INFESTED, 3600)).setRegistryName(mod_LavaCow.MODID + ":long_infestation");
-	public static final Potion FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 600)).setRegistryName(mod_LavaCow.MODID + ":fragile");
-	public static final Potion STRONG_FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_fragile");
-	public static final Potion LONG_FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_fragile");
+	public static final Potion FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 900)).setRegistryName(mod_LavaCow.MODID + ":fragile");
+	public static final Potion STRONG_FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_fragile");
+	public static final Potion LONG_FRAGILE_POTION = new Potion(new EffectInstance(FRAGILE, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_fragile");
+	public static final Potion THORN_POTION = new Potion(new EffectInstance(THORNED, 3600)).setRegistryName(mod_LavaCow.MODID + ":thorn");
+	public static final Potion STRONG_THORN_POTION = new Potion(new EffectInstance(THORNED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_thorn");
+	public static final Potion LONG_THORN_POTION = new Potion(new EffectInstance(THORNED, 9600)).setRegistryName(mod_LavaCow.MODID + ":long_thorn");
 	
     @SubscribeEvent
     public static void registerEffects(RegistryEvent.Register<Effect> event) {
@@ -133,5 +136,15 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, FRAGILE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_FRAGILE_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, FRAGILE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_FRAGILE_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, FRAGILE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_FRAGILE_POTION)));
+        
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.CACTUS_FRUIT)), createPotion(Items.POTION, THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.CACTUS_FRUIT)), createPotion(Items.LINGERING_POTION, THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.CACTUS_FRUIT)), createPotion(Items.SPLASH_POTION, THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_THORN_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, THORN_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_THORN_POTION)));
     }
 }
