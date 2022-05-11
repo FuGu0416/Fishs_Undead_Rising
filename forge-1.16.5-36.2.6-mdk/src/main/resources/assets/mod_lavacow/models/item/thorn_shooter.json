@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "mod_lavacow:items/war"
+        "layer0": "mod_lavacow:items/thorn_shooter"
     },
     "display": {
 

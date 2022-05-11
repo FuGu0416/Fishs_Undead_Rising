@@ -98,6 +98,9 @@
 	"item.mod_lavacow.chitinarmor_chestplate": "甲殼胸甲",
 	"item.mod_lavacow.chitinarmor_leggings": "甲殼護腿",
 	"item.mod_lavacow.chitinarmor_boots": "甲殼靴子",
+	"item.mod_lavacow.cactus_thorn": "仙人掌刺",
+	"item.mod_lavacow.cactus_fruit": "仙人掌果",
+	"item.mod_lavacow.thorn_shooter": "仙人掌槍",
 		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
@@ -130,6 +133,7 @@
 	"item.mod_lavacow.spawn_egg_skeletonking": "骷髏王生怪蛋",
 	"item.mod_lavacow.spawn_egg_mummy": "木乃伊生怪蛋",
 	"item.mod_lavacow.spawn_egg_forsaken": "被遺忘者生怪蛋",
+	"item.mod_lavacow.spawn_egg_cactyrant": "暴君掌生怪蛋",
 
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
@@ -206,6 +210,7 @@
 	"entity.mod_lavacow.skeletonking": "骷髏王",
 	"entity.mod_lavacow.mummy": "木乃伊",
 	"entity.mod_lavacow.forsaken": "被遺忘者",
+	"entity.mod_lavacow.cactyrant": "暴君掌",
 
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",
@@ -371,6 +376,8 @@
 	"tootip.mod_lavacow:skeletonking_mace": "攻擊同時賦予目標死亡之觸V(0:10)",
 	"tootip.mod_lavacow:chitinarmor": "套裝(2)：掉落傷害-50%%",
 	"tootip.mod_lavacow:chitinarmor.l2": "套裝(4)：跳躍時能賦予速度(0:03)",
+	"tootip.mod_lavacow:cactus_fruit": "可用於釀造荊棘藥水，或是種植於沙中",
+	"tootip.mod_lavacow:thorn_shooter": "快速將仙人掌刺射出",
 	
 	"command.mod_lavacow.sitting": "%s現在於原地待命",
 	"command.mod_lavacow.following": "%s正在跟隨",
@@ -404,7 +411,9 @@
 	"description.effect.mod_lavacow:fragile": "當生命低於一定程度時，立即死亡",
 	"effect.mod_lavacow.fear": "恐懼",
 	"description.effect.mod_lavacow:fear": "賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄",
-	
+	"effect.mod_lavacow.thorned": "荊棘",
+	"description.effect.mod_lavacow:thorned": "對發動近戰攻擊的單位造成傷害",
+		
 	"item.minecraft.potion.effect.corrosive": "腐蝕藥水",
 	"item.minecraft.splash_potion.effect.corrosive": "飛濺 腐蝕藥水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滯留 腐蝕藥水",
@@ -449,7 +458,19 @@
 	"item.minecraft.splash_potion.effect.long_fragile": "飛濺 死亡之觸藥水",
 	"item.minecraft.lingering_potion.effect.long_fragile": "滯留 死亡之觸藥水",
 	"item.minecraft.tipped_arrow.effect.long_fragile": "死亡之觸之箭",
-		
+	"item.minecraft.potion.effect.thorn": "荊棘藥水",
+	"item.minecraft.splash_potion.effect.thorn": "飛濺 荊棘藥水",
+	"item.minecraft.lingering_potion.effect.thorn": "滯留 荊棘藥水",
+	"item.minecraft.tipped_arrow.effect.thorn": "荊棘之箭",
+	"item.minecraft.potion.effect.strong_thorn": "荊棘藥水",
+	"item.minecraft.splash_potion.effect.strong_thorn": "飛濺 荊棘藥水",
+	"item.minecraft.lingering_potion.effect.strong_thorn": "滯留 荊棘藥水",
+	"item.minecraft.tipped_arrow.effect.strong_thorn": "荊棘之箭",
+	"item.minecraft.potion.effect.long_thorn": "荊棘藥水",
+	"item.minecraft.splash_potion.effect.long_thorn": "飛濺 荊棘藥水",
+	"item.minecraft.lingering_potion.effect.long_thorn": "滯留 荊棘藥水",
+	"item.minecraft.tipped_arrow.effect.long_thorn": "荊棘之箭",
+			
 	"advancements.mod_lavacow.root.title": "厄夜降臨",
 	"advancements.mod_lavacow.root.description": "進入不死崛起的新世界",
 	"advancements.mod_lavacow.slimy_tasty.title": "黏黏的，但很好吃",

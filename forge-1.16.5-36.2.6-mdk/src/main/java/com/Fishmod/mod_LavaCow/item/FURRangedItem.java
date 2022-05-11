@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EnchantableFireBallEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 
@@ -15,8 +16,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -96,50 +99,78 @@ public class FURRangedItem extends BowItem {
 	    }
 	    else return ActionResult.fail(playerIn.getItemInHand(handIn));
 	         
-	    boolean flag1 = playerIn.abilities.instabuild || (itemstack.getItem().equals(this.ammo) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0);
+     	boolean flag1 = playerIn.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, playerIn));
 
         if (!worldIn.isClientSide) {
 			Vector3d lookVec = playerIn.getLookAngle();
-			 
-			Entity entityammo = this.shot.create(worldIn);
-			((AbstractFireballEntity)entityammo).setOwner(playerIn);
-			
-			if(this.shot.equals(FUREntityRegistry.WAR_SMALL_FIREBALL)) {
-				entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D)));
-				entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()), playerIn.getZ() + lookVec.z * 1.0D);
-			}
-			if(this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
-				entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.5D, 0.0D));
-				entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) + 1.75D, playerIn.getZ() + lookVec.z * 1.0D);
-			}
-			 
-			int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
-			if (j > 0) {
-				((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (j + 1) * 0.25F));
-			}
-			  
-			int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
-			if (k > 0) {
-				((EnchantableFireBallEntity) entityammo).setKnockbackStrength(k);
-			}
-			  
-			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
-				((EnchantableFireBallEntity) entityammo).setFlame(true);
-			}
-			 				 
-			worldIn.addFreshEntity(entityammo);
-            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-    		});
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
-			if (!flag1 && !playerIn.isCreative()) {
-				itemstack.shrink(1);
-				if (itemstack.isEmpty()) {
-					playerIn.inventory.removeItem(itemstack);
+			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN)) {
+	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(playerIn.level, playerIn);
+	        	abstractarrowentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 2.0F, 2.0F);                       
+	        	playerIn.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
+	        	
+	        	int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+                if (j > 0) {
+                   abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)j * 0.1D + 0.1D);
+                }
+
+                int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+                if (k > 0) {
+                   abstractarrowentity.setKnockback(k);
+                }
+
+                if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
+                   abstractarrowentity.setSecondsOnFire(100);
+                }
+                
+                stack.hurtAndBreak(1, playerIn, (p_220009_1_) -> {
+                    p_220009_1_.broadcastBreakEvent(playerIn.getUsedItemHand());
+                });
+                if (flag1) {
+                    abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+                }
+                playerIn.level.addFreshEntity(abstractarrowentity);
+				playerIn.getCooldowns().addCooldown(this, 5);
+			} else {			 
+				Entity entityammo = this.shot.create(worldIn);
+				((AbstractFireballEntity)entityammo).setOwner(playerIn);
+				
+				if(this.shot.equals(FUREntityRegistry.WAR_SMALL_FIREBALL)) {
+					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D)));
+					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()), playerIn.getZ() + lookVec.z * 1.0D);
 				}
+				if(this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
+					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.5D, 0.0D));
+					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) + 1.75D, playerIn.getZ() + lookVec.z * 1.0D);
+				}
+				 
+				int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+				if (j > 0) {
+					((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (j + 1) * 0.25F));
+				}
+				  
+				int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+				if (k > 0) {
+					((EnchantableFireBallEntity) entityammo).setKnockbackStrength(k);
+				}
+				  
+				if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
+					((EnchantableFireBallEntity) entityammo).setFlame(true);
+				}
+				 				 
+				worldIn.addFreshEntity(entityammo);
+	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
+	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+	    		});
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+				if (!flag1 && !playerIn.isCreative()) {
+					itemstack.shrink(1);
+					if (itemstack.isEmpty()) {
+						playerIn.inventory.removeItem(itemstack);
+					}
+				}
+				playerIn.getCooldowns().addCooldown(this, 20 - (j * 2));
 			}
-			playerIn.getCooldowns().addCooldown(this, 20 - (j * 2));
-			  
+			
 			return ActionResult.consume(playerIn.getItemInHand(handIn));
         }
 		
