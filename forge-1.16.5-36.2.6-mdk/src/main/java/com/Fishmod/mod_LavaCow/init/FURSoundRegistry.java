@@ -114,6 +114,9 @@ public class FURSoundRegistry {
 	public static final SoundEvent SKELETONKING_SPELL_SUMMON = addSoundEvent("skeletonking_spell_summon");
 	public static final SoundEvent SKELETONKING_SPELL_TELEPORT = addSoundEvent("skeletonking_spell_teleport");
 	public static final SoundEvent SKELETONKING_SPELL_TOSS = addSoundEvent("skeletonking_spell_toss");
+
+	public static final SoundEvent CACTYRANT_AMBIENT = addSoundEvent("cactyrant_ambient");
+	public static final SoundEvent CACTYRANT_DEATH = addSoundEvent("cactyrant_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);

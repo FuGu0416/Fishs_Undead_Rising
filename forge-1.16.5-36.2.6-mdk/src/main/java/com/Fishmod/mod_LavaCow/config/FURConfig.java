@@ -155,7 +155,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Piranha_AnimalAttack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
-	public static final ForgeConfigSpec.ConfigValue<Integer> HaloNecklace_Damage;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_lt;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_banlist;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Raven_Loot;
@@ -463,7 +462,6 @@ public final class FURConfig {
 		GoldenHeart_GrantsRegeneration = BUILDER.comment("Enables the Regeneration effect of the Golden Heart. [false/true]").define("golden heart grants regeneration", true);
 		GoldenHeart_RepairsEquipment = BUILDER.comment("Allow the Golden Heart to repair worn equipment. [false/true]").define("golden heart repairs equipment", true);	
 		BoneSword_Damage = BUILDER.comment("Set the bonus damage of Bone Sword to X% [0-100]").defineInRange("bonesword bonus damage", 5, 0, 100);		
-		HaloNecklace_Damage = BUILDER.comment("Set the bonus damage of Halo Necklace to X% [0-10000]").defineInRange("halo necklace bonus damage", 10, 0, 10000);		
 		DreamCatcher_spawn = BUILDER.comment("Customize the Spawn list for the Dreamcatcher. Ex. \\\"mod_lavacow:foglet,40,1,2\\\" or \\\"mod_lavacow:vespa,20,1,1\\\"").defineList("spawn list for dreamcatcher", 
 				Lists.newArrayList(
 						"mod_lavacow:foglet,40,1,2",

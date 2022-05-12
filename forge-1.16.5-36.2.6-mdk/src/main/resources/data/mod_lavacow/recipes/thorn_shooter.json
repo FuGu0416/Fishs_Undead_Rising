@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " //",
+        "/CD",
+        " CC"
+    ],
+    "key": {
+        "C": {
+			"item": "minecraft:cactus"
+        },
+        "D": {
+            "item": "mod_lavacow:war"
+        },
+        "/": {
+			"item": "mod_lavacow:cactus_thorn"
+        }
+ 	},
+    "result": {
+        "item": "mod_lavacow:thorn_shooter",
+        "count": 1
+    }
+}

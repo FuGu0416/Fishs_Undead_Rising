@@ -38,7 +38,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -216,9 +215,9 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	*/
     @Override
 	public boolean hurt(DamageSource source, float amount) {
-    	if(source.getEntity() != null && source.getDirectEntity() != null && source.getEntity().equals(source.getDirectEntity()) && !source.isProjectile())
-    		if(source instanceof EntityDamageSource && !((EntityDamageSource) source).isThorns())
-    			source.getEntity().hurt(DamageSource.thorns(this), 1.0F);
+        if (!source.isMagic() && !source.isExplosion() && source.getDirectEntity() instanceof LivingEntity) {
+            source.getDirectEntity().hurt(DamageSource.thorns(this), 2.0F);
+        }
     	return super.hurt(source, amount);
     }
     
@@ -419,24 +418,24 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return FURSoundRegistry.UNDERTAKER_AMBIENT;
+        return FURSoundRegistry.CACTYRANT_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return FURSoundRegistry.UNDERTAKER_HURT;
+        return SoundEvents.WOOL_BREAK;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return FURSoundRegistry.UNDERTAKER_DEATH;
+        return FURSoundRegistry.CACTYRANT_DEATH;
     }
 
 	@Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-    	this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
+    	this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
 	}
 	
     /**

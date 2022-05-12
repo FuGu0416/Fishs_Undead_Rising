@@ -314,7 +314,10 @@
 	"entity_skeletonking_spell_summon": "骷髏王施法聲",
 	"entity_skeletonking_spell_teleport": "骷髏王傳送聲",
 	"entity_skeletonking_spell_toss": "骷髏王施法聲",
-	
+
+	"entity_cactyrant_ambient": "暴君掌沙沙聲",
+	"entity_cactyrant_death": "暴君掌死亡",
+		
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",

@@ -336,118 +336,98 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
+    	DamageSource source = event.getSource();
+    	LivingEntity Attacked = event.getEntityLiving();
+    	Entity Attacker = source.getDirectEntity();
     	float effectlevel = 1.0F;
 	    int Armor_Famine_lvl = 0;
 	    int Armor_Chitin_lvl = 0;
 	    
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+		for(ItemStack S : Attacked.getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
-			}
-			
-			if(S.getItem() instanceof ChitinArmorItem) {
+			} else if (S.getItem() instanceof ChitinArmorItem) {
 				Armor_Chitin_lvl++;
 			}
 		}
 		
-		if((Armor_Famine_lvl >= 2) && event.getSource().getDirectEntity() instanceof LivingEntity && ((LivingEntity) event.getSource().getDirectEntity()).hasEffect(Effects.HUNGER)) {
+		if((Armor_Famine_lvl >= 2) && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
 		}
 
-		if((Armor_Chitin_lvl >= 2) && event.getSource().equals(DamageSource.FALL)) {
+		if((Armor_Chitin_lvl >= 2) && source.equals(DamageSource.FALL)) {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
-		if(event.getSource().getDirectEntity() instanceof LilSludgeEntity) {
-			LivingEntity Owner = ((LilSludgeEntity)event.getSource().getDirectEntity()).getOwner();
-			
-			event.setAmount(event.getAmount() + ((LilSludgeEntity)event.getSource().getDirectEntity()).getBonusDamage(event.getEntityLiving()));
-			
+		if(Attacker instanceof LilSludgeEntity) {
+			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();			
+			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
 			if(Owner != null)
-				Owner.heal(event.getAmount() * ((LilSludgeEntity)event.getSource().getDirectEntity()).getLifestealLevel() * 0.05f);
-		}
-		
-		if(event.getSource().getDirectEntity() instanceof UnburiedEntity) {
-			LivingEntity Owner = ((UnburiedEntity)event.getSource().getDirectEntity()).getOwner();
-			
-			event.setAmount(event.getAmount() + ((UnburiedEntity)event.getSource().getDirectEntity()).getBonusDamage(event.getEntityLiving()));
-			
+				Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
+		} else if (Attacker instanceof UnburiedEntity) {
+			LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();		
+			event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
 			if(Owner != null)
-				Owner.heal(event.getAmount() * ((UnburiedEntity)event.getSource().getDirectEntity()).getLifestealLevel() * 0.05f);
+				Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
 		}
     	
-    	if(event.getEntityLiving().isOnFire() && event.getSource().getDirectEntity() instanceof PlayerEntity) {   		
-    		for(ItemStack S : event.getSource().getDirectEntity().getArmorSlots()) {
+    	if(Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
+    		for(ItemStack S : Attacker.getArmorSlots()) {
     			if(S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
     		}
     	}
     	
-    	if(event.getEntityLiving() instanceof PlayerEntity && !event.getEntityLiving().fireImmune() && (event.getSource().isFire())) {    		
-    		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+    	if(Attacked instanceof PlayerEntity && !Attacked.fireImmune() && source.isFire()) {    		
+    		for(ItemStack S : Attacked.getArmorSlots()) {
     			if(S.getItem() instanceof FelArmorItem)effectlevel -= ((FelArmorItem)S.getItem()).fireprooflevel;
     		}
     		
     		boolean have_Heart = false;
     		/*if(Loader.isModLoaded("baubles")) {
-    			if(baubles.api.BaublesApi.isBaubleEquipped((PlayerEntity) event.getEntityLiving(), FURItemRegistry.MOOTENHEART) != -1)
+    			if(baubles.api.BaublesApi.isBaubleEquipped((PlayerEntity) Attacked, FURItemRegistry.MOOTENHEART) != -1)
     				have_Heart = true;
     		}*/
     		
     		for(int i = 0; i < 9 ; i++)
-    			if(((PlayerEntity)event.getEntityLiving()).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART))
+    			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART))
 					have_Heart = true;
     		
     		if(have_Heart)
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     	}
     	
-    	if(event.getSource().isExplosion() && event.getSource().getDirectEntity() instanceof WolfEntity) {
-    		if(event.getEntityLiving().getMobType().equals(CreatureAttribute.UNDEAD) && event.getSource().getDirectEntity().getName().getString().equals("Holy Grenade")) {
+    	if(source.isExplosion() && Attacker instanceof WolfEntity) {
+    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && Attacker.getName().getString().equals("Holy Grenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
-    			event.getEntityLiving().setSecondsOnFire(8);
-    		} else if(event.getSource().getDirectEntity().getName().getString().equals("Ghost Bomb")) {
-    			event.getEntityLiving().setDeltaMovement(0.0D, event.getEntityLiving().getDeltaMovement().y, 0.0D);
-    			event.getEntityLiving().addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
+    			Attacked.setSecondsOnFire(8);
+    		} else if (Attacker.getName().getString().equals("Ghost Bomb")) {
+    			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
+    			Attacked.addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if(event.getSource().getDirectEntity().getName().getString().equals("Sonic Bomb")) {
-    			event.getEntityLiving().addEffect(new EffectInstance(Effects.WEAKNESS, 4 * 20, 2));
+    		} else if (Attacker.getName().getString().equals("Sonic Bomb")) {
+    			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else
     			event.setAmount(event.getAmount() * 0.15F);
     	}
     	
-    	if(event.getSource().getDirectEntity() != null && event.getSource().getDirectEntity() instanceof LivingEntity) {
-    		Item heldItem = ((LivingEntity)event.getSource().getDirectEntity()).getMainHandItem().getItem();
+    	if(Attacker != null && Attacker instanceof LivingEntity) {
+    		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
     		if(heldItem.equals(FURItemRegistry.BONESWORD))
-    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), event.getEntityLiving().getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
-    		else if(heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !event.getEntityLiving().getMobType().equals(CreatureAttribute.UNDEAD))
+    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
+    		else if(heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
     			event.setAmount(event.getAmount() + 2.0F);
     	}
     	
-    	if(event.getSource().getDirectEntity() != null 
-    			&& event.getSource().getDirectEntity() instanceof PlayerEntity
-    			&& event.getEntityLiving().getMobType().equals(CreatureAttribute.UNDEAD)) {
-    		
-    		boolean have_Necklace = false;
-    		/*if(Loader.isModLoaded("baubles")) {
-    			if(baubles.api.BaublesApi.isBaubleEquipped((PlayerEntity) event.getSource().getDirectEntity(), FURItemRegistry.HALO_NECKLACE) != -1)
-    				have_Necklace = true;
-    		}*/   		
-    		
-    		if(have_Necklace)
-    			event.setAmount(event.getAmount() * ((float)(100 + FURConfig.HaloNecklace_Damage.get()))/100.0F);
-    					
-    	}
+    	if(Attacked.hasEffect(FUREffectRegistry.CORRODED))
+    		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
     	
-    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.CORRODED))
-    		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
-    	
-    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.THORNED)) {
-    		if(event.getSource() == DamageSource.CACTUS || event.getSource() == DamageSource.SWEET_BERRY_BUSH || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).isThorns())) {
+    	if(Attacked.hasEffect(FUREffectRegistry.THORNED)) {
+    		if(source == DamageSource.CACTUS || source == DamageSource.SWEET_BERRY_BUSH || (source instanceof EntityDamageSource && ((EntityDamageSource) source).isThorns())) {
     			event.setCanceled(true);
-    		} else if(event.getSource().getEntity() != null && event.getSource().getDirectEntity() != null && event.getSource().getEntity().equals(event.getSource().getDirectEntity())) {
-    			event.getSource().getEntity().hurt(DamageSource.thorns(event.getEntityLiving()), 1.0F + event.getEntityLiving().getEffect(FUREffectRegistry.THORNED).getAmplifier());
-    		}
+    		} else if (!source.isMagic() && !source.isExplosion() && Attacker instanceof LivingEntity) {
+    			Attacker.hurt(DamageSource.thorns(Attacked), 1.0F + Attacked.getEffect(FUREffectRegistry.THORNED).getAmplifier());
+            }
     	}
     	
     	event.setAmount(event.getAmount() * effectlevel);
