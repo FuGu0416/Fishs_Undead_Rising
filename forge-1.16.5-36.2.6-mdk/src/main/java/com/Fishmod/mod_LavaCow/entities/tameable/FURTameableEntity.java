@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -158,8 +159,13 @@ public class FURTameableEntity extends TameableEntity {
 		    		return ActionResultType.SUCCESS;
 		    	}
 	    	} else if (this.isFood(itemstack) && canTameCondition()) {
-	            if (!player.abilities.instabuild) {
-	               itemstack.shrink(1);
+	            if (!player.abilities.instabuild) {	               
+	               if(itemstack.getItem() instanceof BucketItem) {
+	            	   itemstack.shrink(1);
+	            	   player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+	               } else {
+	            	   itemstack.shrink(1);
+	               }
 	            }
 	
 	            if (this.random.nextInt(this.TameRate(itemstack)) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {

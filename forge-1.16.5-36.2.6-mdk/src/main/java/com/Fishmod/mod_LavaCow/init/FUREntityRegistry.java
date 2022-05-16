@@ -38,6 +38,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.SandBurstEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SludgeJetEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SonicBombEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.WarSmallFireballEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.CactoidEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.RavenEntity;
@@ -94,6 +95,7 @@ public class FUREntityRegistry {
 	public static final EntityType<SkeletonKingEntity> SKELETONKING = registerEntity(EntityType.Builder.of(SkeletonKingEntity::new, EntityClassification.MONSTER).sized(1.25F, 3.1F).fireImmune(), "skeletonking");
 	public static final EntityType<MummyEntity> MUMMY = registerEntity(EntityType.Builder.of(MummyEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mummy");
 	public static final EntityType<CactyrantEntity> CACTYRANT = registerEntity(EntityType.Builder.of(CactyrantEntity::new, EntityClassification.MONSTER).sized(1.3F, 2.8F), "cactyrant");
+	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.65F), "cactoid");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -144,6 +146,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(SKELETONKING, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(MUMMY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MummyEntity::checkMummySpawnRules);
         EntitySpawnPlacementRegistry.register(CACTYRANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactyrantEntity::checkCactyrantSpawnRules);
+        EntitySpawnPlacementRegistry.register(CACTOID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -199,5 +202,6 @@ public class FUREntityRegistry {
         event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());
         event.put(MUMMY, MummyEntity.createAttributes().build());
         event.put(CACTYRANT, CactyrantEntity.createAttributes().build());
+        event.put(CACTOID, CactyrantEntity.createAttributes().build());
     }
 }

@@ -7,7 +7,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class CactyrantRenderer extends MobRenderer<CactyrantEntity, CactyrantModel<CactyrantEntity>> {	
 	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant.png");
 	private static final ResourceLocation TEXTURES_CAMO = new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant_camo.png");

@@ -7,11 +7,14 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * ModelGhostRay - Fish0016054
  * Created using Tabula 8.0.0
  */
+@OnlyIn(Dist.CLIENT)
 public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> {
     public ModelRenderer Body_Base;
     public ModelRenderer Body1;

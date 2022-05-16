@@ -296,7 +296,7 @@ public class LilSludgeEntity extends FURTameableEntity {
 
 	@Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-	    this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
+	    this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
 	}
     
     /**
