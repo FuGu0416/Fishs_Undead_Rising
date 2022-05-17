@@ -11,17 +11,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class CactoidRenderer extends MobRenderer<CactoidEntity, CactoidModel<CactoidEntity>> {	
 	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/cactoid/cactoid.png");
-	//private static final ResourceLocation TEXTURES_CAMO = new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant_camo.png");
+	private static final ResourceLocation TEXTURES_CAMO = new ResourceLocation("mod_lavacow:textures/mobs/cactoid/cactoid_camo.png");
 	static{
         System.out.println(TEXTURES.getPath());
     }
 
 	public CactoidRenderer(EntityRendererManager rendermanagerIn) {
-        super(rendermanagerIn, new CactoidModel<>(), 0.3F);
+        super(rendermanagerIn, new CactoidModel<>(), 0.25F);
     }
     
     @Override
     public ResourceLocation getTextureLocation(CactoidEntity entity) {
-        return TEXTURES;//entity.isCamouflaging() ? TEXTURES_CAMO : TEXTURES;
+        return entity.isSilent() ? TEXTURES_CAMO : TEXTURES;
     }
 }

@@ -117,7 +117,8 @@ public class ScarecrowEntity  extends FURTameableEntity {
            return (f > 0.5F && this.level.canSeeSky(blockpos));
         }
         return false;
-     }
+    }
+    
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.

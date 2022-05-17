@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
@@ -25,6 +26,8 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -45,9 +48,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CactoidEntity extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(CactoidEntity.class, DataSerializers.INT);
+	private WaterAvoidingRandomWalkingGoal move;
+	private LookAtGoal watch;
+	private LookRandomlyGoal look;
 	
-	public CactoidEntity(EntityType<? extends CactoidEntity> p_i48549_1_, World worldIn)
-    {
+	public CactoidEntity(EntityType<? extends CactoidEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
     }
 	
@@ -59,12 +64,18 @@ public class CactoidEntity extends FURTameableEntity {
 	
     @Override
     protected void registerGoals() {
+    	this.move = new WaterAvoidingRandomWalkingGoal(this, 1.0D);
+        this.watch = new LookAtGoal(this, PlayerEntity.class, 8.0F);
+        this.look = new LookRandomlyGoal(this);
+        
     	super.registerGoals();
     	this.goalSelector.addGoal(1, new SwimGoal(this));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, true));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+    	this.goalSelector.addGoal(6, this.move);
+        this.goalSelector.addGoal(10, this.watch);
+        this.goalSelector.addGoal(10, this.look);
+
         this.applyEntityAI();
     }
 
@@ -102,13 +113,50 @@ public class CactoidEntity extends FURTameableEntity {
     	return stack.getItem().equals(Items.WATER_BUCKET);
     }
     
+    @Override
+    protected boolean isSunBurnTick() {
+        if (this.level.isDay() && !this.level.isClientSide) {
+           float f = this.getBrightness();
+           BlockPos blockpos = this.getVehicle() instanceof BoatEntity ? (new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ())).above() : new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ());
+           return (f > 0.5F && this.level.canSeeSky(blockpos));
+        }
+        return false;
+    }
+    
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void aiStep() {
-    	super.aiStep();
+    public void tick() {
+    	if (!this.level.isClientSide && !this.isTame()) {
+    		if (this.isSunBurnTick()) {
+    			this.doSitCommand(null);
+    		} else if (this.state != FURTameableEntity.State.WANDERING) {
+    			this.doFollowCommand(null);
+    			this.doWanderCommand(null);
+    		}
+    	}    	
+    	
+    	super.tick();
+    }
+    
+    @Override
+	public void doSitCommand(PlayerEntity playerIn) {
+    	this.goalSelector.removeGoal(this.move);
+        this.goalSelector.removeGoal(this.watch);
+        this.goalSelector.removeGoal(this.look);
+        this.setSilent(true);
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
+	public void doFollowCommand(PlayerEntity playerIn) {
+    	this.goalSelector.addGoal(6, this.move);
+        this.goalSelector.addGoal(8, this.watch);
+        this.goalSelector.addGoal(8, this.look);
+		this.setSilent(false);
+        super.doFollowCommand(playerIn);
     }
 
 	@Override
@@ -117,6 +165,21 @@ public class CactoidEntity extends FURTameableEntity {
 
         return flag;
     }    
+	
+	/**
+	* Called when the entity is attacked.
+	*/
+    @Override
+	public boolean hurt(DamageSource source, float amount) {
+        if (!source.isMagic() && !source.isExplosion() && source.getDirectEntity() instanceof LivingEntity) {
+            source.getDirectEntity().hurt(DamageSource.thorns(this), 2.0F);
+        }
+        
+    	if(source.isFire())
+    		return super.hurt(source, 2.0F * amount);
+
+    	return super.hurt(source, amount);
+    }
 
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
@@ -156,12 +219,12 @@ public class CactoidEntity extends FURTameableEntity {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return FURSoundRegistry.SLUDGELORD_HURT;
+    	return SoundEvents.WOOL_BREAK;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.LILSLUDGE_DEATH;
+        return FURSoundRegistry.CACTYRANT_DEATH;
     }
 
 	@Override

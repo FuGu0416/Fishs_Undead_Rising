@@ -169,7 +169,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 		            this.setCamouflaging(true);
 	        	}
 	        } else if (this.isCamouflaging()) {
-	            this.goalSelector.addGoal(5, this.move);
+	            this.goalSelector.addGoal(6, this.move);
 	            this.goalSelector.addGoal(8, this.watch);
 	            this.goalSelector.addGoal(8, this.look);
 	            this.setSilent(false);
@@ -218,6 +218,10 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         if (!source.isMagic() && !source.isExplosion() && source.getDirectEntity() instanceof LivingEntity) {
             source.getDirectEntity().hurt(DamageSource.thorns(this), 2.0F);
         }
+        
+    	if(source.isFire())
+    		return super.hurt(source, 2.0F * amount);
+
     	return super.hurt(source, amount);
     }
     
