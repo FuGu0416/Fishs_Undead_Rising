@@ -97,7 +97,10 @@
 	"item.mod_lavacow.chitinarmor_chestplate": "Chitin Chestplate",
 	"item.mod_lavacow.chitinarmor_leggings": "Chitin Leggings",
 	"item.mod_lavacow.chitinarmor_boots": "Chitin Boots",
-	
+	"item.mod_lavacow.cactus_thorn": "Cactus Thorn",
+	"item.mod_lavacow.cactus_fruit": "Prickly Pear",
+	"item.mod_lavacow.thorn_shooter": "Thorn Shooter",
+		
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
 	"item.mod_lavacow.spawn_egg_parasite": "Parasite Spawn Egg",

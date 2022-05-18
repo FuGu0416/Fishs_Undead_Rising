@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.block.BlockState;
@@ -26,7 +27,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -35,7 +35,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +52,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CactoidEntity extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(CactoidEntity.class, DataSerializers.INT);
-	private WaterAvoidingRandomWalkingGoal move;
+	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(CactoidEntity.class, DataSerializers.INT);
 	private LookAtGoal watch;
 	private LookRandomlyGoal look;
 	
@@ -60,11 +64,11 @@ public class CactoidEntity extends FURTameableEntity {
     protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+		this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
     }
 	
     @Override
     protected void registerGoals() {
-    	this.move = new WaterAvoidingRandomWalkingGoal(this, 1.0D);
         this.watch = new LookAtGoal(this, PlayerEntity.class, 8.0F);
         this.look = new LookRandomlyGoal(this);
         
@@ -72,7 +76,6 @@ public class CactoidEntity extends FURTameableEntity {
     	this.goalSelector.addGoal(1, new SwimGoal(this));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, true));
-    	this.goalSelector.addGoal(6, this.move);
         this.goalSelector.addGoal(10, this.watch);
         this.goalSelector.addGoal(10, this.look);
 
@@ -96,6 +99,27 @@ public class CactoidEntity extends FURTameableEntity {
         return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.canSeeSky(p_223316_3_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
+    @Override
+    public void onSyncedDataUpdated(DataParameter<?> p_184206_1_) {
+        if (GROWING_STAGE.equals(p_184206_1_)) {
+           this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(p_184206_1_);
+	}
+    
+    /**
+     * Growing Stage: Normal -> Flowering-> Fruited
+     */
+    public int getGrowingStage() {
+       return this.getEntityData().get(GROWING_STAGE).intValue();
+    }
+    
+    public void setGrowingStage(int i) {
+        this.getEntityData().set(GROWING_STAGE, i);
+        this.refreshDimensions();
+    }
+    
     public int getSkin() {
         return this.entityData.get(SKIN_TYPE).intValue();
     }
@@ -110,7 +134,10 @@ public class CactoidEntity extends FURTameableEntity {
      */
     @Override
     public boolean isFood(ItemStack stack) {
-    	return stack.getItem().equals(Items.WATER_BUCKET);
+    	if (!this.isTame())
+    		return stack.getItem().equals(Items.WATER_BUCKET);
+    	else
+    		return stack.getItem().equals(Items.BONE_MEAL);
     }
     
     @Override
@@ -128,7 +155,7 @@ public class CactoidEntity extends FURTameableEntity {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick() {
+    public void tick() {   	
     	if (!this.level.isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick()) {
     			this.doSitCommand(null);
@@ -138,12 +165,45 @@ public class CactoidEntity extends FURTameableEntity {
     		}
     	}    	
     	
+    	if (!this.level.isClientSide) {
+	        if (this.getAge() < -12000) {
+	        	if(this.getGrowingStage() != 0) {
+	        		this.setGrowingStage(0);
+	        	}
+	        } else if (this.getAge() < 0) {
+	        	if(this.getGrowingStage() != 1) {
+	        		this.setGrowingStage(1);
+	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+	        		this.level.broadcastEntityEvent(this, (byte)14);
+	        	}       	
+	        } else if (this.getAge() == 0) {
+	        	if(this.getGrowingStage() != 2) {
+	        		this.setGrowingStage(2);
+	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+	        		this.level.broadcastEntityEvent(this, (byte)14);
+	        	}       	
+	        }
+    	}
+    	
     	super.tick();
     }
     
     @Override
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    	if (this.isTame() && this.getGrowingStage() == 2) {
+    		this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+    		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT), 0.0F);
+    		this.setGrowingStage(0);
+    		this.setAge(-24000);
+    		
+    		return ActionResultType.sidedSuccess(this.level.isClientSide);
+    	} else {
+    		return super.mobInteract(player, hand);
+    	}
+    }
+    
+    @Override
 	public void doSitCommand(PlayerEntity playerIn) {
-    	this.goalSelector.removeGoal(this.move);
         this.goalSelector.removeGoal(this.watch);
         this.goalSelector.removeGoal(this.look);
         this.setSilent(true);
@@ -152,7 +212,6 @@ public class CactoidEntity extends FURTameableEntity {
     
     @Override
 	public void doFollowCommand(PlayerEntity playerIn) {
-    	this.goalSelector.addGoal(6, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
 		this.setSilent(false);
@@ -191,7 +250,7 @@ public class CactoidEntity extends FURTameableEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.LilSludge_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+    	this.setAge(-24000);
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }	
     
@@ -201,16 +260,46 @@ public class CactoidEntity extends FURTameableEntity {
     }
 	
     /**
+     * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
+     * use in wolves.
+     */
+    @Override
+    public int getMaxHeadXRot() {
+        return this.isSilent() ? 0 : super.getMaxHeadXRot();
+    }
+
+    @Override
+    public int getMaxHeadYRot() {
+        return this.isSilent() ? 0 : super.getMaxHeadYRot();
+    }
+	
+	@OnlyIn(Dist.CLIENT)
+	protected void addParticlesAroundSelf(IParticleData p_213718_1_) {
+		for(int i = 0; i < 5; ++i) {
+			double d0 = this.random.nextGaussian() * 0.02D;
+			double d1 = this.random.nextGaussian() * 0.02D;
+			double d2 = this.random.nextGaussian() * 0.02D;
+			this.level.addParticle(p_213718_1_, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
+		}
+	}
+	
+    /**
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
+	@Override
     public void handleEntityEvent(byte id) {
-    	if (id == 11) {
-
+		if (id == 14) {
+            this.addParticlesAroundSelf(ParticleTypes.FALLING_NECTAR);
         } else {
             super.handleEntityEvent(id);
         }
     }
+	
+	@Override
+	public boolean canFallInLove() {
+		return false;
+	}
     
     @Override
     protected SoundEvent getAmbientSound() {
@@ -239,6 +328,7 @@ public class CactoidEntity extends FURTameableEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
     	super.readAdditionalSaveData(compound);
     	this.setSkin(compound.getInt("Variant"));
+    	this.setGrowingStage(compound.getInt("GrowingStage"));
     }
 
     /**
@@ -248,6 +338,19 @@ public class CactoidEntity extends FURTameableEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
+        compound.putInt("GrowingStage", this.getGrowingStage());
+    }
+	
+    /**
+     * Called when the mob's health reaches 0.
+     */
+    @Override
+    public void die(DamageSource cause) {
+       super.die(cause);
+       
+       if(!this.level.isClientSide() && this.getGrowingStage() == 2) {			
+			this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT), 0.0F);
+       }
     }
     
     @Override
