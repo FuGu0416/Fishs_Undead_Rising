@@ -193,13 +193,38 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	        }
         }
   	   	        
-        if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {
-        	float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-        	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);	        	
-        	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));	            
-            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-            	target.setSecondsOnFire(2 * (int)f);
+        if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {       		        	       		            
+            if (!this.getTarget().isBlocking()) {
+                if (!this.isVehicle() && !this.getTarget().isShiftKeyDown()) {
+                    this.getTarget().startRiding(this, true);
+                } else if (!this.isVehicle()) {
+                	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+                } else {
+                	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.25F);
+                }
             }
+        }
+    }
+	
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldRiderSit() {
+        return false;
+    }
+    
+    @Override
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            float r = 0.4F;
+            float angle = (float) ((Math.PI / 180.0F) * this.yBodyRot);
+            double offX = r * Math.sin((float) (Math.PI + angle));
+            double offZ = r * Math.cos(angle);
+            passenger.setPos(this.getX() + offX, this.getY() + 0.8F, this.getZ() + offZ);
         }
     }
 	
@@ -344,7 +369,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean canUse() {
-    		if (CactyrantEntity.this.getTarget() == null)
+    		if (CactyrantEntity.this.getTarget() == null || CactyrantEntity.this.isVehicle())
                 return false;
             else if (CactyrantEntity.this.isSpellcasting() || !CactyrantEntity.this.canSee(CactyrantEntity.this.getTarget()))
                 return false;

@@ -255,14 +255,28 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
     			break;
     	}
     	
-    	if(spl > 0.0F) {
+    	if(entityIn.isVehicle()) {
+    		this.Body_Seg1.xRot = 0.0F;
+    		this.Body_Seg1.yRot = 0.0F;
+    		this.Body_Seg2.xRot = 0.0F;
+    		this.Body_Seg2.yRot = 0.0F;
+    		this.Limb0_Seg0.xRot = 1.3693853151357844F;
+    		this.Limb0_Seg0.yRot = 0.9382889765773795F;
+    		this.Limb0_Seg1.xRot = 0.0F;
+    		this.Limb0_Seg1.zRot = 0.27314402793711257F;
+    		this.Limb1_Seg0.xRot = -2.111499387652284F;
+    		this.Limb1_Seg0.yRot = 1.9296359783943533F;
+    		this.Limb1_Seg0.zRot = 0.22759093446006054F;  
+    	} else if(spl > 0.0F) {
     		this.Body_Seg1.xRot = 0.0F;
     		this.Body_Seg1.yRot = (float) (Math.PI * 10.0F * (1.0F - spl));
     		this.Body_Seg2.xRot = 0.0F;
     		this.Body_Seg2.yRot = 0.0F;
+    		this.Limb0_Seg0.xRot = 1.3693853151357844F;
     		this.Limb0_Seg0.yRot = 0.0F;
     		this.Limb0_Seg1.xRot = 0.0F;
     		this.Limb0_Seg1.zRot = 0.27314402793711257F;
+    		this.Limb1_Seg0.xRot = 1.407433498155583F;
     		this.Limb1_Seg0.yRot = 3.141592653589793F;
     		this.Limb1_Seg0.zRot = 0.22759093446006054F;	
     	} else if (i > Anime_threshold[1]) {
@@ -271,36 +285,37 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
     		this.Body_Seg1.yRot = GradientAnimation_s(0.0F, -0.5082398928281348F, Anime_ctrl);
     		this.Body_Seg2.xRot = 0.0F;
     		this.Body_Seg2.yRot = GradientAnimation_s(0.0F, -0.23457224414434488F, Anime_ctrl);
+    		this.Limb0_Seg0.xRot = 0.0F;
     		this.Limb0_Seg0.yRot = 0.0F;
     		this.Limb0_Seg1.xRot = 0.0F;
     		this.Limb0_Seg1.zRot = GradientAnimation_s(0.27314402793711257F, 0.5077162820683115F, Anime_ctrl);
+    		this.Limb1_Seg0.xRot = 0.0F;
     		this.Limb1_Seg0.yRot = 3.141592653589793F;
-    		this.Limb1_Seg0.zRot = GradientAnimation_s(0.22759093446006054F, -0.3979350561389017F, Anime_ctrl);	    		   		
+    		this.Limb1_Seg0.zRot = GradientAnimation_s(0.22759093446006054F, -0.3979350561389017F, Anime_ctrl);	   
     	} else if (i > Anime_threshold[2]) {
-    		Anime_ctrl = k * (i - Anime_threshold[2]);    		
+    		Anime_ctrl = k * (i - Anime_threshold[2]);   
     		this.Body_Seg1.xRot = GradientAnimation(0.0F, 0.6257005102083563F, Anime_ctrl);
     		this.Body_Seg1.yRot = GradientAnimation(-0.5082398928281348F, 0.19547687289441354F, Anime_ctrl);
     		this.Body_Seg2.xRot = GradientAnimation(0.0F, 0.6255260065779288F, Anime_ctrl);
     		this.Body_Seg2.yRot = GradientAnimation(-0.23457224414434488F, 0.23457224414434488F, Anime_ctrl);
+    		this.Limb0_Seg0.xRot = 0.0F;
     		this.Limb0_Seg0.yRot = GradientAnimation(0.0F, 0.7037167490777915F, Anime_ctrl);
     		this.Limb0_Seg1.xRot = GradientAnimation(0.0F, 0.7428121536172365F, Anime_ctrl);
     		this.Limb0_Seg1.zRot = 0.5077162820683115F;
+    		this.Limb1_Seg0.xRot = 0.0F;
     		this.Limb1_Seg0.yRot = GradientAnimation(3.141592653589793F, -3.141592653589793F, Anime_ctrl);
-    		this.Limb1_Seg0.zRot = -0.3979350561389017F;	 
+    		this.Limb1_Seg0.zRot = -0.3979350561389017F;	
     	} else if (i > 0.0F) {
-    		Anime_ctrl = l * i;
-        	this.setRotateAngle(Limb0_Seg0, 0.0F, 0.0F, -0.27314402793711257F);
-        	this.setRotateAngle(Limb0_Seg1, 0.0F, 0.0F, 0.27314402793711257F);
-        	this.setRotateAngle(Limb1_Seg0, 0.0F, 3.141592653589793F, 0.22759093446006054F);
-        	this.setRotateAngle(Limb1_Seg1, 0.0F, 0.0F, 0.22759093446006054F);
-        	
+    		Anime_ctrl = l * i;       	
     		this.Body_Seg1.xRot = GradientAnimation_s(0.6257005102083563F, 0.0F, Anime_ctrl);
     		this.Body_Seg1.yRot = GradientAnimation_s(0.19547687289441354F, 0.0F, Anime_ctrl);
     		this.Body_Seg2.xRot = GradientAnimation_s(0.6255260065779288F, 0.0F, Anime_ctrl);
     		this.Body_Seg2.yRot = GradientAnimation_s(0.23457224414434488F, 0.0F, Anime_ctrl);
+    		this.Limb0_Seg0.xRot = 0.0F;
     		this.Limb0_Seg0.yRot = GradientAnimation_s(0.7037167490777915F, 0.0F, Anime_ctrl);
     		this.Limb0_Seg1.xRot = GradientAnimation_s(0.7428121536172365F, 0.0F, Anime_ctrl);
     		this.Limb0_Seg1.zRot = GradientAnimation_s(0.5077162820683115F, 0.27314402793711257F, Anime_ctrl);
+    		this.Limb1_Seg0.xRot = 0.0F;
     		this.Limb1_Seg0.yRot = GradientAnimation_s(-3.141592653589793F, 3.141592653589793F, Anime_ctrl);
     		this.Limb1_Seg0.zRot = GradientAnimation_s(-0.3979350561389017F, 0.22759093446006054F, Anime_ctrl);	 
     	} else {
@@ -308,9 +323,11 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
     		this.Body_Seg1.yRot = 0.0F;
     		this.Body_Seg2.xRot = 0.0F;
     		this.Body_Seg2.yRot = 0.0F;
+    		this.Limb0_Seg0.xRot = 0.0F;
     		this.Limb0_Seg0.yRot = 0.0F;
     		this.Limb0_Seg1.xRot = 0.0F;
     		this.Limb0_Seg1.zRot = 0.27314402793711257F;
+    		this.Limb1_Seg0.xRot = 0.0F;
     		this.Limb1_Seg0.yRot = 3.141592653589793F;
     		this.Limb1_Seg0.zRot = 0.22759093446006054F;	    		
     	}

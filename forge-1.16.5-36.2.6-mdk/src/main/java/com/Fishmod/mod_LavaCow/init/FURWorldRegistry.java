@@ -255,6 +255,11 @@ public class FURWorldRegistry {
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTYRANT, FURConfig.pSpawnRate_Cactyrant.get(), 1, 2));
 		}
+		
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get(), 4, 8));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

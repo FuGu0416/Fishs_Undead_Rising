@@ -139,6 +139,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Cactyrant_Ability_Cooldown;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cactoid;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -403,8 +407,14 @@ public final class FURConfig {
 		BUILDER.push("Cactyrant");
 		pSpawnRate_Cactyrant = BUILDER.comment("Set the spawn rate of Cactyrant [0-10000]").defineInRange("cactyrant spawn rate", 8, 0, 10000);
 		Cactyrant_Health = BUILDER.comment("Maximum Cactyrant health [1-1000]").defineInRange("cactyrant health", 60.0D, 1.0D, 1000.0D);
-		Cactyrant_Attack = BUILDER.comment("Cactyrant strength [1-1000]").defineInRange("cactyrant attack", 6.0D, 1.0D, 1000.0D);
+		Cactyrant_Attack = BUILDER.comment("Cactyrant strength [1-1000]").defineInRange("cactyrant attack", 8.0D, 1.0D, 1000.0D);
 		Cactyrant_Ability_Cooldown = BUILDER.comment("Set the cooldown of thorn barrage [0-100]").defineInRange("cactyrant summon cooldown", 3, 0, 100);
+		BUILDER.pop();
+
+		BUILDER.push("Cactoid");
+		pSpawnRate_Cactoid = BUILDER.comment("Set the spawn rate of Cactoid [0-10000]").defineInRange("cactoid spawn rate", 10, 0, 10000);
+		Cactoid_Health = BUILDER.comment("Maximum Cactoid health [1-1000]").defineInRange("cactoid health", 20.0D, 1.0D, 1000.0D);
+		Cactoid_Attack = BUILDER.comment("Cactoid strength [1-1000]").defineInRange("cactoid attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

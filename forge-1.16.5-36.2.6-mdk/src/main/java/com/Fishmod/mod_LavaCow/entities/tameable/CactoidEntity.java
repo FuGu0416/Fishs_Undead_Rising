@@ -91,8 +91,8 @@ public class CactoidEntity extends FURTameableEntity {
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.LilSludge_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.LilSludge_Attack.get());
+        		.add(Attributes.MAX_HEALTH, FURConfig.Cactoid_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Cactoid_Attack.get());
     }
     
     public static boolean checkCactoidSpawnRules(EntityType<? extends CactoidEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
@@ -247,8 +247,8 @@ public class CactoidEntity extends FURTameableEntity {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.LilSludge_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactoid_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactoid_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setAge(-24000);
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
