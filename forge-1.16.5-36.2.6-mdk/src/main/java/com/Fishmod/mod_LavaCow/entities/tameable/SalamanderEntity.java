@@ -17,6 +17,7 @@ import com.Fishmod.mod_LavaCow.init.FURKeybindRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.message.MessageMountSpecial;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
@@ -39,6 +40,7 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -136,14 +138,44 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
      */
     @Override
     public int getMaxSpawnClusterSize() {
-       return 4;
+    	return 4;
+    }
+
+    protected ItemStack getFishBucket() {
+    	ItemStack stack = new ItemStack(FURItemRegistry.SALAMANDER_BUCKET);
+        CompoundNBT compoundnbt = new CompoundNBT();
+        this.addAdditionalSaveData(compoundnbt);
+        stack.getOrCreateTag().put("SalamanderData", compoundnbt);
+        
+        if (this.hasCustomName()) {
+            stack.setHoverName(this.getCustomName());
+        }
+        
+        return stack;
     }
     
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);   	
         boolean flag = this.isFood(itemstack);
-        if (!flag && this.isOwnedBy(player) && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
+              
+        if (this.isTame() && this.isNymph() && itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
+            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack itemstack1 = this.getFishBucket();
+            if (!this.level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, itemstack1);
+            }
+
+            if (itemstack.isEmpty()) {
+                player.setItemInHand(hand, itemstack1);
+            } else if (!player.inventory.add(itemstack1)) {
+                player.drop(itemstack1, false);
+            }
+
+            this.remove();            
+            return ActionResultType.sidedSuccess(this.level.isClientSide);
+        } else if (!flag && this.isOwnedBy(player) && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
         	if(player.isCrouching()) {
     			this.setSaddled(false);
     			if(!this.level.isClientSide)this.spawnAtLocation(Items.SADDLE, 1);

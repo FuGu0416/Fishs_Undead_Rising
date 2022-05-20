@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -29,6 +30,7 @@ import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -188,9 +190,40 @@ public class CactoidEntity extends FURTameableEntity {
     	super.tick();
     }
     
+    protected ItemStack getFishBucket() {
+    	ItemStack stack = new ItemStack(FURItemRegistry.CACTOID_POT);
+        CompoundNBT compoundnbt = new CompoundNBT();
+        this.addAdditionalSaveData(compoundnbt);
+        stack.getOrCreateTag().put("CactoidData", compoundnbt);
+        
+        if (this.hasCustomName()) {
+            stack.setHoverName(this.getCustomName());
+        }
+        
+        return stack;
+    }
+    
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-    	if (this.isTame() && this.getGrowingStage() == 2) {
+    	ItemStack itemstack = player.getItemInHand(hand);
+    	
+        if (itemstack.getItem() == Items.FLOWER_POT && this.isAlive()) {
+            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack itemstack1 = this.getFishBucket();
+            if (!this.level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, itemstack1);
+            }
+
+            if (itemstack.isEmpty()) {
+                player.setItemInHand(hand, itemstack1);
+            } else if (!player.inventory.add(itemstack1)) {
+                player.drop(itemstack1, false);
+            }
+
+            this.remove();            
+            return ActionResultType.sidedSuccess(this.level.isClientSide);
+        } if (this.isTame() && this.getGrowingStage() == 2) {
     		this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
     		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT), 0.0F);
     		this.setGrowingStage(0);

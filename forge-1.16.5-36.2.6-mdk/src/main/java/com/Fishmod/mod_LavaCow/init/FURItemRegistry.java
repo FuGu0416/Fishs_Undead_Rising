@@ -7,10 +7,12 @@ import java.util.Random;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.item.CactoidPotItem;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.CrownItem;
 import com.Fishmod.mod_LavaCow.item.CursedBandageItem;
 import com.Fishmod.mod_LavaCow.item.DreamCatcherItem;
+import com.Fishmod.mod_LavaCow.item.FURFishBucketItem;
 import com.Fishmod.mod_LavaCow.item.FURItem;
 import com.Fishmod.mod_LavaCow.item.FURItemTier;
 import com.Fishmod.mod_LavaCow.item.FURRangedItem;
@@ -166,6 +168,8 @@ public class FURItemRegistry {
 	public static final Item CACTUS_THORN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactus_thorn");
 	public static final Item CACTUS_FRUIT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 0), 1.0F).build()), 32, UseAction.EAT, 1).setRegistryName("mod_lavacow:cactus_fruit");
 	public static final Item THORN_SHOOTER = new FURRangedItem("mod_lavacow:thorn_shooter", CACTUS_THORN, FUREntityRegistry.CACTUS_THORN, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(768));
+	public static final Item SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:salamander_bucket");
+	public static final Item CACTOID_POT = new CactoidPotItem(FUREntityRegistry.CACTOID, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
 
