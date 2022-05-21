@@ -140,47 +140,75 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
     	this.SwingX_Sin(this.tail0, -2.88380744850172F, ageInTicks, 0.2F, 0.1F, false, 0.0F);
     	this.SwingX_Sin(this.tail1, 0.8993681422473893F, ageInTicks, 0.2F, 0.1F, false, 0.1F);
     	this.SwingX_Sin(this.tail2, 0.9389871242571438F, ageInTicks, 0.2F, 0.1F, false, 0.2F);
-        if(entityfoglet.getIsClimbing()) {           
-            this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
+    	
+    	if (this.riding) {
+    		this.leg_r.xRot = -1.8301522642938983F;
+    		this.leg_r.yRot = 0.27366763203903305F;		
+    		this.leg_l.xRot = -1.8301522642938983F;
+    		this.leg_l.yRot = -0.27366763203903305F;    		
+    	} else if (entityfoglet.getIsClimbing()) {
         	this.leg_r.xRot = -2.0032889154390916F + MathHelper.cos(ageInTicks * 0.3F) * 0.4F;
-            this.leg_l.xRot = -2.0032889154390916F + MathHelper.cos(ageInTicks * 0.3F + 0.2F * (float)Math.PI) * 0.4F;            
+        	this.leg_r.yRot = 0.0F;		
+            this.leg_l.xRot = -2.0032889154390916F + MathHelper.cos(ageInTicks * 0.3F + 0.2F * (float)Math.PI) * 0.4F; 
+            this.leg_l.yRot = 0.0F;	
+    	} else if (entityfoglet.getIsHanging()) {
+            this.setRotateAngle(leg_l, -0.5009094953223726F, 0.0F, 0.0F);
+            this.setRotateAngle(leg_r, -0.5009094953223726F, 0.0F, 0.0F);   		 
+    	} else {
+        	this.leg_r.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        	this.leg_r.yRot = 0.0F;	
+	        this.leg_l.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount; 
+	        this.leg_l.yRot = 0.0F;	
+    	}
+    	
+    	if (entityfoglet.getIsClimbing()) {           
+            this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;        
             this.torso.setPos(-0.0F, 8.0F, -3.0F);
             this.torso.xRot = 0.5009094953223726F;          
         	this.arm_r.xRot = -2.0488420089161434F + MathHelper.sin(ageInTicks * 0.3F + 0.2F * (float)Math.PI) * 0.4F;
             this.arm_l.xRot = -2.0488420089161434F + MathHelper.sin(ageInTicks * 0.3F) * 0.4F; 
-        } else if(entityfoglet.getIsHanging()) {
+        } else if (entityfoglet.getIsHanging()) {
             this.head.xRot = -1.1383037381507017F + headPitch * 0.017453292F;
-            this.setRotateAngle(leg_l, -0.5009094953223726F, 0.0F, 0.0F);
-            this.setRotateAngle(leg_r, -0.5009094953223726F, 0.0F, 0.0F);
             this.torso.setPos(-0.0F, 16.0F, 0.0F);
             this.torso.xRot = -2.86844862565268F;        
         	this.setRotateAngle(arm_l, 2.86844862565268F, 0.10000736613927509F, 0.22759093446006054F);
             this.setRotateAngle(arm_r, 2.86844862565268F, -0.10000736613927509F, -0.22759093446006054F);
-        } else if(entityfoglet.isSpellcastingC()) {
+        } else if (entityfoglet.isSpellcastingC()) {
+        	this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
+	        this.torso.setPos(-0.0F, 8.0F, -3.0F);
+	        this.torso.xRot = 0.5009094953223726F;	
         	this.arm_r.xRot = 2.6862362517444724F;
         	this.arm_l.xRot = 2.6862362517444724F;
         	this.arm_r.zRot = -0.9560913642424937F + MathHelper.sin(ageInTicks * 0.6F) * 0.8196F;
-            this.arm_l.zRot = 0.9560913642424937F - MathHelper.sin(ageInTicks * 0.6F) * 0.8196F;
-        	this.leg_r.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-	        this.leg_l.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;   
-        } else if(entityfoglet.isAggressive()) {
+            this.arm_l.zRot = 0.9560913642424937F - MathHelper.sin(ageInTicks * 0.6F) * 0.8196F; 
+        } else if (entityfoglet.isAggressive()) {
+        	this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
+	        this.torso.setPos(-0.0F, 8.0F, -3.0F);
+	        this.torso.xRot = 0.5009094953223726F;	
         	this.arm_r.xRot = -2.0032889154390916F;
         	this.arm_l.xRot = -2.0032889154390916F;
         	this.arm_r.zRot = 0.10000736613927509F;
-        	this.arm_l.zRot = -0.10000736613927509F;
-        	this.leg_r.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-	        this.leg_l.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;   
+        	this.arm_l.zRot = -0.10000736613927509F; 
         } else {
-            this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
-        	this.leg_r.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-	        this.leg_l.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;   
+            this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;  
 	        this.torso.setPos(-0.0F, 8.0F, -3.0F);
-	        this.torso.xRot = 0.5009094953223726F;
+	        this.torso.xRot = 0.5009094953223726F;	        
 	        
-            this.arm_r.xRot = -0.9023352232810683F + (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-            this.arm_l.xRot = -0.9023352232810683F + (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-        	this.arm_r.zRot = 0.10000736613927509F;
-        	this.arm_l.zRot = -0.10000736613927509F;
+	        if (this.riding) {	
+	    		this.arm_r.xRot = -0.9023352365968739F;
+	    		this.arm_r.yRot = 0.33004175888896664F;
+	    		this.arm_r.zRot = 0.10000736613927509F;
+	    		this.arm_l.xRot = -0.9023352365968739F;
+	    		this.arm_l.yRot = -0.33004175888896664F;	    	        	
+	        	this.arm_l.zRot = -0.10000736613927509F;
+	        } else {
+	            this.arm_r.xRot = -0.9023352232810683F + (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
+	            this.arm_r.yRot = 0.10000736613927509F;
+	            this.arm_r.zRot = 0.10000736613927509F;
+	            this.arm_l.xRot = -0.9023352232810683F + (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;	        	
+	        	this.arm_l.yRot = -0.10000736613927509F;		        	
+	        	this.arm_l.zRot = -0.10000736613927509F;
+	        }
         }                
     }
     

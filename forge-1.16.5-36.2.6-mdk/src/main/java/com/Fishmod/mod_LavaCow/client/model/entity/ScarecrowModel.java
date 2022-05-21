@@ -269,6 +269,29 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
 		        	break;
 		} 
 		
+		if (this.riding) {
+			this.setRotateAngle(leg_r_0, -1.0030407424264298F, 0.5082398928281348F, 0.0F);
+			this.setRotateAngle(leg_r_1, 0.5707226787179512F, 0.0F, 0.0F);
+			this.setRotateAngle(leg_r_2, -0.3761184404889726F, 0.0F, 0.0F);
+			this.setRotateAngle(leg_l_0, -1.0030407424264298F, -0.5082398928281348F, 0.0F);
+			this.setRotateAngle(leg_l_1, 0.5707226787179512F, 0.0F, 0.0F);
+			this.setRotateAngle(leg_l_2, -0.3761184404889726F, 0.0F, 0.0F);
+		} else if (entityIn.isSilent()) {
+        	this.setRotateAngle(leg_l_0, 0.36425021489121656F, 0.0F, 0.0F);
+        	this.setRotateAngle(leg_l_1, 0.0F, 0.0F, 0.0F);
+        	this.setRotateAngle(leg_l_2, 0.0F, 0.0F, 0.0F);
+        	this.setRotateAngle(leg_r_0, 0.36425021489121656F, 0.0F, 0.0F);
+        	this.setRotateAngle(leg_r_1, 0.0F, 0.0F, 0.0F);
+        	this.setRotateAngle(leg_r_2, 0.0F, 0.0F, 0.0F);
+		} else {
+	    	this.leg_r_0.xRot = 0.13072515697963366F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;	              
+	        this.setRotateAngle(leg_r_1, 0.5707226787179512F, 0.0F, 0.0F);
+	        this.setRotateAngle(leg_r_2, -0.3761184404889726F, 0.0F, 0.0F);
+	        this.leg_l_0.xRot = 0.13072515697963366F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        this.setRotateAngle(leg_l_1, 0.5707226787179512F, 0.0F, 0.0F);
+	        this.setRotateAngle(leg_l_2, -0.3761184404889726F, 0.0F, 0.0F);
+		}
+		
         if(!entityIn.isSilent()) {
         	switch(entityIn.getSkin()) {
         		case 0:
@@ -292,31 +315,13 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
         		default:
         			break;
         	}
-	    		    	
-	    	this.leg_r_0.xRot = 0.13072515697963366F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        this.leg_l_0.xRot = 0.13072515697963366F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        
-	        this.setRotateAngle(leg_r_1, 0.5707226787179512F, 0.0F, 0.0F);
-	        this.setRotateAngle(leg_r_2, -0.3761184404889726F, 0.0F, 0.0F);
-	        this.setRotateAngle(leg_l_1, 0.5707226787179512F, 0.0F, 0.0F);
-	        this.setRotateAngle(leg_l_2, -0.3761184404889726F, 0.0F, 0.0F);
-	        
+	    		    	        
 	        this.scepter_base.visible = true;	        
 	    } else {
         	this.setRotateAngle(Head, 0.12F, 0.0F, -0.22759093446006054F);
         	this.setRotateAngle(Head2, 0.12F, 0.0F, -0.22759093446006054F);
         	this.setRotateAngle(Head3, 0.12F, 0.0F, -0.22759093446006054F);
-        	
-        	
-
-        	
-        	this.setRotateAngle(leg_l_0, 0.36425021489121656F, 0.0F, 0.0F);
-        	this.setRotateAngle(leg_l_1, 0.0F, 0.0F, 0.0F);
-        	this.setRotateAngle(leg_l_2, 0.0F, 0.0F, 0.0F);
-        	this.setRotateAngle(leg_r_0, 0.36425021489121656F, 0.0F, 0.0F);
-        	this.setRotateAngle(leg_r_1, 0.0F, 0.0F, 0.0F);
-        	this.setRotateAngle(leg_r_2, 0.0F, 0.0F, 0.0F);
-        	
+        	        	
         	this.scepter_base.visible = false;    	
         }
     }

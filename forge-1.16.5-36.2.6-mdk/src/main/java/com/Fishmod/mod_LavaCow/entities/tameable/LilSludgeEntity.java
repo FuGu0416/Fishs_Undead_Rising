@@ -68,8 +68,7 @@ public class LilSludgeEntity extends FURTameableEntity {
 	private int unbreaking;
 	private boolean isSmoking = false;
 	
-	public LilSludgeEntity(EntityType<? extends LilSludgeEntity> p_i48549_1_, World worldIn)
-    {
+	public LilSludgeEntity(EntityType<? extends LilSludgeEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.limitedLifeTicks = -1;
     }
@@ -93,8 +92,7 @@ public class LilSludgeEntity extends FURTameableEntity {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
@@ -108,8 +106,7 @@ public class LilSludgeEntity extends FURTameableEntity {
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.LilSludge_Attack.get());
     }
     
-    public void setLimitedLife(int limitedLifeTicksIn)
-    {
+    public void setLimitedLife(int limitedLifeTicksIn) {
         this.limitedLifeTicks = limitedLifeTicksIn;
     }
     
@@ -123,13 +120,11 @@ public class LilSludgeEntity extends FURTameableEntity {
     	return this.lifesteal;
     }
     
-    public int getSkin()
-    {
+    public int getSkin() {
         return this.entityData.get(SKIN_TYPE).intValue();
     }
 
-    public void setSkin(int skinType)
-    {
+    public void setSkin(int skinType) {
         this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
@@ -143,11 +138,9 @@ public class LilSludgeEntity extends FURTameableEntity {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void aiStep()
-    {
+    public void aiStep() {
     	if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
-            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity)
-            {
+            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
             }
         	this.level.broadcastEntityEvent(this, (byte)11);
@@ -156,8 +149,7 @@ public class LilSludgeEntity extends FURTameableEntity {
         }
     	
         if(this.isSmoking) {
-	    	for (int j = 0; j < 8; ++j)
-	        {
+	    	for (int j = 0; j < 8; ++j) {
 	            float f = this.random.nextFloat() * ((float)Math.PI * 2F);
 	            float f1 = this.getBbHeight() * 0.4F + this.random.nextFloat() * 0.5F;
 	            float f2 = MathHelper.sin(f) * f1;
@@ -178,12 +170,10 @@ public class LilSludgeEntity extends FURTameableEntity {
     }
 
 	@Override
-    public boolean doHurtTarget(Entity entityIn)
-    {
+    public boolean doHurtTarget(Entity entityIn) {
         boolean flag = super.doHurtTarget(entityIn);
 
-        if (flag)
-        {
+        if (flag) {
             if(entityIn instanceof LivingEntity) {
 	            if(this.fire_aspect > 0)
 	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
@@ -225,7 +215,7 @@ public class LilSludgeEntity extends FURTameableEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.LilSludge_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+        
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }	
     
@@ -238,14 +228,10 @@ public class LilSludgeEntity extends FURTameableEntity {
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id)
-    {
-    	if (id == 11) 
-    	{
+    public void handleEntityEvent(byte id) {
+    	if (id == 11) {
             this.isSmoking = true;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -261,36 +247,31 @@ public class LilSludgeEntity extends FURTameableEntity {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return this.owner != null && this.owner instanceof MobEntity && ((MobEntity) this.owner).isAggressive() && this.canAttack(((MobEntity) this.owner).getTarget(), this.copyOwnerTargeting);
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             LilSludgeEntity.this.setTarget(((MobEntity) this.owner).getTarget());
             super.start();
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.LILSLUDGE_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.SLUDGELORD_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.LILSLUDGE_DEATH;
     }
 
@@ -342,8 +323,7 @@ public class LilSludgeEntity extends FURTameableEntity {
      * Get this Entity's CreatureAttribute
      */
     @Override
-    public CreatureAttribute getMobType()
-    {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
     

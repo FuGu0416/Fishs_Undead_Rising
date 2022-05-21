@@ -25,7 +25,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.TameableEntity;
@@ -54,6 +56,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -230,12 +233,9 @@ public class FURWeaponItem extends SwordItem {
 		int corrosive = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE, playerIn.getItemInHand(handIn));
 		int unbreaking = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getItemInHand(handIn));
 		
-    	if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SLUDGE_WAND) {
-        	
-        	LilSludgeEntity entity = new LilSludgeEntity(FUREntityRegistry.LILSLUDGE, worldIn);
-        	CompoundNBT CompoundNBT = new CompoundNBT();
-        	
-        	entity.moveTo(playerIn.getX() + playerIn.getLookAngle().x, playerIn.getY() + 0.2F, playerIn.getZ() + playerIn.getLookAngle().z, 0.0F, 0.0F);       	
+    	if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SLUDGE_WAND && worldIn instanceof ServerWorld) {       	
+        	LilSludgeEntity entity = (LilSludgeEntity)FUREntityRegistry.LILSLUDGE.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, new BlockPos(playerIn.getX() + playerIn.getLookAngle().x, playerIn.getY() + 0.2F, playerIn.getZ() + playerIn.getLookAngle().z), SpawnReason.MOB_SUMMONED, true, false);        	
+        	CompoundNBT CompoundNBT = new CompoundNBT();    	
         	CompoundNBT.putInt("fire_aspect", fire_aspect);
         	CompoundNBT.putInt("sharpness", sharpness);
         	CompoundNBT.putInt("knockback", knockback);
@@ -249,10 +249,6 @@ public class FURWeaponItem extends SwordItem {
         	entity.tame(playerIn);
         	entity.setLimitedLife(FURConfig.LilSludge_Lifespan.get() * 20);
         	entity.setSkin((fire_aspect > 0) ? 1 : 0);
-        	
-        	if(!worldIn.isClientSide()) {
-	            worldIn.addFreshEntity(entity);
-        	}
         		
             LavaBurst(worldIn, entity.getX(), entity.getY(), entity.getZ(), 1.0D, fire_aspect > 0 ? ParticleTypes.FLAME : ParticleTypes.BUBBLE_COLUMN_UP);
 			
@@ -319,15 +315,11 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL) {
-            for (int i = 0; i < 4; ++i)
-            {
+        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
+            for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 CompoundNBT CompoundNBT = new CompoundNBT();
-                UnburiedEntity entity = new UnburiedEntity(FUREntityRegistry.UNBURIED, worldIn);
-                
-                entity.moveTo(blockpos, 0.0F, 0.0F);
-                
+                UnburiedEntity entity = (UnburiedEntity)FUREntityRegistry.UNBURIED.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
             	CompoundNBT.putInt("fire_aspect", fire_aspect);
             	CompoundNBT.putInt("sharpness", sharpness);
             	CompoundNBT.putInt("knockback", knockback);
@@ -341,10 +333,6 @@ public class FURWeaponItem extends SwordItem {
             	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
             	entity.tame(playerIn);
                 entity.setLimitedLife(FURConfig.Unburied_Lifespan.get() * 20);
-                
-            	if(!worldIn.isClientSide()) {
-    	            worldIn.addFreshEntity(entity);
-            	}
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {

@@ -54,8 +54,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
 	private int RattackTimer;
 	protected int spellTicks;
 	
-	public SludgeLordEntity(EntityType<? extends SludgeLordEntity> p_i48549_1_, World worldIn)
-    {
+	public SludgeLordEntity(EntityType<? extends SludgeLordEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.xpReward = 20;
     }
@@ -73,8 +72,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
@@ -93,16 +91,19 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
-    public boolean isSpellcasting()
-    {
+    public boolean isSpellcasting() {
     	return this.spellTicks > 0;
     }
     
-    public int getSpellTicks()
-    {
+    public int getSpellTicks() {
         return this.spellTicks;
     }
-	
+
+    @Override
+    public double getMyRidingOffset() {
+        return -0.65D;
+    }
+    
     /**
      * Called to update the entity's position/logic.
      */
@@ -189,7 +190,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SludgeLord_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SludgeLord_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+         	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
@@ -255,7 +256,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         compound.putInt("SpellTicks", this.spellTicks);
     }
     
-public class AICastingApell extends Goal {
+	public class AICastingApell extends Goal {
     	
         public AICastingApell() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -264,16 +265,14 @@ public class AICastingApell extends Goal {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return SludgeLordEntity.this.getSpellTicks() > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             super.start();
             SludgeLordEntity.this.getNavigation().stop();
         }
@@ -281,43 +280,33 @@ public class AICastingApell extends Goal {
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
-        public void stop()
-        {
+        public void stop() {
             super.stop();
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
-            if (SludgeLordEntity.this.getTarget() != null)
-            {
+        public void tick() {
+            if (SludgeLordEntity.this.getTarget() != null) {
                 SludgeLordEntity.this.getLookControl().setLookAt(SludgeLordEntity.this.getTarget(), (float)SludgeLordEntity.this.getMaxHeadYRot(), (float)SludgeLordEntity.this.getMaxHeadXRot());
             }
         }
     }
 
-    public class AIUseSpell extends Goal
-    {
+    public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
-            if (SludgeLordEntity.this.getTarget() == null)
-            {
+        public boolean canUse() {
+            if (SludgeLordEntity.this.getTarget() == null) {
                 return false;
-            }
-            else if (SludgeLordEntity.this.isSpellcasting() || SludgeLordEntity.this.getAttackTimer() > 0 || SludgeLordEntity.this.getRAttackTimer() > 0)
-            {
+            } else if (SludgeLordEntity.this.isSpellcasting() || SludgeLordEntity.this.getAttackTimer() > 0 || SludgeLordEntity.this.getRAttackTimer() > 0) {
                 return false;
-            }
-            else
-            {
+            } else {
                 int i = SludgeLordEntity.this.level.getEntitiesOfClass(LilSludgeEntity.class, SludgeLordEntity.this.getBoundingBox().inflate(16.0D)).size();
             	return SludgeLordEntity.this.tickCount >= this.spellCooldown && i < FURConfig.SludgeLord_Ability_Max.get();
             }
@@ -326,23 +315,20 @@ public class AICastingApell extends Goal {
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return SludgeLordEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             SludgeLordEntity.this.spellTicks = this.getCastingTime();
             this.spellCooldown = SludgeLordEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
             SludgeLordEntity.this.level.broadcastEntityEvent(SludgeLordEntity.this, (byte)10);         
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 SludgeLordEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -350,21 +336,17 @@ public class AICastingApell extends Goal {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
                 SludgeLordEntity.this.playSound(SludgeLordEntity.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
-        protected void castSpell()
-        {
-            for (int i = 0; i < FURConfig.SludgeLord_Ability_Num.get(); ++i)
-            {
+        protected void castSpell() {
+            for (int i = 0; i < FURConfig.SludgeLord_Ability_Num.get(); ++i) {
                 BlockPos blockpos = SludgeLordEntity.this.blockPosition().offset(-2 + SludgeLordEntity.this.getRandom().nextInt(5), 1, -2 + SludgeLordEntity.this.getRandom().nextInt(5));
                 LilSludgeEntity entity = FUREntityRegistry.LILSLUDGE.create(SludgeLordEntity.this.level);
                 entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
@@ -379,8 +361,7 @@ public class AICastingApell extends Goal {
                 
                 entity.setTarget(SludgeLordEntity.this.getTarget());
                 
-                for (int j = 0; j < 24; ++j)
-                {
+                for (int j = 0; j < 24; ++j) {
                 	double d0 = entity.getX() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
                 	double d1 = entity.getY() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbHeight());
                 	double d2 = entity.getZ() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
@@ -389,53 +370,45 @@ public class AICastingApell extends Goal {
             }
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 80;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 100;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
         	return FURConfig.SludgeLord_Ability_Cooldown.get() * 20;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
         	return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
     }
     
 	@Override
-    public int getAmbientSoundInterval() {
+	public int getAmbientSoundInterval() {
         return 320;
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.SLUDGELORD_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.SLUDGELORD_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.SLUDGELORD_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
+    protected SoundEvent getSpellSound() {
         return SoundEvents.EVOKER_CAST_SPELL;
     }
 
@@ -448,8 +421,7 @@ public class AICastingApell extends Goal {
      * Get this Entity's CreatureAttribute
      */
     @Override
-    public CreatureAttribute getMobType()
-    {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
     

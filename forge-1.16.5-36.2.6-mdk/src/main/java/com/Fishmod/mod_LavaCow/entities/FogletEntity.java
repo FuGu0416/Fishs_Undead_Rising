@@ -72,14 +72,12 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
-	public FogletEntity(EntityType<? extends FogletEntity> p_i48549_1_, World worldIn)
-    {
+	public FogletEntity(EntityType<? extends FogletEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
     }
 	
 	@Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
@@ -90,8 +88,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
@@ -120,28 +117,29 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.getEntityData().define(CASTING, Byte.valueOf((byte)0));
     }
     
-    public boolean isSpellcasting()
-    {
+    public boolean isSpellcasting() {
     	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
     }
     
     @OnlyIn(Dist.CLIENT)
-    public boolean isSpellcastingC()
-    {
+    public boolean isSpellcastingC() {
     	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
     }
     
-    protected int getSpellTicks()
-    {
+    protected int getSpellTicks() {
         return this.spellTicks;
+    }
+    
+    @Override
+    public double getMyRidingOffset() {
+        return -0.25D;
     }
 	
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         if(this.getIsHanging()) {
@@ -154,10 +152,8 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 		        
 		        List<Entity> list = this.level.getEntities(this, this.getBoundingBox().expandTowards(2.0D, 35.0D, 2.0D));
 		        
-	        	for (Entity entity1 : list)
-	        	{
-	        		if (entity1.getY() < this.getY() && ((entity1 instanceof PlayerEntity && !((PlayerEntity)entity1).isCreative()) || entity1 instanceof AbstractVillagerEntity))
-	        		{
+	        	for (Entity entity1 : list) {
+	        		if (entity1.getY() < this.getY() && ((entity1 instanceof PlayerEntity && !((PlayerEntity)entity1).isCreative()) || entity1 instanceof AbstractVillagerEntity)) {
 	        			this.setTarget((LivingEntity) entity1);
 	        			this.setIsHanging(false);
 	        			break;
@@ -180,8 +176,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {
+    public void tick() {
         if (this.spellTicks > 0) {
             --this.spellTicks;
             
@@ -206,14 +201,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
      * Called when the entity is attacked.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount)
-    {
-    	if (super.hurt(source, amount))
-        {
+    public boolean hurt(DamageSource source, float amount) {
+    	if (super.hurt(source, amount)) {
             LivingEntity LivingEntity = this.getTarget();
         	
-            if (LivingEntity == null && source.getDirectEntity() instanceof LivingEntity)
-            {
+            if (LivingEntity == null && source.getDirectEntity() instanceof LivingEntity) {
                 LivingEntity = (LivingEntity)source.getDirectEntity();
             }
             
@@ -222,20 +214,16 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             }
 
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     @Override
-    public boolean doHurtTarget(Entity entityIn)
-    {
+    public boolean doHurtTarget(Entity entityIn) {
         boolean flag = super.doHurtTarget(entityIn);
 
-        if (flag)
-        {
+        if (flag) {
             float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
             if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
             	entityIn.setSecondsOnFire(2 * (int)f);
@@ -256,16 +244,16 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
- 		   this.setSkin(1);
- 		   this.goalSelector.addGoal(1, new AIClimbimgTree());
- 	   } else if(this.getType().equals(FUREntityRegistry.IMP)) {
- 		  this.setSkin(2);
- 	   }
+    	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
+ 		   	this.setSkin(1);
+ 		   	this.goalSelector.addGoal(1, new AIClimbimgTree());
+    	} else if (this.getType().equals(FUREntityRegistry.IMP)) {
+    		this.setSkin(2);
+    	}
  	   
 
  	   
- 	   return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+ 	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
     
     /**
@@ -283,13 +271,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
        }
     }
     
-    public int getSkin()
-    {
+    public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
     }
 
-    public void setSkin(int skinType)
-    {
+    public void setSkin(int skinType) {
         this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
@@ -308,12 +294,10 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
      */
 	@Override
     @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id)
-    {
+    public void handleEntityEvent(byte id) {
         if (id == 10) {
         	this.spellTicks = 100;
-        }
-        else {
+        } else {
         	this.spellTicks = 0;
 
             super.handleEntityEvent(id);
@@ -352,60 +336,45 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         compound.putByte("Climbing", ((Byte)this.getEntityData().get(CLIMBING)).byteValue());
     }
     
-    public boolean getIsHanging()
-    {
+    public boolean getIsHanging() {
         return (((Byte)this.getEntityData().get(HANGING)).byteValue() & 1) != 0;
     }
     
-    public boolean getIsClimbing()
-    {
+    public boolean getIsClimbing() {
         return (((Byte)this.getEntityData().get(CLIMBING)).byteValue() & 1) != 0;
     }
     
-    public void setIsClimbing(boolean isClimbing)
-    {
+    public void setIsClimbing(boolean isClimbing) {
         byte b0 = ((Byte)this.getEntityData().get(CLIMBING)).byteValue();
 
-        if (isClimbing)
-        {
+        if (isClimbing) {
             this.getEntityData().set(CLIMBING, Byte.valueOf((byte)(b0 | 1)));
-        }
-        else
-        {
+        } else {
             this.getEntityData().set(CLIMBING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
     
-    public void setIsHanging(boolean isHanging)
-    {
+    public void setIsHanging(boolean isHanging) {
         byte b0 = ((Byte)this.getEntityData().get(HANGING)).byteValue();
 
-        if (isHanging)
-        {
+        if (isHanging) {
             this.getEntityData().set(HANGING, Byte.valueOf((byte)(b0 | 1)));
-        }
-        else
-        {
+        } else {
             this.getEntityData().set(HANGING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
     
-    public void setIsCasting(boolean isHanging)
-    {
+    public void setIsCasting(boolean isHanging) {
         byte b0 = ((Byte)this.getEntityData().get(CASTING)).byteValue();
 
-        if (isHanging)
-        {
+        if (isHanging) {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 | 1)));
-        }
-        else
-        {
+        } else {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
     
-    public class AIClimbimgTree extends Goal
-    {
+    public class AIClimbimgTree extends Goal {
         private BlockPos TreePos;
     	
     	public AIClimbimgTree() {
@@ -415,8 +384,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Returns whether the EntityAIBase should begin execution.
          */
     	@Override
-        public boolean canUse()
-        {
+        public boolean canUse() {
             int i = MathHelper.floor(FogletEntity.this.getX());
             int j = MathHelper.floor(FogletEntity.this.getY());
             int k = MathHelper.floor(FogletEntity.this.getZ());
@@ -439,8 +407,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Execute a one shot task or start executing a continuous task
          */
     	@Override
-        public void start()
-        {
+        public void start() {
             super.start();
             FogletEntity.this.setIsClimbing(true);
             FogletEntity.this.getNavigation().stop();
@@ -450,8 +417,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
     	@Override
-        public void stop()
-        {
+        public void stop() {
             int i = MathHelper.floor(FogletEntity.this.getX());
             int j = MathHelper.floor(FogletEntity.this.getY());
             int k = MathHelper.floor(FogletEntity.this.getZ());
@@ -469,8 +435,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Keep ticking a continuous task that has already been started
          */
     	@Override
-        public void tick()
-        {
+        public void tick() {
         	if(FogletEntity.this.getDeltaMovement().y < 0.0D)
         		FogletEntity.this.setDeltaMovement(0.0D, 0.05D, 0.0D);
         	if(TreePos != null) {
@@ -489,8 +454,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Returns whether the EntityAIBase should begin execution.
          */
         @Override
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return FogletEntity.this.getSpellTicks() > 0;
         }
 
@@ -498,8 +462,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Execute a one shot task or start executing a continuous task
          */
         @Override
-        public void start()
-        {
+        public void start() {
             super.start();
             FogletEntity.this.setIsCasting(true);
             FogletEntity.this.getNavigation().stop();
@@ -509,8 +472,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         @Override
-        public void stop()
-        {
+        public void stop() {
             super.stop();
             FogletEntity.this.setIsCasting(false);
         }
@@ -519,17 +481,14 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Keep ticking a continuous task that has already been started
          */
         @Override
-        public void tick()
-        {
-            if (FogletEntity.this.getTarget() != null)
-            {
+        public void tick() {
+            if (FogletEntity.this.getTarget() != null) {
                 FogletEntity.this.getLookControl().setLookAt(FogletEntity.this.getTarget(), (float)FogletEntity.this.getMaxHeadYRot(), (float)FogletEntity.this.getMaxHeadXRot());
             }
         }
     }
     
-    public class AIUseSpell extends Goal
-    {
+    public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
@@ -537,18 +496,12 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Returns whether the EntityAIBase should begin execution.
          */
         @Override
-        public boolean canUse()
-        {
-            if (FogletEntity.this.getTarget() == null)
-            {
+        public boolean canUse() {
+            if (FogletEntity.this.getTarget() == null) {
                 return false;
-            }
-            else if (FogletEntity.this.isSpellcasting())
-            {
+            } else if (FogletEntity.this.isSpellcasting()) {
                 return false;
-            }
-            else
-            {
+            } else {
             	return FogletEntity.this.tickCount >= this.spellCooldown && FogletEntity.this.distanceTo(FogletEntity.this.getTarget()) < 3.0F;
             }
         }
@@ -557,8 +510,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         @Override
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return FogletEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
@@ -566,16 +518,14 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Execute a one shot task or start executing a continuous task
          */
         @Override
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             FogletEntity.this.spellTicks = this.getCastingTime();
             FogletEntity.this.level.broadcastEntityEvent(FogletEntity.this, (byte)10);
             this.spellCooldown = FogletEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
 
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 FogletEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -584,12 +534,10 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          * Keep ticking a continuous task that has already been started
          */
         @Override
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
                 FogletEntity.this.playSound(FogletEntity.this.getSpellSound(), 1.0F, 1.0F);
                 if(FogletEntity.this.getSkin() == 0)
@@ -597,8 +545,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             }
         }
 
-        protected void castSpell()
-        {
+        protected void castSpell() {
         	AreaEffectCloudEntity entityareaeffectcloud = new AreaEffectCloudEntity(FogletEntity.this.level, FogletEntity.this.getX(), FogletEntity.this.getY() + 1.0D, FogletEntity.this.getZ());
             Effect effect;
             
@@ -633,48 +580,40 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             FogletEntity.this.level.addFreshEntity(entityareaeffectcloud);
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 20;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 100;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return 200;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.FOGLET_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.FOGLET_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.FOGLET_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
+    protected SoundEvent getSpellSound() {
         return SoundEvents.EVOKER_CAST_SPELL;
     }
 

@@ -33,6 +33,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -138,6 +139,11 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
     public int getSpellTicks(int i) {
         return this.spellTicks[i];
     }
+    
+    @Override
+    public double getMyRidingOffset() {
+        return -0.95D;
+    }
 	
     @Override
     public void tick() {
@@ -157,10 +163,8 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	        if (this.spellTicks[i] > 0) {
 	            --this.spellTicks[i];
 	            
-	            if (this.level.isClientSide())
-	            {
-	                for (int j = 0; j < 4; ++j)
-	                {
+	            if (this.level.isClientSide()) {
+	                for (int j = 0; j < 4; ++j) {
 	                    this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), this.getY() + this.random.nextDouble() * (double)this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), 0.0D, this.random.nextDouble() * 0.5D, 0.0D);
 	                }
 	            }
@@ -242,20 +246,15 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4) 
-    	{
+    	if (id == 4) {
             this.attackTimer = 30;
-        }
-    	else if (id == 10) {
+        } else if (id == 10) {
     		
         	this.spellTicks[0] = 30;
-        }
-		else if (id == 11) {
+        } else if (id == 11) {
     		
         	this.spellTicks[1] = 15;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -270,30 +269,26 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SkeletonKing_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SkeletonKing_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+    	       
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
-    public class AICastingApell extends Goal
-    {
-        public AICastingApell()
-        {
+    public class AICastingApell extends Goal {
+        public AICastingApell() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         /**
          * Returns whether the Goal should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             return SkeletonKingEntity.this.isSpellcasting();
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             super.start();
             SkeletonKingEntity.this.getNavigation().stop();
         }
@@ -301,33 +296,28 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
-        public void stop()
-        {
+        public void stop() {
             super.stop();
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
-            if (SkeletonKingEntity.this.getTarget() != null)
-            {
+        public void tick() {
+            if (SkeletonKingEntity.this.getTarget() != null) {
                 SkeletonKingEntity.this.getLookControl().setLookAt(SkeletonKingEntity.this.getTarget(), (float)SkeletonKingEntity.this.getMaxHeadYRot(), (float)SkeletonKingEntity.this.getMaxHeadXRot());
             }
         }
     }
     
-    public class AISummoningSpell extends Goal
-    {
+    public class AISummoningSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the Goal should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
         	if (SkeletonKingEntity.this.getTarget() == null || SkeletonKingEntity.this.getAttackTimer() > 0)
                 return false;
             else if ((SkeletonKingEntity.this.isSpellcasting() || !SkeletonKingEntity.this.canSee(SkeletonKingEntity.this.getTarget())) && SkeletonKingEntity.this.distanceTo(SkeletonKingEntity.this.getTarget()) > 16.0D)
@@ -339,23 +329,20 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Returns whether an in-progress Goal should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return SkeletonKingEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             SkeletonKingEntity.this.spellTicks[0] = this.getCastingTime();
             this.spellCooldown = SkeletonKingEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
             SkeletonKingEntity.this.level.broadcastEntityEvent(SkeletonKingEntity.this, (byte)10);
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 SkeletonKingEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -363,21 +350,17 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
                 //EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
-        protected void castSpell()
-        {
-            for (int i = 0; i < 11; ++i)
-            {
+        protected void castSpell() {
+            for (int i = 0; i < 11; ++i) {
                 BlockPos blockpos = SkeletonKingEntity.this.blockPosition().offset(-12 + SkeletonKingEntity.this.random.nextInt(24), 0, -12 + SkeletonKingEntity.this.random.nextInt(24));
 
                 SandBurstEntity entityevokerfangs = new SandBurstEntity(SkeletonKingEntity.this.level, (double)blockpos.getX(), (double)SpawnUtil.getHeight(SkeletonKingEntity.this).getY(), (double)blockpos.getZ(), 0.0F, 20, SkeletonKingEntity.this);
@@ -388,38 +371,32 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
             SkeletonKingEntity.this.level.addFreshEntity(entityevokerfangs);
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 30;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 30;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return 200;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
         	return FURSoundRegistry.SKELETONKING_SPELL_SUMMON;
         }
     }
     
-    public class AITeleportSpell extends Goal
-    {
+    public class AITeleportSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the Goal should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
         	if (SkeletonKingEntity.this.getTarget() == null || SkeletonKingEntity.this.getAttackTimer() > 0)
                 return false;
             else if (SkeletonKingEntity.this.isSpellcasting() || SkeletonKingEntity.this.distanceTo(SkeletonKingEntity.this.getTarget()) > 16.0D || SkeletonKingEntity.this.distanceTo(SkeletonKingEntity.this.getTarget()) < 4.0D)
@@ -431,16 +408,14 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Returns whether an in-progress Goal should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return SkeletonKingEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             this.spellCooldown = SkeletonKingEntity.this.tickCount + this.getCastingInterval();
         }
@@ -448,54 +423,45 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
             }
         }
 
-        protected void castSpell()
-        {
+        protected void castSpell() {
         	SkeletonKingEntity.this.randomTeleport(SkeletonKingEntity.this.getTarget().getX(), SkeletonKingEntity.this.getTarget().getY(), SkeletonKingEntity.this.getTarget().getZ(), false);
         	SkeletonKingEntity.this.playSound(this.getSpellPrepareSound(), 1.0F, 1.0F);
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 20;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 30;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return (SkeletonKingEntity.this.getHealth() >  SkeletonKingEntity.this.getMaxHealth() * 0.5F) ? 320 : 160;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
         	return FURSoundRegistry.SKELETONKING_SPELL_TELEPORT;
         }
     }
     
-    public class AITossSpell extends Goal
-    {
+    public class AITossSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the Goal should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
         	if (SkeletonKingEntity.this.getTarget() == null || SkeletonKingEntity.this.getHealth() >  SkeletonKingEntity.this.getMaxHealth() * 0.5F || SkeletonKingEntity.this.getAttackTimer() > 0)
                 return false;
             else if ((SkeletonKingEntity.this.isSpellcasting() || !SkeletonKingEntity.this.canSee(SkeletonKingEntity.this.getTarget())) && SkeletonKingEntity.this.distanceTo(SkeletonKingEntity.this.getTarget()) > 16.0D)
@@ -507,16 +473,14 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Returns whether an in-progress Goal should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return SkeletonKingEntity.this.getTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             this.spellWarmup = this.getCastWarmupTime();
             SkeletonKingEntity.this.spellTicks[1] = this.getCastingTime();
             this.spellCooldown = SkeletonKingEntity.this.tickCount + this.getCastingInterval();
@@ -531,19 +495,16 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void tick()
-        {
+        public void tick() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
                 //EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
-        protected void castSpell()
-        {
+        protected void castSpell() {
         	if(SkeletonKingEntity.this.getTarget() == null)
         		return;
         	
@@ -555,24 +516,20 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         	}
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 15;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 15;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return 120;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
             return FURSoundRegistry.SKELETONKING_SPELL_TOSS;
         }
     }
@@ -594,12 +551,10 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 			this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
 		}
 		
-	    protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_)
-	    {
+	    protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 	        double d0 = this.getAttackReachSqr(p_190102_1_);
 
-	        if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0)
-	        {
+	        if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0) {
 	            this.ticksUntilNextAttack = 60;
 	            this.mob.swing(Hand.MAIN_HAND);
 	            this.mob.doHurtTarget(p_190102_1_);
@@ -671,28 +626,23 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         return null;
     }
 
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return SoundEvents.SKELETON_AMBIENT;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.SKELETON_HURT;
     }
 
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.SKELETONKING_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
+    protected SoundEvent getSpellSound() {
         return SoundEvents.EVOKER_CAST_SPELL;
     }
 
-    protected SoundEvent getStepSound()
-    {
+    protected SoundEvent getStepSound() {
         return SoundEvents.SKELETON_STEP;
     }
     

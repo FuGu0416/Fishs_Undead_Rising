@@ -207,19 +207,26 @@ public class UndertakerModel<T extends UndertakerEntity> extends FURBaseModel<T>
     	float j = (float)entityIn.getSpellTicks() / 30.0F;
     	
     	this.Head_Looking(this.Neck, 1.7756979809790308F, 0.0F, netHeadYaw, headPitch);
-    	this.SwingX_Sin(this.Jaw, 0.40980330836826856F, ageInTicks, -0.07F, 0.03F, false, 0.0F);
-    	this.SwingX_Sin(this.Leg_r_Seg0, -0.40980330836826856F, limbSwing, limbSwingAmount * 0.7F, 0.3F, true, 0.0F);
-    	this.SwingX_Sin(this.Leg_l_Seg0, -0.40980330836826856F, limbSwing, limbSwingAmount * 0.7F, 0.3F, false, 0.0F);
-    	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, false, 0.3F * (float)Math.PI);
-    	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
-    	this.SwingX_Sin(this.Leg_r_Seg2, -0.18203784098300857F, limbSwing, limbSwingAmount * 0.2F, 0.3F, true, 0.5F * (float)Math.PI);
-    	this.SwingX_Sin(this.Leg_l_Seg2, -0.18203784098300857F, limbSwing, limbSwingAmount * 0.2F, 0.3F, false, 0.5F * (float)Math.PI);
- 	
+    	this.SwingX_Sin(this.Jaw, 0.40980330836826856F, ageInTicks, -0.07F, 0.03F, false, 0.0F); 	
     	this.SwingX_Sin(this.Arm_r_Seg2, -0.5260422258984465F, ageInTicks, -0.07F, 0.03F, false, 0.5F * (float)Math.PI); 
     	this.SwingX_Sin(this.Arm_l_Seg2, -0.5260422258984465F, ageInTicks, -0.07F, 0.03F, false, 0.5F * (float)Math.PI); 
     	
     	this.Arm_r_Seg0.y = -7.0F + (-0.55F  * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI)); 
     	this.Arm_l_Seg0.y = -7.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI)); 
+    	
+    	if (this.riding) {
+    		this.setRotateAngle(Leg_r_Seg0, -1.66085538011367F, 0.19547687289441354F, 0.0F);
+    		this.setRotateAngle(Leg_l_Seg0, -1.66085538011367F, -0.19547687289441354F, 0.0F);
+    	} else {
+        	this.SwingX_Sin(this.Leg_r_Seg0, -0.40980330836826856F, limbSwing, limbSwingAmount * 0.7F, 0.3F, true, 0.0F);
+        	Leg_r_Seg0.yRot = 0.0F;
+        	this.SwingX_Sin(this.Leg_l_Seg0, -0.40980330836826856F, limbSwing, limbSwingAmount * 0.7F, 0.3F, false, 0.0F);
+        	Leg_l_Seg0.yRot = 0.0F;
+        	this.SwingX_Sin(this.Leg_r_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, false, 0.3F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_r_Seg2, -0.18203784098300857F, limbSwing, limbSwingAmount * 0.2F, 0.3F, true, 0.5F * (float)Math.PI);
+        	this.SwingX_Sin(this.Leg_l_Seg2, -0.18203784098300857F, limbSwing, limbSwingAmount * 0.2F, 0.3F, false, 0.5F * (float)Math.PI);    		
+    	}
 
     	if(j > 0.0F) {
     		this.Body_chest.xRot = GradientAnimation(0.4553564018453205F, -0.136659280431156F, j);

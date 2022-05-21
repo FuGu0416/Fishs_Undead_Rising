@@ -31,6 +31,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -119,6 +120,11 @@ public class ScarecrowEntity  extends FURTameableEntity {
         return false;
     }
     
+    @Override
+    public double getMyRidingOffset() {
+        return -1.0D;
+    }
+    
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
@@ -151,9 +157,9 @@ public class ScarecrowEntity  extends FURTameableEntity {
             double d2 = this.getZ();
         	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         	
-        	if(this.AttackStance == (byte)4) {
+        	if (this.AttackStance == (byte)4) {
         		target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
-    			if(this.getSkin() != 2)
+    			if (this.getSkin() != 2)
     				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
     			else
     				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
@@ -163,9 +169,9 @@ public class ScarecrowEntity  extends FURTameableEntity {
         	} else {                
                 for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(2.0D))) {
                     if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
-                    	if(!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
+                    	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
                     		entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-	            			if(this.getSkin() != 2)
+	            			if (this.getSkin() != 2)
 	            				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
 	            			else
 	            				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
@@ -222,7 +228,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
      */
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-    	if(source.isFire())
+    	if (source.isFire())
     		return super.hurt(source, 2.0F * amount);
     	return super.hurt(source, amount);
     }  
@@ -243,7 +249,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarecrow_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+        
     	if (this.random.nextFloat() < 0.00625F * FURConfig.pSpawnRate_Raven.get() && !this.level.isClientSide) {
     		RavenEntity crowpet = FUREntityRegistry.RAVEN.create(this.level);
     		crowpet.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
@@ -300,7 +306,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
 	
     @Override
     public void travel(Vector3d p_213352_1_) {
-    	if(!this.isSilent() || !this.level.getBlockState(this.blockPosition().below()).getMaterial().isSolidBlocking()) {
+    	if (!this.isSilent() || !this.level.getBlockState(this.blockPosition().below()).getMaterial().isSolidBlocking()) {
     		super.travel(p_213352_1_);
     	}
     }
@@ -347,8 +353,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
      * Get this Entity's CreatureAttribute
      */
     @Override
-    public CreatureAttribute getMobType()
-    {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
 

@@ -52,8 +52,7 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
     		return p_213697_0_ == Difficulty.HARD;
 		};
 		
-    public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, World worldIn)
-    {
+    public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.setCanBreakDoors(false);
     }
@@ -64,8 +63,7 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 	}
     
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new EntityFishAIBreakDoor(this, DOOR_BREAKING_PREDICATE));
     }    
@@ -92,12 +90,16 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
         return true;
     }
     
+    @Override
+    public double getMyRidingOffset() {
+        return this.isBaby() ? 0.0D : -0.25D;
+    }
+    
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         if (this.attackTimer > 0) {
@@ -106,26 +108,21 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
     }
 	
 	@Override
-    protected boolean isSunSensitive()
-    {
+    protected boolean isSunSensitive() {
         return !FURConfig.SunScreen_Mode.get();
     }
     
     /**
      * Called to update the entity's position/logic.
      */
-    public void tick()
-    {
+    public void tick() {
     	super.tick();
 
-        if(this.tickCount % 20 == 0)
-        {
+        if(this.tickCount % 20 == 0) {
         	List<Entity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D));
 
-        	for (Entity entity1 : list)
-        	{
-        		if (entity1 instanceof LivingEntity)
-        		{
+        	for (Entity entity1 : list) {
+        		if (entity1 instanceof LivingEntity) {
         			float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
                         
         			if (!((LivingEntity)entity1).hasEffect(Effects.POISON))
@@ -141,17 +138,13 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
         			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);
     }
     
-    public boolean doHurtTarget(Entity par1Entity)
-    {
-        if (super.doHurtTarget(par1Entity))
-        {
+    public boolean doHurtTarget(Entity par1Entity) {
+        if (super.doHurtTarget(par1Entity)) {
         	this.attackTimer = 5;
         	this.level.broadcastEntityEvent(this, (byte)4);
         	
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -176,7 +169,7 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
     	
     	if(is_near_shroom || (this.getY() < 50.0D && !this.level.canSeeSky(new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ()))))
         	this.setSkin(1);
-                        
+    	               
         return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
          
@@ -196,31 +189,25 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4) 
-    	{
+    	if (id == 4) {
             this.attackTimer = 5;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.UNBURIED_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.UNBURIED_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.UNBURIED_DEATH;
     }
     
@@ -230,11 +217,9 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
     public void die(DamageSource cause) {
        super.die(cause);
        if(!this.level.isClientSide) {
-			if (new Random().nextFloat() < 0.1F)
-	    	{
+			if (new Random().nextFloat() < 0.1F) {
 	    		int getVariant = this.getSkin();
-	    		switch(getVariant)
-	    		{
+	    		switch(getVariant) {
 	    			case 0:
 	    				this.spawnAtLocation(new ItemStack(FURBlockRegistry.CORDY_SHROOM, 1), 0.0f);
 	    				break;
@@ -252,8 +237,7 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
        }
     }
     
-    private void makeAreaOfEffectCloud(MycosisEntity EntityIn)
-    {
+    private void makeAreaOfEffectCloud(MycosisEntity EntityIn) {
     	AreaEffectCloudEntity entityareaeffectcloud = new AreaEffectCloudEntity(EntityIn.level, EntityIn.getX(), EntityIn.getY(), EntityIn.getZ());
         float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
         entityareaeffectcloud.setOwner(EntityIn);
@@ -267,13 +251,11 @@ public class MycosisEntity extends ZombieEntity implements IAggressive {
         EntityIn.level.addFreshEntity(entityareaeffectcloud);
     }
     
-    public int getSkin()
-    {
+    public int getSkin() {
         return this.entityData.get(SKIN_TYPE).intValue();
     }
 
-    public void setSkin(int skinType)
-    {
+    public void setSkin(int skinType) {
     	this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
 	

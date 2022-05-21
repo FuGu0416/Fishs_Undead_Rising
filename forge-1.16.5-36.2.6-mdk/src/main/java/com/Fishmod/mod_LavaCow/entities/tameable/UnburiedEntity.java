@@ -139,6 +139,11 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     protected boolean isCommandItem(Item itemIn) {
     	return false;
     }
+    
+    @Override
+    public double getMyRidingOffset() {
+        return this.isBaby() ? 0.0D : -0.25D;
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -164,8 +169,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         }
         
         if(this.isSmoking) {
-	    	for (int j = 0; j < 8; ++j)
-	        {
+	    	for (int j = 0; j < 8; ++j) {
 	            float f = this.random.nextFloat() * ((float)Math.PI * 2F);
 	            float f1 = this.getBbHeight() * 0.4F + this.random.nextFloat() * 0.5F;
 	            float f2 = MathHelper.sin(f) * f1;
@@ -202,8 +206,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         }
         
         if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
-            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity)
-            {
+            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
             }        
             this.level.broadcastEntityEvent(this, (byte)11);
@@ -293,8 +296,8 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
 	@Nullable
-	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);       
+	public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+        livingdata = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);       
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
     	this.setHealth(this.getMaxHealth());

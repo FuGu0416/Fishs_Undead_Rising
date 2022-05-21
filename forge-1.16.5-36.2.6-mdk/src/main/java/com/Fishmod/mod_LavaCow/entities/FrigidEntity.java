@@ -42,14 +42,12 @@ public class FrigidEntity extends ZombieEntity implements IAggressive {
 		return p_213697_0_ == Difficulty.HARD;
 	};
 	
-    public FrigidEntity(EntityType<? extends FrigidEntity> p_i48549_1_, World worldIn)
-    {
+    public FrigidEntity(EntityType<? extends FrigidEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.setCanBreakDoors(false);
     }
     
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new EntityFishAIBreakDoor(this, DOOR_BREAKING_PREDICATE));
     }
@@ -73,12 +71,16 @@ public class FrigidEntity extends ZombieEntity implements IAggressive {
         return false;
     }
     
+    @Override
+    public double getMyRidingOffset() {
+        return this.isBaby() ? 0.0D : -0.25D;
+    }
+    
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         if (this.attackTimer > 0) {
@@ -87,29 +89,23 @@ public class FrigidEntity extends ZombieEntity implements IAggressive {
     }
 	
 	@Override
-    protected boolean isSunSensitive()
-    {
+    protected boolean isSunSensitive() {
         return !FURConfig.SunScreen_Mode.get();
     }
     
 	@Override
-    public boolean doHurtTarget(Entity par1Entity)
-    {
-        if (super.doHurtTarget(par1Entity))
-        {
+    public boolean doHurtTarget(Entity par1Entity) {
+        if (super.doHurtTarget(par1Entity)) {
         	this.attackTimer = 5;
 	        this.level.broadcastEntityEvent(this, (byte)4);
         	
-        	if (par1Entity instanceof LivingEntity)
-            {
+        	if (par1Entity instanceof LivingEntity) {
             	float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
             	((LivingEntity)par1Entity).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 2 * 20 * (int)local_difficulty, 4));
             }
 
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -118,12 +114,10 @@ public class FrigidEntity extends ZombieEntity implements IAggressive {
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
     @Override
-    protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty)
-    {
+    protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(difficulty);
 
-        if (this.random.nextFloat() < (this.level.getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F))
-        {
+        if (this.random.nextFloat() < (this.level.getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F)) {
         	this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FROZENTHIGH));
         }   
     }
@@ -172,31 +166,25 @@ public class FrigidEntity extends ZombieEntity implements IAggressive {
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4) 
-    	{
+    	if (id == 4) {
             this.attackTimer = 5;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
  
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.UNBURIED_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.UNBURIED_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.UNBURIED_DEATH;
     }
 }

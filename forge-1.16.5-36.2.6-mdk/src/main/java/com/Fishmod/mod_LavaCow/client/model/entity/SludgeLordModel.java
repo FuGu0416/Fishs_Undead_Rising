@@ -364,12 +364,59 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
 		this.Waist0.yRot = 0.0F;
 		this.Body_base.yRot = 0.0F;
 		
-    	if (spl > spl_Anime_threshold[1]) {
-    		this.Waist1.y = -1.5F;
+		if (this.riding) {
+			this.Waist1.y = -1.5F; 
+			this.setRotateAngle(Leg_r_seg0, -1.3589133662554294F, 0.4300491170387584F, 0.0F);
+			this.setRotateAngle(Leg_r_seg1, 0.6161012126381928F, 0.0F, 0.0F);
+			this.setRotateAngle(Leg_l_seg0, -1.3589133662554294F, 0.4300491170387584F, 0.0F);
+			this.setRotateAngle(Leg_l_seg1, 0.6161012126381928F, 0.0F, 0.0F);
+		} else if (spl > spl_Anime_threshold[1]) {
+			this.Waist1.y = -1.5F;
+			this.Leg_r_seg0.xRot = -0.26424285474405396F;
+			this.Leg_r_seg0.yRot = 0.0F;
+			this.Leg_r_seg1.xRot = 0.26424285474405396F;
+			this.Leg_l_seg0.xRot = -0.26424285474405396F;
+			this.Leg_l_seg0.yRot = 0.0F;
+			this.Leg_l_seg1.xRot = 0.26424285474405396F;
+		} else if (spl > spl_Anime_threshold[2]) {
+			this.Waist1.y = GradientAnimation_s(-1.5F, 1.0F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_r_seg0.xRot = GradientAnimation_s(-0.26424285474405396F, -0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_r_seg0.yRot = 0.0F;
+			this.Leg_r_seg1.xRot = GradientAnimation_s(0.26424285474405396F, 0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_l_seg0.xRot = GradientAnimation_s(-0.26424285474405396F, -0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_l_seg0.yRot = 0.0F;
+			this.Leg_l_seg1.xRot = GradientAnimation_s(0.26424285474405396F, 0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));   	
+		} else if (spl > spl_Anime_threshold[3]) {
+			this.Waist1.y = 1.0F;
+			this.Leg_r_seg0.xRot = -0.8506735067168082F;
+			this.Leg_r_seg0.yRot = 0.0F;
+			this.Leg_r_seg1.xRot = 0.8506735067168082F;
+			this.Leg_l_seg0.xRot = -0.8506735067168082F;
+			this.Leg_l_seg0.yRot = 0.0F;
+			this.Leg_l_seg1.xRot = 0.8506735067168082F;
+		} else if (spl > 0.0F) {
+			this.Waist1.y = GradientAnimation_s(1.0F, -1.5F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_r_seg0.xRot = GradientAnimation_s(-0.8506735067168082F, -0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_r_seg0.yRot = 0.0F;
+			this.Leg_r_seg1.xRot = GradientAnimation_s(0.8506735067168082F, 0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_l_seg0.xRot = GradientAnimation_s(-0.8506735067168082F, -0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
+			this.Leg_l_seg0.yRot = 0.0F;
+			this.Leg_l_seg1.xRot = GradientAnimation_s(0.8506735067168082F, 0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
+    	} else {
+    		this.Waist1.y = -1.5F;      	
+            this.Leg_r_seg0.xRot = -0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F) * 1.2F * limbSwingAmount;
+            this.Leg_r_seg0.yRot = 0.0F;
+            this.Leg_l_seg0.xRot = -0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 1.2F * limbSwingAmount;   
+            this.Leg_l_seg0.yRot = 0.0F;
+            this.Leg_r_seg1.xRot = 0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 1.2F * limbSwingAmount;
+            this.Leg_l_seg1.xRot = 0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F) * 1.2F * limbSwingAmount;  
+    	}
+		
+    	if (spl > spl_Anime_threshold[1]) {  		
     		this.Waist0.xRot = GradientAnimation_s(0.5232497017584168F, 0.09320058471965828F, spl0 * (spl - Anime_threshold[1]));
     		this.Body_base.xRot = GradientAnimation_s(-0.5110324169681646F, -0.5892231261785137F, spl0 * (spl - Anime_threshold[1]));
     		this.Head_base.xRot = GradientAnimation_s(0.27366763203903305F, 0.27366763203903305F, spl0 * (spl - Anime_threshold[1]));
-    		
+   		
     		this.Arm_r_seg0.xRot = 0.0F;
     		this.Arm_r_seg0.yRot = GradientAnimation_s(0.0F, 2.502104026311715F, spl0 * (spl - Anime_threshold[1]));
     		this.Arm_r_seg0.zRot = 1.092750655326294F;
@@ -381,14 +428,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	this.setRotateAngle(Arm_l_seg1, -0.6637486932281548F, 0.0F, 1.1016518052166933F);
  
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
-        	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
-    	} else if (spl > spl_Anime_threshold[2]) {
-    		this.Waist1.y = GradientAnimation_s(-1.5F, 1.0F, spl1 * (spl - Anime_threshold[2]));
+        	this.Arm_l_seg2.zRot = 0.46931902520863084F;     
+    	} else if (spl > spl_Anime_threshold[2]) {  		
     		this.Waist0.xRot = GradientAnimation_s(0.09320058471965828F, 0.8361872419673221F, spl1 * (spl - Anime_threshold[2]));
     		this.Body_base.xRot = GradientAnimation_s(-0.5892231261785137F, 0.8182103719770693F, spl1 * (spl - Anime_threshold[2]));
     		this.Head_base.xRot = GradientAnimation_s(0.27366763203903305F, -1.13376586611655F, spl1 * (spl - Anime_threshold[2]));
@@ -404,14 +445,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	this.setRotateAngle(Arm_l_seg1, -0.6637486932281548F, 0.0F, 1.1016518052166933F);
  
         	this.Arm_r_seg2.zRot = GradientAnimation_s(-0.46931902520863084F, 0.0F, spl1 * (spl - Anime_threshold[2]));
-        	this.Arm_l_seg2.zRot = GradientAnimation_s(0.46931902520863084F, 0.0F, spl1 * (spl - Anime_threshold[2]));
-        	
-        	Leg_r_seg0.xRot = GradientAnimation_s(-0.26424285474405396F, -0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_r_seg1.xRot = GradientAnimation_s(0.26424285474405396F, 0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_l_seg0.xRot = GradientAnimation_s(-0.26424285474405396F, -0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_l_seg1.xRot = GradientAnimation_s(0.26424285474405396F, 0.8506735067168082F, spl1 * (spl - Anime_threshold[2]));   	
-    	} else if (spl > spl_Anime_threshold[3]) {
-    		this.Waist1.y = 1.0F;
+        	this.Arm_l_seg2.zRot = GradientAnimation_s(0.46931902520863084F, 0.0F, spl1 * (spl - Anime_threshold[2]));      
+    	} else if (spl > spl_Anime_threshold[3]) {   		
     		this.Waist0.xRot = 0.8361872419673221F;
     		this.Body_base.xRot = 0.8182103719770693F;
     		this.Head_base.xRot = -1.13376586611655F;
@@ -427,14 +462,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	this.setRotateAngle(Arm_l_seg1, -0.6637486932281548F, 0.0F, 1.1016518052166933F);
  
         	this.Arm_r_seg2.zRot = 0.0F;
-        	this.Arm_l_seg2.zRot = 0.0F;
-        	
-        	Leg_r_seg0.xRot = -0.8506735067168082F;
-        	Leg_r_seg1.xRot = 0.8506735067168082F;
-        	Leg_l_seg0.xRot = -0.8506735067168082F;
-        	Leg_l_seg1.xRot = 0.8506735067168082F;
-    	} else if (spl > 0.0F) {
-    		this.Waist1.y = GradientAnimation_s(1.0F, -1.5F, spl1 * (spl - Anime_threshold[2]));
+        	this.Arm_l_seg2.zRot = 0.0F;     
+    	} else if (spl > 0.0F) {  		
     		this.Waist0.xRot = GradientAnimation(0.8361872419673221F, 0.5232497017584168F, spl3 * spl);
     		this.Body_base.xRot = GradientAnimation(0.8182103719770693F, -0.5110324169681646F, spl3 * spl);
     		this.Head_base.xRot = GradientAnimation(-1.13376586611655F, 0.27366763203903305F, spl3 * spl);
@@ -450,14 +479,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	this.setRotateAngle(Arm_l_seg1, -0.6637486932281548F, 0.0F, 1.1016518052166933F);
  
         	this.Arm_r_seg2.zRot = GradientAnimation_s(0.0F, -0.46931902520863084F, spl3 * spl);
-        	this.Arm_l_seg2.zRot = GradientAnimation_s(0.0F, 0.46931902520863084F, spl3 * spl);
-        	
-        	Leg_r_seg0.xRot = GradientAnimation_s(-0.8506735067168082F, -0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_r_seg1.xRot = GradientAnimation_s(0.8506735067168082F, 0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_l_seg0.xRot = GradientAnimation_s(-0.8506735067168082F, -0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));
-        	Leg_l_seg1.xRot = GradientAnimation_s(0.8506735067168082F, 0.26424285474405396F, spl1 * (spl - Anime_threshold[2]));   	
-    	} else if (Ratk > Ratk_Anime_threshold[1]) {
-    		this.Waist1.y = -1.5F;
+        	this.Arm_l_seg2.zRot = GradientAnimation_s(0.0F, 0.46931902520863084F, spl3 * spl); 	
+    	} else if (Ratk > Ratk_Anime_threshold[1]) {    		
     		this.Waist0.xRot = 0.5232497017584168F;
     		this.Waist0.yRot = GradientAnimation_s(0.0F, -0.3127630032889644F, Ratk0 * (Ratk - Ratk_Anime_threshold[1]));
     		this.Body_base.xRot = GradientAnimation_s(-0.5110324169681646F, -0.5892231261785137F, Ratk0 * (Ratk - Ratk_Anime_threshold[1]));
@@ -480,13 +503,7 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
 
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
         	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
-    	} else if (Ratk > Ratk_Anime_threshold[2]) {
-    		this.Waist1.y = -1.5F;
+    	} else if (Ratk > Ratk_Anime_threshold[2]) {   		
     		this.Waist0.xRot = GradientAnimation(0.5232497017584168F, 0.679631186758142F, Ratk1 * (Ratk - Ratk_Anime_threshold[2]));
     		this.Waist0.yRot = GradientAnimation(-0.3127630032889644F, 0.5082398928281348F, Ratk1 * (Ratk - Ratk_Anime_threshold[2]));
     		this.Body_base.xRot = GradientAnimation(-0.5892231261785137F, -0.31555552742899423F, Ratk1 * (Ratk - Ratk_Anime_threshold[2]));
@@ -508,14 +525,9 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     		this.Arm_l_seg1.zRot = 1.1016518052166933F;
  
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
-        	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
+        	this.Arm_l_seg2.zRot = 0.46931902520863084F;       
     	} else if (Ratk > 0.0F) {
-    		this.Waist1.y = -1.5F;
+    		
     		this.Waist0.xRot = GradientAnimation(0.679631186758142F, 0.2764601561790629F, Ratk2 * Ratk);
     		this.Waist0.yRot = GradientAnimation(0.5082398928281348F, 0.0F, Ratk2 * Ratk);
     		this.Body_base.xRot = GradientAnimation(-0.31555552742899423F, -0.5110324169681646F, Ratk2 * Ratk);
@@ -537,14 +549,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     		this.Arm_l_seg1.zRot = 1.1016518052166933F;
 
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
-        	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
+        	this.Arm_l_seg2.zRot = 0.46931902520863084F;       
     	} else if (i > Anime_threshold[1]) {
-    		this.Waist1.y = -1.5F;
     		this.Waist0.xRot = GradientAnimation(0.2764601561790629F, 0.6283185307179586F, j * (i - Anime_threshold[1]));
     		this.Body_base.xRot = GradientAnimation(-0.5110324169681646F, 0.2708751078990032F, j * (i - Anime_threshold[1]));
     		this.Head_base.xRot = GradientAnimation(-0.11728612207217244F, 0.1563815016444822F, j * (i - Anime_threshold[1]));
@@ -579,13 +585,7 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
         	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
     	} else if (i > 0.0F) {
-    		this.Waist1.y = -1.5F;
     		this.Waist0.xRot = GradientAnimation(0.6283185307179586F, 0.5892231261785137F, k * i);
     		this.Body_base.xRot = GradientAnimation(0.2708751078990032F, -0.5892231261785137F, k * i);
     		this.Head_base.xRot = GradientAnimation(0.1563815016444822F, 0.27366763203903305F, k * i);
@@ -606,13 +606,7 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     		
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
         	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-        	Leg_r_seg0.xRot = -0.26424285474405396F;
-        	Leg_r_seg1.xRot = 0.26424285474405396F;
-        	Leg_l_seg0.xRot = -0.26424285474405396F;
-        	Leg_l_seg1.xRot = 0.26424285474405396F;
     	} else {
-    		this.Waist1.y = -1.5F;
     		this.Waist0.xRot = 0.5232497017584168F;
     		
     		this.Body_base.xRot = -0.5892231261785137F;
@@ -672,11 +666,6 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	
         	this.Arm_r_seg2.zRot = -0.46931902520863084F;
         	this.Arm_l_seg2.zRot = 0.46931902520863084F;
-        	
-            this.Leg_r_seg0.xRot = -0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F) * 1.2F * limbSwingAmount;
-            this.Leg_l_seg0.xRot = -0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 1.2F * limbSwingAmount;   	
-            this.Leg_r_seg1.xRot = 0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 1.2F * limbSwingAmount;
-            this.Leg_l_seg1.xRot = 0.26424285474405396F + MathHelper.cos(limbSwing * 0.3F) * 1.2F * limbSwingAmount;  
     	}
     }
 }

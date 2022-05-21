@@ -84,14 +84,22 @@ public class LilSludgeModel<T extends LilSludgeEntity> extends FURBaseModel<T> i
     	this.Head_skull.yRot = netHeadYaw * 0.017453292F;        
     	this.Head_skull.y = -5.5F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
 
-        this.Leg_r.xRot = MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
-        this.Leg_l.xRot = MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
-                
-        if(entityIn.isAggressive()) {
+    	if (this.riding) {
+    		this.Leg_r.setPos(-2.0F, -0.5F, -2.0F);
+    		this.Leg_r.xRot = -1.602910321115726F;
+    		this.Leg_l.setPos(2.0F, -0.5F, -2.0F);
+    		this.Leg_l.xRot = -1.602910321115726F;
+    	} else {
+    		this.Leg_r.setPos(-2.0F, 0.0F, 0.0F);
+            this.Leg_r.xRot = MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
+            this.Leg_l.setPos(2.0F, 0.0F, 0.0F);
+            this.Leg_l.xRot = MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;   		
+    	}
+               
+        if (entityIn.isAggressive()) {
         	this.Arm_r.xRot = -1.6390387005478748F;
         	this.Arm_l.xRot = -1.6390387005478748F;
-        }
-        else {
+        } else {
 	        this.Arm_r.xRot = MathHelper.cos(limbSwing + (float)Math.PI);
 	        this.Arm_l.xRot = MathHelper.cos(limbSwing);
         }

@@ -43,8 +43,7 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
 		return p_213697_0_ == Difficulty.HARD;
 	};
 	
-    public MummyEntity(EntityType<? extends MummyEntity> p_i48549_1_, World worldIn)
-    {
+    public MummyEntity(EntityType<? extends MummyEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.setCanBreakDoors(false);
     }
@@ -55,8 +54,7 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 	}
     
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new EntityFishAIBreakDoor(this, DOOR_BREAKING_PREDICATE));
     }
@@ -71,13 +69,17 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
         		.add(Attributes.ARMOR, 4.0D)
         		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
+
+    @Override
+    public double getMyRidingOffset() {
+        return this.isBaby() ? 0.0D : -0.25D;
+    }
     
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         
         if (this.attackTimer > 0) {
@@ -86,8 +88,7 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
     }
 	
 	@Override
-    protected boolean isSunSensitive()
-    {
+    protected boolean isSunSensitive() {
         return false;
     }
     
@@ -113,10 +114,8 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
     		this.level.addParticle(FURParticleRegistry.LOCUST_SWARM, this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), this.getY() + (double)((0.4F + new Random().nextFloat() * 0.6F) * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);
     }
     
-    public boolean doHurtTarget(Entity par1Entity)
-    {
-        if (super.doHurtTarget(par1Entity))
-        {
+    public boolean doHurtTarget(Entity par1Entity) {
+        if (super.doHurtTarget(par1Entity)) {
         	this.attackTimer = 5;
         	this.level.broadcastEntityEvent(this, (byte)4);
         	
@@ -126,9 +125,7 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
             }
 
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -162,41 +159,33 @@ public class MummyEntity extends ZombieEntity implements IAggressive {
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4) 
-    	{
+    	if (id == 4) {
             this.attackTimer = 5;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.UNBURIED_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.UNBURIED_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.UNBURIED_DEATH;
     }
        
-    public int getSkin()
-    {
+    public int getSkin() {
         return this.entityData.get(SKIN_TYPE).intValue();
     }
 
-    public void setSkin(int skinType)
-    {
+    public void setSkin(int skinType) {
     	this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
 	
