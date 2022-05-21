@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_turtle_egg",
+  "textures": {
+    "all": "mod_lavacow:block/cactoid_sprout"
+  }
+}

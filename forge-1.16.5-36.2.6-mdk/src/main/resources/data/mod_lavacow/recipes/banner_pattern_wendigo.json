@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:paper"
+		},
+		{
+			"item": "mod_lavacow:scythe_claw"
+		}
+  	],
+  	"result": {
+    	"item": "mod_lavacow:banner_pattern_wendigo"
+  	}
+}

@@ -52,6 +52,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CactyrantEntity extends MonsterEntity implements IAggressive {	
 	private static final DataParameter<Boolean> DATA_IS_CAMOUFLAGING = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.INT);
+	private static final DataParameter<Integer> HUGGING_CD = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.INT);
 	private int attackTimer;
 	protected int spellTicks;
 	private WaterAvoidingRandomWalkingGoal move;
@@ -91,6 +92,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         super.defineSynchedData();
         this.entityData.define(DATA_IS_CAMOUFLAGING, false);
         this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
+        this.entityData.define(HUGGING_CD, Integer.valueOf(0));
 	}
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -134,7 +136,15 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         this.getEntityData().set(GROWING_STAGE, i);
         this.refreshDimensions();
     }
-    
+
+    public int getHuggingCooldown() {
+        return this.getEntityData().get(HUGGING_CD).intValue();
+	}
+     
+	public void setHuggingCooldown(int i) {
+		this.getEntityData().set(HUGGING_CD, i);
+	}
+     
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;
     }
@@ -157,6 +167,10 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         
         if (this.spellTicks > 0) {
             --this.spellTicks;
+        }
+        
+        if (this.getHuggingCooldown() > 0) {
+        	this.setHuggingCooldown(this.getHuggingCooldown() - 1);
         }
  
         if(!this.level.isClientSide()) {
@@ -195,8 +209,9 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
   	   	        
         if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {       		        	       		            
             if (!this.getTarget().isBlocking()) {
-                if (!this.isVehicle() && !this.getTarget().isShiftKeyDown()) {
+                if (!this.isVehicle() && !this.getTarget().isShiftKeyDown() && this.getHuggingCooldown() == 0) {
                     this.getTarget().startRiding(this, true);
+                    this.setHuggingCooldown(120);
                 } else if (!this.isVehicle()) {
                 	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);

@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.init;
 import java.lang.reflect.Field;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.block.CactoidSproutBlock;
 import com.Fishmod.mod_LavaCow.block.FURHugeShroomBlock;
 import com.Fishmod.mod_LavaCow.block.FURShroomBlock;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
@@ -42,6 +43,7 @@ public class FURBlockRegistry {
 	public static final Block SCARECROWHEAD_COMMON = new ScarecrowHeadBlock(0, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_common");
 	public static final Block SCARECROWHEAD_STRAW = new ScarecrowHeadBlock(1, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_straw");
 	public static final Block SCARECROWHEAD_PLAGUE = new ScarecrowHeadBlock(2, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_plague");
+	public static final Block CACTOID_SPROUT = new CactoidSproutBlock(AbstractBlock.Properties.of(Material.PLANT).randomTicks().strength(0.4F).sound(SoundType.WOOL).noOcclusion()).setRegistryName("mod_lavacow:cactoid_sprout");
 	
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
