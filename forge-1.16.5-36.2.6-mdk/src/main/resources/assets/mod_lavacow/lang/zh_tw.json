@@ -101,6 +101,8 @@
 	"item.mod_lavacow.cactus_thorn": "仙人掌刺",
 	"item.mod_lavacow.cactus_fruit": "仙人掌果",
 	"item.mod_lavacow.thorn_shooter": "仙人掌槍",
+	"item.mod_lavacow.salamander_bucket": "炎熔螈桶",
+	"item.mod_lavacow.cactoid_pot": "幼人掌盆栽",
 		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
@@ -134,6 +136,7 @@
 	"item.mod_lavacow.spawn_egg_mummy": "木乃伊生怪蛋",
 	"item.mod_lavacow.spawn_egg_forsaken": "被遺忘者生怪蛋",
 	"item.mod_lavacow.spawn_egg_cactyrant": "暴君掌生怪蛋",
+	"item.mod_lavacow.spawn_egg_cactoid": "幼人掌生怪蛋",
 
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
@@ -178,6 +181,7 @@
 	"block.mod_lavacow.scarecrowhead_straw": "稻草人頭",
 	"block.mod_lavacow.scarecrowhead_plague": "稻草人頭",
 	"block.mod_lavacow.tombstone": "墓碑",
+	"block.mod_lavacow.cactoid_sprout": "幼人掌苗",
 
 	"entity.mod_lavacow.lavacow": "熔岩牛",
 	"entity.mod_lavacow.mycosis": "菌屍",
