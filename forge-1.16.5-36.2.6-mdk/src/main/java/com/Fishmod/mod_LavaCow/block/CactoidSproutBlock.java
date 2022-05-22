@@ -26,6 +26,10 @@ public class CactoidSproutBlock extends Block {
 		this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)));
 	}
 	
+	protected boolean mayPlaceOn(BlockState blockstate, IBlockReader p_200014_2_, BlockPos pos) {
+		return blockstate.is(BlockTags.SAND);
+	}
+	   
 	public void randomTick(BlockState blockstate, ServerWorld worldIn, BlockPos pos, Random rand) {
 		if (onSand(worldIn, pos)) {
 			int i = blockstate.getValue(HATCH);

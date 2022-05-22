@@ -100,6 +100,8 @@
 	"item.mod_lavacow.cactus_thorn": "Cactus Thorn",
 	"item.mod_lavacow.cactus_fruit": "Prickly Pear",
 	"item.mod_lavacow.thorn_shooter": "Thorn Shooter",
+	"item.mod_lavacow.salamander_bucket": "Bucket of Salamander",
+	"item.mod_lavacow.cactoid_pot": "Potted Cactoid",
 		
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
@@ -132,7 +134,14 @@
 	"item.mod_lavacow.spawn_egg_skeletonking": "Skeleton King Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mummy": "Mummy Spawn Egg",
 	"item.mod_lavacow.spawn_egg_forsaken": "Forsaken Spawn Egg",
-	
+	"item.mod_lavacow.spawn_egg_cactyrant": "Cactyrant Spawn Egg",
+	"item.mod_lavacow.spawn_egg_cactoid": "Cactoid Spawn Egg",
+
+	"item.mod_lavacow.banner_pattern_skeletonking": "Banner Pattern",
+	"item.mod_lavacow.banner_pattern_skeletonking.desc": "Skeleton King",
+	"item.mod_lavacow.banner_pattern_wendigo": "Banner Pattern",
+	"item.mod_lavacow.banner_pattern_wendigo.desc": "Wendigo",
+			
 	"material.mod_lavacow.moltenbeef": "Molten Meat",
 	"material.mod_lavacow.vespa_carapace": "Vespa Carapace",
 	"material.mod_lavacow.scythe_claw": "Scythe Claw",
@@ -162,6 +171,23 @@
 	"block.minecraft.banner.skeletonking.red": "Red Skeleton King",
 	"block.minecraft.banner.skeletonking.black": "Black Skeleton King",
 
+	"block.minecraft.banner.wendigo.white": "White Wendigo",
+	"block.minecraft.banner.wendigo.orange": "Orange Wendigo",
+	"block.minecraft.banner.wendigo.magenta": "Magenta Wendigo",
+	"block.minecraft.banner.wendigo.lightBlue": "Light Blue Wendigo",
+	"block.minecraft.banner.wendigo.yellow": "Yellow Wendigo",
+	"block.minecraft.banner.wendigo.lime": "Lime Wendigo",
+	"block.minecraft.banner.wendigo.pink": "Pink Wendigo",
+	"block.minecraft.banner.wendigo.gray": "Gray Wendigo",
+	"block.minecraft.banner.wendigo.silver": "Silver Wendigo",
+	"block.minecraft.banner.wendigo.cyan": "Cyan Wendigo",
+	"block.minecraft.banner.wendigo.purple": "Purple Wendigo",
+	"block.minecraft.banner.wendigo.blue": "Blue Wendigo",
+	"block.minecraft.banner.wendigo.brown": "Brown Wendigo",
+	"block.minecraft.banner.wendigo.green": "Green Wendigo",
+	"block.minecraft.banner.wendigo.red": "Red Wendigo",
+	"block.minecraft.banner.wendigo.black": "Black Wendigo",
+	
 	"block.mod_lavacow.glowshroom": "Glow Shroom",
 	"block.mod_lavacow.sludgepile": "Sludge Pile",
 	"block.mod_lavacow.glowshroom_block_cap": "Glow Shroom Cap",
@@ -173,6 +199,7 @@
 	"block.mod_lavacow.scarecrowhead_straw": "Scarecrow Head",
 	"block.mod_lavacow.scarecrowhead_plague": "Scarecrow Head",
 	"block.mod_lavacow.tombstone": "Tombstone",
+	"block.mod_lavacow.cactoid_sprout": "Cactoid Sprout",
 
 	"entity.mod_lavacow.lavacow": "Moogma",
 	"entity.mod_lavacow.mycosis": "Mycosis",
@@ -205,6 +232,8 @@
 	"entity.mod_lavacow.skeletonking": "Skeleton King",
 	"entity.mod_lavacow.mummy": "Mummy",
 	"entity.mod_lavacow.forsaken": "Forsaken",
+	"entity.mod_lavacow.cactyrant": "Cactyrant",
+	"entity.mod_lavacow.cactoid": "Cactoid",
 
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
@@ -308,7 +337,10 @@
 	"entity_skeletonking_spell_summon": "Skeleton King casts a spell",
 	"entity_skeletonking_spell_teleport": "Skeleton King teleports",
 	"entity_skeletonking_spell_toss": "Skeleton King casts a spell",
-	
+
+	"entity_cactyrant_ambient": "Cactyrant hisses",
+	"entity_cactyrant_death": "Cactyrant dies",
+		
 	"tootip.mod_lavacow:bonesword": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
 	"tootip.mod_lavacow:netherstew": "Gives random effects(0:40) when eaten.",
 	"tootip.mod_lavacow:goldenheart": "Gives Regeneration and repairs(+1/sec) all equipments when equipped.",
@@ -370,6 +402,8 @@
 	"tootip.mod_lavacow:skeletonking_mace": "Inflicts target with DeathtouchV(0:10).",
 	"tootip.mod_lavacow:chitinarmor": "Set(2): Falling damage -50%%.",
 	"tootip.mod_lavacow:chitinarmor.l2": "Set(4): Gives Speed(0:03) after jumping.",
+	"tootip.mod_lavacow:cactus_fruit": "Can be used to brew Potion of Thorn, or as a seed to plant in sand",
+	"tootip.mod_lavacow:thorn_shooter": "Barrage cactus thorns with rapid speed",
 	
 	"command.mod_lavacow.sitting": "%s is waiting",
 	"command.mod_lavacow.following": "%s is following",
@@ -403,7 +437,9 @@
 	"description.effect.mod_lavacow:fragile": "Cause instant death when health is low.",
 	"effect.mod_lavacow.fear": "Fear",
 	"description.effect.mod_lavacow:fear": "Apply weakness and slowness, non-player entities will flee aimlessly instead.",
-	
+	"effect.mod_lavacow.thorned": "Thorned",
+	"description.effect.mod_lavacow:thorned": "Deal damage to attacking entities",
+		
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
 	"item.minecraft.lingering_potion.effect.corrosive": "Lingering Potion of Corrosion",
@@ -448,7 +484,19 @@
 	"item.minecraft.splash_potion.effect.long_fragile": "Splash Potion of Deathtouch",
 	"item.minecraft.lingering_potion.effect.long_fragile": "Lingering Potion of Deathtouch",
 	"item.minecraft.tipped_arrow.effect.long_fragile": "Arrow of Deathtouch",
-		
+	"item.minecraft.potion.effect.thorn": "Potion of Thorn",
+	"item.minecraft.splash_potion.effect.thorn": "Splash Potion of Thorn",
+	"item.minecraft.lingering_potion.effect.thorn": "Lingering Potion of Thorn",
+	"item.minecraft.tipped_arrow.effect.thorn": "Arrow of Thorn",
+	"item.minecraft.potion.effect.strong_thorn": "Potion of Thorn",
+	"item.minecraft.splash_potion.effect.strong_thorn": "Splash Potion of Thorn",
+	"item.minecraft.lingering_potion.effect.strong_thorn": "Lingering Potion of Thorn",
+	"item.minecraft.tipped_arrow.effect.strong_thorn": "Arrow of Thorn",
+	"item.minecraft.potion.effect.long_thorn": "Potion of Thorn",
+	"item.minecraft.splash_potion.effect.long_thorn": "Splash Potion of Thorn",
+	"item.minecraft.lingering_potion.effect.long_thorn": "Lingering Potion of Thorn",
+	"item.minecraft.tipped_arrow.effect.long_thorn": "Arrow of Thorn",
+			
 	"advancements.mod_lavacow.root.title": "The Dark Night",
 	"advancements.mod_lavacow.root.description": "Enter a world of undead",
 	"advancements.mod_lavacow.slimy_tasty.title": "Slimy, Yet Satisfying",
@@ -513,6 +561,12 @@
 	"advancements.mod_lavacow.get_hatred_shard.description": "Get Memory of a Thousand Armies",
 	"advancements.mod_lavacow.kill_imp.title": "Evil Monkey",
 	"advancements.mod_lavacow.kill_imp.description": "Kill a Imp",
-	
+	"advancements.mod_lavacow.kill_cactyrant.title": "Cactsus",
+	"advancements.mod_lavacow.kill_cactyrant.description": "Kill a Cactyrant",
+	"advancements.mod_lavacow.tame_cactoid.title": "Desert Agriculture",
+	"advancements.mod_lavacow.tame_cactoid.description": "Tame a Cactoid",
+	"advancements.mod_lavacow.get_thorn_shooter.title": "Say Hello To My Little Friend",
+	"advancements.mod_lavacow.get_thorn_shooter.description": "Aacquire a Thorn Shooter",
+				
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

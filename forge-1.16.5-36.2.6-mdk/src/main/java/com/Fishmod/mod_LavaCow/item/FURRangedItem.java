@@ -129,7 +129,6 @@ public class FURRangedItem extends BowItem {
                     abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
                 }
                 playerIn.level.addFreshEntity(abstractarrowentity);
-				playerIn.getCooldowns().addCooldown(this, 5);
 			} else {			 
 				Entity entityammo = this.shot.create(worldIn);
 				((AbstractFireballEntity)entityammo).setOwner(playerIn);

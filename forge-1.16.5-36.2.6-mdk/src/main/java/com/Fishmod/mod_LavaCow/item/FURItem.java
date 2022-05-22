@@ -29,6 +29,13 @@ public class FURItem extends Item {
 		this.UseAction = UseActionIn;
 		this.Tooltip = TooltipIn;
 	}
+	
+	public FURItem(Properties p_i48487_1_, int TooltipIn) {
+		super(p_i48487_1_);
+		this.UseDuration = 32;
+		this.UseAction = net.minecraft.item.UseAction.EAT;
+		this.Tooltip = TooltipIn;
+	}
 
 	@Override
     public int getUseDuration(ItemStack p_77626_1_) {
