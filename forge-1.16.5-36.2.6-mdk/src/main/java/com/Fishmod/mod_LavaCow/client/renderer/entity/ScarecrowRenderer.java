@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.renderer.entity;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
+import com.Fishmod.mod_LavaCow.client.layer.ScarecrowCollarLayer;
 import com.Fishmod.mod_LavaCow.client.model.entity.ScarecrowModel;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarecrowEntity;
 
@@ -27,6 +28,7 @@ public class ScarecrowRenderer extends MobRenderer<ScarecrowEntity, ScarecrowMod
 	public ScarecrowRenderer(EntityRendererManager rendermanagerIn) {
     	super(rendermanagerIn, new ScarecrowModel<>(), 0.5F);
     	this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
+    	this.addLayer(new ScarecrowCollarLayer(this));   	
     }
     
     @Override

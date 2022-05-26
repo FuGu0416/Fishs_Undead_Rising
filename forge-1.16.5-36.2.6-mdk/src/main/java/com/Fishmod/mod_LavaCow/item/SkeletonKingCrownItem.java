@@ -72,6 +72,9 @@ public class SkeletonKingCrownItem extends ArmorItem {
 	    		Field goals;
 	    		Goal remove = null;
 	    		
+	    		if(Skeleton.getTarget().equals(player))
+	    			Skeleton.setTarget(null);
+	    		
 				try {
 					goals = Skeleton.targetSelector.getClass().getDeclaredField("availableGoals");
 					goals.setAccessible(true);

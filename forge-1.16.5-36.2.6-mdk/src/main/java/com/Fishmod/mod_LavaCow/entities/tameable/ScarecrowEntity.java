@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -28,17 +29,22 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -54,12 +60,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ScarecrowEntity  extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
+	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
+	
 	private int attackTimer;
 	private int cleaveTimer;
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
 	
-	private WaterAvoidingRandomWalkingGoal move;
 	private LookAtGoal watch;
 	private LookRandomlyGoal look;
 	
@@ -71,18 +78,17 @@ public class ScarecrowEntity  extends FURTameableEntity {
     protected void defineSynchedData() {
 		super.defineSynchedData();
         this.entityData.define(SKIN_TYPE, Integer.valueOf(this.random.nextInt(2)));
+        this.entityData.define(DATA_COLLAR_COLOR, DyeColor.BROWN.getId());
 	}
 	
     @Override
     protected void registerGoals() {
-        this.move = new WaterAvoidingRandomWalkingGoal(this, 1.0D);
         this.watch = new LookAtGoal(this, PlayerEntity.class, 8.0F);
         this.look = new LookRandomlyGoal(this);
     	
     	super.registerGoals();
     	this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new ScarecrowEntity.AttackGoal(this));
-        this.goalSelector.addGoal(5, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
         this.applyEntityAI();
@@ -185,6 +191,29 @@ public class ScarecrowEntity  extends FURTameableEntity {
     	
         super.tick();
     }
+
+    @Override
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    	ItemStack itemstack = player.getItemInHand(hand);
+    	Item item = itemstack.getItem();
+    	ActionResultType actionresulttype = super.mobInteract(player, hand);
+    	
+    	if (this.isTame() && item instanceof DyeItem) {          
+            DyeColor dyecolor = ((DyeItem)item).getDyeColor();
+            if (dyecolor != this.getCollarColor()) {
+               this.setCollarColor(dyecolor);
+               if (!player.abilities.instabuild) {
+                  itemstack.shrink(1);
+               }
+
+               return ActionResultType.SUCCESS;
+            }
+    		
+    		return ActionResultType.sidedSuccess(this.level.isClientSide);
+    	} else {
+    		return actionresulttype;
+    	}
+    }
     
     @Override
     public boolean doHurtTarget(Entity entityIn) {
@@ -206,7 +235,6 @@ public class ScarecrowEntity  extends FURTameableEntity {
     
     @Override
 	public void doSitCommand(PlayerEntity playerIn) {
-        this.goalSelector.removeGoal(this.move);
         this.goalSelector.removeGoal(this.watch);
         this.goalSelector.removeGoal(this.look);
         this.setSilent(true);
@@ -215,7 +243,6 @@ public class ScarecrowEntity  extends FURTameableEntity {
     
     @Override
 	public void doFollowCommand(PlayerEntity playerIn) {
-        this.goalSelector.addGoal(5, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
 		this.setSilent(false);
@@ -269,7 +296,19 @@ public class ScarecrowEntity  extends FURTameableEntity {
 
     public void setSkin(int skinType) {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
+    	
+    	if (skinType == 2) {
+    		this.setCollarColor(DyeColor.BLACK);
+    	}
     }
+    
+    public DyeColor getCollarColor() {
+        return DyeColor.byId(this.entityData.get(DATA_COLLAR_COLOR));
+	}
+
+	public void setCollarColor(DyeColor p_175547_1_) {
+		this.entityData.set(DATA_COLLAR_COLOR, p_175547_1_.getId());
+	}
     
     /**
      * Handler for {@link World#setEntityState}
