@@ -666,8 +666,8 @@ public class EventHandler {
 	        
 	        if (event.getType() == VillagerProfession.BUTCHER) {
 	            List<ITrade> list = event.getTrades().get(2);
-	            list.add(new ItemsForEmeraldsTrade(FURItemRegistry.INTESTINE, 1, 4, 12, 1));
-	            list.add(new EmeraldForItemsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 12, 1));
+	            list.add(new EmeraldForItemsTrade(FURItemRegistry.INTESTINE, 4, 12, 1));
+	            list.add(new ItemsForEmeraldsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 1, 12, 1));
 	            event.getTrades().put(2, list);
 	        }
     	}
@@ -678,18 +678,21 @@ public class EventHandler {
     	if(FURConfig.BonusWanderingTraderTrades.get()) {
 	        List<VillagerTrades.ITrade> genericTrades = event.getGenericTrades();
 	        List<VillagerTrades.ITrade> rareTrades = event.getRareTrades(); 
-	        genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.SCYTHE_CLAW, 4, 12, 1));
-	        genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.SILKY_SLUDGE, 2, 12, 1));
-	        genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.FOUL_BRISTLE, 2, 12, 1));
-	        genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.PIGBOARHIDE, 4, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SCYTHE_CLAW, 4, 1, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SILKY_SLUDGE, 4, 1, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.FOUL_BRISTLE, 1, 3, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_THORN, 1, 4, 12, 1));
+	        if(FURConfig.pSpawnRate_Cactoid.get() > 0)
+	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_FRUIT, 8, 1, 12, 1));
 	        if(FURConfig.pSpawnRate_Piranha.get() > 0)
-	        	genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.PIRANHA_BUCKET, 4, 12, 1));
+	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIRANHA_BUCKET, 5, 1, 12, 1));
 	        if(FURConfig.pSpawnRate_Swarmer.get() > 0)
-	        	genericTrades.add(new EmeraldForItemsTrade(FURItemRegistry.SWARMER_BUCKET, 4, 12, 1));
-	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.POISONSPORE, 24, 4, 15));
-	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.UNDYINGHEART, 30, 4, 20));
-	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.ACIDICHEART, 30, 4, 20));
-	        rareTrades.add(new EmeraldForItemsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 2, 30));
+	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SWARMER_BUCKET, 5, 1, 12, 1));
+	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.POISONSPORE, 24, 1, 4, 15));
+	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.UNDYINGHEART, 30, 1, 4, 20));
+	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ACIDICHEART, 30, 1, 4, 20));
+	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
     	}
     }
     
