@@ -58,7 +58,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ScarecrowEntity  extends FURTameableEntity {
+public class ScarecrowEntity extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
 	

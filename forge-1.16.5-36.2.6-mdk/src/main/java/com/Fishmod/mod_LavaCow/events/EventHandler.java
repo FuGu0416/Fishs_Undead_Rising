@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
+import com.Fishmod.mod_LavaCow.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.RavenEntity;
@@ -41,6 +42,7 @@ import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
+import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -454,6 +456,8 @@ public class EventHandler {
     	if(event.getEntity() != null && event.getEntity() instanceof VillagerEntity)
     		((VillagerEntity)event.getEntity()).goalSelector.addGoal(1, new AvoidEntityGoal<>(((VillagerEntity)event.getEntity()), UnburiedEntity.class, 8.0F, 0.8D, 0.8D));
 
+    	if(event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
+    		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
     }
     
     @SubscribeEvent

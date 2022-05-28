@@ -183,8 +183,8 @@ public class WetaModel<T extends WetaEntity> extends FURBaseModel<T> implements 
     	
     	this.SwingX_Sin(this.Antenna_Seg0_l, -1.2292353921796064F, ageInTicks, 0.4F, 0.41F, false, 0.0F);
     	this.SwingX_Sin(this.Antenna_Seg0_r, -1.2292353921796064F, ageInTicks, 0.4F, 0.32F, false, 0.25F * (float)Math.PI);
-    	this.SwingX_Sin(this.Antenna_Seg0_l, -0.2292353921796064F, ageInTicks, 0.4F, 0.41F, false, 0.0F);
-    	this.SwingX_Sin(this.Antenna_Seg0_r, -0.2292353921796064F, ageInTicks, 0.4F, 0.32F, false, 0.25F * (float)Math.PI);
+    	this.SwingX_Sin(this.Antenna_Seg1_l, 0.5462880558742251F, ageInTicks, 0.4F, 0.41F, false, 0.0F);
+    	this.SwingX_Sin(this.Antenna_Seg1_r, 0.5462880558742251F, ageInTicks, 0.4F, 0.32F, false, 0.25F * (float)Math.PI);
     	
     	this.SwingX_Sin(this.Leg0_Seg0_r, 0.5009094953223726F, limbSwing, 0.5F * limbSwingAmount, 1.3F, false, 0.0F);
     	this.SwingX_Sin(this.Leg0_Seg0_l, 0.5009094953223726F, limbSwing, 0.5F * limbSwingAmount, 1.3F, false, 0.5F * (float)Math.PI);

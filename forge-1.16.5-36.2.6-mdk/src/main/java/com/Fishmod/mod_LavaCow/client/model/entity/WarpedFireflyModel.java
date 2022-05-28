@@ -9,6 +9,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 
 public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseModel<T> {
 	private final ModelRenderer base;
@@ -30,7 +31,7 @@ public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseMo
 		texHeight = 64;
 
 		base = new ModelRenderer(this);
-		base.setPos(0.0F, 16.5F, 1.0F);
+		base.setPos(0.0F, 19.0F, 1.0F);
 		base.texOffs(0, 0).addBox(-3.5F, -3.5F, -5.0F, 7.0F, 7.0F, 10.0F, 0.0F, false);
 
 		antenne_r = new ModelRenderer(this);
@@ -107,8 +108,26 @@ public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseMo
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		float f = ageInTicks * 2.1F;
+		boolean flag = entity.isOnGround() && entity.getDeltaMovement().lengthSqr() < 1.0E-7D;
+		
+		if(flag) {
+			this.base.y = 19.0F;
+			this.wing_r.zRot = 0.2497F;
+			this.wing_l.zRot = -0.2497F;
+		} else {
+			this.base.y = 19.0F - MathHelper.cos(ageInTicks * 0.18F) * 0.9F;
+			this.wing_r.zRot = MathHelper.cos(f) * (float)Math.PI * 0.1F;
+			this.wing_l.zRot = -this.wing_r.zRot;
+		}
+		
+		this.SwingX_Sin(this.leg0_r, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.0F);
+		this.SwingX_Sin(this.leg1_r, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.33F * (float)Math.PI);
+		this.SwingX_Sin(this.leg2_r, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.67F * (float)Math.PI);
+		this.SwingX_Sin(this.leg0_l, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.0F);
+		this.SwingX_Sin(this.leg1_l, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.33F * (float)Math.PI);
+		this.SwingX_Sin(this.leg2_l, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.67F * (float)Math.PI);
 	}
 
 	@Override
