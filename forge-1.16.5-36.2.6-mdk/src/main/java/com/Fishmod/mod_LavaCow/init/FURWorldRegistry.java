@@ -260,6 +260,10 @@ public class FURWorldRegistry {
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get(), 4, 8));
 		}
+		
+		if(biomeKey.equals(Biomes.WARPED_FOREST)) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_Imp.get(), 4, 8));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

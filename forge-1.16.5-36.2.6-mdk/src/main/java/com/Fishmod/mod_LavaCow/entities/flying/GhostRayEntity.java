@@ -42,6 +42,7 @@ public class GhostRayEntity extends FlyingMobEntity {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {

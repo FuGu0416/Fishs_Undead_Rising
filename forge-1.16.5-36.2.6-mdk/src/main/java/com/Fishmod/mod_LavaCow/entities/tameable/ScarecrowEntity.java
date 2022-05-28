@@ -356,6 +356,9 @@ public class ScarecrowEntity  extends FURTameableEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
+        if (compound.contains("CollarColor", 99)) {
+            this.setCollarColor(DyeColor.byId(compound.getInt("CollarColor")));
+        }
     }
 
     /**
@@ -365,6 +368,7 @@ public class ScarecrowEntity  extends FURTameableEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
+        compound.putByte("CollarColor", (byte)this.getCollarColor().getId());
     }
     
     @Override

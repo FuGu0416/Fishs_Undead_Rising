@@ -43,6 +43,7 @@ public class VespaEntity extends FlyingMobEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
+		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));
 		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, true).setUnseenMemoryTicks(160));
 	}

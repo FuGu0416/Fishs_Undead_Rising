@@ -54,6 +54,7 @@ public class PteraEntity extends FlyingMobEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
+		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
 		if(this.level.getDifficulty() == Difficulty.HARD)
 			this.goalSelector.addGoal(1, new EntityAIDropRider(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));

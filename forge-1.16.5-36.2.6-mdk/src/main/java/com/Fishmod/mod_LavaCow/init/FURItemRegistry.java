@@ -36,6 +36,7 @@ import com.Fishmod.mod_LavaCow.item.UndyingHeartItem;
 import com.Fishmod.mod_LavaCow.item.VespaShieldItem;
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.fluid.Fluids;
@@ -199,6 +200,10 @@ public class FURItemRegistry {
                 	BlockItem blockItem;
                     Item.Properties props = new Item.Properties();
                     props.tab(mod_LavaCow.TAB);
+                    
+                    if(obj instanceof AirBlock)
+                    	continue;
+                    
                     if(obj instanceof ScarecrowHeadBlock)
                     	blockItem = new ScarecrowHeadItem((Block) obj, mod_LavaCow.PROXY.setupISTER(props));
                     else
@@ -242,6 +247,7 @@ public class FURItemRegistry {
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.MUMMY, 0xE9DAAE, 0x9A8157, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mummy"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.CACTYRANT, 0x9FE664, 0xE0D6B1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactyrant"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.CACTOID, 0xABE97D, 0xE5DECD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactoid"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_warpedfirefly"));
     	
     	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_skeletonking"));
     	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_wendigo"));

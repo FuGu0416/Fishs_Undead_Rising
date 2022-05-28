@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.block.TombStoneBlock;
 
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.CarpetBlock;
 import net.minecraft.block.SoundType;
@@ -44,6 +45,9 @@ public class FURBlockRegistry {
 	public static final Block SCARECROWHEAD_STRAW = new ScarecrowHeadBlock(1, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_straw");
 	public static final Block SCARECROWHEAD_PLAGUE = new ScarecrowHeadBlock(2, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_plague");
 	public static final Block CACTOID_SPROUT = new CactoidSproutBlock(AbstractBlock.Properties.of(Material.PLANT).randomTicks().strength(0.4F).sound(SoundType.WOOL).noOcclusion()).setRegistryName("mod_lavacow:cactoid_sprout");
+	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
+	      return 15;
+	   })).setRegistryName("mod_lavacow:glowing_air");
 	
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
