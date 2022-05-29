@@ -245,8 +245,8 @@ public class CactoidEntity extends FURTameableEntity {
     
     @Override
 	public void doFollowCommand(PlayerEntity playerIn) {
-        this.goalSelector.addGoal(8, this.watch);
-        this.goalSelector.addGoal(8, this.look);
+        this.goalSelector.addGoal(10, this.watch);
+        this.goalSelector.addGoal(10, this.look);
 		this.setSilent(false);
         super.doFollowCommand(playerIn);
     }
@@ -305,6 +305,11 @@ public class CactoidEntity extends FURTameableEntity {
     public int getMaxHeadYRot() {
         return this.isSilent() ? 0 : super.getMaxHeadYRot();
     }
+    
+    @Override
+    public int getHeadRotSpeed() {
+        return this.isSilent() ? 0 : super.getHeadRotSpeed();
+	}
 	
 	@OnlyIn(Dist.CLIENT)
 	protected void addParticlesAroundSelf(IParticleData p_213718_1_) {

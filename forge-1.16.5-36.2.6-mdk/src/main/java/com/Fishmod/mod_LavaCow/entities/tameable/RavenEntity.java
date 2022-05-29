@@ -310,8 +310,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         
-        if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {
-        	
+        if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {      	
         	if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
                 this.startRiding(player);
                 this.ridingCooldown = 20;

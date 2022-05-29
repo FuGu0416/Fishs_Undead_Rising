@@ -161,10 +161,37 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if(entityIn.isAggressive()) {
+    	if(entityIn.isInSittingPose()) {
+    		this.Body_Base.y = 23.4F;
+    		this.Body_Base.xRot = -0.07103490055616922F;
+    		
+			this.Head.xRot = -0.6646214111173737F + headPitch * 0.017453292F;
+            this.Head.yRot = netHeadYaw * 0.017453292F;
+            this.Jaw.xRot = 0.08F - 0.08F * MathHelper.sin(0.03F * ageInTicks);
+
+            this.Head_Gill_l0.yRot = -0.8651597102135892F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.0F);
+            this.Head_Gill_l1.yRot = -0.8196066167365371F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.2F);
+            this.Head_Gill_l2.yRot = -0.5918411493512771F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.4F);
+            this.Head_Gill_r0.yRot = 0.8651597102135892F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.0F);
+            this.Head_Gill_r1.yRot = 0.8196066167365371F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.2F);
+            this.Head_Gill_r2.yRot = 0.5918411493512771F - 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.4F);
+
+            this.Tail0.xRot = 0.08F + 0.08F * MathHelper.sin(0.06F * ageInTicks);
+            this.Tail1.xRot = 0.135F + 0.135F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.2F);
+            this.Tail2.xRot = 0.165F + 0.165F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.4F);
+ 
+	        this.leg0_r0.xRot = -1.1728612040769677F;
+	        this.leg0_l0.xRot = -1.1728612040769677F;
+	        this.leg1_r0.xRot = 1.5044737619558903F;
+	        this.leg1_l0.xRot = 1.5044737619558903F;
+	        
+	        this.leg0_r0.zRot = 0.40980330836826856F;
+	        this.leg0_l0.zRot = -0.40980330836826856F;
+	        this.leg1_r0.zRot = 0.40980330836826856F;
+	        this.leg1_l0.zRot = -0.40980330836826856F;        
+    	} else if(entityIn.isAggressive()) {
 			this.Body_Base.y = 21.5F;
 			this.Body_Base.xRot = -0.6829473363053812F;
-	        this.setRotateAngle(Body_Base, -0.6829473363053812F, 0.0F, 0.0F);
 			
 	        this.Head.xRot = 0.5462880558742251F + headPitch * 0.017453292F;
 	        this.Head.yRot = 0.0F;
@@ -178,9 +205,22 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
             this.Head_Gill_r2.yRot = 0.0F;
 			
 			this.Tail0.xRot = 0.5462880558742251F;
+            this.Tail1.xRot = 0.27209683304907706F;
+            this.Tail2.xRot = 0.3312634840390405F;
+            
+            this.leg0_r0.xRot = MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            this.leg0_l0.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_r0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_l0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            
+            this.leg0_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            this.leg0_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
 		} else {
 			this.Body_Base.y = 21.0F;
 			this.Body_Base.xRot = -0.07103490055616922F;
+			
 			this.Head.xRot = headPitch * 0.017453292F;
             this.Head.yRot = netHeadYaw * 0.017453292F;
             this.Jaw.xRot = 0.08F - 0.08F * MathHelper.sin(0.03F * ageInTicks);
@@ -195,17 +235,17 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
             this.Tail0.xRot = 0.08F + 0.08F * MathHelper.sin(0.06F * ageInTicks);
             this.Tail1.xRot = 0.135F + 0.135F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.2F);
             this.Tail2.xRot = 0.165F + 0.165F * MathHelper.sin(0.12F * ageInTicks + (float)Math.PI * 0.4F);
+            
+            this.leg0_r0.xRot = MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            this.leg0_l0.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_r0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_l0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            
+            this.leg0_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+            this.leg0_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+            this.leg1_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
 		}
-		
-        this.leg0_r0.xRot = MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        this.leg0_l0.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.leg1_r0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.leg1_l0.xRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        
-        this.leg0_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        this.leg0_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.leg1_r0.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.leg1_l0.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
     }
 
 	@Override

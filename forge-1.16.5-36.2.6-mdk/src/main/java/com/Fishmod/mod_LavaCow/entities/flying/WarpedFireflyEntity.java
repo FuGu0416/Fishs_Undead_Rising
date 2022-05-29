@@ -94,18 +94,18 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     @OnlyIn(Dist.CLIENT)
     @Override
     public Vector3d getLeashOffset() {
-       return new Vector3d(0.0D, (double)this.getEyeHeight() * 0.5F, (double)(this.getBbWidth() * 0.0F));
+       return new Vector3d(0.0D, (double)this.getEyeHeight() * 0.5F, (double)(this.getBbWidth() * 0.2F));
     }
     
     @Override
     public void tick() {
     	super.tick();
 
-        if (this.glowTimer > 0) {
+        if (this.glowTimer > -6) {
             --this.glowTimer;
         }
         
-    	if(!this.level.isClientSide()) {
+    	if(!this.level.isClientSide() && this.glowTimer > -6) {
     		Block blk = this.level.getBlockState(this.blockPosition()).getBlock();
 	    	if(blk.equals(Blocks.AIR) || blk.equals(Blocks.CAVE_AIR) || blk.equals(Blocks.VOID_AIR)) {
 		    	if(this.tickCount % 5 == 0 && this.level.getBlockState(this.getGlowingPos()).getBlock().equals(FURBlockRegistry.GLOWING_AIR)) {
@@ -124,14 +124,22 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
-    	ActionResultType actionresulttype = super.mobInteract(player, hand);
-    	
-    	if (item.equals(Items.GLOWSTONE_DUST) && this.glowTimer == 0) {   
+    	ActionResultType actionresulttype = super.mobInteract(player, hand);  	
+    	if (this.glowTimer == -6) {   
+    		if (item.equals(Items.GLOWSTONE_DUST)) {
+    			this.glowTimer = 8 * 60 * 20 + 6;
+    		} else if (item.equals(Items.WARPED_FUNGUS)) {
+    			this.glowTimer = 3 * 60 * 20 + 6;
+    		} else {
+    			return actionresulttype;
+    		}
+    		
     		if (!player.abilities.instabuild) {
                 itemstack.shrink(1);
-             }           
-    		this.glowTimer = 8 * 60 * 20;
+    		}        
     		
+    		this.playSound(SoundEvents.BEE_LOOP, 1.0F, 1.0F);
+    		  		
     		return ActionResultType.SUCCESS;
     	} else {
     		return actionresulttype;

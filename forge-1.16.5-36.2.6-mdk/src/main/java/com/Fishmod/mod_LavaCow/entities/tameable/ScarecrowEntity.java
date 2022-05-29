@@ -196,8 +196,7 @@ public class ScarecrowEntity extends FURTameableEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
-    	ActionResultType actionresulttype = super.mobInteract(player, hand);
-    	
+
     	if (this.isTame() && item instanceof DyeItem) {          
             DyeColor dyecolor = ((DyeItem)item).getDyeColor();
             if (dyecolor != this.getCollarColor()) {
@@ -206,13 +205,11 @@ public class ScarecrowEntity extends FURTameableEntity {
                   itemstack.shrink(1);
                }
 
-               return ActionResultType.SUCCESS;
+               return ActionResultType.CONSUME;
             }
-    		
-    		return ActionResultType.sidedSuccess(this.level.isClientSide);
-    	} else {
-    		return actionresulttype;
     	}
+
+    	return super.mobInteract(player, hand); 	
     }
     
     @Override
@@ -341,6 +338,11 @@ public class ScarecrowEntity extends FURTameableEntity {
     public int getMaxHeadYRot() {
         return this.isSilent() ? 0 : super.getMaxHeadYRot();
     }
+    
+    @Override
+    public int getHeadRotSpeed() {
+        return this.isSilent() ? 0 : super.getHeadRotSpeed();
+	}
 	
     @Override
     public void travel(Vector3d p_213352_1_) {

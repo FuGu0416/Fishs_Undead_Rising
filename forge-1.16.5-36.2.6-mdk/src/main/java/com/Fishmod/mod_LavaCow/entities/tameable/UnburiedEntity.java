@@ -34,7 +34,6 @@ import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -135,8 +134,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     public int getSpellTicks() {
         return this.spellTicks;
     }
-        
-    protected boolean isCommandItem(Item itemIn) {
+       
+    @Override
+    protected boolean isCommandable() {
     	return false;
     }
     

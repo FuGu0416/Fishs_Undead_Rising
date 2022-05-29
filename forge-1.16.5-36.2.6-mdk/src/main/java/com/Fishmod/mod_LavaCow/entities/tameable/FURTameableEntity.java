@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -87,43 +86,37 @@ public class FURTameableEntity extends TameableEntity {
 	    return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
     }      
     
-    protected boolean isCommandItem(Item itemIn) {
-    	return itemIn.equals(Items.STICK);
+    protected boolean isCommandable() {
+    	return true;
     }
     
-    public void doSitCommand(PlayerEntity playerIn) {
-    	byte b0 = this.entityData.get(DATA_FLAGS_ID);
-    	
+    public void doSitCommand(PlayerEntity playerIn) {    	
     	this.goalSelector.removeGoal(this.wander);
         this.jumping = false;
         this.getNavigation().stop();
 		this.state = FURTameableEntity.State.SITTING;		
-		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 1));
+		this.setInSittingPose(true);
 		if(playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.sitting", this.getName()), true);
     }
     
     public void doFollowCommand(PlayerEntity playerIn) {
-    	byte b0 = this.entityData.get(DATA_FLAGS_ID);
-    	
 		this.follow = this.followGoal();
 		this.goalSelector.addGoal(6, this.follow);
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.FOLLOWING;
-		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
+		this.setInSittingPose(false);
 		if(playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.following", this.getName()), true);
     }
     
     public void doWanderCommand(PlayerEntity playerIn) {
-    	byte b0 = this.entityData.get(DATA_FLAGS_ID);
-    	
 		this.goalSelector.removeGoal(this.follow);
 		this.wander = this.wanderGoal();
 		this.goalSelector.addGoal(7, this.wander);
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.WANDERING;
-		this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
+		this.setInSittingPose(false);
 		if(playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.wandering", this.getName()), true);
     }
@@ -144,21 +137,7 @@ public class FURTameableEntity extends TameableEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.level.isClientSide) {  
-	    	if(this.isTame() && this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {  
-		    	if (this.isCommandItem(itemstack.getItem()) && this.getPassengers().isEmpty()) {
-		    		if(this.state.equals(FURTameableEntity.State.WANDERING)) {
-		    			this.doSitCommand(player);
-		    		}
-		    		else if(this.state.equals(FURTameableEntity.State.SITTING)) {
-		    			this.doFollowCommand(player);
-		    		}
-		    		else if(this.state.equals(FURTameableEntity.State.FOLLOWING)) {
-		    			this.doWanderCommand(player);
-		    		}
-		    		
-		    		return ActionResultType.SUCCESS;
-		    	}
-	    	} else if (this.isFood(itemstack) && canTameCondition()) {
+	    	if (this.isFood(itemstack) && canTameCondition()) {
 	            if (!player.abilities.instabuild) {	               
 	               if(itemstack.getItem() instanceof BucketItem) {
 	            	   itemstack.shrink(1);
@@ -179,7 +158,19 @@ public class FURTameableEntity extends TameableEntity {
 	            }
 	
 	            return ActionResultType.CONSUME;
-	         }
+	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable()) {  
+	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty()) {
+	    			if (this.state.equals(FURTameableEntity.State.WANDERING)) {
+	    				this.doSitCommand(player);
+	    			} else if (this.state.equals(FURTameableEntity.State.SITTING)) {
+	    				this.doFollowCommand(player);
+	    			} else if (this.state.equals(FURTameableEntity.State.FOLLOWING)) {
+	    				this.doWanderCommand(player);
+	    			}
+			    		
+	    			return ActionResultType.SUCCESS;
+	    		}
+	    	}
         }
 
         return super.mobInteract(player, hand);

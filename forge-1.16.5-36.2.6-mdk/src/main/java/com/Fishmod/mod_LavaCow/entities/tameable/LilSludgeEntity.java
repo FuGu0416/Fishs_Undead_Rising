@@ -33,7 +33,6 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -129,7 +128,7 @@ public class LilSludgeEntity extends FURTameableEntity {
     }
     
 	@Override
-    protected boolean isCommandItem(Item itemIn) {
+    protected boolean isCommandable() {
     	return false;
     }
 	

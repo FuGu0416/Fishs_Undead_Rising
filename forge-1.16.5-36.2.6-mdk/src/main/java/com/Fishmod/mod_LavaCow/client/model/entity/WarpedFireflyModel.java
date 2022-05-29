@@ -85,13 +85,13 @@ public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseMo
 		elytra_r = new ModelRenderer(this);
 		elytra_r.setPos(0.0F, -3.5F, -2.0F);
 		base.addChild(elytra_r);
-		setRotateAngle(elytra_r, 0.7161F, -0.2747F, 0.0468F);
+		setRotateAngle(elytra_r, 1.1026F, -0.4028F, -0.1955F);
 		elytra_r.texOffs(0, 17).addBox(-4.0F, 0.0F, 0.0F, 4.0F, 4.0F, 7.0F, 0.0F, true);
 
 		elytra_l = new ModelRenderer(this);
 		elytra_l.setPos(0.0F, -3.5F, -2.0F);
 		base.addChild(elytra_l);
-		setRotateAngle(elytra_l, 0.7161F, 0.2747F, -0.0468F);
+		setRotateAngle(elytra_l, 1.1026F, 0.4028F, 0.1955F);
 		elytra_l.texOffs(0, 17).addBox(0.0F, 0.0F, 0.0F, 4.0F, 4.0F, 7.0F, 0.0F, false);
 
 		wing_r = new ModelRenderer(this);

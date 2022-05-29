@@ -200,10 +200,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
     	
-    	if (!Entity.isNymph()) {
-	    	this.Head.xRot = headPitch * 0.017453292F;
-	        this.Head.yRot = netHeadYaw * 0.0003F;
-	        
+    	if (!Entity.isNymph()) {	        
         	if(Entity.isBaby()) {
         		if(Entity.getGrowingStage() == 1) {
 	        		this.Tooth_l.visible = false;
@@ -226,36 +223,100 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
         		this.Cannon3.visible = true;
         	}
 	    	
-	    	if(i <= Anime_threshold[0] && i > Anime_threshold[1]) {
+	    	if(entityIn.isInSittingPose()) {
+		    	this.Head.xRot = -0.35185837453889574F + headPitch * 0.017453292F;
+		        this.Head.yRot = netHeadYaw * 0.0003F;
+	    		this.Head.zRot = 0.0F;
+	    		this.Jaw_lower.xRot = 0.19547687289441354F + (-0.08F * MathHelper.sin(0.03F * ageInTicks));
+	    		
+		        this.RightArm.xRot = -0.7689920923971514F;
+		        this.LeftArm.xRot = -0.7689920923971514F;
+		        this.RightLeg.xRot = 0.6326818538479445F;
+		        this.LeftLeg.xRot = 0.6326818538479445F;
+		        
+		        this.RightArm.zRot = 0.956091342937205F;
+		        this.LeftArm.zRot = -0.956091342937205F;
+		        this.RightLeg.zRot = 0.40980330836826856F;
+		        this.LeftLeg.zRot = -0.40980330836826856F;
+		        		        
+		        this.Body.xRot = 0.0F;
+		        this.Body.y = 20.0F;	
+		        
+		        this.Tail1.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks);
+		        this.Tail2.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks + 0.02F);
+		        this.Tail3.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks + 0.04F);
+		        
+		        this.Cannon2.z = -3.0F;
+		        this.Cannon3.z = -3.0F;	    		
+	    	} else if (i <= Anime_threshold[0] && i > Anime_threshold[1]) {
+		    	this.Head.xRot = headPitch * 0.017453292F;
+		        this.Head.yRot = netHeadYaw * 0.0003F;
 	    		this.Head.zRot = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));
 	    		this.Jaw_lower.xRot = GradientAnimation(0.0F, 0.6829473363053812F, j * (i - Anime_threshold[1]));
+	    		
 		        this.RightArm.xRot = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
 		        this.LeftArm.xRot = GradientAnimation(0.091106186954104F, -0.5009094953223726F, j * (i - Anime_threshold[1]));
+		        this.RightLeg.xRot = -0.22759093446006054F;
+		        this.LeftLeg.xRot = -0.22759093446006054F;
+
+		        this.RightArm.zRot = 0.9560913642424937F;
+		        this.LeftArm.zRot = -0.9560913642424937F;
+		        this.RightLeg.zRot = 0.40980330836826856F;
+		        this.LeftLeg.zRot = -0.40980330836826856F;
+		        
 		        this.Body.xRot = GradientAnimation(0.0F, -0.18203784098300857F, j * (i - Anime_threshold[1]));
 		        this.Body.y = GradientAnimation(17.5F, 16.2F, j * (i - Anime_threshold[1]));
+		        
 		        this.Tail1.yRot = GradientAnimation(0.0F, -0.136659280431156F, j * (i - Anime_threshold[1]));
 		        this.Tail2.yRot = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
 		        this.Tail3.yRot = GradientAnimation(0.0F, -0.40980330836826856F, j * (i - Anime_threshold[1]));
-	    	} else if(i <= Anime_threshold[1] && i > Anime_threshold[2]) {
+		        
+		        this.Cannon2.z = -3.0F;
+		        this.Cannon3.z = -3.0F;
+	    	} else if (i <= Anime_threshold[1] && i > Anime_threshold[2]) {
+		    	this.Head.xRot = headPitch * 0.017453292F;
+		        this.Head.yRot = netHeadYaw * 0.0003F;
 	    		this.Head.zRot = GradientAnimation(-0.36425021489121656F, 0.0F, k * (i - Anime_threshold[2]));
 	    		this.Jaw_lower.xRot = GradientAnimation(0.6829473363053812F, 0.0F, k * (i - Anime_threshold[2]));
+	    		
 		        this.RightArm.xRot = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
 		        this.LeftArm.xRot = GradientAnimation(-0.5009094953223726F, 0.091106186954104F, k * (i - Anime_threshold[2]));
+		        this.RightLeg.xRot = -0.22759093446006054F;
+		        this.LeftLeg.xRot = -0.22759093446006054F;
+
+		        this.RightArm.zRot = 0.9560913642424937F;
+		        this.LeftArm.zRot = -0.9560913642424937F;
+		        this.RightLeg.zRot = 0.40980330836826856F;
+		        this.LeftLeg.zRot = -0.40980330836826856F;
+		        
 		        this.Body.xRot = GradientAnimation(-0.18203784098300857F, 0.0F, k * (i - Anime_threshold[2]));
 		        this.Body.y = GradientAnimation(16.2F, 17.5F, k * (i - Anime_threshold[2]));
+		        
 		        this.Tail1.yRot = GradientAnimation(-0.136659280431156F, 0.0F, k * (i - Anime_threshold[2]));
 		        this.Tail2.yRot = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
 		        this.Tail3.yRot = GradientAnimation(-0.40980330836826856F, 0.0F, k * (i - Anime_threshold[2]));
 		        
 		        this.Cannon2.z = -1.8F + 1.2F * MathHelper.sin(1.0F * ageInTicks);
 		        this.Cannon3.z = -1.3F + 1.7F * MathHelper.sin(1.0F * ageInTicks);
-	    	} else if(!Entity.isBaby() && i <= Anime_threshold[2]) {
+	    	} else {
+		    	this.Head.xRot = headPitch * 0.017453292F;
+		        this.Head.yRot = netHeadYaw * 0.0003F;
 	    		this.Head.zRot = 0.0F;
-	    		this.Jaw_lower.xRot = -0.08F + (-0.08F * MathHelper.sin(0.03F * ageInTicks));
-		        this.RightArm.xRot = 0.091106186954104F;
-		        this.LeftArm.xRot = 0.091106186954104F;
+	    		this.Jaw_lower.xRot = 0.19547687289441354F + (-0.08F * MathHelper.sin(0.03F * ageInTicks));
+	    		
+		        this.RightArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+		        this.LeftArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+		        this.RightLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+		        this.LeftLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+		        
+		        this.RightArm.zRot = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+		        this.LeftArm.zRot = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+		        this.RightLeg.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+		        this.LeftLeg.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+		        		        
 		        this.Body.xRot = 0.0F;
-		        this.Body.y = 17.5F;		
+		        this.Body.y = 17.5F;	
+		        
 		        this.Tail1.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks);
 		        this.Tail2.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks + 0.02F);
 		        this.Tail3.yRot = 0.15F * MathHelper.sin(0.03F * ageInTicks + 0.04F);
@@ -263,17 +324,6 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
 		        this.Cannon2.z = -3.0F;
 		        this.Cannon3.z = -3.0F;
 	    	}
-	    	
-	        this.RightArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        this.LeftArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.RightLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.LeftLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        
-	        this.RightArm.zRot = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        this.LeftArm.zRot = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.RightLeg.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        this.LeftLeg.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-	        
     	} else {
     		ChildModel.setupAnim(Entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     	}
