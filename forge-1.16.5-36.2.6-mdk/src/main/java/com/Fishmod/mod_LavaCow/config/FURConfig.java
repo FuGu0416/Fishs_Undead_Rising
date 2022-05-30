@@ -143,6 +143,9 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cactoid;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Attack;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_WarpedFirefly;
+	public static final ForgeConfigSpec.ConfigValue<Double> WarpedFirefly_Health;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -415,6 +418,11 @@ public final class FURConfig {
 		pSpawnRate_Cactoid = BUILDER.comment("Set the spawn rate of Cactoid [0-10000]").defineInRange("cactoid spawn rate", 10, 0, 10000);
 		Cactoid_Health = BUILDER.comment("Maximum Cactoid health [1-1000]").defineInRange("cactoid health", 20.0D, 1.0D, 1000.0D);
 		Cactoid_Attack = BUILDER.comment("Cactoid strength [1-1000]").defineInRange("cactoid attack", 3.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+		
+		BUILDER.push("Warped Firefly");
+		pSpawnRate_WarpedFirefly = BUILDER.comment("Set the spawn rate of Warped Firefly [0-10000]").defineInRange("warped firefly spawn rate", 4, 0, 10000);
+		WarpedFirefly_Health = BUILDER.comment("Maximum Warped Firefly health [1-1000]").defineInRange("warped firefly health", 10.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

@@ -262,7 +262,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(biomeKey.equals(Biomes.WARPED_FOREST)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_Imp.get(), 4, 8));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_WarpedFirefly.get(), 4, 8));
 		}
 	}
 	

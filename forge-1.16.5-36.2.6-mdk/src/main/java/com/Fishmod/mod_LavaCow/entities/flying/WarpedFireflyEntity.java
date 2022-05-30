@@ -65,7 +65,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.6D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.GhostRay_Health.get())
+        		.add(Attributes.MAX_HEALTH, FURConfig.WarpedFirefly_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, 0.0D)
         		.add(Attributes.FLYING_SPEED, 0.6D);
     }
@@ -160,7 +160,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
 	}
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GhostRay_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.WarpedFirefly_Health.get());
     	this.setHealth(this.getMaxHealth());
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
