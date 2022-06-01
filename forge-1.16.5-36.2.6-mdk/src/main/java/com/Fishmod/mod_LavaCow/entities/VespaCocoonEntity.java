@@ -18,12 +18,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
-public class VespaCocoonEntity extends MonsterEntity {
-	
+public class VespaCocoonEntity extends MonsterEntity {	
 	private int Lifespan = 8 * 20;
 	
-	public VespaCocoonEntity(EntityType<? extends VespaCocoonEntity> p_i48549_1_, World worldIn)
-    {
+	public VespaCocoonEntity(EntityType<? extends VespaCocoonEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
     }
 	
@@ -42,8 +40,7 @@ public class VespaCocoonEntity extends MonsterEntity {
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void aiStep()
-    {
+    public void aiStep() {
         super.aiStep();
         if(this.tickCount >= Lifespan) {
         	this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F);
@@ -63,8 +60,7 @@ public class VespaCocoonEntity extends MonsterEntity {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {   	
+    public void tick() {   	
         super.tick();
         this.setDeltaMovement(0.0D, this.getDeltaMovement().y, 0.0D);
     }
@@ -73,8 +69,7 @@ public class VespaCocoonEntity extends MonsterEntity {
      * Called when the entity is attacked.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount)
-    {
+    public boolean hurt(DamageSource source, float amount) {
 		if (source.equals(DamageSource.IN_WALL) || source.equals(DamageSource.DROWN))
 			return false;
 		return super.hurt(source, amount);
@@ -99,8 +94,7 @@ public class VespaCocoonEntity extends MonsterEntity {
 	}
     
     @Override
-    public boolean isImmobile()
-    {
+    public boolean isImmobile() {
         return true;
     }
     
@@ -108,8 +102,7 @@ public class VespaCocoonEntity extends MonsterEntity {
      * Applies a velocity to the entities, to push them away from eachother.
      */
     @Override
-    public void push(Entity entityIn)
-    {
+    public void push(Entity entityIn) {
     }
 
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
@@ -117,20 +110,17 @@ public class VespaCocoonEntity extends MonsterEntity {
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return FURSoundRegistry.PARASITE_AMBIENT;
+    protected SoundEvent getAmbientSound() {
+        return null;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.WOOL_BREAK;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.PARASITE_DEATH;
     }
 

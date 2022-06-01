@@ -256,5 +256,8 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.BLOODTOOTH_SHROOM.asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CORDY_SHROOM.asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.VEIL_SHROOM.asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.HYPHAE.asItem(), 0.50F);
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_FRUIT.asItem(), 0.85F);
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_THORN.asItem(), 0.30F);
     }
 }
