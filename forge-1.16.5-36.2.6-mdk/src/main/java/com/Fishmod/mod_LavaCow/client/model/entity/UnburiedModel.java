@@ -44,7 +44,8 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
     public ModelRenderer Leg_r_Seg1;
     public ModelRenderer Arm_l_bandage;
     public ModelRenderer Arm_r_bandage;
-
+    public ModelRenderer Hat;
+    
     public UnburiedModel() {
     	this(0.0F);
     }
@@ -132,6 +133,10 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
         this.Arm_r_Seg1.setPos(-1.0F, 7.0F, 1.0F);
         this.Arm_r_Seg1.addBox(-1.0F, 0.0F, -2.0F, 2.0F, 10.0F, 2.0F, 0.0F, 0.0F, scale);
         this.setRotateAngle(Arm_r_Seg1, -0.7740534966278743F, 0.0F, 0.0F);
+        this.Hat = new ModelRenderer(this, 32, 48);
+        this.Hat.setPos(0.0F, 5.0F, -4.0F);
+        this.Hat.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);      
+        
         this.Body_chest.addChild(this.Neck0);
         this.Arm_l_Seg0.addChild(this.Arm_l_Seg1);
         this.Body_base.addChild(this.Body_waist);
@@ -152,6 +157,7 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
         this.Leg_r_Seg0.addChild(this.Leg_r_Seg1);
         this.Head.addChild(this.Head_teeth);
         this.Arm_r_Seg0.addChild(this.Arm_r_Seg1);
+        this.Head.addChild(this.Hat);
     }
 
     @Override
@@ -171,12 +177,17 @@ public class UnburiedModel<T extends LivingEntity> extends FURBaseModel<T> imple
     }
     
     public void copyPropertiesTo(BipedModel<T> p_217148_1_) {
-        super.copyPropertiesTo(p_217148_1_);
-        p_217148_1_.head.copyFrom(this.Head);
-        p_217148_1_.hat.copyFrom(this.Head);
+        super.copyPropertiesTo(p_217148_1_);		
+        p_217148_1_.head.copyFrom(this.Hat);
+        p_217148_1_.hat.copyFrom(this.Hat);
         p_217148_1_.body.copyFrom(this.Body_chest);
         p_217148_1_.rightLeg.copyFrom(this.Leg_r_Seg0);
         p_217148_1_.leftLeg.copyFrom(this.Leg_l_Seg0);
+       
+        /*p_217148_1_.head.y += 5.0F;
+        p_217148_1_.head.z -= 4.0F;
+        p_217148_1_.hat.y += 5.0F;
+        p_217148_1_.hat.z -= 4.0F;*/
 	}
 
     @Override

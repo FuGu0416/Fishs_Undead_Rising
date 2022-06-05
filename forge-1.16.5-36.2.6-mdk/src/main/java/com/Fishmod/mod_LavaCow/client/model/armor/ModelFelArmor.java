@@ -54,9 +54,9 @@ public class ModelFelArmor<T extends LivingEntity> extends BipedModel<T> {
         
         this.horn_l_0.addChild(this.horn_l_1);
         this.horn_l_1.addChild(this.horn_l_2);
-        this.head.addChild(this.horn_l_0);
+        this.hat.addChild(this.horn_l_0);
         this.horn_r_1.addChild(this.horn_r_2);
-        this.head.addChild(this.horn_r_0);
+        this.hat.addChild(this.horn_r_0);
         this.horn_r_0.addChild(this.horn_r_1);    
     }
 
@@ -71,8 +71,7 @@ public class ModelFelArmor<T extends LivingEntity> extends BipedModel<T> {
     
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAngle, float entityTickTime, float rotationYaw, float rotationPitch) {		
-		if (entity instanceof ArmorStandEntity)
-        {
+		if (entity instanceof ArmorStandEntity) {
             ArmorStandEntity ArmorStandEntity = (ArmorStandEntity)entity;
             this.head.xRot = ((float)Math.PI / 180F) * ArmorStandEntity.getHeadPose().getX();
             this.head.yRot = ((float)Math.PI / 180F) * ArmorStandEntity.getHeadPose().getY();

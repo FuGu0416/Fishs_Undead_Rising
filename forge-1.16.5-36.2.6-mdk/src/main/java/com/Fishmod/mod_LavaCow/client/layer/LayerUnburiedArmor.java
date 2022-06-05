@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedArmorModel;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -29,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class LayerUnburiedArmor<T extends LivingEntity, M extends UnburiedModel<T>> extends LayerRenderer<T, M> {
 	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
-	private final UnburiedArmorModel<T> ArmorModel = new UnburiedArmorModel<>(1.0F);
+	private final BipedModel<T> ArmorModel = new BipedModel<>(1.0F);
 	
     public LayerUnburiedArmor(IEntityRenderer<T, M> p_i226039_1_) {
         super(p_i226039_1_);
@@ -77,6 +76,7 @@ public class LayerUnburiedArmor<T extends LivingEntity, M extends UnburiedModel<
 	        	this.getParentModel().Body_chest.translateAndRotate(matrixStackIn);
 	        	this.getParentModel().Neck0.translateAndRotate(matrixStackIn);
 	        	this.getParentModel().Neck1.translateAndRotate(matrixStackIn);
+	        	this.getParentModel().Head.translateAndRotate(matrixStackIn);
 	            break;
 	        case CHEST:
 	        	this.getParentModel().Body_base.translateAndRotate(matrixStackIn);
