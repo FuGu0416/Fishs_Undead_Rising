@@ -439,7 +439,9 @@
 	"description.effect.mod_lavacow:fear": "Apply weakness and slowness, non-player entities will flee aimlessly instead.",
 	"effect.mod_lavacow.thorned": "Thorned",
 	"description.effect.mod_lavacow:thorned": "Deal damage to attacking entities",
-		
+	"effect.mod_lavacow.immolation": "Immolation",
+	"description.effect.mod_lavacow:immolation": "Gain fire resistance, also set entities nearby ablaze.",
+			
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
 	"item.minecraft.lingering_potion.effect.corrosive": "Lingering Potion of Corrosion",
@@ -496,7 +498,19 @@
 	"item.minecraft.splash_potion.effect.long_thorn": "Splash Potion of Thorn",
 	"item.minecraft.lingering_potion.effect.long_thorn": "Lingering Potion of Thorn",
 	"item.minecraft.tipped_arrow.effect.long_thorn": "Arrow of Thorn",
-			
+	"item.minecraft.potion.effect.immolation": "Potion of Immolation",
+	"item.minecraft.splash_potion.effect.immolation": "Splash Potion of Immolation",
+	"item.minecraft.lingering_potion.effect.immolation": "Lingering Potion of Immolation",
+	"item.minecraft.tipped_arrow.effect.immolation": "Arrow of Immolation",
+	"item.minecraft.potion.effect.strong_immolation": "Potion of Immolation",
+	"item.minecraft.splash_potion.effect.strong_immolation": "Splash Potion of Immolation",
+	"item.minecraft.lingering_potion.effect.strong_immolation": "Lingering Potion of Immolation",
+	"item.minecraft.tipped_arrow.effect.strong_immolation": "Arrow of Immolation",
+	"item.minecraft.potion.effect.long_immolation": "Potion of Immolation",
+	"item.minecraft.splash_potion.effect.long_immolation": "Splash Potion of Immolation",
+	"item.minecraft.lingering_potion.effect.long_immolation": "Lingering Potion of Immolation",
+	"item.minecraft.tipped_arrow.effect.long_immolation": "Arrow of Immolation",
+				
 	"advancements.mod_lavacow.root.title": "The Dark Night",
 	"advancements.mod_lavacow.root.description": "Enter a world of undead",
 	"advancements.mod_lavacow.slimy_tasty.title": "Slimy, Yet Satisfying",

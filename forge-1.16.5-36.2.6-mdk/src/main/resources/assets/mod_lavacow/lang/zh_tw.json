@@ -439,7 +439,9 @@
 	"description.effect.mod_lavacow:fear": "賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄",
 	"effect.mod_lavacow.thorned": "荊棘",
 	"description.effect.mod_lavacow:thorned": "對發動近戰攻擊的單位造成傷害",
-		
+	"effect.mod_lavacow.immolation": "燒灼",
+	"description.effect.mod_lavacow:immolation": "獲得火焰抗性，並使附近的單位燃燒",
+			
 	"item.minecraft.potion.effect.corrosive": "腐蝕藥水",
 	"item.minecraft.splash_potion.effect.corrosive": "飛濺 腐蝕藥水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滯留 腐蝕藥水",
@@ -496,7 +498,19 @@
 	"item.minecraft.splash_potion.effect.long_thorn": "飛濺 荊棘藥水",
 	"item.minecraft.lingering_potion.effect.long_thorn": "滯留 荊棘藥水",
 	"item.minecraft.tipped_arrow.effect.long_thorn": "荊棘之箭",
-			
+	"item.minecraft.potion.effect.immolation": "燒灼藥水",
+	"item.minecraft.splash_potion.effect.immolation": "飛濺 燒灼藥水",
+	"item.minecraft.lingering_potion.effect.immolation": "滯留 燒灼藥水",
+	"item.minecraft.tipped_arrow.effect.immolation": "燒灼之箭",
+	"item.minecraft.potion.effect.strong_immolation": "燒灼藥水",
+	"item.minecraft.splash_potion.effect.strong_immolation": "飛濺 燒灼藥水",
+	"item.minecraft.lingering_potion.effect.strong_immolation": "滯留 燒灼藥水",
+	"item.minecraft.tipped_arrow.effect.strong_immolation": "燒灼之箭",
+	"item.minecraft.potion.effect.long_immolation": "燒灼藥水",
+	"item.minecraft.splash_potion.effect.long_immolation": "飛濺 燒灼藥水",
+	"item.minecraft.lingering_potion.effect.long_immolation": "滯留 燒灼藥水",
+	"item.minecraft.tipped_arrow.effect.long_immolation": "燒灼之箭",
+				
 	"advancements.mod_lavacow.root.title": "厄夜降臨",
 	"advancements.mod_lavacow.root.description": "進入不死崛起的新世界",
 	"advancements.mod_lavacow.slimy_tasty.title": "黏黏的，但很好吃",
