@@ -136,6 +136,8 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
     
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {        
     	FogletEntity entityfoglet = (FogletEntity)entityIn;  	
+    	float i = entityfoglet.getAttackTimer() / 35.0F;
+    	
     	this.head.yRot = netHeadYaw * 0.017453292F;
     	this.SwingX_Sin(this.tail0, -2.88380744850172F, ageInTicks, 0.2F, 0.1F, false, 0.0F);
     	this.SwingX_Sin(this.tail1, 0.8993681422473893F, ageInTicks, 0.2F, 0.1F, false, 0.1F);
@@ -154,6 +156,11 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
     	} else if (entityfoglet.getIsHanging()) {
             this.setRotateAngle(leg_l, -0.5009094953223726F, 0.0F, 0.0F);
             this.setRotateAngle(leg_r, -0.5009094953223726F, 0.0F, 0.0F);   		 
+    	} else if (i > 0) {
+        	this.leg_r.xRot = GradientAnimation(0.0F, 0.46914448828868976F, i);
+        	this.leg_r.yRot = 0.0F;	
+	        this.leg_l.xRot = -0.899542712456844F;
+	        this.leg_l.yRot = 0.0F;	   		
     	} else {
         	this.leg_r.xRot = -0.5009094953223726F + MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         	this.leg_r.yRot = 0.0F;	
@@ -181,6 +188,20 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
         	this.arm_l.xRot = 2.6862362517444724F;
         	this.arm_r.zRot = -0.9560913642424937F + MathHelper.sin(ageInTicks * 0.6F) * 0.8196F;
             this.arm_l.zRot = 0.9560913642424937F - MathHelper.sin(ageInTicks * 0.6F) * 0.8196F; 
+        } else if (i > 0) {
+        	this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
+	        this.torso.setPos(-0.0F, GradientAnimation(8.0F, 10.0F, i), -3.0F);
+	        this.torso.xRot = GradientAnimation(0.07086036663228437F, 0.8908160661968724F, i);	
+        	this.arm_r.xRot = GradientAnimation(-0.5195845263081952F, 0.5359905973084921F, i);	
+        	
+        	if (i > 0.5F) {
+        		this.arm_l.xRot = GradientAnimation(1.4978415587352114F, 3.141592653589793F, i);	       		
+        	} else {
+        		this.arm_l.xRot = GradientAnimation(-3.141592653589793F, -1.9046777647645121F, i);	      		
+        	}
+        	        	
+        	this.arm_r.zRot = 0.10000736613927509F;
+        	this.arm_l.zRot = -0.10000736613927509F; 
         } else if (entityfoglet.isAggressive()) {
         	this.head.xRot = -0.5009094953223726F + headPitch * 0.017453292F;
 	        this.torso.setPos(-0.0F, 8.0F, -3.0F);
@@ -212,8 +233,7 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
         }                
     }
     
-    private float triangleWave(float p_78172_1_, float p_78172_2_)
-    {
+    private float triangleWave(float p_78172_1_, float p_78172_2_) {
         return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
     }
 

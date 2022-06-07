@@ -345,6 +345,11 @@ public class EventHandler {
 	    int Armor_Famine_lvl = 0;
 	    int Armor_Chitin_lvl = 0;
 	    
+	    if(event.getSource().isFire() && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION)) {
+	    	event.setCanceled(true);
+	    	return;
+	    }
+	    
 		for(ItemStack S : Attacked.getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;

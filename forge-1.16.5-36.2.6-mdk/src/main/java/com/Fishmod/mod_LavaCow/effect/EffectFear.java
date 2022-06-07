@@ -30,7 +30,7 @@ public class EffectFear extends Effect {
     
     @Override
     public boolean isDurationEffectTick(int p_76397_1_, int p_76397_2_) {
-        int i = 5 >> p_76397_2_;
+        int i = 5;
         if (i > 0) {
            return p_76397_1_ % i == 0;
         } else {

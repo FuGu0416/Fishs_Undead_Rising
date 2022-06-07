@@ -80,6 +80,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());
+        this.goalSelector.addGoal(3, new FogletEntity.AISelfImmolation());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
@@ -179,16 +180,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     public void tick() {
         if (this.spellTicks > 0) {
             --this.spellTicks;
-            
-            if(this.getType().equals(FUREntityRegistry.IMP) && this.tickCount % 10 == 0 && this.spellTicks < 80) {
-            	List<Entity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0D));
-
-            	for (Entity entity1 : list) {                        
-        			if (!entity1.isOnFire() && !entity1.fireImmune() && this.getRandom().nextFloat() < 0.4F)
-        				entity1.setSecondsOnFire(3);
-            	}         		
-            }
         }
+        
+    	if(this.getAttackTimer() > 0) {
+    		--this.attackTimer;
+    	}
     	
     	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(8);
@@ -249,10 +245,9 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
  		   	this.goalSelector.addGoal(1, new AIClimbimgTree());
     	} else if (this.getType().equals(FUREntityRegistry.IMP)) {
     		this.setSkin(2);
+    		//this.goalSelector.addGoal(2, new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL, 1, 5, 1.0D, 0.1D, 1.0D));
     	}
- 	   
-
- 	   
+ 	   	   
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
     
@@ -295,13 +290,18 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-        if (id == 10) {
-        	this.spellTicks = 100;
-        } else {
-        	this.spellTicks = 0;
-
-            super.handleEntityEvent(id);
-        }
+		switch(id) {
+			case 5:
+				this.setAttackTimer(35);
+				break;
+			case 10:
+				this.spellTicks = 100;
+				break;			
+			default:
+				this.spellTicks = 0;
+				super.handleEntityEvent(id);
+				break;
+		}
     }
     
 	@Override
@@ -497,7 +497,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          */
         @Override
         public boolean canUse() {
-            if (FogletEntity.this.getTarget() == null) {
+            if (FogletEntity.this.getTarget() == null || FogletEntity.this.getSkin() == 2) {
                 return false;
             } else if (FogletEntity.this.isSpellcasting()) {
                 return false;
@@ -554,11 +554,8 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 	            	effect = Effects.BLINDNESS;
 	                break;
 	            case 1:
-	            	effect = FUREffectRegistry.SOILED;
-	                break;
-	            case 2:
 	            default:
-	            	effect = Effects.HARM;
+	            	effect = FUREffectRegistry.SOILED;
 	                break;
             }
             
@@ -568,12 +565,12 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             entityareaeffectcloud.setDuration(120);
             entityareaeffectcloud.setWaitTime(10);
             entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
+            
             if (FogletEntity.this.getSkin() == 0)
             	entityareaeffectcloud.setParticle(ParticleTypes.CLOUD);
             else if (FogletEntity.this.getSkin() == 1)
             	entityareaeffectcloud.setPotion(FUREffectRegistry.FOULODOR_POTION);
-            else
-            	entityareaeffectcloud.setParticle(ParticleTypes.FLAME);
+            
             entityareaeffectcloud.addEffect(new EffectInstance(effect, 4 * 20, 1));
             entityareaeffectcloud.setFixedColor(FogletEntity.this.getSkin() == 0 ? 0xFFFFFF : 0x6F5B3C);
 
@@ -595,6 +592,79 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         @Nullable
         protected SoundEvent getSpellPrepareSound() {
             return SoundEvents.EVOKER_PREPARE_ATTACK;
+        }
+    }
+
+    public class AISelfImmolation extends Goal {
+        protected int spellWarmup;
+        protected int spellCooldown;
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        @Override
+        public boolean canUse() {
+            if (FogletEntity.this.getTarget() == null || FogletEntity.this.getSkin() != 2) {
+                return false;
+            } else if (FogletEntity.this.isSpellcasting() || FogletEntity.this.hasEffect(FUREffectRegistry.IMMOLATION)) {
+                return false;
+            } else {
+            	return FogletEntity.this.tickCount >= this.spellCooldown;
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        @Override
+        public boolean canContinueToUse() {
+            return FogletEntity.this.getTarget() != null && this.spellWarmup > 0;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        @Override
+        public void start() {
+            this.spellWarmup = this.getCastWarmupTime();
+            FogletEntity.this.spellTicks = this.getCastingTime();
+            FogletEntity.this.level.broadcastEntityEvent(FogletEntity.this, (byte)10);
+            this.spellCooldown = FogletEntity.this.tickCount + this.getCastingInterval();
+            SoundEvent soundevent = this.getSpellPrepareSound();
+
+            if (soundevent != null) {
+                FogletEntity.this.playSound(soundevent, 1.0F, 1.0F);
+            }
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        @Override
+        public void tick() {
+            --this.spellWarmup;
+
+            if (this.spellWarmup == 0) {
+                FogletEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
+                FogletEntity.this.addEffect(new EffectInstance(FUREffectRegistry.IMMOLATION, 2 * 60 * 20));
+            }
+        }
+
+        protected int getCastWarmupTime() {
+            return 20;
+        }
+
+        protected int getCastingTime() {
+            return 20;
+        }
+
+        protected int getCastingInterval() {
+            return 12 * 20;
+        }
+
+        @Nullable
+        protected SoundEvent getSpellPrepareSound() {
+            return SoundEvents.FURNACE_FIRE_CRACKLE;
         }
     }
     
