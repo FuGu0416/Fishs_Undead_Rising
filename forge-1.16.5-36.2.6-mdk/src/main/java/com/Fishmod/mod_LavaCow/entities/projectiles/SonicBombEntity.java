@@ -53,8 +53,8 @@ public class SonicBombEntity extends ProjectileItemEntity {
 	
 	@Override
 	protected void onHit(RayTraceResult result) {
-        if (!this.level.isClientSide())
-        {
+		super.onHit(result);
+        if (!this.level.isClientSide()) {
         	WolfEntity Dummy = EntityType.WOLF.create(this.level);
         	Dummy.tame((PlayerEntity) this.getOwner());
         	Dummy.setCustomName(this.getName());

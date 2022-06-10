@@ -1,6 +1,9 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
@@ -10,7 +13,10 @@ import net.minecraft.network.IPacket;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -44,6 +50,7 @@ public class FlameJetEntity extends ProjectileItemEntity {
 	*/
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
+    	super.onHitEntity(result);
 	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
 	    	float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 	    	this.setDamage( (float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -52,14 +59,28 @@ public class FlameJetEntity extends ProjectileItemEntity {
 	    	this.remove();
 	    }
     }
+    
+	@Override
+	protected void onHitBlock(BlockRayTraceResult result) {
+		super.onHitBlock(result);
+		if (!this.level.isClientSide) {
+			Entity entity = this.getOwner();
+			if (entity == null || !(entity instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getEntity())) {
+				BlockPos blockpos = result.getBlockPos().relative(result.getDirection());
+	            if (this.level.isEmptyBlock(blockpos)) {
+	            	this.level.setBlockAndUpdate(blockpos, AbstractFireBlock.getState(this.level, blockpos));
+	            }
+			}
+		}
+	}
 
-    /**
-    * Returns true if other Entities should be prevented from moving through this Entity.
-    */
-    @Override
-    public boolean canBeCollidedWith() {
-    	return false;
-    }
+	@Override
+	protected void onHit(RayTraceResult p_70227_1_) {
+		super.onHit(p_70227_1_);
+		if (!this.level.isClientSide) {
+			this.remove();
+		}
+	}
    
     public void setDamage(float damageIn) {
 	    this.damage = damageIn;

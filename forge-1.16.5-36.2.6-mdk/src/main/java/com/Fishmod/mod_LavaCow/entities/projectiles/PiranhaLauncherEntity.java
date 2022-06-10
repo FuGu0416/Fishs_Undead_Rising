@@ -76,7 +76,6 @@ public class PiranhaLauncherEntity extends EnchantableFireBallEntity {
 
 	protected void onHitBlock(BlockRayTraceResult result) {
 		super.onHitBlock(result);
-
 		SwarmerEntity entityzombie = FUREntityRegistry.SWARMER.create(this.level);
 		entityzombie.moveTo(result.getLocation().x, result.getLocation().y + 1.5D, result.getLocation().z);
 		this.level.addFreshEntity(entityzombie);	    		  

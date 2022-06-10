@@ -52,14 +52,6 @@ public class EnchantableFireBallEntity extends AbstractFireballEntity {
 			this.remove();
 		}
 	}
-
-	/**
-	 * Returns true if other Entities should be prevented from moving through this Entity.
-	 */
-	@Override
-	public boolean canBeCollidedWith() {
-		return false;
-	}
 	   
 	public void setDamage(float damageIn) {
 		this.damage = damageIn;

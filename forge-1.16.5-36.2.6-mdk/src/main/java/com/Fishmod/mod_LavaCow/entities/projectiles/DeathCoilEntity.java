@@ -13,8 +13,8 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,6 +54,7 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
 	*/
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
+    	super.onHitEntity(result);
 	    if (!this.level.isClientSide() && result.getEntity() != null && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
 	    	float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 	    	this.setDamage((float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -64,18 +65,13 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
 	    }
     }
     
-    protected void onHitBlock(BlockRayTraceResult p_230299_1_) {
-    	this.remove();
-        super.onHitBlock(p_230299_1_);
+	@Override
+	protected void onHit(RayTraceResult p_70227_1_) {
+		super.onHit(p_70227_1_);
+		if (!this.level.isClientSide) {
+			this.remove();
+		}
 	}
-
-    /**
-    * Returns true if other Entities should be prevented from moving through this Entity.
-    */
-    @Override
-    public boolean canBeCollidedWith() {
-    	return false;
-    }
 
     @Override
     public boolean isPickable() {

@@ -38,8 +38,7 @@ public class WarSmallFireballEntity extends EnchantableFireBallEntity {
 	 * Called to update the entity's position/logic.
 	 */
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		if (this.tickCount < 3) {
 			this.level.addParticle(ParticleTypes.LAVA, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			this.level.addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);

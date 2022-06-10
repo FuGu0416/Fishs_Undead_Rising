@@ -15,6 +15,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -48,6 +49,7 @@ public class AcidJetEntity extends ProjectileItemEntity {
 	*/
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
+    	super.onHitEntity(result);
 	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
 	    	float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 	    	this.setDamage( (float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -58,13 +60,13 @@ public class AcidJetEntity extends ProjectileItemEntity {
 	    }
     }
 
-    /**
-    * Returns true if other Entities should be prevented from moving through this Entity.
-    */
-    @Override
-    public boolean canBeCollidedWith() {
-    	return false;
-    }
+	@Override
+	protected void onHit(RayTraceResult p_70227_1_) {
+		super.onHit(p_70227_1_);
+		if (!this.level.isClientSide) {
+			this.remove();
+		}
+	}
    
     public void setDamage(float damageIn) {
 	    this.damage = damageIn;

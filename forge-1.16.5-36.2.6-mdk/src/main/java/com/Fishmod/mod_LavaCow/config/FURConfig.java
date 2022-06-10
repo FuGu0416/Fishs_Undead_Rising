@@ -421,7 +421,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Warped Firefly");
-		pSpawnRate_WarpedFirefly = BUILDER.comment("Set the spawn rate of Warped Firefly [0-10000]").defineInRange("warped firefly spawn rate", 4, 0, 10000);
+		pSpawnRate_WarpedFirefly = BUILDER.comment("Set the spawn rate of Warped Firefly [0-10000]").defineInRange("warped firefly spawn rate", 2, 0, 10000);
 		WarpedFirefly_Health = BUILDER.comment("Maximum Warped Firefly health [1-1000]").defineInRange("warped firefly health", 10.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
