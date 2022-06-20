@@ -256,7 +256,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Mimicrab");
-		pSpawnRate_Mimic = BUILDER.comment("Set the spawn rate of Mimicrab [0-10000]").defineInRange("mimicrab spawn rate", 20, 0, 10000);
+		pSpawnRate_Mimic = BUILDER.comment("Set the spawn rate of Mimicrab [0-10000]").defineInRange("mimicrab spawn rate", 10, 0, 10000);
 		Mimic_Health = BUILDER.comment("Maximum Mimicrab health [1-1000]").defineInRange("mimicrab health", 10.0D, 1.0D, 1000.0D);
 		Mimic_Attack = BUILDER.comment("Mimicrab strength [1-1000]").defineInRange("mimicrab attack", 8.0D, 1.0D, 1000.0D);
 		pSpawnRate_DeathMimic = BUILDER.comment("Set the spawn rate of Mimicrab near player death [0-1000]").defineInRange("mimicrab spawn rate near player death", 250, 0, 1000);
