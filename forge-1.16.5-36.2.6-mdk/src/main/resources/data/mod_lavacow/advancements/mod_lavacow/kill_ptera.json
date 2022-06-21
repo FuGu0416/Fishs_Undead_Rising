@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "mod_lavacow:ptera_wing_jungle"
+            "item": "mod_lavacow:ptera_wing"
         },
         "title": {
             "translate": "advancements.mod_lavacow.kill_ptera.title"

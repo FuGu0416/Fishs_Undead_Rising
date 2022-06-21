@@ -8,6 +8,8 @@
     "minecraft:chicken",
     "minecraft:cooked_chicken",
     "minecraft:mutton",
-    "minecraft:cooked_mutton"
+    "minecraft:cooked_mutton",
+    "mod_lavacow:ptera_wing",
+    "mod_lavacow:ptera_wing_cooked"
   ]
 }

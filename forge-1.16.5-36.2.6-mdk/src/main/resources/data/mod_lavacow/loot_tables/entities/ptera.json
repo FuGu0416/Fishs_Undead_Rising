@@ -7,7 +7,7 @@
                 {
                     "type":"item",
                     "weight":1,
-                    "name":"mod_lavacow:ptera_wing_jungle",
+                    "name":"mod_lavacow:ptera_wing",
                     "functions":[
                         {
                             "function":"furnace_smelt",

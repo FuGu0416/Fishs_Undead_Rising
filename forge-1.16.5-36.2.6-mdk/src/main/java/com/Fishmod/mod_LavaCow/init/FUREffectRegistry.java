@@ -92,8 +92,7 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.STRONG_REGENERATION)), Ingredient.of(new ItemStack(FURItemRegistry.HYPHAE)), new ItemStack(FURItemRegistry.FISSIONPOTION)));
         BrewingRecipeRegistry.addRecipe(Ingredient.of(new ItemStack(FURItemRegistry.FISSIONPOTION)), Ingredient.of(new ItemStack(FURItemRegistry.MOOTENHEART)), new ItemStack(FURItemRegistry.POTION_OF_MOOTEN_LAVA));
         
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING_JUNGLE)), createPotion(Items.POTION, Potions.SLOW_FALLING)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING_DESERT)), createPotion(Items.POTION, Potions.SLOW_FALLING)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING)), createPotion(Items.POTION, Potions.SLOW_FALLING)));
         
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDICHEART)), createPotion(Items.POTION, CORROSIVE_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDICHEART)), createPotion(Items.LINGERING_POTION, CORROSIVE_POTION)));

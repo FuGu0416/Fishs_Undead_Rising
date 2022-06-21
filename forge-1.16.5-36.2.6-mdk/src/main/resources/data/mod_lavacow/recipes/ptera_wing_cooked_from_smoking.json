@@ -2,10 +2,7 @@
   "type": "minecraft:smoking",
   "ingredient": [
 	{
-		"item": "mod_lavacow:ptera_wing_jungle"
-	},
-	{
-		"item": "mod_lavacow:ptera_wing_desert"
+		"item": "mod_lavacow:ptera_wing"
 	}
   ],
   "result": "mod_lavacow:ptera_wing_cooked",

@@ -28,7 +28,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.Difficulty;
@@ -131,8 +130,12 @@ public class PteraEntity extends FlyingMobEntity {
 	   this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ptera_Health.get());
        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
        this.setHealth(this.getMaxHealth());
-   	
-	   if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.DRY))
+
+	   if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.SAVANNA))
+		   this.setSkin(2);
+	   else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.SWAMP))
+		   this.setSkin(3);
+	   else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.DRY))
 		   this.setSkin(1);
 	   
 	   if(this.level.getDifficulty() == Difficulty.HARD) {
@@ -215,16 +218,4 @@ public class PteraEntity extends FlyingMobEntity {
 	protected float getSoundVolume() {
 		return 0.7F;
 	}
-	
-    @Nullable
-    @Override
-    protected ResourceLocation getDefaultLootTable() {
-    	switch(this.getSkin()) {
-    		case 1:
-    			return new ResourceLocation("mod_lavacow", "entities/ptera1");
-    		case 0:
-    		default:
-    			return super.getDefaultLootTable();
-    	}
-    }
 }

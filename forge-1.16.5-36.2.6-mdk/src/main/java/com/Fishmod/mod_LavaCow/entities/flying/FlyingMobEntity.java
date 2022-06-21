@@ -240,8 +240,7 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
     static class AIRandomFly extends Goal {
         private final FlyingMobEntity parentEntity;
 
-        public AIRandomFly(FlyingMobEntity entityFlyingMob)
-        {
+        public AIRandomFly(FlyingMobEntity entityFlyingMob) {
             this.parentEntity = entityFlyingMob;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
@@ -249,19 +248,14 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse()
-        {
+        public boolean canUse() {
             MovementController entitymovehelper = this.parentEntity.getMoveControl();
             
-            if (!entitymovehelper.hasWanted())
-            {
+            if (!entitymovehelper.hasWanted()) {
                 return true;
-            }
-            else if (this.parentEntity.getTarget() != null) {
+            } else if (this.parentEntity.getTarget() != null) {
             	return false;
-            }
-            else
-            {
+            } else {
                 double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
                 double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
                 double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
@@ -273,16 +267,14 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean canContinueToUse()
-        {
+        public boolean canContinueToUse() {
             return false;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start()
-        {
+        public void start() {
             Random random = this.parentEntity.getRandom();
 
             double d0 = this.parentEntity.getX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
@@ -293,26 +285,25 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
             	d1 = Math.min(d1, SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D);
             else if(FURConfig.FlyingHeight_limit.get() != 0 && (double)FURConfig.FlyingHeight_limit.get() < d1)
             	d1 = Math.min(d1, (double)(SpawnUtil.getHeight(this.parentEntity).getY() + FURConfig.FlyingHeight_limit.get()));
+            else
+            	d1 = Math.max(d1, (double)(SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D));
             
             this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
         }
     }
     
-    static class FlyingMoveHelper extends MovementController
-    {
+    static class FlyingMoveHelper extends MovementController {
         private final FlyingMobEntity parentEntity;
         private int courseChangeCooldown;
 		double entityMoveSpeed;
 		
-        public FlyingMoveHelper(FlyingMobEntity flyer)
-        {
+        public FlyingMoveHelper(FlyingMobEntity flyer) {
             super(flyer);
             this.parentEntity = flyer;
             this.entityMoveSpeed = flyer.getAttributeValue(Attributes.FLYING_SPEED);
         }
 
-        public void tick()
-        {
+        public void tick() {
             if (this.operation == MovementController.Action.MOVE_TO) {
                 if (this.courseChangeCooldown-- <= 0) {
                     this.courseChangeCooldown += this.parentEntity.getRandom().nextInt(5) + 2;

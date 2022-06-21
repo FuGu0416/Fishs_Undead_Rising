@@ -45,7 +45,7 @@ public class SpawnUtil {
 	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
-    	return entityIn.level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, entityIn.blockPosition());
+    	return entityIn.level.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, entityIn.blockPosition());
     }
     
     /*public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {

@@ -173,12 +173,10 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_Ptera.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE))) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PTERA, FURConfig.pSpawnRate_Ptera.get(), 4, 8));
-		}
-		
-		if(FURConfig.pSpawnRate_Ptera.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
+				BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.SAVANNA) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.SWAMP) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.DRY)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PTERA, FURConfig.pSpawnRate_Ptera.get(), 2, 4));
 		}
 		
