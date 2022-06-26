@@ -41,6 +41,8 @@ public class CactoidSproutBlock extends Block {
                 CactoidEntity turtleentity = FUREntityRegistry.CACTOID.create(worldIn);
                 turtleentity.setAge(-24000);
                 turtleentity.moveTo((double)pos.getX() + 0.3D, (double)pos.getY(), (double)pos.getZ() + 0.3D, 0.0F, 0.0F);
+                if(worldIn.dimensionType().ultraWarm())
+                	turtleentity.setSkin(3);
                 worldIn.addFreshEntity(turtleentity);
 			}
 		}

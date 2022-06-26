@@ -44,11 +44,11 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FURWorldRegistry {
 	public static List<Feature<?>> featureList = new ArrayList<>();	
-    public static final DeferredRegister<Structure<?>> STRUCTURES =
-            DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, mod_LavaCow.MODID);	
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, mod_LavaCow.MODID);	
+    public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, mod_LavaCow.MODID);	
     
-	public static Feature<BigMushroomFeatureConfig> HUGE_GLOWSHROOM;
-	public static Feature<NoFeatureConfig> SMALL_CEMETERY;
+	public static RegistryObject<Feature<BigMushroomFeatureConfig>> HUGE_GLOWSHROOM = FEATURES.register("huge_glowshroom", () -> new WorldGenLargeGlowShroom(BigMushroomFeatureConfig.CODEC));
+	public static RegistryObject<Feature<NoFeatureConfig>> SMALL_CEMETERY = FEATURES.register("small_cemetery", () -> new WorldGenCemeterySmall(NoFeatureConfig.CODEC));	
 	
 	public static final RegistryObject<Structure<NoFeatureConfig>> DESERT_TOMB = STRUCTURES.register("desert_tomb", DesertTombStructure::new);
 	
@@ -60,16 +60,13 @@ public class FURWorldRegistry {
 	public static ConfiguredFeature<?, ?> SMALL_CEMETERY_CF;
 	public static StructureFeature<?, ?> DESERT_TOMB_CF;
 	
-	public static void register() {
-		HUGE_GLOWSHROOM = registerFeature(new WorldGenLargeGlowShroom(BigMushroomFeatureConfig.CODEC), "mod_lavacow:huge_glowshroom");
-		SMALL_CEMETERY = registerFeature(new WorldGenCemeterySmall(NoFeatureConfig.CODEC), "mod_lavacow:small_cemetery");
-	    
+	public static void register() {	  		
 		GLOWSHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:glowshroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(8).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(FURConfig.pSpawnRate_Glowshroom.get()));		
 		BLOODTOOTH_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:bloodtooth_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.BLOODTOOTH_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).range(128).chance(8).count(3));		
 		CORDY_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:cordy_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.CORDY_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));		
 		VEIL_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:veil_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.VEIL_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));				
-		HUGE_GLOWSHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:huge_glowshroom", HUGE_GLOWSHROOM.configured(new BigMushroomFeatureConfig(new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.defaultBlockState()), new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.defaultBlockState()), 3)));
-		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.configured(IFeatureConfig.NONE).chance(FURConfig.SpawnRate_Cemetery.get()));		
+		HUGE_GLOWSHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:huge_glowshroom", HUGE_GLOWSHROOM.get().configured(new BigMushroomFeatureConfig(new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.defaultBlockState()), new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.defaultBlockState()), 3)));
+		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.get().configured(IFeatureConfig.NONE).chance(FURConfig.SpawnRate_Cemetery.get()));		
 	}
 	
 	public static void setupStructures() {
@@ -173,10 +170,10 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_Ptera.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE) ||
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.JUNGLE) ||
 				BiomeDictionary.getTypes(biomeKey).contains(Type.SAVANNA) ||
 				BiomeDictionary.getTypes(biomeKey).contains(Type.SWAMP) ||
-				BiomeDictionary.getTypes(biomeKey).contains(Type.DRY)) {
+				BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PTERA, FURConfig.pSpawnRate_Ptera.get(), 2, 4));
 		}
 		
@@ -259,6 +256,10 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get(), 4, 8));
 		}
 		
+		if(FURConfig.pSpawnRate_BoneWorm.get() > 0 && biomeKey.equals(Biomes.BASALT_DELTAS)) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get() * 3, 4, 8));
+		}
+		
 		if(FURConfig.pSpawnRate_WarpedFirefly.get() > 0 && biomeKey.equals(Biomes.WARPED_FOREST)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_WarpedFirefly.get(), 4, 8));
 		}
@@ -292,12 +293,8 @@ public class FURWorldRegistry {
         Structure.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);       
     }
     
-    private static <C extends IFeatureConfig, F extends Feature<C>> F registerFeature(F feature, String registryName) {
-        featureList.add(feature.setRegistryName(registryName));
-        return feature;
-    }
-    
     public static void register(IEventBus eventBus) {
         STRUCTURES.register(eventBus);
+        FEATURES.register(eventBus);
     }
 }

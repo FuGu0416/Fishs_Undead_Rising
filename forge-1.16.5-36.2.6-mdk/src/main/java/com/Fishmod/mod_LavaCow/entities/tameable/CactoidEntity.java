@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
@@ -49,6 +50,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -65,7 +67,7 @@ public class CactoidEntity extends FURTameableEntity {
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.random.nextInt(3)));
 		this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
     }
 	
@@ -98,7 +100,7 @@ public class CactoidEntity extends FURTameableEntity {
     }
     
     public static boolean checkCactoidSpawnRules(EntityType<? extends CactoidEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.canSeeSky(p_223316_3_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().ultraWarm());//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
     @Override
@@ -136,9 +138,12 @@ public class CactoidEntity extends FURTameableEntity {
      */
     @Override
     public boolean isFood(ItemStack stack) {
-    	if (!this.isTame())
-    		return stack.getItem().equals(Items.WATER_BUCKET);
-    	else
+    	if (!this.isTame()) {
+    		if (this.getSkin() == 3)
+    			return stack.getItem().equals(Items.LAVA_BUCKET);
+    		else
+    			return stack.getItem().equals(Items.WATER_BUCKET);
+    	} else
     		return stack.getItem().equals(Items.BONE_MEAL);
     }
     
@@ -149,7 +154,7 @@ public class CactoidEntity extends FURTameableEntity {
            BlockPos blockpos = this.getVehicle() instanceof BoatEntity ? (new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ())).above() : new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ());
            return (f > 0.5F && this.level.canSeeSky(blockpos));
         }
-        return false;
+        return this.level.dimensionType().ultraWarm();
     }
     
     /**
@@ -284,6 +289,11 @@ public class CactoidEntity extends FURTameableEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactoid_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setAge(-24000);
+    	
+        if(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition())).equals(Biomes.BASALT_DELTAS)) {
+     	   this.setSkin(3);
+        }
+        
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }	
     
@@ -321,6 +331,11 @@ public class CactoidEntity extends FURTameableEntity {
 		}
 	}
 	
+    @Override
+    public boolean fireImmune() {
+        return (this.getSkin() == 3) || super.fireImmune();
+    }
+	
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -333,6 +348,11 @@ public class CactoidEntity extends FURTameableEntity {
             super.handleEntityEvent(id);
         }
     }
+	
+	@Override
+	public float getScale() {
+		return 1.0F;
+	}
 	
 	@Override
 	public boolean canFallInLove() {

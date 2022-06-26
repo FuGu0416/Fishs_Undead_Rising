@@ -58,7 +58,7 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
 	
     public static boolean checkFlyerSpawnRules(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_)
-        		&& (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());//SpawnUtil.isAllowedDimension(this.dimension);
+        		&& (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().ultraWarm());//SpawnUtil.isAllowedDimension(this.dimension);
     }
 	
     /**

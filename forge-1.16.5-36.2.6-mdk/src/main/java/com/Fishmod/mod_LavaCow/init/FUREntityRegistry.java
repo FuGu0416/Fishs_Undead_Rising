@@ -96,7 +96,7 @@ public class FUREntityRegistry {
 	public static final EntityType<SkeletonKingEntity> SKELETONKING = registerEntity(EntityType.Builder.of(SkeletonKingEntity::new, EntityClassification.MONSTER).sized(1.25F, 3.1F).fireImmune(), "skeletonking");
 	public static final EntityType<MummyEntity> MUMMY = registerEntity(EntityType.Builder.of(MummyEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mummy");
 	public static final EntityType<CactyrantEntity> CACTYRANT = registerEntity(EntityType.Builder.of(CactyrantEntity::new, EntityClassification.MONSTER).sized(1.3F, 2.8F), "cactyrant");
-	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.65F), "cactoid");
+	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 1.1F), "cactoid");
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
