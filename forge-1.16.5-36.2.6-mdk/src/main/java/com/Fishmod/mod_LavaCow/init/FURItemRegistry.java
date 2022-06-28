@@ -171,6 +171,8 @@ public class FURItemRegistry {
 	public static final Item THORN_SHOOTER = new FURRangedItem("mod_lavacow:thorn_shooter", CACTUS_THORN, FUREntityRegistry.CACTUS_THORN, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(768));
 	public static final Item SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:salamander_bucket");
 	public static final Item CACTOID_POT = new CactoidPotItem(FUREntityRegistry.CACTOID, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
+	public static final Item BOABING = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:baobing");
+	public static final Item KUNG_PAO_CHICKEN = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new EffectInstance(FUREffectRegistry.IMMOLATION, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:kung_pao_chicken");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

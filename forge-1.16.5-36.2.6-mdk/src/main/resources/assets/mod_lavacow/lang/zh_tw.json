@@ -101,6 +101,8 @@
 	"item.mod_lavacow.thorn_shooter": "仙人掌槍",
 	"item.mod_lavacow.salamander_bucket": "炎熔螈桶",
 	"item.mod_lavacow.cactoid_pot": "幼人掌盆栽",
+	"item.mod_lavacow.baobing": "刨冰",
+	"item.mod_lavacow.kung_pao_chicken": "宮保雞丁",
 		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
@@ -401,6 +403,8 @@
 	"tootip.mod_lavacow:chitinarmor.l2": "套裝(4)：跳躍時能賦予速度(0:03)",
 	"tootip.mod_lavacow:cactus_fruit": "可用於釀造荊棘藥水，或是種植於沙中",
 	"tootip.mod_lavacow:thorn_shooter": "快速將仙人掌刺射出",
+	"tootip.mod_lavacow:baobing": "食用後可熄滅身上的火焰，並獲得荊棘II(1:00)",
+	"tootip.mod_lavacow:kung_pao_chicken": "食用後獲得燒灼II(1:00)，或用於馴服炎熔螈",
 	
 	"command.mod_lavacow.sitting": "%s現在於原地待命",
 	"command.mod_lavacow.following": "%s正在跟隨",

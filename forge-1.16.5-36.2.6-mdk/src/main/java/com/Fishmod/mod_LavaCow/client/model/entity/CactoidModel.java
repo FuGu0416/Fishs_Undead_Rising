@@ -220,6 +220,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		switch(entity.getSkin()) {
 	    	case 1:
+	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
 		    	this.fruit_0.visible = false;
@@ -301,6 +302,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
 				}
 	    		break;
 	    	case 2:
+	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
 		    	this.fruit_0.visible = false;
@@ -382,6 +384,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
 				}
 	    		break;
 	    	case 3:
+	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
 		    	this.fruit_0.visible = false;
@@ -463,6 +466,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
 				}
 	    		break;
 			default:
+				this.crest_0.visible = true;
 		    	this.flower0_0.visible = true;
 		    	this.flower1_0.visible = true;
 		    	this.fruit_0.visible = true;

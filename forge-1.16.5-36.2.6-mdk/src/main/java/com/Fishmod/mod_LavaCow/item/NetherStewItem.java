@@ -22,7 +22,11 @@ public class NetherStewItem extends FURItem {
 	public NetherStewItem(Properties PropertiesIn, int TooltipIn) {
     	super(PropertiesIn, 32, UseAction.DRINK, TooltipIn);
     }
-    
+
+	public NetherStewItem(Properties PropertiesIn, UseAction UseActionIn, int TooltipIn) {
+    	super(PropertiesIn, 32, UseActionIn, TooltipIn);
+    }
+	
 	@Override
 	public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
     	if (this.equals(FURItemRegistry.NETHERSTEW) && target instanceof PigEntity && !target.isBaby()) {

@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -45,6 +46,19 @@ public class FURItem extends Item {
 	@Override
     public UseAction getUseAnimation(ItemStack p_77661_1_) {
         return this.UseAction;
+    }
+	
+    /**
+     * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
+     * the Item before the action is complete.
+     */
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+    	
+		if((stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || stack.getItem().equals(FURItemRegistry.BOABING)) && entityLiving.isOnFire())
+			entityLiving.clearFire();
+		
+    	return super.finishUsingItem(stack, worldIn, entityLiving);
     }
  
 	@Override
