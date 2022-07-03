@@ -137,6 +137,7 @@
 	"item.mod_lavacow.spawn_egg_forsaken": "Forsaken Spawn Egg",
 	"item.mod_lavacow.spawn_egg_cactyrant": "Cactyrant Spawn Egg",
 	"item.mod_lavacow.spawn_egg_cactoid": "Cactoid Spawn Egg",
+	"item.mod_lavacow.spawn_egg_warpedfirefly": "Warped Firefly Spawn Egg",
 
 	"item.mod_lavacow.banner_pattern_skeletonking": "Banner Pattern",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "Skeleton King",
@@ -235,7 +236,8 @@
 	"entity.mod_lavacow.forsaken": "Forsaken",
 	"entity.mod_lavacow.cactyrant": "Cactyrant",
 	"entity.mod_lavacow.cactoid": "Cactoid",
-
+	"entity.mod_lavacow.warpedfirefly": "Warped Firefly",
+	
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
 	"entity_parasite_hurt": "Parasite hurts",

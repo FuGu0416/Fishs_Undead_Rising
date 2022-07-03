@@ -557,8 +557,8 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
 			this.body_base.y = 22.0F;
 			this.root_r.visible = true;
 			this.root_l.visible = true;
-	        this.root_r.xRot = MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
-	        this.root_l.xRot = MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;			
+	        this.root_r.z = MathHelper.cos(limbSwing) * 2.5F * limbSwingAmount;
+	        this.root_l.z = MathHelper.cos(limbSwing + (float)Math.PI) * 2.5F * limbSwingAmount;			
 		}
 	}
 

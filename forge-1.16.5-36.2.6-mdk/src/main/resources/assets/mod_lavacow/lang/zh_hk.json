@@ -137,7 +137,8 @@
 	"item.mod_lavacow.spawn_egg_forsaken": "被遺忘者生怪蛋",
 	"item.mod_lavacow.spawn_egg_cactyrant": "暴君掌生怪蛋",
 	"item.mod_lavacow.spawn_egg_cactoid": "幼人掌生怪蛋",
-
+	"item.mod_lavacow.spawn_egg_warpedfirefly": "扭曲螢火蟲生怪蛋",
+	
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
 	"item.mod_lavacow.banner_pattern_wendigo": "旗幟圖案",
@@ -235,7 +236,8 @@
 	"entity.mod_lavacow.forsaken": "被遺忘者",
 	"entity.mod_lavacow.cactyrant": "暴君掌",
 	"entity.mod_lavacow.cactoid": "幼人掌",
-
+	"entity.mod_lavacow.warpedfirefly": "扭曲螢火蟲",
+	
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",
 	"entity_parasite_hurt": "屍蛆受傷",
