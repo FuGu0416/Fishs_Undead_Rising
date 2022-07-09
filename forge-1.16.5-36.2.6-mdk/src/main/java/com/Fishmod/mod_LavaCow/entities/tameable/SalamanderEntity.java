@@ -158,7 +158,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);   	
         boolean flag = this.isFood(itemstack);
-              
+        
         if (this.isTame() && this.isNymph() && itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
@@ -175,8 +175,8 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 
             this.remove();            
             return ActionResultType.sidedSuccess(this.level.isClientSide);
-        } else if (!flag && this.isOwnedBy(player) && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
-        	if(player.isCrouching()) {
+        } else if (!flag && this.isOwnedBy(player) && this.isSaddled() && !this.isVehicle()) {
+        	if (player.isSecondaryUseActive()) {
     			this.setSaddled(false);
     			if(!this.level.isClientSide)this.spawnAtLocation(Items.SADDLE, 1);
     		} else if (!player.isPassenger()) {
@@ -184,14 +184,15 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     		}
 
            return ActionResultType.sidedSuccess(this.level.isClientSide);
-        } else {
-        	ActionResultType actionresulttype = super.mobInteract(player, hand);
-        	if (!actionresulttype.consumesAction()) {
-        		return itemstack.getItem() == Items.SADDLE ? itemstack.interactLivingEntity(player, this, hand) : ActionResultType.PASS;
-        	} else {
-        		return actionresulttype;
-        	}
         }
+        
+        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
+        
+        if (actionResultType.consumesAction()) {
+        	return actionResultType;
+        }
+        
+        return super.mobInteract(player, hand);
     }
     
     @Override

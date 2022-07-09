@@ -99,9 +99,11 @@ public class FissionPotionItem extends FURItem {
     			double d2 = new Random().nextGaussian() * 0.02D;
     			playerIn.level.addParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), dy + 1.0D + (double)(new Random().nextFloat() * playerIn.getBbHeight()), dz + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), d0, d1, d2);
     		}
+    		
+    		return flag ? ActionResultType.sidedSuccess(playerIn.level.isClientSide) : ActionResultType.PASS;
         }  
     	
-        return super.interactLivingEntity(stack, playerIn, target, hand);
+        return ActionResultType.PASS;
     }
     
     /**

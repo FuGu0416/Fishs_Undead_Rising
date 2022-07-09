@@ -148,7 +148,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         	case 2:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.BOW));
         		break;
-        	case 3:
+        	/*case 3:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
         		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.27D);
         		this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
@@ -157,13 +157,11 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
                 skeletonhorseentity.finalizeSpawn(p_213386_1_, difficulty, SpawnReason.JOCKEY, (ILivingEntityData)null, (CompoundNBT)null);
                 skeletonhorseentity.setPos(this.getX(), this.getY(), this.getZ());
                 skeletonhorseentity.invulnerableTime = 60;
-                skeletonhorseentity.setPersistenceRequired();
-                skeletonhorseentity.setTamed(true);
                 skeletonhorseentity.setAge(0);
                 skeletonhorseentity.level.addFreshEntity(skeletonhorseentity);
                 
                 this.startRiding(skeletonhorseentity);           
-        		break;
+        		break;*/
         	default:
         		break;
         	

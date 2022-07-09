@@ -72,7 +72,7 @@ public class SkeletonKingCrownItem extends ArmorItem {
 	    		Field goals;
 	    		Goal remove = null;
 	    		
-	    		if(Skeleton.getTarget().equals(player))
+	    		if(Skeleton.getTarget() != null && Skeleton.getTarget().equals(player))
 	    			Skeleton.setTarget(null);
 	    		
 				try {

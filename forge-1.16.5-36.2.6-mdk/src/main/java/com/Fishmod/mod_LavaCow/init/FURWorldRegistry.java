@@ -211,7 +211,8 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.PINGU, FURConfig.pSpawnRate_Pingu.get(), 4, 8));
 		}
 		
-		if(FURConfig.pSpawnRate_Undertaker.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD)) {
+		if(FURConfig.pSpawnRate_Undertaker.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.UNDERTAKER, FURConfig.pSpawnRate_Undertaker.get(), 1, 1));
 		}
 		

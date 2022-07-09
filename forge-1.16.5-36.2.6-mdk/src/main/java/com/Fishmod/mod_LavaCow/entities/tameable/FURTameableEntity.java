@@ -194,8 +194,7 @@ public class FURTameableEntity extends TameableEntity {
     {
         super.tick();
 
-        if (!this.level.isClientSide && !this.isTame() && this.level.getDifficulty() == Difficulty.PEACEFUL)
-        {
+        if (!this.level.isClientSide && this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.remove();
         }
         

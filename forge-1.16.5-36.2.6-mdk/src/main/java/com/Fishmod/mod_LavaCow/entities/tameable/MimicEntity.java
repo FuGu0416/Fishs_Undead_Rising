@@ -142,9 +142,9 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
-        return this.inventory.isEmpty() && (!this.isPersistenceRequired() || super.removeWhenFarAway(p_213397_1_));
+        return this.inventory.isEmpty() && super.removeWhenFarAway(p_213397_1_);
     }
-	
+
     public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) { 	
     	return SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null && FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
@@ -308,10 +308,9 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 	
     @Override
     public void travel(Vector3d p_213352_1_) {
-		if((!this.isAggressive() && !this.isTame()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
+		if(this.SitTimer > 0 && this.SitTimer < 20) {
             this.setDeltaMovement(Vector3d.ZERO);
-		}
-		else
+		} else
 			super.travel(p_213352_1_);
 	}
     
