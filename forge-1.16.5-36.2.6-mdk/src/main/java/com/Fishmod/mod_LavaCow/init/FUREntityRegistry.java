@@ -71,7 +71,7 @@ public class FUREntityRegistry {
 	public static final EntityType<FogletEntity> IMP = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.5F).fireImmune(), "imp");
 	public static final EntityType<FrigidEntity> FRIGID = registerEntity(EntityType.Builder.of(FrigidEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "frigid");
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
-	public static final EntityType<SalamanderEntity> SALAMANDER = registerEntity(EntityType.Builder.of(SalamanderEntity::new, EntityClassification.MONSTER).sized(2.0F, 1.6F).fireImmune(), "salamander");
+	public static final EntityType<SalamanderEntity> SALAMANDER = registerEntity(EntityType.Builder.of(SalamanderEntity::new, EntityClassification.MONSTER).sized(1.95F, 1.6F).fireImmune(), "salamander");
 	public static final EntityType<WendigoEntity> WENDIGO = registerEntity(EntityType.Builder.of(WendigoEntity::new, EntityClassification.MONSTER).sized(1.6F, 2.6F), "wendigo");
 	public static final EntityType<MimicEntity> MIMIC = registerEntity(EntityType.Builder.of(MimicEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.0F), "mimic");
 	public static final EntityType<SludgeLordEntity> SLUDGELORD = registerEntity(EntityType.Builder.of(SludgeLordEntity::new, EntityClassification.MONSTER).sized(2.2F, 3.7F), "sludgelord");

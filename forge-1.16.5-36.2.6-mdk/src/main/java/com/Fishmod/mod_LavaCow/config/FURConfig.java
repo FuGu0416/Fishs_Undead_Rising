@@ -243,7 +243,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Salamander");
-		pSpawnRate_Salamander = BUILDER.comment("Set the spawn rate of Salamander [0-10000]").defineInRange("salamander spawn rate", 30, 0, 10000);
+		pSpawnRate_Salamander = BUILDER.comment("Set the spawn rate of Salamander [0-10000]").defineInRange("salamander spawn rate", 10, 0, 10000);
 		Salamander_Health = BUILDER.comment("Maximum Salamander health [1-1000]").defineInRange("salamander health", 60.0D, 1.0D, 1000.0D);
 		Salamander_Attack = BUILDER.comment("Salamander strength [1-1000]").defineInRange("salamander attack", 4.0D, 1.0D, 1000.0D);
 		BUILDER.pop();

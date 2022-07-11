@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
