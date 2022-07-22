@@ -257,7 +257,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get(), 4, 8));
 		}
 		
-		if(FURConfig.pSpawnRate_BoneWorm.get() > 0 && biomeKey.equals(Biomes.BASALT_DELTAS)) {
+		if(FURConfig.pSpawnRate_Cactoid.get() > 0 && biomeKey.equals(Biomes.BASALT_DELTAS)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.CACTOID, FURConfig.pSpawnRate_Cactoid.get() * 3, 4, 8));
 		}
 		
