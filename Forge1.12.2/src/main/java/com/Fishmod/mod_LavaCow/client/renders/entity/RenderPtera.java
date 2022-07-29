@@ -12,6 +12,8 @@ public class RenderPtera extends RenderLiving<EntityPtera>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera1.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera2.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera3.png")
 	};
 	
 	static{

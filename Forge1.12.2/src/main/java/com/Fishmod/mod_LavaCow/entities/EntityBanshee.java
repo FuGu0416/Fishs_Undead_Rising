@@ -402,7 +402,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         				
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
         				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage().setDamageBypassesArmor(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F);
+        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F);
         			}
         		}
         	} 

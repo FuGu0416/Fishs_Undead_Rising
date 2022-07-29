@@ -399,8 +399,7 @@ public class ModEntities {
 		for(Type C : Type.getAll()) {
 			if(!C.equals(Type.NETHER) && !C.equals(Type.END)) {
 				tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
-				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
-				tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, C);			
+				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);						
 			}
 		}
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
@@ -408,6 +407,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityRaven.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Raven, 4, 8, BiomeDictionary.Type.CONIFEROUS);
 		tweakEntitySpawn(EntityRaven.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Raven, 4, 8, BiomeDictionary.Type.BEACH);
 		tweakEntitySpawn(EntityPtera.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Ptera, 4, 8, BiomeDictionary.Type.JUNGLE);
+		tweakEntitySpawn(EntityPtera.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Ptera, 2, 4, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityPtera.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Ptera, 2, 4, BiomeDictionary.Type.SWAMP);
 		tweakEntitySpawn(EntityPtera.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Ptera, 2, 4, BiomeDictionary.Type.DRY);
 		tweakEntitySpawn(EntityScarecrow.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 1, 1, BiomeDictionary.Type.PLAINS);
 		tweakEntitySpawn(EntityBoneWorm.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_BoneWorm, 1, 2, BiomeDictionary.Type.SANDY);
@@ -416,6 +417,9 @@ public class ModEntities {
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.OCEAN);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, Type.RARE);	
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, Type.HILLS);	
+		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, Type.MOUNTAIN);	
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
 		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 4, 8, BiomeDictionary.Type.SANDY);

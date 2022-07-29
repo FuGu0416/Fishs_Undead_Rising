@@ -41,7 +41,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -151,9 +150,6 @@ public class EntityParasite extends EntitySpider{
 		        	EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
 		    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
 		    		this.world.spawnEntity(pupa);
-		    		
-	        		for(EntityPlayer E : list)
-	            		E.sendMessage(new TextComponentTranslation("entity.mod_lavacow.parasite.name").appendSibling(new TextComponentTranslation("message.mod_lavacow.metamorphosis"))); 
         		}
         		this.setDead();
 

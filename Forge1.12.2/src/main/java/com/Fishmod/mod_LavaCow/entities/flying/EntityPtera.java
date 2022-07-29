@@ -140,7 +140,11 @@ public class EntityPtera extends EntityFlyingMob {
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
-	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.DRY))
+	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SAVANNA))
+		   this.setSkin(2);
+	   else if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SWAMP))
+		   this.setSkin(3);
+	   else if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.DRY))
 		   this.setSkin(1);
 	   
 		if(this.world.getDifficulty() == EnumDifficulty.HARD) {
@@ -224,13 +228,12 @@ public class EntityPtera extends EntityFlyingMob {
 
 	@Nullable
 	protected ResourceLocation getLootTable() {
-    	switch(this.getSkin()) { 
-	        case 0: 
-	        	return LootTableHandler.PTERA;
+    	switch(this.getSkin()) { 	      	        	
 	        case 1: 
 	            return LootTableHandler.PTERA1;
+	        case 0: 
 	        default: 
-	            return null; 
+	        	return LootTableHandler.PTERA;
 	    } 
 	}
 
