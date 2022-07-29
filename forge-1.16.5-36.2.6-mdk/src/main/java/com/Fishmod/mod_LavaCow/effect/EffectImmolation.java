@@ -20,7 +20,7 @@ public class EffectImmolation extends Effect {
     public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {       
     	List<Entity> list = entityLivingBaseIn.level.getEntitiesOfClass(LivingEntity.class, entityLivingBaseIn.getBoundingBox().inflate(2.0D));
     	for (Entity entity1 : list) {
-    		if (entity1 instanceof LivingEntity && !entity1.isAlliedTo(entityLivingBaseIn)) {
+    		if (entity1 instanceof LivingEntity && !entity1.isAlliedTo(entityLivingBaseIn) && entity1 != entityLivingBaseIn) {
     			entity1.setSecondsOnFire(2 + amplifier);
     		}
     	}        
