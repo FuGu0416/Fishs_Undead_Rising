@@ -14,7 +14,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Lavacow_Health;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Foglet;
-	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Imp;
 	public static final ForgeConfigSpec.ConfigValue<Double> Foglet_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Foglet_Attack;
 	
@@ -146,6 +145,17 @@ public final class FURConfig {
 
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_WarpedFirefly;
 	public static final ForgeConfigSpec.ConfigValue<Double> WarpedFirefly_Health;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Imp;
+	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Attack;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_SeaHag;
+	public static final ForgeConfigSpec.ConfigValue<Double> SeaHag_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> SeaHag_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Num;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Max;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Cooldown;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -202,7 +212,6 @@ public final class FURConfig {
 		
 		BUILDER.push("Foglet");
 		pSpawnRate_Foglet = BUILDER.comment("Set the spawn rate of Foglet [0-10000]").defineInRange("foglet spawn rate", 20, 0, 10000);
-		pSpawnRate_Imp = BUILDER.comment("Set the spawn rate of Imp [0-10000]").defineInRange("imp spawn rate", 3, 0, 10000);
 		Foglet_Health = BUILDER.comment("Maximum Foglet health [1-1000]").defineInRange("foglet health", 16.0D, 1.0D, 1000.0D);
 		Foglet_Attack = BUILDER.comment("Foglet strength [1-1000]").defineInRange("foglet attack", 2.0D, 1.0D, 1000.0D);	
 		BUILDER.pop();
@@ -423,6 +432,21 @@ public final class FURConfig {
 		BUILDER.push("Warped Firefly");
 		pSpawnRate_WarpedFirefly = BUILDER.comment("Set the spawn rate of Warped Firefly [0-10000]").defineInRange("warped firefly spawn rate", 2, 0, 10000);
 		WarpedFirefly_Health = BUILDER.comment("Maximum Warped Firefly health [1-1000]").defineInRange("warped firefly health", 10.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+		
+		BUILDER.push("Imp");
+		pSpawnRate_Imp = BUILDER.comment("Set the spawn rate of Imp [0-10000]").defineInRange("imp spawn rate", 3, 0, 10000);
+		Imp_Health = BUILDER.comment("Maximum Imp health [1-1000]").defineInRange("imp health", 16.0D, 1.0D, 1000.0D);
+		Imp_Attack = BUILDER.comment("Imp strength [1-1000]").defineInRange("imp attack", 2.0D, 1.0D, 1000.0D);	
+		BUILDER.pop();
+
+		BUILDER.push("Sea Hag");
+		pSpawnRate_SeaHag = BUILDER.comment("Set the spawn rate of Sea Hag [0-10000]").defineInRange("sea hag spawn rate", 20, 0, 10000);
+		SeaHag_Health = BUILDER.comment("Maximum Sea Hag health [1-1000]").defineInRange("sea hag health", 30.0D, 1.0D, 1000.0D);
+		SeaHag_Attack = BUILDER.comment("Sea Hag strength [1-1000]").defineInRange("sea hag attack", 5.0D, 1.0D, 1000.0D);	
+		SeaHag_Ability_Num = BUILDER.comment("Set the number of Weta summoned per cast [0-100]").defineInRange("sea hag summon number", 4, 0, 100);
+		SeaHag_Ability_Max = BUILDER.comment("Set the max number of Weta summoned [0-100]").defineInRange("sea hag summon max", 8, 0, 100);
+		SeaHag_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Weta [0-100]").defineInRange("sea hag summon cooldown", 12, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

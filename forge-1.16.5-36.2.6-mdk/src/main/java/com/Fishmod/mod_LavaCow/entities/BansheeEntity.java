@@ -125,6 +125,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         return this.spellTicks;
     }
     
+    @Nullable
     protected IParticleData ParticleType() {
     	return new RedstoneParticleData(0.20F, 0.21F, 0.23F, 0.6F);
     }
@@ -136,7 +137,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
     public void aiStep() {
         super.aiStep();
         
-        if(this.tickCount % 2 == 0) {
+        if(this.tickCount % 2 == 0 && this.ParticleType() != null) {
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;
@@ -388,7 +389,7 @@ public class BansheeEntity extends MonsterEntity implements IAggressive{
         public void start() {
             LivingEntity LivingEntity = BansheeEntity.this.getTarget();
             Vector3d vec3d = LivingEntity.getEyePosition(1.0F);
-            BansheeEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.5D);
+            BansheeEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
         }
 
         /**

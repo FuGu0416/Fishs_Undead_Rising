@@ -97,12 +97,20 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, TurtleEntity.class, 10, true, false, TurtleEntity.BABY_ON_LAND_SELECTOR));
     }
     
-    public static AttributeModifierMap.MutableAttribute createAttributes() {    	
+    public static AttributeModifierMap.MutableAttribute createAttributesFoglet() {    	
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Foglet_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Foglet_Attack.get());
+    }
+    
+    public static AttributeModifierMap.MutableAttribute createAttributesImp() {    	
+        return MobEntity.createMobAttributes()
+        		.add(Attributes.MOVEMENT_SPEED, 0.25D)
+        		.add(Attributes.FOLLOW_RANGE, 16.0D)
+        		.add(Attributes.MAX_HEALTH, FURConfig.Imp_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Imp_Attack.get());
     }
     
     public static boolean checkFogletSpawnRules(EntityType<? extends FogletEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
@@ -245,7 +253,9 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
  		   	this.goalSelector.addGoal(1, new AIClimbimgTree());
     	} else if (this.getType().equals(FUREntityRegistry.IMP)) {
     		this.setSkin(2);
-    		//this.goalSelector.addGoal(2, new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL, 1, 5, 1.0D, 0.1D, 1.0D));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
+        	this.setHealth(this.getMaxHealth());
     	}
  	   	   
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);

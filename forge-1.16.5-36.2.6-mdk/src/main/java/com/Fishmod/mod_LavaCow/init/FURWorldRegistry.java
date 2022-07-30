@@ -264,6 +264,12 @@ public class FURWorldRegistry {
 		if(FURConfig.pSpawnRate_WarpedFirefly.get() > 0 && biomeKey.equals(Biomes.WARPED_FOREST)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_WarpedFirefly.get(), 4, 8));
 		}
+		
+		if(FURConfig.pSpawnRate_Avaton.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.BEACH)) ||
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.OCEAN))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

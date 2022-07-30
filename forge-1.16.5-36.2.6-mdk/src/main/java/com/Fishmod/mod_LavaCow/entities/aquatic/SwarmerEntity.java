@@ -33,6 +33,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -46,7 +47,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class SwarmerEntity extends AbstractFishEntity {
+public class SwarmerEntity extends AbstractGroupFishEntity {
 	private boolean isAmmo = false;
 
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn)
@@ -95,7 +96,7 @@ public class SwarmerEntity extends AbstractFishEntity {
     
     @Override
     public int getMaxSpawnClusterSize() {
-       return 2;
+       return 1;
     }
     
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
@@ -103,7 +104,7 @@ public class SwarmerEntity extends AbstractFishEntity {
     }
     
     public int getMaxSchoolSize() {
-        return 12;
+        return 4;
     }
     
     protected void handleAirSupply(int p_209207_1_) {    	

@@ -107,6 +107,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTYRANT, manager -> new CactyrantRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAHAG, manager -> new AvatonRenderer(manager));  
         
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));

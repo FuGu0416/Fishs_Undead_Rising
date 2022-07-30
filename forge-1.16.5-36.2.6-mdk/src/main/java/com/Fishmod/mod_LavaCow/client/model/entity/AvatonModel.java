@@ -161,10 +161,17 @@ public class AvatonModel<T extends AvatonEntity> extends FURBaseModel<T> impleme
     	if(limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
     		this.Body_base.xRot -= 0.005F;
     		this.Head.xRot += 0.005F;
-    	}
-    	else if(limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
+    	} else if(limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
     		this.Body_base.xRot += 0.005F;
     		this.Head.xRot -= 0.005F;
+    	}
+    	
+    	if (entityIn.getSkin() == 0) {
+    		this.Neck0.xRot = -0.091106186954104F;
+    		this.Body_waist.xRot = 0.7285004297824331F; 		
+    	} else if (entityIn.getSkin() == 1) {
+    		this.Neck0.xRot = 0.2143F;
+    		this.Body_waist.xRot = 0.3794F;
     	}
     		
     	SwingX_Sin(this.Body_lower_front, -0.31869712141416456F, ageInTicks, 0.2F, 0.08F, true, 0.0F);

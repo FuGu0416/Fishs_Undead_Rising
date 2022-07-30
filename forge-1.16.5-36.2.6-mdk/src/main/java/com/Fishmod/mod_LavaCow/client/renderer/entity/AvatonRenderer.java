@@ -16,6 +16,7 @@ public class AvatonRenderer extends MobRenderer<AvatonEntity, AvatonModel<Avaton
 	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/avaton.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/sea_hag.png")
 	};
 	
 	static{
@@ -29,7 +30,7 @@ public class AvatonRenderer extends MobRenderer<AvatonEntity, AvatonModel<Avaton
     
     @Override
     public ResourceLocation getTextureLocation(AvatonEntity entity) {
-    	return TEXTURES[0];
+    	return TEXTURES[entity.getSkin()];
     }
     
     @Nullable

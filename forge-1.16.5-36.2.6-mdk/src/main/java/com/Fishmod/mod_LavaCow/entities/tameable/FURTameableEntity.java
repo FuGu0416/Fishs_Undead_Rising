@@ -84,7 +84,12 @@ public class FURTameableEntity extends TameableEntity {
 	@Override
     protected boolean shouldDespawnInPeaceful() {
 	    return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
-    }      
+    }   
+	
+	@Override
+	public boolean requiresCustomPersistence() {
+		return (this.isTame() && this.getOwner() instanceof PlayerEntity) || super.requiresCustomPersistence();
+	}
     
     protected boolean isCommandable() {
     	return true;
@@ -193,10 +198,6 @@ public class FURTameableEntity extends TameableEntity {
     public void tick()
     {
         super.tick();
-
-        if (!this.level.isClientSide && this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
-            this.remove();
-        }
         
         if (!this.level.isClientSide && FURConfig.Suicidal_Minion.get() && (this.getOwner() != null && (!(this.getOwner() instanceof PlayerEntity) && !this.getOwner().isAlive()))) {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor(), this.getMaxHealth());

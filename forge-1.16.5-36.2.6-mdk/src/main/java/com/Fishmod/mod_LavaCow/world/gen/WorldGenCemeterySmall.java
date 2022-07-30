@@ -28,7 +28,6 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 	
 	@Override
 	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {
-		System.out.println("OAO " + position);
 		if (!FURConfig.Generate_Cemetery.get()) {			
 			return false;
 		}
