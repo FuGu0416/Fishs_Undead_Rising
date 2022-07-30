@@ -467,7 +467,7 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         {
             EntityLivingBase entitylivingbase = EntityBanshee.this.getAttackTarget();
             Vec3d vec3d = entitylivingbase.getPositionEyes(1.0F);
-            EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.5D);
+            EntityBanshee.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.2D);
         }
 
         /**
