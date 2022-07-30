@@ -1,5 +1,9 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -30,13 +34,20 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 
 public class AvatonEntity extends BansheeEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(AvatonEntity.class, DataSerializers.INT);
@@ -79,6 +90,17 @@ public class AvatonEntity extends BansheeEntity {
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.SeaHag_Attack.get());
     }
     
+	public static boolean checkSeaHagSpawnRules(EntityType<AvatonEntity> p_223332_0_, IServerWorld p_223332_1_, SpawnReason p_223332_2_, BlockPos p_223332_3_, Random p_223332_4_) {
+		Optional<RegistryKey<Biome>> optional = p_223332_1_.getBiomeName(p_223332_3_);
+        boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == SpawnReason.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).is(FluidTags.WATER));
+        System.out.println("OAO!! " + flag + " " + p_223332_3_.getX() + " " + p_223332_3_.getY() + " " + p_223332_3_.getZ());
+        if (!Objects.equals(optional, Optional.of(Biomes.RIVER)) && !Objects.equals(optional, Optional.of(Biomes.FROZEN_RIVER))) {
+        	return p_223332_4_.nextInt(40) == 0 && flag;
+        } else {
+        	return p_223332_4_.nextInt(15) == 0 && flag;
+        }
+	}
+    
     @Override
     protected void defineSynchedData() {
     	super.defineSynchedData();
@@ -115,7 +137,7 @@ public class AvatonEntity extends BansheeEntity {
     	if(this.getSkin() == 0)
     		return FURParticleRegistry.LOCUST_SWARM;
     	
-    	return null;
+    	return ParticleTypes.FALLING_WATER;
     }
     
     protected boolean isSunBurnTick() {
@@ -277,15 +299,17 @@ public class AvatonEntity extends BansheeEntity {
 
             if (this.spellWarmup == 5) {
         		this.castSpell();        	
-                AvatonEntity.this.playSound(AvatonEntity.this.getSpellSound(), 4.0F, 1.2F);                         
+                AvatonEntity.this.playSound(SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, 4.0F, 1.2F);                         
             }
         }
        
         protected void castSpell() {
             for (int i = 0; i < FURConfig.SeaHag_Ability_Num.get(); ++i) {
                 BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(3), 1, -2 + AvatonEntity.this.getRandom().nextInt(3));
-                PufferfishEntity entityvex = EntityType.PUFFERFISH.create(AvatonEntity.this.level);
+                PufferfishEntity entityvex = EntityType.PUFFERFISH.create(AvatonEntity.this.level);               
                 entityvex.moveTo(blockpos, 0.0F, 0.0F);
+                entityvex.setAirSupply(80);
+                entityvex.addTag("noLoot");
                 
                 if(!AvatonEntity.this.level.isClientSide())
                 	AvatonEntity.this.level.addFreshEntity(entityvex);

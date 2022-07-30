@@ -265,7 +265,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WARPEDFIREFLY, FURConfig.pSpawnRate_WarpedFirefly.get(), 4, 8));
 		}
 		
-		if(FURConfig.pSpawnRate_Avaton.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+		if(FURConfig.pSpawnRate_SeaHag.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.BEACH)) ||
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.OCEAN))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
@@ -289,6 +289,11 @@ public class FURWorldRegistry {
 		
 		if(FURConfig.pSpawnRate_Mimic.get() > 0 && event.getStructure().equals(Structure.PILLAGER_OUTPOST)) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, 1, 1, 1));
+		}
+		
+		if(FURConfig.pSpawnRate_SeaHag.get() > 0 && event.getStructure().equals(Structure.OCEAN_RUIN) || 
+				event.getStructure().equals(Structure.SHIPWRECK)) {
+			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
 		}
 	}
 	

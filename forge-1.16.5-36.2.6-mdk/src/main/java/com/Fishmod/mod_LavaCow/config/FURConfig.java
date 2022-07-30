@@ -444,9 +444,9 @@ public final class FURConfig {
 		pSpawnRate_SeaHag = BUILDER.comment("Set the spawn rate of Sea Hag [0-10000]").defineInRange("sea hag spawn rate", 20, 0, 10000);
 		SeaHag_Health = BUILDER.comment("Maximum Sea Hag health [1-1000]").defineInRange("sea hag health", 30.0D, 1.0D, 1000.0D);
 		SeaHag_Attack = BUILDER.comment("Sea Hag strength [1-1000]").defineInRange("sea hag attack", 5.0D, 1.0D, 1000.0D);	
-		SeaHag_Ability_Num = BUILDER.comment("Set the number of Weta summoned per cast [0-100]").defineInRange("sea hag summon number", 4, 0, 100);
-		SeaHag_Ability_Max = BUILDER.comment("Set the max number of Weta summoned [0-100]").defineInRange("sea hag summon max", 8, 0, 100);
-		SeaHag_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Weta [0-100]").defineInRange("sea hag summon cooldown", 12, 0, 100);
+		SeaHag_Ability_Num = BUILDER.comment("Set the number of Pufferfish summoned per cast [0-100]").defineInRange("sea hag summon number", 4, 0, 100);
+		SeaHag_Ability_Max = BUILDER.comment("Set the max number of Pufferfish summoned [0-100]").defineInRange("sea hag summon max", 8, 0, 100);
+		SeaHag_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Pufferfish [0-100]").defineInRange("sea hag summon cooldown", 12, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

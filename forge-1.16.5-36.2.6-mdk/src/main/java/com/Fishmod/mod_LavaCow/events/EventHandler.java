@@ -45,6 +45,7 @@ import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.FishingRodItem;
@@ -167,6 +168,10 @@ public class EventHandler {
 	            event.getEntityLiving().spawnAtLocation(FURItemRegistry.INTESTINE, 1);
 	        }
         }
+    	
+    	if (event.getEntityLiving() instanceof PufferfishEntity && event.getEntityLiving().getTags().contains("noLoot")) {
+    		event.setCanceled(true);
+    	}
     }
     
     /**

@@ -96,15 +96,15 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     
     @Override
     public int getMaxSpawnClusterSize() {
-       return 1;
+       return 2;
     }
     
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return p_223316_4_.nextInt(15) == 0 && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
     public int getMaxSchoolSize() {
-        return 4;
+        return 12;
     }
     
     protected void handleAirSupply(int p_209207_1_) {    	
