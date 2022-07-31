@@ -3,8 +3,6 @@ package com.Fishmod.mod_LavaCow.init;
 import java.lang.reflect.Field;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-import com.Fishmod.mod_LavaCow.entities.AvatonEntity;
-import com.Fishmod.mod_LavaCow.entities.BansheeEntity;
 import com.Fishmod.mod_LavaCow.entities.BoneWormEntity;
 import com.Fishmod.mod_LavaCow.entities.CactyrantEntity;
 import com.Fishmod.mod_LavaCow.entities.FogletEntity;
@@ -23,6 +21,11 @@ import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.AvatonEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.BansheeEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.FloatingMobEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.SeaHagEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.WispEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.FlyingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.GhostRayEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.PteraEntity;
@@ -98,7 +101,8 @@ public class FUREntityRegistry {
 	public static final EntityType<CactyrantEntity> CACTYRANT = registerEntity(EntityType.Builder.of(CactyrantEntity::new, EntityClassification.MONSTER).sized(1.3F, 2.8F), "cactyrant");
 	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 1.1F), "cactoid");
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
-	public static final EntityType<AvatonEntity> SEAHAG = registerEntity(EntityType.Builder.of(AvatonEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "seahag");
+	public static final EntityType<SeaHagEntity> SEAHAG = registerEntity(EntityType.Builder.of(SeaHagEntity::new, EntityClassification.MONSTER).sized(1.25F, 1.5F).clientTrackingRange(8), "seahag");
+	public static final EntityType<WispEntity> WISP = registerEntity(EntityType.Builder.of(WispEntity::new, EntityClassification.MONSTER).sized(0.525F, 0.525F).clientTrackingRange(8).fireImmune(), "wisp");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -142,16 +146,17 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(PINGU, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
         EntitySpawnPlacementRegistry.register(UNDERTAKER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndertakerEntity::checkUndertakerSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTRAY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(BANSHEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BansheeEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(BANSHEE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(WETA, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules);
-        EntitySpawnPlacementRegistry.register(AVATON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BansheeEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(AVATON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(FORSAKEN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ForsakenEntity::checkForsakenSpawnRules);
         EntitySpawnPlacementRegistry.register(SKELETONKING, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(MUMMY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MummyEntity::checkMummySpawnRules);
         EntitySpawnPlacementRegistry.register(CACTYRANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactyrantEntity::checkCactyrantSpawnRules);
         EntitySpawnPlacementRegistry.register(CACTOID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules);
         EntitySpawnPlacementRegistry.register(WARPEDFIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(SEAHAG, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BansheeEntity::checkBansheeSpawnRules/*AvatonEntity::checkSeaHagSpawnRules*/);
+        EntitySpawnPlacementRegistry.register(SEAHAG, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -202,13 +207,14 @@ public class FUREntityRegistry {
         event.put(GHOSTRAY, GhostRayEntity.createAttributes().build());
         event.put(BANSHEE, BansheeEntity.createAttributes().build());
         event.put(WETA, WetaEntity.createAttributes().build());
-        event.put(AVATON, AvatonEntity.createAttributesAvaton().build());
+        event.put(AVATON, AvatonEntity.createAttributes().build());
         event.put(FORSAKEN, ForsakenEntity.createAttributes().build());
         event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());
         event.put(MUMMY, MummyEntity.createAttributes().build());
         event.put(CACTYRANT, CactyrantEntity.createAttributes().build());
         event.put(CACTOID, CactyrantEntity.createAttributes().build());
         event.put(WARPEDFIREFLY, WarpedFireflyEntity.createAttributes().build());
-        event.put(SEAHAG, AvatonEntity.createAttributesSeaHag().build());
+        event.put(SEAHAG, SeaHagEntity.createAttributes().build());
+        event.put(WISP, WispEntity.createAttributes().build());
     }
 }

@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
-import com.Fishmod.mod_LavaCow.entities.AvatonEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.FloatingMobEntity;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -14,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelAvaton - Fish0016054
  * Created using Tabula 7.1.0
  */
-public class AvatonModel<T extends AvatonEntity> extends FURBaseModel<T> implements IHasArm, IHasHead {
+public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> implements IHasArm, IHasHead {
     public ModelRenderer Body_base;
     public ModelRenderer Body_waist;
     public ModelRenderer Body_lower_front;
@@ -151,7 +152,7 @@ public class AvatonModel<T extends AvatonEntity> extends FURBaseModel<T> impleme
      * and third as in the setRotationAngles method.
      */
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
-    	float j = (float)((AvatonEntity) entityIn).getSpellTicks() / 30.0F;
+    	float j = entityIn.getSpellTicks() / 30.0F;
     	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	SwingX_Sin(this.Hair_front, -2.0032889154390916F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
@@ -166,10 +167,10 @@ public class AvatonModel<T extends AvatonEntity> extends FURBaseModel<T> impleme
     		this.Head.xRot -= 0.005F;
     	}
     	
-    	if (entityIn.getSkin() == 0) {
+    	if (entityIn.getType() == FUREntityRegistry.AVATON) {
     		this.Neck0.xRot = -0.091106186954104F;
     		this.Body_waist.xRot = 0.7285004297824331F; 		
-    	} else if (entityIn.getSkin() == 1) {
+    	} else if (entityIn.getType() == FUREntityRegistry.SEAHAG) {
     		this.Neck0.xRot = 0.2143F;
     		this.Body_waist.xRot = 0.3794F;
     	}
@@ -182,7 +183,7 @@ public class AvatonModel<T extends AvatonEntity> extends FURBaseModel<T> impleme
     	SwingY_Sin(this.Arm_r_Seg2, 0.0F, ageInTicks, 0.22F, 0.08F, false, 0.0F);
     	SwingY_Sin(this.Arm_l_Seg2, 0.0F, ageInTicks, 0.18F, 0.06F, true, 0.0F);
  	
-    	if(((AvatonEntity) entityIn).isSpellcasting()) {
+    	if(entityIn.isSpellcasting()) {
     		Arm_r_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.yRot = 2.111673824703684F;

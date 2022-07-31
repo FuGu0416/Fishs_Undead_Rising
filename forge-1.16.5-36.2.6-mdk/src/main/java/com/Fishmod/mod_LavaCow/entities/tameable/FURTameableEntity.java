@@ -201,6 +201,7 @@ public class FURTameableEntity extends TameableEntity {
         
         if (!this.level.isClientSide && FURConfig.Suicidal_Minion.get() && (this.getOwner() != null && (!(this.getOwner() instanceof PlayerEntity) && !this.getOwner().isAlive()))) {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor(), this.getMaxHealth());
+        	this.addTag("FUR_noLoot");
         }
     }   
     

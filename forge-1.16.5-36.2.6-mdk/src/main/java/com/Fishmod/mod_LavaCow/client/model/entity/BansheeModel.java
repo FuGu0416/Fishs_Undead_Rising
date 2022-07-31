@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
-import com.Fishmod.mod_LavaCow.entities.BansheeEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.BansheeEntity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

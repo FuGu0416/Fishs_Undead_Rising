@@ -3,7 +3,8 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.AvatonModel;
-import com.Fishmod.mod_LavaCow.entities.AvatonEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.AvatonEntity;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

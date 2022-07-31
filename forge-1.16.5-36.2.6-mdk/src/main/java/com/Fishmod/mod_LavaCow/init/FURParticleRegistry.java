@@ -15,6 +15,7 @@ public class FURParticleRegistry {
 	public static final BasicParticleType GASTRO_ACID = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:gastro_acid");
 	public static final BasicParticleType LOCUST_SWARM = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:locust_swarm");
 	public static final BasicParticleType SLUDGE_JET = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:sludge_jet");
+	public static final BasicParticleType GHOST_FLAME = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:ghost_flame");
 	
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

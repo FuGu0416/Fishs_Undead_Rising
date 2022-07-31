@@ -31,6 +31,7 @@ import com.Fishmod.mod_LavaCow.client.renderer.entity.RavenRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.SandBurstRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.ScarecrowRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.SkeletonKingRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.SludgeLordRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.SwarmerRenderer;
@@ -42,6 +43,7 @@ import com.Fishmod.mod_LavaCow.client.renderer.entity.VespaRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.WarpedFireflyRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.WetaRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.WispRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.tileentity.ScarecrowHeadTileEntityRenderer;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -51,6 +53,7 @@ import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTileEntityRegistry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -107,7 +110,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTYRANT, manager -> new CactyrantRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAHAG, manager -> new AvatonRenderer(manager));  
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAHAG, manager -> new SeaHagRenderer(manager));  
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WISP, manager -> new WispRenderer(manager));  
         
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
@@ -153,5 +157,6 @@ public class ClientProxy extends CommonProxy {
 		instance.particleEngine.register(FURParticleRegistry.GASTRO_ACID, GastroAcidParticle.GastroAcidFactory::new);
 		instance.particleEngine.register(FURParticleRegistry.LOCUST_SWARM, LocustSwarmParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.SLUDGE_JET, GastroAcidParticle.SludgeJetFactory::new);
+		instance.particleEngine.register(FURParticleRegistry.GHOST_FLAME, FlameParticle.Factory::new);
     }
 }

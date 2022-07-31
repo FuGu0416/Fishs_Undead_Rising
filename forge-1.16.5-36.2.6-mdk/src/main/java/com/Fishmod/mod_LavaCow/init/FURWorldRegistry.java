@@ -270,6 +270,10 @@ public class FURWorldRegistry {
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.OCEAN))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
 		}
+		
+		if(FURConfig.pSpawnRate_BoneWorm.get() > 0 && (biomeKey.equals(Biomes.NETHER_WASTES) || biomeKey.equals(Biomes.SOUL_SAND_VALLEY) || biomeKey.equals(Biomes.BASALT_DELTAS))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WISP, FURConfig.pSpawnRate_Wisp.get(), 4, 8));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

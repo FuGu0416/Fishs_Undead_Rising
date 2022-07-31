@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.world.Dimension;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
 public final class FURConfig {
 	public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
@@ -156,6 +157,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Num;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Max;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SeaHag_Ability_Cooldown;
+	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wisp;
+	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_Health;
+	public static final ConfigValue<Double> Wisp_ExplosionPower;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -447,6 +452,12 @@ public final class FURConfig {
 		SeaHag_Ability_Num = BUILDER.comment("Set the number of Pufferfish summoned per cast [0-100]").defineInRange("sea hag summon number", 4, 0, 100);
 		SeaHag_Ability_Max = BUILDER.comment("Set the max number of Pufferfish summoned [0-100]").defineInRange("sea hag summon max", 8, 0, 100);
 		SeaHag_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Pufferfish [0-100]").defineInRange("sea hag summon cooldown", 12, 0, 100);
+		BUILDER.pop();
+		
+		BUILDER.push("Wisp");
+		pSpawnRate_Wisp = BUILDER.comment("Set the spawn rate of Wisp [0-10000]").defineInRange("wisp spawn rate", 10, 0, 10000);
+		Wisp_Health = BUILDER.comment("Maximum Wisp health [1-1000]").defineInRange("wisp health", 8.0D, 1.0D, 1000.0D);
+		Wisp_ExplosionPower = BUILDER.comment("Wisp strength [1-1000]").defineInRange("wisp attack", 0.75D, 0.0D, 10.0D);	
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

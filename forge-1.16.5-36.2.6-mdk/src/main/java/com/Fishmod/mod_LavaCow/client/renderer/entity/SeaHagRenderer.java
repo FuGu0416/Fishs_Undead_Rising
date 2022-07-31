@@ -2,8 +2,8 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.client.model.entity.BansheeModel;
-import com.Fishmod.mod_LavaCow.entities.floating.BansheeEntity;
+import com.Fishmod.mod_LavaCow.client.model.entity.AvatonModel;
+import com.Fishmod.mod_LavaCow.entities.floating.SeaHagEntity;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -13,10 +13,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BansheeRenderer extends MobRenderer<BansheeEntity, BansheeModel<BansheeEntity>> {
+public class SeaHagRenderer extends MobRenderer<SeaHagEntity, AvatonModel<SeaHagEntity>> {
 	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-			new ResourceLocation("mod_lavacow:textures/mobs/banshee.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/avaton.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/sea_hag.png")
 	};
 	
 	static{
@@ -24,18 +25,18 @@ public class BansheeRenderer extends MobRenderer<BansheeEntity, BansheeModel<Ban
 			System.out.println(texture.getPath());
     }
 
-    public BansheeRenderer(EntityRendererManager rendermanagerIn) {
-        super(rendermanagerIn, new BansheeModel<>(), 0.0F);
+    public SeaHagRenderer(EntityRendererManager rendermanagerIn) {
+        super(rendermanagerIn, new AvatonModel<>(), 0.0F);
     }
     
     @Override
-    public ResourceLocation getTextureLocation(BansheeEntity entity) {
-    	return TEXTURES[0];
+    public ResourceLocation getTextureLocation(SeaHagEntity entity) {
+    	return TEXTURES[entity.getSkin()];
     }
     
     @Nullable
     @Override
-    protected RenderType getRenderType(BansheeEntity p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
+    protected RenderType getRenderType(SeaHagEntity p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
     	return RenderType.entityTranslucent(this.getTextureLocation(p_230496_1_));
     }
 }
