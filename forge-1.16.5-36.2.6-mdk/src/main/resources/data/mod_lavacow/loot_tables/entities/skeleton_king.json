@@ -249,6 +249,17 @@
 		                    "treasure": true
 		                }
                     ]
+                },              
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "mod_lavacow:thorn_shooter",
+					"functions":[
+		                {
+		                    "function": "enchant_randomly",
+		                    "treasure": true
+		                }
+                    ]
                 }
             ]
         }

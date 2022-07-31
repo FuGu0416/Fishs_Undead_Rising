@@ -16,6 +16,7 @@ public class FURParticleRegistry {
 	public static final BasicParticleType LOCUST_SWARM = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:locust_swarm");
 	public static final BasicParticleType SLUDGE_JET = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:sludge_jet");
 	public static final BasicParticleType GHOST_FLAME = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:ghost_flame");
+	public static final BasicParticleType WITHER_FLAME = (BasicParticleType) new BasicParticleType(false).setRegistryName("mod_lavacow:wither_flame");
 	
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -9,7 +10,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -41,11 +41,7 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
     @Override
     public void tick() {
        super.tick();
-       if(this.level.isClientSide())
-    	   for(int i = 0 ; i < 4 + this.random.nextInt(16) ; i++) {
-    		   this.level.addParticle(this.getTrailParticle(), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);	    	   
-    	   }
-       if(this.tickCount >= 5 * 20)
+       if(this.tickCount >= 30)
     	   this.remove();
     }
 	   
@@ -93,7 +89,7 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
 
     @Override
     protected IParticleData getTrailParticle() {
-        return ParticleTypes.SMOKE;
+        return FURParticleRegistry.WITHER_FLAME;
 	}
     
     @Override
