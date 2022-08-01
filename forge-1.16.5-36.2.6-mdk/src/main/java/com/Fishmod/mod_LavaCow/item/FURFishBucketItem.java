@@ -54,6 +54,8 @@ public class FURFishBucketItem extends BucketItem {
 			CompoundNBT compoundnbt = stack.getOrCreateTag();
 			if(compoundnbt.contains("SalamanderData")){
                 ((SalamanderEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("SalamanderData"));
+            } else {
+            	((SalamanderEntity) entity).setBaby(true);
             }
 		}
 	}

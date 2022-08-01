@@ -135,6 +135,8 @@ public class WispEntity extends FloatingMobEntity {
   		   this.setSkin(2);
       	}
     	
+    	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));
+    	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     

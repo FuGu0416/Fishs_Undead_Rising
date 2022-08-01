@@ -24,11 +24,14 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class CactoidPotItem extends Item {
+public class EntityBucketItem extends Item {
 	private final EntityType<?> type;
-	public CactoidPotItem(EntityType<?> fishTypeIn, Item.Properties builder) {
+	private final Item returnItem;
+	
+	public EntityBucketItem(EntityType<?> fishTypeIn, Item itemIn, Item.Properties builder) {
 		super(builder);
 		this.type = fishTypeIn;
+		this.returnItem = itemIn;
 	}
 
 	public void checkExtraContent(World worldIn, ItemStack stack, BlockPos pos) {
@@ -66,6 +69,10 @@ public class CactoidPotItem extends Item {
             this.playEmptySound(player, worldIn, blockpos);                  
         }
         
-        return ActionResult.sidedSuccess(itemstack, worldIn.isClientSide);
+        return ActionResult.sidedSuccess(this.getEmptySuccessItem(itemstack, player), worldIn.isClientSide());
+	}
+	
+	protected ItemStack getEmptySuccessItem(ItemStack stack, PlayerEntity player) {
+		return !player.abilities.instabuild ? new ItemStack(this.returnItem) : stack;
 	}
 }

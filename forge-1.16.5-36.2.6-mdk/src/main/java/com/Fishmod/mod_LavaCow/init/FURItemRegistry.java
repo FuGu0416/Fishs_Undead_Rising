@@ -7,7 +7,7 @@ import java.util.Random;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.item.CactoidPotItem;
+import com.Fishmod.mod_LavaCow.item.EntityBucketItem;
 import com.Fishmod.mod_LavaCow.item.CactusFruitItem;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.CrownItem;
@@ -170,9 +170,11 @@ public class FURItemRegistry {
 	public static final Item CACTUS_FRUIT = new CactusFruitItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 0), 1.0F).build()), 1).setRegistryName("mod_lavacow:cactus_fruit");
 	public static final Item THORN_SHOOTER = new FURRangedItem("mod_lavacow:thorn_shooter", CACTUS_THORN, FUREntityRegistry.CACTUS_THORN, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(768));
 	public static final Item SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:salamander_bucket");
-	public static final Item CACTOID_POT = new CactoidPotItem(FUREntityRegistry.CACTOID, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
+	public static final Item CACTOID_POT = new EntityBucketItem(FUREntityRegistry.CACTOID, Items.FLOWER_POT, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
 	public static final Item BOABING = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:baobing");
 	public static final Item KUNG_PAO_CHICKEN = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new EffectInstance(FUREffectRegistry.IMMOLATION, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:kung_pao_chicken");
+	public static final Item WISP_ASHES = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:wisp_ashes");
+	public static final Item WISP_IN_A_BOTTLE = new EntityBucketItem(FUREntityRegistry.WISP, Items.GLASS_BOTTLE, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:wisp_in_a_bottle");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");
@@ -249,8 +251,8 @@ public class FURItemRegistry {
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.CACTYRANT, 0x9FE664, 0xE0D6B1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactyrant"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.CACTOID, 0xABE97D, 0xE5DECD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactoid"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_warpedfirefly"));
-    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.SEAHAG, 0x488573, 0x329400, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seahag"));
-    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WISP, 0xD4D3D2, 0xFFC90A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wisp"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seahag"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wisp"));
     	
     	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_skeletonking"));
     	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_wendigo"));
