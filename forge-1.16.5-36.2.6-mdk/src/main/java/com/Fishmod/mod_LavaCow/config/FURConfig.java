@@ -457,7 +457,7 @@ public final class FURConfig {
 		BUILDER.push("Wisp");
 		pSpawnRate_Wisp = BUILDER.comment("Set the spawn rate of Wisp [0-10000]").defineInRange("wisp spawn rate", 10, 0, 10000);
 		Wisp_Health = BUILDER.comment("Maximum Wisp health [1-1000]").defineInRange("wisp health", 8.0D, 1.0D, 1000.0D);
-		Wisp_ExplosionPower = BUILDER.comment("Wisp strength [1-1000]").defineInRange("wisp attack", 0.75D, 0.0D, 10.0D);	
+		Wisp_ExplosionPower = BUILDER.comment("Wisp strength [1-1000]").defineInRange("wisp attack", 1.5D, 0.0D, 10.0D);	
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

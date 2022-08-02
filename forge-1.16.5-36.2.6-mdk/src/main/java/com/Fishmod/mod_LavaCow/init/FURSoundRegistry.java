@@ -117,6 +117,9 @@ public class FURSoundRegistry {
 
 	public static final SoundEvent CACTYRANT_AMBIENT = addSoundEvent("cactyrant_ambient");
 	public static final SoundEvent CACTYRANT_DEATH = addSoundEvent("cactyrant_death");
+
+	public static final SoundEvent SEAHAG_AMBIENT = addSoundEvent("seahag_ambient");
+	public static final SoundEvent SEAHAG_DEATH = addSoundEvent("seahag_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);

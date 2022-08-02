@@ -18,7 +18,7 @@ public class WispSwellGoal extends Goal {
 
 	   public boolean canUse() {
 	      LivingEntity livingentity = this.wisp.getTarget();
-	      return this.wisp.getSwellDir() > 0 || livingentity != null && this.wisp.distanceToSqr(livingentity) < 9.0D;
+	      return this.wisp.getSwellDir() > 0 || livingentity != null && this.wisp.distanceToSqr(livingentity) < 4.0D;
 	   }
 
 	   public void start() {

@@ -213,7 +213,7 @@ public class SeaHagEntity extends FloatingMobEntity {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.BANSHEE_AMBIENT;
+        return FURSoundRegistry.SEAHAG_AMBIENT;
     }
 
     @Override
@@ -223,7 +223,7 @@ public class SeaHagEntity extends FloatingMobEntity {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.AVATON_DEATH;
+        return FURSoundRegistry.SEAHAG_DEATH;
     }
     
     protected SoundEvent getSpellSound() {

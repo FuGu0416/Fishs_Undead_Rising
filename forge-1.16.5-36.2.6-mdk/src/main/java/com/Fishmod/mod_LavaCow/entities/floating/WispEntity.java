@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -63,6 +64,7 @@ public class WispEntity extends FloatingMobEntity {
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, true));
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -145,14 +147,14 @@ public class WispEntity extends FloatingMobEntity {
     protected IParticleData ParticleType() { 
     	switch(this.getSkin()) {
 			case 1:
-				return ParticleTypes.SOUL_FIRE_FLAME;
+				return ParticleTypes.FLAME;
 			case 2:
 				return ParticleTypes.POOF;
 			case 3:
 				return FURParticleRegistry.GHOST_FLAME;
 			case 0:
 			default:
-				return ParticleTypes.FLAME;
+				return ParticleTypes.SOUL_FIRE_FLAME;			
 		}
     }
     

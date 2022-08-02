@@ -571,5 +571,19 @@
 		"category": "hostile",
 		"subtitle": "entity_cactyrant_death",
 		"sounds": [{"name": "mod_lavacow:entity/cactyrant/death","stream": true}]
+	},
+	
+	"seahag_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_seahag_ambient",
+		"sounds": ["mod_lavacow:entity/seahag/ambient0","mod_lavacow:entity/seahag/ambient1"]
+	},
+	
+	"seahag_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_seahag_death",
+		"sounds": ["mod_lavacow:entity/seahag/death0","mod_lavacow:entity/seahag/death1"]
 	}
 }
