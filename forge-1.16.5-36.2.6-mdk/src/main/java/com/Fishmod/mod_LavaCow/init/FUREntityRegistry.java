@@ -25,7 +25,6 @@ import com.Fishmod.mod_LavaCow.entities.floating.AvatonEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.BansheeEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.FloatingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.SeaHagEntity;
-import com.Fishmod.mod_LavaCow.entities.floating.WispEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.FlyingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.GhostRayEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.PteraEntity;
@@ -50,6 +49,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.SalamanderEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarecrowEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.WetaEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -156,7 +156,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(CACTOID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules);
         EntitySpawnPlacementRegistry.register(WARPEDFIREFLY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
         EntitySpawnPlacementRegistry.register(SEAHAG, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
-        EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WispEntity::checkWispSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")

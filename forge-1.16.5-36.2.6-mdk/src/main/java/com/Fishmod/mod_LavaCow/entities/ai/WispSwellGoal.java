@@ -2,7 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.ai;
 
 import java.util.EnumSet;
 
-import com.Fishmod.mod_LavaCow.entities.floating.WispEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;

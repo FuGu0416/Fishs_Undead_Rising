@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.TameableEntity;
@@ -35,7 +36,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class FURTameableEntity extends TameableEntity {
 	protected FURTameableEntity.State state;
-	protected WaterAvoidingRandomWalkingGoal wander;
+	protected Goal wander;
 	protected FollowOwnerGoal follow;
 	protected SitGoal aiSit;
 	
@@ -126,7 +127,7 @@ public class FURTameableEntity extends TameableEntity {
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.wandering", this.getName()), true);
     }
     
-    protected WaterAvoidingRandomWalkingGoal wanderGoal() {
+    protected Goal wanderGoal() {
     	return new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
     }
     

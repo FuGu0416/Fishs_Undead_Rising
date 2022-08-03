@@ -3,7 +3,7 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.WispModel;
-import com.Fishmod.mod_LavaCow.entities.floating.WispEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.renderer.RenderType;

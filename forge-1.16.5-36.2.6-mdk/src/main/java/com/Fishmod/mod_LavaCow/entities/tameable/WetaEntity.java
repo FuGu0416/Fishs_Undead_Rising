@@ -49,7 +49,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class WetaEntity extends FURTameableEntity implements IAggressive{
+public class WetaEntity extends FURTameableEntity implements IAggressive {
 	private int attackTimer = 0;
 	private EntityAIDestroyCrops DestroyCrops;
 	

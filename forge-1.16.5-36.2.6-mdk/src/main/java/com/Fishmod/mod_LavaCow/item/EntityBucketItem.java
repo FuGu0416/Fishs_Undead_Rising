@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.item;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.entities.tameable.CactoidEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 
 import net.minecraft.entity.Entity;
@@ -50,6 +51,12 @@ public class EntityBucketItem extends Item {
 			CompoundNBT compoundnbt = stack.getOrCreateTag();
 			if(compoundnbt.contains("CactoidData")){
                 ((CactoidEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("CactoidData"));
+            }
+		}
+		if (entity != null && entity.getType() == FUREntityRegistry.WISP) {
+			CompoundNBT compoundnbt = stack.getOrCreateTag();
+			if(compoundnbt.contains("WispData")){
+                ((WispEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("WispData"));
             }
 		}
 	}

@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
-import com.Fishmod.mod_LavaCow.entities.floating.WispEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -48,6 +48,10 @@ public class WispModel<T extends WispEntity> extends FURBaseModel<T> {
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
+    	this.Head.x = MathHelper.cos(ageInTicks * 0.03F) * 0.3F;
+    	this.Head.y = 22.0F + MathHelper.cos(ageInTicks * 0.012F) * 0.22F;
+    	this.Head.z = MathHelper.cos(ageInTicks * 0.06F) * 0.4F;
+    	
     	if(entityIn.isAggressive()) {
     		this.Jaw.xRot = 0.3515093006990136F;
     		this.Jaw.y = 2.0F;
