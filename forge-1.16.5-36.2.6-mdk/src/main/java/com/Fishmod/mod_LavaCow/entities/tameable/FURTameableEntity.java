@@ -37,7 +37,7 @@ import net.minecraft.world.server.ServerWorld;
 public class FURTameableEntity extends TameableEntity {
 	protected FURTameableEntity.State state;
 	protected Goal wander;
-	protected FollowOwnerGoal follow;
+	protected Goal follow;
 	protected SitGoal aiSit;
 	
 	public FURTameableEntity(EntityType<? extends FURTameableEntity> p_i50240_1_, World worldIn) {
@@ -131,7 +131,7 @@ public class FURTameableEntity extends TameableEntity {
     	return new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F);
     }
     
-    protected FollowOwnerGoal followGoal() {
+    protected Goal followGoal() {
     	return new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);
     }
     

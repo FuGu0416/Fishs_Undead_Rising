@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.entities.ai.WispSwellGoal;
 import com.Fishmod.mod_LavaCow.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
@@ -14,6 +15,7 @@ import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -23,9 +25,10 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
@@ -35,6 +38,7 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -45,6 +49,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.FlyingPathNavigator;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -63,7 +69,7 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class WispEntity extends FURTameableEntity {
+public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(WispEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> DATA_SWELL_DIR = EntityDataManager.defineId(WispEntity.class, DataSerializers.INT);
 	private int oldSwell;
@@ -72,7 +78,7 @@ public class WispEntity extends FURTameableEntity {
 	   
 	public WispEntity(EntityType<? extends WispEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		this.moveControl = new WispEntity.AIMoveControl(this);
+	      this.moveControl = new FlyingMovementController(this, 20, true);
 	}
 	
     /**
@@ -84,10 +90,10 @@ public class WispEntity extends FURTameableEntity {
         this.checkInsideBlocks();
     }
 	
-    /*@Override
+    @Override
     protected boolean isCommandable() {
     	return false;
-    }*/
+    }
 	
     @Override
     protected void registerGoals() {
@@ -97,6 +103,7 @@ public class WispEntity extends FURTameableEntity {
     	this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new WispEntity.AIChargeAttack());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));  
+        this.goalSelector.addGoal(8, new WispEntity.AIMoveRandom());
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.applyEntityAI();
     }
@@ -110,16 +117,24 @@ public class WispEntity extends FURTameableEntity {
         }));
     }
     
+    @Override
     protected Goal wanderGoal() {
     	return new WispEntity.AIMoveRandom();
     }
     
+    @Override
+    protected Goal followGoal() {
+    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, true);
+    }
+    
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.2D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.3D)
+        		.add(Attributes.FLYING_SPEED, 0.6F)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Wisp_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, 1.0D);
+        		.add(Attributes.ATTACK_DAMAGE, 1.0D)
+        		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
     public static boolean checkWispSpawnRules(EntityType<? extends WispEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
@@ -173,7 +188,7 @@ public class WispEntity extends FURTameableEntity {
            }
         }
 
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
+    	this.noPhysics = true;//(this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
@@ -183,6 +198,8 @@ public class WispEntity extends FURTameableEntity {
         if (!this.level.isClientSide) {
            this.dead = true;
            this.level.explode(this, this.getX(), this.getY(), this.getZ(), FURConfig.Wisp_ExplosionPower.get().floatValue(), net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this), Explosion.Mode.NONE);
+           if(this.isTame())
+        	   this.spawnAtLocation(this.getAshes(), 1); 
            this.remove();
         }
 	}
@@ -195,6 +212,30 @@ public class WispEntity extends FURTameableEntity {
     @Override
 	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
 	}
+    
+	/**
+	* Called when the entity is attacked.
+	*/
+    @Override
+	public boolean hurt(DamageSource source, float amount) {
+    	if(source.isExplosion())
+    		return false;
+    				
+		return super.hurt(source, amount);
+    }
+    
+    protected ItemStack getAshes() {
+    	ItemStack stack = new ItemStack(FURItemRegistry.WISP_ASHES);
+        CompoundNBT compoundnbt = new CompoundNBT();
+        this.addAdditionalSaveData(compoundnbt);
+        stack.getOrCreateTag().put("WispData", compoundnbt);
+        
+        if (this.hasCustomName()) {
+            stack.setHoverName(this.getCustomName());
+        }
+        
+        return stack;
+    }
     
     protected ItemStack getFishBucket() {
     	ItemStack stack = new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE);
@@ -265,6 +306,18 @@ public class WispEntity extends FURTameableEntity {
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
+    protected PathNavigator createNavigation(World p_175447_1_) {
+        FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, p_175447_1_) {
+           public boolean isStableDestination(BlockPos p_188555_1_) {
+              return !this.level.getBlockState(p_188555_1_.below()).getMaterial().equals(Material.AIR);
+           }
+        };
+        flyingpathnavigator.setCanOpenDoors(false);
+        flyingpathnavigator.setCanFloat(true);
+        flyingpathnavigator.setCanPassDoors(true);
+        return flyingpathnavigator;
+	}
+    
     @Nullable
     protected IParticleData ParticleType() { 
     	switch(this.getSkin()) {
@@ -330,6 +383,15 @@ public class WispEntity extends FURTameableEntity {
         return null;
     }
     
+	@Override
+	protected boolean isMovementNoisy() {
+		return false;
+	}
+	
+	@Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+	} 
+    
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
@@ -360,7 +422,7 @@ public class WispEntity extends FURTameableEntity {
         return CreatureAttribute.UNDEAD;
     }
     
-class AIChargeAttack extends Goal {
+    class AIChargeAttack extends Goal {
     	
         public AIChargeAttack() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -370,7 +432,7 @@ class AIChargeAttack extends Goal {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean canUse() {
-            if (WispEntity.this.getTarget() != null && !WispEntity.this.getMoveControl().hasWanted() && WispEntity.this.getRandom().nextInt(7) == 0) {
+            if (WispEntity.this.getTarget() != null/* && !WispEntity.this.getMoveControl().hasWanted() && WispEntity.this.getRandom().nextInt(7) == 0*/) {
                 return WispEntity.this.distanceToSqr(WispEntity.this.getTarget()) > 4.0D;
             } else {
                 return false;
@@ -416,73 +478,43 @@ class AIChargeAttack extends Goal {
         }
     }
     
-    class AIMoveControl extends MovementController {
-        public AIMoveControl(WispEntity Banshee) {
-            super(Banshee);
-        }
+    class AIMoveRandom extends Goal {
+    	AIMoveRandom() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+    	}
 
-        public void tick() {
-            if (this.operation == MovementController.Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.wantedX - WispEntity.this.getX(), this.wantedY - WispEntity.this.getY(), this.wantedZ - WispEntity.this.getZ());
-                double d0 = vector3d.length();
-                if (d0 < WispEntity.this.getBoundingBox().getSize()) {
-                   this.operation = MovementController.Action.WAIT;
-                   WispEntity.this.setDeltaMovement(WispEntity.this.getDeltaMovement().scale(0.5D));
-                } else {
-                   WispEntity.this.setDeltaMovement(WispEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
-                   if (WispEntity.this.getTarget() == null) {
-                      Vector3d vector3d1 = WispEntity.this.getDeltaMovement();
-                      WispEntity.this.yRot = -((float)MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
-                      WispEntity.this.yBodyRot = WispEntity.this.yRot;
-                   } else {
-                      double d2 = WispEntity.this.getTarget().getX() - WispEntity.this.getX();
-                      double d1 = WispEntity.this.getTarget().getZ() - WispEntity.this.getZ();
-                      WispEntity.this.yRot = -((float)MathHelper.atan2(d2, d1)) * (180F / (float)Math.PI);
-                      WispEntity.this.yBodyRot = WispEntity.this.yRot;
-                   }
-                }
+    	public boolean canUse() {
+    		return WispEntity.this.navigation.isDone() && WispEntity.this.random.nextInt(10) == 0;
+    	}
+
+    	public boolean canContinueToUse() {
+            return WispEntity.this.navigation.isInProgress();
+    	}
+
+    	public void start() {
+            Vector3d vector3d = this.findPos();
+            if (vector3d != null) {
+               WispEntity.this.navigation.moveTo(WispEntity.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
             }
-        }
+
+    	}
+
+    	@Nullable
+    	private Vector3d findPos() {
+            Vector3d vector3d = WispEntity.this.getViewVector(0.0F);
+            Vector3d vector3d2 = RandomPositionGenerator.getAboveLandPos(WispEntity.this, 8, 7, vector3d, ((float)Math.PI / 2F), 2, 1);
+            return vector3d2 != null ? vector3d2 : RandomPositionGenerator.getAirPos(WispEntity.this, 8, 4, -2, vector3d, (double)((float)Math.PI / 2F));
+    	}
     }
     
-    class AIMoveRandom extends Goal {
-        public AIMoveRandom() {
-        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        public boolean canUse() {
-            return !WispEntity.this.getMoveControl().hasWanted() && WispEntity.this.getRandom().nextInt(7) == 0 && !WispEntity.this.isAggressive();
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            return false;
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {            
-            BlockPos blockpos = WispEntity.this.blockPosition();
-            int y = WispEntity.this.getRandom().nextInt(11) - 5;
-           
-            y = Math.min(SpawnUtil.getHeight(WispEntity.this).getY() + 4/*FURConfig.FlyingHeight_limit.get()*/, y);
-
-            for(int i = 0; i < 3; ++i) {
-               BlockPos blockpos1 = blockpos.offset(WispEntity.this.random.nextInt(15) - 7, y, WispEntity.this.random.nextInt(15) - 7);
-               if (WispEntity.this.level.isEmptyBlock(blockpos1)) {
-                  WispEntity.this.moveControl.setWantedPosition((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 0.25D);
-                  if (WispEntity.this.getTarget() == null) {
-                     WispEntity.this.getLookControl().setLookAt((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
-                  }
-                  break;
-               }
-            }
-        }
-    }
+    /**
+     * Called when the mob's health reaches 0.
+     */
+	@Override
+    public void dropAllDeathLoot(DamageSource cause) {
+		if(this.isTame())
+			this.spawnAtLocation(this.getAshes(), 1); 
+		
+		super.dropAllDeathLoot(cause);
+	}
 }
