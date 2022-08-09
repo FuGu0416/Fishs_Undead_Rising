@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+	"item": "mod_lavacow:ectoplasm_mass"
+  },
+  "result": {
+    "item": "mod_lavacow:ectoplasm_ingot",
+    "count": 1
+  },
+  "experience": 0.7,
+  "cookingtime": 100
+}

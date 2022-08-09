@@ -83,8 +83,12 @@ public class FURWeaponItem extends SwordItem {
 
 	@Override
 	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN)stack.enchant(Enchantments.FIRE_ASPECT, 2);
-		else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
+		if (!stack.isEnchanted()) {
+			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER)
+				stack.enchant(Enchantments.FIRE_ASPECT, 2);
+			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
+				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
+		}
 	}
 	
 	@Override
@@ -95,10 +99,11 @@ public class FURWeaponItem extends SwordItem {
 	
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted())
-		{
-			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN)stack.enchant(Enchantments.FIRE_ASPECT, 2);
-			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
+		if (!stack.isEnchanted()) {
+			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER)
+				stack.enchant(Enchantments.FIRE_ASPECT, 2);
+			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
+				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
 		}
 		
 		if(entityIn instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && isSelected) {
@@ -169,14 +174,11 @@ public class FURWeaponItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		float f = (float) attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
 		
-		if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE)
-		{
+		if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE) {
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
-            for (LivingEntity LivingEntity : attacker.level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2.0D, 0.25D, 2.0D)))
-            {
-                if (LivingEntity != attacker && LivingEntity != target && !attacker.isAlliedTo(LivingEntity) && attacker.distanceToSqr(LivingEntity) < 16.0D)
-                {
+            for (LivingEntity LivingEntity : attacker.level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2.0D, 0.25D, 2.0D))) {
+                if (LivingEntity != attacker && LivingEntity != target && !attacker.isAlliedTo(LivingEntity) && attacker.distanceToSqr(LivingEntity) < 16.0D) {
                     LivingEntity.knockback(0.4F, (double)MathHelper.sin(attacker.yRot * 0.017453292F), (double)(-MathHelper.cos(attacker.yRot * 0.017453292F)));
                     LivingEntity.hurt(DamageSource.playerAttack((PlayerEntity) attacker), f3);
                 }
@@ -184,16 +186,11 @@ public class FURWeaponItem extends SwordItem {
 
             attacker.level.playSound((PlayerEntity)null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 1.0F, 1.0F);
             ((PlayerEntity) attacker).sweepAttack();
-		}
-		else if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
+		} else if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
 			((PlayerEntity)attacker).getFoodData().eat(1, 0.0F);
-		}
-		else if(stack.getItem() == FURItemRegistry.MOLTENPAN)
-		{
+		} else if(stack.getItem() == FURItemRegistry.MOLTENPAN) {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
-		}
-		else if(stack.getItem() == FURItemRegistry.SKELETONKING_MACE)
-		{
+		} else if(stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
 		}
 		
@@ -203,12 +200,10 @@ public class FURWeaponItem extends SwordItem {
         return true;
     }
 	
-	public static void LavaBurst(World worldIn, double x, double y, double z, double radius, BasicParticleType particleIn)
-	{		
+	public static void LavaBurst(World worldIn, double x, double y, double z, double radius, BasicParticleType particleIn) {		
 		double NumberofParticles = radius * 8.0D;
 		
-		for(double i = 0.0D; i < NumberofParticles; i++)
-		{
+		for(double i = 0.0D; i < NumberofParticles; i++) {
 			double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
             double d1 = (double)(y + 1);
             double d2 = z + radius * MathHelper.cos((float) (i / NumberofParticles * 360.0f));
@@ -288,6 +283,44 @@ public class FURWeaponItem extends SwordItem {
 				}
 			}
 			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.FLAME);
+            playerIn.getItemInHand(handIn).hurtAndBreak(16, playerIn, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    		});
+			playerIn.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.0F);
+			playerIn.getCooldowns().addCooldown(this, 80);
+			
+			return ActionResult.pass(playerIn.getItemInHand(handIn));
+		}
+        
+        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SOULFIREHAMMER) {
+			double radius = 4.0D;
+
+			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
+			for(Entity entity1 : list) {
+				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity/* && Modconfig.MoltenHammer_PVP*/))
+				{
+					entity1.setSecondsOnFire(2 * fire_aspect);
+					entity1.hurt(DamageSource.mobAttack(playerIn) , 10.0F + (float)sharpness
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
+					
+					if(knockback > 0)
+						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
+					
+		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD)))
+		            {
+		                int i = 20 + worldIn.random.nextInt(10 * bane_of_arthropods);
+		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
+		            }
+		            
+		            if(poisonous > 0)
+		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, poisonous - 1));
+		            
+		            if(corrosive > 0)
+		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, corrosive - 1));
+				}
+			}
+			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.SOUL_FIRE_FLAME);
             playerIn.getItemInHand(handIn).hurtAndBreak(16, playerIn, (p_220045_0_) -> {
     			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
     		});

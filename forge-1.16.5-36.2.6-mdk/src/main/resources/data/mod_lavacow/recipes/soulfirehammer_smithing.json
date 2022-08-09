@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:smithing",
+	"base": {
+		"item": "mod_lavacow:moltenhammer"
+	},
+	"addition": {
+		"item": "mod_lavacow:soulfireheart"
+	},
+	"result": {
+		"item": "mod_lavacow:soulfirehammer"
+	}
+}

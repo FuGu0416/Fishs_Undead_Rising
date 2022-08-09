@@ -175,6 +175,10 @@ public class FURItemRegistry {
 	public static final Item KUNG_PAO_CHICKEN = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new EffectInstance(FUREffectRegistry.IMMOLATION, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:kung_pao_chicken");
 	public static final Item WISP_ASHES = new Item(new Item.Properties().tab(mod_LavaCow.TAB).fireResistant()).setRegistryName("mod_lavacow:wisp_ashes");
 	public static final Item WISP_IN_A_BOTTLE = new EntityBucketItem(FUREntityRegistry.WISP, Items.GLASS_BOTTLE, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:wisp_in_a_bottle");
+	public static final Item ECTOPLASM_MASS = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ectoplasm_mass");
+	public static final Item ECTOPLASM_INGOT = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ectoplasm_ingot");
+	public static final Item SOULFIREHEART = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:soulfireheart");
+	public static final Item SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

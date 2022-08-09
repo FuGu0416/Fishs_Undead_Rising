@@ -400,7 +400,18 @@ public class EventHandler {
     		}*/
     		
     		for(int i = 0; i < 9 ; i++)
-    			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART))
+    			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART) || ((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
+					have_Heart = true;
+    		
+    		if(have_Heart)
+    			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
+    	}
+    	
+    	if(Attacked instanceof PlayerEntity && source.isExplosion()) {    		
+    		boolean have_Heart = false;
+  		
+    		for(int i = 0; i < 9 ; i++)
+    			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
 					have_Heart = true;
     		
     		if(have_Heart)
