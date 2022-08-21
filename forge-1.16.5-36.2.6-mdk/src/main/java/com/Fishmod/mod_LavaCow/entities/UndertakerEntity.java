@@ -330,6 +330,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                 		
                     	MummyEntity entityvex = FUREntityRegistry.MUMMY.create(UndertakerEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
+                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
                         
                         if(!UndertakerEntity.this.level.isClientSide())
                         	UndertakerEntity.this.level.addFreshEntity(entityvex);
@@ -341,6 +342,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                     	
                     	FrigidEntity entityvex = FUREntityRegistry.FRIGID.create(UndertakerEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
+                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
                         
                         if(!UndertakerEntity.this.level.isClientSide())
                         	UndertakerEntity.this.level.addFreshEntity(entityvex);
@@ -352,6 +354,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                     	
                     	MycosisEntity entityvex = FUREntityRegistry.MYCOSIS.create(UndertakerEntity.this.level);
                         entityvex.moveTo(blockpos, 0.0F, 0.0F);
+                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
                         
                         if(!UndertakerEntity.this.level.isClientSide())
                         	UndertakerEntity.this.level.addFreshEntity(entityvex);
@@ -365,6 +368,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                 	UnburiedEntity entityvex = FUREntityRegistry.UNBURIED.create(UndertakerEntity.this.level);
                     entityvex.moveTo(blockpos, 0.0F, 0.0F);
                     entityvex.setOwnerUUID(UndertakerEntity.this.getUUID());
+                    entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
                     
                     if(!UndertakerEntity.this.level.isClientSide())
                     	UndertakerEntity.this.level.addFreshEntity(entityvex);

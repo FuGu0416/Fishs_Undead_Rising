@@ -668,8 +668,11 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         	entityscarecrow.addEffect(new EffectInstance(Effects.HEALTH_BOOST, 8 * 20, 2));
         	entityscarecrow.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 1));
 		
-        	if(cause.getEntity() != null && cause.getEntity() instanceof LivingEntity)
-        		entityscarecrow.setTarget((LivingEntity) cause.getEntity());
+        	if(cause.getEntity() != null && cause.getEntity() instanceof LivingEntity) {
+        		if (!(cause.getEntity() instanceof PlayerEntity && ((PlayerEntity)cause.getEntity()).isCreative())) {
+        			entityscarecrow.setTarget((LivingEntity) cause.getEntity());
+        		}
+        	}
 		}
 
 		super.die(cause);

@@ -88,7 +88,7 @@ public class FURItemRegistry {
 	public static final Item UNDYINGHEART = new UndyingHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:undyingheart");
 	public static final Item GOLDENHEART = new GoldenHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(FURConfig.GoldenHeart_dur.get())).setRegistryName("mod_lavacow:goldenheart");
 	public static final Item MOLTENBEEF = new MoltenBeefItem("moltenbeef").setRegistryName("mod_lavacow:moltenbeef");
-	public static final Item MOLTENAXE = new MoltenAxeItem().setRegistryName("mod_lavacow:moltenaxe");
+	public static final Item MOLTENAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).fireResistant(), "mod_lavacow:moltenaxe", ItemTier.DIAMOND, 5.0F, -3.0F, Items.GUNPOWDER, ParticleTypes.FLAME);
 	public static final Item MOLTENHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant(), "mod_lavacow:moltenhammer", ItemTier.DIAMOND, 3, -2.4F, Items.GUNPOWDER);
 	public static final Item MOOTENHEART = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:mootenheart");//new ItemBaubleTrinket("mootenheart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
 	public static final Item POTION_OF_MOOTEN_LAVA = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA).setRegistryName("mod_lavacow:potion_of_mooten_lava");
@@ -179,6 +179,8 @@ public class FURItemRegistry {
 	public static final Item ECTOPLASM_INGOT = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ectoplasm_ingot");
 	public static final Item SOULFIREHEART = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:soulfireheart");
 	public static final Item SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
+	public static final Item SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 6.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
+	public static final Item SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");
@@ -257,6 +259,8 @@ public class FURItemRegistry {
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_warpedfirefly"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seahag"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wisp"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobber"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobberghost"));
     	
     	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_skeletonking"));
     	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_wendigo"));
@@ -268,5 +272,6 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.HYPHAE.asItem(), 0.50F);
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_FRUIT.asItem(), 0.85F);
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_THORN.asItem(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CACTOID_SPROUT.asItem(), 0.85F);
     }
 }

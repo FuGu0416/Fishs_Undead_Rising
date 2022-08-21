@@ -4,13 +4,17 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.block.TombStoneBlock;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -27,13 +31,13 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
     }
 	
 	@Override
-	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {
-		if (!FURConfig.Generate_Cemetery.get()) {			
+	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {		
+		if (!FURConfig.Generate_Cemetery.get() || (rand.nextInt(10000) > FURConfig.Cemetery_SpawnRate.get())) {			
 			return false;
 		}
 		
 		int facing = rand.nextInt(4);
-		for(int i = 0; i < rand.nextInt(5) + 1; i++)
+		for(int i = 0; i < rand.nextInt(5) + 1; i++) {
 			switch(facing) {
 				case 0: //NORTH
 					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.north(2 * i)).below().below(), facing);
@@ -50,6 +54,21 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				default:
 					break;
 			}	
+		}
+		
+		if (rand.nextInt(60) < FURConfig.pSpawnRate_GraveRobber.get()) {
+			BlockPos pos = worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position);
+	        	
+	    	for (int i = 0; i < rand.nextInt(5); ++i) {
+	            BlockPos blockpos = pos.offset(-2 + rand.nextInt(5), 0, -2 + rand.nextInt(5));
+	            GraveRobberEntity entity = FUREntityRegistry.GRAVEROBBER.create(worldIn.getLevel());	            
+	            entity.moveTo(blockpos, 0.0F, 0.0F);      
+	            entity.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(blockpos), SpawnReason.NATURAL, null, (CompoundNBT)null);
+	            entity.setPersistenceRequired();
+	            worldIn.addFreshEntity(entity);
+	        }	
+		}
+    	
 		return true;
     }
 	

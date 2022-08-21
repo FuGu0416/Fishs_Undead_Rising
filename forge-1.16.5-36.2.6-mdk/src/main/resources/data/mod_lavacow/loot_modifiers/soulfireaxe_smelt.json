@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "item": "mod_lavacow:soulfireaxe"
+      }
+    }
+  ]
+}

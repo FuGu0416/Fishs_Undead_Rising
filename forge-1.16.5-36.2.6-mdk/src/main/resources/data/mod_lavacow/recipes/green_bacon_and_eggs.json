@@ -11,10 +11,16 @@
 			"tag": "forge:eggs"
 	    }
 	],
-    {
-    	"item": "mod_lavacow:moltenpan",
-    	"data": 32767
-    },
+    [
+        {
+			"item": "mod_lavacow:moltenpan",
+			"data": 32767
+    	},
+    	{
+			"item": "mod_lavacow:soulfirepan",
+			"data": 32767
+    	}	    	
+    ],
     {
       "item": "mod_lavacow:plagued_porkchop"
     }

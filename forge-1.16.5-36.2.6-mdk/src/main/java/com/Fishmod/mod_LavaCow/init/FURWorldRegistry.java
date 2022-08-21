@@ -66,7 +66,7 @@ public class FURWorldRegistry {
 		CORDY_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:cordy_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.CORDY_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));		
 		VEIL_SHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:veil_shroom", Feature.RANDOM_PATCH.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FURBlockRegistry.VEIL_SHROOM.defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(new Random().nextInt(2)))), SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build()).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).chance(4).count(3));				
 		HUGE_GLOWSHROOM_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:huge_glowshroom", HUGE_GLOWSHROOM.get().configured(new BigMushroomFeatureConfig(new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.defaultBlockState()), new SimpleBlockStateProvider(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.defaultBlockState()), 3)));
-		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.get().configured(IFeatureConfig.NONE).chance(FURConfig.SpawnRate_Cemetery.get()));		
+		SMALL_CEMETERY_CF = Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "mod_lavacow:small_cemetery", SMALL_CEMETERY.get().configured(IFeatureConfig.NONE).chance(1));		
 	}
 	
 	public static void setupStructures() {
@@ -86,9 +86,11 @@ public class FURWorldRegistry {
 		if(biomeKey == null)
 			return;
 		
+		
+		
 		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				(!(BiomeDictionary.getTypes(biomeKey).contains(Type.COLD) && 
-				!(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))))) {
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.COLD)) && 
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, GLOWSHROOM_CF);
 		}
 		
@@ -277,7 +279,8 @@ public class FURWorldRegistry {
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {
-		if(FURConfig.pSpawnRate_Mummy.get() > 0 && event.getStructure().equals(Structure.DESERT_PYRAMID)) {
+		if(FURConfig.pSpawnRate_Mummy.get() > 0 && event.getStructure().equals(Structure.DESERT_PYRAMID) ||
+				event.getStructure().equals(DESERT_TOMB.get())) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MUMMY, FURConfig.pSpawnRate_Mummy.get(), 4, 8));
 		}
 		
@@ -287,17 +290,23 @@ public class FURWorldRegistry {
 				event.getStructure().equals(Structure.NETHER_BRIDGE) ||
 				event.getStructure().equals(Structure.STRONGHOLD) ||
 				event.getStructure().equals(Structure.VILLAGE) ||
-				event.getStructure().equals(Structure.WOODLAND_MANSION)) {
+				event.getStructure().equals(Structure.WOODLAND_MANSION) ||
+				event.getStructure().equals(DESERT_TOMB.get())) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, FURConfig.pSpawnRate_Mimic.get(), 1, 1));
 		}
 		
 		if(FURConfig.pSpawnRate_Mimic.get() > 0 && event.getStructure().equals(Structure.PILLAGER_OUTPOST)) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, 1, 1, 1));
 		}
-		
+				
 		if(FURConfig.pSpawnRate_SeaHag.get() > 0 && event.getStructure().equals(Structure.OCEAN_RUIN) || 
 				event.getStructure().equals(Structure.SHIPWRECK)) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
+		}
+		
+		if(FURConfig.pSpawnRate_GraveRobber.get() > 0 && event.getStructure().equals(Structure.DESERT_PYRAMID) ||
+				event.getStructure().equals(DESERT_TOMB.get())) {
+			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.GRAVEROBBER, FURConfig.pSpawnRate_GraveRobber.get(), 4, 8));
 		}
 	}
 	

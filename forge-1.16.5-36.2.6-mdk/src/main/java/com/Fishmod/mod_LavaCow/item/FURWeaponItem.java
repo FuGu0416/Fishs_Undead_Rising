@@ -84,7 +84,7 @@ public class FURWeaponItem extends SwordItem {
 	@Override
 	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
 		if (!stack.isEnchanted()) {
-			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER)
+			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN)
 				stack.enchant(Enchantments.FIRE_ASPECT, 2);
 			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
 				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
@@ -100,7 +100,7 @@ public class FURWeaponItem extends SwordItem {
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if (!stack.isEnchanted()) {
-			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER)
+			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN)
 				stack.enchant(Enchantments.FIRE_ASPECT, 2);
 			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
 				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
@@ -125,7 +125,7 @@ public class FURWeaponItem extends SwordItem {
 	@Override
     public boolean hasContainerItem(ItemStack stack)
     {
-        return stack.getItem() == FURItemRegistry.MOLTENPAN && stack.getDamageValue() < stack.getMaxDamage();
+        return (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) && stack.getDamageValue() < stack.getMaxDamage();
     }
     
 	@Override
@@ -188,7 +188,7 @@ public class FURWeaponItem extends SwordItem {
             ((PlayerEntity) attacker).sweepAttack();
 		} else if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
 			((PlayerEntity)attacker).getFoodData().eat(1, 0.0F);
-		} else if(stack.getItem() == FURItemRegistry.MOLTENPAN) {
+		} else if(stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
 		} else if(stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));

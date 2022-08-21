@@ -18,6 +18,8 @@ import com.Fishmod.mod_LavaCow.client.renderer.entity.FogletRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.ForsakenRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.FrigidRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhostRayRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberGhostRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.LilSludgeRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.MimicRenderer;
@@ -112,6 +114,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAHAG, manager -> new SeaHagRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WISP, manager -> new WispRenderer(manager));  
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
         
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));

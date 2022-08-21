@@ -20,10 +20,16 @@
         "X": {
 			"item": "mod_lavacow:intestine"
         },
-        "Y": {
-	    	"item": "mod_lavacow:moltenpan",
-	    	"data": 32767
-        }
+        "Y": [
+            {
+				"item": "mod_lavacow:moltenpan",
+				"data": 32767
+	    	},
+	    	{
+				"item": "mod_lavacow:soulfirepan",
+				"data": 32767
+	    	}    	
+        ]
     },
     "result": {
 	    "item": "mod_lavacow:sausage_roll",

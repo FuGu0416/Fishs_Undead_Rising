@@ -13,9 +13,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -76,7 +78,7 @@ public class TombStoneBlock extends Block implements IWaterLoggable {
         
     	if(i < 3 && worldIn.isAreaLoaded(pos, 3) && rand.nextInt(100) < FURConfig.Cemetery_SpawnRate.get() && !worldIn.isDay() && worldIn.getDifficulty() != Difficulty.PEACEFUL) {           
 	        UnburiedEntity entityunburied = FUREntityRegistry.UNBURIED.create(worldIn);
-	        
+	        	        
 			switch(enumfacing) {
 				case NORTH:
 					entityunburied.moveTo(pos.south(), 0.0F, 0.0F);
@@ -93,6 +95,8 @@ public class TombStoneBlock extends Block implements IWaterLoggable {
 				default:
 					break;
 			}	
+			
+			entityunburied.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(entityunburied.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
 			
 	        if(!worldIn.isClientSide())
 	        	worldIn.addFreshEntity(entityunburied);

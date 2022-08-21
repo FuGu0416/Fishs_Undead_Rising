@@ -161,6 +161,13 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wisp;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_Health;
 	public static final ConfigValue<Double> Wisp_ExplosionPower;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GraveRobber;
+	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GraveRobberGhost;
+	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -459,6 +466,15 @@ public final class FURConfig {
 		Wisp_Health = BUILDER.comment("Maximum Wisp health [1-1000]").defineInRange("wisp health", 8.0D, 1.0D, 1000.0D);
 		Wisp_ExplosionPower = BUILDER.comment("Wisp strength [1-1000]").defineInRange("wisp attack", 3.0D, 0.0D, 10.0D);	
 		BUILDER.pop();
+
+		BUILDER.push("Grave Robber");
+		pSpawnRate_GraveRobber = BUILDER.comment("Set the spawn rate of Grave Robber [0-10000]").defineInRange("grave robber spawn rate", 15, 0, 10000);
+		GraveRobber_Health = BUILDER.comment("Maximum Grave Robber health [1-1000]").defineInRange("grave robber health", 20.0D, 1.0D, 1000.0D);
+		GraveRobber_Attack = BUILDER.comment("Grave Robber strength [1-1000]").defineInRange("grave robber attack", 5.0D, 1.0D, 1000.0D);	
+		pSpawnRate_GraveRobberGhost = BUILDER.comment("Set the spawn rate of Ghost of Grave Robber [0-100]").defineInRange("grave robber ghost spawn rate", 40, 0, 100);
+		GraveRobberGhost_Health = BUILDER.comment("Maximum Ghost of Grave Robber health [1-1000]").defineInRange("grave robber ghost health", 8.0D, 1.0D, 1000.0D);
+		GraveRobberGhost_Attack = BUILDER.comment("Ghost of Grave Robber strength [1-1000]").defineInRange("grave robber ghost attack", 5.0D, 1.0D, 1000.0D);	
+		BUILDER.pop();
 		
 		BUILDER.push("Item");
 		MoltenHammer_PVP = BUILDER.comment("Allow Molten Hammer active effect to hit players [false/true]").define("allow molten hammer pvp", false);
@@ -538,7 +554,7 @@ public final class FURConfig {
 		
 		BUILDER.push("Structure");
 		Generate_Cemetery = BUILDER.comment("Generate Cemetery in the Overworld. [false/true]").define("generate cemetery", true);
-		SpawnRate_Cemetery = BUILDER.comment("Spawn rate of Cemetery [1-10000]").defineInRange("cemetery spawn rate", 500, 0, 10000);
+		SpawnRate_Cemetery = BUILDER.comment("Spawn rate of Cemetery [1-10000]").defineInRange("cemetery spawn rate", 2, 0, 10000);
 		Spawn_Cemetery_AllowList = BUILDER.comment("Cemetery are only allowed to spawn in these dimensions' IDs").defineList("cemetery spawn allow dimensions", 
 				Lists.newArrayList(Dimension.OVERWORLD.location().toString()), o -> o instanceof String);
 		Cemetery_SpawnRate = BUILDER.comment("Cemetery spawns Unburied occasionally. [0-100]").defineInRange("cemetery spawns unburied", 40, 0, 100);	

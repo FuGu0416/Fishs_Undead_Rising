@@ -1,10 +1,13 @@
 package com.Fishmod.mod_LavaCow;
 
 import net.minecraft.item.ItemGroup;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -58,13 +61,15 @@ public class mod_LavaCow {
         // Register the doClientStuff method for modloading
     	eventBus.addListener(this::doClientStuff); 
     	eventBus.addListener(this::setupParticleEvent);
-
+        eventBus.addGenericListener(Feature.class, EventPriority.LOW,
+                (final RegistryEvent.Register<Feature<?>> event) -> FURWorldRegistry.register());
+        
         // Register ourselves for server and other game events we are interested in
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);           
         MinecraftForge.EVENT_BUS.register(new EventHandler());                   
         ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
-
+        
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
@@ -91,7 +96,7 @@ public class mod_LavaCow {
     	event.enqueueWork(() -> {
     		FURWorldRegistry.setupStructures();
     		FURProcessors.registerProcessors();
-            FURWorldRegistry.register();
+            //FURWorldRegistry.register();
             LootTableHandler.addLootTable();
         });
         PROXY.initNetwork();

@@ -14,11 +14,10 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EventBusHandler {
     @SubscribeEvent
-    public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>>
-                                                           event) {
+    public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         event.getRegistry().registerAll(
-                new SmeltLootModifier.Serializer().setRegistryName
-                        (new ResourceLocation(mod_LavaCow.MODID, "moltenaxe_smelt"))
+                new SmeltLootModifier.Serializer().setRegistryName(new ResourceLocation(mod_LavaCow.MODID, "moltenaxe_smelt")),
+                new SmeltLootModifier.Serializer().setRegistryName(new ResourceLocation(mod_LavaCow.MODID, "soulfirenaxe_smelt"))
         );
     }
 }
