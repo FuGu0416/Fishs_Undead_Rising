@@ -15,14 +15,14 @@ public class ModelCrown<T extends LivingEntity> extends BipedModel<T> {
 		super(modelSize, 0, 64, 32);
         this.texWidth = 128;
         this.texHeight = 64;
-        this.Crown = new ModelRenderer(this, 92, 19);
+        this.Crown = new ModelRenderer(this, 92, 23);
         this.Crown.setPos(0.0F, -6.0F, 0.0F);
         this.Crown.addBox(-4.5F, -4.0F, -4.5F, 9, 5, 9, 0.0F);
         this.head.addChild(this.Crown);
 	}
 	
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAngle, float entityTickTime, float rotationYaw, float rotationPitch) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAngle, float entityTickTime, float rotationYaw, float rotationPitch) {		
         if (entity instanceof ArmorStandEntity)
         {
             ArmorStandEntity ArmorStandEntity = (ArmorStandEntity)entity;
