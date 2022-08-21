@@ -32,8 +32,7 @@ public class EntityAIFollowEntity extends Goal
     float minDist;
     private float oldWaterCost;
 
-    public EntityAIFollowEntity(MobEntity tameableIn, UUID uniqueIDIn, double followSpeedIn, float minDistIn, float maxDistIn)
-    {
+    public EntityAIFollowEntity(MobEntity tameableIn, UUID uniqueIDIn, double followSpeedIn, float minDistIn, float maxDistIn) {
         this.tameable = tameableIn;
         this.ownerID = uniqueIDIn;
         this.world = tameableIn.level;
@@ -42,8 +41,7 @@ public class EntityAIFollowEntity extends Goal
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
 
-        if (!(tameableIn.getNavigation() instanceof GroundPathNavigator) && !(tameableIn.getNavigation() instanceof FlyingPathNavigator))
-        {
+        if (!(tameableIn.getNavigation() instanceof GroundPathNavigator) && !(tameableIn.getNavigation() instanceof FlyingPathNavigator)) {
             throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
         }
     }
@@ -51,44 +49,36 @@ public class EntityAIFollowEntity extends Goal
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    public boolean canUse()
-    {
+    public boolean canUse() {
         if(this.world instanceof ServerWorld) {
 	    	LivingEntity LivingEntity = SpawnUtil.getEntityByUniqueId(this.ownerID, (ServerWorld) this.world);
 	
-	        if (LivingEntity == null)
-	        {        	
+	        if (LivingEntity == null) {        	
 	        	return false;
-	        }
-	        else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity)LivingEntity).isSpectator())
-	        {
+	        } else if (LivingEntity instanceof PlayerEntity && ((PlayerEntity)LivingEntity).isSpectator()) {
 	            return false;
-	        }
-	        else if (this.tameable.distanceToSqr(LivingEntity) < (double)(this.minDist * this.minDist))
-	        {
+	        } else if (this.tameable.distanceToSqr(LivingEntity) < (double)(this.minDist * this.minDist)) {
 	            return false;
-	        }
-	        else
-	        {
+	        } else {
 	            this.owner = LivingEntity;
 	            return true;
 	        }
-        } else return false;
+        }
+        
+        return false;
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean canContinueToUse()
-    {
+    public boolean canContinueToUse() {
         return !this.petPathfinder.isDone() && this.tameable.distanceToSqr(this.owner) > (double)(this.maxDist * this.maxDist);
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void start()
-    {
+    public void start() {
         this.timeToRecalcPath = 0;
         this.oldWaterCost = this.tameable.getPathfindingMalus(PathNodeType.WATER);
         this.tameable.setPathfindingMalus(PathNodeType.WATER, 0.0F);
@@ -97,8 +87,7 @@ public class EntityAIFollowEntity extends Goal
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void stop()
-    {
+    public void stop() {
         this.owner = null;
         this.petPathfinder.stop();
         this.tameable.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
@@ -107,16 +96,13 @@ public class EntityAIFollowEntity extends Goal
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void tick()
-    {
+    public void tick() {
         this.tameable.getLookControl().setLookAt(this.owner, 10.0F, (float)this.tameable.getMaxHeadXRot());
 
-        if (--this.timeToRecalcPath <= 0)
-        {
+        if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = 10;
 
-            if (!this.tameable.isLeashed() && !this.tameable.isPassenger())
-            {
+            if (!this.tameable.isLeashed() && !this.tameable.isPassenger()) {
                 if (this.tameable.distanceToSqr(this.owner) >= 144.0D) {
                     this.teleportToOwner();
                  } else {

@@ -79,7 +79,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -478,6 +477,10 @@ public class EventHandler {
 
     	if(event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
+    	
+    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeletonEntity && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
+    		event.getEntity().removeTag("FUR_tameSkeleton");
+    	}
     }
     
     @SubscribeEvent
@@ -718,13 +721,6 @@ public class EventHandler {
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ACIDICHEART, 30, 1, 4, 20));
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
     	}
-    }
-    
-    @SubscribeEvent
-    public void onEVisibility(LivingVisibilityEvent event) {
-        if (event.getLookingEntity() instanceof AbstractSkeletonEntity)
-            if (event.getEntityLiving() instanceof PlayerEntity && event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN))
-                    event.modifyVisibility(0.0D);    	
     }
     
     @SubscribeEvent

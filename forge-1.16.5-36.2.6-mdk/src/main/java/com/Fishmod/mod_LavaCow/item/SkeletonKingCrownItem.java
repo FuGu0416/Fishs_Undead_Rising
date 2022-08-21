@@ -1,9 +1,7 @@
 package com.Fishmod.mod_LavaCow.item;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelCrown;
@@ -17,10 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -36,7 +32,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SkeletonKingCrownItem extends ArmorItem {
-
+	private List<Goal> remove = new ArrayList<Goal>();
+	
 	public SkeletonKingCrownItem(Item.Properties p_i48534_3_) {
 		super(ArmorMaterial.DIAMOND, EquipmentSlotType.HEAD, p_i48534_3_);
 	}
@@ -62,82 +59,39 @@ public class SkeletonKingCrownItem extends ArmorItem {
     /**
      * Called to tick armor in the armor slot. Override to do something
      */
-	@SuppressWarnings("unchecked")
 	@Override
-    public void onArmorTick(ItemStack itemStack, World world, PlayerEntity player){
-    	if(player.tickCount % 20 == 0) {
-    		boolean modified = false;
-    			    	
-	    	for (AbstractSkeletonEntity Skeleton : world.getEntitiesOfClass(AbstractSkeletonEntity.class, player.getBoundingBox().inflate(16.0D))) {
-	    		Field goals;
-	    		Goal remove = null;
+    public void onArmorTick(ItemStack itemStack, World world, PlayerEntity player) {	
+    	if(player.tickCount % 20 == 0) {    			    	
+	    	for (AbstractSkeletonEntity Skeleton : world.getEntitiesOfClass(AbstractSkeletonEntity.class, player.getBoundingBox().inflate(16.0D))) {   		
+	    		this.remove.clear();
 	    		
 	    		if(Skeleton.getTarget() != null && Skeleton.getTarget().equals(player))
 	    			Skeleton.setTarget(null);
 	    		
-				try {
-					goals = Skeleton.targetSelector.getClass().getDeclaredField("availableGoals");
-					goals.setAccessible(true);
-					Set<PrioritizedGoal> goalSet;
-					try {
-						goalSet = (Set<PrioritizedGoal>) goals.get(Skeleton.targetSelector);
-				    	for(PrioritizedGoal task : goalSet) {
-					        if(task.getGoal() instanceof EntityAIFollowEntity) {
-					        	modified = true;     
-					        }
-					        
-					        if(task.getGoal() instanceof NearestAttackableTargetGoal<?>) {
-								Field targetClassField;
-								try {
-									targetClassField = task.getGoal().getClass().getDeclaredField("targetType");
-									targetClassField.setAccessible(true);
-					                Class<?> targetClass;				                
-									try {
-										targetClass = (Class<?>) targetClassField.get(task.getGoal());
-										if(targetClass.equals(PlayerEntity.class) || targetClass.equals(ServerPlayerEntity.class)) {
-						    	            remove = task.getGoal();
-						    	            break;							
-										}   
-									} catch (IllegalArgumentException e) {
-										continue;
-									} catch (IllegalAccessException e) {
-										continue;
-									}
-								} catch (NoSuchFieldException e) {
-									continue;
-								} catch (SecurityException e) {
-									continue;
-								}	      
-					        }
-				    	}
-				    	
-				    	if(!modified && remove != null) {
-			    			Skeleton.setTarget(null);
-			    			Skeleton.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0F, 1.0F);
-			    			
-				            for(int i = 0; i < 16; ++i) {
-				                double d0 = Item.random.nextGaussian() * 0.02D;
-				                double d1 = Item.random.nextGaussian() * 0.02D;
-				                double d2 = Item.random.nextGaussian() * 0.02D;
-				                player.level.addParticle(ParticleTypes.ENTITY_EFFECT, Skeleton.getRandomX(1.0D), Skeleton.getRandomY() + 1.0D, Skeleton.getRandomZ(1.0D), d0, d1, d2);
-				            }
-				        	
-				    		Skeleton.goalSelector.addGoal(6, new EntityAIFollowEntity(Skeleton, player.getUUID(), 1.0D, 10.0F, 2.0F));
-				    		Skeleton.targetSelector.addGoal(1, new SkeletonOwnerHurtByTargetGoal(Skeleton, player.getUUID()));
-				    		Skeleton.targetSelector.addGoal(2, new SkeletonOwnerHurtTargetGoal(Skeleton, player.getUUID()));
-				    		Skeleton.targetSelector.removeGoal(remove);
-					    }
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (IllegalAccessException e1) {
-						e1.printStackTrace();
+				Skeleton.targetSelector.getRunningGoals().forEach((k) -> {
+					if(k.getGoal() instanceof NearestAttackableTargetGoal<?>) {
+						this.remove.add(k.getGoal());			
 					}
+				});				
+								
+				for(Goal e : this.remove) {
+					Skeleton.targetSelector.removeGoal(e);
+				}
+				
+	    		if(!Skeleton.getTags().contains("FUR_tameSkeleton")) {
+	    			Skeleton.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0F, 1.0F);
+		            for(int i = 0; i < 16; ++i) {
+		                double d0 = Item.random.nextGaussian() * 0.02D;
+		                double d1 = Item.random.nextGaussian() * 0.02D;
+		                double d2 = Item.random.nextGaussian() * 0.02D;
+		                player.level.addParticle(ParticleTypes.ENTITY_EFFECT, Skeleton.getRandomX(1.0D), Skeleton.getRandomY() + 1.0D, Skeleton.getRandomZ(1.0D), d0, d1, d2);
+		            }
 
-				} catch (NoSuchFieldException e1) {
-					e1.printStackTrace();
-				} catch (SecurityException e1) {
-					e1.printStackTrace();
-				}   		
+		    		Skeleton.goalSelector.addGoal(6, new EntityAIFollowEntity(Skeleton, player.getUUID(), 1.0D, 10.0F, 2.0F));
+		    		Skeleton.targetSelector.addGoal(1, new SkeletonOwnerHurtByTargetGoal(Skeleton, player.getUUID()));
+		    		Skeleton.targetSelector.addGoal(2, new SkeletonOwnerHurtTargetGoal(Skeleton, player.getUUID()));		
+		    		Skeleton.addTag("FUR_tameSkeleton");
+			    }		
 	    	}
     	}
     }

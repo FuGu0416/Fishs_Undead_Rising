@@ -145,6 +145,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));      		
         		break;
         	case 2:
+        	default:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.BOW));
         		break;
         	/*case 3:
@@ -160,10 +161,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
                 skeletonhorseentity.level.addFreshEntity(skeletonhorseentity);
                 
                 this.startRiding(skeletonhorseentity);           
-        		break;*/
-        	default:
-        		break;
-        	
+        		break;*/        	
         }
         this.reassessWeaponGoal();
                 
