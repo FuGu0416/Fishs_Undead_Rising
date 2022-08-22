@@ -138,7 +138,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     		this.setSecondsOnFire(8);
         }
     	
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
+    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.1D && !this.isAggressive());
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);

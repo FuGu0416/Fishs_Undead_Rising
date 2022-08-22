@@ -24,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class LootTableHandler {
 	public static final ResourceLocation CEMETERY_CHEST = new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest");
-	public static final ResourceLocation SKELETON_KING = new ResourceLocation(mod_LavaCow.MODID, "entities/skeleton_king");
+	public static final ResourceLocation SKELETON_KING = new ResourceLocation(mod_LavaCow.MODID, "entities/skeletonking");
 	public static final ResourceLocation DESERT_TOMB_CHEST = new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest");
 	
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
@@ -77,8 +77,7 @@ public class LootTableHandler {
 	}
 	
 	public static void dropRareLoot(Entity entityIn, Item itemIn, int chance,@Nullable Enchantment enchantmentIn, int enchantlevel, int looting) {
-		if (!entityIn.level.isClientSide() && new Random().nextInt(100) < chance + (2 * looting))
-    	{			
+		if (!entityIn.level.isClientSide() && new Random().nextInt(100) < chance + (2 * looting)) {			
 			ItemStack item = new ItemStack(itemIn, 1);
 			if(FURConfig.Enchantment_Enable.get() && enchantmentIn != null)
 				EnchantedBookItem.addEnchantment(item, new EnchantmentData(enchantmentIn, enchantlevel));
@@ -87,8 +86,7 @@ public class LootTableHandler {
 	}
 	
 	public static void dropRareLoot(Entity entityIn, ItemStack itemstackIn, int chance, int looting) {
-		if (!entityIn.level.isClientSide() && new Random().nextInt(100) < chance + (2 * looting))
-    	{			
+		if (!entityIn.level.isClientSide() && new Random().nextInt(100) < chance + (2 * looting)) {			
 			entityIn.spawnAtLocation(itemstackIn, 0.0F);
     	}
 	}

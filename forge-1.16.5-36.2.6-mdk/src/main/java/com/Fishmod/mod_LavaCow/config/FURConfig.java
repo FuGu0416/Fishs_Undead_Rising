@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.world.Dimension;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
 public final class FURConfig {
 	public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
@@ -130,6 +129,10 @@ public final class FURConfig {
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> SkeletonKing_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> SkeletonKing_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SkeletonKing_AbilityA_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SkeletonKing_AbilityB_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SkeletonKing_AbilityC_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> SkeletonKing_Loot_Option;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Mummy;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Health;
@@ -160,7 +163,7 @@ public final class FURConfig {
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wisp;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_Health;
-	public static final ConfigValue<Double> Wisp_ExplosionPower;
+	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_ExplosionPower;
 
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GraveRobber;
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Health;
@@ -420,6 +423,10 @@ public final class FURConfig {
 		BUILDER.push("Skeleton King");
 		SkeletonKing_Health = BUILDER.comment("Maximum Skeleton King health [1-1000]").defineInRange("skeleton king health", 360.0D, 1.0D, 1000.0D);
 		SkeletonKing_Attack = BUILDER.comment("Skeleton King strength [1-1000]").defineInRange("skeleton king attack", 16.0D, 1.0D, 1000.0D);
+		SkeletonKing_AbilityA_Cooldown = BUILDER.comment("Set the cooldown of Sand Tomb [0-100]").defineInRange("skeleton king sand tomb cooldown", 10, 0, 100);
+		SkeletonKing_AbilityB_Cooldown = BUILDER.comment("Set the cooldown of Sand Wraith [0-100]").defineInRange("skeleton king sand wraith cooldown", 16, 0, 100);
+		SkeletonKing_AbilityC_Cooldown = BUILDER.comment("Set the cooldown of Death Coil [0-100]").defineInRange("skeleton king death coil cooldown", 6, 0, 100);
+		SkeletonKing_Loot_Option = BUILDER.comment("Should Skeleton King drop its loots inside a chest [false/true]").define("skeleton king loot in chest", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Mummy");

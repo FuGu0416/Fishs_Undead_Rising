@@ -63,6 +63,11 @@ public class SeaHagEntity extends FloatingMobEntity {
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
     
+    @Override
+	public float getBrightness() {
+		return 1.0F;
+	}
+    
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.175D)

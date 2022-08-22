@@ -1,7 +1,7 @@
 {
   "pools": [
 	    {      
-	      "name": "mod_lavacow:skeleton_king",
+	      "name": "mod_lavacow:skeleton_king_base",
 	      "rolls": {
 	        "min": 2,
 	        "max": 3
@@ -79,7 +79,7 @@
 	      ]
 	    },
         {
-            "name": "mod_lavacow:skeleton_king",
+            "name": "mod_lavacow:skeleton_king_emblem",
  			"rolls": {
  				"min": 2,
  				"max": 3
@@ -102,7 +102,7 @@
             ]
         },
         {
-            "name": "mod_lavacow:skeleton_king",
+            "name": "mod_lavacow:skeleton_king_crown",
             "rolls": 1,
             "entries": [
                 {
@@ -121,7 +121,7 @@
             ]
         },
         {
-            "name": "mod_lavacow:skeleton_king",
+            "name": "mod_lavacow:skeleton_king_equipment",
             "rolls": 2,
             "entries": [
                 {

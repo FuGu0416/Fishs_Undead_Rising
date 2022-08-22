@@ -14,6 +14,7 @@ import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -30,7 +31,6 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,7 +74,6 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new SkeletonKingEntity.AITeleportSpell());
         this.goalSelector.addGoal(3, new SkeletonKingEntity.AITossSpell());
@@ -379,7 +378,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         }
 
         protected int getCastingInterval() {
-            return 200;
+            return FURConfig.SkeletonKing_AbilityA_Cooldown.get() * 20;
         }
 
         @Nullable
@@ -444,7 +443,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         }
 
         protected int getCastingInterval() {
-            return (SkeletonKingEntity.this.getHealth() >  SkeletonKingEntity.this.getMaxHealth() * 0.5F) ? 320 : 160;
+            return FURConfig.SkeletonKing_AbilityB_Cooldown.get() * ((SkeletonKingEntity.this.getHealth() >  SkeletonKingEntity.this.getMaxHealth() * 0.5F) ? 20 : 10);
         }
 
         @Nullable
@@ -524,7 +523,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         }
 
         protected int getCastingInterval() {
-            return 120;
+            return FURConfig.SkeletonKing_AbilityC_Cooldown.get();
         }
 
         @Nullable
@@ -621,8 +620,8 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	
     @Nullable
     @Override
-    protected ResourceLocation getDefaultLootTable() {
-        return null;
+    protected ResourceLocation getDefaultLootTable() {    	
+        return FURConfig.SkeletonKing_Loot_Option.get() ? null : super.getDefaultLootTable();
     }
 
     protected SoundEvent getAmbientSound() {
@@ -657,19 +656,22 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
      * Called when the mob's health reaches 0.
      */
 	@Override
-    public void dropAllDeathLoot(DamageSource cause) {
-		BlockPos position = this.blockPosition();
+    public void dropAllDeathLoot(DamageSource cause) {		
 		super.dropAllDeathLoot(cause);
 		
-		while(this.level.getBlockState(position.below()).getBlock() == Blocks.AIR)
-			position = position.below();
-		
-		while(this.level.getBlockState(position).getBlock() != Blocks.AIR)
-			position = position.above();
-		
-		this.level.setBlock(position, Blocks.CHEST.defaultBlockState(), 8 | 4 | 2 | 1);
-        if (this.level.getBlockState(position).getBlock() instanceof ChestBlock) {
-        	LockableLootTileEntity.setLootTable(this.level, this.random, position, LootTableHandler.SKELETON_KING);
-        }
+		if (FURConfig.SkeletonKing_Loot_Option.get()) {
+			BlockPos position = this.blockPosition();
+			
+			while(this.level.getBlockState(position).getMaterial().equals(Material.AIR))
+				position = position.below();
+			
+			while(!this.level.getBlockState(position).getMaterial().equals(Material.AIR))
+				position = position.above();
+			
+			this.level.setBlock(position, Blocks.CHEST.defaultBlockState(), 8 | 4 | 2 | 1);
+	        if (this.level.getBlockState(position).getBlock() instanceof ChestBlock) {
+	        	LockableLootTileEntity.setLootTable(this.level, this.random, position, LootTableHandler.SKELETON_KING);
+	        }
+		}
     }
 }
