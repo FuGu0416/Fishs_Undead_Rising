@@ -322,10 +322,10 @@
 	"entity_ghostray_death": "鬼靈鱝死亡",
 	"entity_ghostray_hurt": "鬼靈鱝受傷",
 
-	"entity_banshee_ambient": "報喪女妖低語聲",
+	"entity_banshee_ambient": "怨靈低語聲",
 	"entity_banshee_attack": "報喪女妖尖叫",
-	"entity_banshee_death": "報喪女妖死亡",
-	"entity_banshee_hurt": "鬼靈受傷",
+	"entity_banshee_death": "怨靈死亡",
+	"entity_banshee_hurt": "怨靈受傷",
 
 	"entity_weta_ambient": "沙螽唧唧聲",
 	"entity_weta_death": "沙螽死亡",

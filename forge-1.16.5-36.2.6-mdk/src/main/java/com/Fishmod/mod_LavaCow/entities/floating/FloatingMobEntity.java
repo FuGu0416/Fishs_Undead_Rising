@@ -341,7 +341,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             BlockPos blockpos = FloatingMobEntity.this.blockPosition();
             int y = FloatingMobEntity.this.getRandom().nextInt(11) - 5;
            
-            y = Math.min(SpawnUtil.getHeight(FloatingMobEntity.this).getY() + 4/*FURConfig.FlyingHeight_limit.get()*/, y);
+            y = Math.min(SpawnUtil.getHeight(FloatingMobEntity.this).getY() + 4, y);
 
             for(int i = 0; i < 3; ++i) {
                BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);

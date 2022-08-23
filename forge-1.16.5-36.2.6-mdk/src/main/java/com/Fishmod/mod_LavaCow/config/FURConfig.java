@@ -172,6 +172,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Attack;
 	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wraith;
+	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Attack;
+	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Wendigo_AnimalAttack;
@@ -481,6 +485,12 @@ public final class FURConfig {
 		pSpawnRate_GraveRobberGhost = BUILDER.comment("Set the spawn rate of Ghost of Grave Robber [0-100]").defineInRange("grave robber ghost spawn rate", 40, 0, 100);
 		GraveRobberGhost_Health = BUILDER.comment("Maximum Ghost of Grave Robber health [1-1000]").defineInRange("grave robber ghost health", 8.0D, 1.0D, 1000.0D);
 		GraveRobberGhost_Attack = BUILDER.comment("Ghost of Grave Robber strength [1-1000]").defineInRange("grave robber ghost attack", 5.0D, 1.0D, 1000.0D);	
+		BUILDER.pop();
+		
+		BUILDER.push("Wraith");
+		pSpawnRate_Wraith = BUILDER.comment("Set the spawn rate of Wraith [0-10000]").defineInRange("wraith spawn rate", 20, 0, 10000);
+		Wraith_Health = BUILDER.comment("Maximum Wraith health [1-1000]").defineInRange("wraith health", 20.0D, 1.0D, 1000.0D);
+		Wraith_Attack = BUILDER.comment("Wraith strength [1-1000]").defineInRange("wraith attack", 5.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

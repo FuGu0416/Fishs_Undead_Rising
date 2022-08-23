@@ -27,6 +27,7 @@ import com.Fishmod.mod_LavaCow.entities.floating.BansheeEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.FloatingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.GraveRobberGhostEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.SeaHagEntity;
+import com.Fishmod.mod_LavaCow.entities.floating.WraithEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.FlyingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.GhostRayEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.PteraEntity;
@@ -103,10 +104,11 @@ public class FUREntityRegistry {
 	public static final EntityType<CactyrantEntity> CACTYRANT = registerEntity(EntityType.Builder.of(CactyrantEntity::new, EntityClassification.MONSTER).sized(1.3F, 2.8F), "cactyrant");
 	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 1.1F), "cactoid");
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
-	public static final EntityType<SeaHagEntity> SEAHAG = registerEntity(EntityType.Builder.of(SeaHagEntity::new, EntityClassification.MONSTER).sized(1.25F, 1.5F).clientTrackingRange(8), "seahag");
+	public static final EntityType<SeaHagEntity> SEAHAG = registerEntity(EntityType.Builder.of(SeaHagEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "seahag");
 	public static final EntityType<WispEntity> WISP = registerEntity(EntityType.Builder.of(WispEntity::new, EntityClassification.MONSTER).sized(0.525F, 0.525F).clientTrackingRange(8).fireImmune(), "wisp");
 	public static final EntityType<GraveRobberEntity> GRAVEROBBER = registerEntity(EntityType.Builder.of(GraveRobberEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobber");
 	public static final EntityType<GraveRobberGhostEntity> GRAVEROBBERGHOST = registerEntity(EntityType.Builder.of(GraveRobberGhostEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobberghost");
+	public static final EntityType<WraithEntity> WRAITH = registerEntity(EntityType.Builder.of(WraithEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "wraith");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -163,6 +165,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WispEntity::checkWispSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBERGHOST, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(WRAITH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -224,5 +227,6 @@ public class FUREntityRegistry {
         event.put(WISP, WispEntity.createAttributes().build());
         event.put(GRAVEROBBER, GraveRobberEntity.createAttributes().build());
         event.put(GRAVEROBBERGHOST, GraveRobberGhostEntity.createAttributes().build());
+        event.put(WRAITH, SeaHagEntity.createAttributes().build());
     }
 }

@@ -153,26 +153,35 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
      */
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
     	float j = entityIn.getSpellTicks() / 30.0F;
-    	
-    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
-    	SwingX_Sin(this.Hair_front, -2.0032889154390916F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
+    	    	
     	SwingX_Sin(this.Hair_r, -1.4114477660878142F, ageInTicks, 0.09F, 0.067F, false, 0.25F * (float)Math.PI);
     	SwingX_Sin(this.Hair_l, -1.4114477660878142F, ageInTicks, 0.11F, 0.06F, true, 0.0F);
-    	
+ 
     	if(limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
     		this.Body_base.xRot -= 0.005F;
     		this.Head.xRot += 0.005F;
     	} else if(limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
     		this.Body_base.xRot += 0.005F;
     		this.Head.xRot -= 0.005F;
-    	}
+    	}      
     	
-    	if (entityIn.getType() == FUREntityRegistry.AVATON) {
+    	if (entityIn.getType() == FUREntityRegistry.AVATON) {   		
+    		this.Body_waist.xRot = 0.7285004297824331F; 	
+    		this.Body_waist.zRot = -0.045553093477052F;
+    		this.Body_chest.xRot = 0.5009094953223726F;
     		this.Neck0.xRot = -0.091106186954104F;
-    		this.Body_waist.xRot = 0.7285004297824331F; 		
-    	} else if (entityIn.getType() == FUREntityRegistry.SEAHAG) {
+    		this.Head.setPos(0.0F, 0.0F, 0.0F);
+    		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    		SwingX_Sin(this.Hair_front, -2.0032889154390916F, ageInTicks, 0.12F, 0.07F, false, 0.0F);	
+    	} else if (entityIn.getType() == FUREntityRegistry.SEAHAG || entityIn.getType() == FUREntityRegistry.WRAITH) {		
+    		this.Body_waist.xRot = 0.1613F;
+    		this.Body_waist.zRot = 0.0F;
+    		this.Body_chest.xRot = 0.1955F;
     		this.Neck0.xRot = 0.2143F;
-    		this.Body_waist.xRot = 0.3794F;
+    		this.Head.setPos(0.0F, -4.0F, 2.0F);
+    		this.Head_Looking(this.Head, 0.5672F, 0.0F, netHeadYaw, headPitch);
+    		SwingX_Sin(this.Hair_front, -2.8323F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
+    		this.Body_base.xRot = 0.0F;
     	}
     		
     	SwingX_Sin(this.Body_lower_front, -0.31869712141416456F, ageInTicks, 0.2F, 0.08F, true, 0.0F);
@@ -192,16 +201,14 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
     		Arm_l_Seg0.zRot = -1.5627678282146893F;
     		if(this.Body_base.y > 5.0F)
     			this.Body_base.y -= 0.17F;
-    	}
-    	else if(entityIn.isAggressive()) {
+    	} else if(entityIn.isAggressive()) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);
     		if(this.Body_base.y < 10.0F)
     			this.Body_base.y += 0.17F;
     		else
     			this.Body_base.y = 10.0F + MathHelper.sin(0.08F * ageInTicks);
-    	}
-    	else {
+    	} else {
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
     		if(this.Body_base.y < 10.0F)

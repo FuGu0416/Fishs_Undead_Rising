@@ -276,6 +276,11 @@ public class FURWorldRegistry {
 		if(FURConfig.pSpawnRate_BoneWorm.get() > 0 && (biomeKey.equals(Biomes.NETHER_WASTES) || biomeKey.equals(Biomes.SOUL_SAND_VALLEY) || biomeKey.equals(Biomes.BASALT_DELTAS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WISP, FURConfig.pSpawnRate_Wisp.get(), 4, 8));
 		}
+		
+		if(FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.FOREST))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Banshee.get(), 1, 2));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {
