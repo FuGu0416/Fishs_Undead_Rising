@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 
@@ -38,13 +39,23 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class ForsakenEntity extends AbstractSkeletonEntity {
-
+	private final EntityChargeAttackGoal entityAICharge = new EntityChargeAttackGoal(this);
+	
 	public ForsakenEntity(EntityType<? extends ForsakenEntity> p_i48555_1_, World worldIn) {
 		super(p_i48555_1_, worldIn);
 	}
-	
+
     public static boolean checkForsakenSpawnRules(EntityType<? extends ForsakenEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+    }
+    
+    @Override
+    public void push(Entity entityIn) {
+    	super.push(entityIn);
+		if(this.entityAICharge != null && this.isCharging()) {
+			this.doHurtTarget(entityIn);
+			entityIn.setDeltaMovement(entityIn.getDeltaMovement().add(this.getLookAngle().normalize().multiply(0.8D, 1.6D, 0.8D)));
+		}
     }
     
     @Override
@@ -116,6 +127,15 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_) {
 
     }
+	
+	@Override
+	public void reassessWeaponGoal() {
+		super.reassessWeaponGoal();
+
+		if (this.getOffhandItem().getItem().equals(Items.SHIELD)) {
+			this.goalSelector.addGoal(2, this.entityAICharge);
+		}
+	}
     
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
@@ -136,7 +156,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
     	this.setHealth(this.getMaxHealth());
     	
         switch(this.getRandom().nextInt(4)) {
-        	case 0:
+        	case 0:     		
         		this.setItemSlot(EquipmentSlotType.OFFHAND, shield);
                 this.getAttribute(Attributes.ARMOR).setBaseValue(4.0D);
                 this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.4D);
@@ -147,21 +167,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         	case 2:
         	default:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.BOW));
-        		break;
-        	/*case 3:
-        		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
-        		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.27D);
-        		this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
-                
-                SkeletonHorseEntity skeletonhorseentity = EntityType.SKELETON_HORSE.create(this.level);
-                skeletonhorseentity.finalizeSpawn(p_213386_1_, difficulty, SpawnReason.JOCKEY, (ILivingEntityData)null, (CompoundNBT)null);
-                skeletonhorseentity.setPos(this.getX(), this.getY(), this.getZ());
-                skeletonhorseentity.invulnerableTime = 60;
-                skeletonhorseentity.setAge(0);
-                skeletonhorseentity.level.addFreshEntity(skeletonhorseentity);
-                
-                this.startRiding(skeletonhorseentity);           
-        		break;*/        	
+        		break;     	
         }
         this.reassessWeaponGoal();
                 
@@ -180,6 +186,22 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
            return true;
         }
 	}
+    
+	/**
+	* Called when the entity is attacked.
+	*/
+    @Override
+	public boolean hurt(DamageSource source, float amount) {
+    	if (this.isCharging()) {
+    		return false;
+    	}
+    	
+    	return super.hurt(source, amount);
+    }
+    
+    public boolean isCharging() {
+    	return this.entityAICharge == null ? false : this.entityAICharge.isCharging();
+    }
     
     @Override
     protected AbstractArrowEntity getArrow(ItemStack p_213624_1_, float p_213624_2_) {
