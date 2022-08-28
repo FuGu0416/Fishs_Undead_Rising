@@ -192,10 +192,6 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 	*/
     @Override
 	public boolean hurt(DamageSource source, float amount) {
-    	if (this.isCharging()) {
-    		return false;
-    	}
-    	
     	return super.hurt(source, amount);
     }
     

@@ -1,10 +1,13 @@
 package com.Fishmod.mod_LavaCow.enchantment;
 
+import com.Fishmod.mod_LavaCow.config.FURConfig;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 
@@ -23,10 +26,10 @@ public class EnchantmentPoisonous extends Enchantment {
     /**
      * Determines if this enchantment can be applied to a specific ItemStack.
      */
-	/*@Override
+    @Override
     public boolean canEnchant(ItemStack stack) {
-        return Modconfig.Enchantment_Enable ? super.canEnchant(stack) : false;
-    }*/
+        return FURConfig.Enchantment_Enable.get() ? super.canEnchant(stack) : false;
+    }
 	
     /**
      * This applies specifically to applying at the enchanting table. The other method {@link #canEnchant(ItemStack)}
@@ -34,19 +37,19 @@ public class EnchantmentPoisonous extends Enchantment {
      * @param stack
      * @return
      */
-	/*@Override
+    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return Modconfig.Enchantment_Enable ? super.canApplyAtEnchantingTable(stack) : false;
-    }*/
+        return FURConfig.Enchantment_Enable.get() ? super.canApplyAtEnchantingTable(stack) : false;
+    }
 	
     /**
      * Is this enchantment allowed to be enchanted on books via Enchantment Table
      * @return false to disable the vanilla feature
      */
-	/*@Override
+	@Override
     public boolean isAllowedOnBooks() {
-        return Modconfig.Enchantment_Enable;
-    }*/
+        return FURConfig.Enchantment_Enable.get();
+    }
 	
 	@Override
 	public void doPostAttack(LivingEntity user, Entity target, int level) {

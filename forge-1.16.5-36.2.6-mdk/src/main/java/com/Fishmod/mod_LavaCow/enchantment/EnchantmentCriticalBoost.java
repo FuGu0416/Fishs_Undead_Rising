@@ -2,24 +2,22 @@ package com.Fishmod.mod_LavaCow.enchantment;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 
+import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
-public class EnchantmentLifesteal extends Enchantment {
+public class EnchantmentCriticalBoost extends Enchantment {
 
-	public EnchantmentLifesteal(String registryName, EnchantmentType type) {
+	public EnchantmentCriticalBoost(String registryName, EnchantmentType type) {
 		super(Rarity.VERY_RARE, type, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND});
 		this.setRegistryName(registryName);
 	}
 	
 	@Override
 	public int getMaxLevel() {
-		return 3;
+		return 5;
 	}
 	
     /**
@@ -51,8 +49,7 @@ public class EnchantmentLifesteal extends Enchantment {
     }
 	
 	@Override
-	public void doPostAttack(LivingEntity user, Entity target, int level) {
-		user.heal((float)user.getAttributeValue(Attributes.ATTACK_DAMAGE) * (float)level * 0.05F);
+	public boolean checkCompatibility(Enchantment p_77326_1_) {
+		return !(p_77326_1_ instanceof DamageEnchantment);
 	}
-
 }

@@ -80,6 +80,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -736,5 +737,13 @@ public class EventHandler {
 		if(Armor_Chitin_lvl >= 4 && event.getEntity() instanceof LivingEntity) {
 			event.getEntityLiving().addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 0));
 		}
+    }
+    
+    @SubscribeEvent
+    public void onPCritical(CriticalHitEvent event) {
+    	int CriticalBoostlvl = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CRITICALBOOST, event.getPlayer().getMainHandItem());
+    	if (CriticalBoostlvl != 0 && event.getDamageModifier() > 1.0F) {
+    		event.setDamageModifier(event.getDamageModifier() + (CriticalBoostlvl * 0.15F));
+    	}
     }
 }
