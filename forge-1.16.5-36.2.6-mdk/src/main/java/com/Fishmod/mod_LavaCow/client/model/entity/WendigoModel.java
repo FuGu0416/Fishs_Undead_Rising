@@ -69,6 +69,7 @@ public class WendigoModel<T extends WendigoEntity> extends FURBaseModel<T> imple
     public ModelRenderer Horn4_r;
     public ModelRenderer Horn5_r;
     public ModelRenderer Horn6_r;
+    
     public WendigoModel() {
         this.texWidth = 64;
         this.texHeight = 64;

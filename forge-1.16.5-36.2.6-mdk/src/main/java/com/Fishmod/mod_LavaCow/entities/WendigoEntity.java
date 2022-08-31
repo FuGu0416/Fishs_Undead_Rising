@@ -133,7 +133,7 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
         } 
     		   	
         if (target != null && this.distanceToSqr(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canSee(target)) {                      
-            if(this.AttackStance == (byte)40) {
+            if(this.AttackStance == (byte)4) {
             	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
             	if(target instanceof PlayerEntity)
             		((PlayerEntity) target).disableShield(true);

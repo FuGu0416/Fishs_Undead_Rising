@@ -17,6 +17,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.HuskEntity;
@@ -56,6 +57,7 @@ public class PteraEntity extends FlyingMobEntity {
 		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
 		if(this.level.getDifficulty() == Difficulty.HARD)
 			this.goalSelector.addGoal(1, new EntityAIDropRider(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractFishEntity.class, 120, true, true, null).setUnseenMemoryTicks(160));
 	}

@@ -418,15 +418,15 @@ public class EventHandler {
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     	}
     	
-    	if(source.isExplosion() && Attacker instanceof WolfEntity) {
-    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && Attacker.getName().getString().equals("Holy Grenade")) {
+    	if(source.isExplosion() && source.getEntity() instanceof WolfEntity) {
+    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().getString().equals("entity.mod_lavacow.holygrenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
-    		} else if (Attacker.getName().getString().equals("Ghost Bomb")) {
+    		} else if (source.getEntity().getName().getString().equals("entity.mod_lavacow.ghostbomb")) {
     			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
     			Attacked.addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if (Attacker.getName().getString().equals("Sonic Bomb")) {
+    		} else if (source.getEntity().getName().getString().equals("entity.mod_lavacow.sonicbomb")) {
     			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else

@@ -43,6 +43,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -101,6 +102,7 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.UndeadSwine_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.UndeadSwine_Attack.get())
+        		.add(Attributes.ARMOR, 2.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -113,7 +115,7 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
     	super.push(entityIn);
 		if(this.entityAICharge != null && this.entityAICharge.isCharging()) {
 			this.doHurtTarget(entityIn);
-			entityIn.setDeltaMovement(entityIn.getDeltaMovement().add(this.getLookAngle().normalize().multiply(0.8D, 1.6D, 0.8D)));
+			((LivingEntity)entityIn).knockback(2.0F * 0.5F, (double)MathHelper.sin(this.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.yRot * ((float)Math.PI / 180F))));
 		}
     }
     
@@ -221,7 +223,7 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
          */
         @Override
         public void start() {
-           this.attackStep = 0;
+           super.start();
            this.charger.playSound(FURSoundRegistry.UNDEADSWINE_CHARGE, 1.0F, 1.0F);
         }  
     }

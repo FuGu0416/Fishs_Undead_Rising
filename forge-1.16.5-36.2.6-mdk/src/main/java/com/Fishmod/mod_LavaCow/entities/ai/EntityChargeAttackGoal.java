@@ -7,6 +7,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityChargeAttackGoal extends Goal {
     protected final MobEntity charger;
@@ -57,7 +58,7 @@ public class EntityChargeAttackGoal extends Goal {
               if (this.attackTime <= 0) {
                  this.attackTime = 30;
                  this.charger.doHurtTarget(LivingEntity);
-                 LivingEntity.setDeltaMovement(LivingEntity.getDeltaMovement().add(this.charger.getLookAngle().normalize().multiply(0.8D, 1.6D, 0.8D)));
+                 LivingEntity.knockback(2.0F * 0.5F, (double)MathHelper.sin(this.charger.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.charger.yRot * ((float)Math.PI / 180F))));
               }
            } else if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
               double v = 4.0D;

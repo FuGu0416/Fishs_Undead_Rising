@@ -12,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.BlockParticleData;
@@ -34,14 +35,11 @@ public class SandBurstEntity extends Entity
     private LivingEntity caster;
     private UUID ownerUUID;
 
-    public SandBurstEntity(EntityType<? extends SandBurstEntity> p_i50170_1_, World worldIn)
-    {
+    public SandBurstEntity(EntityType<? extends SandBurstEntity> p_i50170_1_, World worldIn) {
         super(p_i50170_1_, worldIn);
-        //this.setSize(0.5F, 0.8F);
     }
 
-    public SandBurstEntity(World worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn)
-    {
+    public SandBurstEntity(World worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn) {
         super(FUREntityRegistry.SANDBURST, worldIn);
         this.warmupDelayTicks = p_i47276_9_;
         this.setOwner(casterIn);
@@ -126,7 +124,16 @@ public class SandBurstEntity extends Entity
            }
 
            if (--this.lifeTicks < 0) {
-              this.remove();
+        	   if(this.random.nextFloat() < 0.3F) {
+        		   ForsakenEntity entityvex = FUREntityRegistry.FORSAKEN.create(this.level);
+        		   entityvex.moveTo(this.blockPosition(), 0.0F, 0.0F);
+        		   entityvex.finalizeSpawn(entityvex.getServer().overworld(), this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
+                     
+                   if(!this.level.isClientSide())
+                	   this.level.addFreshEntity(entityvex); 
+        	   }
+        	   
+        	   this.remove();
            }
         }       
         

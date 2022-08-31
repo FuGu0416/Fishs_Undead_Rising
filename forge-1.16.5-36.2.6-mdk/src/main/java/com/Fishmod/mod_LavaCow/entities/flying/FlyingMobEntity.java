@@ -53,7 +53,7 @@ public class FlyingMobEntity extends MonsterEntity implements IAggressive {
 	@Override
     protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(2, new AIFlyingAttackMelee(this, 1.0D, true));
+		this.goalSelector.addGoal(2, new AIFlyingAttackMelee(this, 1.0D, true));		
 	}
 	
     public static boolean checkFlyerSpawnRules(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
