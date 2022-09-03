@@ -133,21 +133,25 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     		this.setSecondsOnFire(40);
         } 
     		   	
-        if (target != null && this.distanceToSqr(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canSee(target)) {                      
+        if (target != null && this.distanceToSqr(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canSee(target)) {   
+        	boolean flag = false;
+        	
             if(this.AttackStance == (byte)4) {
-            	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
+            	flag = target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
             	if(target instanceof PlayerEntity)
             		((PlayerEntity) target).disableShield(true);
             } else
-            	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            	flag = target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             
-            float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-            	target.setSecondsOnFire(2 * (int)f);
-            }
-            
-            if (target instanceof LivingEntity) {
-                ((LivingEntity)target).addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f, 4));
+            if (flag) {
+	            float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+	            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
+	            	target.setSecondsOnFire(2 * (int)f);
+	            }
+	            
+	            if (target instanceof LivingEntity) {
+	                ((LivingEntity)target).addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f, 4));
+	            }
             }
         }
     }

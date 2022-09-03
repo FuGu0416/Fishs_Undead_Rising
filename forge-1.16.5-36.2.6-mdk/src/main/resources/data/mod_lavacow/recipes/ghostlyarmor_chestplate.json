@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:ectoplasm_ingot"
+        },
+        "X": {
+            "item": "mod_lavacow:soulfireheart"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:ghostlyarmor_chestplate"
+    }
+}

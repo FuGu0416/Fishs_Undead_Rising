@@ -163,26 +163,28 @@ public class ScarecrowEntity extends FURTameableEntity {
         	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         	
         	if (this.AttackStance == (byte)4) {
-        		target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
-    			if (this.getSkin() != 2)
-    				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
-    			else
-    				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
-                if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                	target.setSecondsOnFire(2 * (int)f);
-                }
+        		if (target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
+        			if (this.getSkin() != 2)
+        				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
+        			else
+        				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
+                    if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
+                    	target.setSecondsOnFire(2 * (int)f);
+                    }        			
+        		}
         	} else {                
                 for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(2.0D))) {
                     if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
                     	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
-                    		entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-	            			if (this.getSkin() != 2)
-	            				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
-	            			else
-	            				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
-	                        if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-	                        	entitylivingbase.setSecondsOnFire(2 * (int)f);
-	                        }
+                    		if (target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
+		            			if (this.getSkin() != 2)
+		            				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
+		            			else
+		            				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
+		                        if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
+		                        	entitylivingbase.setSecondsOnFire(2 * (int)f);
+		                        }	                        
+                    		}
                     	}
                     }
                 }

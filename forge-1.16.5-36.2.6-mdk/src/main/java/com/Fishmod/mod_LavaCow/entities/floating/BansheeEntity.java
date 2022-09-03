@@ -154,10 +154,11 @@ public class BansheeEntity extends FloatingMobEntity {
         	
         	for (Entity entity1 : list) {
         		if (entity1 instanceof LivingEntity) {                 
-        			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {
-        				float local_difficulty = BansheeEntity.this.level.getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
-        				((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2));       				
-        				((LivingEntity)entity1).hurt(DamageSource.mobAttack(BansheeEntity.this).setMagic(), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F);
+        			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {        				
+        				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(BansheeEntity.this).setMagic(), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
+        					float local_difficulty = BansheeEntity.this.level.getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
+        					((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2));       	
+        				}       							
         			}
         		}
         	} 

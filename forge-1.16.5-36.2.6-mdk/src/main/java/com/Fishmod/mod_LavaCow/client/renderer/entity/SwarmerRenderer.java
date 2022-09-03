@@ -13,8 +13,9 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<SwarmerEntity>> {	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-			new ResourceLocation("mod_lavacow:textures/mobs/zombiepiranha.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/piranha.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/piranha/piranha.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha1.png"),
 	};
 	
 	static{

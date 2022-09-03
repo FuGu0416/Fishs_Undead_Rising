@@ -23,6 +23,7 @@ import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
+import com.Fishmod.mod_LavaCow.item.GhostlyArmorItem;
 import com.Fishmod.mod_LavaCow.item.GoldenHeartItem;
 import com.Fishmod.mod_LavaCow.item.SwineArmorItem;
 import com.Fishmod.mod_LavaCow.item.VespaShieldItem;
@@ -80,6 +81,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -407,17 +409,6 @@ public class EventHandler {
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     	}
     	
-    	if(Attacked instanceof PlayerEntity && source.isExplosion()) {    		
-    		boolean have_Heart = false;
-  		
-    		for(int i = 0; i < 9 ; i++)
-    			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
-					have_Heart = true;
-    		
-    		if(have_Heart)
-    			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
-    	}
-    	
     	if(source.isExplosion() && source.getEntity() instanceof WolfEntity) {
     		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().getString().equals("entity.mod_lavacow.holygrenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
@@ -451,6 +442,32 @@ public class EventHandler {
     			Attacker.hurt(DamageSource.thorns(Attacked), 1.0F + Attacked.getEffect(FUREffectRegistry.THORNED).getAmplifier());
             }
     	}
+    	
+		int Armor_Ghostly_lvl = 0;
+		
+		for(ItemStack S : Attacked.getArmorSlots()) {
+			if(S.getItem() instanceof GhostlyArmorItem) {
+				Armor_Ghostly_lvl++;
+			}
+		}
+		
+		if(Armor_Ghostly_lvl >= 2) {
+			Attacked.heal(event.getAmount() * 0.2F);
+		}
+		
+		if (source.getEntity() != null && Attacked != null && source.getEntity() instanceof LivingEntity && (((LivingEntity) source.getEntity()).getHealth() < Attacked.getHealth())) {
+			Armor_Ghostly_lvl = 0;
+			
+			for(ItemStack S : source.getEntity().getArmorSlots()) {
+				if(S.getItem() instanceof GhostlyArmorItem) {
+					Armor_Ghostly_lvl++;
+				}
+			}
+			
+			if(Armor_Ghostly_lvl >= 4) {
+				event.setAmount(event.getAmount() * 1.2F);
+			}
+		}
     	
     	event.setAmount(event.getAmount() * effectlevel);
     }
@@ -744,6 +761,22 @@ public class EventHandler {
     	int CriticalBoostlvl = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CRITICALBOOST, event.getPlayer().getMainHandItem());
     	if (CriticalBoostlvl != 0 && event.getDamageModifier() > 1.0F) {
     		event.setDamageModifier(event.getDamageModifier() + (CriticalBoostlvl * 0.15F));
+    	}
+    }
+    
+    @SubscribeEvent
+    public void onEHeal(LivingHealEvent event) {
+    	if(event.getEntityLiving() instanceof PlayerEntity) {    		
+    		boolean have_Heart = false;
+  		
+    		for(int i = 0; i < 9 ; i++)
+    			if(((PlayerEntity)event.getEntityLiving()).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
+					have_Heart = true;
+    		
+    		if (have_Heart) {
+    			event.setAmount(event.getAmount() * 1.25F);
+    		}
+    			
     	}
     }
 }

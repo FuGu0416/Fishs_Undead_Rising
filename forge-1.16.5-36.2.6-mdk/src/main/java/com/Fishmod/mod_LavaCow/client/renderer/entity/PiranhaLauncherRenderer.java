@@ -15,7 +15,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class PiranhaLauncherRenderer extends EntityRenderer<PiranhaLauncherEntity> {
 	private final SwarmerModel<PiranhaLauncherEntity> model = new SwarmerModel<>();
-	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/zombiepiranha.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha.png");
 
     public PiranhaLauncherRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn);

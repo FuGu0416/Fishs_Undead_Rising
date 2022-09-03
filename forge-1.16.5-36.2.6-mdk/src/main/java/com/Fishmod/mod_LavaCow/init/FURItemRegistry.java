@@ -23,6 +23,7 @@ import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
 import com.Fishmod.mod_LavaCow.item.FissionPotionItem;
 import com.Fishmod.mod_LavaCow.item.FrozenThighItem;
+import com.Fishmod.mod_LavaCow.item.GhostlyArmorItem;
 import com.Fishmod.mod_LavaCow.item.GoldenHeartItem;
 import com.Fishmod.mod_LavaCow.item.IntestineItem;
 import com.Fishmod.mod_LavaCow.item.MoltenAxeItem;
@@ -181,6 +182,10 @@ public class FURItemRegistry {
 	public static final Item SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final Item SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 6.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
 	public static final Item SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);
+	public static final Item GHOSTLYARMOR_HELMET = new GhostlyArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_helmet");
+	public static final Item GHOSTLYARMOR_CHESTPLATE = new GhostlyArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_chestplate");
+	public static final Item GHOSTLYARMOR_LEGGINGS = new GhostlyArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_leggings");
+	public static final Item GHOSTLYARMOR_BOOTS = new GhostlyArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_boots");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

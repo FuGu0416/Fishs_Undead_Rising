@@ -294,9 +294,9 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
     	this.setHealth(this.getMaxHealth());
 
     	if (SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.NETHER_WASTES)) {
-		   this.setSkin(0);
+		   this.setSkin(1);
     	} else if (SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
- 		   this.setSkin(1);
+ 		   this.setSkin(0);
      	} else if (SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.BASALT_DELTAS)) {
   		   this.setSkin(2);
       	}
