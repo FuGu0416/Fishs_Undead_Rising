@@ -15,7 +15,6 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha/piranha.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha1.png"),
 	};
 	
 	static{

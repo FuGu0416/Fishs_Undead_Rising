@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.tameable.GhostSwarmerEntity;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -24,6 +26,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -93,6 +96,19 @@ public class GhostRayEntity extends FlyingMobEntity {
     	
     	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
 		   this.setSkin(1);
+    	}
+    	
+    	if (this.random.nextFloat() < 0.4F) {
+	    	for(int i = 0; i < 2 + this.random.nextInt(2); ++i) {
+	    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
+	    		GhostSwarmerEntity entity = FUREntityRegistry.GHOSTSWARMER.create(this.level);
+		        entity.moveTo(blockpos, this.yRot, 0.0F);
+		        entity.finalizeSpawn(worldIn, difficulty, SpawnReason.REINFORCEMENT, (ILivingEntityData)null, (CompoundNBT)null);
+		        entity.setOwnerUUID(this.getUUID());
+		        
+	            if(!this.level.isClientSide())
+	            	this.level.addFreshEntity(entity);
+	    	}
     	}
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);

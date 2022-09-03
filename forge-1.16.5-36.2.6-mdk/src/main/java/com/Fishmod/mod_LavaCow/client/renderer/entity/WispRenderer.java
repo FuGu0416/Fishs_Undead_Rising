@@ -61,6 +61,7 @@ public class WispRenderer extends MobRenderer<WispEntity, WispModel<WispEntity>>
         return (int)(f * 10.0F) % 2 == 0 ? 0.0F : MathHelper.clamp(f, 0.5F, 1.0F);
 	}
     
+	@Override
     protected int getBlockLightLevel(WispEntity p_225624_1_, BlockPos p_225624_2_) {
         return 15;
     }

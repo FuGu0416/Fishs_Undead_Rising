@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.item;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.entities.tameable.CactoidEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.GhostSwarmerEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 
@@ -47,16 +48,25 @@ public class EntityBucketItem extends Item {
 	
 	private void spawn(ServerWorld worldIn, ItemStack stack, BlockPos pos) {
 		Entity entity = this.type.spawn(worldIn, stack, (PlayerEntity)null, pos, SpawnReason.BUCKET, true, false);
+		
 		if (entity != null && entity.getType() == FUREntityRegistry.CACTOID) {
 			CompoundNBT compoundnbt = stack.getOrCreateTag();
 			if(compoundnbt.contains("CactoidData")){
                 ((CactoidEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("CactoidData"));
             }
 		}
+		
 		if (entity != null && entity.getType() == FUREntityRegistry.WISP) {
 			CompoundNBT compoundnbt = stack.getOrCreateTag();
 			if(compoundnbt.contains("WispData")){
                 ((WispEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("WispData"));
+            }
+		}
+		
+		if (entity != null && entity.getType() == FUREntityRegistry.GHOSTSWARMER) {
+			CompoundNBT compoundnbt = stack.getOrCreateTag();
+			if(compoundnbt.contains("GhostSwarmerData")){
+                ((GhostSwarmerEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("GhostSwarmerData"));
             }
 		}
 	}
