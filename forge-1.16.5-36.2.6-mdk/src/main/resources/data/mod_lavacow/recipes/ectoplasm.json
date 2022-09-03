@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mod_lavacow:ectoplasm_mass"
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:ectoplasm",
+    "count": 4
+  }
+}

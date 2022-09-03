@@ -58,11 +58,6 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        /*for (Goal G : this.goalSelector.getRunningGoals().toList()) {
-        	if(G instanceof PanicGoal || G instanceof AvoidEntityGoal) {
-        		this.goalSelector.removeGoal(G);
-        	}
-        }*/
         this.goalSelector.addGoal(1, new AIPiranhaLeapAtTarget(this, 0.6F));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));      
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));

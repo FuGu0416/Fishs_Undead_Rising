@@ -64,6 +64,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	private final ServerBossInfo bossEvent = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS)).setDarkenScreen(false);
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.defineId(SkeletonKingEntity.class, DataSerializers.BLOCK_POS);
+	private static final DataParameter<Integer> DATA_ID_INV = EntityDataManager.defineId(SkeletonKingEntity.class, DataSerializers.INT);
 	private int attackTimer;
 	protected int spellTicks[] = {0, 0};
 	
@@ -74,6 +75,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	
     @Override
     protected void registerGoals() {
+    	this.goalSelector.addGoal(0, new SkeletonKingEntity.DoNothingGoal());
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new SkeletonKingEntity.AITeleportSpell());
         this.goalSelector.addGoal(3, new SkeletonKingEntity.AITossSpell());
@@ -104,6 +106,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(SPAWN_ORIGIN, new BlockPos(0, 0, 0));
+		this.entityData.define(DATA_ID_INV, 0);
 	}
     
     @Override
@@ -155,6 +158,12 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
             
             if(this.attackTimer == 20)
             	this.playSound(FURSoundRegistry.SKELETONKING_ATTACK, 1.0F, 1.0F);
+        }
+        
+        if (this.getInvulnerableTicks() > 0) {
+            for(int i1 = 0; i1 < 3; ++i1) {
+               this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + this.random.nextGaussian(), this.getY() + (double)(this.random.nextFloat() * 3.3F), this.getZ() + this.random.nextGaussian(), 0.0D, this.random.nextDouble() * 0.5D, 0.0D);
+            }
         }
         
         for(int i = 0 ; i < 2; i++) {
@@ -211,6 +220,14 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	@Override
 	protected void customServerAiStep() {
 		super.customServerAiStep();
+		
+		if (this.getInvulnerableTicks() > 0) {
+			this.setInvulnerableTicks(this.getInvulnerableTicks() - 1);
+			if (this.tickCount % 5 == 0) {
+				this.heal(this.getMaxHealth() * 0.03F);
+			}
+		}	      
+		
 		this.bossEvent.setPercent(this.getHealth() / this.getMaxHealth());
 	}
 	
@@ -232,10 +249,14 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
      */
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
+		if (this.getInvulnerableTicks() > 0 && source != DamageSource.OUT_OF_WORLD) {
+            return false;
+		}
+		
     	if(source.equals(DamageSource.IN_WALL)) {
     		this.level.explode(this, this.getX(), this.getY(), this.getZ(), (float)(3.0D + this.random.nextDouble() * 1.5D), true, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
     	}
-    		
+    	  		
     	return super.hurt(source, amount);
     }
 	
@@ -246,11 +267,9 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
             this.attackTimer = 30;
-        } else if (id == 10) {
-    		
+        } else if (id == 10) {  		
         	this.spellTicks[0] = 30;
-        } else if (id == 11) {
-    		
+        } else if (id == 11) {		
         	this.spellTicks[1] = 15;
         } else {
             super.handleEntityEvent(id);
@@ -498,7 +517,6 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 
             if (this.spellWarmup == 0) {
                 this.castSpell();
-                //EntitySkeletonKing.this.playSound(EntitySkeletonKing.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
@@ -573,9 +591,26 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	    
 	    protected double getAttackReachSqr(LivingEntity attackTarget) {
 	        return (double)(this.mob.getBbWidth() * 3.0F * this.mob.getBbWidth() * 3.0F + attackTarget.getBbWidth());
-	    }
-    	
+	    }	
     }
+    
+    class DoNothingGoal extends Goal {
+        public DoNothingGoal() {
+           this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+           return SkeletonKingEntity.this.getInvulnerableTicks() > 0;
+        }
+	}
+    
+    public int getInvulnerableTicks() {
+        return this.entityData.get(DATA_ID_INV);
+	}
+
+	public void setInvulnerableTicks(int p_82215_1_) {
+		this.entityData.set(DATA_ID_INV, p_82215_1_);
+	}
 	
 	@Override
 	public void setCustomName(@Nullable ITextComponent name) {
@@ -603,6 +638,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         super.readAdditionalSaveData(compound);
         this.spellTicks[0] = compound.getInt("SpellTicks0");
         this.spellTicks[1] = compound.getInt("SpellTicks1");
+        this.setInvulnerableTicks(compound.getInt("Invul"));
         if (this.hasCustomName()) {
             this.bossEvent.setName(this.getDisplayName());
         }
@@ -616,6 +652,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpellTicks0", this.spellTicks[0]);
         compound.putInt("SpellTicks1", this.spellTicks[1]);
+        compound.putInt("Invul", this.getInvulnerableTicks());
     }
 	
     @Nullable

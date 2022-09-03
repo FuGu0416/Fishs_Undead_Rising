@@ -12,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -129,8 +130,12 @@ public class SandBurstEntity extends Entity
         		   entityvex.moveTo(this.blockPosition(), 0.0F, 0.0F);
         		   entityvex.finalizeSpawn(entityvex.getServer().overworld(), this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
                      
-                   if(!this.level.isClientSide())
+                   if (!this.level.isClientSide())
                 	   this.level.addFreshEntity(entityvex); 
+                   
+                   if (this.getOwner() != null && ((MobEntity) this.getOwner()).getTarget() != null) {
+                	   entityvex.setTarget(((MobEntity) this.getOwner()).getTarget());
+                   }
         	   }
         	   
         	   this.remove();

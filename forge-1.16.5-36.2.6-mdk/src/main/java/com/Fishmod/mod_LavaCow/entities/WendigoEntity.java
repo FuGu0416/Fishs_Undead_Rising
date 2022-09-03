@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -42,7 +43,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -232,6 +233,7 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	   public AIWendigoLeapAtTarget(LivingEntity leapingEntity, float leapMotionYIn) {
  	      this.leaper = leapingEntity;
  	      this.leapMotionY = leapMotionYIn;
+ 	      this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
  	   }
  	   
  	   /**
@@ -267,17 +269,17 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	   /**
  	    * Execute a one shot task or start executing a continuous task
  	    */
- 	   public void start() {
- 		   double d0 = this.leapTarget.getX() - this.leaper.getX();
- 		   double d1 = this.leapTarget.getZ() - this.leaper.getZ();
- 		   float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
- 		   
+ 	   public void start() {		   
+ 		   Vector3d vector3d = this.leaper.getDeltaMovement();
+ 		   Vector3d vector3d1 = new Vector3d(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
  		   ((MobEntity) this.leaper).getLookControl().setLookAt(this.leapTarget, 100.0F, 100.0F); 
  		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK, 4.0F, 1.0F);
  		   ((WendigoEntity)this.leaper).jumpTimer = 240;
- 		   if ((double)f >= 1.0E-4D) {
- 			   this.leaper.getDeltaMovement().add(d0 / (double)f * 0.5D * (double)8.4F + this.leaper.getDeltaMovement().x * (double)8.4F, (double)this.leapMotionY, d1 / (double)f * 0.5D * (double)8.4F + this.leaper.getDeltaMovement().z * (double)8.4F);
+ 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
+ 			   vector3d1 = vector3d1.normalize().scale(4.2D).add(vector3d.scale(8.4D));
  		   }
+
+ 		   this.leaper.setDeltaMovement(vector3d1.x, (double)this.leapMotionY, vector3d1.z);
  	   }  	
  	   
        /**

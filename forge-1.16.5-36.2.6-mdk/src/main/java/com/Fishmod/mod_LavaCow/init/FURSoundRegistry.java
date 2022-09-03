@@ -110,11 +110,13 @@ public class FURSoundRegistry {
 	public static final SoundEvent AVATON_DEATH = addSoundEvent("avaton_death");
 	
 	public static final SoundEvent SKELETONKING_ATTACK = addSoundEvent("skeletonking_attack");
+	public static final SoundEvent SKELETONKING_HURT = addSoundEvent("skeletonking_hurt");
 	public static final SoundEvent SKELETONKING_DEATH = addSoundEvent("skeletonking_death");
 	public static final SoundEvent SKELETONKING_SPELL_SUMMON = addSoundEvent("skeletonking_spell_summon");
 	public static final SoundEvent SKELETONKING_SPELL_TELEPORT = addSoundEvent("skeletonking_spell_teleport");
 	public static final SoundEvent SKELETONKING_SPELL_TOSS = addSoundEvent("skeletonking_spell_toss");
-
+	public static final SoundEvent SKELETONKING_SPAWN = addSoundEvent("skeletonking_spawn");
+	
 	public static final SoundEvent CACTYRANT_AMBIENT = addSoundEvent("cactyrant_ambient");
 	public static final SoundEvent CACTYRANT_DEATH = addSoundEvent("cactyrant_death");
 

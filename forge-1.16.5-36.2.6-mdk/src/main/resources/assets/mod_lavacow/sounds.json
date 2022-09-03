@@ -530,7 +530,14 @@
 		"subtitle": "entity_skeletonking_attack",
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/attack","stream": true}]
 	},
-	
+
+	"skeletonking_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/hurt","stream": true}]
+	},
+		
 	"skeletonking_death":
 	{
 		"category": "hostile",
@@ -557,6 +564,13 @@
 		"category": "hostile",
 		"subtitle": "entity_skeletonking_spell_toss",
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_toss","stream": true}]
+	},
+	
+	"skeletonking_spawn":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_spawn",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spawn","stream": true}]
 	},
 	
 	"cactyrant_ambient":

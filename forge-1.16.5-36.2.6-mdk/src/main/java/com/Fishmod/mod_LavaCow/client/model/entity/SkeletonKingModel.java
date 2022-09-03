@@ -148,7 +148,14 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    	float o = (float)(entityIn.getInvulnerableTicks()) / 140.0F;
+    	if (o > 0.0F) {
+    		this.Head.xRot = GradientAnimation_s(0.5866051722479385F, 0.0F, o);
+    		this.Head.yRot = 0.0F;
+    		this.Head.zRot = 0.0F;
+    	} else {
+    		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    	}
     }
     
     @Override
@@ -160,6 +167,7 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     	float Anime_threshold[] = {1.0F, 0.5F, 0.2F};
     	float m = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float n = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
+    	float o = ((float)(entity.getInvulnerableTicks()) - 60.0F) / 80.0F;
     	
     	if (this.riding) {
     		this.Body_base.y = 4.2F;
@@ -190,18 +198,31 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
         	this.SwingX_Sin(this.Leg_l_Seg1, 0.5918411493512771F, limbSwing, limbSwingAmount * 0.4F, 0.3F, true, 0.3F * (float)Math.PI);
     	}
     	
-    	if(k > 0) {
+    	if (o > 0.0F) {
+    		this.Body_base.y = GradientAnimation_s(44.0F, 4.2F, o);
+    		this.Body_waist.xRot = 0.136659280431156F;
+    		this.Body_chest.xRot = 0.0F;
+    		
+    		this.setRotateAngle(Arm_r_Seg0, 0.0F, 0.0F, 0.07714355426972991F);
+    		this.setRotateAngle(Arm_r_Seg1, -0.7740534966278743F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_l_Seg0, 0.0F, 0.0F, -0.07714355426972991F);
+    		this.setRotateAngle(Arm_l_Seg1, -0.7740534966278743F, 0.0F, 0.0F);
+    		
+    		this.weapon_handle0.visible = false;
+    		this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
+    	} else if (k > 0) {
     		this.Body_base.y = 4.2F;
     		this.Body_waist.xRot = GradientAnimation(0.5009094953223726F, -0.31869712141416456F, k);
     		this.Body_chest.xRot = GradientAnimation(0.091106186954104F, -0.18203784098300857F, k);   
     		this.Arm_l_Seg0.xRot = GradientAnimation(0.091106186954104F, 0.9560913642424937F, k); 
     		this.Arm_l_Seg1.xRot = -0.36425021489121656F;
+    		this.weapon_handle0.visible = true;
     		this.weapon_handle0.xRot = 0.136659280431156F;
     		this.Arm_r_Seg0.xRot = GradientAnimation(0.0F, -1.6845917940249266F, k); 
     		this.Arm_r_Seg0.yRot = GradientAnimation(0.0F, 0.5462880558742251F, k); 
     		this.Arm_r_Seg0.zRot = GradientAnimation(0.5462880558742251F, 0.136659280431156F, k); 
     		this.Arm_r_Seg1.xRot = GradientAnimation(-0.7740535232594852F, -1.3658946726107624F, k); 
-    	} else if(l > 0) { 		
+    	} else if (l > 0) { 		
     		this.Body_base.y = 4.2F;
     		this.Body_waist.xRot = 0.136659280431156F;
     		this.Body_chest.xRot = 0.0F;
@@ -214,8 +235,9 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     		this.Arm_r_Seg1.zRot = 0.0F;
     		this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
     		this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
+    		this.weapon_handle0.visible = true;
     		this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
-    	} else if(i > Anime_threshold[1]) {
+    	} else if (i > Anime_threshold[1]) {
     		this.Body_base.y = GradientAnimation(4.2F, 15.0F, m * (i - Anime_threshold[1]));
     		this.Body_waist.xRot = GradientAnimation(-0.27314402793711257F, 0.6373942428283291F, m * (i - Anime_threshold[1]));
     		this.Body_chest.xRot = GradientAnimation(-0.31869712141416456F, 0.27314402793711257F, m * (i - Anime_threshold[1]));
@@ -229,6 +251,7 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     		this.Arm_l_Seg0.zRot = 0.0F;
     		this.Arm_l_Seg1.xRot = -0.22759093446006054F;
     		this.Arm_l_Seg1.zRot = 0.5462880558742251F;
+    		this.weapon_handle0.visible = true;
     		this.weapon_handle0.xRot = 0.27314402793711257F;
     	} else if (i > 0.0F) {
     		this.Body_base.y = GradientAnimation(15.0F, 4.2F, n * i);
@@ -244,6 +267,7 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     		this.Arm_l_Seg0.zRot = GradientAnimation(0.0F, -0.40980330836826856F, n * i);
     		this.Arm_l_Seg1.xRot = GradientAnimation(-0.22759093446006054F, -1.9123572614101867F, n * i);
     		this.Arm_l_Seg1.zRot = GradientAnimation(0.5462880558742251F, 0.0F, n * i);
+    		this.weapon_handle0.visible = true;
     		this.weapon_handle0.xRot = GradientAnimation(0.27314402793711257F, -0.36425021489121656F, n * i);
     	} else {
     		this.Body_base.y = 4.2F;
@@ -254,13 +278,13 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     		this.setRotateAngle(Arm_r_Seg1, -0.7740535232594852F, 0.0F, 0.0F);
     		this.setRotateAngle(Arm_l_Seg0, -0.9560913642424937F, 0.0F, -0.40980330836826856F);
     		this.setRotateAngle(Arm_l_Seg1, -1.9123572614101867F, 0.0F, 0.0F);
+    		this.weapon_handle0.visible = true;
     		this.setRotateAngle(weapon_handle0, -0.36425021489121656F, 0.0F, 0.0F);
     	}
     }
 
 	@Override
 	public ModelRenderer getHead() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.Head;
 	}
 }
