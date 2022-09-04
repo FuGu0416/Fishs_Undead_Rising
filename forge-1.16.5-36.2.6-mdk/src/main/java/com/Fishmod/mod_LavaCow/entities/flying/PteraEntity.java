@@ -6,8 +6,9 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.FogletEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDropRider;
-import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -19,9 +20,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.HuskEntity;
-import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -31,10 +29,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
@@ -140,35 +140,22 @@ public class PteraEntity extends FlyingMobEntity {
 	   else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.DRY))
 		   this.setSkin(1);
 	   
-	   if(this.level.getDifficulty() == Difficulty.HARD) {
-	        if (this.getRandom().nextInt(100) < 2) {
-	        	CreeperEntity entityRider = EntityType.CREEPER.create(this.level);
-	            entityRider.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
-	            entityRider.finalizeSpawn(worldIn, difficulty, p_213386_3_, (ILivingEntityData)null, (CompoundNBT)null);
-	            entityRider.startRiding(this);	   
-	        } else if (this.getRandom().nextInt(100) < 5) {
-	            if(this.getSkin() == 0) {
-	            	ZombieEntity entityRider = EntityType.ZOMBIE.create(this.level);
-		            entityRider.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
-		            entityRider.finalizeSpawn(worldIn, difficulty, p_213386_3_, (ILivingEntityData)null, (CompoundNBT)null);
-		            entityRider.startRiding(this);
-	            }
-	            else if(this.getSkin() == 1) {
-	            	HuskEntity entityRider = EntityType.HUSK.create(this.level);
-		            entityRider.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
-		            entityRider.finalizeSpawn(worldIn, difficulty, p_213386_3_, (ILivingEntityData)null, (CompoundNBT)null);
-		            entityRider.startRiding(this);
-	            }
-	        } else if (this.getRandom().nextInt(100) < 10 && this.getSkin() == 0) {
-	        	FogletEntity entityRider = FUREntityRegistry.FOGLET.create(this.level);
-	            entityRider.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
-	            entityRider.finalizeSpawn(worldIn, difficulty, p_213386_3_, (ILivingEntityData)null, (CompoundNBT)null);
-	            entityRider.setIsHanging(true);
-	            entityRider.startRiding(this);	   
-	        }
-		}
-
-	   
+	   if (!this.isPassenger() && this.random.nextInt(100) < FURConfig.Ptera_Ability_Chance.get()) {
+		   MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(this.random, LootTableHandler.PTERA_LIST));
+		   Entity entityRider = Result.type.create(this.level);
+			
+		   if(entityRider instanceof MobEntity) {					
+				entityRider.moveTo(this.blockPosition(), this.yRot, 0.0F);
+				this.level.addFreshEntity(entityRider);
+				entityRider.startRiding(this);
+				((MobEntity) entityRider).finalizeSpawn(worldIn, difficulty, SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, (CompoundNBT)null);								
+				
+				if(entityRider instanceof FogletEntity) {
+					((FogletEntity) entityRider).setIsHanging(true);
+				}
+		   }
+	   }
+	   	   
 	   return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
 	}  
    

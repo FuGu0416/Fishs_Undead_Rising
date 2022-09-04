@@ -62,6 +62,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Ptera;
 	public static final ForgeConfigSpec.ConfigValue<Double> Ptera_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Ptera_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Ptera_Ability_Chance;
+	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Ptera_Ability_Spawn;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Vespa;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Health;
@@ -336,6 +338,14 @@ public final class FURConfig {
 		pSpawnRate_Ptera = BUILDER.comment("Set the spawn rate of Ptera [0-10000]").defineInRange("ptera spawn rate", 20, 0, 10000);
 		Ptera_Health = BUILDER.comment("Maximum Ptera health [1-1000]").defineInRange("ptera health", 10.0D, 1.0D, 1000.0D);
 		Ptera_Attack = BUILDER.comment("Ptera strength [1-1000]").defineInRange("ptera attack", 3.0D, 1.0D, 1000.0D);
+		Ptera_Ability_Chance = BUILDER.comment("Chance of Ptera to carry a passenger when spawned [0-100]").defineInRange("ptera carries passenger chance", 10, 0, 100);
+		Ptera_Ability_Spawn = BUILDER.comment("Customize the passenger list for the Ptera. Ex. \\\"mod_lavacow:foglet,40\\\" or \\\"minecraft:spider,20\\\"").defineList("passenger list for ptera", 
+				Lists.newArrayList(
+						"mod_lavacow:foglet,40",
+						"minecraft:zombie,40",
+						"minecraft:creeper,20"), 
+				o -> o instanceof String);
+		
 		BUILDER.pop();
 		
 		BUILDER.push("Vespa");
@@ -345,7 +355,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Scarecrow");
-		pSpawnRate_Scarecrow = BUILDER.comment("Set the spawn rate of Scarecrow [0-100]").defineInRange("scarecrow spawn rate", 15, 0, 10000);
+		pSpawnRate_Scarecrow = BUILDER.comment("Set the spawn rate of Scarecrow [0-10000]").defineInRange("scarecrow spawn rate", 15, 0, 10000);
 		Scarecrow_Health = BUILDER.comment("Maximum Scarecrow health [1-1000]").defineInRange("scarecrow health", 40.0D, 1.0D, 1000.0D);
 		Scarecrow_Attack = BUILDER.comment("Scarecrow strength [1-1000]").defineInRange("scarecrow attack", 8.0D, 1.0D, 1000.0D);
 		pScarecrow_PlagueDoctor = BUILDER.comment("Set the spawn rate of Plague Doctor Scarecrow when a Raven was killed. [0-100]").defineInRange("plague doctor scarecrow spawn rate", 30, 0, 100);
@@ -371,13 +381,13 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Penghoul");
-		pSpawnRate_Pingu = BUILDER.comment("Set the spawn rate of Penghoul [0-100]").defineInRange("penghoul spawn rate", 20, 0, 10000);
+		pSpawnRate_Pingu = BUILDER.comment("Set the spawn rate of Penghoul [0-10000]").defineInRange("penghoul spawn rate", 20, 0, 10000);
 		Pingu_Health = BUILDER.comment("Maximum Penghoul health [1-1000]").defineInRange("penghoul health", 10.0D, 1.0D, 1000.0D);
 		Pingu_Attack = BUILDER.comment("Penghoul strength [1-1000]").defineInRange("penghoul attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Undertaker");
-		pSpawnRate_Undertaker = BUILDER.comment("Set the spawn rate of Undertaker [0-100]").defineInRange("undertaker spawn rate", 8, 0, 10000);
+		pSpawnRate_Undertaker = BUILDER.comment("Set the spawn rate of Undertaker [0-10000]").defineInRange("undertaker spawn rate", 8, 0, 10000);
 		Undertaker_Health = BUILDER.comment("Maximum Undertaker health [1-1000]").defineInRange("undertaker health", 40.0D, 1.0D, 1000.0D);
 		Undertaker_Attack = BUILDER.comment("Undertaker strength [1-1000]").defineInRange("undertaker attack", 6.0D, 1.0D, 1000.0D);
 		Undertaker_Ability_Num = BUILDER.comment("Set the number of Unburied summoned per cast [0-100]").defineInRange("undertaker summon number", 4, 0, 100);
@@ -397,7 +407,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Banshee");
-		pSpawnRate_Banshee = BUILDER.comment("Set the spawn rate of Banshee [0-100]").defineInRange("banshee spawn rate", 20, 0, 10000);
+		pSpawnRate_Banshee = BUILDER.comment("Set the spawn rate of Banshee [0-10000]").defineInRange("banshee spawn rate", 20, 0, 10000);
 		Banshee_Health = BUILDER.comment("Maximum Banshee health [1-1000]").defineInRange("banshee health", 34.0D, 1.0D, 1000.0D);
 		Banshee_Attack = BUILDER.comment("Banshee strength [1-1000]").defineInRange("banshee attack", 7.0D, 1.0D, 1000.0D);
 		Banshee_Ability_Radius = BUILDER.comment("Set the effect radius of Banshee scream [1-1000]").defineInRange("banshee scream radius", 3.0D, 1.0D, 1000.0D);
@@ -410,7 +420,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Avaton");
-		pSpawnRate_Avaton = BUILDER.comment("Set the spawn rate of Avaton [0-100]").defineInRange("avaton spawn rate", 20, 0, 10000);
+		pSpawnRate_Avaton = BUILDER.comment("Set the spawn rate of Avaton [0-10000]").defineInRange("avaton spawn rate", 20, 0, 10000);
 		Avaton_Health = BUILDER.comment("Maximum Avaton health [1-1000]").defineInRange("avaton health", 30.0D, 1.0D, 1000.0D);
 		Avaton_Attack = BUILDER.comment("Avaton strength [1-1000]").defineInRange("avaton attack", 5.0D, 1.0D, 1000.0D);
 		Avaton_Ability_Num = BUILDER.comment("Set the number of Weta summoned per cast [0-100]").defineInRange("avaton summon number", 2, 0, 100);
@@ -552,7 +562,7 @@ public final class FURConfig {
 				Lists.newArrayList(
 						"mod_lavacow:foglet,40,1,2",
 						"mod_lavacow:undeadswine,20,1,1",
-						"mod_lavacow:ithaqua,20,1,1",
+						"mod_lavacow:wendigo,20,1,1",
 						"mod_lavacow:sludgelord,20,1,1",
 						"mod_lavacow:vespa,20,1,1",
 						"mod_lavacow:scarecrow,20,1,1",

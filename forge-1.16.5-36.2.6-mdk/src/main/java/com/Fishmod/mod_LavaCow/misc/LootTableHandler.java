@@ -34,7 +34,8 @@ public class LootTableHandler {
 	public static Map<ItemStack, Float> LOOT_SPECTRAL_RAVEN = new HashMap<ItemStack, Float>();
 	public static List<MobSpawnInfo.Spawners> DREAMCATCHER_LIST = Lists.<MobSpawnInfo.Spawners>newArrayList();
 	public static List<ResourceLocation> PARASITE_HOSTLIST = Lists.<ResourceLocation>newArrayList();
-
+	public static List<MobSpawnInfo.Spawners> PTERA_LIST = Lists.<MobSpawnInfo.Spawners>newArrayList();
+	
 	public static Map<ItemStack, Float> parseLootTable(List<? extends String> list) {
 		Map<ItemStack, Float> lootTable = new HashMap<ItemStack, Float>();
 
@@ -66,13 +67,22 @@ public class LootTableHandler {
 			String[] S_splt = S.split(",");
 			EntityType<?> entityClass = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(S_splt[0]));
 			
-			if(entityClass != null && S_splt.length == 4 && Integer.parseInt(S_splt[1]) > 0 &&Integer.parseInt(S_splt[2]) > 0 &&Integer.parseInt(S_splt[3]) > 0) {
+			if(entityClass != null && S_splt.length == 4 && Integer.parseInt(S_splt[1]) > 0 && Integer.parseInt(S_splt[2]) > 0 && Integer.parseInt(S_splt[3]) > 0) {
 				DREAMCATCHER_LIST.add(new MobSpawnInfo.Spawners(entityClass, Integer.parseInt(S_splt[1]), Integer.parseInt(S_splt[2]), Integer.parseInt(S_splt[3])));
 			}
 		}
 		
 		for(String S : FURConfig.Parasite_Hostlist.get()) {
 			PARASITE_HOSTLIST.add(new ResourceLocation(S));
+		}
+		
+		for(String S : FURConfig.Ptera_Ability_Spawn.get()) {
+			String[] S_splt = S.split(",");
+			EntityType<?> entityClass = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(S_splt[0]));
+			
+			if(entityClass != null && S_splt.length == 2 && Integer.parseInt(S_splt[1]) > 0) {
+				PTERA_LIST.add(new MobSpawnInfo.Spawners(entityClass, Integer.parseInt(S_splt[1]), 1, 1));
+			}
 		}
 	}
 	

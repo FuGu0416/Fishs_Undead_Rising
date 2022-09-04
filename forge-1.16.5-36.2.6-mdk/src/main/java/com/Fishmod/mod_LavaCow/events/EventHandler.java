@@ -53,6 +53,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -543,7 +544,7 @@ public class EventHandler {
 			int max  = Result.maxCount;
 			boolean has_spawn = false;
 			
-			if(LivingEntity instanceof LivingEntity) {
+			if(LivingEntity instanceof MobEntity) {
 				for(int i = 0; i < new Random().nextInt(MathHelper.abs(max-min) + 1) + min; i++) {
 					Entity LivingEntity_to_spawn = Result.type.create(world);
 					double k1 = player.getX() + (world.random.nextDouble() * 32.0D) - 16.0D;
@@ -552,7 +553,8 @@ public class EventHandler {
 					BlockPos pos = new BlockPos(k1, l1, i2);
 					
 					LivingEntity_to_spawn.moveTo(k1, l1, i2, 0.0F, 0.0F);
-
+					((MobEntity) LivingEntity_to_spawn).finalizeSpawn(LivingEntity_to_spawn.getServer().overworld(), world.getCurrentDifficultyAt(pos), SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, (CompoundNBT)null);
+					
 					if(world.getBlockState(pos).isValidSpawn(world, pos, Result.type)) {
 						world.addFreshEntity(LivingEntity_to_spawn);
 						has_spawn = true;
