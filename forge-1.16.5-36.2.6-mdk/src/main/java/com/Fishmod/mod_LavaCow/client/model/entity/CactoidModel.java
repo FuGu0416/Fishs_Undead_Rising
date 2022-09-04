@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 // Paste this class into your mod and generate all required imports
 
 @OnlyIn(Dist.CLIENT)
-public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
+public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> implements IHasHead {
 	private final ModelRenderer body_base;
 	private final ModelRenderer root_r;
 	private final ModelRenderer root_l;
@@ -568,4 +569,9 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> {
             modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, 0.85F);
         });
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.body_base;
+	}
 }

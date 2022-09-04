@@ -4,6 +4,8 @@ import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class WispModel<T extends WispEntity> extends FURBaseModel<T> {
+public class WispModel<T extends WispEntity> extends FURBaseModel<T> implements IHasHead {
     public ModelRenderer Head;
     public ModelRenderer Core;
     public ModelRenderer Jaw;
@@ -66,4 +68,9 @@ public class WispModel<T extends WispEntity> extends FURBaseModel<T> {
     		this.Head.yRot = 0.0F;
     	}
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Head;
+	}
 }

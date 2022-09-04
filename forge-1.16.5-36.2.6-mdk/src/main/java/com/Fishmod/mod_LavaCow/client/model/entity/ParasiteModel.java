@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 7.0.1
  */
 @OnlyIn(Dist.CLIENT)
-public class ParasiteModel<T extends ParasiteEntity> extends FURBaseModel<T> {
+public class ParasiteModel<T extends ParasiteEntity> extends FURBaseModel<T> implements IHasHead {
 	
 	private final ModelRenderer[] Parasite_Seg;
 	
@@ -134,4 +135,9 @@ public class ParasiteModel<T extends ParasiteEntity> extends FURBaseModel<T> {
         RIDING,
         NORMAL;
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Parasite_Seg[0];
+	}
 }

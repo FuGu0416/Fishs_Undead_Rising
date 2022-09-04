@@ -7,9 +7,11 @@ import com.Fishmod.mod_LavaCow.entities.floating.GraveRobberGhostEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasArm;
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class GraveRobberGhostModel<T extends GraveRobberGhostEntity> extends FlyingBaseModel<T> {
+public class GraveRobberGhostModel<T extends GraveRobberGhostEntity> extends FlyingBaseModel<T> implements IHasArm, IHasHead {
 	private final ModelRenderer head;
 	private final ModelRenderer nose;
 	private final ModelRenderer arm_l;
@@ -79,5 +81,10 @@ public class GraveRobberGhostModel<T extends GraveRobberGhostEntity> extends Fly
 		arm_r.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha * 0.75F);
 		body.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha * 0.75F);
 		arm_fold.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha * 0.75F);
+	}
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.head;
 	}
 }

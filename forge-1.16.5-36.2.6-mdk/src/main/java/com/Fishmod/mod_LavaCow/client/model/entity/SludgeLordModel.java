@@ -4,6 +4,8 @@ import com.Fishmod.mod_LavaCow.entities.SludgeLordEntity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T> {
+public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T> implements IHasHead {
     public ModelRenderer Body_base;
     public ModelRenderer Head_base;
     public ModelRenderer Arm_l_seg0;
@@ -668,4 +670,9 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         	this.Arm_l_seg2.zRot = 0.46931902520863084F;
     	}
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Head;
+	}
 }

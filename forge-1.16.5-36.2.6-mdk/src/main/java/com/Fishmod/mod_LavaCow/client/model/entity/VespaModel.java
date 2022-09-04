@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
@@ -13,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelVespa - Fish0416
  * Created using Tabula 7.0.1
  */
-public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> {
+public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implements IHasHead {
     public ModelRenderer Throax_base;
     public ModelRenderer Head;
     public ModelRenderer Throax_0;
@@ -242,4 +243,9 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> {
 	    	this.setRotateAngle(leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);
     	}
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Head;
+	}
 }

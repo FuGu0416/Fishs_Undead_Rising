@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 7.0.1
  */
 @OnlyIn(Dist.CLIENT)
-public class SwarmerModel<T extends Entity> extends FURBaseModel<T> {
+public class SwarmerModel<T extends Entity> extends FURBaseModel<T> implements IHasHead {
     public ModelRenderer Head;
     public ModelRenderer Body;
     public ModelRenderer Fin_dorsal;
@@ -92,4 +93,9 @@ public class SwarmerModel<T extends Entity> extends FURBaseModel<T> {
        this.Fin_caudal.yRot = this.Body2.yRot * 1.2F;
        this.Jaw.xRot = -0.36425021489121656F + (-f * 0.45F * MathHelper.sin(0.6F * ageInTicks));
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Head;
+	}
 }

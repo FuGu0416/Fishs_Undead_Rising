@@ -8,10 +8,11 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
-public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseModel<T> {
+public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseModel<T> implements IHasHead {
 	private final ModelRenderer base;
 	private final ModelRenderer antenne_r;
 	private final ModelRenderer antenne_l;
@@ -135,5 +136,10 @@ public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseMo
         ImmutableList.of(this.base).forEach((modelRenderer) -> { 
             modelRenderer.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         });
+	}
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.base;
 	}
 }

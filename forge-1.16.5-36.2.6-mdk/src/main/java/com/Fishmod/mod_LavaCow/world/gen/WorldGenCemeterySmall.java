@@ -32,7 +32,13 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 	
 	@Override
 	public boolean place(ISeedReader worldIn, ChunkGenerator p_241855_2_, Random rand, BlockPos position, NoFeatureConfig p_241855_5_) {		
+		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, position).below());
+		
 		if (!FURConfig.Generate_Cemetery.get() || (rand.nextInt(10000) > FURConfig.Cemetery_SpawnRate.get())) {			
+			return false;
+		}
+		
+		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
 			return false;
 		}
 		
@@ -72,13 +78,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 		return true;
     }
 	
-	private void Gen_Cemetery(ISeedReader worldIn, Random rand, BlockPos position, int facing) {
-		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, position).below());
-
-		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
-			return;
-		}
-		
+	private void Gen_Cemetery(ISeedReader worldIn, Random rand, BlockPos position, int facing) {		
 		worldIn.setBlock(position.above(), Blocks.PODZOL.defaultBlockState(), 2);
 		
 		switch(facing) {

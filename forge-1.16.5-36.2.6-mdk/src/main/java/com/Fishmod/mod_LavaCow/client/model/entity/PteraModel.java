@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
@@ -13,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
  * ModelPtera - Fish0016054
  * Created using Tabula 7.0.1
  */
-public class PteraModel<T extends PteraEntity> extends FlyingBaseModel<T> {
+public class PteraModel<T extends PteraEntity> extends FlyingBaseModel<T> implements IHasHead {
     public ModelRenderer Body_Base;
     public ModelRenderer Wing_r;
     public ModelRenderer Wing_l;
@@ -176,4 +177,9 @@ public class PteraModel<T extends PteraEntity> extends FlyingBaseModel<T> {
 	        this.leg_l.xRot = 0.619591884457987F;        	
         }
     }
+
+	@Override
+	public ModelRenderer getHead() {
+		return this.Head;
+	}
 }
