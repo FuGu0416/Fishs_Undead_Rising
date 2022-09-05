@@ -448,7 +448,9 @@
 	"enchantment.mod_lavacow.lifesteal.desc": "對目標造成傷害時，能回復玩家的生命值",
 	"enchantment.mod_lavacow.corrosive": "酸蝕性",
 	"enchantment.mod_lavacow.corrosive.desc": "攻擊時能侵蝕目標，提高它接下來所受到的傷害",
-
+	"enchantment.mod_lavacow.criticalboost": "弱點爆擊",
+	"enchantment.mod_lavacow.criticalboost.desc": "提高跳躍攻擊時爆擊所能造成的傷害",
+	
 	"effect.mod_lavacow.corroded": "腐蝕",
 	"effect.mod_lavacow.strong_corroded": "腐蝕 II",
 	"effect.mod_lavacow.long_corroded": "腐蝕",
@@ -610,6 +612,20 @@
 	"advancements.mod_lavacow.tame_cactoid.description": "馴服一株幼人掌",
 	"advancements.mod_lavacow.get_thorn_shooter.title": "與我的小朋友打聲招呼吧",
 	"advancements.mod_lavacow.get_thorn_shooter.description": "獲得一把仙人掌槍",
-			
+	"advancements.mod_lavacow.feed_warpedfirefly.title": "看啊！是那道光",
+	"advancements.mod_lavacow.feed_warpedfirefly.description": "讓一隻扭曲螢火蟲發光",
+	"advancements.mod_lavacow.kill_seahag.title": "深淵魔物 (笑)",
+	"advancements.mod_lavacow.kill_seahag.description": "殺死一頭海巫",
+	"advancements.mod_lavacow.tame_wisp.title": "TEMP",
+	"advancements.mod_lavacow.tame_wisp.description": "馴服一隻鬼火",
+	"advancements.mod_lavacow.kill_graverobber.title": "當強尼拿到鏟子",
+	"advancements.mod_lavacow.kill_graverobber.description": "殺死一名盜墓賊",
+	"advancements.mod_lavacow.kill_graverobberghost.title": "還來啊",
+	"advancements.mod_lavacow.kill_graverobberghost.description": "殺死一名盜墓賊亡魂",
+	"advancements.mod_lavacow.kill_wraith.title": "TEMP",
+	"advancements.mod_lavacow.kill_wraith.description": "殺死一頭怨靈",
+	"advancements.mod_lavacow.kill_ghostswarmer.title": "叢林巡航III：復仇亡靈",
+	"advancements.mod_lavacow.kill_ghostswarmer.description": "殺死一隻鬼靈群獵者",
+
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }

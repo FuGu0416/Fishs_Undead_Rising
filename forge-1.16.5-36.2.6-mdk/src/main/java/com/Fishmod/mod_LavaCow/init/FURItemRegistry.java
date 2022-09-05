@@ -6,7 +6,6 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
-import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.item.EntityBucketItem;
 import com.Fishmod.mod_LavaCow.item.CactusFruitItem;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
@@ -87,7 +86,7 @@ public class FURItemRegistry {
 	public static final Item FROZENTHIGH = new FrozenThighItem(new Item.Properties().stacksTo(1).durability(64).tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(10).saturationMod(1.2F).alwaysEat().effect(() -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 4*20, 4), 0.6F).build())).setRegistryName("mod_lavacow:frozenthigh");
 	public static final Item POISONSPORE = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:poisonspore");
 	public static final Item UNDYINGHEART = new UndyingHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:undyingheart");
-	public static final Item GOLDENHEART = new GoldenHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(FURConfig.GoldenHeart_dur.get())).setRegistryName("mod_lavacow:goldenheart");
+	public static final Item GOLDENHEART = new GoldenHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(250)).setRegistryName("mod_lavacow:goldenheart");
 	public static final Item MOLTENBEEF = new MoltenBeefItem("moltenbeef").setRegistryName("mod_lavacow:moltenbeef");
 	public static final Item MOLTENAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).fireResistant(), "mod_lavacow:moltenaxe", ItemTier.DIAMOND, 5.0F, -3.0F, Items.GUNPOWDER, ParticleTypes.FLAME);
 	public static final Item MOLTENHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant(), "mod_lavacow:moltenhammer", ItemTier.DIAMOND, 3, -2.4F, Items.GUNPOWDER);
@@ -186,7 +185,7 @@ public class FURItemRegistry {
 	public static final Item GHOSTLYARMOR_CHESTPLATE = new GhostlyArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_chestplate");
 	public static final Item GHOSTLYARMOR_LEGGINGS = new GhostlyArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_leggings");
 	public static final Item GHOSTLYARMOR_BOOTS = new GhostlyArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_boots");
-	public static final Item GHOSTSWARMER = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.LEVITATION, 3*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:ghostswarmer");
+	public static final Item GHOSTSWARMER = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.LEVITATION, 3*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:ghostswarmer_item");
 	public static final Item GHOSTSWARMER_BUCKET = new EntityBucketItem(FUREntityRegistry.GHOSTSWARMER, Items.BUCKET, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostswarmer_bucket");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");

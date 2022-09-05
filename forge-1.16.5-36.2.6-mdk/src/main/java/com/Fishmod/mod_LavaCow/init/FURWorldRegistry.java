@@ -228,7 +228,6 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(biomeKey).contains(Type.RARE)) &&
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.HILLS) ||
 				 BiomeDictionary.getTypes(biomeKey).contains(Type.MOUNTAIN))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BANSHEE, FURConfig.pSpawnRate_Banshee.get(), 1, 2));

@@ -37,9 +37,6 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
 
 	@Override
     public void inventoryTick(ItemStack stack, World WorldIn, Entity EntityIn, int itemSlot, boolean isSelected) {
-		if(stack.getDamageValue() > stack.getMaxDamage())
-			stack.setDamageValue(stack.getMaxDamage());
-
 		if(EntityIn instanceof PlayerEntity && itemSlot < 9 && EntityIn.tickCount % 20 == 0)
 			onTick(stack, (PlayerEntity)EntityIn);
     }
@@ -52,23 +49,22 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
     public static void onTick(ItemStack stack, PlayerEntity PlayerIn) {
     	boolean flag = false;
 
-    	if((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) {
-	    	if(!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt()) {
+    	if ((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) {
+	    	if (!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt()) {
 	    		PlayerIn.addEffect(new EffectInstance(Effects.REGENERATION, 8 * 20, 0));
 	    		flag = true;
-	    	}
-	    	else if(PlayerIn.getHealth() == PlayerIn.getMaxHealth())
-	    		for(ItemStack item : PlayerIn.getAllSlots())
-		        {
-		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {
-		        		item.setDamageValue(java.lang.Math.max(item.getDamageValue() - 1, 0));
+	    	} else if (PlayerIn.getHealth() == PlayerIn.getMaxHealth())
+	    		for(ItemStack item : PlayerIn.getAllSlots()) {
+		        	if (!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {		        		
+		        		item.setDamageValue(java.lang.Math.max(item.getDamageValue() - 1, 0));		        		
 		        		flag = true;
 		        	}
 		        }   		  		
     	}
     	
-    	if(flag && !PlayerIn.isCreative() && stack.getMaxDamage() != 0)
+    	if (flag && !PlayerIn.isCreative() && stack.getMaxDamage() != 0 && PlayerIn.getRandom().nextInt(100) < FURConfig.GoldenHeart_dur.get()) {
 			stack.hurtAndBreak(1, PlayerIn, e -> e.broadcastBreakEvent(net.minecraft.inventory.EquipmentSlotType.OFFHAND));
+    	}
 	}
     
     /*@Override

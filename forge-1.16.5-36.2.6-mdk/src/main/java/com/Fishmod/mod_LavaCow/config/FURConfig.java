@@ -552,7 +552,7 @@ public final class FURConfig {
 			      		"mod_lavacow:forsaken"
 			      		), 
 				o -> o instanceof String);
-		GoldenHeart_dur = BUILDER.comment("Set the duribility of Golden Heart, 0 = Infinite [0-10000]").defineInRange("golden heart duribility", 250, 0, 10000);
+		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 duribility per tick , 0 = Infinite [0-100]").defineInRange("golden heart duribility", 100, 0, 100);
 		GoldenHeart_bl = BUILDER.comment("BlackBanlist for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"mod_lavacow:moltenhammer\\\"").defineList("banlisted items from golden heart", 
 				Lists.newArrayList(), o -> o instanceof String);		
 		GoldenHeart_GrantsRegeneration = BUILDER.comment("Enables the Regeneration effect of the Golden Heart. [false/true]").define("golden heart grants regeneration", true);

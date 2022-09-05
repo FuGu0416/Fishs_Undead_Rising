@@ -24,7 +24,6 @@ import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
 import com.Fishmod.mod_LavaCow.item.GhostlyArmorItem;
-import com.Fishmod.mod_LavaCow.item.GoldenHeartItem;
 import com.Fishmod.mod_LavaCow.item.SwineArmorItem;
 import com.Fishmod.mod_LavaCow.item.VespaShieldItem;
 import com.Fishmod.mod_LavaCow.misc.EmeraldForItemsTrade;
@@ -273,7 +272,7 @@ public class EventHandler {
             return;
         }     
         
-		ItemStack Heart = null;
+		/*ItemStack Heart = null;
 		
 		for(int i = 0; i < 9 ; i++) {
 			if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.GOLDENHEART)) {
@@ -283,7 +282,7 @@ public class EventHandler {
 		}
 		
 		if(Heart != null)
-			GoldenHeartItem.onTick(Heart, player);
+			GoldenHeartItem.onTick(Heart, player);*/
 		
 		if(player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F)
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
