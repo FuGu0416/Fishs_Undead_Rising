@@ -50,6 +50,13 @@ public class LayerRaven<T extends RavenEntity, M extends RavenModel<T>> extends 
         	matrixStackIn.translate(-0.25F, 0.5F, 1.0F);    
         	matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
         }
+        
+        if(itemstack.getItem().equals(Items.COD)) {
+        	matrixStackIn.translate(-0.25F, 1.25F, 1.0F);    
+        	matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+        	matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        }
+        
         Minecraft.getInstance().getItemInHandRenderer().renderItem(entityIn, itemstack, ItemCameraTransforms.TransformType.HEAD, true, matrixStackIn, bufferIn, p_225628_3_);
         matrixStackIn.popPose();
     }

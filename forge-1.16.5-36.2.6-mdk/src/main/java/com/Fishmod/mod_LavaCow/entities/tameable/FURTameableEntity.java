@@ -96,6 +96,10 @@ public class FURTameableEntity extends TameableEntity {
     	return true;
     }
     
+    protected boolean canSitCondition() {
+    	return true;
+    }
+    
     public void doSitCommand(PlayerEntity playerIn) {    	
     	this.goalSelector.removeGoal(this.wander);
         this.jumping = false;
@@ -164,10 +168,12 @@ public class FURTameableEntity extends TameableEntity {
 	            }
 	
 	            return ActionResultType.CONSUME;
-	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable()) {  
-	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty()) {
+	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && this.getUsedItemHand().equals(hand)) {  
+	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty() && !this.level.isClientSide) {
 	    			if (this.state.equals(FURTameableEntity.State.WANDERING)) {
-	    				this.doSitCommand(player);
+	    				if (this.canSitCondition()) {
+	    					this.doSitCommand(player);
+	    				}
 	    			} else if (this.state.equals(FURTameableEntity.State.SITTING)) {
 	    				this.doFollowCommand(player);
 	    			} else if (this.state.equals(FURTameableEntity.State.FOLLOWING)) {

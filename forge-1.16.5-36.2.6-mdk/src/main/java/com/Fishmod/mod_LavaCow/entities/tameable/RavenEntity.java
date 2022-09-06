@@ -305,6 +305,35 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 
         this.flap += this.flapping * 2.0F;
     }
+    
+    @Override
+    protected boolean canSitCondition() {
+    	return !this.isFlying() && super.canSitCondition();
+    }
+    
+    @Override
+    public void doSitCommand(PlayerEntity playerIn) {    	
+    	super.doSitCommand(playerIn);     	
+        if (!this.level.isClientSide) {      	
+            this.setOrderedToSit(true);
+        }
+    }
+    
+    @Override
+    public void doFollowCommand(PlayerEntity playerIn) {
+    	super.doFollowCommand(playerIn);   	
+        if (!this.level.isClientSide) {
+            this.setOrderedToSit(false);
+        }
+    }
+    
+    @Override
+    public void doWanderCommand(PlayerEntity playerIn) {
+    	super.doWanderCommand(playerIn);   	
+        if (!this.level.isClientSide) {
+            this.setOrderedToSit(false);
+        }
+    }
 
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
