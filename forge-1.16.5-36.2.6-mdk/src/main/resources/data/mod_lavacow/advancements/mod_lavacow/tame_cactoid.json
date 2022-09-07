@@ -12,7 +12,7 @@
     },
     "parent": "mod_lavacow:mod_lavacow/kill_cactyrant",
     "criteria": {
-        "tamed_raven": {
+        "tamed_cactoid": {
             "trigger": "minecraft:tame_animal",
 		    "conditions": {
 				"entity": {

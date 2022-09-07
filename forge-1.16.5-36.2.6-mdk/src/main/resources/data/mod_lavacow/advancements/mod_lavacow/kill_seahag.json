@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "item": "mod_lavacow:cursed_fabric"
+            "item": "minecraft:kelp"
         },
         "title": {
-            "translate": "advancements.mod_lavacow.kill_avaton.title"
+            "translate": "advancements.mod_lavacow.kill_seahag.title"
         },
         "description": {
-            "translate": "advancements.mod_lavacow.kill_avaton.description"
+            "translate": "advancements.mod_lavacow.kill_seahag.description"
         }
     },
     "parent": "mod_lavacow:mod_lavacow/kill_wraith",
@@ -16,7 +16,7 @@
             "trigger": "minecraft:player_killed_entity",
 		    "conditions": {
 				"entity": {
-					"type": "mod_lavacow:avaton"
+					"type": "mod_lavacow:seahag"
 		        }
 		      }
         }

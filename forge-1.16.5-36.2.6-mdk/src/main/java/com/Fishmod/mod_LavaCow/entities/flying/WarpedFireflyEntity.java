@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureAttribute;
@@ -24,6 +25,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -128,8 +130,14 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     	if (this.glowTimer == -6) {   
     		if (item.equals(Items.GLOWSTONE_DUST)) {
     			this.glowTimer = 8 * 60 * 20 + 6;
+    			if (player instanceof ServerPlayerEntity) {
+    				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
+    			}
     		} else if (item.equals(Items.WARPED_FUNGUS)) {
     			this.glowTimer = 3 * 60 * 20 + 6;
+    			if (player instanceof ServerPlayerEntity) {
+    				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
+    			}
     		} else {
     			return actionresulttype;
     		}

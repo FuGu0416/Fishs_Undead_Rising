@@ -79,6 +79,12 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
     }
 	
 	private void Gen_Cemetery(ISeedReader worldIn, Random rand, BlockPos position, int facing) {		
+		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, position).above());
+		
+		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
+			return;
+		}
+		
 		worldIn.setBlock(position.above(), Blocks.PODZOL.defaultBlockState(), 2);
 		
 		switch(facing) {

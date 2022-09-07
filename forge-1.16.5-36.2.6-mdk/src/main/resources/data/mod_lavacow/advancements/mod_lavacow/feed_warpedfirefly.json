@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:shroomlight"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.feed_warpedfirefly.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.feed_warpedfirefly.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/root",
+    "criteria": {
+        "feed_warpedfirefly": {
+            "trigger": "minecraft:summoned_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:warpedfirefly"
+		        }
+		      }
+        }
+    }
+}

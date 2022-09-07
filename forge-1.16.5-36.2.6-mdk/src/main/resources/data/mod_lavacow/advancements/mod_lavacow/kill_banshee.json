@@ -10,7 +10,7 @@
             "translate": "advancements.mod_lavacow.kill_banshee.description"
         }
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
+    "parent": "mod_lavacow:mod_lavacow/kill_wraith",
     "criteria": {
         "killed": {
             "trigger": "minecraft:player_killed_entity",
