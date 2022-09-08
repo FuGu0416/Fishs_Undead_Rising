@@ -7,6 +7,7 @@ import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
@@ -51,8 +52,12 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
     	super.onHitEntity(result);
-	    if (!this.level.isClientSide() && result.getEntity() != null && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {    	
-	    	this.setDamage((float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
+	    if (!this.level.isClientSide() && result.getEntity() != null && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {   
+	    	if(this.getOwner() instanceof PlayerEntity) {
+	    		this.setDamage(4.0F);
+	    	} else {
+	    		this.setDamage((float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
+	    	}	    	    	
 	    	
 	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {
 	    		float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();

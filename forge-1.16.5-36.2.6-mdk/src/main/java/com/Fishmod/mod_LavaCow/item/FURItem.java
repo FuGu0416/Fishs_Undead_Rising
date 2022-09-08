@@ -73,7 +73,5 @@ public class FURItem extends Item {
 			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()));			
 		else if(this.Tooltip == 1)
 			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
-		
-
 	}	
 }

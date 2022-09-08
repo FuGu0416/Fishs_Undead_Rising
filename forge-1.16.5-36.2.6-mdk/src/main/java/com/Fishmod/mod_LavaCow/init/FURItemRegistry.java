@@ -187,6 +187,7 @@ public class FURItemRegistry {
 	public static final Item GHOSTLYARMOR_BOOTS = new GhostlyArmorItem(EquipmentSlotType.FEET, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_boots");
 	public static final Item GHOSTSWARMER = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.LEVITATION, 3*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:ghostswarmer_item");
 	public static final Item GHOSTSWARMER_BUCKET = new EntityBucketItem(FUREntityRegistry.GHOSTSWARMER, Items.BUCKET, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostswarmer_bucket");
+	public static final Item FORSAKEN_STAFF = new FURRangedItem("mod_lavacow:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().tab(mod_LavaCow.TAB).durability(32));
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

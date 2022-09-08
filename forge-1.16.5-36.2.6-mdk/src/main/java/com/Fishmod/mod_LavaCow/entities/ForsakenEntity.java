@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityChargeAttackGoal;
+import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -16,9 +16,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -33,6 +35,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -40,6 +43,7 @@ import net.minecraft.world.World;
 
 public class ForsakenEntity extends AbstractSkeletonEntity {
 	private final EntityChargeAttackGoal entityAICharge = new EntityChargeAttackGoal(this);
+	private final RangedAttackGoal staffGoal = new RangedAttackGoal(this, 1.25D, 40, 20.0F);
 	
 	public ForsakenEntity(EntityType<? extends ForsakenEntity> p_i48555_1_, World worldIn) {
 		super(p_i48555_1_, worldIn);
@@ -130,10 +134,38 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 	
 	@Override
 	public void reassessWeaponGoal() {
-		super.reassessWeaponGoal();
+		if (this.level != null && !this.level.isClientSide) {
+			this.goalSelector.removeGoal(this.staffGoal);
+			ItemStack itemstack = this.getItemBySlot(EquipmentSlotType.MAINHAND);
+			if (itemstack.getItem() == FURItemRegistry.FORSAKEN_STAFF) {
+				this.goalSelector.addGoal(4, this.staffGoal);
+			} else {
+				super.reassessWeaponGoal();				
+				if (this.getOffhandItem().getItem().equals(Items.SHIELD)) {
+					this.goalSelector.addGoal(2, this.entityAICharge);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void performRangedAttack(LivingEntity p_82196_1_, float p_82196_2_) {
+		ItemStack itemstack = this.getItemBySlot(EquipmentSlotType.MAINHAND);
+		if (itemstack.getItem() == FURItemRegistry.FORSAKEN_STAFF) {
+			DeathCoilEntity entitysnowball = new DeathCoilEntity(this.level, this, 0.0D, 0.0D, 0.0D);
+			entitysnowball.setPos(this.getX() - (double)(this.getBbWidth() + 1.0F) * 0.5D * (double)MathHelper.sin(this.yBodyRot * ((float)Math.PI / 180F)), this.getEyeY() - (double)0.1F, this.getZ() + (double)(this.getBbWidth() + 1.0F) * 0.5D * (double)MathHelper.cos(this.yBodyRot * ((float)Math.PI / 180F)));
+			double d0 = p_82196_1_.getX() - this.getX();
+			double d1 = p_82196_1_.getY(0.3333333333333333D) - entitysnowball.getY();
+			double d2 = p_82196_1_.getZ() - this.getZ();
+			float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;		
+			entitysnowball.shoot(d0, d1 + (double)f, d2, 1.5F, 10.0F);
+			if (!this.isSilent()) {
+				//this.level.playSound((PlayerEntity)null, this.getX(), this.getY(), this.getZ(), SoundEvents.SKELETON_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+			}
 
-		if (this.getOffhandItem().getItem().equals(Items.SHIELD)) {
-			this.goalSelector.addGoal(2, this.entityAICharge);
+			this.level.addFreshEntity(entitysnowball);
+		} else {
+			super.performRangedAttack(p_82196_1_, p_82196_2_);
 		}
 	}
     
@@ -168,7 +200,11 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         	default:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.BOW));
         		break;     	
+        	case 3:
+        		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
+        		break;
         }
+        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
         this.reassessWeaponGoal();
                 
         return ilivingentitydata;

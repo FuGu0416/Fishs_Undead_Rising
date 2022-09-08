@@ -6,8 +6,10 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EnchantableFireBallEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -49,7 +51,7 @@ public class FURRangedItem extends BowItem {
 	}
 
 	public ItemStack getProjectile(ItemStack stack, PlayerEntity playerIn) {
-	   if (!(stack.getItem() instanceof ShootableItem)) {
+	   if (!(stack.getItem() instanceof ShootableItem) || this.ammo == null) {
 		   return ItemStack.EMPTY;
        } else {
     	   Predicate<ItemStack> predicate = ((ShootableItem)stack.getItem()).getSupportedHeldProjectiles();
@@ -89,15 +91,14 @@ public class FURRangedItem extends BowItem {
 	@Override
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack stack = playerIn.getItemInHand(handIn);
-		boolean flag = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+		boolean flag = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0 || this.ammo == null;
         ItemStack itemstack = this.getProjectile(stack, playerIn);
 
      	if (!itemstack.isEmpty() || flag) {
      		if (itemstack.isEmpty()) {
      			itemstack = new ItemStack(this.ammo);
  			}
-	    }
-	    else return ActionResult.fail(playerIn.getItemInHand(handIn));
+	    } else return ActionResult.fail(playerIn.getItemInHand(handIn));
 	         
      	boolean flag1 = playerIn.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, playerIn));
 
@@ -129,7 +130,24 @@ public class FURRangedItem extends BowItem {
                     abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
                 }
                 playerIn.level.addFreshEntity(abstractarrowentity);
-			} else {			 
+			} else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
+				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(worldIn);
+        		entitysnowball.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()),playerIn.getZ() + lookVec.z * 1.0D);
+	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.75F, 1.0F);
+	            entitysnowball.setOwner(playerIn);
+	            worldIn.addFreshEntity(entitysnowball);
+	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
+	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+	    		});
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+				if (!flag1 && !playerIn.isCreative()) {
+					itemstack.shrink(1);
+					if (itemstack.isEmpty()) {
+						playerIn.inventory.removeItem(itemstack);
+					}
+				}
+				playerIn.getCooldowns().addCooldown(this, 40);
+        	} else {			 
 				Entity entityammo = this.shot.create(worldIn);
 				((AbstractFireballEntity)entityammo).setOwner(playerIn);
 				
