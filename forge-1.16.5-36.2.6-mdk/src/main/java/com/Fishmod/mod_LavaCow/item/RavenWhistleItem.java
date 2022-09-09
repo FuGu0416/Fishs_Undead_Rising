@@ -23,7 +23,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -42,8 +41,8 @@ public class RavenWhistleItem extends FURItem {
     public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
         Vector3d pos = playerIn.pick(30.0D, 1.0F, false).getLocation();
         
-        if(this.OrderEntityID != null) { 	
-        	Entity entity = SpawnUtil.getEntityByUniqueId(this.OrderEntityID, (ServerWorld) worldIn);
+        if(this.OrderEntityID != null && !playerIn.level.isClientSide()) { 	
+        	Entity entity = SpawnUtil.getEntityByUniqueId(this.OrderEntityID, worldIn.getServer().overworld());
         	if(playerIn.distanceTo(entity) < 16.0F) {
 	        	((RavenEntity) entity).setTargetLocation((float)pos.x, (float)pos.y, (float)pos.z);
 				playerIn.playSound(FURSoundRegistry.RAVEN_CALL, 1.0F, 1.0F);
