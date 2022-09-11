@@ -27,7 +27,7 @@ public class ForsakenModel<T extends ForsakenEntity> extends SkeletonModel<T> {
 		ItemStack itemstack_off = p_212843_1_.getItemInHand(Hand.OFF_HAND);
 		
 		if (itemstack_main.getItem() == FURItemRegistry.FORSAKEN_STAFF && p_212843_1_.isAggressive()) {
-			this.rightArmPose = BipedModel.ArmPose.THROW_SPEAR;
+			this.rightArmPose = BipedModel.ArmPose.CROSSBOW_HOLD;			
 		} else if (itemstack_off.getItem() == Items.SHIELD && p_212843_1_.isAggressive()) {
 			if (p_212843_1_.getMainArm() == HandSide.RIGHT) {
 				this.leftArmPose = BipedModel.ArmPose.BLOCK;

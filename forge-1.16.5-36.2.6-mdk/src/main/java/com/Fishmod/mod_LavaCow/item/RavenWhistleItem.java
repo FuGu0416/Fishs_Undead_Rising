@@ -18,6 +18,7 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -45,9 +46,8 @@ public class RavenWhistleItem extends FURItem {
         	Entity entity = SpawnUtil.getEntityByUniqueId(this.OrderEntityID, worldIn.getServer().overworld());
         	if(playerIn.distanceTo(entity) < 16.0F) {
 	        	((RavenEntity) entity).setTargetLocation((float)pos.x, (float)pos.y, (float)pos.z);
-				playerIn.playSound(FURSoundRegistry.RAVEN_CALL, 1.0F, 1.0F);
-				playerIn.getCooldowns().addCooldown(this, 30);
-				 
+	        	worldIn.playSound(null, entity, FURSoundRegistry.RAVEN_CALL, SoundCategory.VOICE, 1.0F, 1.0F);
+	        	playerIn.getCooldowns().addCooldown(this, 30);
 				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, playerIn.getItemInHand(handIn));
         	} else if (!playerIn.level.isClientSide()) {
         		playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.whistle_err", entity.getName()), true);

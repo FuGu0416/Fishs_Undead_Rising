@@ -30,6 +30,8 @@ public class WispInaBottleRecipe extends SpecialRecipe {
 	            	flag1 = true;
 	            } else if (itemstack.getItem() == Items.GLASS_BOTTLE && !flag) {
 	            	flag = true;
+	            } else {
+	            	return false;
 	            }
 	         }
 		}

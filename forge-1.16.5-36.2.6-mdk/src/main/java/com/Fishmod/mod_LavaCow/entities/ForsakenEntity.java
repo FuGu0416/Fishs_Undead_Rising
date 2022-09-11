@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -42,7 +43,17 @@ import net.minecraft.world.World;
 
 public class ForsakenEntity extends AbstractSkeletonEntity {
 	private final EntityChargeAttackGoal entityAICharge = new EntityChargeAttackGoal(this);
-	private final RangedAttackGoal staffGoal = new RangedAttackGoal(this, 1.25D, 40, 20.0F);
+	private final RangedAttackGoal staffGoal = new RangedAttackGoal(this, 1.25D, 40, 20.0F) {
+		public void stop() {
+			super.stop();
+			ForsakenEntity.this.setAggressive(false);
+		}
+
+		public void start() {
+			super.start();
+			ForsakenEntity.this.setAggressive(true);
+		}
+	};
 	
 	public ForsakenEntity(EntityType<? extends ForsakenEntity> p_i48555_1_, World worldIn) {
 		super(p_i48555_1_, worldIn);
@@ -159,7 +170,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 			float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;		
 			entitysnowball.shoot(d0, d1 + (double)f, d2, 1.5F, 10.0F);
 			if (!this.isSilent()) {
-				//this.level.playSound((PlayerEntity)null, this.getX(), this.getY(), this.getZ(), SoundEvents.SKELETON_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+				this.level.playSound((PlayerEntity)null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLAZE_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
 			}
 
 			this.level.addFreshEntity(entitysnowball);
@@ -192,6 +203,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
                 this.getAttribute(Attributes.ARMOR).setBaseValue(4.0D);
                 this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.4D);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22D);
+                this.getOffhandItem().setDamageValue(this.getRandom().nextInt(this.getOffhandItem().getMaxDamage()));
         	case 1:
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));      		
         		break;
@@ -204,6 +216,8 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         		break;
         }
         this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
+        this.getMainHandItem().setDamageValue(this.getRandom().nextInt(this.getMainHandItem().getMaxDamage()));
+        this.populateDefaultEquipmentEnchantments(difficulty);
         this.reassessWeaponGoal();
                 
         return ilivingentitydata;

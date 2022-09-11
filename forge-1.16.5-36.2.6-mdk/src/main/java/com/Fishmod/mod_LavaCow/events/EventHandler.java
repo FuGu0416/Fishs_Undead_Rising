@@ -187,71 +187,50 @@ public class EventHandler {
     	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
     	int ench_lvl = 1;
     	
-    	if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURItemRegistry.PARASITE_COMMON) {
+    	if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
-    		event.setCost(ench_lvl*2);
-    		if (currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
-			}
+    		event.setCost(ench_lvl * 2);
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem()) {
+    	} else if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
-    		event.setCost(ench_lvl*2);
-    		if (currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} else {
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
-			}
+    		event.setCost(ench_lvl * 2);
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE) {
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} else {
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART) {
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} else {
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART) {
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(4);
-    		if (currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} else {
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
+    		event.setMaterialCost(1);
+    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
+    		CompoundNBT compoundnbt = ench.getTag();
+    		ench_lvl = compoundnbt == null ? 1 : compoundnbt.getInt("level");
+    		event.setOutput(outputStack);
+    		event.setCost(4 * ench_lvl);
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(FUREnchantmentRegistry.CRITICALBOOST, ench_lvl);		
     		event.setMaterialCost(1);
     	}
-
     }
     
     /**

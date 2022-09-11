@@ -57,6 +57,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -77,7 +78,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(RavenEntity.class, DataSerializers.INT);
-    private final Set<Item> TAME_ITEMS = Sets.newHashSet(FURItemRegistry.PARASITE_COMMON, FURItemRegistry.PARASITE_COOKED, FURItemRegistry.PARASITE_DESERT);
+    private static final Set<Item> TAME_ITEMS = Sets.newHashSet(FURItemRegistry.PARASITE_COMMON, FURItemRegistry.PARASITE_COOKED, FURItemRegistry.PARASITE_DESERT);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -393,7 +394,10 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
      */
     @Override
     public boolean isFood(ItemStack stack) {
-       return TAME_ITEMS.contains(stack.getItem());
+    	if(this.getSkin() == 2)
+    		return stack.getItem().is(ItemTags.FISHES);
+    	else
+    		return TAME_ITEMS.contains(stack.getItem());
     }
     
     /**
@@ -527,8 +531,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         if (this.isInvulnerableTo(source) || this.getSkin() == 3) {
             return false;
         } else {
-            if (this.aiSit != null)
-            {
+            if (this.aiSit != null) {
                 this.setInSittingPose(false);
             }
             
@@ -560,13 +563,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Raven_Health.get());
     	this.setHealth(this.getMaxHealth());
-    	
-    	if(this.getType().equals(FUREntityRegistry.SEAGULL)) {
- 		   this.TAME_ITEMS.clear();
- 		   this.TAME_ITEMS.add(Items.TROPICAL_FISH);
- 		   this.setSkin(2);
- 	   	}
-    	
+    	    	
  	   	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
     
@@ -639,7 +636,6 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         public void start() {
             super.start();
             RavenEntity.this.getNavigation().stop();
-            RavenEntity.this.setInSittingPose(false);
         }
 
         /**
@@ -649,7 +645,6 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
             super.stop();
             RavenEntity.this.TargetLocationX = RavenEntity.this.TargetLocationY = RavenEntity.this.TargetLocationZ = -1.0F;
             RavenEntity.this.getNavigation().stop();
-            RavenEntity.this.setInSittingPose(true);
         }
 
         /**
