@@ -250,18 +250,6 @@ public class EventHandler {
         if ((player.level.getGameTime() & 0x1FL) > 0L) {
             return;
         }     
-        
-		/*ItemStack Heart = null;
-		
-		for(int i = 0; i < 9 ; i++) {
-			if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.GOLDENHEART)) {
-				Heart = player.inventory.getItem(i);
-				break;
-			}
-		}
-		
-		if(Heart != null)
-			GoldenHeartItem.onTick(Heart, player);*/
 		
 		if(player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F)
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {

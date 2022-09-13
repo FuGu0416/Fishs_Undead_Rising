@@ -215,7 +215,6 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
         		break;
         }
-        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
         this.getMainHandItem().setDamageValue(this.getRandom().nextInt(this.getMainHandItem().getMaxDamage()));
         this.populateDefaultEquipmentEnchantments(difficulty);
         this.reassessWeaponGoal();
