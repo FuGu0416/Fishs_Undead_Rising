@@ -154,31 +154,34 @@ public class EntityScarecrow  extends EntityFishTameable{
         	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         	
         	if(this.AttackStance == (byte)4) {
-        		target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-    			if(this.getSkin() != 2)
-    				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
-    			else
-    				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
-        	}		
-        	else {
-                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
-                {
-                    if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase))
-                    {
-                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-            			if(this.getSkin() != 2)
-            				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
-            			else
-            				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+        		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue())) {
+	    			if(this.getSkin() != 2)
+	    				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
+	    			else
+	    				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+	    			
+	                if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
+	                	target.setFire(2 * (int)f);
+	                }
+        		}
+        	} else {
+                for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
+                    if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
+                    	if (entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue())) {
+	                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+	                        
+	            			if(this.getSkin() != 2)
+	            				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
+	            			else
+	            				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+	            			
+	    	                if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
+	    	                	target.setFire(2 * (int)f);
+	    	                }
+                    	}
                     }
                 }
         	}
-        		            
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-            	target.setFire(2 * (int)f);
-            }
         }
     	
         super.onLivingUpdate();

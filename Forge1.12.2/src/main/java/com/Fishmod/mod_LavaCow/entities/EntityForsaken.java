@@ -14,7 +14,6 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
@@ -143,7 +142,7 @@ public class EntityForsaken extends AbstractSkeleton{
 		patternsList.appendTag(createPatternTag(AddRecipes.PATTERN_SKELETONKING, EnumDyeColor.WHITE));
         shield.getOrCreateSubCompound("BlockEntityTag").setInteger("Base", EnumDyeColor.BLACK.getDyeDamage());       
         
-        switch(this.rand.nextInt(4)) {
+        switch(this.rand.nextInt(3)) {
         	case 0:
         		this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, shield);
                 this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
@@ -153,27 +152,12 @@ public class EntityForsaken extends AbstractSkeleton{
         		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));      		
         		break;
         	case 2:
-        		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
-        		break;
-        	case 3:
-        		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
-        		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D);
-        		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
-        		
-                EntitySkeletonHorse entityskeletonhorse = new EntitySkeletonHorse(this.world);
-                entityskeletonhorse.onInitialSpawn(difficulty, (IEntityLivingData)null);
-                entityskeletonhorse.setPosition(this.posX, this.posY, this.posZ);
-                entityskeletonhorse.hurtResistantTime = 60;
-                entityskeletonhorse.setHorseTamed(true);
-                entityskeletonhorse.setGrowingAge(0);
-                entityskeletonhorse.world.spawnEntity(entityskeletonhorse);
-                
-                this.startRiding(entityskeletonhorse);           
-        		break;
         	default:
+        		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         		break;
         	
         }
+        
         this.setCombatTask();
                 
         return ientitylivingdata;

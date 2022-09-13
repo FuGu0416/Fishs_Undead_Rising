@@ -8,6 +8,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -54,9 +55,13 @@ public class EntitySludgeJet extends EntityFireball {
 	   protected void onImpact(RayTraceResult result) {
 	      if (!this.world.isRemote && result.entityHit != null && this.shootingEntity != null && result.entityHit instanceof EntityLivingBase) {
 	    	  this.setDamage( (float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	    	  result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage());           		            		            	            		            	
-	    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4*20, 3));
-	    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4*20, 1));
+	    	  
+	    	  if (result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage())) {  
+	    		  float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4 * 20 * (int)local_difficulty, 3));
+		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4 * 20 * (int)local_difficulty, 1));
+	    	  }
+	    	  
 	    	  this.setDead();
 	      }
 

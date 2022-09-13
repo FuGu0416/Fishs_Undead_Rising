@@ -218,89 +218,49 @@ public class ModEventHandler {
     	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
     	int ench_lvl = 1;
     	
-    	if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == FishItems.PARASITE_ITEM)
+    	if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == FishItems.PARASITE_ITEM && !currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure")))
     	{
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
-    		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure"))) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
     		event.setMaterialCost(1);
     	}
-    	else if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == Modblocks.item_block_glowshroom)
+    	else if(tool.getItem() instanceof ItemFishingRod && ench.getItem() == Modblocks.item_block_glowshroom && !currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure")))
     	{
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl*2);
-    		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("lure"))) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("lure"), ench_lvl);
     		event.setMaterialCost(1);
     	}
-    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.POISONSPORE)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.POISONSPORE && !currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:poisonous")))
     	{
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:poisonous"))) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:poisonous"), ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:poisonous"), ench_lvl);
     		event.setMaterialCost(1);
     	}
-    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.UNDYINGHEART)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.UNDYINGHEART && !currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:lifesteal")))
     	{
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
-    		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:lifesteal"))) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:lifesteal"), ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:lifesteal"), ench_lvl);
     		event.setMaterialCost(1);
     	}
-    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.ACIDICHEART)
+    	else if(Modconfig.Enchantment_Enable && ench.getItem() == FishItems.ACIDICHEART && !currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:corrosive")))
     	{
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(4);
-    		if (currentEnchantments.containsKey(Enchantment.getEnchantmentByLocation("mod_lavacow:corrosive"))) 
-    		{
-				event.setOutput(event.getLeft().copy());
-				EnchantmentHelper.setEnchantments(currentEnchantments, event.getOutput());
-			} 
-    		else 
-    		{
-				event.setOutput(event.getLeft().copy());
-				event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:corrosive"), ench_lvl);
-			}
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().addEnchantment(Enchantment.getEnchantmentByLocation("mod_lavacow:corrosive"), ench_lvl);
     		event.setMaterialCost(1);
     	}
 

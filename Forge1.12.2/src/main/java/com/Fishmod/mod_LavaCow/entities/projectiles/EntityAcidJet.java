@@ -51,12 +51,15 @@ public class EntityAcidJet extends EntityThrowable {
 	* Called when this EntityFireball hits a block or entity.
 	*/
     protected void onImpact(RayTraceResult result) {
-	    if (!this.world.isRemote && result.entityHit != null && this.getThrower() != null && result.entityHit instanceof EntityLivingBase && result.entityHit != this.getThrower()) {
-	    	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+	    if (!this.world.isRemote && result.entityHit != null && this.getThrower() != null && result.entityHit instanceof EntityLivingBase && result.entityHit != this.getThrower()) {	    	
 	    	this.setDamage( (float) this.getThrower().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	    	result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage());
-	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
-	    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 3));
+	    	
+	    	if (result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage())) {
+	    		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+		    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+		    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 3));
+	    	}
+	    	
 	    	this.setDead();
 	    }
     }

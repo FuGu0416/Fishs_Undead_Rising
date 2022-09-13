@@ -135,26 +135,26 @@ public class EntityWendigo extends EntityMob implements IAggressive{
   	   	}   
   	   	
         if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0) {
-                        
+        	boolean flag = false;
+        	
             if(this.AttackStance == (byte)40) {
-            	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.5F);
+            	flag = this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.5F);
             	if(this.getAttackTarget() instanceof EntityPlayer)
             		((EntityPlayer) this.getAttackTarget()).disableShield(true);
-            }
-            else
-            	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+            } else
+            	flag = this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
             
-            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-            	this.getAttackTarget().setFire(2 * (int)f);
-            }
-            
-            if (this.getAttackTarget() instanceof EntityLivingBase)
-            {
-                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-
-                ((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int)local_difficulty, 4));
+            if (flag) {
+	            float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+	            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
+	            	this.getAttackTarget().setFire(2 * (int)f);
+	            }
+	            
+	            if (this.getAttackTarget() instanceof EntityLivingBase) {
+	                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+	
+	                ((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int)local_difficulty, 4));
+	            }
             }
         }
     }

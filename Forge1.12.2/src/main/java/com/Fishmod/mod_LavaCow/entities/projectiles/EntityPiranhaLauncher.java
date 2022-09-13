@@ -58,16 +58,17 @@ public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
 	    		  this.world.spawnEntity(entityzombie);
 	    		  entityzombie.setAttackTarget((EntityLivingBase) result.entityHit);
 	            if (this.shootingEntity != null) {
-	            	result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage());           		            		            	            	
-	            	if (this.knockbackStrength > 0) {
-	                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-	                    if (f1 > 0.0F) {
-	                    	result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
-	                    }
-	                 }
-	            	
-	            	if(this.isBurning())
-	            		result.entityHit.setFire(5);
+	            	if (result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage())) {           		            		            	            	
+		            	if (this.knockbackStrength > 0) {
+		                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		                    if (f1 > 0.0F) {
+		                    	result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
+		                    }
+		                 }
+		            	
+		            	if(this.isBurning())
+		            		result.entityHit.setFire(5);
+	            	}
 	            }
 	            
 	    	  }

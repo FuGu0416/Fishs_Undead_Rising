@@ -398,11 +398,11 @@ public class EntityBanshee extends EntityMob implements IAggressive{
         		if (entity1 instanceof EntityLivingBase)
         		{                 
         			if (((EntityLivingBase)entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
-        				float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();
-        				
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
-        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 6));
-        				((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F);
+        				if (((EntityLivingBase)entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F)) {
+	        				float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();	        				
+	        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20 * (int)local_difficulty, 2));
+	        				((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 6));
+        				}       				
         			}
         		}
         	} 
