@@ -1,6 +1,5 @@
 package com.Fishmod.mod_LavaCow.entities.floating;
 
-import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -31,7 +30,6 @@ import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -181,67 +179,7 @@ public class BansheeEntity extends FloatingMobEntity {
             return null;
         }
     }
-    
-    class AIChargeAttack extends Goal {
-    	
-        public AIChargeAttack() {
-        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        public boolean canUse() {
-            if (BansheeEntity.this.getTarget() != null && !BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getRandom().nextInt(7) == 0) {
-                return BansheeEntity.this.distanceToSqr(BansheeEntity.this.getTarget()) > 4.0D;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            return BansheeEntity.this.getMoveControl().hasWanted() && BansheeEntity.this.getTarget() != null && BansheeEntity.this.getTarget().isAlive();
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void start() {
-            LivingEntity LivingEntity = BansheeEntity.this.getTarget();
-            Vector3d vec3d = LivingEntity.getEyePosition(1.0F);
-            BansheeEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
-        }
-
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
-        public void stop() {
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            LivingEntity livingentity = BansheeEntity.this.getTarget();
-            if (BansheeEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
-               BansheeEntity.this.doHurtTarget(livingentity);
-            } else {
-               double d0 = BansheeEntity.this.distanceToSqr(livingentity);
-               if (d0 < 9.0D) {
-                  Vector3d vector3d = livingentity.getEyePosition(1.0F);
-                  BansheeEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
-                  if(BansheeEntity.this.getAttackTimer() == 0) {
-	   	               BansheeEntity.this.setAttackTimer(20);
-	   	               BansheeEntity.this.level.broadcastEntityEvent(BansheeEntity.this, (byte)4);
-                  }
-               }
-            }
-        }
-    }
-    
+       
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
         return p_213348_2_.height * 0.8F;

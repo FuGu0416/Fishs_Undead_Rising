@@ -43,26 +43,28 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 		}
 		
 		int facing = rand.nextInt(4);
+		boolean graverobber_spawn = rand.nextInt(60) < FURConfig.pSpawnRate_GraveRobber.get();
+		
 		for(int i = 0; i < rand.nextInt(5) + 1; i++) {
 			switch(facing) {
 				case 0: //NORTH
-					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.north(2 * i)).below().below(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.north(2 * i)).below().below(), facing, graverobber_spawn);
 					break;
 				case 1: //EAST
-					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.east(2 * i)).below().below(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.east(2 * i)).below().below(), facing, graverobber_spawn);
 					break;
 				case 2: //WEST
-					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.west(2 * i)).below().below(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.west(2 * i)).below().below(), facing, graverobber_spawn);
 					break;
 				case 3: //SOUTH
-					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.south(2 * i)).below().below(), facing);
+					Gen_Cemetery(worldIn, rand, worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position.south(2 * i)).below().below(), facing, graverobber_spawn);
 					break;
 				default:
 					break;
 			}	
 		}
 		
-		if (rand.nextInt(60) < FURConfig.pSpawnRate_GraveRobber.get()) {
+		if (graverobber_spawn) {
 			BlockPos pos = worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, position);
 	        	
 	    	for (int i = 0; i < rand.nextInt(5); ++i) {
@@ -78,7 +80,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 		return true;
     }
 	
-	private void Gen_Cemetery(ISeedReader worldIn, Random rand, BlockPos position, int facing) {		
+	private void Gen_Cemetery(ISeedReader worldIn, Random rand, BlockPos position, int facing, boolean graverobber_spawn) {		
 		BlockState blockstate = worldIn.getBlockState(worldIn.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, position).above());
 		
 		if (blockstate.getMaterial() != Material.DIRT && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
@@ -89,7 +91,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 		
 		switch(facing) {
 			case 0: //NORTH
-				if(rand.nextBoolean()) {
+				if(rand.nextBoolean() || graverobber_spawn) {
 					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
@@ -97,7 +99,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				worldIn.setBlock(position.above().west(), Blocks.PODZOL.defaultBlockState(), 2);
 				break;
 			case 1: //EAST
-				if(rand.nextBoolean()) {
+				if(rand.nextBoolean() || graverobber_spawn) {
 					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
@@ -105,7 +107,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				worldIn.setBlock(position.above().north(), Blocks.PODZOL.defaultBlockState(), 2);
 				break;
 			case 2: //WEST
-				if(rand.nextBoolean()) {
+				if(rand.nextBoolean() || graverobber_spawn) {
 					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}
@@ -113,7 +115,7 @@ public class WorldGenCemeterySmall extends Feature<NoFeatureConfig> {
 				worldIn.setBlock(position.above().south(), Blocks.PODZOL.defaultBlockState(), 2);
 				break;
 			case 3: //SOUTH
-				if(rand.nextBoolean()) {
+				if(rand.nextBoolean() || graverobber_spawn) {
 					worldIn.setBlock(position, Blocks.BARREL.defaultBlockState(), 3);
 					LockableLootTileEntity.setLootTable(worldIn, rand, position, LootTableHandler.CEMETERY_CHEST);
 				}

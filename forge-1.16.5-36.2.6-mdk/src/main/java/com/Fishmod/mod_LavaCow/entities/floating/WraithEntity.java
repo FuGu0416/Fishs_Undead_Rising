@@ -1,21 +1,28 @@
 package com.Fishmod.mod_LavaCow.entities.floating;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
@@ -30,6 +37,7 @@ public class WraithEntity extends FloatingMobEntity {
     @Override
     protected void registerGoals() {
     	super.registerGoals();        
+    	this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
     }
     
@@ -66,6 +74,91 @@ public class WraithEntity extends FloatingMobEntity {
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
+    public class AIUseSpell extends Goal {
+        protected int spellWarmup;
+        protected int spellCooldown;
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean canUse() {
+            if (WraithEntity.this.getTarget() == null) {
+                return false;
+            } else if (WraithEntity.this.isSpellcasting()) {
+                return false;
+            } else {
+            	return WraithEntity.this.tickCount >= this.spellCooldown && WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 3.0F;
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return WraithEntity.this.getTarget() != null && this.spellWarmup > 0;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.spellWarmup = this.getCastWarmupTime();
+            WraithEntity.this.spellTicks = this.getCastingTime();
+            WraithEntity.this.level.broadcastEntityEvent(WraithEntity.this, (byte)10);
+            this.spellCooldown = WraithEntity.this.tickCount + this.getCastingInterval();
+            SoundEvent soundevent = this.getSpellPrepareSound();
+
+            if (soundevent != null) {
+                WraithEntity.this.playSound(soundevent, 1.0F, 1.0F);
+            }
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            --this.spellWarmup;
+
+            if (this.spellWarmup == 5) {
+                this.castSpell();
+                WraithEntity.this.playSound(WraithEntity.this.getSpellSound(), 4.0F, 1.2F);                        
+            }
+        }
+
+        protected void castSpell() {
+        	List<Entity> list = WraithEntity.this.level.getEntities(WraithEntity.this, WraithEntity.this.getBoundingBox().inflate(FURConfig.Banshee_Ability_Radius.get()));
+        	WraithEntity.this.level.broadcastEntityEvent(WraithEntity.this, (byte)11);
+        	
+        	for (Entity entity1 : list) {
+        		if (entity1 instanceof LivingEntity) {                 
+        			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {        				
+        				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(WraithEntity.this).setMagic(), (float) WraithEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
+        					float local_difficulty = WraithEntity.this.level.getCurrentDifficultyAt(WraithEntity.this.blockPosition()).getEffectiveDifficulty();
+        					((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2));       	
+        				}       							
+        			}
+        		}
+        	} 
+        }
+
+        protected int getCastWarmupTime() {
+            return 20;
+        }
+
+        protected int getCastingTime() {
+            return 30;
+        }
+
+        protected int getCastingInterval() {
+            return 320;
+        }
+
+        @Nullable
+        protected SoundEvent getSpellPrepareSound() {
+            return null;
+        }
+    }
+    
     @Override
     protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.BANSHEE_AMBIENT;
@@ -79,6 +172,10 @@ public class WraithEntity extends FloatingMobEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return FURSoundRegistry.BANSHEE_DEATH;
+    }
+    
+    protected SoundEvent getSpellSound() {
+        return FURSoundRegistry.BANSHEE_ATTACK;
     }
     
     /**
