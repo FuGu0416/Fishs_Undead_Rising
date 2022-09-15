@@ -27,6 +27,7 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
@@ -55,6 +56,7 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 
 	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> p_i48556_1_, World p_i48556_2_) {
 		super(p_i48556_1_, p_i48556_2_);
+		this.setCanPickUpLoot(true);
 	}
 	
 	protected void customServerAiStep() {
@@ -95,9 +97,36 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 	public AbstractIllagerEntity.ArmPose getArmPose() {
 		if (this.isAggressive()) {
 			return AbstractIllagerEntity.ArmPose.ATTACKING;
+		} else if (!this.getOffhandItem().isEmpty()) {
+			return AbstractIllagerEntity.ArmPose.NEUTRAL;
 		} else {
 			return this.isCelebrating() ? AbstractIllagerEntity.ArmPose.CELEBRATING : AbstractIllagerEntity.ArmPose.CROSSED;
 		}
+	}
+	
+	public void aiStep() {
+	      super.aiStep();
+	      if (!this.level.isClientSide && this.tickCount % 20 == 0) {	    	  
+	      }
+	}
+	
+	@Override
+	public boolean canHoldItem(ItemStack stack) {
+		return stack.getItem() == Items.EMERALD && !this.isAggressive();
+	}
+	
+	@Override
+	protected boolean canReplaceCurrentItem(ItemStack stack_pickup, ItemStack stack_onhand) {
+		return this.getMainHandItem().getItem() == Items.IRON_SHOVEL && this.getOffhandItem().isEmpty();
+	}
+	
+	@Override
+	protected void pickUpItem(ItemEntity stack) {
+		this.onItemPickup(stack);
+        this.setItemSlot(EquipmentSlotType.OFFHAND, stack.getItem());
+        this.setGuaranteedDrop(EquipmentSlotType.OFFHAND);
+        this.take(stack, stack.getItem().getCount());
+        stack.remove();
 	}
 	
 	@Nullable
