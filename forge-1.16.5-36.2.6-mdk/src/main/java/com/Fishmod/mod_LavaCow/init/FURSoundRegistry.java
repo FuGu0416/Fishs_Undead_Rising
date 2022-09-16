@@ -122,6 +122,9 @@ public class FURSoundRegistry {
 
 	public static final SoundEvent SEAHAG_AMBIENT = addSoundEvent("seahag_ambient");
 	public static final SoundEvent SEAHAG_DEATH = addSoundEvent("seahag_death");
+
+	public static final SoundEvent WRAITH_AMBIENT = addSoundEvent("wraith_ambient");
+	public static final SoundEvent WRAITH_DEATH = addSoundEvent("wraith_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);

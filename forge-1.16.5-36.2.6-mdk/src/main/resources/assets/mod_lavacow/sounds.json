@@ -599,5 +599,19 @@
 		"category": "hostile",
 		"subtitle": "entity_seahag_death",
 		"sounds": ["mod_lavacow:entity/seahag/death0","mod_lavacow:entity/seahag/death1"]
+	},
+	
+	"wraith_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_ambient",
+		"sounds": ["mod_lavacow:entity/wraith/ambient0","mod_lavacow:entity/wraith/ambient1","mod_lavacow:entity/wraith/ambient2"]
+	},
+	
+	"wraith_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_death",
+		"sounds": [{"name": "mod_lavacow:entity/wraith/death","stream": true}]
 	}
 }

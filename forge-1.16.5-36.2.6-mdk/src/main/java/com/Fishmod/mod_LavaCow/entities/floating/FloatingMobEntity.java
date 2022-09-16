@@ -29,6 +29,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -40,6 +41,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FloatingMobEntity extends MonsterEntity implements IAggressive{
 	private static final DataParameter<Byte> CASTING = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
+	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
@@ -104,6 +106,22 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     protected IParticleData ParticleType() {
     	return null;
     }
+
+	public boolean isCharging() {
+        int i = this.entityData.get(DATA_FLAGS_ID);
+        return (i & 1) != 0;
+	}
+
+	public void setIsCharging(boolean p_190648_1_) {
+		int i = this.entityData.get(DATA_FLAGS_ID);
+        if (p_190648_1_) {
+           i = i | 1;
+        } else {
+           i = i & 0;
+        }
+
+        this.entityData.set(DATA_FLAGS_ID, (byte)(i & 255));
+	}
 	
     /**
      * Called to update the entity's position/logic.
@@ -138,7 +156,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     		this.setSecondsOnFire(8);
         }
     	
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.1D && !this.isAggressive());
+    	this.noPhysics = true;//(this.getY() > SpawnUtil.getHeight(this).getY() + 0.1D && !this.isAggressive());
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
@@ -226,8 +244,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
         }
     }
        
-    class AIChargeAttack extends Goal {
-    	
+    class AIChargeAttack extends Goal {  	
         public AIChargeAttack() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
@@ -247,7 +264,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean canContinueToUse() {
-            return FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.getTarget() != null && FloatingMobEntity.this.getTarget().isAlive();
+            return FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.isCharging() && FloatingMobEntity.this.getTarget() != null && FloatingMobEntity.this.getTarget().isAlive();
         }
 
         /**
@@ -257,12 +274,15 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             LivingEntity LivingEntity = FloatingMobEntity.this.getTarget();
             Vector3d vec3d = LivingEntity.getEyePosition(1.0F);
             FloatingMobEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
+            FloatingMobEntity.this.setIsCharging(true);
+            FloatingMobEntity.this.playSound(SoundEvents.VEX_CHARGE, 1.0F, 1.0F);
         }
 
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void stop() {
+        	FloatingMobEntity.this.setIsCharging(false);
         }
 
         /**
@@ -272,6 +292,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             LivingEntity livingentity = FloatingMobEntity.this.getTarget();
             if (FloatingMobEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                FloatingMobEntity.this.doHurtTarget(livingentity);
+               FloatingMobEntity.this.setIsCharging(false);
             } else {
                double d0 = FloatingMobEntity.this.distanceToSqr(livingentity);
                if (d0 < 9.0D) {
@@ -324,7 +345,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean canUse() {
-            return !FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.getRandom().nextInt(7) == 0 && !FloatingMobEntity.this.isAggressive();
+            return !FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.getRandom().nextInt(7) == 0;
         }
 
         /**
@@ -339,9 +360,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
          */
         public void tick() {            
             BlockPos blockpos = FloatingMobEntity.this.blockPosition();
-            int y = FloatingMobEntity.this.getRandom().nextInt(11) - 5;
-           
-            y = Math.min(SpawnUtil.getHeight(FloatingMobEntity.this).getY() + 4, y);
+            int y = Math.min(SpawnUtil.getHeight(FloatingMobEntity.this).getY() + 4 - blockpos.getY(), FloatingMobEntity.this.getRandom().nextInt(11) - 5);
 
             for(int i = 0; i < 3; ++i) {
                BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);

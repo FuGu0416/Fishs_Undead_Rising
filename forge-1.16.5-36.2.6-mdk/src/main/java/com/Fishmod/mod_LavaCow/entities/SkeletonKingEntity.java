@@ -14,7 +14,6 @@ import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -697,13 +696,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 		super.dropAllDeathLoot(cause);
 		
 		if (FURConfig.SkeletonKing_Loot_Option.get()) {
-			BlockPos position = this.blockPosition();
-			
-			while(this.level.getBlockState(position).getMaterial().equals(Material.AIR))
-				position = position.below();
-			
-			while(!this.level.getBlockState(position).getMaterial().equals(Material.AIR))
-				position = position.above();
+			BlockPos position = SpawnUtil.getHeight(this);
 			
 			this.level.setBlock(position, Blocks.CHEST.defaultBlockState(), 8 | 4 | 2 | 1);
 	        if (this.level.getBlockState(position).getBlock() instanceof ChestBlock) {

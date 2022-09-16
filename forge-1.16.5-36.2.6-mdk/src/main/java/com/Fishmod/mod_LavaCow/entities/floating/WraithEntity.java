@@ -161,7 +161,7 @@ public class WraithEntity extends FloatingMobEntity {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.BANSHEE_AMBIENT;
+        return FURSoundRegistry.WRAITH_AMBIENT;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class WraithEntity extends FloatingMobEntity {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.BANSHEE_DEATH;
+        return FURSoundRegistry.WRAITH_DEATH;
     }
     
     protected SoundEvent getSpellSound() {

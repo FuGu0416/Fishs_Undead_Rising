@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.RegistryKey;
@@ -16,7 +17,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
 public class SpawnUtil {
@@ -45,7 +45,15 @@ public class SpawnUtil {
 	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
-    	return entityIn.level.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, entityIn.blockPosition());
+    	BlockPos position = entityIn.blockPosition();
+		
+		while(entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR))
+			position = position.below();
+		
+		while(!entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR))
+			position = position.above();
+		
+    	return position;
     }
     
     /*public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {

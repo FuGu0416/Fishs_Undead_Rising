@@ -62,11 +62,11 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
         this.Body_lower_l.mirror = true;
         this.Body_lower_l.setPos(4.0F, -2.0F, 0.0F);
         this.Body_lower_l.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_l, 0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_l, 0.0F, -1.5707963267948966F, 0.0F);
         this.Body_lower_r = new ModelRenderer(this, 34, 48);
         this.Body_lower_r.setPos(-4.0F, -2.0F, 0.0F);
         this.Body_lower_r.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_r, -0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_r, 0.0F, -1.5707963267948966F, 0.0F);
         this.Hair_back = new ModelRenderer(this, 31, 37);
         this.Hair_back.mirror = true;
         this.Hair_back.setPos(0.0F, -3.0F, 0.0F);
@@ -199,10 +199,10 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     		this.Head.xRot -= 0.005F;
     	}
     		
-    	SwingX_Sin(this.Body_lower_front, -0.31869712141416456F, ageInTicks, 0.2F, 0.08F, true, 0.0F);
-    	SwingZ_Sin(this.Body_lower_r, 0.0F, ageInTicks, 0.16F, 0.07F, false, 0.25F * (float)Math.PI);
-    	SwingZ_Sin(this.Body_lower_l, 0.0F, ageInTicks, 0.18F, 0.09F, true, 0.45F * (float)Math.PI);
-    	SwingX_Sin(this.Body_lower_back, 0.27314402793711257F, ageInTicks, 0.25F, 0.06F, false, 0.70F * (float)Math.PI);
+    	SwingX_Sin(this.Body_lower_front, -0.5369F, ageInTicks, 0.3F, 0.08F, true, 0.0F);
+    	SwingZ_Sin(this.Body_lower_r, 0.4894F, ageInTicks, 0.24F, 0.07F, false, 0.25F * (float)Math.PI);
+    	SwingZ_Sin(this.Body_lower_l, -0.4894F, ageInTicks, 0.27F, 0.09F, true, 0.45F * (float)Math.PI);
+    	SwingX_Sin(this.Body_lower_back, 0.5786F, ageInTicks, 0.38F, 0.06F, false, 0.70F * (float)Math.PI);
     	
     	SwingY_Sin(this.Arm_r_Seg2, 0.0F, ageInTicks, 0.22F, 0.08F, false, 0.0F);
     	SwingY_Sin(this.Arm_l_Seg2, 0.0F, ageInTicks, 0.18F, 0.06F, true, 0.0F);
