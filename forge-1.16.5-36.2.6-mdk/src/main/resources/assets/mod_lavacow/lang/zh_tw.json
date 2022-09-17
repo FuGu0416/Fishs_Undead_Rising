@@ -117,6 +117,9 @@
 	"item.mod_lavacow.ghostlyarmor_boots": "幽魂靴子",
 	"item.mod_lavacow.ghostswarmer_item": "鬼靈群獵者",
 	"item.mod_lavacow.ghostswarmer_bucket": "鬼靈群獵者桶",
+	"item.mod_lavacow.forsaken_staff": "被遺忘者法杖",
+	"item.mod_lavacow.sinister_whetstone": "怨念磨刀石",
+	"item.mod_lavacow.illager_nose": "窳鼻",
 			
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
@@ -222,6 +225,7 @@
 	"block.mod_lavacow.scarecrowhead_plague": "稻草人頭",
 	"block.mod_lavacow.tombstone": "墓碑",
 	"block.mod_lavacow.cactoid_sprout": "幼人掌苗",
+	"block.mod_lavacow.ectoplasm_block": "靈質磚",
 
 	"entity.mod_lavacow.lavacow": "熔岩牛",
 	"entity.mod_lavacow.mycosis": "菌屍",
@@ -348,9 +352,9 @@
 	"entity_ghostray_death": "鬼靈鱝死亡",
 	"entity_ghostray_hurt": "鬼靈鱝受傷",
 
-	"entity_banshee_ambient": "怨靈低語聲",
+	"entity_banshee_ambient": "報喪女妖低語聲",
 	"entity_banshee_attack": "報喪女妖尖叫",
-	"entity_banshee_death": "怨靈死亡",
+	"entity_banshee_death": "報喪女妖死亡",
 	"entity_banshee_hurt": "怨靈受傷",
 
 	"entity_weta_ambient": "沙螽唧唧聲",
@@ -366,10 +370,17 @@
 	"entity_skeletonking_spell_summon": "骷髏王施法聲",
 	"entity_skeletonking_spell_teleport": "骷髏王傳送聲",
 	"entity_skeletonking_spell_toss": "骷髏王施法聲",
+	"entity_skeletonking_spawn": "不詳的聲響",
 
 	"entity_cactyrant_ambient": "暴君掌沙沙聲",
 	"entity_cactyrant_death": "暴君掌死亡",
-		
+
+	"entity_seahag_ambient": "海巫低語聲",
+	"entity_seahag_death": "海巫死亡",
+
+	"entity_wraith_ambient": "怨靈低語聲",
+	"entity_wraith_death": "怨靈死亡",
+				
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",
@@ -440,6 +451,8 @@
 	"tootip.mod_lavacow:soulfirepan": "用以烹製特殊料理",
 	"tootip.mod_lavacow:ghostlyarmor": "套裝(2)：醫療所受到傷害的20%%",
 	"tootip.mod_lavacow:ghostlyarmor.l2": "套裝(4)：對生命比你高的單位傷害+20%%",
+	"tootip.mod_lavacow:forsaken_staff": "右鍵向目標發射一枚死亡纏繞",
+	"tootip.mod_lavacow:illager_nose": "大部分窳民不再將你視為敵人",
 		
 	"command.mod_lavacow.sitting": "%s現在於原地待命",
 	"command.mod_lavacow.following": "%s正在跟隨",

@@ -103,7 +103,24 @@
 	"item.mod_lavacow.cactoid_pot": "幼人掌盆栽",
 	"item.mod_lavacow.baobing": "刨冰",
 	"item.mod_lavacow.kung_pao_chicken": "宫保鸡丁",
-			
+	"item.mod_lavacow.wisp_ashes": "鬼火余烬",
+	"item.mod_lavacow.wisp_in_a_bottle": "鬼火瓶",
+	"item.mod_lavacow.ectoplasm_mass": "灵质团块",
+	"item.mod_lavacow.ectoplasm_ingot": "灵质锭",
+	"item.mod_lavacow.soulfireheart": "魂火之心",
+	"item.mod_lavacow.soulfirehammer": "魂火锤",
+	"item.mod_lavacow.soulfireaxe": "魂火斧",
+	"item.mod_lavacow.soulfirepan": "魂火煎锅",
+	"item.mod_lavacow.ghostlyarmor_helmet": "幽魂头盔",
+	"item.mod_lavacow.ghostlyarmor_chestplate": "幽魂胸甲",
+	"item.mod_lavacow.ghostlyarmor_leggings": "幽魂护腿",
+	"item.mod_lavacow.ghostlyarmor_boots": "幽魂靴子",
+	"item.mod_lavacow.ghostswarmer_item": "鬼灵群猎者",
+	"item.mod_lavacow.ghostswarmer_bucket": "鬼灵群猎者桶",
+	"item.mod_lavacow.forsaken_staff": "被遗忘者法杖",
+	"item.mod_lavacow.sinister_whetstone": "怨念磨刀石",
+	"item.mod_lavacow.illager_nose": "窳鼻",		
+		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌尸生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "尸蛆生怪蛋",
@@ -138,7 +155,13 @@
 	"item.mod_lavacow.spawn_egg_cactyrant": "暴君掌生怪蛋",
 	"item.mod_lavacow.spawn_egg_cactoid": "幼人掌生怪蛋",
 	"item.mod_lavacow.spawn_egg_warpedfirefly": "扭曲萤火虫生怪蛋",
-	
+	"item.mod_lavacow.spawn_egg_seahag": "海巫生怪蛋",
+	"item.mod_lavacow.spawn_egg_wisp": "鬼火生怪蛋",
+	"item.mod_lavacow.spawn_egg_graverobber": "盗墓贼生怪蛋",
+	"item.mod_lavacow.spawn_egg_graverobberghost": "盗墓贼亡魂生怪蛋",
+	"item.mod_lavacow.spawn_egg_wraith": "怨灵生怪蛋",
+	"item.mod_lavacow.spawn_egg_ghostswarmer": "鬼灵群猎者生怪蛋",
+		
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗帜图案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髅王图纹",
 	"item.mod_lavacow.banner_pattern_wendigo": "旗帜图案",
@@ -202,7 +225,8 @@
 	"block.mod_lavacow.scarecrowhead_plague": "稻草人头",
 	"block.mod_lavacow.tombstone": "墓碑",
 	"block.mod_lavacow.cactoid_sprout": "幼人掌苗",
-
+	"block.mod_lavacow.ectoplasm_block": "灵质砖",
+	
 	"entity.mod_lavacow.lavacow": "熔岩牛",
 	"entity.mod_lavacow.mycosis": "菌尸",
 	"entity.mod_lavacow.parasite": "尸蛆",
@@ -237,7 +261,13 @@
 	"entity.mod_lavacow.cactyrant": "暴君掌",
 	"entity.mod_lavacow.cactoid": "幼人掌",
 	"entity.mod_lavacow.warpedfirefly": "扭曲萤火虫",
-
+	"entity.mod_lavacow.seahag": "海巫",
+	"entity.mod_lavacow.wisp": "鬼火",
+	"entity.mod_lavacow.graverobber": "盗墓贼",
+	"entity.mod_lavacow.graverobberghost": "盗墓贼亡魂",
+	"entity.mod_lavacow.wraith": "怨灵",
+	"entity.mod_lavacow.ghostswarmer": "鬼灵群猎者",
+	
 	"entity_parasite_ambient": "尸蛆骚动声",
 	"entity_parasite_death": "尸蛆死亡",
 	"entity_parasite_hurt": "尸蛆受伤",
@@ -340,10 +370,17 @@
 	"entity_skeletonking_spell_summon": "骷髅王施法声",
 	"entity_skeletonking_spell_teleport": "骷髅王传送声",
 	"entity_skeletonking_spell_toss": "骷髅王施法声",
+	"entity_skeletonking_spawn": "不详的声响",
 
 	"entity_cactyrant_ambient": "暴君掌沙沙声",
 	"entity_cactyrant_death": "暴君掌死亡",
-		
+
+	"entity_seahag_ambient": "海巫低语声",
+	"entity_seahag_death": "海巫死亡",
+
+	"entity_wraith_ambient": "怨灵低语声",
+	"entity_wraith_death": "怨灵死亡",
+			
 	"tootip.mod_lavacow:bonesword": "对目标额外造成其最大生命值 %d%% 的伤害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用后获得随机效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在装备时赋予再生并修补(+1/秒)装备物品",
@@ -407,7 +444,16 @@
 	"tootip.mod_lavacow:thorn_shooter": "快速将仙人掌刺射出",
 	"tooltip.mod_lavacow:baobing": "食用后可熄灭身上的火焰,并获得荆棘II(1:00)",
 	"tootip.mod_lavacow:kung_pao_chicken": "食用后获得烧灼II(1:00),或用于驯服炎熔螈",	
-	
+	"tootip.mod_lavacow:soulfireheart": "受到的火焰伤害-%d%%", 	
+	"tootip.mod_lavacow:soulfireheart.l2": "医疗回复量+%d%%", 	
+	"tootip.mod_lavacow:soulfirehammer": "右键点击时可对玩家周遭单位造成伤害",	
+	"tootip.mod_lavacow:soulfireaxe": "砍下原木时可直接获得木炭",
+	"tootip.mod_lavacow:soulfirepan": "用以烹制特殊料理",
+	"tootip.mod_lavacow:ghostlyarmor": "套装(2)：医疗所受到伤害的20%%",
+	"tootip.mod_lavacow:ghostlyarmor.l2": "套装(4)：对生命比你高的单位伤害+20%%",
+	"tootip.mod_lavacow:forsaken_staff": "右键向目标发射一枚死亡缠绕",
+	"tootip.mod_lavacow:illager_nose": "大部分窳民不再将你视为敌人",
+		
 	"command.mod_lavacow.sitting": "%s现在于原地待命",
 	"command.mod_lavacow.following": "%s正在跟随",
 	"command.mod_lavacow.wandering": "%s进入徘徊状态",
@@ -422,7 +468,9 @@
 	"enchantment.mod_lavacow.lifesteal.desc": "对目标造成伤害时，能回復玩家的生命值",
 	"enchantment.mod_lavacow.corrosive": "酸蚀性",
 	"enchantment.mod_lavacow.corrosive.desc": "攻击时能侵蚀目标，提高它接下来所受到的伤害",
-
+	"enchantment.mod_lavacow.criticalboost": "弱点爆击",
+	"enchantment.mod_lavacow.criticalboost.desc": "提高跳跃攻击时爆击所能造成的伤害",
+	
 	"effect.mod_lavacow.corroded": "腐蚀",
 	"effect.mod_lavacow.strong_corroded": "腐蚀 II",
 	"effect.mod_lavacow.long_corroded": "腐蚀",
@@ -570,6 +618,20 @@
 	"advancements.mod_lavacow.tame_cactoid.description": "驯服一株幼人掌",
 	"advancements.mod_lavacow.get_thorn_shooter.title": "对我的小朋友打声招呼吧",
 	"advancements.mod_lavacow.get_thorn_shooter.description": "获得一把仙人掌枪",
-			
+	"advancements.mod_lavacow.feed_warpedfirefly.title": "看啊！是那道光",
+	"advancements.mod_lavacow.feed_warpedfirefly.description": "让一只扭曲萤火虫发光",
+	"advancements.mod_lavacow.kill_seahag.title": "深渊魔物 (笑)",
+	"advancements.mod_lavacow.kill_seahag.description": "杀死一头海巫",
+	"advancements.mod_lavacow.tame_wisp.title": "幽灵系训练家",
+	"advancements.mod_lavacow.tame_wisp.description": "驯服一只鬼火",
+	"advancements.mod_lavacow.kill_graverobber.title": "当强尼拿到铲子",
+	"advancements.mod_lavacow.kill_graverobber.description": "杀死一名盗墓贼",
+	"advancements.mod_lavacow.kill_graverobberghost.title": "还来啊",
+	"advancements.mod_lavacow.kill_graverobberghost.description": "杀死一名盗墓贼亡魂",
+	"advancements.mod_lavacow.kill_wraith.title": "魔鬼克星",
+	"advancements.mod_lavacow.kill_wraith.description": "杀死一头怨灵",
+	"advancements.mod_lavacow.kill_ghostswarmer.title": "丛林巡航III：复仇亡灵",
+	"advancements.mod_lavacow.kill_ghostswarmer.description": "杀死一只鬼灵群猎者",
+				
 	"death.mod_lavacow.timeup": "%1$s的生命消逝于尘土之中"
 }

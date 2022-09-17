@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -136,7 +135,7 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
 	
 	@Override
     public void tick() {
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
+    	this.noPhysics = true;
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);

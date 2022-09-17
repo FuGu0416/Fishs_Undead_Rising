@@ -105,7 +105,9 @@ public class GhostRayEntity extends FlyingMobEntity {
 		        entity.moveTo(blockpos, this.yRot, 0.0F);
 		        entity.finalizeSpawn(worldIn, difficulty, SpawnReason.REINFORCEMENT, (ILivingEntityData)null, (CompoundNBT)null);
 		        entity.setOwnerUUID(this.getUUID());
-		        
+		        entity.doSitCommand(null);
+		        entity.doFollowCommand(null);
+		    	
 	            if(!this.level.isClientSide())
 	            	this.level.addFreshEntity(entity);
 	    	}
