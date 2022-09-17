@@ -188,7 +188,7 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
            }
         }
 
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D && this.getTarget()== null);
+    	this.noPhysics = true;
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);

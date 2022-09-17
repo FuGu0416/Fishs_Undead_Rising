@@ -141,6 +141,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.CORDY_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.VEIL_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK, RenderType.translucent());
         
         ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_COMMON, manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
         ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_STRAW, manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));

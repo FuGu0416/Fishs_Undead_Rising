@@ -56,8 +56,8 @@ public class WraithEntity extends FloatingMobEntity {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.GraveRobberGhost_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.GraveRobberGhost_Attack.get());
+        		.add(Attributes.MAX_HEALTH, FURConfig.Wraith_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Wraith_Attack.get());
     }
     
     /**
@@ -67,8 +67,8 @@ public class WraithEntity extends FloatingMobEntity {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GraveRobberGhost_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.GraveRobberGhost_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wraith_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Wraith_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);

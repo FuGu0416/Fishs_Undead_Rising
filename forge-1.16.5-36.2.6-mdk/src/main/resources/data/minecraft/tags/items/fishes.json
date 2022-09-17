@@ -10,6 +10,7 @@
     "mod_lavacow:swarmer_item",
     "mod_lavacow:swarmer_item_cooked",
     "mod_lavacow:piranha_item",
-    "mod_lavacow:piranha_item_cooked"
+    "mod_lavacow:piranha_item_cooked",
+    "mod_lavacow:ghostswarmer_item"
   ]
 }

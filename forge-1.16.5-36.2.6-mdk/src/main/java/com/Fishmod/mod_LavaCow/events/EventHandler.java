@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
@@ -36,6 +37,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
@@ -44,10 +46,12 @@ import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -85,6 +89,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -472,6 +477,12 @@ public class EventHandler {
     	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeletonEntity && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
     		event.getEntity().removeTag("FUR_tameSkeleton");
     	}
+    	
+    	if(event.getEntity() != null && event.getEntity() instanceof IronGolemEntity) {
+    		((IronGolemEntity)event.getEntity()).targetSelector.addGoal(5, new NearestAttackableTargetGoal<>((IronGolemEntity)event.getEntity(), PlayerEntity.class, 0, true, false, (p_210136_0_) -> {
+				return p_210136_0_.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE);
+			}));	
+    	}
     }
     
     @SubscribeEvent
@@ -761,5 +772,15 @@ public class EventHandler {
         if (event.getLookingEntity() instanceof AbstractIllagerEntity)
             if (event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE))
                     event.modifyVisibility(0.0D);    	
+    }
+    
+    @SubscribeEvent
+    public void onInventoryOpen(final PlayerContainerEvent.Open event) {
+    	if (!event.getPlayer().isCreative() && event.getContainer() instanceof ChestContainer) {
+    		AxisAlignedBB axisalignedbb = AxisAlignedBB.unitCubeFromLowerCorner(event.getPlayer().position()).inflate(16.0D, 10.0D, 16.0D);
+    		for (MobEntity mobs : event.getPlayer().level.getLoadedEntitiesOfClass(GraveRobberEntity.class, axisalignedbb)) {
+    			mobs.setTarget(event.getPlayer());
+    		}
+    	}
     }
 }

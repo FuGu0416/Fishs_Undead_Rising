@@ -121,6 +121,10 @@ public class FURWorldRegistry {
 			event.getGeneration().addStructureStart(DESERT_TOMB_CF);
 		}
 		
+		if(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM)) {
+			return;
+		}
+		
 		if(FURConfig.pSpawnRate_ZombieMushroom.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.WET) || 
 				BiomeDictionary.getTypes(biomeKey).contains(Type.RIVER))) {
@@ -278,7 +282,7 @@ public class FURWorldRegistry {
 		
 		if(FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.FOREST))) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Banshee.get(), 1, 2));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}
 	}
 	
