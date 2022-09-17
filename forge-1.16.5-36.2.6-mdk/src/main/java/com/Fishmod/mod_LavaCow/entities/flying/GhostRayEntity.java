@@ -98,7 +98,7 @@ public class GhostRayEntity extends FlyingMobEntity {
 		   this.setSkin(1);
     	}
     	
-    	if (this.random.nextFloat() < 0.4F) {
+    	if (this.random.nextFloat() < 0.01F * (float)FURConfig.pSpawnRate_GhostSwarmer.get()) {
 	    	for(int i = 0; i < 2 + this.random.nextInt(2); ++i) {
 	    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
 	    		GhostSwarmerEntity entity = FUREntityRegistry.GHOSTSWARMER.create(this.level);

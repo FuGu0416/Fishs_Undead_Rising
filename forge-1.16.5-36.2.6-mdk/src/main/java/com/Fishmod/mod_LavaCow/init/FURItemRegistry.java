@@ -24,6 +24,7 @@ import com.Fishmod.mod_LavaCow.item.FissionPotionItem;
 import com.Fishmod.mod_LavaCow.item.FrozenThighItem;
 import com.Fishmod.mod_LavaCow.item.GhostlyArmorItem;
 import com.Fishmod.mod_LavaCow.item.GoldenHeartItem;
+import com.Fishmod.mod_LavaCow.item.IllagerNoseItem;
 import com.Fishmod.mod_LavaCow.item.IntestineItem;
 import com.Fishmod.mod_LavaCow.item.MoltenAxeItem;
 import com.Fishmod.mod_LavaCow.item.MoltenBeefItem;
@@ -190,6 +191,7 @@ public class FURItemRegistry {
 	public static final Item GHOSTSWARMER_BUCKET = new EntityBucketItem(FUREntityRegistry.GHOSTSWARMER, Items.BUCKET, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostswarmer_bucket");
 	public static final Item FORSAKEN_STAFF = new FURRangedItem("mod_lavacow:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().tab(mod_LavaCow.TAB).durability(32));
 	public static final Item SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:sinister_whetstone");
+	public static final Item ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB))).setRegistryName("mod_lavacow:illager_nose");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

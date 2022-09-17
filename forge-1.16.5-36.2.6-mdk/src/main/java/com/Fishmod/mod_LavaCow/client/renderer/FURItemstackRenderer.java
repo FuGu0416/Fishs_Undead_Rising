@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renderer;
 
+import com.Fishmod.mod_LavaCow.client.model.armor.ModelIllagerNose;
 import com.Fishmod.mod_LavaCow.client.model.item.ModelBeastClaw;
 import com.Fishmod.mod_LavaCow.client.model.item.ModelSkeletonKingMace;
 import com.Fishmod.mod_LavaCow.client.model.item.ModelVespaShield;
@@ -25,6 +26,8 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
     private static final ResourceLocation SKELETONKING_MACE_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
     private static final ModelVespaShield VESPA_SHIELD_MODEL = new ModelVespaShield();
     private static final ResourceLocation VESPA_SHIELD_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa.png");
+    private static final ModelIllagerNose<?> ILLAGER_NOSE_MODEL = new ModelIllagerNose<>(1.0F);
+    private static final ResourceLocation ILLAGER_NOSE_TEXTURE = new ResourceLocation("mod_lavacow:textures/armors/illager_nose.png");
     
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType p_239207_2_, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
@@ -62,6 +65,14 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
         
         if(itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_PLAGUE.asItem()) {
         	new ScarecrowHeadTileEntityRenderer<>(2, TileEntityRendererDispatcher.instance).render(null, combinedOverlayIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        }
+        
+        if(itemStackIn.getItem() == FURItemRegistry.ILLAGER_NOSE){
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(ILLAGER_NOSE_TEXTURE), false, itemStackIn.hasFoil());
+            ILLAGER_NOSE_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder1, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
         }
     }
 }

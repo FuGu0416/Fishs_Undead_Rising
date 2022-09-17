@@ -29,7 +29,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -40,7 +39,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FloatingMobEntity extends MonsterEntity implements IAggressive{
-	private static final DataParameter<Byte> CASTING = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
 	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
 	private int attackTimer = 0;
 	protected int spellTicks;
@@ -86,42 +84,54 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     @Override
     protected void defineSynchedData() {
     	super.defineSynchedData();
-        this.getEntityData().define(CASTING, Byte.valueOf((byte)0));
+        this.getEntityData().define(DATA_FLAGS_ID, (byte)0);
     }
-    
-    public boolean isSpellcasting() {
-    	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
-    }
-    
-    @OnlyIn(Dist.CLIENT)
-    public boolean isSpellcastingC() {
-    	return (((Byte)this.getEntityData().get(CASTING)).byteValue() & 1) != 0;
-    }
-    
-    public int getSpellTicks() {
-        return this.spellTicks;
-    }
-    
+       
     @Nullable
     protected IParticleData ParticleType() {
     	return null;
     }
 
-	public boolean isCharging() {
+	private boolean getFloaterFlag(int p_190656_1_) {
         int i = this.entityData.get(DATA_FLAGS_ID);
-        return (i & 1) != 0;
+        return (i & p_190656_1_) != 0;
 	}
 
-	public void setIsCharging(boolean p_190648_1_) {
-		int i = this.entityData.get(DATA_FLAGS_ID);
-        if (p_190648_1_) {
-           i = i | 1;
+	private void setFloaterFlag(int byte_loc, boolean bool) {
+        int i = this.entityData.get(DATA_FLAGS_ID);
+        if (bool) {
+           i = i | byte_loc;
         } else {
-           i = i & 0;
+           i = i & ~byte_loc;
         }
 
         this.entityData.set(DATA_FLAGS_ID, (byte)(i & 255));
 	}
+	
+    public boolean isSpellcasting() {
+    	 return this.getFloaterFlag(2);
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    public boolean isSpellcastingC() {
+    	 return this.getFloaterFlag(2);
+    }
+    
+    public void setIsCasting(boolean bool) {
+    	this.setFloaterFlag(2, bool);
+    }
+
+	public boolean isCharging() {
+        return this.getFloaterFlag(1);
+	}
+
+	public void setIsCharging(boolean bool) {
+        this.setFloaterFlag(1, bool);
+	}
+	
+    public int getSpellTicks() {
+        return this.spellTicks;
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -156,7 +166,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     		this.setSecondsOnFire(8);
         }
     	
-    	this.noPhysics = true;//(this.getY() > SpawnUtil.getHeight(this).getY() + 0.1D && !this.isAggressive());
+    	this.noPhysics = true;
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
@@ -194,17 +204,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             super.handleEntityEvent(id);
         }
     }
-    
-    public void setIsCasting(boolean isHanging) {
-        byte b0 = ((Byte)this.getEntityData().get(CASTING)).byteValue();
-
-        if (isHanging) {
-            this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 | 1)));
-        } else {
-            this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 & -2)));
-        }
-    }
-    
+        
     public class AICastingApell extends Goal {
         public AICastingApell() {
         	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -275,7 +275,6 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             Vector3d vec3d = LivingEntity.getEyePosition(1.0F);
             FloatingMobEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
             FloatingMobEntity.this.setIsCharging(true);
-            FloatingMobEntity.this.playSound(SoundEvents.VEX_CHARGE, 1.0F, 1.0F);
         }
 
         /**

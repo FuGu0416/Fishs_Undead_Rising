@@ -41,6 +41,7 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -80,6 +81,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -168,6 +170,10 @@ public class EventHandler {
 	        if (!(FURConfig.Intestine_banlist.get().contains(event.getEntityLiving().getType().getRegistryName().toString()))) {
 	            event.getEntityLiving().spawnAtLocation(FURItemRegistry.INTESTINE, 1);
 	        }
+        }
+    	
+    	if (event.isRecentlyHit() && event.getEntityLiving() instanceof AbstractIllagerEntity && event.getEntityLiving().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_IllagerNose.get()) {          
+            event.getEntityLiving().spawnAtLocation(FURItemRegistry.ILLAGER_NOSE, 1);
         }
     	
     	if (event.getEntityLiving().getTags().contains("FUR_noLoot")) {
@@ -706,6 +712,8 @@ public class EventHandler {
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.UNDYINGHEART, 30, 1, 4, 20));
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ACIDICHEART, 30, 1, 4, 20));
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
+	        if(FURConfig.pSpawnRate_Wisp.get() > 0)
+	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.WISP_IN_A_BOTTLE, 3, 1, 12, 1));
     	}
     }
     
@@ -746,5 +754,12 @@ public class EventHandler {
     		}
     			
     	}
+    }
+    
+    @SubscribeEvent
+    public void onEVisibility(LivingVisibilityEvent event) {
+        if (event.getLookingEntity() instanceof AbstractIllagerEntity)
+            if (event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE))
+                    event.modifyVisibility(0.0D);    	
     }
 }

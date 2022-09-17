@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -7,6 +9,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.floating.GraveRobberGhostEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import com.google.common.collect.Maps;
 
 import net.minecraft.enchantment.Enchantment;
@@ -21,6 +24,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -37,6 +41,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.DamageSource;
@@ -53,7 +61,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GraveRobberEntity extends AbstractIllagerEntity {
-
+	public int tradeTimer = 0;
+	
 	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> p_i48556_1_, World p_i48556_2_) {
 		super(p_i48556_1_, p_i48556_2_);
 		this.setCanPickUpLoot(true);
@@ -81,6 +90,7 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 		this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (p_210136_0_) -> {
 				return this.getHealth() > this.getMaxHealth() * 0.5F &&  p_210136_0_.getMobType().equals(CreatureAttribute.UNDEAD);
 			}));	
+		this.goalSelector.addGoal(7, new GraveRobberEntity.TradeGoal(this));
 		this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.6D));
 		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
 		this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
@@ -98,7 +108,7 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 		if (this.isAggressive()) {
 			return AbstractIllagerEntity.ArmPose.ATTACKING;
 		} else if (!this.getOffhandItem().isEmpty()) {
-			return AbstractIllagerEntity.ArmPose.NEUTRAL;
+			return AbstractIllagerEntity.ArmPose.CROSSBOW_HOLD;
 		} else {
 			return this.isCelebrating() ? AbstractIllagerEntity.ArmPose.CELEBRATING : AbstractIllagerEntity.ArmPose.CROSSED;
 		}
@@ -112,7 +122,7 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 	
 	@Override
 	public boolean canHoldItem(ItemStack stack) {
-		return stack.getItem() == Items.EMERALD && !this.isAggressive();
+		return stack.getItem() == Items.EMERALD && !this.isAggressive() && this.getOffhandItem().isEmpty();
 	}
 	
 	@Override
@@ -128,6 +138,24 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
         this.take(stack, stack.getItem().getCount());
         stack.remove();
 	}
+	
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+        this.tradeTimer = compound.getInt("tradeTimer");
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+	@Override
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("tradeTimer", this.tradeTimer);
+    }
 	
 	@Nullable
 	public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_, @Nullable ILivingEntityData p_213386_4_, @Nullable CompoundNBT p_213386_5_) {
@@ -150,6 +178,22 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 		}
 	}
 	
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+	@Override
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+		switch(id) {
+			case 4:
+				this.tradeTimer = 60;
+				break;
+			default:
+				super.handleEntityEvent(id);
+				break;
+		}
+    }
+	
 	public boolean isAlliedTo(Entity p_184191_1_) {
 		if (super.isAlliedTo(p_184191_1_)) {
 			return true;
@@ -159,6 +203,74 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
 			return false;
 		}
 	}
+	
+	static class TradeGoal extends Goal {
+		private final GraveRobberEntity mob;
+			
+        public TradeGoal(GraveRobberEntity entity) {
+        	this.mob = entity;
+        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+        
+        private static List<ItemStack> getItemStacks(GraveRobberEntity mob) {
+            LootTable loottable = mob.level.getServer().getLootTables().get(LootTableHandler.TRADE_LOOT);
+            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)mob.level)).withParameter(LootParameters.ORIGIN, mob.position()).withParameter(LootParameters.THIS_ENTITY, mob).withRandom(mob.getRandom());
+            return loottable.getRandomItems(lootcontext$builder.create(LootParameterSets.PIGLIN_BARTER));
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        @Override
+        public boolean canUse() {
+            return this.mob.tradeTimer <= 0  && !this.mob.getOffhandItem().isEmpty() && !this.mob.isAggressive();
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        @Override
+        public boolean canContinueToUse() {
+            return this.mob.tradeTimer > 0  && !this.mob.getOffhandItem().isEmpty() && !this.mob.isAggressive();
+        }
+        
+        @Override
+        public void start() {
+        	this.mob.tradeTimer = 60;
+        	this.mob.level.broadcastEntityEvent(this.mob, (byte)4);
+        	this.mob.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.15F);
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        @Override
+        public void tick() {            
+        	if (this.mob.tradeTimer > 0) {
+        		this.mob.tradeTimer --;
+        	}
+        }
+        
+        @Override
+        public void stop() {     
+        	this.mob.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+        	this.mob.tradeTimer = 0;        	
+        	
+        	if (!this.mob.isAggressive()) {       		
+        		List<ItemStack> lootList = getItemStacks(this.mob);
+        		 if (lootList.size() > 0) {
+                     ItemStack loot = lootList.remove(0).copy();
+                     this.mob.spawnAtLocation(loot);
+                 }      		
+        	} else {
+        		this.mob.spawnAtLocation(this.mob.getOffhandItem().copy());
+        	}
+        	
+        	ItemStack stack = this.mob.getOffhandItem().copy();
+        	stack.setCount(stack.getCount() - 1);
+        	this.mob.setItemSlot(EquipmentSlotType.OFFHAND, stack);
+        }
+    }
 	
 	protected SoundEvent getAmbientSound() {
 		return SoundEvents.VINDICATOR_AMBIENT;

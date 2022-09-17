@@ -178,6 +178,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Attack;
 	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GhostSwarmer;
+	public static final ForgeConfigSpec.ConfigValue<Double> GhostSwarmer_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> GhostSwarmer_Attack;
+	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Wendigo_AnimalAttack;
@@ -220,6 +224,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades; 
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
+	public static final ForgeConfigSpec.ConfigValue<Integer> General_IllagerNose;
 	
 	static {
 		BUILDER.push("Glowshroom");
@@ -503,6 +508,12 @@ public final class FURConfig {
 		Wraith_Attack = BUILDER.comment("Wraith strength [1-1000]").defineInRange("wraith attack", 5.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
+		BUILDER.push("Ghost Swarmer");
+		pSpawnRate_GhostSwarmer = BUILDER.comment("Set the spawn rate of Ghost Swarmer [0-100]").defineInRange("ghost swarmer spawn rate", 40, 0, 100);
+		GhostSwarmer_Health = BUILDER.comment("Maximum Ghost Swarmer health [1-1000]").defineInRange("ghost swarmer health", 8.0D, 1.0D, 1000.0D);
+		GhostSwarmer_Attack = BUILDER.comment("Ghost Swarmer strength [1-1000]").defineInRange("ghost swarmer attack", 1.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+		
 		BUILDER.push("Item");
 		MoltenHammer_PVP = BUILDER.comment("Allow Molten Hammer active effect to hit players [false/true]").define("allow molten hammer pvp", false);
 		Fission_ModEntity = BUILDER.comment("Allow Potion of Fission to be used on entites from other mods [false/true]").define("fission potion works on entities from other mods", false);
@@ -576,7 +587,8 @@ public final class FURConfig {
 		SludgeWand_Cooldown = BUILDER.comment("Ability cooldown of \\\"Pestilence\\\" [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Midnight Mourne [1-10000]").defineInRange("midnight mourne cooldown", 60, 0, 10000);							
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
-		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);		
+		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
+		General_IllagerNose = BUILDER.comment("Set the drop rate of Illager Nose [0-100]").defineInRange("illager nose drop rate", 2, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Structure");

@@ -112,8 +112,8 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
         		.add(Attributes.MOVEMENT_SPEED, 0.3D)
         		.add(Attributes.FLYING_SPEED, 0.6F)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Wisp_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Wisp_Health.get())
+        		.add(Attributes.MAX_HEALTH, FURConfig.GhostSwarmer_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.GhostSwarmer_Health.get())
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -209,8 +209,8 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SeaHag_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SeaHag_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GhostSwarmer_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.GhostSwarmer_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
     	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));

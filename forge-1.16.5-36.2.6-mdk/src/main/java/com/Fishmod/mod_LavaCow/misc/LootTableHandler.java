@@ -26,6 +26,7 @@ public class LootTableHandler {
 	public static final ResourceLocation CEMETERY_CHEST = new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest");
 	public static final ResourceLocation SKELETON_KING = new ResourceLocation(mod_LavaCow.MODID, "entities/skeletonking");
 	public static final ResourceLocation DESERT_TOMB_CHEST = new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest");
+	public static final ResourceLocation TRADE_LOOT = new ResourceLocation(mod_LavaCow.MODID, "gameplay/graverobber_bartering");
 	
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
