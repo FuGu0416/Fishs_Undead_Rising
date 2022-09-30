@@ -47,10 +47,10 @@ public class SpawnUtil {
     public static BlockPos getHeight(Entity entityIn) {
     	BlockPos position = entityIn.blockPosition();
 		
-		while(entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR))
+		while(entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR) || entityIn.level.getBlockState(position).getMaterial().equals(Material.LEAVES))
 			position = position.below();
 		
-		while(!entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR))
+		while(!entityIn.level.getBlockState(position).getMaterial().equals(Material.AIR) && !entityIn.level.getBlockState(position).getMaterial().equals(Material.LEAVES))
 			position = position.above();
 		
     	return position;

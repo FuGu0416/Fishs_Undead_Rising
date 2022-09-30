@@ -129,6 +129,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Forsaken_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Forsaken_Attack;
 	
+	public static final ForgeConfigSpec.ConfigValue<Boolean> pSpawnRate_SkeletonKing;
 	public static final ForgeConfigSpec.ConfigValue<Double> SkeletonKing_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> SkeletonKing_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SkeletonKing_AbilityA_Cooldown;
@@ -440,6 +441,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Skeleton King");
+		pSpawnRate_SkeletonKing = BUILDER.comment("Should Skeleton King be summoned with the crown [false/true]").define("skeleton king summon", true);
 		SkeletonKing_Health = BUILDER.comment("Maximum Skeleton King health [1-1000]").defineInRange("skeleton king health", 360.0D, 1.0D, 1000.0D);
 		SkeletonKing_Attack = BUILDER.comment("Skeleton King strength [1-1000]").defineInRange("skeleton king attack", 16.0D, 1.0D, 1000.0D);
 		SkeletonKing_AbilityA_Cooldown = BUILDER.comment("Set the cooldown of Sand Tomb [0-100]").defineInRange("skeleton king sand tomb cooldown", 10, 0, 100);

@@ -26,7 +26,7 @@ public class PiranhaLauncherRenderer extends EntityRenderer<PiranhaLauncherEntit
         p_225623_4_.scale(-1.0F, -1.0F, 1.0F);
         float f = MathHelper.rotLerp(p_225623_1_.yRotO, p_225623_1_.yRot, p_225623_3_);
         IVertexBuilder ivertexbuilder = p_225623_5_.getBuffer(this.model.renderType(this.getTextureLocation(p_225623_1_)));
-        //p_225623_4_.translate(0.0F, 0.8F, 0.0F);
+        p_225623_4_.translate(0.0F, -1.5F, 0.0F);
         p_225623_4_.mulPose(Vector3f.YP.rotationDegrees(f));
         this.model.renderToBuffer(p_225623_4_, ivertexbuilder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         p_225623_4_.popPose();

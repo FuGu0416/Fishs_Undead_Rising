@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.SkeletonKingEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -51,7 +52,7 @@ public class CrownItem extends Item {
 		Hand hand = ContextIn.getHand();
 		BlockPos pos = ContextIn.getClickedPos();
 		World worldIn = ContextIn.getLevel();
-        if(this.type == 1
+        if(this.type == 1 && FURConfig.pSpawnRate_SkeletonKing.get()
         		&& worldIn.getBlockState(pos).getBlock().equals(Blocks.SKELETON_SKULL)
         		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(pos))).contains(Type.HOT)
         		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(pos))).contains(Type.DRY)

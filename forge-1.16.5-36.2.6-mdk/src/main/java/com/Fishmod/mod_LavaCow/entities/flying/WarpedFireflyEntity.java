@@ -11,6 +11,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -100,6 +101,12 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     }
     
     @Override
+    public void setLeashedTo(Entity p_110162_1_, boolean p_110162_2_) {
+    	this.setPersistenceRequired();
+    	super.setLeashedTo(p_110162_1_, p_110162_2_);
+    }
+    
+    @Override
     public void tick() {
     	super.tick();
 
@@ -130,11 +137,13 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     	if (this.glowTimer == -6) {   
     		if (item.equals(Items.GLOWSTONE_DUST)) {
     			this.glowTimer = 8 * 60 * 20 + 6;
+    			this.setPersistenceRequired();
     			if (player instanceof ServerPlayerEntity) {
     				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
     			}
     		} else if (item.equals(Items.WARPED_FUNGUS)) {
     			this.glowTimer = 3 * 60 * 20 + 6;
+    			this.setPersistenceRequired();
     			if (player instanceof ServerPlayerEntity) {
     				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
     			}

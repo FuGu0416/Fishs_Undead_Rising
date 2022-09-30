@@ -156,8 +156,8 @@ public class FURRangedItem extends BowItem {
 					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()), playerIn.getZ() + lookVec.z * 1.0D);
 				}
 				if(this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
-					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.5D, 0.0D));
-					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) + 1.75D, playerIn.getZ() + lookVec.z * 1.0D);
+					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
+					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) - 0.5D, playerIn.getZ() + lookVec.z * 1.0D);
 				}
 				 
 				int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
