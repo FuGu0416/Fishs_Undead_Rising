@@ -88,7 +88,7 @@ public class FURWorldRegistry {
 		
 		
 		
-		if(BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+		if(FURConfig.pSpawnRate_Glowshroom.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				!(BiomeDictionary.getTypes(biomeKey).contains(Type.COLD)) && 
 				!(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
 			event.getGeneration().addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, GLOWSHROOM_CF);
