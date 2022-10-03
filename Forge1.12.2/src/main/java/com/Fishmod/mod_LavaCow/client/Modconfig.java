@@ -136,6 +136,7 @@ public class Modconfig {
 	public static double Forsaken_Health;
 	public static double Forsaken_Attack;
 	
+	public static boolean pSpawnRate_SkeletonKing;
 	public static double SkeletonKing_Health;
 	public static double SkeletonKing_Attack;
 	
@@ -343,6 +344,7 @@ public class Modconfig {
 		Forsaken_Health = config.get("Forsaken", "forsaken health", 30.0D, "Maximum Forsaken health [1-1000]", 1, 1000).getDouble(30.0D);
 		Forsaken_Attack = config.get("Forsaken", "forsaken attack", 4.0D, "Forsaken strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
+		pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
 		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 360.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(360.0D);
 		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 
 import net.minecraft.client.resources.I18n;
@@ -48,7 +49,7 @@ public class ItemCrown extends ItemFishCustom{
      */
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(player.getHeldItem(hand).getMetadata() == 1
+        if(player.getHeldItem(hand).getMetadata() == 1 && Modconfig.pSpawnRate_SkeletonKing
         		&& worldIn.getBlockState(pos).getBlock().equals(Blocks.SKULL)
         		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.HOT)
         		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.DRY)
