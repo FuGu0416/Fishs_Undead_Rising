@@ -36,7 +36,7 @@ public class MoltenAxeItem extends AxeItem {
 	private BasicParticleType particles;
 	
 	public MoltenAxeItem(Properties p_i48487_1_, String registryName, IItemTier materialIn, float damageIn, float attackspeedIn, Item repair, BasicParticleType particlesIn) {
-		super(materialIn, attackspeedIn, attackspeedIn, p_i48487_1_);
+		super(materialIn, damageIn, attackspeedIn, p_i48487_1_);
 		this.repair_material = repair;
 		this.particles = particlesIn;
 		this.setRegistryName(registryName);

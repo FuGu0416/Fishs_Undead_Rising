@@ -181,7 +181,7 @@ public class FURItemRegistry {
 	public static final Item ECTOPLASM_INGOT = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ectoplasm_ingot");
 	public static final Item SOULFIREHEART = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:soulfireheart");
 	public static final Item SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
-	public static final Item SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 6.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
+	public static final Item SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
 	public static final Item SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final Item GHOSTLYARMOR_HELMET = new GhostlyArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_helmet");
 	public static final Item GHOSTLYARMOR_CHESTPLATE = new GhostlyArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostlyarmor_chestplate");
