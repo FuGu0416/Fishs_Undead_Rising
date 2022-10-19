@@ -52,7 +52,6 @@ import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ChestContainer;
-import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -198,42 +197,42 @@ public class EventHandler {
     	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
     	int ench_lvl = 1;
     	
-    	if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
+    	if(Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl * 2);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(tool.getItem() instanceof FishingRodItem && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
+    	} else if(Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl * 2);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
+    	} else if(FUREnchantmentRegistry.POISONOUS.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
+    	} else if(FUREnchantmentRegistry.LIFESTEAL.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
+    	} else if(FUREnchantmentRegistry.CORROSIVE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(4);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
+    	} else if(FUREnchantmentRegistry.CRITICALBOOST.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
     		CompoundNBT compoundnbt = ench.getTag();
     		ench_lvl = compoundnbt == null ? 1 : compoundnbt.getInt("level");
     		event.setOutput(outputStack);
