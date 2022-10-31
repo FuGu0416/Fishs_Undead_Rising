@@ -414,12 +414,15 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	public SalamanderEntity getBreedOffspring(ServerWorld worldIn, AgeableEntity ageable) {
     	SalamanderEntity entity = FUREntityRegistry.SALAMANDER.create(worldIn);
 		UUID uuid = this.getOwnerUUID();
+		
 		if (uuid != null) {
 			entity.setOwnerUUID(uuid);
 			entity.setTame(true);
-			entity.setHealth(this.getMaxHealth());
 		}
-
+		
+		entity.setHealth(entity.getMaxHealth());
+		entity.setSkin(this.getRandom().nextBoolean() ? this.getSkin() : ((SalamanderEntity) ageable).getSkin());
+		
 		return entity;
 	}
     
