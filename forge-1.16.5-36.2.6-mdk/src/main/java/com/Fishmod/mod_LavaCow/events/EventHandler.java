@@ -107,18 +107,19 @@ public class EventHandler {
     @SubscribeEvent
     public void onEDeath(LivingDeathEvent event) {
     	Entity entity = event.getEntityLiving();
+    	Entity killer = event.getSource().getDirectEntity();
 	    World world = event.getEntityLiving().level;
 	    int Armor_Famine_lvl = 0;
 		
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+		for(ItemStack S : killer.getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
 			}
 		}
 		
-		if((Armor_Famine_lvl >= 4) && event.getSource().getDirectEntity() instanceof PlayerEntity) {
-			((PlayerEntity)event.getSource().getDirectEntity()).heal(1.0F);
-			((PlayerEntity)event.getSource().getDirectEntity()).getFoodData().eat(4, 0.0F);
+		if((Armor_Famine_lvl >= 4) && killer instanceof PlayerEntity) {
+			((PlayerEntity)killer).heal(1.0F);
+			((PlayerEntity)killer).getFoodData().eat(4, 0.0F);
 		}
 
     	/**
@@ -140,7 +141,7 @@ public class EventHandler {
         		ParasiteEntity ParasiteEntity = FUREntityRegistry.PARASITE.create(world);
         		if(passenger != null)ParasiteEntity.setSkin(passenger.getSkin());
         		else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.DRY)) ParasiteEntity.setSkin(1);
-        		else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE) || event.getSource().getDirectEntity() instanceof VespaEntity)ParasiteEntity.setSkin(2);
+        		else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE) || killer instanceof VespaEntity) ParasiteEntity.setSkin(2);
         		else ParasiteEntity.setSkin(0);
                 ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
                 world.addFreshEntity(ParasiteEntity);
@@ -333,10 +334,14 @@ public class EventHandler {
 	    	return;
 	    }
 	    
-		for(ItemStack S : Attacked.getArmorSlots()) {
+		for(ItemStack S : Attacker.getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
-			} else if (S.getItem() instanceof ChitinArmorItem) {
+			}
+		}
+		
+		for(ItemStack S : Attacked.getArmorSlots()) {
+			if (S.getItem() instanceof ChitinArmorItem) {
 				Armor_Chitin_lvl++;
 			}
 		}
