@@ -111,13 +111,15 @@ public class EventHandler {
 	    World world = event.getEntityLiving().level;
 	    int Armor_Famine_lvl = 0;
 		
-		for(ItemStack S : killer.getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				Armor_Famine_lvl++;
+	    if(killer != null) {
+			for(ItemStack S : killer.getArmorSlots()) {
+				if(S.getItem() instanceof FamineArmorItem) {
+					Armor_Famine_lvl++;
+				}
 			}
-		}
+	    }
 		
-		if((Armor_Famine_lvl >= 4) && killer instanceof PlayerEntity) {
+		if(killer != null && Armor_Famine_lvl >= 4 && killer instanceof PlayerEntity) {
 			((PlayerEntity)killer).heal(1.0F);
 			((PlayerEntity)killer).getFoodData().eat(4, 0.0F);
 		}
@@ -334,11 +336,13 @@ public class EventHandler {
 	    	return;
 	    }
 	    
-		for(ItemStack S : Attacker.getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				Armor_Famine_lvl++;
+	    if(Attacker != null) {
+			for(ItemStack S : Attacker.getArmorSlots()) {
+				if(S.getItem() instanceof FamineArmorItem) {
+					Armor_Famine_lvl++;
+				}
 			}
-		}
+	    }
 		
 		for(ItemStack S : Attacked.getArmorSlots()) {
 			if (S.getItem() instanceof ChitinArmorItem) {
@@ -346,7 +350,7 @@ public class EventHandler {
 			}
 		}
 		
-		if((Armor_Famine_lvl >= 2) && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
+		if(Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
 		}
 
@@ -354,19 +358,19 @@ public class EventHandler {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
-		if(Attacker instanceof LilSludgeEntity) {
+		if(Attacker != null && Attacker instanceof LilSludgeEntity) {
 			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();			
 			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
 			if(Owner != null)
 				Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
-		} else if (Attacker instanceof UnburiedEntity) {
+		} else if (Attacker != null && Attacker instanceof UnburiedEntity) {
 			LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();		
 			event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
 			if(Owner != null)
 				Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
 		}
     	
-    	if(Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
+    	if(Attacker != null && Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
     		for(ItemStack S : Attacker.getArmorSlots()) {
     			if(S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
     		}
@@ -417,7 +421,7 @@ public class EventHandler {
     	if(Attacked.hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
     	
-    	if(Attacked.hasEffect(FUREffectRegistry.THORNED)) {
+    	if(Attacker != null && Attacked.hasEffect(FUREffectRegistry.THORNED)) {
     		if(source == DamageSource.CACTUS || source == DamageSource.SWEET_BERRY_BUSH || (source instanceof EntityDamageSource && ((EntityDamageSource) source).isThorns())) {
     			event.setCanceled(true);
     		} else if (!source.isMagic() && !source.isExplosion() && Attacker instanceof LivingEntity) {
