@@ -119,7 +119,7 @@ public class ParasiteEntity extends SpiderEntity {
         	if(!long_live) {
         		this.lifespawn--;
         	}
-        } else if (this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pSpawnRate_Vespa.get()) {
+        } else if (this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 

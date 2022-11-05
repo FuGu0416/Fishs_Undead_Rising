@@ -258,14 +258,13 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	    	    this.setItemInHand(this.getUsedItemHand(), new ItemStack(chosenDrop.getItem(), this.getRandom().nextInt(chosenDrop.getCount()) + 1));
 	    	}
         }
-        
-        if(this.canPickUpLoot() && !this.getMainHandItem().isEmpty()) {
-        	this.setCanPickUpLoot(false);
-        } else if (!this.canPickUpLoot() && this.getMainHandItem().isEmpty())
-        	this.setCanPickUpLoot(true);
-             
+                    
         this.calculateFlapping();
     }
+    
+    public boolean canPickUpLoot() {
+        return super.canPickUpLoot() && this.getMainHandItem().isEmpty();
+	}
     
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
@@ -341,7 +340,17 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         ItemStack itemstack = player.getItemInHand(hand);
         
         if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {      	
-        	if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
+        	 if (!this.level.isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {     	
+             	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+             	
+             	if (!player.inventory.add(this.getMainHandItem().copy())) {
+                     player.spawnAtLocation(this.getMainHandItem().copy());
+                 }
+             	
+             	this.getMainHandItem().shrink(this.getMainHandItem().getCount());
+         		
+         		return ActionResultType.CONSUME;	            
+ 	        } else if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
                 this.startRiding(player);
                 this.ridingCooldown = 20;
                 return ActionResultType.SUCCESS;
@@ -372,16 +381,6 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	            }
 	        	
 	        	return ActionResultType.CONSUME;
-	        } else if (!this.level.isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {     	
-            	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
-            	
-            	if (!player.inventory.add(this.getMainHandItem().copy())) {
-                    player.spawnAtLocation(this.getMainHandItem().copy());
-                }
-            	
-            	this.getMainHandItem().shrink(this.getMainHandItem().getCount());
-        		
-        		return ActionResultType.CONSUME;	            
 	        }
         }
         

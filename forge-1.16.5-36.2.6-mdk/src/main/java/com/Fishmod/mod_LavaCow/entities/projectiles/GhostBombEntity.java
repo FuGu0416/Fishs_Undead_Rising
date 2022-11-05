@@ -5,7 +5,6 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
@@ -56,7 +55,8 @@ public class GhostBombEntity extends ProjectileItemEntity {
 		super.onHit(result);
         if (!this.level.isClientSide()) {
         	WolfEntity Dummy = EntityType.WOLF.create(this.level);
-        	Dummy.tame((PlayerEntity) this.getOwner());
+        	Dummy.setTame(true);
+        	Dummy.setOwnerUUID(this.getOwner().getUUID());
         	Dummy.setCustomName(this.getName());
         	this.level.explode(Dummy, this.getX(), this.getY(), this.getZ(), 4.0F, false, Explosion.Mode.NONE);
         	Dummy.remove();

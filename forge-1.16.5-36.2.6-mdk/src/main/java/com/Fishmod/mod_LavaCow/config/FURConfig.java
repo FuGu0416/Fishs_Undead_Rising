@@ -66,6 +66,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Ptera_Ability_Spawn;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Vespa;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Vespa;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Attack;
 	
@@ -356,6 +357,7 @@ public final class FURConfig {
 		
 		BUILDER.push("Vespa");
 		pSpawnRate_Vespa = BUILDER.comment("Set the spawn rate of Vespa [0-100]").defineInRange("vespa spawn rate", 20, 0, 100);
+		pEvolveRate_Vespa = BUILDER.comment("Set the chance of Vespa transformed from a Parasite [0-100]").defineInRange("vespa evolve rate", 20, 0, 100);
 		Vespa_Health = BUILDER.comment("Maximum Vespa health [1-1000]").defineInRange("vespa health", 20.0D, 1.0D, 1000.0D);
 		Vespa_Attack = BUILDER.comment("Vespa strength [1-1000]").defineInRange("vespa attack", 5.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
