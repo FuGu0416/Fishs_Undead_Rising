@@ -315,7 +315,7 @@
 	"tootip.mod_lavacow:intestine": "Clic derecho para ver qué tiene adentro.",
 	"tootip.mod_lavacow:felarmor": "Daño extra a criaturas quemándose+",
 	"tootip.mod_lavacow:felarmor.l2": "Reduce el daño de fuego-",
-	"tootip.mod_lavacow:swinearmor": "Set(2): El jabalí zombi va a ser neutral al jugador -20%%",
+	"tootip.mod_lavacow:swinearmor": "Set(2): El jabalí zombi va a ser neutral al jugador -25%%",
 	"tootip.mod_lavacow:swinearmor.l2": "Set(4): Otorga inmunidad al veneno.",
 	"tootip.mod_lavacow:piranhalauncher": "Right click to launch a Swarmer at target. (need Swarmer as ammunition)",
 	"tootip.mod_lavacow:cursed_bandage.0.desc0": "Heal",

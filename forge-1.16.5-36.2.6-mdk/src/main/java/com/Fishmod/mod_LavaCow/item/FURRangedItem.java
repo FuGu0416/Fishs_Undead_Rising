@@ -93,7 +93,7 @@ public class FURRangedItem extends BowItem {
 		ItemStack stack = playerIn.getItemInHand(handIn);
 		boolean flag = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0 || this.ammo == null;
         ItemStack itemstack = this.getProjectile(stack, playerIn);
-
+        
      	if (!itemstack.isEmpty() || flag) {
      		if (itemstack.isEmpty()) {
      			itemstack = new ItemStack(this.ammo);
@@ -130,6 +130,12 @@ public class FURRangedItem extends BowItem {
                     abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
                 }
                 playerIn.level.addFreshEntity(abstractarrowentity);
+				if (!flag1 && !playerIn.isCreative()) {
+					itemstack.shrink(1);
+					if (itemstack.isEmpty()) {
+						playerIn.inventory.removeItem(itemstack);
+					}
+				}
 			} else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
 				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(worldIn);
         		entitysnowball.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()),playerIn.getZ() + lookVec.z * 1.0D);
@@ -140,12 +146,6 @@ public class FURRangedItem extends BowItem {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
-				if (!flag1 && !playerIn.isCreative()) {
-					itemstack.shrink(1);
-					if (itemstack.isEmpty()) {
-						playerIn.inventory.removeItem(itemstack);
-					}
-				}
 				playerIn.getCooldowns().addCooldown(this, 40);
         	} else {			 
 				Entity entityammo = this.shot.create(worldIn);

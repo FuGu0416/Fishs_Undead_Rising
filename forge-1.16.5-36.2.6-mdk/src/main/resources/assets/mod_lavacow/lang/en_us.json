@@ -398,7 +398,7 @@
 	"tootip.mod_lavacow:intestine": "Right click to find what's inside it",
 	"tootip.mod_lavacow:felarmor": "Damage to burning mobs+",
 	"tootip.mod_lavacow:felarmor.l2": "Fire damage to player-",
-	"tootip.mod_lavacow:swinearmor": "Set(2): Time of consuming food -20%%.",
+	"tootip.mod_lavacow:swinearmor": "Set(2): Time of consuming food -25%%.",
 	"tootip.mod_lavacow:swinearmor.l2": "Set(4): Remove negative potion effects after consuming food.",
 	"tootip.mod_lavacow:piranhalauncher": "Right click to launch a Swarmer at target. (need Swarmer as ammunition)",
 	"tootip.mod_lavacow:cursed_bandage.0.desc0": "Heal",

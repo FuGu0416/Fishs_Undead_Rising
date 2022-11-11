@@ -196,8 +196,21 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
             this.partyParrot = false;
             this.jukebox = null;
         }
-        
-        if(!this.isFetching() && this.isTame()) {
+                          
+        this.calculateFlapping();
+    }
+    
+    public boolean canPickUpLoot() {
+        return super.canPickUpLoot() && this.getMainHandItem().isEmpty();
+	}
+    
+    /**
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
+     */
+    @Override
+    public void tick() {    	
+    	if(!this.isFetching() && this.isTame()) {
         	if(this.ridingCooldown > 0)
         		this.ridingCooldown--;
         	
@@ -214,7 +227,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        	}
 	        }
 	        
-	    	if(!this.isInSittingPose() && !this.isPassenger() && this.getMainHandItem().isEmpty() && this.tickCount % 200 == 0 && this.getRandom().nextFloat() < 0.02f) {
+	    	if(!this.isInSittingPose() && !this.isPassenger() && this.getMainHandItem().isEmpty() && this.tickCount % 200 == 0/* && this.getRandom().nextFloat() < 0.02f*/) {
 	    	    ItemStack chosenDrop = null;
                 Map<ItemStack, Float> lootTable = null;
 
@@ -258,20 +271,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	    	    this.setItemInHand(this.getUsedItemHand(), new ItemStack(chosenDrop.getItem(), this.getRandom().nextInt(chosenDrop.getCount()) + 1));
 	    	}
         }
-                    
-        this.calculateFlapping();
-    }
-    
-    public boolean canPickUpLoot() {
-        return super.canPickUpLoot() && this.getMainHandItem().isEmpty();
-	}
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-    public void tick() {    	
+    	
     	this.noPhysics = (this.getSkin() == 3 && this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D);
     	super.tick();
         this.noPhysics = false;

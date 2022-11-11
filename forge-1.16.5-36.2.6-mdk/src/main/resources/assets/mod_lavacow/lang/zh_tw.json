@@ -398,7 +398,7 @@
 	"tootip.mod_lavacow:intestine": "右鍵點擊以拾取腸內物品",
 	"tootip.mod_lavacow:felarmor": "對燃燒中的單位造成傷害+",
 	"tootip.mod_lavacow:felarmor.l2": "玩家所受到的火焰傷害-",
-	"tootip.mod_lavacow:swinearmor": "套裝(2)：使用食物物品所需時間-20%%",
+	"tootip.mod_lavacow:swinearmor": "套裝(2)：使用食物物品所需時間-25%%",
 	"tootip.mod_lavacow:swinearmor.l2": "套裝(4)：使用食物物品後移除負面效果",
 	"tootip.mod_lavacow:piranhalauncher": "右鍵向目標發射一隻群獵者！ (需要群獵者作為彈藥)",
 	"tootip.mod_lavacow:cursed_bandage.0.desc0": "醫療",

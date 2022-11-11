@@ -35,7 +35,7 @@ public class DeathCoilRenderer extends EntityRenderer<DeathCoilEntity> {
     public void render(DeathCoilEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
         p_225623_4_.pushPose();
         p_225623_4_.scale(-1.0F, -1.0F, 1.0F);
-        float f = MathHelper.rotLerp(p_225623_1_.yRotO, p_225623_1_.yRot, p_225623_3_);
+        float f = MathHelper.rotLerp(p_225623_3_, p_225623_1_.yRotO, p_225623_1_.yRot);
         float f1 = MathHelper.lerp(p_225623_3_, p_225623_1_.xRotO, p_225623_1_.xRot);
         IVertexBuilder ivertexbuilder = p_225623_5_.getBuffer(this.model.renderType(this.getTextureLocation(p_225623_1_)));
         this.model.setupAnim(0.0F, f, f1);

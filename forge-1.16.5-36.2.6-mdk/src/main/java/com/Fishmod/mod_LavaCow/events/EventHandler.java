@@ -568,7 +568,8 @@ public class EventHandler {
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
 	    int Armor_Famine_lvl = 0;
-	
+	    int Armor_Swine_lvl = 0;
+	    
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
@@ -582,12 +583,7 @@ public class EventHandler {
     	if(event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED)  && event.getItem().getItem() instanceof PotionItem) {
     		event.setCanceled(true);
     	}
-    }
-    
-    @SubscribeEvent
-    public void onActiveItemUseTick(LivingEntityUseItemEvent.Tick event) {
-	    int Armor_Swine_lvl = 0;
-		
+    			
 		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof SwineArmorItem) {
 				Armor_Swine_lvl++;
@@ -595,7 +591,7 @@ public class EventHandler {
 		}
     	
     	if((Armor_Swine_lvl >= 2) && event.getItem().getItem().isEdible()) {
-    		event.setDuration((int) (event.getDuration() * 0.8F));
+    		event.setDuration((int) (event.getDuration() * 0.75F));
     	}
     }
     
