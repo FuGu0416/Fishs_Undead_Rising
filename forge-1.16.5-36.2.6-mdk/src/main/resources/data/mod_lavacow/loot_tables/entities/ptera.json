@@ -10,6 +10,13 @@
                     "name":"mod_lavacow:ptera_wing",
                     "functions":[
                         {
+                            "function":"set_count",
+                            "count":{
+                                "min":0,
+                                "max":2
+                            }
+                        },
+                        {
                             "function":"furnace_smelt",
                             "conditions":[
                                 {

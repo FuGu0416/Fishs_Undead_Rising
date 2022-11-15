@@ -48,7 +48,7 @@ public class FURBlockRegistry {
 	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
 	      return 15;
 	   })).setRegistryName("mod_lavacow:glowing_air");
-	public static final Block ECTOPLASM_BLOCK = new Block(AbstractBlock.Properties.of(Material.CLAY, MaterialColor.COLOR_CYAN).speedFactor(0.4F).noOcclusion().sound(SoundType.HONEY_BLOCK)).setRegistryName("mod_lavacow:ectoplasm_block");
+	public static final Block ECTOPLASM_BLOCK = new Block(AbstractBlock.Properties.of(Material.CLAY, MaterialColor.COLOR_CYAN).speedFactor(0.4F).noOcclusion().sound(SoundType.NETHER_BRICKS)).setRegistryName("mod_lavacow:ectoplasm_block");
 	
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

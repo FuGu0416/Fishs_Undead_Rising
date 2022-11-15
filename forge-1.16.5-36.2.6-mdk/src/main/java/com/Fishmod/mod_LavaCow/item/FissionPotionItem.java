@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
@@ -57,6 +58,9 @@ public class FissionPotionItem extends FURItem {
 	    		if(stack.getItem().equals(FURItemRegistry.FISSIONPOTION)) {	    			
 			    	AgeableEntity parent = (AgeableEntity)target;
 			    	AgeableEntity AgeableEntity = (AgeableEntity) parent.getType().create(playerIn.level);
+			    	CompoundNBT compoundnbt = new CompoundNBT();
+			    	parent.addAdditionalSaveData(compoundnbt);
+			    	AgeableEntity.readAdditionalSaveData(compoundnbt);
 			    	AgeableEntity.setBaby(true);
 			        AgeableEntity.moveTo(target.getX(), target.getY() + 0.2F, target.getZ(), target.yRot, target.xRot);
 			        parent.level.addFreshEntity(AgeableEntity);

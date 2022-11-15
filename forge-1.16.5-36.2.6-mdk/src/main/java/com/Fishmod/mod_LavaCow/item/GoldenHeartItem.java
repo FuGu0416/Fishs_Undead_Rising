@@ -49,17 +49,18 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
     public static void onTick(ItemStack stack, PlayerEntity PlayerIn) {
     	boolean flag = false;
 
-    	if ((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) {
+    	if (((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) && FURConfig.GoldenHeart_GrantsRegeneration.get()) {
 	    	if (!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt()) {
 	    		PlayerIn.addEffect(new EffectInstance(Effects.REGENERATION, 8 * 20, 0));
 	    		flag = true;
-	    	} else if (PlayerIn.getHealth() == PlayerIn.getMaxHealth())
+	    	} else if (PlayerIn.getHealth() == PlayerIn.getMaxHealth() && FURConfig.GoldenHeart_RepairsEquipment.get()) {
 	    		for(ItemStack item : PlayerIn.getAllSlots()) {
 		        	if (!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {		        		
 		        		item.setDamageValue(java.lang.Math.max(item.getDamageValue() - 1, 0));		        		
 		        		flag = true;
 		        	}
-		        }   		  		
+		        }  
+	    	}
     	}
     	
     	if (flag && !PlayerIn.isCreative() && stack.getMaxDamage() != 0 && PlayerIn.getRandom().nextInt(100) < FURConfig.GoldenHeart_dur.get()) {

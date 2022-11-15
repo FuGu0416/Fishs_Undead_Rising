@@ -17,7 +17,7 @@
 			              	}
 						},
 						{
-							"function": "looting_enchant",
+							"function": "minecraft:looting_enchant",
 							"count": {
 								"min": 0,
 								"max": 1
@@ -50,7 +50,14 @@
                                     "entity":"this"
                                 }
                             ]
-	            		}
+	            		},
+                        {
+                            "function":"minecraft:looting_enchant",
+                            "count":{
+                                "min":0,
+                                "max":1
+                            }
+                        }
 	          		]
 	        	}
 	      	]

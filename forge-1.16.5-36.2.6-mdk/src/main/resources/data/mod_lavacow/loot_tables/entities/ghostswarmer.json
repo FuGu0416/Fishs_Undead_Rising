@@ -31,9 +31,9 @@
                             }
                         },
                         {
-                            "function":"looting_enchant",
+                            "function":"minecraft:looting_enchant",
                             "count":{
-                                "min":1,
+                                "min":0,
                                 "max":1
                             }
                         }

@@ -59,7 +59,7 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
 	    		this.setDamage((float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
 	    	}	    	    	
 	    	
-	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {
+	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {	    		
 	    		float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(Effects.WITHER, 10 * 20 * (int)local_difficulty, 1));
 		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 10 * 20 * (int)local_difficulty, 2));	    		

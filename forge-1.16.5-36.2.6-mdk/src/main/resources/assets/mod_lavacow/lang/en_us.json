@@ -383,7 +383,7 @@
 		
 	"tootip.mod_lavacow:bonesword": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
 	"tootip.mod_lavacow:netherstew": "Gives random effects(0:40) when eaten.",
-	"tootip.mod_lavacow:goldenheart": "Gives Regeneration and repairs(+1/sec) all equipments when equipped.",
+	"tootip.mod_lavacow:goldenheart": "Gives regeneration and repairs (+1/sec) all equipment when in the hotbar.",
 	"tootip.mod_lavacow:moltenaxe": "Get charcoal when chopping down logs.",
 	"tootip.mod_lavacow:moltenhammer": "Right click to deal damage to creatures around player.",
 	"tootip.mod_lavacow:potion_of_mooten_lava": "Try feeding this to a cow with Fire Resistance. :)",

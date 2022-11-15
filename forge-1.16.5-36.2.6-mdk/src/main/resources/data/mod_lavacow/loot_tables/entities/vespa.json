@@ -29,6 +29,13 @@
                                 "min":0,
                                 "max":4
                             }
+                        },
+                        {
+                            "function":"minecraft:looting_enchant",
+                            "count":{
+                                "min":0,
+                                "max":2
+                            }
                         }
                     ]
                 }

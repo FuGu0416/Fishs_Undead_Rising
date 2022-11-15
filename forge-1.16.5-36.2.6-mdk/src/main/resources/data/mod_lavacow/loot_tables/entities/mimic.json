@@ -10,16 +10,18 @@
                     "name": "mod_lavacow:mimic_claw",
                     "functions": [
 		                {
-			              "function": "furnace_smelt",
-			              "conditions": [
-			                {
-			                  "condition": "entity_properties",
-			                  "entity": "this",
-			                  "properties": {
-			                    "on_fire": true
-			                  }
-			                }
-			              ]
+							"function": "furnace_smelt",
+							"conditions": [
+								{
+									"condition":"minecraft:entity_properties",
+									"predicate":{
+                                    	"flags":{
+                                        	"is_on_fire":true
+                                    	}
+                                	},
+                                	"entity":"this"
+                            	}
+			              	]
 			            }
                     ]
                 },
