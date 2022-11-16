@@ -223,7 +223,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
         		this.Cannon3.visible = true;
         	}
 	    	
-	    	if(entityIn.isInSittingPose()) {
+	    	if(entityIn.isInSittingPose() && !entityIn.isVehicle()) {
 		    	this.Head.xRot = -0.35185837453889574F + headPitch * 0.017453292F;
 		        this.Head.yRot = netHeadYaw * 0.0003F;
 	    		this.Head.zRot = 0.0F;

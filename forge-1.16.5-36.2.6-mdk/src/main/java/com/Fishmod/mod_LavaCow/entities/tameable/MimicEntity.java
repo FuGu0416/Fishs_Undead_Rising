@@ -29,6 +29,8 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
@@ -138,6 +140,11 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Mimic_Attack.get())
         		.add(Attributes.ARMOR, 20.0D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D);
+    }
+    
+    @Override
+    protected Goal followGoal() {
+    	return new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false);
     }
 
 	@Override

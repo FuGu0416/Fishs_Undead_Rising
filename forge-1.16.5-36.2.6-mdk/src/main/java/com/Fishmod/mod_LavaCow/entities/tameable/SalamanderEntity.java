@@ -34,6 +34,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
@@ -121,6 +123,11 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Salamander_Attack.get())
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
+    
+    @Override
+    protected Goal followGoal() {
+    	return new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false);
+    }
 
     /**
      * Gets how bright this entity is.
@@ -176,14 +183,14 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
             this.remove();            
             return ActionResultType.sidedSuccess(this.level.isClientSide);
         } else if (!flag && this.isOwnedBy(player) && this.isSaddled() && !this.isVehicle()) {
-        	if (player.isSecondaryUseActive()) {
-    			this.setSaddled(false);
-    			if(!this.level.isClientSide)this.spawnAtLocation(Items.SADDLE, 1);
-    		} else if (!player.isPassenger()) {
-        	   player.startRiding(this);
-    		}
-
-           return ActionResultType.sidedSuccess(this.level.isClientSide);
+        	if (itemstack.getItem().equals(Items.SHEARS)) {
+    			this.setSaddled(false);  			
+    			this.spawnAtLocation(Items.SADDLE, 1);      		
+    			return ActionResultType.sidedSuccess(this.level.isClientSide);
+    		} else if (!player.isSecondaryUseActive() && !player.isPassenger()) {
+        	   player.startRiding(this);        	   
+        	   return ActionResultType.sidedSuccess(this.level.isClientSide);
+    		}    	
         }
         
         ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
@@ -358,10 +365,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		        
 		        if(this.isSaddleable()) {
 		        	this.setSaddled(false);
-		        	
-		            if (!this.level.isClientSide) {
-		            	this.spawnAtLocation(Items.SADDLE, 1);
-		            }
+		            this.spawnAtLocation(Items.SADDLE, 1);
 		        }
 	        	break;
 	        case 1:   		

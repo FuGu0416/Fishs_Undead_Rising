@@ -67,7 +67,8 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(FURItemRegistry.PLAGUED_PORKCHOP), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PLAGUED_PORKCHOP), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.GREEN_BACON_AND_EGGS), false));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
         this.goalSelector.addGoal(5, this.DestroyCrops);
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));

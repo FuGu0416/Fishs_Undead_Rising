@@ -679,6 +679,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     }
     
     @Override
+    protected float getSoundVolume() {
+        return this.isDeadOrDying() ? 0.4F : 1.0F;
+	}
+    
+    @Override
     protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.FOGLET_AMBIENT;
     }
