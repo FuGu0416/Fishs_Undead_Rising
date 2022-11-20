@@ -28,7 +28,7 @@ public class FURBlockRegistry {
 	   }), "mod_lavacow:glowshroom");
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");
 	public static final Block GLOWSHROOM_BLOCK_STEM = new FURHugeShroomBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)).setRegistryName("mod_lavacow:glowshroom_block_stem");
-    public static final Block GLOWSHROOM_BLOCK_CAP = new FURHugeShroomBlock(AbstractBlock.Properties.of(Material.GRASS, MaterialColor.COLOR_CYAN).strength(1.0F).sound(SoundType.SHROOMLIGHT).randomTicks().lightLevel((p_235439_0_) -> {
+    public static final Block GLOWSHROOM_BLOCK_CAP = new FURHugeShroomBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).randomTicks().lightLevel((p_235439_0_) -> {
 	      return 15;
 	   })).setRegistryName("mod_lavacow:glowshroom_block_cap");
 	public static final Block BLOODTOOTH_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_PINK).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {

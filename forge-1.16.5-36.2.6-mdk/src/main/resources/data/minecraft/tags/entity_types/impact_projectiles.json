@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "mod_lavacow:warsmallfireball",
+    "mod_lavacow:piranhalauncher",
+    "mod_lavacow:acidjet",
+    "mod_lavacow:holygrenade",
+    "mod_lavacow:ghostbomb",
+    "mod_lavacow:sonicbomb",
+    "mod_lavacow:sludgejet",
+    "mod_lavacow:deathcoil",
+    "mod_lavacow:flamejet",
+    "mod_lavacow:cactus_thorn"
+  ]
+}

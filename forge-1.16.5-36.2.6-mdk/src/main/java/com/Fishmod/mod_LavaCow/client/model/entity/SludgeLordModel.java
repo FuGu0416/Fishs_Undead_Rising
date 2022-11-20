@@ -26,6 +26,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     public ModelRenderer Head_Twig0;
     public ModelRenderer Head_Twig4;
     public ModelRenderer Head;
+	private final ModelRenderer antenne_l;
+	private final ModelRenderer antenne_r;
     public ModelRenderer Head_bubble;
     public ModelRenderer Head_bubble_in;
     public ModelRenderer Head_Twig1;
@@ -167,7 +169,20 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         this.setRotateAngle(Waist0_Twig1_l, 0.6829473549475088F, 0.0F, 0.0F);
         this.Head = new ModelRenderer(this, 146, 92);
         this.Head.setPos(0.0F, -13.0F, -1.0F);
-        this.Head.addBox(-4.0F, -6.0F, -4.0F, 8.0F, 6.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.Head.addBox(-4.0F, -6.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        
+        this.antenne_l = new ModelRenderer(this);
+        this.antenne_l.setPos(3.0F, -5.6F, -3.1F);
+        this.Head.addChild(antenne_l);
+        this.setRotateAngle(antenne_l, -0.5672F, 0.0F, 0.0F);
+		this.antenne_l.texOffs(0, 0).addBox(-1.5F, 0.0F, -4.75F, 1.0F, 0.0F, 5.0F, 0.0F, false);
+
+		this.antenne_r = new ModelRenderer(this);
+		this.antenne_r.setPos(-2.0F, -5.6F, -3.1F);
+		this.Head.addChild(antenne_r);
+		this.setRotateAngle(antenne_r, -0.5672F, 0.0F, 0.0F);
+		this.antenne_r.texOffs(0, 0).addBox(-0.5F, 0.0F, -4.75F, 1.0F, 0.0F, 5.0F, 0.0F, true);
+		
         this.Arm_r_knot1 = new ModelRenderer(this, 0, 10);
         this.Arm_r_knot1.mirror = true;
         this.Arm_r_knot1.setPos(-5.0F, 7.0F, 0.0F);
