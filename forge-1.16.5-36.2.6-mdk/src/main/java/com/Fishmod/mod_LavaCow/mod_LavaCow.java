@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID)
 public class mod_LavaCow {
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
     public static ItemGroup TAB = new FURItemGroup();
