@@ -80,16 +80,6 @@ public class FURWeaponItem extends SwordItem {
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackspeedIn, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();   
 	}
-
-	@Override
-	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		if (!stack.isEnchanted()) {
-			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN)
-				stack.enchant(Enchantments.FIRE_ASPECT, 2);
-			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
-				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
-		}
-	}
 	
 	@Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
@@ -99,11 +89,14 @@ public class FURWeaponItem extends SwordItem {
 	
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted()) {
-			if(stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN)
+		if (!stack.isEnchanted() && !stack.getTag().contains("onCraftEnchantments")) {
+			if (stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 				stack.enchant(Enchantments.FIRE_ASPECT, 2);
-			else if(FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER)
+				stack.getOrCreateTagElement("onCraftEnchantments");
+			} else if (FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
 				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
+				stack.getOrCreateTagElement("onCraftEnchantments");
+			}
 		}
 		
 		if(entityIn instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && isSelected) {

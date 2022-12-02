@@ -41,16 +41,13 @@ public class MoltenAxeItem extends AxeItem {
 		this.particles = particlesIn;
 		this.setRegistryName(registryName);
 	}
-	
-	@Override
-	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		stack.enchant(Enchantments.FIRE_ASPECT, 2);
-	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted())
+		if (!stack.isEnchanted() && !stack.getTag().contains("onCraftEnchantments")) {
 			stack.enchant(Enchantments.FIRE_ASPECT, 2);
+			stack.getOrCreateTagElement("onCraftEnchantments");
+		}
 	}
 		
 	/**

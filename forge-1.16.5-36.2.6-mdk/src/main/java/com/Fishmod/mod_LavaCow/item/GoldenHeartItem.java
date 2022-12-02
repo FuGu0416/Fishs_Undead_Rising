@@ -55,7 +55,7 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
 	    		flag = true;
 	    	} else if (PlayerIn.getHealth() == PlayerIn.getMaxHealth() && FURConfig.GoldenHeart_RepairsEquipment.get()) {
 	    		for(ItemStack item : PlayerIn.getAllSlots()) {
-		        	if (!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0 && item.isRepairable()) {		        		
+		        	if (!isBlackListed(item) && item.getMaxDamage() != 0 && item.isDamageableItem() && (item.isEnchantable() || item.isEnchanted()) && item.getDamageValue() > 0) {		        		
 		        		item.setDamageValue(java.lang.Math.max(item.getDamageValue() - 1, 0));		        		
 		        		flag = true;
 		        	}
