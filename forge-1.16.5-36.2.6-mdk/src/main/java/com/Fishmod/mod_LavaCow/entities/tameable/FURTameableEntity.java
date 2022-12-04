@@ -290,7 +290,7 @@ public class FURTameableEntity extends TameableEntity {
 	  			break;
 	       case (byte)2:
 	    	   this.state = FURTameableEntity.State.FOLLOWING;
-	       	   this.follow = new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false);
+	       	   this.follow = this.followGoal();
 	       	   this.getNavigation().stop();
 	    	   this.goalSelector.removeGoal(this.wander);
 	    	   this.goalSelector.addGoal(6, this.follow);

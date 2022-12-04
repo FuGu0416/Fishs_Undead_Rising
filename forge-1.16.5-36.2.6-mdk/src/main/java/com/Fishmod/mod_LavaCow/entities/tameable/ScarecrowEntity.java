@@ -201,6 +201,7 @@ public class ScarecrowEntity extends FURTameableEntity {
 
     	if (this.isTame() && item instanceof DyeItem) {          
             DyeColor dyecolor = ((DyeItem)item).getDyeColor();
+            
             if (dyecolor != this.getCollarColor()) {
                this.setCollarColor(dyecolor);
                if (!player.abilities.instabuild) {
@@ -209,6 +210,17 @@ public class ScarecrowEntity extends FURTameableEntity {
 
                return ActionResultType.CONSUME;
             }
+    	} else if (this.isTame() && this.isOwnedBy(player) && !this.isVehicle() && player.getPassengers().get(0) instanceof RavenEntity) {
+    		Entity passenger = player.getPassengers().get(0);
+    		passenger.removeVehicle();
+    		passenger.startRiding(this, true);
+    		
+    		return ActionResultType.SUCCESS;
+    	} else if (this.isTame() && this.isOwnedBy(player) && this.isVehicle()) {
+    		Entity passenger = this.getPassengers().get(0);
+    		passenger.removeVehicle();
+    		
+    		return ActionResultType.SUCCESS;
     	}
 
     	return super.mobInteract(player, hand); 	

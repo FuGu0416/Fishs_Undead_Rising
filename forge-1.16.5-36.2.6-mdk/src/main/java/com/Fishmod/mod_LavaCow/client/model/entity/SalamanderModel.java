@@ -198,7 +198,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
     	float i = Entity.getAttackTimer() / 80.0F;
     	float Anime_threshold[] = {0.85F, 0.67F, 0.12F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
-    	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
+    	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);    	
     	
     	if (!Entity.isNymph()) {	        
         	if(Entity.isBaby()) {
@@ -224,8 +224,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
         	}
 	    	
 	    	if(entityIn.isInSittingPose() && !entityIn.isVehicle()) {
-		    	this.Head.xRot = -0.35185837453889574F + headPitch * 0.017453292F;
-		        this.Head.yRot = netHeadYaw * 0.0003F;
+		        this.Head_Looking(this.Head, -0.35185837453889574F, 0.0F, netHeadYaw, headPitch);
 	    		this.Head.zRot = 0.0F;
 	    		this.Jaw_lower.xRot = 0.19547687289441354F + (-0.08F * MathHelper.sin(0.03F * ageInTicks));
 	    		
@@ -249,8 +248,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
 		        this.Cannon2.z = -3.0F;
 		        this.Cannon3.z = -3.0F;	    		
 	    	} else if (i <= Anime_threshold[0] && i > Anime_threshold[1]) {
-		    	this.Head.xRot = headPitch * 0.017453292F;
-		        this.Head.yRot = netHeadYaw * 0.0003F;
+	    		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
 	    		this.Head.zRot = GradientAnimation(0.0F, -0.36425021489121656F, j * (i - Anime_threshold[1]));
 	    		this.Jaw_lower.xRot = GradientAnimation(0.0F, 0.6829473363053812F, j * (i - Anime_threshold[1]));
 	    		
@@ -274,8 +272,7 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
 		        this.Cannon2.z = -3.0F;
 		        this.Cannon3.z = -3.0F;
 	    	} else if (i <= Anime_threshold[1] && i > Anime_threshold[2]) {
-		    	this.Head.xRot = headPitch * 0.017453292F;
-		        this.Head.yRot = netHeadYaw * 0.0003F;
+	    		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
 	    		this.Head.zRot = GradientAnimation(-0.36425021489121656F, 0.0F, k * (i - Anime_threshold[2]));
 	    		this.Jaw_lower.xRot = GradientAnimation(0.6829473363053812F, 0.0F, k * (i - Anime_threshold[2]));
 	    		
@@ -299,21 +296,28 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
 		        this.Cannon2.z = -1.8F + 1.2F * MathHelper.sin(1.0F * ageInTicks);
 		        this.Cannon3.z = -1.3F + 1.7F * MathHelper.sin(1.0F * ageInTicks);
 	    	} else {
-		    	this.Head.xRot = headPitch * 0.017453292F;
-		        this.Head.yRot = netHeadYaw * 0.0003F;
+	    		final float walking_f = 0.44F;
+	    		final float walking_a = 0.4F;
+	    		
+		        this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
 	    		this.Head.zRot = 0.0F;
 	    		this.Jaw_lower.xRot = 0.19547687289441354F + (-0.08F * MathHelper.sin(0.03F * ageInTicks));
 	    		
-		        this.RightArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-		        this.LeftArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-		        this.RightLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-		        this.LeftLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
+		        this.RightArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * walking_f) * walking_a * limbSwingAmount;
+		        this.LeftArm.xRot = 0.091106186954104F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * walking_a * limbSwingAmount;
+		        this.RightLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * walking_a * limbSwingAmount;
+		        this.LeftLeg.xRot = -0.22759093446006054F + MathHelper.cos(limbSwing * walking_f) * walking_a * limbSwingAmount;
 		        
-		        this.RightArm.zRot = 0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-		        this.LeftArm.zRot = -0.9560913642424937F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-		        this.RightLeg.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-		        this.LeftLeg.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-		        		        
+		        this.RightArm.zRot = 0.9560913642424937F + MathHelper.cos(limbSwing * walking_f) * walking_a * limbSwingAmount;
+		        this.LeftArm.zRot = -0.9560913642424937F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * walking_a * limbSwingAmount;
+		        this.RightLeg.zRot = 0.40980330836826856F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * walking_a * limbSwingAmount;
+		        this.LeftLeg.zRot = -0.40980330836826856F + MathHelper.cos(limbSwing * walking_f) * walking_a * limbSwingAmount;
+
+		        this.RightArm.y = 0.0F + MathHelper.cos(limbSwing * walking_f) * 1.0F * limbSwingAmount;
+		        this.LeftArm.y = 0.0F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * 1.0F * limbSwingAmount;
+		        this.RightLeg.y = -0.2F + MathHelper.cos(limbSwing * walking_f + (float)Math.PI) * 1.0F * limbSwingAmount;
+		        this.LeftLeg.y = -0.2F + MathHelper.cos(limbSwing * walking_f) * 1.0F * limbSwingAmount;
+		        
 		        this.Body.xRot = 0.0F;
 		        this.Body.y = 17.5F;	
 		        

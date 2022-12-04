@@ -49,7 +49,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -126,9 +129,9 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     
     @Override
     protected Goal followGoal() {
-    	return new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false);
+    	return new FollowOwnerGoal(this, 1.5D, 6.0F, 2.0F, false);
     }
-
+    
     /**
      * Gets how bright this entity is.
      */
@@ -166,7 +169,35 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	ItemStack itemstack = player.getItemInHand(hand);   	
         boolean flag = this.isFood(itemstack);
         
-        if (this.isTame() && this.isNymph() && itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
+        if (this.isTame() && itemstack.getItem() == Items.BLAZE_POWDER && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 1) {
+        	if (!player.isCreative()) {
+        		itemstack.shrink(64);
+        	}
+        	this.setSkin(0);      	
+        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+            }
+        	
+        	return ActionResultType.sidedSuccess(this.level.isClientSide);
+        } else if (this.isTame() && itemstack.getItem() == FURItemRegistry.ECTOPLASM && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 0) {
+        	if (!player.isCreative()) {
+        		itemstack.shrink(64);
+        	}
+        	this.setSkin(1);  	
+        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+            }
+        	
+        	return ActionResultType.sidedSuccess(this.level.isClientSide);
+        } else if (this.isTame() && this.isNymph() && itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
             ItemStack itemstack1 = this.getFishBucket();
@@ -282,6 +313,12 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     		if (this.isTame() && this.getRandom().nextInt(this.isInLava() ? 45 : 900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);
             }
+    		
+    		if (this.isVehicle() && this.getControllingPassenger() instanceof LivingEntity && this.tickCount % 20 == 0) {
+    			if (!((LivingEntity) this.getControllingPassenger()).hasEffect(Effects.FIRE_RESISTANCE)) {
+    				((LivingEntity) this.getControllingPassenger()).addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 3 * 20, 0));
+    			}
+    		}
 
 	    	if(this.getAge() < -16000) {
 	    		if(this.getGrowingStage() != 0)
