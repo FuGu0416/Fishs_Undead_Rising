@@ -17,7 +17,7 @@ public class EventBusHandler {
     public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         event.getRegistry().registerAll(
                 new SmeltLootModifier.Serializer().setRegistryName(new ResourceLocation(mod_LavaCow.MODID, "moltenaxe_smelt")),
-                new SmeltLootModifier.Serializer().setRegistryName(new ResourceLocation(mod_LavaCow.MODID, "soulfirenaxe_smelt"))
+                new SmeltLootModifier.Serializer().setRegistryName(new ResourceLocation(mod_LavaCow.MODID, "soulfireaxe_smelt"))
         );
     }
 }
