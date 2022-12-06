@@ -18,6 +18,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.gen.Heightmap;
 
 public class SpawnUtil {
 	
@@ -45,26 +46,19 @@ public class SpawnUtil {
 	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
-		final BlockPos currentPosition = entityIn.blockPosition();
-    	BlockPos groundPosition = entityIn.blockPosition();
-		
-		while(entityIn.level.getBlockState(groundPosition).getMaterial().equals(Material.AIR) || entityIn.level.getBlockState(groundPosition).getMaterial().equals(Material.LEAVES)) {
-			if (World.isOutsideBuildHeight(groundPosition) && groundPosition.getY() < 0) { // Double-check to account for 1.17+ worlds build heights below 0 may be valid, but also don't want to trigger for being ABOVE build height.
-				mod_LavaCow.LOGGER.warn(String.format("Attempt to get ground position of entity \"%s\" (of type \"%s\", UUID=\"%s\") at \"%s\" resulted in a position below world height - using the entity's current position instead.", entityIn.getDisplayName().getString(), entityIn.getType().getRegistryName(), entityIn.getStringUUID(), currentPosition));
-				return currentPosition;
-			}
-			groundPosition = groundPosition.below();
-		}
-		
-		while(!entityIn.level.getBlockState(groundPosition).getMaterial().equals(Material.AIR) && !entityIn.level.getBlockState(groundPosition).getMaterial().equals(Material.LEAVES)) {
-			if (World.isOutsideBuildHeight(groundPosition)) {
-				mod_LavaCow.LOGGER.warn(String.format("Attempt to get ground position of entity \"%s\" (of type \"%s\", UUID=\"%s\") at \"%s\" resulted in a position above world height - using the entity's current position instead.", entityIn.getDisplayName().getString(), entityIn.getType().getRegistryName(), entityIn.getStringUUID(), currentPosition));
-				return currentPosition;
-			}
-			groundPosition = groundPosition.above();
-		}
-		
-    	return groundPosition;
+    	BlockPos pos = entityIn.level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, entityIn.blockPosition());
+    	
+    	if (entityIn.level.dimensionType().hasCeiling()) {
+    		do {
+    			pos = pos.below();
+    		} while (!entityIn.level.getBlockState(pos).getMaterial().equals(Material.AIR));
+
+    		do {
+    			pos = pos.below();
+            } while (entityIn.level.getBlockState(pos).getMaterial().equals(Material.AIR) && pos.getY() > 0);
+    	}
+
+    	return pos;
     }
     
     /*public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
