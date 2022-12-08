@@ -16,10 +16,13 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -38,13 +41,11 @@ public class VespaEntity extends FlyingMobEntity {
 	
 	public VespaEntity(EntityType<? extends VespaEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		//this.moveControl = new FlyingMovementController(this, 30, true);
 	}
 	
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));
 		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, true).setUnseenMemoryTicks(160));
@@ -63,6 +64,21 @@ public class VespaEntity extends FlyingMobEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+    }
+    
+    @Override
+    protected Goal wanderGoal() {
+    	return new FlyingMobEntity.AIRandomFly(this);
+    }
+    
+    @Override
+    protected Goal followGoal() {
+    	return new FollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, false);
+    }
+    
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
     }
     
     @Override
