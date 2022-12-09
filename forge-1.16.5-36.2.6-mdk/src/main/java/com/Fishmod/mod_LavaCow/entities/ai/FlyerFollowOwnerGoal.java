@@ -84,7 +84,7 @@ public class FlyerFollowOwnerGoal extends Goal {
 		if (--this.timeToRecalcPath <= 0) {
 			this.timeToRecalcPath = 10;
 			if (!this.tamable.isLeashed() && !this.tamable.isPassenger()) {
-				if (this.tamable.distanceToSqr(this.owner) >= 256.0D) {
+				if (this.tamable.distanceToSqr(this.owner) >= 576.0D) {
 					this.teleportToOwner();
 				} else {
 					this.navigation.moveTo(this.owner.blockPosition().getX(), this.owner.blockPosition().above().above().getY(), this.owner.blockPosition().getZ(), this.speedModifier);

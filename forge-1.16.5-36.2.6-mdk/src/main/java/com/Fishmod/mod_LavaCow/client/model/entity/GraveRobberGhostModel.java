@@ -61,6 +61,8 @@ public class GraveRobberGhostModel<T extends GraveRobberGhostEntity> extends Fly
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		
 		this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
 		
 		if(entity.isAggressive()) {

@@ -130,6 +130,8 @@ public class PteraModel<T extends PteraEntity> extends FlyingBaseModel<T> implem
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    	
     	float flap = MathHelper.sin(ageInTicks * 0.5F);
     	this.Head.xRot = headPitch * 0.017453292F;
     	this.Head.yRot = netHeadYaw * 0.017453292F;

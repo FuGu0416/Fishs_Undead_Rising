@@ -111,6 +111,8 @@ public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> 
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    	
     	float flap = MathHelper.sin(ageInTicks * 0.1F);
     	
     	this.Body_Base.y = 22.0F + flap;

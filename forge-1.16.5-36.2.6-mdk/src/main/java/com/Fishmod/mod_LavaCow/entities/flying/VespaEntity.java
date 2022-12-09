@@ -3,6 +3,8 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.entity.CreatureAttribute;
@@ -16,13 +18,13 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -73,12 +75,32 @@ public class VespaEntity extends FlyingMobEntity {
     
     @Override
     protected Goal followGoal() {
-    	return new FollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, false);
+    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, false);
     }
     
     @Override
     public boolean isFood(ItemStack stack) {
         return false;
+    }
+    
+    @Override
+    public void doSitCommand(PlayerEntity playerIn) {
+    	if (SpawnUtil.getHeight(this).getY() > 0) {   		
+    		this.setNoGravity(false);
+    	}
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
+    public void doFollowCommand(PlayerEntity playerIn) {
+    	this.setNoGravity(true);
+    	super.doFollowCommand(playerIn);
+    }
+    
+    @Override
+    public void doWanderCommand(PlayerEntity playerIn) {
+    	this.setNoGravity(true);
+    	super.doWanderCommand(playerIn);
     }
     
     @Override

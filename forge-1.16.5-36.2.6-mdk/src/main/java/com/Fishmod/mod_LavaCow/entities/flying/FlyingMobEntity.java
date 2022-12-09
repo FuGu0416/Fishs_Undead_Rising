@@ -23,8 +23,11 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
@@ -52,9 +55,18 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	}
 	
 	@Override
+    protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.setNoGravity(true);
+	}
+	
+	@Override
     protected void registerGoals() {
+		super.registerGoals();
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(2, new AIFlyingAttackMelee(this, 1.0D, true));		
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 	
     public static boolean checkFlyerSpawnRules(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
@@ -158,6 +170,12 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             if (!lowestPassenger.level.noCollision(lowestPassenger, passengerBounds)) {
             	this.getMoveControl().setWantedPosition(this.getX(), this.getY() + lowestPassenger.getBbHeight(), this.getZ(), 1.0D);
             }            
+        }
+        
+        if (!this.isNoGravity()) {
+        	this.moveRelative(0.02F, p_213352_1_);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().x, -0.15D, this.getDeltaMovement().z);
         }
     	
     	if (this.getTarget() != null) {

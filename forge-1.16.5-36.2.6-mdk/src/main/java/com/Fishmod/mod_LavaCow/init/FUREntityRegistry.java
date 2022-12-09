@@ -86,7 +86,7 @@ public class FUREntityRegistry {
 	public static final EntityType<RavenEntity> RAVEN = registerEntity(EntityType.Builder.of(RavenEntity::new, EntityClassification.CREATURE).sized(0.5F, 0.9F), "raven");
 	public static final EntityType<RavenEntity> SEAGULL = registerEntity(EntityType.Builder.of(RavenEntity::new, EntityClassification.CREATURE).sized(0.5F, 0.9F), "seagull");
 	public static final EntityType<PteraEntity> PTERA = registerEntity(EntityType.Builder.of(PteraEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.8F), "ptera");
-	public static final EntityType<VespaEntity> VESPA = registerEntity(EntityType.Builder.of(VespaEntity::new, EntityClassification.MONSTER).sized(2.6F, 1.0F), "vespa");
+	public static final EntityType<VespaEntity> VESPA = registerEntity(EntityType.Builder.of(VespaEntity::new, EntityClassification.MONSTER).sized(1.3F, 1.0F), "vespa");
 	public static final EntityType<ScarecrowEntity> SCARECROW = registerEntity(EntityType.Builder.of(ScarecrowEntity::new, EntityClassification.MONSTER).sized(0.8F, 3.0F), "scarecrow");
 	public static final EntityType<VespaCocoonEntity> VESPACOCOON = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "vespacocoon");
 	public static final EntityType<PiranhaEntity> PIRANHA = registerEntity(EntityType.Builder.of(PiranhaEntity::new, EntityClassification.WATER_AMBIENT).sized(1.0F, 0.8F), "piranha");

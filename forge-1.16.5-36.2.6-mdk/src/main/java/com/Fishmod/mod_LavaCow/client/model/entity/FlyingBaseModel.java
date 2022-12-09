@@ -16,17 +16,16 @@ public class FlyingBaseModel<T extends Entity> extends FURBaseModel<T> {
      * and third as in the setRotationAngles method.
      */
 	public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {	
-    	if(entityIn instanceof FlyingMobEntity) {
-    		
+    	if(entityIn instanceof FlyingMobEntity) {  		
     		FlyingMobEntity entity = (FlyingMobEntity)entityIn;
-    	
-	    	if(entity.getAttackTimer() > 0) {
+    		
+	    	if (entity.isOnGround()) {
+	    		this.state = FlyingBaseModel.State.WAITING;
+	    	} else if (entity.getAttackTimer() > 0) {
 	    		this.state = FlyingBaseModel.State.ATTACKING;
-	    	}
-	    	else if(HoverCounter < 10) {
+	    	} else if (HoverCounter < 10) {
 	    		this.state = FlyingBaseModel.State.HOVERING;
-	    	}
-	    	else {
+	    	} else {
 	    		this.state = FlyingBaseModel.State.FLYING;	    		
 	    	}
 	    	
@@ -41,6 +40,7 @@ public class FlyingBaseModel<T extends Entity> extends FURBaseModel<T> {
     {
         FLYING,
         HOVERING,
-        ATTACKING;
+        ATTACKING,
+        WAITING;
     }
 }
