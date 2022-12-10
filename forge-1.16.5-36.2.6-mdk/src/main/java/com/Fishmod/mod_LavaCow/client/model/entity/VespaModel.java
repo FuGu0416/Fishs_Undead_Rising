@@ -189,20 +189,19 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
   	  	
     	float vibrate_rate = 0.5F;
     	
-    	this.Head.xRot = headPitch * 0.017453292F;
-    	this.Head.yRot = netHeadYaw * 0.017453292F;
-
+    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    	
     	this.Wing_0_r.xRot = 0.0F;
     	this.Wing_0_r.yRot = -0.22759093446006054F;
     	this.Wing_0_r.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks);
     	this.Wing_1_r.xRot = 0.0F;
-    	this.Wing_1_r.xRot = 0.40980330836826856F;
+    	this.Wing_1_r.yRot = 0.40980330836826856F;
     	this.Wing_1_r.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks + (float)Math.PI);
     	this.Wing_0_l.xRot = 0.0F;
     	this.Wing_0_l.yRot = 0.22759093446006054F;
     	this.Wing_0_l.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks + (float)Math.PI);
     	this.Wing_1_l.xRot = 0.0F;
-    	this.Wing_1_l.xRot = -0.40980330836826856F;
+    	this.Wing_1_l.yRot = -0.40980330836826856F;
     	this.Wing_1_l.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks);
       
     	this.Throax_base.y = 7.0F + 5.0F * MathHelper.sin(ageInTicks * vibrate_rate);  	    	
@@ -230,6 +229,37 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
 	    	this.setRotateAngle(leg_l_0, 0.0F, 0.7853981633974483F, 0.7853981633974483F);
 	    	this.setRotateAngle(leg_l_1, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
 	    	this.setRotateAngle(leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
+	    	
+	        this.leg_r_0.zRot = (-(float)Math.PI / 4F);
+	        this.leg_l_0.zRot = ((float)Math.PI / 4F);
+	        this.leg_r_1.zRot = -0.58119464F;
+	        this.leg_l_1.zRot = 0.58119464F;
+	        this.leg_r_2.zRot = -0.58119464F;
+	        this.leg_l_2.zRot = 0.58119464F;
+	        this.leg_r_0.yRot = ((float)Math.PI / 4F);
+	        this.leg_l_0.yRot = (-(float)Math.PI / 4F);
+	        this.leg_r_1.yRot = ((float)Math.PI / 8F);
+	        this.leg_l_1.yRot = (-(float)Math.PI / 8F);
+	        this.leg_r_2.yRot = (-(float)Math.PI / 8F);
+	        this.leg_l_2.yRot = ((float)Math.PI / 8F);
+	        float f3 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
+	        float f4 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * limbSwingAmount;
+	        float f5 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+	        float f7 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
+	        float f8 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float)Math.PI) * 0.4F) * limbSwingAmount;
+	        float f9 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+	        this.leg_r_0.yRot += f3;
+	        this.leg_l_0.yRot += -f3;
+	        this.leg_r_1.yRot += f4;
+	        this.leg_l_1.yRot += -f4;
+	        this.leg_r_2.yRot += f5;
+	        this.leg_l_2.yRot += -f5;
+	        this.leg_r_0.zRot += f7;
+	        this.leg_l_0.zRot += -f7;
+	        this.leg_r_1.zRot += f8;
+	        this.leg_l_1.zRot += -f8;
+	        this.leg_r_2.zRot += f9;
+	        this.leg_l_2.zRot += -f9;	       	
     	} else if (this.state.equals(FlyingBaseModel.State.FLYING)) {
 	    	this.Waist.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
@@ -258,13 +288,13 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
 	    	this.setRotateAngle(leg_l_0, 0.0F, 0.7853981633974483F, 0.7853981633974483F);
 	    	this.setRotateAngle(leg_l_1, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
 	    	this.setRotateAngle(leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
-    	} else {
-	    	this.Waist.xRot = -0.028F * (10 - this.HoverCounter) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen1.xRot = -0.028F * (10 - this.HoverCounter) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen2.xRot = -0.028F * (10 - this.HoverCounter) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen3.xRot = -0.028F * (10 - this.HoverCounter) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen4.xRot = -0.028F * (10 - this.HoverCounter) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
-	    	this.Stinger.xRot = -0.028F * (10 - this.HoverCounter) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
+    	} else if (this.state.equals(FlyingBaseModel.State.HOVERING)) {
+	    	this.Waist.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen1.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen2.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen3.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen4.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
+	    	this.Stinger.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
 	    	
 	    	this.setRotateAngle(leg_r_0, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
 	    	this.setRotateAngle(leg_r_1, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);

@@ -15,8 +15,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FURBaseModel<T extends Entity> extends EntityModel<T> {
 	
 	protected void Head_Looking(ModelRenderer Head, float initX, float initY, float netHeadYaw, float headPitch) {
-    	Head.xRot = initX + headPitch * 0.017453292F;
-        Head.yRot = initY + netHeadYaw * 0.017453292F;
+    	Head.xRot = initX + headPitch * ((float)Math.PI / 180F);;
+        Head.yRot = initY + netHeadYaw * ((float)Math.PI / 180F);;
 	}
 	
 	protected void SwingX_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {

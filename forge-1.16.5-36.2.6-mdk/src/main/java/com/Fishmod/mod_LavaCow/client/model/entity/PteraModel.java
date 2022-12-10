@@ -166,12 +166,10 @@ public class PteraModel<T extends PteraEntity> extends FlyingBaseModel<T> implem
     	        this.leg_l.xRot = 0.619591884457987F; 
         	}
         		
-        }
-        else if(this.state.equals(FlyingBaseModel.State.ATTACKING)) {
+        } else if(this.state.equals(FlyingBaseModel.State.ATTACKING)) {
         	this.Head.xRot = -0.5235987755982988F * 0.05F * ((FlyingMobEntity)entityIn).getAttackTimer();
         	this.Jaw.xRot = 1.415287490442202F * 0.05F * ((FlyingMobEntity)entityIn).getAttackTimer();
-        }
-        else {
+        } else {
         	this.Body1.xRot = -0.36267941856442165F;
         	this.Tail0.xRot = -0.18448130193580065F - 0.18F * flap;
         	

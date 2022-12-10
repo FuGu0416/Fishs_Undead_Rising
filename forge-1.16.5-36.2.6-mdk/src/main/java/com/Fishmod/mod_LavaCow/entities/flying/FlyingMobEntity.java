@@ -44,8 +44,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
-
 	private int attackTimer;
+	private int hoverTimer;
+	private int landTimer;
 	
 	public FlyingMobEntity(EntityType<? extends FlyingMobEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -102,6 +103,22 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	@Override
 	public void setAttackTimer(int i) {
 		this.attackTimer = i;
+	}
+	
+	public int getHoverTimer() {
+		return this.hoverTimer;
+	}
+    
+	public void setHoverTimer(int i) {
+		this.hoverTimer = i;
+	}
+
+	public int getLandTimer() {
+		return this.landTimer;
+	}
+    
+	public void setLandTimer(int i) {
+		this.landTimer = i;
 	}
     
     /**
