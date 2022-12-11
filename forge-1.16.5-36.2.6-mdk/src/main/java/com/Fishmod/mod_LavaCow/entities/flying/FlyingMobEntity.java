@@ -189,7 +189,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             }            
         }
         
-        if (!this.isNoGravity()) {
+        if (!this.isNoGravity() && !this.isVehicle() && !(this.getControllingPassenger() instanceof PlayerEntity)) {
         	this.moveRelative(0.02F, p_213352_1_);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().x, -0.15D, this.getDeltaMovement().z);

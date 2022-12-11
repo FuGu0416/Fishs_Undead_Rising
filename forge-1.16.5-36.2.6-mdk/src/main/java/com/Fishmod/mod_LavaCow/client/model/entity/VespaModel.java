@@ -204,7 +204,7 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
     	this.Wing_1_l.yRot = -0.40980330836826856F;
     	this.Wing_1_l.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks);
       
-    	this.Throax_base.y = 7.0F + 5.0F * MathHelper.sin(ageInTicks * vibrate_rate);  	    	
+    	this.Throax_base.y = 7.0F + (entityIn.isVehicle() ? 0.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
     	
     	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
