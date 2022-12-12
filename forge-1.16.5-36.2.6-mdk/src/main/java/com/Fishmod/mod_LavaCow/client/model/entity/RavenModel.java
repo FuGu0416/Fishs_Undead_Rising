@@ -28,7 +28,6 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
     public ModelRenderer beak1;
     public ModelRenderer beak2;
     public ModelRenderer feather;
-    private RavenModel.State state = RavenModel.State.STANDING;
 
     public RavenModel() {
         this.texWidth = 32;
@@ -94,59 +93,8 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float f = 0.0F;
-        this.head.xRot = headPitch * 0.017453292F;
-        this.head.yRot = netHeadYaw * 0.017453292F;
-        this.head.zRot = 0.0F;
-        this.head.x = 0.0F;
-        this.body.x = 0.0F;
-        this.tail.x = 0.0F;
-        this.wingRight.x = -1.5F;
-        this.wingLeft.x = 1.5F;
-
-        if (this.state != RavenModel.State.FLYING)
-        {
-            if (this.state == RavenModel.State.SITTING)
-            {
-                return;
-            }
-
-            if (this.state == RavenModel.State.PARTY)
-            {
-                float f1 = MathHelper.cos(ageInTicks);
-                float f2 = MathHelper.sin(ageInTicks);
-                this.head.x = f1;
-                this.head.y = 15.69F + f2;
-                this.head.xRot = 0.0F;
-                this.head.yRot = 0.0F;
-                this.head.zRot = MathHelper.sin((float)entityIn.tickCount) * 0.4F;
-                this.body.x = f1;
-                this.body.y = 16.5F + f2;
-                this.wingLeft.x = 1.5F + f1;
-                this.wingLeft.y = 16.94F + f2;
-                this.wingRight.x = -1.5F + f1;
-                this.wingRight.y = 16.94F + f2;
-                this.tail.x = f1;
-                this.tail.y = 21.07F + f2;
-                return;
-            }
-            this.wingLeft.zRot = -0.0873F;
-            this.wingRight.zRot = 0.0873F;
-            this.legLeft.xRot += MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.legRight.xRot += MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        } else {
-	        this.head.y = 15.69F + f;
-	        this.tail.xRot = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
-	        this.tail.y = 21.07F + f;
-	        this.body.y = 16.5F + f;
-        	this.wingLeft.zRot = -0.0873F - ageInTicks;
-	        this.wingLeft.y = 16.94F + f;	  
-	        this.wingRight.zRot = 0.0873F + ageInTicks;
-	        this.wingRight.y = 16.94F + f;
-	        this.legLeft.y = 22.0F + f;
-	        this.legRight.y = 22.0F + f;
-        }
-        
+    	this.setupAnim(getState(entityIn), entityIn.tickCount, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    	
         if(entityIn.callTimer > 0 && entityIn.getMainHandItem().isEmpty()) {
         	this.beak1.xRot = -0.18F;
         	this.beak2.xRot = 0.18F;
@@ -162,60 +110,112 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
      */
     @Override
     public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
+    	this.prepare(getState(entityIn));    	
+    }
+    
+    private void setupAnim(RavenModel.State p_217162_1_, int p_217162_2_, float p_217162_3_, float p_217162_4_, float p_217162_5_, float p_217162_6_, float p_217162_7_) {
+        this.head.xRot = p_217162_7_ * ((float)Math.PI / 180F);
+        this.head.yRot = p_217162_6_ * ((float)Math.PI / 180F);
+        this.head.zRot = 0.0F;
+        this.head.x = 0.0F;
+        this.body.x = 0.0F;
+        this.tail.x = 0.0F;
+        this.wingRight.x = -1.5F;
+        this.wingLeft.x = 1.5F;
+        switch(p_217162_1_) {
+        case SITTING:
+        	break;
+        case PARTY:
+        	float f = MathHelper.cos((float)p_217162_2_);
+           	float f1 = MathHelper.sin((float)p_217162_2_);
+           	this.head.x = f;
+           	this.head.y = 15.69F + f1;
+           	this.head.xRot = 0.0F;
+           	this.head.yRot = 0.0F;
+           	this.head.zRot = MathHelper.sin((float)p_217162_2_) * 0.4F;
+           	this.body.x = f;
+           	this.body.y = 16.5F + f1;
+           	this.wingLeft.zRot = -0.0873F - p_217162_5_;
+           	this.wingLeft.x = 1.5F + f;
+           	this.wingLeft.y = 16.94F + f1;
+           	this.wingRight.zRot = 0.0873F + p_217162_5_;
+           	this.wingRight.x = -1.5F + f;
+           	this.wingRight.y = 16.94F + f1;
+           	this.tail.x = f;
+           	this.tail.y = 21.07F + f1;
+           	break;
+        case STANDING:
+        	this.legLeft.xRot += MathHelper.cos(p_217162_3_ * 0.6662F) * 1.4F * p_217162_4_;
+           	this.legRight.xRot += MathHelper.cos(p_217162_3_ * 0.6662F + (float)Math.PI) * 1.4F * p_217162_4_;
+        case FLYING:
+        default:
+        	float f2 = p_217162_5_ * 0.3F;
+           	this.head.y = 15.69F + f2;
+           	this.tail.xRot = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
+           	this.tail.y = 21.07F + f2;
+           	this.body.y = 16.5F + f2;
+           	this.wingLeft.zRot = -0.0873F - p_217162_5_;
+           	this.wingLeft.y = 16.94F + f2;
+           	this.wingRight.zRot = 0.0873F + p_217162_5_;
+           	this.wingRight.y = 16.94F + f2;
+           	this.legLeft.y = 22.0F + f2;
+           	this.legRight.y = 22.0F + f2;
+        }
+	}
+
+	private void prepare(RavenModel.State p_217160_1_) {
         this.feather.xRot = -0.2214F;
         this.body.xRot = 0.4937F;
-        this.wingLeft.xRot = -((float)Math.PI * 2F / 9F);
+        this.wingLeft.xRot = -0.6981F;
         this.wingLeft.yRot = -(float)Math.PI;
-        this.wingRight.xRot = -((float)Math.PI * 2F / 9F);
+        this.wingRight.xRot = -0.6981F;
         this.wingRight.yRot = -(float)Math.PI;
         this.legLeft.xRot = -0.0299F;
         this.legRight.xRot = -0.0299F;
         this.legLeft.y = 22.0F;
         this.legRight.y = 22.0F;
-
-        if (entityIn.isPartyParrot())
-        {
-            this.wingRight.zRot = 0.0873F;
-        	this.legLeft.zRot = -0.34906584F;
-            this.legRight.zRot = 0.34906584F;
-            this.state = RavenModel.State.PARTY;
-            return;
-        }
-
-        if (entityIn.isFlying())
-        {
-            this.legLeft.xRot += ((float)Math.PI * 2F / 9F);
-            this.legRight.xRot += ((float)Math.PI * 2F / 9F);
-            this.state = RavenModel.State.FLYING;
-        }
-        else if (entityIn.isInSittingPose())
-        {
-            //float f = 1.9F;
-            this.head.y = 17.59F;
-            this.tail.xRot = 1.5388988F;
-            this.tail.y = 22.97F;
-            this.body.y = 18.4F;
-            this.wingLeft.zRot = -0.0873F;
-            this.wingLeft.y = 18.84F;
-            this.wingRight.zRot = 0.0873F;
-            this.wingRight.y = 18.84F;
-            ++this.legLeft.y;
-            ++this.legRight.y;
-            ++this.legLeft.xRot;
-            ++this.legRight.xRot;
-            this.state = RavenModel.State.SITTING;
-        }
-        else
-        {
-            this.state = RavenModel.State.STANDING;
-        }
-
         this.legLeft.zRot = 0.0F;
         this.legRight.zRot = 0.0F;
-    }
+        switch(p_217160_1_) {
+        case SITTING:
+        	this.head.y = 17.59F;
+           	this.tail.xRot = 1.5388988F;
+           	this.tail.y = 22.97F;
+           	this.body.y = 18.4F;
+           	this.wingLeft.zRot = -0.0873F;
+           	this.wingLeft.y = 18.84F;
+           	this.wingRight.zRot = 0.0873F;
+           	this.wingRight.y = 18.84F;
+           	++this.legLeft.y;
+           	++this.legRight.y;
+           	++this.legLeft.xRot;
+           	++this.legRight.xRot;
+           	break;
+        case PARTY:
+        	this.legLeft.zRot = -0.34906584F;
+           	this.legRight.zRot = 0.34906584F;
+        case STANDING:
+        default:
+        	break;
+    	case FLYING:
+        	this.legLeft.xRot += 0.6981317F;
+        	this.legRight.xRot += 0.6981317F;
+        }
 
-    static enum State
-    {
+	}
+    
+	private static RavenModel.State getState(RavenEntity p_217158_0_) {
+		if (p_217158_0_.isPartyParrot()) {
+			return RavenModel.State.PARTY;
+    	} else if (p_217158_0_.isInSittingPose()) {
+    		return RavenModel.State.SITTING;
+        } else {
+        	return p_217158_0_.isFlying() ? RavenModel.State.FLYING : RavenModel.State.STANDING;
+        }
+	}
+
+    @OnlyIn(Dist.CLIENT)
+    public static enum State {
         FLYING,
         STANDING,
         SITTING,
