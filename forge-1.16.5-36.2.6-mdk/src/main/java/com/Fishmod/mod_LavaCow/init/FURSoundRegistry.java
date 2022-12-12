@@ -65,6 +65,7 @@ public class FURSoundRegistry {
 	public static final SoundEvent VESPA_AMBIENT = addSoundEvent("vespa_ambient");
 	public static final SoundEvent VESPA_HURT = addSoundEvent("vespa_hurt");
 	public static final SoundEvent VESPA_DEATH = addSoundEvent("vespa_death");
+	public static final SoundEvent VESPA_FLYING = addSoundEvent("vespa_flying");
 	
 	public static final SoundEvent SCARECROW_AMBIENT = addSoundEvent("scarecrow_ambient");
 	public static final SoundEvent SCARECROW_HURT = addSoundEvent("scarecrow_hurt");

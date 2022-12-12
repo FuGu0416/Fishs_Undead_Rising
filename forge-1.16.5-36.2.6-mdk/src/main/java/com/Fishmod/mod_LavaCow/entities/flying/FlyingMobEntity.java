@@ -176,6 +176,10 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 			
 		super.makeStuckInBlock(p_213295_1_, p_213295_2_);
 	}
+	
+	protected double VehicleSpeedMod() {
+		return 1.0D;
+	}
 
     public void travel(Vector3d p_213352_1_) {
     	// If the lowest passenger is colliding with the ground, get them out!
@@ -223,7 +227,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             }
 
             this.moveRelative(this.onGround ? 0.1F * f1 : 0.02F, p_213352_1_);
-            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.move(MoverType.SELF, this.getDeltaMovement().scale(this.VehicleSpeedMod()));
             this.setDeltaMovement(this.getDeltaMovement().scale((double)f));
         }
 

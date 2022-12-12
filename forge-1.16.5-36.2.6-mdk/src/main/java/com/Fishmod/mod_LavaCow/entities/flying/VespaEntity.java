@@ -53,7 +53,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
-            return true;
+            return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof VespaEntity);
         }).setUnseenMemoryTicks(160));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
             return true;
@@ -114,13 +114,19 @@ public class VespaEntity extends RidableFlyingMobEntity {
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
     	return p_213348_2_.height * 0.35F;
     }
+    
+    @Override
+    public void tick() {
+    	super.tick();
+    	
+    	if(!this.onGround && tickCount % 20 == 0)
+    		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
+    }
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
-		if (super.doHurtTarget(par1Entity))
-		{
-			if (par1Entity instanceof LivingEntity)
-			{
+		if (super.doHurtTarget(par1Entity)) {
+			if (par1Entity instanceof LivingEntity) {
 				float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 
 				((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
@@ -129,9 +135,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
 			}
 
 			return true;
-       }
-       else
-       {
+       } else {
            return false;
        }
 	}
@@ -157,6 +161,11 @@ public class VespaEntity extends RidableFlyingMobEntity {
     public void setSkin(int skinType) {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
+    
+    @Override
+	protected double VehicleSpeedMod() {
+		return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
+	}
 	
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -190,6 +199,10 @@ public class VespaEntity extends RidableFlyingMobEntity {
 
 	protected SoundEvent getDeathSound() {
 		return FURSoundRegistry.VESPA_DEATH;
+	}
+	
+	protected SoundEvent getFlyingSound() {
+		return FURSoundRegistry.VESPA_FLYING;
 	}
 	
     /**

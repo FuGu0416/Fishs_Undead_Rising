@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.init.FURKeybindRegistry;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -106,8 +108,12 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     public void tick() {
     	super.tick();
     	
-    	if(isClimbingUp()) {
-    		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.15F, 0.0F));
+    	if(this.isUp() && !this.isDown()) {
+    		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.05F, 0.0F));
+    	}
+    	
+    	if(!this.isUp() && this.isDown()) {
+    		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, -0.05F, 0.0F));
     	}
     }
     
@@ -122,18 +128,18 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     
     @OnlyIn(Dist.CLIENT)
     protected void ClientControl() {
-    	byte prevState = entityData.get(CONTROL_STATE).byteValue();
     	Minecraft game = Minecraft.getInstance();
+    	
 		/*if (this.barrage_CD == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player)) {
 			this.barrage_CD = 80;
 			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ()));
 		}*/
     	
-    	if (game.options.keyJump.isDown()) {
-    		entityData.set(CONTROL_STATE, (byte) (prevState | 1));
-    	} else {
-    		entityData.set(CONTROL_STATE, (byte) (prevState & 0));
+    	if (this.isRidingPlayer(game.player)) {
+        	this.setControlState(0, game.options.keyJump.isDown());
+        	this.setControlState(1, FURKeybindRegistry.MOUNT_DOWN.isDown());
     	}
+	
     }
     
     /**
@@ -152,8 +158,21 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     	return this.getEntityData().get(SADDLED).booleanValue();
     }
     
-    private boolean isClimbingUp() {
+    private boolean isUp() {
     	return (entityData.get(CONTROL_STATE).byteValue() & 1) == 1;
+    }
+    
+    private boolean isDown() {
+    	return ((entityData.get(CONTROL_STATE).byteValue() >> 1) & 1) == 1;
+    }
+    
+    private void setControlState(int byteLoc, boolean stateIn) {
+        byte prevState = entityData.get(CONTROL_STATE).byteValue();
+        if (stateIn) {
+            entityData.set(CONTROL_STATE, (byte) (prevState | (1 << byteLoc)));
+        } else {
+            entityData.set(CONTROL_STATE, (byte) (prevState & ~(1 << byteLoc)));
+        }
     }
     
     @Override
@@ -173,7 +192,6 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
 	            float f1 = controller.zza;
 	
 	            if (this.isControlledByLocalInstance()) {
-	                //this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
 	                super.travel(new Vector3d((double)f, p_213352_1_.y, (double)f1));
 	            } else {
 	            	this.setDeltaMovement(Vector3d.ZERO);

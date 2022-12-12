@@ -276,7 +276,7 @@
 	{
 		"category": "hostile",
 		"subtitle": "entity_vespa_ambient",
-		"sounds": ["mod_lavacow:entity/vespa/ambient0","mod_lavacow:entity/vespa/ambient1"]
+		"sounds": [{"name": "mod_lavacow:entity/vespa/ambient1","stream": true}]
 	},
 	
 	"vespa_hurt":
@@ -292,7 +292,13 @@
 		"subtitle": "entity_vespa_death",
 		"sounds": [{"name": "mod_lavacow:entity/vespa/death","stream": true}]
 	},
-	
+
+	"vespa_flying":
+	{
+		"category": "hostile",
+		"sounds": [{"name": "mod_lavacow:entity/vespa/ambient0","stream": true}]
+	},
+		
 	"scarecrow_ambient":
 	{
 		"category": "hostile",
