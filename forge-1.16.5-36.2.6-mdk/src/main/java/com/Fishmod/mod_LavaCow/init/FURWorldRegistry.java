@@ -271,8 +271,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_SeaHag.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				(BiomeDictionary.getTypes(biomeKey).contains(Type.BEACH)) ||
-				(BiomeDictionary.getTypes(biomeKey).contains(Type.OCEAN))) {
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.BEACH))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
 		}
 		
@@ -299,6 +298,8 @@ public class FURWorldRegistry {
 				event.getStructure().equals(Structure.STRONGHOLD) ||
 				event.getStructure().equals(Structure.VILLAGE) ||
 				event.getStructure().equals(Structure.WOODLAND_MANSION) ||
+				event.getStructure().equals(Structure.SHIPWRECK) ||
+				event.getStructure().equals(Structure.OCEAN_RUIN) ||
 				event.getStructure().equals(DESERT_TOMB.get())) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, FURConfig.pSpawnRate_Mimic.get(), 1, 1));
 		}

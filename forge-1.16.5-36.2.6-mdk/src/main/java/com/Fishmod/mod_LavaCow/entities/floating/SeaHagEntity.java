@@ -38,6 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -79,7 +80,7 @@ public class SeaHagEntity extends FloatingMobEntity {
 	public static boolean checkSeaHagSpawnRules(EntityType<SeaHagEntity> p_223332_0_, IServerWorld p_223332_1_, SpawnReason p_223332_2_, BlockPos p_223332_3_, Random p_223332_4_) {
 		Optional<RegistryKey<Biome>> optional = p_223332_1_.getBiomeName(p_223332_3_);
         boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == SpawnReason.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).is(FluidTags.WATER));
-        System.out.println("OAO!! " + flag + " " + p_223332_3_.getX() + " " + p_223332_3_.getY() + " " + p_223332_3_.getZ());
+
         if (!Objects.equals(optional, Optional.of(Biomes.RIVER)) && !Objects.equals(optional, Optional.of(Biomes.FROZEN_RIVER))) {
         	return p_223332_4_.nextInt(40) == 0 && flag;
         } else {
@@ -91,6 +92,11 @@ public class SeaHagEntity extends FloatingMobEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(1));
+    }
+    
+    @Override
+    public boolean checkSpawnObstruction(IWorldReader p_205019_1_) {
+        return p_205019_1_.isUnobstructed(this);
     }
     
     /**

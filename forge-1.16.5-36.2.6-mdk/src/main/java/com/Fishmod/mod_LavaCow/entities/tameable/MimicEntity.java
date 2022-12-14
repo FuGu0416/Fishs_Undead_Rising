@@ -77,6 +77,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -170,6 +171,11 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 	}
     
     @Override
+    public boolean checkSpawnObstruction(IWorldReader p_205019_1_) {
+        return p_205019_1_.isUnobstructed(this);
+    }
+    
+    @Override
     public void setTame(boolean tamed) {
     	super.setTame(tamed);
         
@@ -245,10 +251,10 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 			if (!this.isAggressive() && !this.isTame()) {
 				if(!this.isSilent()) {
 					this.setInSittingPose(true);
-					this.level.broadcastEntityEvent(this, (byte)41);
+					this.level.broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
 				}
 			
-				this.setPos(MathHelper.floor(this.getX()) + 0.5, MathHelper.floor(this.getY()), MathHelper.floor(this.getZ()) + 0.55);
+				this.setPos(MathHelper.floor(this.getX()) + 0.5, MathHelper.floor(this.getY()), MathHelper.floor(this.getZ()) + 0.5);
 				this.yRot = this.yRotO = this.rotationAngle;
 				this.yBodyRot = this.yBodyRotO = 0F;		
 				
@@ -487,7 +493,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+
     	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
  		   this.setSkin(6); 	 
     	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : this.getSkin() == 7 ? LootTableHandler.DESERT_TOMB_CHEST : LootTables.SIMPLE_DUNGEON);
