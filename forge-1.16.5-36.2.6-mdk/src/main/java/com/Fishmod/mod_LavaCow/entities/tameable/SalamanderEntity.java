@@ -40,6 +40,8 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -113,7 +115,11 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	this.goalSelector.addGoal(4, this.range_atk);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        if(FURConfig.Salamander_Defender.get()) {
+        	this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        	this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        }
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
         }));

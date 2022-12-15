@@ -37,6 +37,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Salamander;
 	public static final ForgeConfigSpec.ConfigValue<Double> Salamander_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Salamander_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Salamander_Defender;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wendigo;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wendigo_Health;
@@ -168,7 +169,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Wisp;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wisp_ExplosionPower;
-
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Wisp_Tamed_Explosion;
+	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GraveRobber;
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Attack;
@@ -283,6 +285,7 @@ public final class FURConfig {
 		pSpawnRate_Salamander = BUILDER.comment("Set the spawn rate of Salamander [0-10000]").defineInRange("salamander spawn rate", 10, 0, 10000);
 		Salamander_Health = BUILDER.comment("Maximum Salamander health [1-1000]").defineInRange("salamander health", 60.0D, 1.0D, 1000.0D);
 		Salamander_Attack = BUILDER.comment("Salamander strength [1-1000]").defineInRange("salamander attack", 4.0D, 1.0D, 1000.0D);
+		Salamander_Defender = BUILDER.comment("Should tamed Salamander defend its owner [false/true]").define("salamander defender", false);
 		BUILDER.pop();
 		
 		BUILDER.push("Wendigo");
@@ -495,6 +498,7 @@ public final class FURConfig {
 		pSpawnRate_Wisp = BUILDER.comment("Set the spawn rate of Wisp [0-10000]").defineInRange("wisp spawn rate", 10, 0, 10000);
 		Wisp_Health = BUILDER.comment("Maximum Wisp health [1-1000]").defineInRange("wisp health", 8.0D, 1.0D, 1000.0D);
 		Wisp_ExplosionPower = BUILDER.comment("Wisp strength [1-1000]").defineInRange("wisp attack", 3.0D, 0.0D, 10.0D);	
+		Wisp_Tamed_Explosion = BUILDER.comment("Should tamed Wisp use explosion attack. [false/true]").define("tamed wisp explodes", true);
 		BUILDER.pop();
 
 		BUILDER.push("Grave Robber");

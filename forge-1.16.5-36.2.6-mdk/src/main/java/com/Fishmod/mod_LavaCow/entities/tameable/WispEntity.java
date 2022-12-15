@@ -165,7 +165,7 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
 	
 	@Override
     public void tick() {
-        if (this.isAlive()) {
+        if (this.isAlive() && (!this.isTame() || (this.isTame() && FURConfig.Wisp_Tamed_Explosion.get()))) {
            this.oldSwell = this.swell;
 
            int i = this.getSwellDir();
@@ -182,11 +182,11 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
               this.swell = this.maxSwell;
               this.explodeWisp();
            }
-           
-           if (this.isGastly() && this.getSkin() != 3) {
-        	   this.setSkin(3);
-           }
         }
+        
+        if (this.isGastly() && this.getSkin() != 3) {
+        	this.setSkin(3);
+        }      
 
     	this.noPhysics = true;
     	super.tick();

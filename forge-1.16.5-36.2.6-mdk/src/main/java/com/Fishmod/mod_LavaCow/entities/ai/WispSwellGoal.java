@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.ai;
 
 import java.util.EnumSet;
 
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.WispEntity;
 
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +19,7 @@ public class WispSwellGoal extends Goal {
 
 	   public boolean canUse() {
 	      LivingEntity livingentity = this.wisp.getTarget();
-	      return this.wisp.getSwellDir() > 0 || livingentity != null && this.wisp.distanceToSqr(livingentity) < 4.0D;
+	      return (this.wisp.getSwellDir() > 0 || livingentity != null && this.wisp.distanceToSqr(livingentity) < 4.0D) && (!this.wisp.isTame() || (this.wisp.isTame() && FURConfig.Wisp_Tamed_Explosion.get()));
 	   }
 
 	   public void start() {
