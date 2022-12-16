@@ -217,7 +217,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 				if (this.inventory.getItem(i).getItem().equals(itemIn)) {
 					return i;
 				}			
-    	}   	
+    	}  
+    	
     	return -1;
     }
     
@@ -241,15 +242,15 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     public void tick() {
 		super.tick();
 		
-		if(this.AggressiveTimer > 0)
+		if (this.AggressiveTimer > 0)
 			this.AggressiveTimer--;
 		
-    	if(this.AttackTimer > 0)
+    	if (this.AttackTimer > 0)
     		this.AttackTimer--;
     	
-		if(!this.level.isClientSide()) {
+		if (!this.level.isClientSide()) {
 			if (!this.isAggressive() && !this.isTame()) {
-				if(!this.isSilent()) {
+				if (!this.isSilent()) {
 					this.setInSittingPose(true);
 					this.level.broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
 				}
@@ -270,17 +271,17 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 			}
 		}
 		
-		if(!this.isTame() && this.getTarget() != null && this.distanceTo(this.getTarget()) > this.getAttribute(Attributes.FOLLOW_RANGE).getValue()) {
+		if (!this.isTame() && this.getTarget() != null && this.distanceTo(this.getTarget()) > this.getAttribute(Attributes.FOLLOW_RANGE).getValue()) {
 			this.setTarget((LivingEntity)null);
 		}
 		
 		for(ItemStack S: this.getHandSlots())
-			if(!S.isEmpty())this.hasSpace(S);
+			if (!S.isEmpty())this.hasSpace(S);
 		
-		if(this.isTame() && this.getHealth() <= this.getMaxHealth() * 0.5F)
+		if (this.isTame() && this.getHealth() <= this.getMaxHealth() * 0.5F)
 			this.EmergencyFood();
 		
-		if(this.getSkin() == getVoidSkin() && this.tickCount % 100 == 0) {
+		if (this.getSkin() == getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
                 int j = this.getRandom().nextInt(2) * 2 - 1;
                 int k = this.getRandom().nextInt(2) * 2 - 1;
@@ -294,12 +295,12 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
             }
 		}
 		
-    	if(this.level.isClientSide()) {
-        	if(this.isInSittingPose() && this.SitTimer > 0) {
+    	if (this.level.isClientSide()) {
+        	if (this.isInSittingPose() && this.SitTimer > 0) {
         		this.SitTimer--;
         	}
         	
-        	if(!this.isInSittingPose() && this.SitTimer < 20) {
+        	if (!this.isInSittingPose() && this.SitTimer < 20) {
         		this.SitTimer++;
         	}
     	}
@@ -312,7 +313,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     public void aiStep() {
     	super.aiStep();
     	
-    	if(this.IdleTimer > 0)
+    	if (this.IdleTimer > 0)
     		this.IdleTimer--;
     	   	
 		if (!this.isAggressive() && !this.isTame() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0)
@@ -321,7 +322,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 	
     @Override
     public void travel(Vector3d p_213352_1_) {
-		if(this.SitTimer > 0 && this.SitTimer < 20) {
+		if (this.SitTimer > 0 && this.SitTimer < 20) {
             this.setDeltaMovement(Vector3d.ZERO);
 		} else
 			super.travel(p_213352_1_);
@@ -354,7 +355,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         	this.AttackTimer = 5;
         	this.level.broadcastEntityEvent(this, (byte)40);
         	
-        	if(this.getSkin() == 6 && this.getRandom().nextInt(4) == 0) {
+        	if (this.getSkin() == 6 && this.getRandom().nextInt(4) == 0) {
         		entityIn.setSecondsOnFire(4);
         	}
         }
@@ -373,7 +374,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     	ItemStack is;
     	super.doFollowCommand(playerIn);
     	
-    	if(this.getSkin() == this.getVoidSkin()) {
+    	if (this.getSkin() == this.getVoidSkin()) {
       	   this.setCanPickUpLoot(false);
      	   
 	       for (int i = 0; i < this.inventory.getContainerSize();i++) {
@@ -402,8 +403,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
             return super.mobInteract(player, hand);
         } else if (this.isTame() && this.getOwner().equals(player)) {
         	if (player.isCrouching()) {
-        		if(!this.level.isClientSide()) {
-        			if(this.getSkin() == getVoidSkin()) {	
+        		if (!this.level.isClientSide()) {
+        			if (this.getSkin() == getVoidSkin()) {	
     					EnderChestInventory enderchestinventory = player.getEnderChestInventory();
     					player.openMenu(new SimpleNamedContainerProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
     						return ChestContainer.threeRows(p_226928_1_, p_226928_2_, enderchestinventory);
@@ -478,7 +479,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
             return super.mobInteract(player, hand);
         }
         
-        if(!this.isTame() && this.distanceToSqr(player) < 2.0D) {
+        if (!this.isTame() && this.distanceToSqr(player) < 2.0D) {
 	        this.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FURSoundRegistry.MIMIC_AMBIENT, 0.4F, 1.0F);
 	        this.setTarget(player);	        
@@ -494,7 +495,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
-    	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
+    	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
  		   this.setSkin(6); 	 
     	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : this.getSkin() == 7 ? LootTableHandler.DESERT_TOMB_CHEST : LootTables.SIMPLE_DUNGEON);
     	for (int i = 0; i < this.inventory.getContainerSize();i++) {
@@ -605,28 +606,17 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-        if (id == 40)
-        {
+        if (id == 40) {
             this.AttackTimer = 5;
-        }
-        else if (id == 41)
-        {
+        } else if (id == 41) {
         	this.rotationAngle = 180.0F * ((float)Math.PI / 180.0F);
-        }
-        else if (id == 42)
-        {
+        } else if (id == 42) {
         	this.rotationAngle = 270.0F * ((float)Math.PI / 180.0F);
-        }
-        else if (id == 43)
-        {
+        } else if (id == 43) {
         	this.rotationAngle = 0.0F * ((float)Math.PI / 180.0F);
-        }
-        else if (id == 44)
-        {
+        } else if (id == 44) {
         	this.rotationAngle = 90.0F * ((float)Math.PI / 180.0F);
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -659,20 +649,17 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.MIMIC_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.MIMIC_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.MIMIC_DEATH;
     }
 

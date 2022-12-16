@@ -89,7 +89,7 @@ public class FURWeaponItem extends SwordItem {
 	
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted() && !stack.getTag().contains("onCraftEnchantments")) {
+		if (!stack.isEnchanted() && (!stack.hasTag() || (stack.hasTag() && !stack.getTag().contains("onCraftEnchantments")))) {
 			if (stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 				stack.enchant(Enchantments.FIRE_ASPECT, 2);
 				stack.getOrCreateTagElement("onCraftEnchantments");
@@ -99,11 +99,11 @@ public class FURWeaponItem extends SwordItem {
 			}
 		}
 		
-		if(entityIn instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && isSelected) {
+		if (entityIn instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && isSelected) {
 			((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.HUNGER, 7*20, 4));
 		}
 		
-		if(entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && worldIn.random.nextInt(50) < 2)
+		if (entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && worldIn.random.nextInt(50) < 2)
 			stack.setDamageValue(java.lang.Math.max(stack.getDamageValue() - 1, 0));
 	}
 	
@@ -116,21 +116,29 @@ public class FURWeaponItem extends SwordItem {
     }
 	   
 	@Override
-    public boolean hasContainerItem(ItemStack stack)
-    {
+    public boolean hasContainerItem(ItemStack stack) {
         return (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) && stack.getDamageValue() < stack.getMaxDamage();
     }
     
 	@Override
-    public ItemStack getContainerItem(ItemStack itemStack)
-    {
-		if(this.hasContainerItem(itemStack)) {
+    public ItemStack getContainerItem(ItemStack itemStack) {
+		if (this.hasContainerItem(itemStack)) {
 			ItemStack result = itemStack.copy();
 			result.setDamageValue(itemStack.getDamageValue() + 8);
 			return result;
-		}
-		else return ItemStack.EMPTY;
+		} 
+		
+		return ItemStack.EMPTY;
     }
+	
+	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		if (stack.getItem() == FURItemRegistry.SPECTRAL_DAGGER) {
+			return this.getItemStackLimit(stack) == 1;
+		}
+		
+		return super.isEnchantable(stack);
+	}
 	
 	/**
 	* Called when this item is used when targetting a Block
@@ -167,7 +175,7 @@ public class FURWeaponItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		float f = (float) attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
 		
-		if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE) {
+		if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE) {
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
             for (LivingEntity LivingEntity : attacker.level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2.0D, 0.25D, 2.0D))) {
@@ -179,11 +187,11 @@ public class FURWeaponItem extends SwordItem {
 
             attacker.level.playSound((PlayerEntity)null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 1.0F, 1.0F);
             ((PlayerEntity) attacker).sweepAttack();
-		} else if(attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
+		} else if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
 			((PlayerEntity)attacker).getFoodData().eat(1, 0.0F);
-		} else if(stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
+		} else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
-		} else if(stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
+		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
 		}
 		
@@ -252,26 +260,24 @@ public class FURWeaponItem extends SwordItem {
 
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
 			for(Entity entity1 : list) {
-				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity/* && Modconfig.MoltenHammer_PVP*/))
-				{
+				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
 					entity1.setSecondsOnFire(2 * fire_aspect);
 					entity1.hurt(DamageSource.mobAttack(playerIn) , 8.0F + (float)sharpness
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
 					
-					if(knockback > 0)
+					if (knockback > 0)
 						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
 					
-		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD)))
-		            {
+		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
 		                int i = 20 + worldIn.random.nextInt(10 * bane_of_arthropods);
 		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
 		            }
 		            
-		            if(poisonous > 0)
+		            if (poisonous > 0)
 		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, poisonous - 1));
 		            
-		            if(corrosive > 0)
+		            if (corrosive > 0)
 		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, corrosive - 1));
 				}
 			}
@@ -290,26 +296,24 @@ public class FURWeaponItem extends SwordItem {
 
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
 			for(Entity entity1 : list) {
-				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity/* && Modconfig.MoltenHammer_PVP*/))
-				{
+				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
 					entity1.setSecondsOnFire(2 * fire_aspect);
 					entity1.hurt(DamageSource.mobAttack(playerIn) , 10.0F + (float)sharpness
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
 							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
 					
-					if(knockback > 0)
+					if (knockback > 0)
 						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
 					
-		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD)))
-		            {
+		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
 		                int i = 20 + worldIn.random.nextInt(10 * bane_of_arthropods);
 		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
 		            }
 		            
-		            if(poisonous > 0)
+		            if (poisonous > 0)
 		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, poisonous - 1));
 		            
-		            if(corrosive > 0)
+		            if (corrosive > 0)
 		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, corrosive - 1));
 				}
 			}
@@ -340,7 +344,7 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 CompoundNBT CompoundNBT = new CompoundNBT();
@@ -372,8 +376,7 @@ public class FURWeaponItem extends SwordItem {
     }
 	
 	@Override
-	public boolean isValidRepairItem(ItemStack par1ItemStack, ItemStack par2ItemStack)
-	{
+	public boolean isValidRepairItem(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem().equals(this.repair_material);
 	}
 	
@@ -390,7 +393,7 @@ public class FURWeaponItem extends SwordItem {
 		} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW)) {
 			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc0").withStyle(TextFormatting.YELLOW));
 			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc1").withStyle(TextFormatting.YELLOW));
-		} else if(this.Tooltip != null)
+		} else if (this.Tooltip != null)
 			tooltip.add(new TranslationTextComponent(this.Tooltip).withStyle(TextFormatting.YELLOW));
 	}
 	
