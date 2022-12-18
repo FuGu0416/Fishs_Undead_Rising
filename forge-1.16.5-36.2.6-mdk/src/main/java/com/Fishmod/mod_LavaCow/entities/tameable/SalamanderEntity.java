@@ -320,7 +320,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
                 this.heal(1.0F);
             }
     		
-    		if (this.isVehicle() && this.getControllingPassenger() instanceof LivingEntity && this.tickCount % 20 == 0) {
+    		if (this.isVehicle() && this.getControllingPassenger() instanceof LivingEntity && this.tickCount % 40 == 0) {
     			if (!((LivingEntity) this.getControllingPassenger()).hasEffect(Effects.FIRE_RESISTANCE)) {
     				((LivingEntity) this.getControllingPassenger()).addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 3 * 20, 0));
     			}

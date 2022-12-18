@@ -220,7 +220,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        	this.setRot(this.getVehicle().yRot, 0F);
 	        	
 	        	if(FURConfig.Raven_Slowfall.get() && !this.getVehicle().isOnGround() && this.getVehicle().getDeltaMovement().y < 0.0D && 
-	        			!this.getVehicle().isNoGravity() && !((PlayerEntity)this.getVehicle()).isFallFlying()) {
+	        			!this.getVehicle().isNoGravity() && !((PlayerEntity)this.getVehicle()).isFallFlying() && this.tickCount % 40 == 0) {
 	        		((LivingEntity) this.getVehicle()).addEffect(new EffectInstance(Effects.SLOW_FALLING, 3 * 20, 0));
 	        	}
 	        	

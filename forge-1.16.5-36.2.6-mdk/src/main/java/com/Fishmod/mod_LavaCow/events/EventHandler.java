@@ -523,11 +523,16 @@ public class EventHandler {
 				have_DreamCatcher = baubles.api.BaublesApi.getBaublesHandler(player).getItem(i);
 		}*/
 		
-		for(int i = 0; i < 9 ; i++)
-			if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER))
-				have_DreamCatcher = player.inventory.getItem(i);
+		if (!event.wakeImmediately()) {
+			for(int i = 0; i < 9 ; i++) {
+				if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER)) {
+					have_DreamCatcher = player.inventory.getItem(i);
+					break;
+				}
+			}
+		}
 		
-		if(!world.isClientSide() && have_DreamCatcher != null) {
+		if (!world.isClientSide() && have_DreamCatcher != null && !event.wakeImmediately()) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
 
 			Entity LivingEntity = Result.type.create(world);
@@ -535,7 +540,7 @@ public class EventHandler {
 			int max  = Result.maxCount;
 			boolean has_spawn = false;
 			
-			if(LivingEntity instanceof MobEntity) {
+			if (LivingEntity instanceof MobEntity) {
 				for(int i = 0; i < new Random().nextInt(MathHelper.abs(max-min) + 1) + min; i++) {
 					Entity LivingEntity_to_spawn = Result.type.create(world);
 					double k1 = player.getX() + (world.random.nextDouble() * 32.0D) - 16.0D;
@@ -552,10 +557,10 @@ public class EventHandler {
 					}
 				}
 				
-				if(has_spawn) {
+				if (has_spawn) {
 					world.playSound((PlayerEntity)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
 					
-					if(!player.isCreative())
+					if (!player.isCreative())
 						have_DreamCatcher.hurtAndBreak(20, event.getEntityLiving(), (p_220045_0_) -> {
 			    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 			    		});
@@ -570,27 +575,27 @@ public class EventHandler {
 	    int Armor_Famine_lvl = 0;
 	    int Armor_Swine_lvl = 0;
 	    
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+		for (ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
 			}
 		}
 		
-    	if((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || (Armor_Famine_lvl >= 4)) && event.getItem().isEdible()) {
+    	if ((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || (Armor_Famine_lvl >= 4)) && event.getItem().isEdible()) {
     		event.setCanceled(true);
     	}
     	
-    	if(event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED)  && event.getItem().getItem() instanceof PotionItem) {
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED)  && event.getItem().getItem() instanceof PotionItem) {
     		event.setCanceled(true);
     	}
     			
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof SwineArmorItem) {
+		for (ItemStack S : event.getEntityLiving().getArmorSlots()) {
+			if (S.getItem() instanceof SwineArmorItem) {
 				Armor_Swine_lvl++;
 			}
 		}
     	
-    	if((Armor_Swine_lvl >= 2) && event.getItem().getItem().isEdible()) {
+    	if ((Armor_Swine_lvl >= 2) && event.getItem().getItem().isEdible()) {
     		event.setDuration((int) (event.getDuration() * 0.75F));
     	}
     }
@@ -599,13 +604,13 @@ public class EventHandler {
     public void onActiveItemUseFinish(LivingEntityUseItemEvent.Finish event) {
 	    int Armor_Swine_lvl = 0;
 		
-		for(ItemStack S : event.getEntityLiving().getArmorSlots()) {
+		for (ItemStack S : event.getEntityLiving().getArmorSlots()) {
 			if(S.getItem() instanceof SwineArmorItem) {
 				Armor_Swine_lvl++;
 			}
 		}
     	
-    	if(!event.getEntityLiving().level.isClientSide() && (Armor_Swine_lvl >= 4) && event.getItem().isEdible()) {
+    	if (!event.getEntityLiving().level.isClientSide() && (Armor_Swine_lvl >= 4) && event.getItem().isEdible()) {
     		event.getEntityLiving().curePotionEffects(new ItemStack(Items.MILK_BUCKET));
     	}
     }
