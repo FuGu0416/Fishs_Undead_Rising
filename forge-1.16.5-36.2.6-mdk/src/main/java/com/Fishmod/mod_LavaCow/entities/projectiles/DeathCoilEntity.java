@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -11,19 +12,21 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class DeathCoilEntity extends DamagingProjectileEntity {
-	
-	private float damage = 6.0F;
+public class DeathCoilEntity extends DamagingProjectileEntity {	
+	private float damage = 4.0F;
+	protected int knockbackStrength;
 	
     public DeathCoilEntity(EntityType<? extends DeathCoilEntity> p_i50147_1_, World worldIn) {
         super(p_i50147_1_, worldIn);
@@ -52,19 +55,35 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
     	super.onHitEntity(result);
-	    if (!this.level.isClientSide() && result.getEntity() != null && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {   
-	    	if(this.getOwner() instanceof PlayerEntity) {
-	    		this.setDamage(4.0F);
-	    	} else {
-	    		this.setDamage((float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
+    	Entity shooter = this.getOwner();
+    	Entity target = result.getEntity();
+    	
+	    if (!this.level.isClientSide() && target != null && shooter != null && target instanceof LivingEntity && target != shooter) {   
+	    	if(!(shooter instanceof PlayerEntity)) {
+	    		this.setDamage((float)((LivingEntity) shooter).getAttributeValue(Attributes.ATTACK_DAMAGE));
 	    	}	    	    	
 	    	
-	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {	    		
+	    	if (target.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)shooter).setProjectile(), this.getDamage())) {	    		
 	    		float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(Effects.WITHER, 10 * 20 * (int)local_difficulty, 1));
-		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 10 * 20 * (int)local_difficulty, 2));	    		
-	    	}
+		    	((LivingEntity)target).addEffect(new EffectInstance(Effects.WITHER, 10 * 20 * (int)local_difficulty, 1));
+		    	((LivingEntity)target).addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 10 * 20 * (int)local_difficulty, 2));	 
 
+	    		if (this.isOnFire()) {
+	    			target.setSecondsOnFire(5);
+	    		}
+    			
+                if (this.knockbackStrength > 0) {
+                    Vector3d vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
+                    if (vector3d.lengthSqr() > 0.0D) {
+                    	target.push(vector3d.x, 0.1D, vector3d.z);
+                    }
+                }
+                
+	            if (shooter instanceof LivingEntity) {
+	                this.doEnchantDamageEffects((LivingEntity)shooter, target);
+	            }
+	    	}
+	    	
 	    	this.remove();
 	    }
     }
@@ -94,10 +113,17 @@ public class DeathCoilEntity extends DamagingProjectileEntity {
     public float getDamage() {
 	    return this.damage;
     }	   
+    
+	/**
+	 * Sets the amount of knockback the arrow applies when it hits a mob.
+	 */
+	public void setKnockbackStrength(int knockbackStrengthIn) {
+		this.knockbackStrength = knockbackStrengthIn;
+	}
 
     @Override
     protected IParticleData getTrailParticle() {
-        return FURParticleRegistry.WITHER_FLAME;
+        return this.isOnFire() ? ParticleTypes.FLAME : FURParticleRegistry.WITHER_FLAME;
 	}
     
     @Override

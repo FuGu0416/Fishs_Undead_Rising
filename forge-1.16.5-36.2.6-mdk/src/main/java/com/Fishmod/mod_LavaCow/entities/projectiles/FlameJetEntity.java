@@ -51,12 +51,13 @@ public class FlameJetEntity extends ProjectileItemEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
     	super.onHitEntity(result);
-	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {	    	
+	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity && result.getEntity() != this.getOwner()) {	    	
 	    	this.setDamage( (float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
 	    	
 	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {
 	    		float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-	    		result.getEntity().setRemainingFireTicks(2 * 20 * (int)local_difficulty);
+	    		result.getEntity().setRemainingFireTicks(2 * 20 * (int)local_difficulty);	    		
+	            this.doEnchantDamageEffects((LivingEntity)this.getOwner(), result.getEntity());
 	    	}
 	    	
 	    	this.remove();

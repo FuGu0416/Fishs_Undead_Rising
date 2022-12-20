@@ -104,22 +104,23 @@ public class FURRangedItem extends BowItem {
 
         if (!worldIn.isClientSide) {
 			Vector3d lookVec = playerIn.getLookAngle();
+			int power_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+			int punch_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+			int flame_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack);
 			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN)) {
 	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(playerIn.level, playerIn);
 	        	abstractarrowentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 2.0F, 2.0F);                       
 	        	playerIn.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
-	        	
-	        	int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
-                if (j > 0) {
-                   abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)j * 0.1D + 0.1D);
+	        	        	
+                if (power_lvl > 0) {
+                   abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
+                }
+           
+                if (punch_lvl > 0) {
+                   abstractarrowentity.setKnockback(punch_lvl);
                 }
 
-                int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
-                if (k > 0) {
-                   abstractarrowentity.setKnockback(k);
-                }
-
-                if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
+                if (flame_lvl > 0) {
                    abstractarrowentity.setSecondsOnFire(100);
                 }
                 
@@ -141,12 +142,25 @@ public class FURRangedItem extends BowItem {
         		entitysnowball.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()),playerIn.getZ() + lookVec.z * 1.0D);
 	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.75F, 1.0F);
 	            entitysnowball.setOwner(playerIn);
+	            
+				if (power_lvl > 0) {
+					((DeathCoilEntity) entitysnowball).setDamage(((DeathCoilEntity) entitysnowball).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+				}
+				  
+				if (punch_lvl > 0) {
+					((DeathCoilEntity) entitysnowball).setKnockbackStrength(punch_lvl);
+				}
+				  
+				if (flame_lvl > 0) {
+					((DeathCoilEntity) entitysnowball).setSecondsOnFire(100);
+				}
+				
 	            worldIn.addFreshEntity(entitysnowball);
 	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
-				playerIn.getCooldowns().addCooldown(this, 40);
+				playerIn.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));
         	} else {			 
 				Entity entityammo = this.shot.create(worldIn);
 				((AbstractFireballEntity)entityammo).setOwner(playerIn);
@@ -160,17 +174,15 @@ public class FURRangedItem extends BowItem {
 					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) - 0.5D, playerIn.getZ() + lookVec.z * 1.0D);
 				}
 				 
-				int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
-				if (j > 0) {
-					((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (j + 1) * 0.25F));
+				if (power_lvl > 0) {
+					((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
 				}
 				  
-				int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
-				if (k > 0) {
-					((EnchantableFireBallEntity) entityammo).setKnockbackStrength(k);
+				if (punch_lvl > 0) {
+					((EnchantableFireBallEntity) entityammo).setKnockbackStrength(punch_lvl);
 				}
 				  
-				if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) {
+				if (flame_lvl > 0) {
 					((EnchantableFireBallEntity) entityammo).setFlame(true);
 				}
 				 				 
@@ -185,7 +197,7 @@ public class FURRangedItem extends BowItem {
 						playerIn.inventory.removeItem(itemstack);
 					}
 				}
-				playerIn.getCooldowns().addCooldown(this, 20 - (j * 2));
+				playerIn.getCooldowns().addCooldown(this, 20 - (power_lvl * 2));
 			}
 			
 			return ActionResult.consume(playerIn.getItemInHand(handIn));

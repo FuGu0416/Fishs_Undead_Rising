@@ -50,13 +50,14 @@ public class AcidJetEntity extends ProjectileItemEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
     	super.onHitEntity(result);
-	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {    	
+	    if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity && result.getEntity() != this.getOwner()) {    	
 	    	this.setDamage( (float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
 	    	
 	    	if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {
 	    		float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();	    		
 		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(Effects.POISON, 2 * 20 * (int)local_difficulty, 0));
-		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 2 * 20 * (int)local_difficulty, 3));	    		
+		    	((LivingEntity)result.getEntity()).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 2 * 20 * (int)local_difficulty, 3));			 
+	            this.doEnchantDamageEffects((LivingEntity)this.getOwner(), result.getEntity());
 	    	}
 	    	
 	    	this.remove();

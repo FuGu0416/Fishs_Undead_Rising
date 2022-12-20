@@ -68,7 +68,9 @@ public class PiranhaLauncherEntity extends EnchantableFireBallEntity {
 		                }   
 		            	
 		            	if(this.isOnFire())
-		            		entity.setSecondsOnFire(5 + flame);	            		
+		            		entity.setSecondsOnFire(5 + flame);	     
+		            	
+			            this.doEnchantDamageEffects((LivingEntity)this.getOwner(), entity);
 	            	}
 	            }	            
 			}
