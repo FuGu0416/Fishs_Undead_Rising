@@ -522,8 +522,10 @@ public class EventHandler {
 			if(i != -1)
 				have_DreamCatcher = baubles.api.BaublesApi.getBaublesHandler(player).getItem(i);
 		}*/
+		System.out.println("OAO1 " + event.wakeImmediately());
+		System.out.println("OAO2 " + event.updateWorld());
 		
-		if (!event.wakeImmediately()) {
+		if (!event.updateWorld()) {
 			for(int i = 0; i < 9 ; i++) {
 				if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER)) {
 					have_DreamCatcher = player.inventory.getItem(i);
@@ -532,7 +534,7 @@ public class EventHandler {
 			}
 		}
 		
-		if (!world.isClientSide() && have_DreamCatcher != null && !event.wakeImmediately()) {
+		if (!world.isClientSide() && have_DreamCatcher != null && !event.updateWorld()) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
 
 			Entity LivingEntity = Result.type.create(world);
@@ -546,15 +548,12 @@ public class EventHandler {
 					double k1 = player.getX() + (world.random.nextDouble() * 32.0D) - 16.0D;
 					double l1 = player.getY() + (world.random.nextDouble() * 4.0D) - 2.0D;
 					double i2 = player.getZ() + (world.random.nextDouble() * 32.0D) - 16.0D;
-					BlockPos pos = new BlockPos(k1, l1, i2);
+					BlockPos pos = SpawnUtil.getHeight(world, new BlockPos(k1, l1, i2));
 					
-					LivingEntity_to_spawn.moveTo(k1, l1, i2, 0.0F, 0.0F);
+					LivingEntity_to_spawn.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 					((MobEntity) LivingEntity_to_spawn).finalizeSpawn(LivingEntity_to_spawn.getServer().overworld(), world.getCurrentDifficultyAt(pos), SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, (CompoundNBT)null);
-					
-					if(world.getBlockState(pos).isValidSpawn(world, pos, Result.type)) {
-						world.addFreshEntity(LivingEntity_to_spawn);
-						has_spawn = true;
-					}
+					world.addFreshEntity(LivingEntity_to_spawn);
+					has_spawn = true;
 				}
 				
 				if (has_spawn) {

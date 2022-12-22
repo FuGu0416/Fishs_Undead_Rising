@@ -60,6 +60,22 @@ public class SpawnUtil {
 
     	return pos;
     }
+
+    public static BlockPos getHeight(World worldIn, BlockPos posIn) {
+    	BlockPos pos = worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, posIn);
+    	
+    	if (worldIn.dimensionType().hasCeiling()) {
+    		do {
+    			pos = pos.below();
+    		} while (!worldIn.getBlockState(pos).getMaterial().equals(Material.AIR));
+
+    		do {
+    			pos = pos.below();
+            } while (worldIn.getBlockState(pos).getMaterial().equals(Material.AIR) && pos.getY() > 0);
+    	}
+
+    	return pos;
+    }
     
     /*public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
     	if(worldIn.getChunkProvider() instanceof ChunkProviderServer)
