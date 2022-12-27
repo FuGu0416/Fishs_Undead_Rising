@@ -146,6 +146,20 @@
 	                }
 	            ],
 	            "weight": 1
+	        },
+	        {
+	          "type": "item",
+	          "name": "mod_lavacow:ancient_amber",
+	          "weight": 8,
+	          "functions": [
+				{
+	              "function": "minecraft:set_count",
+	              "count": {
+	                "min": 2,
+	                "max": 4
+	              }
+	            }
+	          ]
 	        }
 	      ]
     },

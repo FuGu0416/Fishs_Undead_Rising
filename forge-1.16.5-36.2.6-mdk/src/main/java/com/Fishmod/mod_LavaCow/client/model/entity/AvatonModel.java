@@ -181,7 +181,6 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
     		this.Head.setPos(0.0F, -4.0F, 2.0F);
     		this.Head_Looking(this.Head, 0.5672F, 0.0F, netHeadYaw, headPitch);
     		SwingX_Sin(this.Hair_front, -2.8323F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
-    		this.Body_base.xRot = 0.0F;
     	}
     		
     	SwingX_Sin(this.Body_lower_front, -0.5369F, ageInTicks, 0.3F, 0.08F, true, 0.0F);

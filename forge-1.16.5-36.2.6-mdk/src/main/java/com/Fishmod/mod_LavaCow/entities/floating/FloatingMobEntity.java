@@ -311,13 +311,12 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             super(Banshee);
         }
 
-        public void tick() {
+        public void tick() {            
             if (this.operation == MovementController.Action.MOVE_TO) {
                 Vector3d vector3d = new Vector3d(this.wantedX - FloatingMobEntity.this.getX(), this.wantedY - FloatingMobEntity.this.getY(), this.wantedZ - FloatingMobEntity.this.getZ());
                 double d0 = vector3d.length();
                 if (d0 < FloatingMobEntity.this.getBoundingBox().getSize()) {
                    this.operation = MovementController.Action.WAIT;
-                   FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                    FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                    if (FloatingMobEntity.this.getTarget() == null) {
