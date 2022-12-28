@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        " Y ",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:ancient_amber"
+        },
+        "X": {
+			"tag": "forge:rods/wooden"
+        },
+        "D": {
+        	"item": "minecraft:dead_bush"
+        },
+        "Y": {
+        	"item": "mod_lavacow:sludge_wand"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:scarab_scepter"
+    }
+}

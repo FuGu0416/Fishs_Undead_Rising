@@ -6,7 +6,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "weight": 1,
+                    "weight": 3,
                     "name": "minecraft:stick",
                     "functions": [
                         {
@@ -27,7 +27,7 @@
                 },
                 {
                     "type": "item",
-                    "weight": 1,
+                    "weight": 3,
                     "name": "minecraft:wheat",
                     "functions": [
                         {
@@ -48,8 +48,29 @@
                 },
                 {
                     "type": "item",
-                    "weight": 1,
+                    "weight": 3,
                     "name": "mod_lavacow:cursed_fabric",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "mod_lavacow:diseased_wheat",
                     "functions": [
                         {
                             "function": "set_count",
