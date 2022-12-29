@@ -28,7 +28,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -87,7 +86,6 @@ public class ScarecrowEntity extends FURTameableEntity {
         this.look = new LookRandomlyGoal(this);
     	
     	super.registerGoals();
-    	this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new ScarecrowEntity.AttackGoal(this));
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
@@ -371,6 +372,35 @@ public class FURWeaponItem extends SwordItem {
 			
         	return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
+        
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SCARAB_SCEPTER && worldIn instanceof ServerWorld) {       
+        	Vector3d lookVec = playerIn.getLookAngle();
+        	
+            for (int i = 0; i < 4; ++i) {
+                BlockPos blockpos = playerIn.blockPosition().offset(lookVec.x * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D), 0, lookVec.z * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D));
+                CompoundNBT CompoundNBT = new CompoundNBT();
+                ScarabEntity entity = (ScarabEntity)FUREntityRegistry.SCARAB.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
+            	CompoundNBT.putInt("fire_aspect", fire_aspect);
+            	CompoundNBT.putInt("sharpness", sharpness);
+            	CompoundNBT.putInt("knockback", knockback);
+            	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
+            	CompoundNBT.putInt("smite", smite);
+            	CompoundNBT.putInt("unbreaking", unbreaking);
+            	CompoundNBT.putInt("lifesteal", lifesteal);
+            	CompoundNBT.putInt("poisonous", poisonous);
+            	CompoundNBT.putInt("corrosive", corrosive);
+            	entity.readAdditionalSaveData(CompoundNBT);
+            	entity.tame(playerIn);
+                entity.setLimitedLife(FURConfig.Unburied_Lifespan.get() * 20);
+            }
+			
+            playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    		});
+			playerIn.getCooldowns().addCooldown(this, 20/*FURConfig.SludgeWand_Cooldown.get() * 20*/);
+            
+			return ActionResult.pass(playerIn.getItemInHand(handIn));
+        }
 
     	return super.use(worldIn, playerIn, handIn);
     }
