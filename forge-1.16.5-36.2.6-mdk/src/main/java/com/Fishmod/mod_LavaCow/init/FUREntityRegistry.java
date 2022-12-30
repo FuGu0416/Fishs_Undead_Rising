@@ -165,7 +165,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(CACTYRANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactyrantEntity::checkCactyrantSpawnRules);
         EntitySpawnPlacementRegistry.register(CACTOID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules);
         EntitySpawnPlacementRegistry.register(WARPEDFIREFLY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(SEAHAG, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
+        EntitySpawnPlacementRegistry.register(SEAHAG, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SeaHagEntity::checkSeaHagSpawnRules);
         EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WispEntity::checkWispSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBERGHOST, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
