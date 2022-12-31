@@ -230,18 +230,18 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
 	    	this.setRotateAngle(leg_l_1, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
 	    	this.setRotateAngle(leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
 	    	
-	        this.leg_r_0.zRot = (-(float)Math.PI / 4F);
-	        this.leg_l_0.zRot = ((float)Math.PI / 4F);
+	        this.leg_r_0.zRot = -0.78539816F;
+	        this.leg_l_0.zRot = 0.78539816F;
 	        this.leg_r_1.zRot = -0.58119464F;
 	        this.leg_l_1.zRot = 0.58119464F;
 	        this.leg_r_2.zRot = -0.58119464F;
 	        this.leg_l_2.zRot = 0.58119464F;
-	        this.leg_r_0.yRot = ((float)Math.PI / 4F);
-	        this.leg_l_0.yRot = (-(float)Math.PI / 4F);
-	        this.leg_r_1.yRot = ((float)Math.PI / 8F);
-	        this.leg_l_1.yRot = (-(float)Math.PI / 8F);
-	        this.leg_r_2.yRot = (-(float)Math.PI / 8F);
-	        this.leg_l_2.yRot = ((float)Math.PI / 8F);
+	        this.leg_r_0.yRot = -0.78539816F;
+	        this.leg_l_0.yRot = 0.78539816F;
+	        this.leg_r_1.yRot = -0.39269908F;
+	        this.leg_l_1.yRot = 0.39269908F;
+	        this.leg_r_2.yRot = 0.39269908F;
+	        this.leg_l_2.yRot = -0.39269908F;
 	        float f3 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
 	        float f4 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * limbSwingAmount;
 	        float f5 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;

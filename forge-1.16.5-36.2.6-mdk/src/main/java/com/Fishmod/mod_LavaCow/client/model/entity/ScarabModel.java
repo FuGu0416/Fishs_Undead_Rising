@@ -3,12 +3,14 @@ package com.Fishmod.mod_LavaCow.client.model.entity;
 // Exported for Minecraft version 1.15 - 1.16 with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,7 +37,7 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 		texHeight = 32;
 
 		base = new ModelRenderer(this);
-		base.setPos(0.0F, 23.0F, 5.0F);
+		base.setPos(0.0F, 23.0F, 3.0F);
 		base.texOffs(0, 0).addBox(-2.5F, -3.5F, -4.0F, 5.0F, 3.0F, 6.0F, 0.0F, false);
 
 		Head = new ModelRenderer(this);
@@ -124,7 +126,77 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+		float f = ageInTicks * 2.1F;
+		float i = (float)((IAggressive) entity).getAttackTimer() / 10.0F;
+		
+		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+		
+		if (i > 0.0F) {
+			this.Jaw_r.yRot = GradientAnimation(-0.7F, 0.6F, i);
+			this.Jaw_l.yRot = GradientAnimation(0.7F, -0.6F, i);
+		} else if (entity.isAggressive()) {
+			this.Jaw_r.yRot = -0.2618F;
+			this.Jaw_l.yRot = 0.2618F;
+		} else {
+			this.Jaw_r.yRot = 0.0436F;
+			this.Jaw_l.yRot = -0.0436F;			
+		}
+		
+        if (entity.isOnGround()) {
+            this.leg0_l.zRot = -0.7854F;
+            this.leg0_r.zRot = 0.7854F;
+            this.leg1_l.zRot = -0.5812F;
+            this.leg1_r.zRot = 0.5812F;
+            this.leg2_l.zRot = -0.5812F;
+            this.leg2_r.zRot = 0.5812F;
+            this.leg0_l.yRot = -0.7854F;
+            this.leg0_r.yRot = 0.7854F;
+            this.leg1_l.yRot = -0.3927F;
+            this.leg1_r.yRot = 0.3927F;
+            this.leg2_l.yRot = 0.3927F;
+            this.leg2_r.yRot = -0.3927F;
+            float f3 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
+            float f4 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * limbSwingAmount;
+            float f5 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+            float f7 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
+            float f8 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float)Math.PI) * 0.4F) * limbSwingAmount;
+            float f9 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+            this.leg0_l.yRot += f3;
+            this.leg0_r.yRot += -f3;
+            this.leg1_l.yRot += f4;
+            this.leg1_r.yRot += -f4;
+            this.leg2_l.yRot += f5;
+            this.leg2_r.yRot += -f5;
+            this.leg0_l.zRot += f7;
+            this.leg0_r.zRot += -f7;
+            this.leg1_l.zRot += f8;
+            this.leg1_r.zRot += -f8;
+            this.leg2_l.zRot += f9;
+            this.leg2_r.zRot += -f9;	
+            
+    		this.setRotateAngle(elytra_r, 0.0856F, 0.0F, 0.0275F);
+    		this.setRotateAngle(elytra_l, 0.0856F, 0.0F, -0.0275F);
+    		
+			this.wing_r.zRot = 0.0F;
+			this.wing_r.visible = false;
+			this.wing_l.zRot = -this.wing_r.zRot;
+			this.wing_l.visible = false;
+        } else {
+    		this.setRotateAngle(this.leg0_r, 0.0F, 0.7854F, 0.7854F);
+    		this.setRotateAngle(this.leg1_r, 0.0F, 0.3927F, 0.5812F);
+    		this.setRotateAngle(this.leg2_r, 0.0F, -0.3927F, 0.5812F);
+    		this.setRotateAngle(this.leg0_l, 0.0F, -0.7854F, -0.7854F);
+    		this.setRotateAngle(this.leg1_l, 0.0F, -0.3927F, -0.5812F);
+    		this.setRotateAngle(this.leg2_l, 0.0F, 0.3927F, -0.5812F);      
+    		
+    		this.setRotateAngle(elytra_r, 1.0996F, -0.4803F, -0.1511F);
+    		this.setRotateAngle(elytra_l, 1.0996F, 0.4803F, 0.1511F);
+    		
+			this.wing_r.zRot = MathHelper.cos(f) * (float)Math.PI * 0.1F;
+			this.wing_r.visible = true;
+			this.wing_l.zRot = -this.wing_r.zRot;
+			this.wing_l.visible = true;
+        }
 	}
 
 	@Override

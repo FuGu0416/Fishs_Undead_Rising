@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
@@ -53,8 +54,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ScarabEntity extends FURTameableEntity {
+public class ScarabEntity extends FURTameableEntity implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(ScarabEntity.class, DataSerializers.INT);
+	private int attackTimer = 10;
 	private int limitedLifeTicks;
 	private int fire_aspect;
 	private int sharpness;
@@ -100,7 +102,7 @@ public class ScarabEntity extends FURTameableEntity {
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.25D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.263D)
         		.add(Attributes.MAX_HEALTH, FURConfig.LilSludge_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.LilSludge_Attack.get());
     }
@@ -160,19 +162,30 @@ public class ScarabEntity extends FURTameableEntity {
 	            world.addParticle(enumparticletypes, d0, this.getBoundingBox().minY + (double)f1, d1, 0.0D, 0.05D, 0.0D);
 	        }
         }
-           	
-    	if (!FURConfig.SunScreen_Mode.get() && !(this.getOwner() instanceof PlayerEntity) && this.isSunBurnTick()) {
-    		this.setSecondsOnFire(8);
-        }
     	
     	super.aiStep();
     }
+    
+    /**
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
+     */
+	@Override
+    public void tick() {
+		super.tick();
+		
+    	if (this.attackTimer > 0)
+    		this.attackTimer--;
+	}
 
 	@Override
     public boolean doHurtTarget(Entity entityIn) {
         boolean flag = super.doHurtTarget(entityIn);
 
         if (flag) {
+        	this.attackTimer = 10;
+        	this.level.broadcastEntityEvent(this, (byte)40);
+        	
             if(entityIn instanceof LivingEntity) {
 	            if(this.fire_aspect > 0)
 	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
@@ -220,15 +233,27 @@ public class ScarabEntity extends FURTameableEntity {
     
 	@Override
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
-        return 0.6F;
+        return p_213348_2_.height * 0.6F;
     }
+	
+	@Override
+	public int getAttackTimer() {
+		return this.attackTimer;
+	}
+
+	@Override
+	public void setAttackTimer(int i) {		
+		this.attackTimer = i;
+	}
 	
     /**
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 11) {
+		if (id == 40) {
+            this.attackTimer = 10;
+        } else if (id == 11) {
             this.isSmoking = true;
         } else {
             super.handleEntityEvent(id);
@@ -323,7 +348,7 @@ public class ScarabEntity extends FURTameableEntity {
      */
     @Override
     public CreatureAttribute getMobType() {
-        return CreatureAttribute.UNDEAD;
+        return CreatureAttribute.ARTHROPOD;
     }
     
     @Override
