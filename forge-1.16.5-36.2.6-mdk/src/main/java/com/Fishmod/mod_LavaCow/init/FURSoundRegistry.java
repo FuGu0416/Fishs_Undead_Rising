@@ -127,6 +127,10 @@ public class FURSoundRegistry {
 	public static final SoundEvent WRAITH_AMBIENT = addSoundEvent("wraith_ambient");
 	public static final SoundEvent WRAITH_DEATH = addSoundEvent("wraith_death");
 	
+	public static final SoundEvent SCARAB_AMBIENT = addSoundEvent("scarab_ambient");
+	public static final SoundEvent SCARAB_HURT = addSoundEvent("scarab_hurt");
+	public static final SoundEvent SCARAB_DEATH = addSoundEvent("scarab_death");
+	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);
         return new SoundEvent(sound_ID).setRegistryName(sound_ID);

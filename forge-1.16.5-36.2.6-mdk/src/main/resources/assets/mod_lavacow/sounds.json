@@ -619,5 +619,26 @@
 		"category": "hostile",
 		"subtitle": "entity_wraith_death",
 		"sounds": [{"name": "mod_lavacow:entity/wraith/death","stream": true}]
+	},
+	
+	"scarab_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_ambient",
+		"sounds": ["mod_lavacow:entity/scarab/ambient0", "mod_lavacow:entity/scarab/ambient1", "mod_lavacow:entity/scarab/ambient2"]
+	},
+	
+	"scarab_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_hurt",
+		"sounds": ["mod_lavacow:entity/scarab/hurt"]
+	},
+	
+	"scarab_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_death",
+		"sounds": [{"name": "mod_lavacow:entity/scarab/death","stream": true}]
 	}
 }

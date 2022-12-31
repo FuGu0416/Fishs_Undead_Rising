@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renderer.entity;
 
+import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
 import com.Fishmod.mod_LavaCow.client.model.entity.ScarabModel;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -9,13 +10,16 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class ScarabRenderer extends MobRenderer<ScarabEntity, ScarabModel<ScarabEntity>> {	
-	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/scarab.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/scarab/scarab_glow.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/scarab/scarab.png");
+	
 	static{
         System.out.println(TEXTURES.getPath());
     }
 
     public ScarabRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn, new ScarabModel<ScarabEntity>(), 0.5F);
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
     
     @Override

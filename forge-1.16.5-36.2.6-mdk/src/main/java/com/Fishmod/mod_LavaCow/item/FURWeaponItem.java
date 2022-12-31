@@ -391,7 +391,7 @@ public class FURWeaponItem extends SwordItem {
             	CompoundNBT.putInt("corrosive", corrosive);
             	entity.readAdditionalSaveData(CompoundNBT);
             	entity.tame(playerIn);
-                entity.setLimitedLife(FURConfig.Unburied_Lifespan.get() * 20);
+                entity.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
             }
 			
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {

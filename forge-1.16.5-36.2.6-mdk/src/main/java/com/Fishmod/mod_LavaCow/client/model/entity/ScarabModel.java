@@ -132,14 +132,14 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
 		
 		if (i > 0.0F) {
-			this.Jaw_r.yRot = GradientAnimation(-0.7F, 0.6F, i);
-			this.Jaw_l.yRot = GradientAnimation(0.7F, -0.6F, i);
+			this.Jaw_r.yRot = GradientAnimation_s(-0.7F, 0.6F, i);
+			this.Jaw_l.yRot = GradientAnimation_s(0.7F, -0.6F, i);
 		} else if (entity.isAggressive()) {
 			this.Jaw_r.yRot = -0.2618F;
 			this.Jaw_l.yRot = 0.2618F;
-		} else {
-			this.Jaw_r.yRot = 0.0436F;
-			this.Jaw_l.yRot = -0.0436F;			
+		} else {	
+	    	this.SwingY_Sin(this.Jaw_r, 0.0436F, ageInTicks, 0.0125F, 0.2F, false, 0.0F);
+	    	this.SwingY_Sin(this.Jaw_l, -0.0436F, ageInTicks, 0.0125F, 0.2F, true, 0.0F);
 		}
 		
         if (entity.isOnGround()) {

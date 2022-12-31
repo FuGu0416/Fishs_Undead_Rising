@@ -103,8 +103,8 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.263D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.LilSludge_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.LilSludge_Attack.get());
+        		.add(Attributes.MAX_HEALTH, FURConfig.Scarab_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Scarab_Attack.get());
     }
     
     public void setLimitedLife(int limitedLifeTicksIn) {
@@ -141,11 +141,11 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     @Override
     public void aiStep() {
     	if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
-            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
+            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
             }
         	this.level.broadcastEntityEvent(this, (byte)11);
-            this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(this.getDeathSound(), this.getSoundVolume() * 0.2F, this.getVoicePitch());
             this.remove();
         }
     	
@@ -224,8 +224,8 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.LilSludge_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarab_Attack.get());
     	this.setHealth(this.getMaxHealth());
         
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
@@ -235,6 +235,14 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
         return p_213348_2_.height * 0.6F;
     }
+	
+	/**
+	* Called when the entity is attacked.
+	*/
+    @Override
+	public boolean hurt(DamageSource source, float amount) {      
+    	return source == DamageSource.FALL ? false : super.hurt(source, amount);
+	}
 	
 	@Override
 	public int getAttackTimer() {
@@ -286,17 +294,17 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.LILSLUDGE_AMBIENT;
+        return FURSoundRegistry.SCARAB_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return FURSoundRegistry.SLUDGELORD_HURT;
+        return FURSoundRegistry.SCARAB_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.LILSLUDGE_DEATH;
+        return FURSoundRegistry.SCARAB_DEATH;
     }
 
 	@Override
@@ -353,6 +361,6 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     public boolean shouldDropLoot() {
-    	return this.isTame() || !(this.getOwner() instanceof PlayerEntity);
+    	return !this.isTame() || (this.isTame() && !(this.getOwner() instanceof PlayerEntity));
     }
 }

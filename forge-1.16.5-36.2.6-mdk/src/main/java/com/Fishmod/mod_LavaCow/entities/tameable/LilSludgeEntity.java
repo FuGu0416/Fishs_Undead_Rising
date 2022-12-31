@@ -139,7 +139,7 @@ public class LilSludgeEntity extends FURTameableEntity {
     @Override
     public void aiStep() {
     	if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
-            if (!this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
+            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
             }
         	this.level.broadcastEntityEvent(this, (byte)11);
@@ -328,6 +328,6 @@ public class LilSludgeEntity extends FURTameableEntity {
     
     @Override
     public boolean shouldDropLoot() {
-    	return this.isTame() || !(this.getOwner() instanceof PlayerEntity);
+    	return !this.isTame() || (this.isTame() && !(this.getOwner() instanceof PlayerEntity));
     }
 }

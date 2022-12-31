@@ -185,6 +185,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GhostSwarmer;
 	public static final ForgeConfigSpec.ConfigValue<Double> GhostSwarmer_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> GhostSwarmer_Attack;
+
+	public static final ForgeConfigSpec.ConfigValue<Double> Scarab_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Scarab_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Scarab_Lifespan;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -229,6 +233,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_IllagerNose;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege; 
 	
 	static {
 		BUILDER.push("Glowshroom");
@@ -521,6 +526,12 @@ public final class FURConfig {
 		GhostSwarmer_Health = BUILDER.comment("Maximum Ghost Swarmer health [1-1000]").defineInRange("ghost swarmer health", 8.0D, 1.0D, 1000.0D);
 		GhostSwarmer_Attack = BUILDER.comment("Ghost Swarmer strength [1-1000]").defineInRange("ghost swarmer attack", 1.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
+
+		BUILDER.push("Amber Scarab");
+		Scarab_Lifespan = BUILDER.comment("Amber Scarab lifespan [1-10000]").defineInRange("amber scarab lifespan", 60, 0, 10000);
+		Scarab_Health = BUILDER.comment("Maximum Amber Scarab health [1-1000]").defineInRange("amber scarab health", 8.0D, 1.0D, 1000.0D);
+		Scarab_Attack = BUILDER.comment("Amber Scarab strength [1-1000]").defineInRange("amber scarab attack", 1.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
 		
 		BUILDER.push("Item");
 		MoltenHammer_PVP = BUILDER.comment("Allow Molten Hammer active effect to hit players [false/true]").define("allow molten hammer pvp", false);
@@ -621,6 +632,7 @@ public final class FURConfig {
 		Suicidal_Minion = BUILDER.comment("Entities summoned by other mobs die when their summoner dies. [false/true]").define("suicidal", true);
 		BonusVillagerTrades = BUILDER.comment("Offers bonus Villager trades. [false/true]").define("bonus villager trades", true);
 		BonusWanderingTraderTrades = BUILDER.comment("Offers bonus Wandering Trader trades. [false/true]").define("bonus wandering trader trades", true); 
+		Show_Expire_Death_Messege = BUILDER.comment("Show custom death messege when summoned mobs expired. [false/true]").define("show summoned mobs death messege", true); 
 		BUILDER.pop();
 		
 		SPEC = BUILDER.build();
