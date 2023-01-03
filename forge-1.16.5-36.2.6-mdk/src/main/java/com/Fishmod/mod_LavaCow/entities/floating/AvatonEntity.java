@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.MoveThroughVillageGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -42,7 +43,8 @@ public class AvatonEntity extends FloatingMobEntity {
 	
     @Override
     protected void registerGoals() {
-    	super.registerGoals();        
+    	super.registerGoals();  
+        this.goalSelector.addGoal(0, new SwimGoal(this));
     	this.goalSelector.addGoal(3, new AvatonEntity.AIUseSpell());
     	this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
     }

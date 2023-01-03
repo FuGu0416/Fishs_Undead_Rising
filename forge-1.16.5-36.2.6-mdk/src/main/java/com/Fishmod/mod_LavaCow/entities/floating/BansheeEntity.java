@@ -22,6 +22,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.IParticleData;
@@ -43,6 +44,7 @@ public class BansheeEntity extends FloatingMobEntity {
 	@Override
     protected void registerGoals() {
 		super.registerGoals();
+		this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new BansheeEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());  
     }

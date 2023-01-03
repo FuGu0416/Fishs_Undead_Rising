@@ -22,7 +22,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -42,6 +41,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
 	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
 	private int attackTimer = 0;
 	protected int spellTicks;
+	protected Goal moveRand = new FloatingMobEntity.AIMoveRandom();
 	
 	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
@@ -60,11 +60,10 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
 	@Override
     protected void registerGoals() {
 		super.registerGoals();
-        this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new FloatingMobEntity.AIMoveRandom());
+        this.goalSelector.addGoal(7, this.moveRand);
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.applyEntityAI();

@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.floating;
 
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -7,10 +8,13 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.WetaEntity;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
@@ -35,6 +39,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -48,12 +53,15 @@ public class SeaHagEntity extends FloatingMobEntity {
 	
 	public SeaHagEntity(EntityType<? extends SeaHagEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.setPathfindingMalus(PathNodeType.WATER, 8.0F);
+        this.setPathfindingMalus(PathNodeType.WATER, 8.0F);      
     }
 	
     @Override
     protected void registerGoals() {
-    	super.registerGoals();        
+    	this.moveRand = new SeaHagEntity.AIMoveRandom();
+    	
+    	super.registerGoals();    
+    	this.goalSelector.addGoal(1, new SeaHagEntity.GoToWaterGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
 		this.goalSelector.addGoal(3, new SeaHagEntity.AIUseSpell());
     }
@@ -116,7 +124,7 @@ public class SeaHagEntity extends FloatingMobEntity {
     @Override
     @Nullable
     protected IParticleData ParticleType() {   	
-    	return ParticleTypes.FALLING_WATER;
+    	return this.isInWater() ? null : ParticleTypes.FALLING_WATER;
     }
     
 	/**
@@ -211,6 +219,102 @@ public class SeaHagEntity extends FloatingMobEntity {
         @Nullable
         protected SoundEvent getSpellPrepareSound() {
             return null;
+        }
+    }
+    
+    static class GoToWaterGoal extends Goal {
+        private final CreatureEntity mob;
+        private double wantedX;
+        private double wantedY;
+        private double wantedZ;
+        private final double speedModifier;
+        private final World level;
+
+        public GoToWaterGoal(CreatureEntity p_i48910_1_, double p_i48910_2_) {
+           this.mob = p_i48910_1_;
+           this.speedModifier = p_i48910_2_;
+           this.level = p_i48910_1_.level;
+           this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        public boolean canUse() {
+           if (!this.level.isDay()) {
+              return false;
+           } else if (this.mob.isInWater()) {
+              return false;
+           } else {
+              Vector3d vector3d = this.getWaterPos();
+              if (vector3d == null) {
+                 return false;
+              } else {
+                 this.wantedX = vector3d.x;
+                 this.wantedY = vector3d.y;
+                 this.wantedZ = vector3d.z;
+                 return true;
+              }
+           }
+        }
+
+        public boolean canContinueToUse() {
+        	return !this.mob.getNavigation().isDone();
+        }
+
+        public void start() {
+        	this.mob.getMoveControl().setWantedPosition(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+        }
+
+        @Nullable
+        private Vector3d getWaterPos() {
+           Random random = this.mob.getRandom();
+           BlockPos blockpos = this.mob.blockPosition();
+
+           for(int i = 0; i < 10; ++i) {
+              BlockPos blockpos1 = blockpos.offset(random.nextInt(20) - 10, 2 - random.nextInt(8), random.nextInt(20) - 10);
+              if (this.level.getBlockState(blockpos1).is(Blocks.WATER)) {
+                 return Vector3d.atBottomCenterOf(blockpos1);
+              }
+           }
+
+           return null;
+        }
+	}
+    
+    class AIMoveRandom extends Goal {
+        public AIMoveRandom() {
+        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean canUse() {
+            return !SeaHagEntity.this.getMoveControl().hasWanted() && SeaHagEntity.this.getRandom().nextInt(7) == 0;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return false;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {            
+            BlockPos blockpos = SeaHagEntity.this.blockPosition();
+            int y = Math.min(SpawnUtil.getHeight(SeaHagEntity.this).getY() + 4 - blockpos.getY(), SeaHagEntity.this.getRandom().nextInt(11) - 5);
+
+            for(int i = 0; i < 3; ++i) {
+               BlockPos blockpos1 = blockpos.offset(SeaHagEntity.this.random.nextInt(15) - 7, y, SeaHagEntity.this.random.nextInt(15) - 7);
+               if ((!SeaHagEntity.this.level.isDay() && SeaHagEntity.this.level.isEmptyBlock(blockpos1)) || SeaHagEntity.this.level.isWaterAt(blockpos1)) {
+                  SeaHagEntity.this.moveControl.setWantedPosition((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 0.25D);
+                  if (SeaHagEntity.this.getTarget() == null) {
+                     SeaHagEntity.this.getLookControl().setLookAt((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                  }
+                  break;
+               }
+            }
         }
     }
     

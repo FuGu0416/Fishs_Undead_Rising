@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
@@ -30,7 +31,8 @@ public class GraveRobberGhostEntity extends FloatingMobEntity {
 	
     @Override
     protected void registerGoals() {
-    	super.registerGoals();        
+    	super.registerGoals();   
+    	this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
     }
     
