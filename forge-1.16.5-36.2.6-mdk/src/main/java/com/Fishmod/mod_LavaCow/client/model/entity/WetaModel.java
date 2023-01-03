@@ -175,16 +175,18 @@ public class WetaModel<T extends WetaEntity> extends FURBaseModel<T> implements 
      * and third as in the setRotationAngles method.
      */
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    	float f = (entityIn.getSkin() == 2) ? 0.5F : 1.0F;
+    	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	this.Body_base.y = 20.0F - 0.5F * MathHelper.sin(limbSwing * 1.3F);
     	
     	this.SwingY_Sin(this.Jaw_l, -0.7740535232594852F, ageInTicks, 0.125F, 0.4F, true, 0.0F);
     	this.SwingY_Sin(this.Jaw_r, 0.7740535232594852F, ageInTicks, 0.125F, 0.4F, false, 0.0F);
     	
-    	this.SwingX_Sin(this.Antenna_Seg0_l, -1.2292353921796064F, ageInTicks, 0.4F, 0.41F, false, 0.0F);
-    	this.SwingX_Sin(this.Antenna_Seg0_r, -1.2292353921796064F, ageInTicks, 0.4F, 0.32F, false, 0.25F * (float)Math.PI);
-    	this.SwingX_Sin(this.Antenna_Seg1_l, 0.5462880558742251F, ageInTicks, 0.4F, 0.41F, false, 0.0F);
-    	this.SwingX_Sin(this.Antenna_Seg1_r, 0.5462880558742251F, ageInTicks, 0.4F, 0.32F, false, 0.25F * (float)Math.PI);
+    	this.SwingX_Sin(this.Antenna_Seg0_l, -1.2292353921796064F, ageInTicks, 0.4F, 0.41F * f, false, 0.0F);
+    	this.SwingX_Sin(this.Antenna_Seg0_r, -1.2292353921796064F, ageInTicks, 0.4F, 0.32F * f, false, 0.25F * (float)Math.PI);
+    	this.SwingX_Sin(this.Antenna_Seg1_l, 0.5462880558742251F, ageInTicks, 0.4F, 0.41F * f, false, 0.0F);
+    	this.SwingX_Sin(this.Antenna_Seg1_r, 0.5462880558742251F, ageInTicks, 0.4F, 0.32F * f, false, 0.25F * (float)Math.PI);
     	
     	this.SwingX_Sin(this.Leg0_Seg0_r, 0.5009094953223726F, limbSwing, 0.5F * limbSwingAmount, 1.3F, false, 0.0F);
     	this.SwingX_Sin(this.Leg0_Seg0_l, 0.5009094953223726F, limbSwing, 0.5F * limbSwingAmount, 1.3F, false, 0.5F * (float)Math.PI);

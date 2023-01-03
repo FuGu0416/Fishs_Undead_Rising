@@ -14,6 +14,7 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -37,7 +38,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -50,6 +57,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WetaEntity extends FURTameableEntity implements IAggressive {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(WetaEntity.class, DataSerializers.INT);
 	private int attackTimer = 0;
 	private EntityAIDestroyCrops DestroyCrops;
 	
@@ -59,8 +67,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 	}
 	
 	@Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
 		this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, false);
 		
 		super.registerGoals();
@@ -76,12 +83,17 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
         this.applyEntityAI();
     }
 	
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
     }
+    
+    @Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextFloat() < 0.05F ? 2 : 0));
+	}
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
@@ -92,7 +104,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     }
     
     public static boolean checkWetaSpawnRules(EntityType<? extends WetaEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
 
     @Override
@@ -131,14 +143,37 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     }
         
     @Override
-    protected void reassessTameGoals()
-    {
+    protected void reassessTameGoals() {
     	if(this.isTame())
     		this.goalSelector.removeGoal(this.DestroyCrops);
     }
     
-    public boolean doHurtTarget(Entity entityIn)
-    {
+    @Override
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    	ItemStack itemstack = player.getItemInHand(hand);
+           	
+    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD && this.getSkin() == 0) {
+    		if (!player.isCreative()) {
+    			itemstack.shrink(1);
+    		}
+            
+        	this.setSkin(2);
+        	
+        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+            }
+        	
+        	return ActionResultType.CONSUME;
+        }
+    
+        return super.mobInteract(player, hand);
+    }
+    
+    public boolean doHurtTarget(Entity entityIn) {
         if (super.doHurtTarget(entityIn)) {
         	this.attackTimer = 5;
         	this.level.broadcastEntityEvent(this, (byte)4);
@@ -160,17 +195,18 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 
     @Override
     protected boolean canTameCondition() {
-    	return !this.isTame() && !this.isBaby();
+    	return !this.isTame() && !this.isBaby() && this.getSkin() != 2;
     }
     
     @Override
     protected int TameRate(ItemStack stack) {
-    	if(stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP))
+    	if (stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP)) {
     		return 3;
-    	else if(stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS))
+    	} else if (stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS)) {
     		return 1;
-    	else
+    	} else {
     		return super.TameRate(stack);
+    	}
     }
     
     /**
@@ -197,18 +233,22 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 		this.attackTimer = i;
 	}
 	
+    public int getSkin() {
+        return this.getEntityData().get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.getEntityData().set(SKIN_TYPE, skinType);
+    }
+	
     /**
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id)
-    {
-    	if (id == 4) 
-    	{
+    public void handleEntityEvent(byte id) {
+    	if (id == 4) {
             this.attackTimer = 5;
-        }
-        else
-        {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -217,22 +257,37 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
         return 0.1F;
     }
+	
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+		this.setSkin(compound.getInt("Variant"));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+	@Override
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("Variant", getSkin());
+    }
     
 	@Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.WETA_AMBIENT;
     }
 	
 	@Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.WETA_HURT;
     }
 
 	@Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.WETA_DEATH;
     }
 
@@ -252,4 +307,16 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 
 		return entity;
 	}
+	
+    /**
+     * Get this Entity's EnumCreatureAttribute
+     */
+    @Override
+    public CreatureAttribute getMobType() {
+        if (this.getSkin() == 2) {
+        	return CreatureAttribute.UNDEAD;
+        } else {
+        	return CreatureAttribute.ARTHROPOD;
+        }
+    }
 }

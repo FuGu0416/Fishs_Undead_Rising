@@ -397,7 +397,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
     			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
     		});
-			playerIn.getCooldowns().addCooldown(this, 20/*FURConfig.SludgeWand_Cooldown.get() * 20*/);
+			playerIn.getCooldowns().addCooldown(this, FURConfig.ScarabScepter_Cooldown.get() * 20);
             
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
         }

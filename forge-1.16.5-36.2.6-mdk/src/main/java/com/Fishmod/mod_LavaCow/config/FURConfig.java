@@ -111,6 +111,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Weta;
 	public static final ForgeConfigSpec.ConfigValue<Double> Weta_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Weta_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Double> Weta_Harvest_Diseased_Wheat;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Avaton;
 	public static final ForgeConfigSpec.ConfigValue<Double> Avaton_Health;
@@ -234,6 +235,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_IllagerNose;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege; 
+	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
 	
 	static {
 		BUILDER.push("Glowshroom");
@@ -433,6 +435,7 @@ public final class FURConfig {
 		pSpawnRate_Weta = BUILDER.comment("Set the spawn rate of Weta [0-10000]").defineInRange("weta spawn rate", 30, 0, 10000);
 		Weta_Health = BUILDER.comment("Maximum Weta health [1-1000]").defineInRange("weta health", 12.0D, 1.0D, 1000.0D);
 		Weta_Attack = BUILDER.comment("Weta strength [1-1000]").defineInRange("weta attack", 1.0D, 1.0D, 1000.0D);
+		Weta_Harvest_Diseased_Wheat = BUILDER.comment("Chance of dropping Diseased Wheat [1-1000]").defineInRange("diseased wheat drop rate", 0.15D, 0.0D, 1.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Avaton");
@@ -608,6 +611,7 @@ public final class FURConfig {
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
 		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
 		General_IllagerNose = BUILDER.comment("Set the drop rate of Illager Nose [0-100]").defineInRange("illager nose drop rate", 2, 0, 100);
+		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("Structure");

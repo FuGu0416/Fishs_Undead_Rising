@@ -11,7 +11,8 @@ import net.minecraft.util.ResourceLocation;
 public class WetaRenderer extends MobRenderer<WetaEntity, WetaModel<WetaEntity>> {	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta2.png")
 	};
 	
 	static{
@@ -25,7 +26,7 @@ public class WetaRenderer extends MobRenderer<WetaEntity, WetaModel<WetaEntity>>
     
     @Override
     public ResourceLocation getTextureLocation(WetaEntity entity) {
-    	return TEXTURES[entity.isBaby()? 1 : 0];
+    	return TEXTURES[entity.isBaby()? 1 : entity.getSkin()];
     }
     
     @Override

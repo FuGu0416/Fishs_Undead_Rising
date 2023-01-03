@@ -356,7 +356,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
                 this.startRiding(player);
                 this.ridingCooldown = 20;
                 return ActionResultType.SUCCESS;
-            } if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+            } else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 	        	
 	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
