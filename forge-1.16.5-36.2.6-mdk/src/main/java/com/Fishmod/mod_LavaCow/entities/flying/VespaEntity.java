@@ -7,6 +7,8 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -35,6 +38,8 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
@@ -87,7 +92,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return false;
+        return stack.getItem() == Items.BEEF;
     }
     
     @Override
@@ -203,6 +208,11 @@ public class VespaEntity extends RidableFlyingMobEntity {
 	
 	protected SoundEvent getFlyingSound() {
 		return FURSoundRegistry.VESPA_FLYING;
+	}
+	
+	@Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+    	this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
 	}
 	
     /**

@@ -16,7 +16,7 @@ public class FlyingBaseModel<T extends Entity> extends FURBaseModel<T> {
      */
 	public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {	
     	if(entityIn instanceof FlyingMobEntity) {  		
-    		FlyingMobEntity entity = (FlyingMobEntity)entityIn;
+    		FlyingMobEntity entity = (FlyingMobEntity)entityIn;   		
     		
 	    	if (entity.getLandTimer() > 10) {
 	    		this.state = FlyingBaseModel.State.WAITING;
@@ -36,16 +36,6 @@ public class FlyingBaseModel<T extends Entity> extends FURBaseModel<T> {
 	    	} else if (entity.getHoverTimer() < 60) {
 	    		entity.setHoverTimer(entity.getHoverTimer() + 1);
 	    	}	   
-	    	
-	    	if (entity.isOnGround()) {
-	    		if (entity.getLandTimer() < 20) {
-	    			entity.setLandTimer(entity.getLandTimer() + 1);
-	    		}
-	    	} else {
-	    		if (entity.getLandTimer() > 0) {
-	    			entity.setLandTimer(entity.getLandTimer() - 1);
-	    		}
-	    	}
     	}
     }
 	

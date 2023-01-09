@@ -114,7 +114,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     	
     	if(!this.isUp() && this.isDown()) {
     		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, -0.05F, 0.0F));
-    	}
+    	}   	
     }
     
     @Override
@@ -195,8 +195,8 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
 	                super.travel(new Vector3d((double)f, p_213352_1_.y, (double)f1));
 	            } else {
 	            	this.setDeltaMovement(Vector3d.ZERO);
-	            }
-	
+	            }         
+	            
 	            this.calculateEntityAnimation(this, false);
 	        } else {
 	            super.travel(p_213352_1_);

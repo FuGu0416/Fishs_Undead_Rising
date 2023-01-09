@@ -84,7 +84,21 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 		
 		if (this.attackTimer > 0) {
             --this.attackTimer;
-         }
+        }
+		
+		if (!this.level.isClientSide) {
+	    	if (this.isOnGround()) {
+	    		if (this.getLandTimer() < 20) {
+	    			this.setLandTimer(this.getLandTimer() + 1);
+	    			this.level.broadcastEntityEvent(this, (byte)40);
+	    		}
+	    	} else {
+	    		if (this.getLandTimer() > 0) {
+	    			this.setLandTimer(this.getLandTimer() - 1);
+	    			this.level.broadcastEntityEvent(this, (byte)41);
+	    		}
+	    	}
+		}
     }
 
 	@Override
@@ -127,12 +141,17 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4) 
-    	{
+    	if (id == 4)  {
             this.attackTimer = 20;
-        }
-        else
-        {
+        } else if (id == 40)  {
+    		if (this.getLandTimer() < 20) {
+    			this.setLandTimer(this.getLandTimer() + 1);
+    		}
+        } else if (id == 41)  {
+    		if (this.getLandTimer() > 0) {
+    			this.setLandTimer(this.getLandTimer() - 1);
+    		}
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -185,7 +204,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     	// If the lowest passenger is colliding with the ground, get them out!
         Entity lowestPassenger = this.getLowestPassenger();
 
-        if (lowestPassenger != null) {
+        if (lowestPassenger != null && !(lowestPassenger instanceof PlayerEntity)) {
             AxisAlignedBB passengerBounds = lowestPassenger.getBoundingBox();
 
             if (!lowestPassenger.level.noCollision(lowestPassenger, passengerBounds)) {
