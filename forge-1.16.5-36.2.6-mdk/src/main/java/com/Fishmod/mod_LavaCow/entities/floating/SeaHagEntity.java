@@ -57,9 +57,7 @@ public class SeaHagEntity extends FloatingMobEntity {
     }
 	
     @Override
-    protected void registerGoals() {
-    	this.moveRand = new SeaHagEntity.AIMoveRandom();
-    	
+    protected void registerGoals() {   	
     	super.registerGoals();    
     	this.goalSelector.addGoal(1, new SeaHagEntity.GoToWaterGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
@@ -70,6 +68,11 @@ public class SeaHagEntity extends FloatingMobEntity {
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
+    @Override
+    protected Goal wanderGoal() {
+    	return new SeaHagEntity.AIMoveRandom();
     }
     
     @Override
@@ -303,7 +306,12 @@ public class SeaHagEntity extends FloatingMobEntity {
          */
         public void tick() {            
             BlockPos blockpos = SeaHagEntity.this.blockPosition();
-            int y = Math.min(SpawnUtil.getHeight(SeaHagEntity.this).getY() + 4 - blockpos.getY(), SeaHagEntity.this.getRandom().nextInt(11) - 5);
+            int groundHeight = SpawnUtil.getHeight(SeaHagEntity.this).getY();
+            int y = SeaHagEntity.this.getRandom().nextInt(11) - 5;
+
+            if (groundHeight > 0) {
+            	y = Math.min(groundHeight + 4 - blockpos.getY(), y);
+            }
 
             for(int i = 0; i < 3; ++i) {
                BlockPos blockpos1 = blockpos.offset(SeaHagEntity.this.random.nextInt(15) - 7, y, SeaHagEntity.this.random.nextInt(15) - 7);

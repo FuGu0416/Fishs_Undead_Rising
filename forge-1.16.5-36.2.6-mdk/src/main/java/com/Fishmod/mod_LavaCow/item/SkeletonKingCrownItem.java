@@ -65,9 +65,6 @@ public class SkeletonKingCrownItem extends ArmorItem {
 	    	for (AbstractSkeletonEntity Skeleton : world.getEntitiesOfClass(AbstractSkeletonEntity.class, player.getBoundingBox().inflate(16.0D))) {   		
 	    		this.remove.clear();
 	    		
-	    		if(Skeleton.getTarget() != null && Skeleton.getTarget().equals(player))
-	    			Skeleton.setTarget(null);
-	    		
 				Skeleton.targetSelector.getRunningGoals().forEach((k) -> {
 					if(k.getGoal() instanceof NearestAttackableTargetGoal<?>) {
 						this.remove.add(k.getGoal());			

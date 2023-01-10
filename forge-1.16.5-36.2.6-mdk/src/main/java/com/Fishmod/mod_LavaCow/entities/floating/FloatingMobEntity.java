@@ -41,7 +41,6 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
 	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(FloatingMobEntity.class, DataSerializers.BYTE);
 	private int attackTimer = 0;
 	protected int spellTicks;
-	protected Goal moveRand = new FloatingMobEntity.AIMoveRandom();
 	
 	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
@@ -63,13 +62,17 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, this.moveRand);
+        this.goalSelector.addGoal(7, this.wanderGoal());
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.applyEntityAI();
     }
 
     protected void applyEntityAI() {
+    }
+    
+    protected Goal wanderGoal() {
+    	return new FloatingMobEntity.AIMoveRandom();
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -357,8 +360,13 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
          */
         public void tick() {            
             BlockPos blockpos = FloatingMobEntity.this.blockPosition();
-            int y = Math.min(SpawnUtil.getHeight(FloatingMobEntity.this).getY() + 4 - blockpos.getY(), FloatingMobEntity.this.getRandom().nextInt(11) - 5);
+            int groundHeight = SpawnUtil.getHeight(FloatingMobEntity.this).getY();
+            int y = FloatingMobEntity.this.getRandom().nextInt(11) - 5;
 
+            if (groundHeight > 0) {
+            	y = Math.min(groundHeight + 4 - blockpos.getY(), y);
+            }
+            
             for(int i = 0; i < 3; ++i) {
                BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);
                if (FloatingMobEntity.this.level.isEmptyBlock(blockpos1)) {

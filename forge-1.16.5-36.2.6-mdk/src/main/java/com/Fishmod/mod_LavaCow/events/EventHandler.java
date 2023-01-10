@@ -84,9 +84,9 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -522,8 +522,6 @@ public class EventHandler {
 			if(i != -1)
 				have_DreamCatcher = baubles.api.BaublesApi.getBaublesHandler(player).getItem(i);
 		}*/
-		System.out.println("OAO1 " + event.wakeImmediately());
-		System.out.println("OAO2 " + event.updateWorld());
 		
 		if (!event.updateWorld()) {
 			for(int i = 0; i < 9 ; i++) {
@@ -776,13 +774,6 @@ public class EventHandler {
     }
     
     @SubscribeEvent
-    public void onEVisibility(LivingVisibilityEvent event) {
-        if (event.getLookingEntity() instanceof AbstractIllagerEntity)
-            if (event.getEntityLiving().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE))
-                    event.modifyVisibility(0.0D);    	
-    }
-    
-    @SubscribeEvent
     public void onInventoryOpen(final PlayerContainerEvent.Open event) {
     	if (!event.getPlayer().isCreative() && event.getContainer() instanceof ChestContainer) {
     		AxisAlignedBB axisalignedbb = AxisAlignedBB.unitCubeFromLowerCorner(event.getPlayer().position()).inflate(16.0D, 10.0D, 16.0D);
@@ -790,5 +781,22 @@ public class EventHandler {
     			mobs.setTarget(event.getPlayer());
     		}
     	}
+    }
+    
+    @SubscribeEvent
+    public void onESetTarget(LivingSetAttackTargetEvent event) {    	
+    	// Neutral
+        if (event.getTarget() != null && event.getEntityLiving().getLastHurtByMob() != event.getTarget()) {
+        	if (event.getEntity() instanceof AbstractIllagerEntity && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE)) {
+        		((MobEntity) event.getEntityLiving()).setTarget(null);
+        	}
+        }
+        
+        // Passive
+        if (event.getTarget() != null) {
+        	if (event.getEntity() instanceof AbstractSkeletonEntity && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN)) {
+        		((MobEntity) event.getEntityLiving()).setTarget(null);
+        	}
+        }
     }
 }

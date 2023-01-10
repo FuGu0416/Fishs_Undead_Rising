@@ -340,12 +340,17 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             double d1 = this.parentEntity.getY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d2 = this.parentEntity.getZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             
-            if(this.parentEntity.isInWaterRainOrBubble())
-            	d1 = Math.min(d1, SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D);
-            else if(FURConfig.FlyingHeight_limit.get() != 0 && (double)FURConfig.FlyingHeight_limit.get() < d1)
-            	d1 = Math.min(d1, (double)(SpawnUtil.getHeight(this.parentEntity).getY() + FURConfig.FlyingHeight_limit.get()));
-            else
-            	d1 = Math.max(d1, (double)(SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D));
+            int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
+            
+            if (groundHeight > 0) {
+	            if (this.parentEntity.isInWaterRainOrBubble()) {
+	            	d1 = Math.min(d1, groundHeight + 3.0D);
+	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)FURConfig.FlyingHeight_limit.get() < d1) {
+	            	d1 = Math.min(d1, groundHeight + FURConfig.FlyingHeight_limit.get());
+	            } else {
+	            	d1 = Math.max(d1, groundHeight + 3.0D);
+	            }
+            }
             
             this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
         }
