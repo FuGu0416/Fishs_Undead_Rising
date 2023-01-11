@@ -3,7 +3,6 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -39,6 +38,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -96,36 +96,36 @@ public class VespaEntity extends RidableFlyingMobEntity {
     }
     
     @Override
-    public void doSitCommand(PlayerEntity playerIn) {
-    	if (SpawnUtil.getHeight(this).getY() > 0) {   		
-    		this.setNoGravity(false);
-    	}
-    	super.doSitCommand(playerIn);
-    }
-    
-    @Override
-    public void doFollowCommand(PlayerEntity playerIn) {
-    	this.setNoGravity(true);
-    	super.doFollowCommand(playerIn);
-    }
-    
-    @Override
-    public void doWanderCommand(PlayerEntity playerIn) {
-    	this.setNoGravity(true);
-    	super.doWanderCommand(playerIn);
-    }
-    
-    @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
     	return p_213348_2_.height * 0.35F;
+    }
+    
+    @Override
+	public int abilityCooldown() {
+    	return 40;
     }
     
     @Override
     public void tick() {
     	super.tick();
     	
-    	if(!this.onGround && tickCount % 20 == 0)
+    	if(!this.onGround && this.tickCount % 20 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
+    	}
+    	
+    	if (this.getAttackTimer() == 16 && this.abilityCooldown > 0 && this.deathTime <= 0) {
+			double d0 = this.getX() + 1.75D * this.getLookAngle().normalize().x;
+            double d1 = this.getY();
+            double d2 = this.getZ() + 1.75D * this.getLookAngle().normalize().z;
+    		      		        
+            for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(1.0D))) {
+            	if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
+            		this.doHurtTarget(entitylivingbase);
+                }
+            }	
+            
+            this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
+    	}
     }
    
     @Override
@@ -135,8 +135,10 @@ public class VespaEntity extends RidableFlyingMobEntity {
 				float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 
 				((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
-           		if(this.getRandom().nextInt(5) == 0)
+				
+           		if(this.getRandom().nextInt(5) == 0) {
            			((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
+           		}
 			}
 
 			return true;

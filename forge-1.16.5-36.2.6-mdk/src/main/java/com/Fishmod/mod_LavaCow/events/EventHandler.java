@@ -127,9 +127,10 @@ public class EventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isClientSide() && world.dimension() == World.OVERWORLD && ((LootTableHandler.PARASITE_HOSTLIST.contains(entity.getType().getRegistryName()) 
-    			&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get() || ParasiteEntity.gotParasite(entity.getPassengers()) != null)) 
-    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
+    	if (!world.isClientSide() && 
+    			(((LootTableHandler.PARASITE_HOSTLIST.contains(entity.getType().getRegistryName()) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get())) 
+    			|| (ParasiteEntity.gotParasite(entity.getPassengers()) != null)
+    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		ParasiteEntity passenger = ParasiteEntity.gotParasite(entity.getPassengers());

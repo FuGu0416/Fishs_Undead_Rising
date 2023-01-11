@@ -208,9 +208,9 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     	SwingY_Sin(this.Arm_l_Seg2, 0.0F, ageInTicks, 0.18F, 0.06F, true, 0.0F);
 
     	boolean aggressive = entityIn.isAggressive();
-    	float i = (float)((BansheeEntity) entityIn).getAttackTimer() / 20.0F;
-    	float j = (float)((BansheeEntity) entityIn).getSpellTicks() / 30.0F;
-    	if(((BansheeEntity) entityIn).isSpellcasting()) {
+    	float i = ((float)entityIn.getAttackTimer()) / 20.0F;
+    	float j = ((float)entityIn.getSpellTicks()) / 30.0F;
+    	if(entityIn.isSpellcasting()) {
     		Arm_r_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.yRot = 2.111673824703684F;

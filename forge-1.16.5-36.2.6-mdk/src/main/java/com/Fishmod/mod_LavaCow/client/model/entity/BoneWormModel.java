@@ -144,10 +144,10 @@ public class BoneWormModel<T extends BoneWormEntity> extends FURBaseModel<T> imp
         
     	float f = (limbSwingAmount < 0.02F) ? 1.0F : 1.5F;
     	float g = 0.1F;
-    	int i = ((BoneWormEntity)entityIn).getAttackTimer(0);
-    	int j = ((BoneWormEntity)entityIn).getAttackTimer(1);
-    	int k = ((BoneWormEntity)entityIn).diggingTimer[0];
-    	int l = ((BoneWormEntity)entityIn).diggingTimer[1];    	
+    	int i = entityIn.getAttackTimer(0);
+    	int j = entityIn.getAttackTimer(1);
+    	int k = entityIn.diggingTimer[0];
+    	int l = entityIn.diggingTimer[1];    	
     	
     	if (j > 0) {
     		this.setRotateAngle(Appendage_r0_seg0, -1.2747884856566583F, -0.18203784098300857F, 0.0F);

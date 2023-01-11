@@ -1,6 +1,5 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
-import com.Fishmod.mod_LavaCow.entities.flying.FlyingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -97,9 +96,9 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
         this.Throax_base.mirror = true;
         this.Throax_base.setPos(0.0F, 12.0F, 3.5F);
         this.Throax_base.addBox(-6.0F, -6.0F, -4.0F, 12, 12, 8, 0.0F);
-        this.Stinger = new ModelRenderer(this, 56, 26);
-        this.Stinger.setPos(0.0F, 0.0F, 3.0F);
-        this.Stinger.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
+        this.Stinger = new ModelRenderer(this, 50, 14);
+        this.Stinger.setPos(0.0F, 0.0F, -3.0F);
+        this.Stinger.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 12, 0.0F);
         this.leg_l_1 = new ModelRenderer(this, 56, 0);
         this.leg_l_1.setPos(4.0F, 6.0F, -3.5F);
         this.leg_l_1.addBox(-1.0F, -1.0F, -1.0F, 12, 2, 2, 0.0F);
@@ -184,11 +183,11 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
      * "far" arms and legs can swing at most.
      */
     @Override
-    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-  	  	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-  	  	
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {  	 	  	
     	float vibrate_rate = 0.5F;
+    	float i = (float)entityIn.getAttackTimer();
     	
+    	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);    	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	
     	this.Wing_0_r.xRot = 0.0F;
@@ -205,6 +204,14 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
     	this.Wing_1_l.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks);
       
     	this.Throax_base.y = 7.0F + (entityIn.isVehicle() ? 0.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
+    	this.Stinger.z = -3.0F;
+    	
+    	this.setRotateAngle(leg_r_0, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
+    	this.setRotateAngle(leg_r_1, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);
+    	this.setRotateAngle(leg_r_2, 0.0F, 1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, -1.3658946726107624F);
+    	this.setRotateAngle(leg_l_0, 0.0F, -0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, 1.6845917940249266F);
+    	this.setRotateAngle(leg_l_1, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
+    	this.setRotateAngle(leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);    
     	
     	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
@@ -222,7 +229,7 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
     		this.setRotateAngle(Wing_1_r, 0.0781907508222411F, 1.2699016010353295F, -1.2901473511162753F);
     		this.setRotateAngle(Wing_0_l, 0.8600982340775168F, -1.2971286947558636F, 0.5082398928281348F);
     		this.setRotateAngle(Wing_1_l, 0.0781907508222411F, -1.2699016010353295F, 1.2901473511162753F);
-    		
+ 
 	    	this.setRotateAngle(leg_r_0, 0.0F, -0.7853981633974483F, -0.7853981633974483F);
 	    	this.setRotateAngle(leg_r_1, 0.0F, -0.39269908169872414F, -0.5811946409141118F);
 	    	this.setRotateAngle(leg_r_2, 0.0F, 0.39269908169872414F, -0.5811946409141118F);
@@ -259,7 +266,7 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
 	        this.leg_r_1.zRot += f8;
 	        this.leg_l_1.zRot += -f8;
 	        this.leg_r_2.zRot += f9;
-	        this.leg_l_2.zRot += -f9;	       	
+	        this.leg_l_2.zRot += -f9;	
     	} else if (this.state.equals(FlyingBaseModel.State.FLYING)) {
 	    	this.Waist.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
@@ -267,41 +274,39 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
 	    	this.UAbdomen3.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen4.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
 	    	this.Stinger.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;	   
-	    	
-	    	this.setRotateAngle(leg_r_0, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
-	    	this.setRotateAngle(leg_r_1, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);
-	    	this.setRotateAngle(leg_r_2, 0.0F, 1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, -1.3658946726107624F);
-	    	this.setRotateAngle(leg_l_0, 0.0F, -0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, 1.6845917940249266F);
-	    	this.setRotateAngle(leg_l_1, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
-	    	this.setRotateAngle(leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);
     	} else if (this.state.equals(FlyingBaseModel.State.ATTACKING)) {
-	    	this.Waist.xRot = -0.18F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	this.UAbdomen1.xRot = -0.18F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	this.UAbdomen2.xRot = -0.20F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	this.UAbdomen3.xRot = -0.20F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	this.UAbdomen4.xRot = -0.22F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	this.Stinger.xRot = -0.24F * MathHelper.abs(10 - ((FlyingMobEntity)entityIn).getAttackTimer());
-	    	
-	    	this.setRotateAngle(leg_r_0, 0.0F, -0.7853981633974483F, -0.7853981633974483F);
-	    	this.setRotateAngle(leg_r_1, 0.0F, -0.39269908169872414F, -0.5811946409141118F);
-	    	this.setRotateAngle(leg_r_2, 0.0F, 0.39269908169872414F, -0.5811946409141118F);
-	    	this.setRotateAngle(leg_l_0, 0.0F, 0.7853981633974483F, 0.7853981633974483F);
-	    	this.setRotateAngle(leg_l_1, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
-	    	this.setRotateAngle(leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
+    		if (i > 8.0F) {
+    	    	this.Waist.xRot = GradientAnimation(0.0F, -1.0472F, (i - 8.0F) / 12.0F);
+    	    	this.UAbdomen1.xRot = GradientAnimation(0.2276F, -0.7323F, (i - 8.0F) / 12.0F);
+    	    	this.UAbdomen2.xRot = GradientAnimation(-0.2276F, -0.6203F, (i - 8.0F) / 12.0F);
+    	    	this.UAbdomen3.xRot = GradientAnimation(-0.2276F, -0.7512F, (i - 8.0F) / 12.0F);
+    	    	this.UAbdomen4.xRot = GradientAnimation(-0.2276F, -0.0094F, (i - 8.0F) / 12.0F);
+    	    	this.Stinger.xRot = 0.0F;
+    	    	this.Stinger.z = GradientAnimation(-3.0F, 3.0F, (i - 8.0F) / 12.0F);
+    		} else if (i > 5.0F) {
+    	    	this.Waist.xRot = -1.0472F;
+    	    	this.UAbdomen1.xRot = -0.7323F;
+    	    	this.UAbdomen2.xRot = -0.6203F;
+    	    	this.UAbdomen3.xRot = -0.7512F;
+    	    	this.UAbdomen4.xRot = -0.0094F;
+    	    	this.Stinger.xRot = 0.0F;
+    	    	this.Stinger.z = 3.0F;
+    		} else if (i > 0.0F) {
+    	    	this.Waist.xRot = GradientAnimation_s(-1.0472F, 0.0F, i / 5.0F);
+    	    	this.UAbdomen1.xRot = GradientAnimation_s(-0.7323F, 0.2276F, i / 5.0F);
+    	    	this.UAbdomen2.xRot = GradientAnimation_s(-0.6203F, -0.2276F, i / 5.0F);
+    	    	this.UAbdomen3.xRot = GradientAnimation_s(-0.7512F, -0.2276F, i / 5.0F);
+    	    	this.UAbdomen4.xRot = GradientAnimation_s(-0.0094F, -0.2276F, i / 5.0F);	
+    			this.Stinger.xRot = 0.0F;
+    			this.Stinger.z = GradientAnimation_s(3.0F, -3.0F, i / 5.0F);
+    		}
     	} else if (this.state.equals(FlyingBaseModel.State.HOVERING)) {
 	    	this.Waist.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen2.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen3.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen4.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
-	    	this.Stinger.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
-	    	
-	    	this.setRotateAngle(leg_r_0, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
-	    	this.setRotateAngle(leg_r_1, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);
-	    	this.setRotateAngle(leg_r_2, 0.0F, 1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, -1.3658946726107624F);
-	    	this.setRotateAngle(leg_l_0, 0.0F, -0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, 1.6845917940249266F);
-	    	this.setRotateAngle(leg_l_1, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
-	    	this.setRotateAngle(leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);
+	    	this.Stinger.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;	    
     	}
     }
 

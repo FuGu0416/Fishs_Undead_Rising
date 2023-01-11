@@ -2,7 +2,9 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.init.FURKeybindRegistry;
+import com.Fishmod.mod_LavaCow.message.MessageMountSpecial;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -29,9 +31,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipable {
 	private static final DataParameter<Boolean> SADDLED = EntityDataManager.defineId(RidableFlyingMobEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> CONTROL_STATE = EntityDataManager.defineId(RidableFlyingMobEntity.class, DataSerializers.BYTE); // BIT(0): up, BIT(1): down, BIT(2): ability 
+	public int abilityCooldown;
 	
 	public RidableFlyingMobEntity(EntityType<? extends FlyingMobEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+		this.abilityCooldown = 0;
 	}
 
     @Override
@@ -104,10 +108,18 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
         return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity && this.getControllingPassenger().getUUID().equals(player.getUUID());
     }
     
+    public int abilityCooldown() {
+    	return 0;
+    }
+    
     @Override
     public void tick() {
     	super.tick();
-    	
+
+        if (this.abilityCooldown > 0) {
+        	this.abilityCooldown--;
+        }
+        
     	if(this.isUp() && !this.isDown()) {
     		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.05F, 0.0F));
     	}
@@ -130,10 +142,10 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     protected void ClientControl() {
     	Minecraft game = Minecraft.getInstance();
     	
-		/*if (this.barrage_CD == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player)) {
-			this.barrage_CD = 80;
+		if (this.abilityCooldown == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player) && this.getLandTimer() <= 10) {
+			this.abilityCooldown = this.abilityCooldown();
 			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ()));
-		}*/
+		}
     	
     	if (this.isRidingPlayer(game.player)) {
         	this.setControlState(0, game.options.keyJump.isDown());

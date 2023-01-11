@@ -202,8 +202,7 @@ public class FURTameableEntity extends TameableEntity {
     /**
      * Called to update the entity's position/logic.
      */
-    public void tick()
-    {
+    public void tick() {
         super.tick();
         
         if (!this.level.isClientSide && FURConfig.Suicidal_Minion.get() && (this.getOwner() != null && (!(this.getOwner() instanceof PlayerEntity) && !this.getOwner().isAlive()))) {
@@ -279,22 +278,25 @@ public class FURTameableEntity extends TameableEntity {
        super.readAdditionalSaveData(compound);
        switch(compound.getByte("state")) {
 	       case (byte)0:
-	    	   this.state = FURTameableEntity.State.WANDERING;
+	    	   	this.state = FURTameableEntity.State.WANDERING;
 	       		this.getNavigation().stop();
+	       		this.setInSittingPose(false);
 	  			break;
 	       case (byte)1:
-	    	   this.state = FURTameableEntity.State.SITTING;
-	    	   this.goalSelector.removeGoal(this.wander);
-               this.jumping = false;
-               this.getNavigation().stop();
-	  			break;
+	    	   	this.state = FURTameableEntity.State.SITTING;
+	    	   	this.goalSelector.removeGoal(this.wander);
+	    	   	this.jumping = false;
+	    	   	this.getNavigation().stop();
+	    	   	this.setInSittingPose(true);
+	    	   	break;
 	       case (byte)2:
-	    	   this.state = FURTameableEntity.State.FOLLOWING;
-	       	   this.follow = this.followGoal();
-	       	   this.getNavigation().stop();
-	    	   this.goalSelector.removeGoal(this.wander);
-	    	   this.goalSelector.addGoal(6, this.follow);
-	   			break;
+	    	   	this.state = FURTameableEntity.State.FOLLOWING;
+	       	   	this.follow = this.followGoal();
+	       	   	this.getNavigation().stop();
+	       	   	this.goalSelector.removeGoal(this.wander);
+	       	   	this.goalSelector.addGoal(6, this.follow);
+	       	   	this.setInSittingPose(false);
+	       	   	break;
 	   		default:
 	   			break;
        }

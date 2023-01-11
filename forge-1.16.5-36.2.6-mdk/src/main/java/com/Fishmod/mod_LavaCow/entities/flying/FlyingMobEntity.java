@@ -74,6 +74,26 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
         return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_)
         		&& (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());
     }
+    
+    @Override
+    public void doSitCommand(PlayerEntity playerIn) {
+    	if (SpawnUtil.getHeight(this).getY() > 0) {   		
+    		this.setNoGravity(false);
+    	}
+    	super.doSitCommand(playerIn);
+    }
+    
+    @Override
+    public void doFollowCommand(PlayerEntity playerIn) {
+    	this.setNoGravity(true);
+    	super.doFollowCommand(playerIn);
+    }
+    
+    @Override
+    public void doWanderCommand(PlayerEntity playerIn) {
+    	this.setNoGravity(true);
+    	super.doWanderCommand(playerIn);
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -92,20 +112,36 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	    			this.setLandTimer(this.getLandTimer() + 1);
 	    			this.level.broadcastEntityEvent(this, (byte)40);
 	    		}
+	    		
+	    		if (this.isNoGravity()) {
+	    			this.setNoGravity(this.getTarget() != null);
+	    		}
 	    	} else {
 	    		if (this.getLandTimer() > 0) {
 	    			this.setLandTimer(this.getLandTimer() - 1);
 	    			this.level.broadcastEntityEvent(this, (byte)41);
 	    		}
+	    		
+	    		if (!this.isNoGravity()) {
+	    			this.setNoGravity(true);
+	    		}
 	    	}
+	    		    	
+	        if (this.isInSittingPose() && this.getTarget() == null) {	        	
+	        	if (!this.isOnGround() && SpawnUtil.getHeight(this).getY() > 0) {
+	        		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, -0.025F, 0.0F));
+	        	}
+	        }
 		}
     }
 
 	@Override
     public boolean doHurtTarget(Entity entityIn) {
-        this.attackTimer = 20;
-    	this.level.broadcastEntityEvent(this, (byte)4);
-        
+		if (this.attackTimer == 0) {
+			this.attackTimer = 20;
+    		this.level.broadcastEntityEvent(this, (byte)4);
+		}
+		
         return super.doHurtTarget(entityIn);
     }
     
@@ -383,6 +419,10 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
                         this.operation = MovementController.Action.WAIT;
                     }
                 }
+                
+    	        if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null) {
+    	        	this.operation = MovementController.Action.WAIT;
+    	        }
             }
         }
         

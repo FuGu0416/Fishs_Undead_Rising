@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.SalamanderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,12 +57,21 @@ public class MessageMountSpecial {
 			PlayerEntity player = context.get().getSender();
 			Entity entity = player.level.getEntity(message.Id);
 			Vector3d lookVec = entity.getLookAngle();
-	   	 	for(int i = 0 ; i < 8 ; i++) {
-	   	 		SmallFireballEntity entityammo = new SmallFireballEntity(entity.level, (LivingEntity) entity, lookVec.x * (7.0D + new Random().nextGaussian() * 2.0D), lookVec.y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, lookVec.z * (7.0D + new Random().nextGaussian() * 2.0D));
-	   	 		entityammo.setPos(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D);
-				entity.level.addFreshEntity(entityammo);	
-	   	 	}	
-	   	 	entity.level.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+			
+			if (entity instanceof SalamanderEntity) {
+		   	 	for(int i = 0 ; i < 8 ; i++) {
+		   	 		SmallFireballEntity entityammo = new SmallFireballEntity(entity.level, (LivingEntity) entity, lookVec.x * (7.0D + new Random().nextGaussian() * 2.0D), lookVec.y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, lookVec.z * (7.0D + new Random().nextGaussian() * 2.0D));
+		   	 		entityammo.setPos(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D);
+					entity.level.addFreshEntity(entityammo);	
+		   	 	}	
+		   	 	entity.level.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+			}
+			
+			if (entity instanceof VespaEntity) {
+				((VespaEntity) entity).setAttackTimer(20);
+				((VespaEntity) entity).abilityCooldown = ((VespaEntity) entity).abilityCooldown();
+				entity.level.broadcastEntityEvent(entity, (byte)4);					
+			}
 		}
 	}
 
