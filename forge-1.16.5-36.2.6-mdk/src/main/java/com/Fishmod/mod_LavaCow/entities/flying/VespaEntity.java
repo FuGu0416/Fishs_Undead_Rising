@@ -24,10 +24,12 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -54,15 +56,19 @@ public class VespaEntity extends RidableFlyingMobEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof VespaEntity);
         }).setUnseenMemoryTicks(160));
-        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
-            return true;
-        }).setUnseenMemoryTicks(160));
+        
+        if (FURConfig.Vespa_Attack_Zombie.get()) {
+	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
+	            return true;
+	        }).setUnseenMemoryTicks(160));
+        }
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -79,6 +85,19 @@ public class VespaEntity extends RidableFlyingMobEntity {
     	super.defineSynchedData();
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
     }
+    
+    @Override
+    public void setTame(boolean tamed) {
+    	super.setTame(tamed);
+        
+        if (tamed) {
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get() * 2.0D);
+        	this.setHealth(this.getHealth() * 2.0F);
+        } else {
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get());
+        	this.setHealth(this.getHealth() * 0.5F);
+        }
+	}
     
     @Override
     protected Goal wanderGoal() {
@@ -113,7 +132,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     	
-    	if (this.getAttackTimer() == 16 && this.abilityCooldown > 0 && this.deathTime <= 0) {
+    	if (this.getAttackTimer() == 6 && this.abilityCooldown > 0 && this.deathTime <= 0) {
 			double d0 = this.getX() + 1.75D * this.getLookAngle().normalize().x;
             double d1 = this.getY();
             double d2 = this.getZ() + 1.75D * this.getLookAngle().normalize().z;
@@ -130,22 +149,40 @@ public class VespaEntity extends RidableFlyingMobEntity {
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
-		if (super.doHurtTarget(par1Entity)) {
-			if (par1Entity instanceof LivingEntity) {
-				float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+ 	   if (par1Entity instanceof ZombieEntity) {
+ 		  this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get() * 2.0D);
+ 	   } else {
+		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
+ 	   }
+ 	   
+ 	   if (super.doHurtTarget(par1Entity)) {
+ 		   if (par1Entity instanceof LivingEntity) {
+ 			   float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 
-				((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
+ 			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
 				
-           		if(this.getRandom().nextInt(5) == 0) {
-           			((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
-           		}
-			}
+ 			   if(this.getRandom().nextInt(5) == 0) {
+ 				   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
+ 			   }
+ 		   }
 
-			return true;
-       } else {
-           return false;
+ 		   return true;
+ 	   } else {
+    	   return false;
        }
 	}
+
+    /**
+     * Called when the entity is attacked.
+     */
+    @Override
+    public boolean hurt(DamageSource source, float amount) {    	
+    	if(source.getEntity() instanceof ZombieEntity) {
+    		return super.hurt(source, amount * 0.5F);
+    	}
+    	   
+ 	   	return super.hurt(source, amount);
+    }
     
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called

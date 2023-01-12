@@ -477,7 +477,7 @@
 	"description.effect.mod_lavacow:corroded": "Increase income damage.",
 	"effect.mod_lavacow.soiled": "Soiled",
 	"effect.mod_lavacow.long_soiled": "Soiled",
-	"description.effect.mod_lavacow:soiled": "Prevent from eating or drinking.",
+	"description.effect.mod_lavacow:soiled": "Prevent from eating or drinking, and lower all healing received.",
 	"effect.mod_lavacow.infested": "Infested",
 	"effect.mod_lavacow.strong_infested": "Infested II",
 	"effect.mod_lavacow.long_infested": "Infested",

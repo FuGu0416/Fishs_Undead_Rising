@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDestroyCrops;
+import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
@@ -42,6 +44,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -177,7 +180,11 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
         if (super.doHurtTarget(entityIn)) {
         	this.attackTimer = 5;
         	this.level.broadcastEntityEvent(this, (byte)4);
-	        
+
+            if(entityIn instanceof LivingEntity && this.getSkin() == 2) {	            
+            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 8 * 20, 1));
+            }
+            
             return true;
         } else {
             return false;

@@ -203,6 +203,8 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
 	            
 	            if(this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, this.corrosive - 1));
+	            
+            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 8 * 20, 1));
             }
         }
 

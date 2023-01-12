@@ -117,13 +117,14 @@ public class PteraEntity extends FlyingMobEntity {
 	   
 	   return super.doHurtTarget(par1Entity);
    }
+   
    /**
     * Called when the entity is attacked.
     */
-   public boolean hurt(DamageSource source, float amount)
-   {
-       if(!this.getPassengers().isEmpty())
+   public boolean hurt(DamageSource source, float amount) {
+       if (!this.getPassengers().isEmpty()) {
     	   this.ejectPassengers();
+       }
     	   
 	   return super.hurt(source, amount);
    }

@@ -772,6 +772,10 @@ public class EventHandler {
     		}
     			
     	}
+    	
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED)) {
+    		event.setAmount(event.getAmount() * (1.0F - 0.25F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.SOILED).getAmplifier())));
+    	}    	
     }
     
     @SubscribeEvent

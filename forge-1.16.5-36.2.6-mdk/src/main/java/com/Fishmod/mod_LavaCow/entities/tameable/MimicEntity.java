@@ -184,10 +184,12 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get() * 0.5D);
         	this.setSilent(false);
+        	this.setHealth(this.getHealth() * 3.0F);
         } else {
         	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22D);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
+        	this.setHealth(this.getHealth() * 0.334F);
         }
 	}
 

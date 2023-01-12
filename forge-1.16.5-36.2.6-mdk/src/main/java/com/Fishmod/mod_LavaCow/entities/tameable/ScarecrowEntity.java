@@ -208,15 +208,21 @@ public class ScarecrowEntity extends FURTameableEntity {
 
                return ActionResultType.CONSUME;
             }
-    	} else if (this.isTame() && this.isOwnedBy(player) && !this.isVehicle() && player.getPassengers().get(0) instanceof RavenEntity) {
-    		Entity passenger = player.getPassengers().get(0);
-    		passenger.removeVehicle();
-    		passenger.startRiding(this, true);
-    		
+    	} else if (this.isTame() && this.isOwnedBy(player) && !this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
+    		for(Entity passenger : player.getPassengers()) {
+    			if (passenger instanceof RavenEntity) {
+    	    		passenger.removeVehicle();
+    	    		passenger.startRiding(this, true);
+    			}
+    		}
+  		
     		return ActionResultType.SUCCESS;
-    	} else if (this.isTame() && this.isOwnedBy(player) && this.isVehicle()) {
-    		Entity passenger = this.getPassengers().get(0);
-    		passenger.removeVehicle();
+    	} else if (this.isTame() && this.isOwnedBy(player) && this.isVehicle() && this.hasPassenger(RavenEntity.class)) {
+    		for(Entity passenger : this.getPassengers()) {
+    			if (passenger instanceof RavenEntity) {
+    	    		passenger.removeVehicle();
+    			}
+    		}
     		
     		return ActionResultType.SUCCESS;
     	}
