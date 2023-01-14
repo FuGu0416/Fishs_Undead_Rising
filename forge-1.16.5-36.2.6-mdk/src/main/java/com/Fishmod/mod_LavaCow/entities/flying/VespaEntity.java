@@ -24,12 +24,9 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -56,7 +53,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
+		//this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
@@ -111,7 +108,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.BEEF;
+        return false;//stack.getItem() == Items.BEEF;
     }
     
     @Override

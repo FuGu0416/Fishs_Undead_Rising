@@ -476,6 +476,7 @@
 	"effect.mod_lavacow.long_corroded": "腐蝕",
 	"description.effect.mod_lavacow:corroded": "提高所受傷害",
 	"effect.mod_lavacow.soiled": "玷汙",
+	"effect.mod_lavacow.strong_soiled": "玷汙 II",
 	"effect.mod_lavacow.long_soiled": "玷汙",
 	"description.effect.mod_lavacow:soiled": "防止進食或飲用，並降低醫療回復量",
 	"effect.mod_lavacow.infested": "感染",
