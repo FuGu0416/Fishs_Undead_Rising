@@ -66,6 +66,48 @@
                             }
                         }
                     ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "mod_lavacow:feather_black",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "mod_lavacow:diseased_wheat",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -76,12 +118,12 @@
                 {
                     "type": "item",
                     "weight": 1,
-                    "name": "mod_lavacow:scarecrowhead_straw",
+                    "name": "mod_lavacow:scarecrowhead_plague",
 					"conditions":[
                         {
 
                             "condition": "minecraft:random_chance_with_looting",
-                            "chance": 0.1,
+                            "chance": 0.25,
                             "looting_multiplier": 0.05
                         }
                     ]
