@@ -204,13 +204,12 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SludgeLord_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
-    	//TO BE ADDED
- 	   	/*if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.HOT)
+ 	   	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.HOT)
  			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.DRY)
  			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.SANDY)
  			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.OVERWORLD)) {
 		   this.setSkin(1);
- 	   	}*/
+ 	   	}
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }

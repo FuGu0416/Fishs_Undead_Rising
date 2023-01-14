@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.util.ActionResultType;
@@ -44,10 +45,11 @@ public class FURItem extends Item {
 	}
 	
 	public FURItem(Properties p_i48487_1_, int TooltipIn) {
-		super(p_i48487_1_);
-		this.UseDuration = 32;
-		this.UseAction = net.minecraft.item.UseAction.EAT;
-		this.Tooltip = TooltipIn;
+		this(p_i48487_1_, 32, net.minecraft.item.UseAction.EAT, TooltipIn);
+	}
+	
+	public FURItem(Properties p_i48487_1_) {
+		this(p_i48487_1_, 0);
 	}
 
 	@Override
@@ -99,6 +101,17 @@ public class FURItem extends Item {
     	
         return ActionResultType.FAIL;
 	}
+    
+    @Override
+    public int getBurnTime(ItemStack itemStack, @Nullable IRecipeType<?> recipeType) {
+    	if(itemStack.getItem().equals(FURItemRegistry.BURNTOVIPOSITOR)) {
+    		return 6400;
+    	} else if(itemStack.getItem().equals(FURItemRegistry.IMP_HORN)) {
+    		return 3200;
+    	} else {
+    		return super.getBurnTime(itemStack, recipeType);
+    	}
+    }
  
 	@Override
     @OnlyIn(Dist.CLIENT)

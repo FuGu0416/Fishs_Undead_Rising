@@ -95,7 +95,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, /*TO BE ADDED Integer.valueOf(this.getRandom().nextFloat() < 0.05F ? 2 : 0*/Integer.valueOf(0));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextFloat() < 0.05F ? 2 : 0));
 	}
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {

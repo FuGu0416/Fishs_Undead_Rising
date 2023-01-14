@@ -169,13 +169,12 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SLUDGELORD, FURConfig.pSpawnRate_SludgeLord.get(), 1, 2));
 		}		
 
-		//TO BE ADDED
-		/*if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+		if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.HOT) ||
 				BiomeDictionary.getTypes(biomeKey).contains(Type.DRY) ||
 				BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SLUDGELORD, FURConfig.pSpawnRate_SludgeLord.get(), 1, 2));
-		}*/		
+		}	
 		
 		if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.SPOOKY) ||

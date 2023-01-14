@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.world.World;
 
@@ -38,5 +41,10 @@ public class MoltenBeefItem extends FlintAndSteelItem {
 	@Override
     public UseAction getUseAnimation(ItemStack stack) {
         return UseAction.BLOCK;
+    }
+	
+    @Override
+    public int getBurnTime(ItemStack itemStack, @Nullable IRecipeType<?> recipeType) {
+        return 3200;
     }
 }

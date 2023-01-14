@@ -104,7 +104,7 @@ public class FURItemRegistry {
 	public static final Item MIMIC_CLAW_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:mimic_claw_cooked");
 	public static final Item SILKY_SLUDGE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:silky_sludge");
 	public static final Item SLUDGE_WAND = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
-	public static final Item BURNTOVIPOSITOR = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant()).setRegistryName("mod_lavacow:burntovipositor");
+	public static final Item BURNTOVIPOSITOR = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant()).setRegistryName("mod_lavacow:burntovipositor");
 	public static final Item WAR = new FURRangedItem("mod_lavacow:war", Items.FIRE_CHARGE, FUREntityRegistry.WAR_SMALL_FIREBALL, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(384));
 	public static final Item MOLTENPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).setNoRepair().fireResistant(), "mod_lavacow:moltenpan", ItemTier.DIAMOND, 1, -3.0F, Items.GUNPOWDER);
 	public static final Item FELARMOR_HELMET = new FelArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant(), 0.2F).setRegistryName("mod_lavacow:felarmor_helmet");
@@ -163,7 +163,7 @@ public class FURItemRegistry {
 	public static final Item SKELETONKING_MACE = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant()), "mod_lavacow:skeletonking_mace", ItemTier.DIAMOND, 12, -3.2F, FURItemRegistry.HATRED_SHARD);
 	public static final Item PIRANHA_BUCKET = new FishBucketItem(() -> FUREntityRegistry.PIRANHA, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:piranha_bucket");
 	public static final Item SWARMER_BUCKET = new FishBucketItem(() -> FUREntityRegistry.SWARMER, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:swarmer_bucket");
-	public static final Item IMP_HORN = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:imp_horn");
+	public static final Item IMP_HORN = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:imp_horn");
 	public static final Item CHITINARMOR_HELMET = new ChitinArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_helmet");
 	public static final Item CHITINARMOR_CHESTPLATE = new ChitinArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_chestplate");
 	public static final Item CHITINARMOR_LEGGINGS = new ChitinArmorItem(EquipmentSlotType.LEGS, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:chitinarmor_leggings");
