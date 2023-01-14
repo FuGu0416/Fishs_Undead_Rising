@@ -75,7 +75,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
      */
     @Override
     public double getPassengersRidingOffset() {
-        return (double)this.getBbHeight() * 1.3D;
+        return (double)this.getBbHeight() * 0.9D;
     }
     
     @Override

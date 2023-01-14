@@ -116,12 +116,12 @@ public class VespaEntity extends RidableFlyingMobEntity {
     
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
-    	return p_213348_2_.height * 0.35F;
+    	return p_213348_2_.height * 0.45F;
     }
     
     @Override
 	public int abilityCooldown() {
-    	return 40;
+    	return 30;
     }
     
     @Override
@@ -229,6 +229,11 @@ public class VespaEntity extends RidableFlyingMobEntity {
         compound.putInt("Variant", getSkin());
     }
 	
+	@Override
+	public int getAmbientSoundInterval() {
+		return 1000;
+	}
+	
 	public SoundCategory getSoundCategory() {
 		return SoundCategory.HOSTILE;
 	}
@@ -251,7 +256,9 @@ public class VespaEntity extends RidableFlyingMobEntity {
 	
 	@Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-    	this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
+		if (this.getLandTimer() > 10) {
+			this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
+		}
 	}
 	
     /**

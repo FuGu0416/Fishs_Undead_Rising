@@ -40,7 +40,9 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
     public ModelRenderer UAbdomen3;
     public ModelRenderer UAbdomen4;
     public ModelRenderer Stinger;
-
+	private final ModelRenderer saddle;
+	private final ModelRenderer saddle_top;
+	
     public VespaModel() {
         this.texWidth = 128;
         this.texHeight = 64;
@@ -92,11 +94,11 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
         this.Eye_r = new ModelRenderer(this, 8, 22);
         this.Eye_r.setPos(-4.0F, -1.0F, -10.0F);
         this.Eye_r.addBox(-4.0F, -2.0F, -2.0F, 4, 4, 4, 0.0F);
-        this.Throax_base = new ModelRenderer(this, 0, 44);
+        this.Throax_base = new ModelRenderer(this, 38, 14);
         this.Throax_base.mirror = true;
-        this.Throax_base.setPos(0.0F, 12.0F, 3.5F);
+        this.Throax_base.setPos(0.0F, 12.0F, 7.5F);
         this.Throax_base.addBox(-6.0F, -6.0F, -4.0F, 12, 12, 8, 0.0F);
-        this.Stinger = new ModelRenderer(this, 50, 14);
+        this.Stinger = new ModelRenderer(this, 72, 8);
         this.Stinger.setPos(0.0F, 0.0F, -3.0F);
         this.Stinger.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 12, 0.0F);
         this.leg_l_1 = new ModelRenderer(this, 56, 0);
@@ -168,6 +170,16 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
         this.Waist.addChild(this.UAbdomen1);
         this.Throax_base.addChild(this.Wing_1_r);
         this.Throax_base.addChild(this.leg_l_0);
+        
+        this.saddle = new ModelRenderer(this);
+        this.saddle.setPos(0.0F, 12.0F, 1.5F);
+        this.Throax_0.addChild(this.saddle);
+        this.saddle.texOffs(34, 44).addBox(-6.0F, -19.0F, -5.0F, 12.0F, 1.0F, 7.0F, 0.0F, false);
+
+        this.saddle_top = new ModelRenderer(this);
+        this.saddle_top.setPos(0.0F, -18.5F, -1.5F);
+        this.saddle.addChild(this.saddle_top);
+        this.saddle_top.texOffs(66, 44).addBox(-6.0F, -2.5F, 2.5F, 12.0F, 2.0F, 1.0F, 0.0F, false);
     }
     
     @Override
@@ -203,7 +215,7 @@ public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implem
     	this.Wing_1_l.yRot = -0.40980330836826856F;
     	this.Wing_1_l.zRot = 0.5F * MathHelper.sin(4.0F * ageInTicks);
       
-    	this.Throax_base.y = 7.0F + (entityIn.isVehicle() ? 0.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
+    	this.Throax_base.y = 7.0F + (entityIn.isVehicle() ? 5.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
     	this.Stinger.z = -3.0F;
     	
     	this.setRotateAngle(leg_r_0, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
