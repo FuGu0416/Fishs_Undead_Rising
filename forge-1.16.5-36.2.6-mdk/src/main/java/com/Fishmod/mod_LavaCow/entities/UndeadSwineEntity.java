@@ -113,7 +113,7 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
     @Override
     public void push(Entity entityIn) {
     	super.push(entityIn);
-		if(this.entityAICharge != null && this.entityAICharge.isCharging()) {
+		if(this.entityAICharge != null && this.entityAICharge.isCharging() && !this.isAlliedTo(entityIn)) {
 			this.doHurtTarget(entityIn);
 			((LivingEntity)entityIn).knockback(2.0F * 0.5F, (double)MathHelper.sin(this.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.yRot * ((float)Math.PI / 180F))));
 		}

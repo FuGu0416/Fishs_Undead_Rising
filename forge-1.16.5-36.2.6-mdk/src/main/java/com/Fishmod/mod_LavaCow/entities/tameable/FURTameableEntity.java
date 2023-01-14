@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -16,8 +17,11 @@ import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -211,10 +215,23 @@ public class FURTameableEntity extends TameableEntity {
         }
     }   
     
+    public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
+        if (this.isInvulnerableTo(p_70097_1_)) {
+           return false;
+        } else {
+           Entity entity = p_70097_1_.getEntity();
+           this.setOrderedToSit(false);
+           if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+              p_70097_2_ = (p_70097_2_ + 1.0F) / 2.0F;
+           }
+
+           return super.hurt(p_70097_1_, p_70097_2_);
+        }
+	}
+    
     @Override
     @Nullable
-    public LivingEntity getOwner()
-    {
+    public LivingEntity getOwner() {
     	try
         {
             UUID uuid = this.getOwnerUUID();
@@ -242,14 +259,26 @@ public class FURTameableEntity extends TameableEntity {
      * the animal type)
      */
     @Override
-    public boolean isFood(ItemStack stack)
-    {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
     
 	@Override
-	public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+	public AgeableEntity getBreedOffspring(ServerWorld worldIn, AgeableEntity entity) {
 		return null;
+	}
+	
+	@Override
+	public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
+		if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
+			if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canHarmPlayer((PlayerEntity)target)) {
+				return false;
+			} else {
+				return !(target instanceof TameableEntity) || !((TameableEntity)target).isTame();
+			}
+		} else {
+			return false;
+		}
 	}
 	
     /**

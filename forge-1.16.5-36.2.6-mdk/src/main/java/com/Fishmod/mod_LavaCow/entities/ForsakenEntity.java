@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -66,7 +67,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
     @Override
     public void push(Entity entityIn) {
     	super.push(entityIn);
-		if(this.entityAICharge != null && this.isCharging()) {
+		if(this.entityAICharge != null && this.isCharging() && !this.isAlliedTo(entityIn)) {
 			this.doHurtTarget(entityIn);
 			entityIn.setDeltaMovement(entityIn.getDeltaMovement().add(this.getLookAngle().normalize().multiply(0.8D, 1.6D, 0.8D)));
 		}
@@ -139,7 +140,6 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
      */
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance p_180481_1_) {
-
     }
 	
 	@Override
@@ -234,6 +234,21 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
            return true;
         }
 	}
+    
+    @Override
+    public boolean isAlliedTo(Entity p_184191_1_) {
+        if (p_184191_1_ == null) {
+            return false;
+         } else if (p_184191_1_ == this) {
+            return true;
+         } else if (super.isAlliedTo(p_184191_1_)) {
+            return true;
+         } else if (p_184191_1_ instanceof SkeletonKingEntity || p_184191_1_ instanceof ForsakenEntity) {
+            return !(this.getTags().contains("FUR_tameSkeleton"));
+         } else {
+            return false;
+         }    	
+    }
     
 	/**
 	* Called when the entity is attacked.

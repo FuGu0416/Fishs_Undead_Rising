@@ -25,7 +25,7 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
     private static final ModelSkeletonKingMace SKELETONKING_MACE_MODEL = new ModelSkeletonKingMace();
     private static final ResourceLocation SKELETONKING_MACE_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
     private static final ModelVespaShield VESPA_SHIELD_MODEL = new ModelVespaShield();
-    private static final ResourceLocation VESPA_SHIELD_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa.png");
+    private static final ResourceLocation VESPA_SHIELD_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png");
     private static final ModelIllagerNose<?> ILLAGER_NOSE_MODEL = new ModelIllagerNose<>(1.0F);
     private static final ResourceLocation ILLAGER_NOSE_TEXTURE = new ResourceLocation("mod_lavacow:textures/armors/illager_nose.png");
     

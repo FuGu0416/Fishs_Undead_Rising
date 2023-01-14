@@ -79,7 +79,7 @@ public class PiranhaEntity extends SwarmerEntity {
     @Override
     public CreatureAttribute getMobType()
     {
-        return CreatureAttribute.UNDEFINED;
+        return CreatureAttribute.WATER;
     }
     
     protected ItemStack getBucketItemStack() {

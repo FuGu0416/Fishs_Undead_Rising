@@ -87,7 +87,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
     }
     
     protected void applyEntityAI() {
-    	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    	this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ForsakenEntity.class));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
     
@@ -242,6 +242,21 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	
 	public void makeStuckInBlock(BlockState p_213295_1_, Vector3d p_213295_2_) {
 	}
+	
+    @Override
+    public boolean isAlliedTo(Entity p_184191_1_) {
+        if (p_184191_1_ == null) {
+            return false;
+         } else if (p_184191_1_ == this) {
+            return true;
+         } else if (super.isAlliedTo(p_184191_1_)) {
+            return true;
+         } else if (p_184191_1_ instanceof SkeletonKingEntity || p_184191_1_ instanceof ForsakenEntity) {
+            return true;
+         } else {
+            return false;
+         }    	
+    }
 	
     /**
      * Called when the entity is attacked.
