@@ -300,8 +300,6 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         this.Waist0.addChild(this.Waist0_Twig0_l);
         this.Arm_r_Finger2_seg0.addChild(this.Arm_r_Finger2_Seg1);
         this.Arm_l_seg2.addChild(this.Arm_l_knot1);
-        this.Head_base.addChild(this.Head_bubble);
-        this.Head_base.addChild(this.Head_bubble_in);
         this.Waist1.addChild(this.Waist1_Twig0_l);
         this.Waist1.addChild(this.Leg_l_seg0);
         this.Arm_l_seg0.addChild(this.Arm_l_seg1);
@@ -312,6 +310,8 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
         this.Arm_r_Finger0_seg0.addChild(this.Arm_r_Finger0_Seg1);
         this.Waist0_Twig0_l.addChild(this.Waist0_Twig1_l);
         this.Head_base.addChild(this.Head);
+        this.Head_base.addChild(this.Head_bubble);
+        this.Head_base.addChild(this.Head_bubble_in);
         this.Arm_r_seg2.addChild(this.Arm_r_knot1);
         this.Head_base.addChild(this.Head_Twig2);
         this.Arm_r_seg2.addChild(this.Arm_r_Finger2_seg0);
@@ -355,7 +355,7 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     	this.Head_base.y = -3.4F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
     	this.Head.xRot = headPitch * 0.017453292F;
     	this.Head.yRot = netHeadYaw * 0.017453292F;        
-    	this.Head.y = -13.0F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
+    	this.Head.y = ((entityIn.getSkin() == 0) ? -13.0F : -11.0F) + 0.5F * MathHelper.sin(0.03F * ageInTicks);
         this.Jaw.xRot = 0.15F + 0.11F * MathHelper.sin(0.03F * ageInTicks);                 
     }
     

@@ -163,10 +163,23 @@ public class FURWorldRegistry {
 				BiomeDictionary.getTypes(biomeKey).contains(Type.CONIFEROUS)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WENDIGO, FURConfig.pSpawnRate_Wendigo.get(), 1, 1));
 		}
-
+		
 		if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
-				BiomeDictionary.getTypes(biomeKey).contains(Type.SPOOKY) ||
-				BiomeDictionary.getTypes(biomeKey).contains(Type.CONIFEROUS)) {
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SWAMP))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SLUDGELORD, FURConfig.pSpawnRate_SludgeLord.get(), 1, 2));
+		}		
+
+		//TO BE ADDED
+		/*if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.HOT) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.DRY) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.SANDY))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SLUDGELORD, FURConfig.pSpawnRate_SludgeLord.get(), 1, 2));
+		}*/		
+		
+		if(FURConfig.pSpawnRate_Raven.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				(BiomeDictionary.getTypes(biomeKey).contains(Type.SPOOKY) ||
+				BiomeDictionary.getTypes(biomeKey).contains(Type.CONIFEROUS))) {
 			event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(FUREntityRegistry.RAVEN, FURConfig.pSpawnRate_Raven.get(), 4, 8));
 		}
 

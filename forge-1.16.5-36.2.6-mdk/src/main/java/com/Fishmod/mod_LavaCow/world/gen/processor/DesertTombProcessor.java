@@ -28,7 +28,7 @@ public class DesertTombProcessor extends StructureProcessor {
     public static final Codec<DesertTombProcessor> CODEC = Codec.unit(() -> INSTANCE);
     
     private static List<EntityType<?>> Desert_Tomb_SpawnEntityID = Lists.newArrayList( 
-    		FUREntityRegistry.AVATON, FUREntityRegistry.MUMMY, EntityType.SPIDER, EntityType.CAVE_SPIDER, FUREntityRegistry.SCARAB
+    		FUREntityRegistry.AVATON, FUREntityRegistry.MUMMY, EntityType.SPIDER, EntityType.CAVE_SPIDER, /*TO BE ADDED FUREntityRegistry.SCARAB*/FUREntityRegistry.UNBURIED
     		);
     
     @Override

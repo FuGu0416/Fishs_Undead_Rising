@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -34,6 +35,9 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -48,8 +52,11 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class SludgeLordEntity extends MonsterEntity implements IAggressive {
+	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(SludgeLordEntity.class, DataSerializers.INT);
 	private int attackTimer;
 	private int RattackTimer;
 	protected int spellTicks;
@@ -58,6 +65,12 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         super(p_i48549_1_, worldIn);
         this.xpReward = 20;
     }
+	
+    @Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+	}
 	
     @Override
     protected void registerGoals() {
@@ -186,17 +199,33 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
      */
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SludgeLord_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SludgeLord_Attack.get());
     	this.setHealth(this.getMaxHealth());
-         	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+
+    	//TO BE ADDED
+ 	   	/*if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.HOT)
+ 			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.DRY)
+ 			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.SANDY)
+ 			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.OVERWORLD)) {
+		   this.setSkin(1);
+ 	   	}*/
+    	
+    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     
 	@Override
     public float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
         return p_213348_2_.height * 0.8F;
+    }
+	
+    public int getSkin() {
+        return this.getEntityData().get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+    	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
 	
 	public int getAttackTimer() {
@@ -245,6 +274,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.spellTicks = compound.getInt("SpellTicks");
+        this.setSkin(compound.getInt("Variant"));
     }
 
     /**
@@ -254,6 +284,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpellTicks", this.spellTicks);
+        compound.putInt("Variant", getSkin());
     }
     
 	public class AICastingApell extends Goal {

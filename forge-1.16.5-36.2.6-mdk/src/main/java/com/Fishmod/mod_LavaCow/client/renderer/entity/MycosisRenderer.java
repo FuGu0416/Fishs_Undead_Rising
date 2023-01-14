@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerMycosis;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.MycosisEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -58,7 +59,7 @@ public class MycosisRenderer extends MobRenderer<MycosisEntity, UnburiedModel<My
         }
 
         public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, MycosisEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if(entitylivingbaseIn.getSkin() != 0) {
+            if(entitylivingbaseIn.getSkin() != 0 && (!SpawnUtil.isDay(entitylivingbaseIn.level) || entitylivingbaseIn.level.dimensionType().hasCeiling() || !entitylivingbaseIn.level.canSeeSky(entitylivingbaseIn.blockPosition()))) {
 	        	IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(TEXTURES_EYE));
 	            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }
