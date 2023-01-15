@@ -8,11 +8,14 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * ModelVespa - Fish0416
  * Created using Tabula 7.0.1
  */
+@OnlyIn(Dist.CLIENT)
 public class VespaModel<T extends VespaEntity> extends FlyingBaseModel<T> implements IHasHead {
     public ModelRenderer Throax_base;
     public ModelRenderer Head;

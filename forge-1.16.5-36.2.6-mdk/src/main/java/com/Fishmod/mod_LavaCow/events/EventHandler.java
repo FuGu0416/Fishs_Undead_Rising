@@ -760,6 +760,8 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onEHeal(LivingHealEvent event) {
+    	float effectlevel = 1.0F;
+    	
     	if(event.getEntityLiving() instanceof PlayerEntity) {    		
     		boolean have_Heart = false;
   		
@@ -768,14 +770,16 @@ public class EventHandler {
 					have_Heart = true;
     		
     		if (have_Heart) {
-    			event.setAmount(event.getAmount() * 1.25F);
+    			effectlevel += 0.25F;
     		}
     			
     	}
     	
     	if (event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED)) {
-    		event.setAmount(event.getAmount() * (1.0F - 0.25F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.SOILED).getAmplifier())));
-    	}    	
+    		effectlevel -= 0.25F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.SOILED).getAmplifier());
+    	}  
+    	
+    	event.setAmount(event.getAmount() * effectlevel);
     }
     
     @SubscribeEvent

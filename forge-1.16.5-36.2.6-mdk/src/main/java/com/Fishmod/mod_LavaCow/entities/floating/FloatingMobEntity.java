@@ -192,6 +192,15 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
     @Override
 	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
 	}
+    
+	@Override
+	protected boolean makeFlySound() {
+		return true;
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+	}
 	
     /**
      * Handler for {@link World#setEntityState}

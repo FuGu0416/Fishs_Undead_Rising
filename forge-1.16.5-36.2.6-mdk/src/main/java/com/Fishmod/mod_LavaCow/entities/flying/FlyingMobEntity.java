@@ -232,6 +232,15 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 		super.makeStuckInBlock(p_213295_1_, p_213295_2_);
 	}
 	
+	@Override
+	protected boolean makeFlySound() {
+		return true;
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+	}
+	
 	protected double VehicleSpeedMod() {
 		return 1.0D;
 	}

@@ -117,10 +117,14 @@ public class WarpedFireflyModel<T extends WarpedFireflyEntity> extends FURBaseMo
 			this.base.y = 19.0F;
 			this.wing_r.zRot = 0.2497F;
 			this.wing_l.zRot = -0.2497F;
+			this.elytra_r.zRot = -0.1955F;
+			this.elytra_l.zRot = 0.1955F;
 		} else {
 			this.base.y = 19.0F - MathHelper.cos(ageInTicks * 0.18F) * 0.9F;
 			this.wing_r.zRot = MathHelper.cos(f) * (float)Math.PI * 0.1F;
 			this.wing_l.zRot = -this.wing_r.zRot;
+			this.elytra_r.zRot = -0.1955F + MathHelper.cos(f * 0.15F) * (float)Math.PI * 0.03F;
+			this.elytra_l.zRot = -this.elytra_r.zRot;
 		}
 		
 		this.SwingX_Sin(this.leg0_r, -1.0472F, ageInTicks, 0.2F, 0.15F, false, 0.0F);

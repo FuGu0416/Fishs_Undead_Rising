@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -211,6 +212,15 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
 		compound.putInt("glowPosY", this.getGlowingPos().getY());
 		compound.putInt("glowPosZ", this.getGlowingPos().getZ());
 		compound.putInt("glowTimer", this.glowTimer);
+	}
+	
+	@Override
+	protected boolean makeFlySound() {
+		return true;
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
 	}
 
 	@Override

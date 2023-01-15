@@ -28,6 +28,7 @@ import com.Fishmod.mod_LavaCow.entities.floating.FloatingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.GraveRobberGhostEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.SeaHagEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.WraithEntity;
+import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.FlyingMobEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.GhostRayEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.PteraEntity;
@@ -113,6 +114,7 @@ public class FUREntityRegistry {
 	public static final EntityType<WraithEntity> WRAITH = registerEntity(EntityType.Builder.of(WraithEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "wraith");
 	public static final EntityType<GhostSwarmerEntity> GHOSTSWARMER = registerEntity(EntityType.Builder.of(GhostSwarmerEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.5F).clientTrackingRange(8).fireImmune(), "ghostswarmer");
 	public static final EntityType<ScarabEntity> SCARAB = registerEntity(EntityType.Builder.of(ScarabEntity::new, EntityClassification.MONSTER).sized(1.0F, 0.6F).clientTrackingRange(8), "scarab");
+	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -171,6 +173,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(GRAVEROBBERGHOST, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(WRAITH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTSWARMER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GhostSwarmerEntity::checkWispSpawnRules);
+        EntitySpawnPlacementRegistry.register(BEELZEBUB, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -235,5 +238,6 @@ public class FUREntityRegistry {
         event.put(WRAITH, SeaHagEntity.createAttributes().build());
         event.put(GHOSTSWARMER, GhostSwarmerEntity.createAttributes().build());
         event.put(SCARAB, ScarabEntity.createAttributes().build());
+        event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
     }
 }

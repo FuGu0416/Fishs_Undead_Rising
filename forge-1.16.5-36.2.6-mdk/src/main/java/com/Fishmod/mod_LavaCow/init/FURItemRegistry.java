@@ -278,6 +278,8 @@ public class FURItemRegistry {
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobberghost"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wraith"));
     	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.GHOSTSWARMER, 0xA4F3F3, 0xC31919, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostswarmer"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.SCARAB, 0x282219, 0xFFCD55, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_scarab"));
+    	event.getRegistry().register(new ForgeSpawnEggItem(() -> FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_beelzebub"));
     	
     	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_skeletonking"));
     	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_wendigo"));
