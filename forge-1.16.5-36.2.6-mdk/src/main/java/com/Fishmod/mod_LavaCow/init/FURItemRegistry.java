@@ -196,6 +196,7 @@ public class FURItemRegistry {
 	public static final Item SCARAB_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:scarab_scepter", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.ANCIENT_AMBER);
 	public static final Item DISEASED_WHEAT = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:diseased_wheat");
 	public static final Item DISEASED_BREAD = new FURItem((new Item.Properties()).tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.6F).effect(() -> new EffectInstance(Effects.CONFUSION, 8*20, 0), 1.0F).effect(() -> new EffectInstance(Effects.POISON, 8*20, 1), 0.3F).effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 1), 0.3F).effect(() -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 16*20, 1), 0.3F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 16*20, 2), 0.3F).build()), 1).setRegistryName("mod_lavacow:diseased_bread");
+	public static final Item PHEROMONE_GLAND = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("mod_lavacow:pheromone_gland");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

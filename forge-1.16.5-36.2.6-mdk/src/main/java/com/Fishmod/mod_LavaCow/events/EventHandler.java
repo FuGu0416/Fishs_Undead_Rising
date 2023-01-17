@@ -779,6 +779,10 @@ public class EventHandler {
     		effectlevel -= 0.25F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.SOILED).getAmplifier());
     	}  
     	
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.FLOURISHED)) {
+    		effectlevel += 0.25F * (1 + event.getEntityLiving().getEffect(FUREffectRegistry.FLOURISHED).getAmplifier());
+    	} 
+    	
     	event.setAmount(event.getAmount() * effectlevel);
     }
     
@@ -796,8 +800,13 @@ public class EventHandler {
     public void onESetTarget(LivingSetAttackTargetEvent event) {    	
     	// Neutral
         if (event.getTarget() != null && event.getEntityLiving().getLastHurtByMob() != event.getTarget()) {
-        	if (event.getEntity() instanceof AbstractIllagerEntity && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE)) {
+        	if (event.getEntityLiving().getMobType().equals(CreatureAttribute.ILLAGER) && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE)) {
         		((MobEntity) event.getEntityLiving()).setTarget(null);
+        	}
+        	
+        	if (event.getEntityLiving().getMobType().equals(CreatureAttribute.ARTHROPOD) && event.getTarget().hasEffect(FUREffectRegistry.CHARMING_PHEROMONE)) {
+        		((MobEntity) event.getEntityLiving()).setTarget(null);
+        		((MobEntity) event.getEntityLiving()).getNavigation().moveTo(event.getTarget().getX(), event.getTarget().getY(), event.getTarget().getZ(), ((MobEntity) event.getEntityLiving()).getMoveControl().getSpeedModifier());
         	}
         }
         
