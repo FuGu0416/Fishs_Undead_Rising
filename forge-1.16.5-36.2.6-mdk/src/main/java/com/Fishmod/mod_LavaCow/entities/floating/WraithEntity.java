@@ -23,6 +23,8 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -53,6 +55,12 @@ public class WraithEntity extends FloatingMobEntity {
 	public float getBrightness() {
 		return 1.0F;
 	}
+    
+    @Nullable
+    @Override
+    protected IParticleData ParticleType() {
+    	return ParticleTypes.SOUL_FIRE_FLAME;
+    }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
