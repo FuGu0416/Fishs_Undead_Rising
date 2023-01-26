@@ -23,6 +23,8 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.FlyingPathNavigator;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -75,7 +77,7 @@ public class SkeletonKingCrownItem extends ArmorItem {
 					Skeleton.targetSelector.removeGoal(e);
 				}
 				
-	    		if(!Skeleton.getTags().contains("FUR_tameSkeleton")) {
+	    		if(!Skeleton.getTags().contains("FUR_tameSkeleton") && ((Skeleton.getNavigation() instanceof GroundPathNavigator) || (Skeleton.getNavigation() instanceof FlyingPathNavigator))) {
 	    			Skeleton.playSound(SoundEvents.EVOKER_CAST_SPELL, 1.0F, 1.0F);
 		            for(int i = 0; i < 16; ++i) {
 		                double d0 = Item.random.nextGaussian() * 0.02D;
