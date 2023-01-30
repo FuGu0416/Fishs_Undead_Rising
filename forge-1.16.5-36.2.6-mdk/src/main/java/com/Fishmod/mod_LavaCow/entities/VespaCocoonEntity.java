@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities;
 
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.entity.CreatureAttribute;
@@ -11,14 +12,14 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
-public class VespaCocoonEntity extends MonsterEntity {	
+public class VespaCocoonEntity extends FURTameableEntity {	
 	private int Lifespan = 8 * 20;
 	
 	public VespaCocoonEntity(EntityType<? extends VespaCocoonEntity> p_i48549_1_, World worldIn) {
@@ -27,13 +28,19 @@ public class VespaCocoonEntity extends MonsterEntity {
 	
 	@Override
     protected void registerGoals() {
+		super.registerGoals();
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MAX_HEALTH, 20.0D)
         		.add(Attributes.ARMOR, 10.0D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+    }
+    
+    protected boolean isCommandable() {
+    	return false;
     }
     
     /**
@@ -46,9 +53,12 @@ public class VespaCocoonEntity extends MonsterEntity {
         	this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F);
         	
     		if (!this.level.isClientSide) {		   			
-	    		VespaEntity pupa = FUREntityRegistry.VESPA.create(this.level);
-	    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-	    		this.level.addFreshEntity(pupa);
+	    		VespaEntity adult = FUREntityRegistry.VESPA.create(this.level);
+	    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+	    		this.level.addFreshEntity(adult);
+	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+	    			adult.tame((PlayerEntity) this.getOwner());
+	    		}
     		}
         	
     		this.remove();

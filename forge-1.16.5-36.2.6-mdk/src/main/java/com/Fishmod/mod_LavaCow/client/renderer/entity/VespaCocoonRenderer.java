@@ -32,10 +32,10 @@ public class VespaCocoonRenderer extends MobRenderer<VespaCocoonEntity, VespaCoc
     
     @Override
 	protected void scale(VespaCocoonEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-    	float f = (1.0f + 0.2f * MathHelper.sin(entity.tickCount * 0.25F));
+    	float f = (1.2f + 0.2f * MathHelper.sin(entity.tickCount * 0.25F));
     	
     	if(!entity.isBaby())
-    		matrixStackIn.scale(1.2F, f, 1.2F);
+    		matrixStackIn.scale(1.5F, f, 1.5F);
 	}
     
     @Nullable

@@ -199,6 +199,7 @@ public class FURTameableEntity extends TameableEntity {
     @Override
     public void tame(PlayerEntity player) {   	
     	super.tame(player);
+    	this.setPersistenceRequired();
     	this.doSitCommand(null);
     	this.doFollowCommand(null);
     }
