@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.init;
 import java.lang.reflect.Field;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.FURBrewingRecipe;
 import com.Fishmod.mod_LavaCow.effect.EffectCharmingPheromone;
 import com.Fishmod.mod_LavaCow.effect.EffectCorroded;
@@ -86,14 +87,17 @@ public class FUREffectRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        FUREffectRegistry.onInitItems();
+        
+        if (FURConfig.Potion_Enable.get()) {
+        	FUREffectRegistry.onInitItems();
+        }
     }
 
     public static ItemStack createPotion(Item potionType, Potion potion){
         return  PotionUtils.setPotion(new ItemStack(potionType), potion);
     }
     
-    public static void onInitItems(){
+    public static void onInitItems() {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.STRONG_REGENERATION)), Ingredient.of(new ItemStack(FURItemRegistry.HYPHAE)), new ItemStack(FURItemRegistry.FISSIONPOTION)));
         BrewingRecipeRegistry.addRecipe(Ingredient.of(new ItemStack(FURItemRegistry.FISSIONPOTION)), Ingredient.of(new ItemStack(FURItemRegistry.MOOTENHEART)), new ItemStack(FURItemRegistry.POTION_OF_MOOTEN_LAVA));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PHEROMONE_GLAND)), new ItemStack(FURItemRegistry.CHARMING_CATALYST)));

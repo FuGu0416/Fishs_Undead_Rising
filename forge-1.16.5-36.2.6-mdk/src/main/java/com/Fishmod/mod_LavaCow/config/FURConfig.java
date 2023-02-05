@@ -385,7 +385,7 @@ public final class FURConfig {
 		pSpawnRate_Swarmer = BUILDER.comment("Set the spawn rate of Swarmer [0-10000]").defineInRange("swarmer spawn rate", 5, 0, 10000);
 		Swarmer_Health = BUILDER.comment("Maximum Swarmer health [1-1000]").defineInRange("swarmer health", 8.0D, 1.0D, 1000.0D);
 		Swarmer_Attack = BUILDER.comment("Swarmer strength [1-1000]").defineInRange("swarmer attack", 1.0D, 1.0D, 1000.0D);
-		Piranha_AnimalAttack = BUILDER.comment("Should Piranha and Swarmer attack innocent animals [false/true]").define("piranha attacks animals", true);
+		Piranha_AnimalAttack = BUILDER.comment("Should Piranha and Swarmer attack injured animals [false/true]").define("piranha attacks animals", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Piranha");

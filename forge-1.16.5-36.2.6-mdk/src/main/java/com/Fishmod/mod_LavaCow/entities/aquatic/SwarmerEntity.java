@@ -38,10 +38,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -50,8 +52,7 @@ import net.minecraft.world.World;
 public class SwarmerEntity extends AbstractGroupFishEntity {
 	private boolean isAmmo = false;
 
-    public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn)
-    {
+    public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);   
     }
     
@@ -62,7 +63,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));      
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
         this.applyEntityAI();
-     }
+	}
     
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
@@ -90,12 +91,17 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     }
     
     @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return true;
+	}
+    
+    @Override
     public int getMaxSpawnClusterSize() {
        return 2;
     }
     
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return p_223316_4_.nextInt(15) == 0 && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return p_223316_4_.nextInt(15) == 0 && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
     }
     
     public int getMaxSchoolSize() {
@@ -103,6 +109,11 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     }
     
     protected void handleAirSupply(int p_209207_1_) {    	
+    }
+    
+    @Override
+    public void tick() {
+    	super.tick();
     }
     
     public boolean doHurtTarget(Entity p_70652_1_) {
@@ -185,6 +196,11 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     protected ItemStack getBucketItemStack() {
     	return new ItemStack(FURItemRegistry.SWARMER_BUCKET);
 	}
+ 
+    @Override
+    public SoundCategory getSoundSource() {
+        return SoundCategory.HOSTILE;
+    }
     
 	protected SoundEvent getAmbientSound() {
 		return FURSoundRegistry.SWARMER_AMBIENT;
@@ -206,8 +222,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
      * Get this Entity's CreatureAttribute
      */
     @Override
-    public CreatureAttribute getMobType()
-    {
+    public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
     }
 	
@@ -216,8 +231,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 		return this.getBbHeight() * 0.5F;
 	}
 	
-	public void setIsAmmo(boolean t)
-	{
+	public void setIsAmmo(boolean t) {
 		this.isAmmo = t;
 	}
        

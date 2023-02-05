@@ -219,13 +219,16 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
       
     	this.Throax_base.y = 7.0F + (entityIn.isVehicle() ? 5.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
     	
-    	this.setRotateAngle(this.leg_r_0, 0.0F, -0.7854F, -0.7854F);
+    	this.setRotateAngle(this.leg_r_0, 0.0F, -0.7854F, -0.7354F + 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI));
     	this.setRotateAngle(this.leg_r_1, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);
     	this.setRotateAngle(this.leg_r_2, 0.0F, 1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, -1.3658946726107624F);
-    	this.setRotateAngle(this.leg_l_0, 0.0F, 0.7854F, 0.7854F);
+    	this.setRotateAngle(this.leg_l_0, 0.0F, 0.7854F, 0.7354F - 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI));
     	this.setRotateAngle(this.leg_l_1, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
     	this.setRotateAngle(this.leg_l_2, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);    
-    	
+ 
+		this.leg_r_0_1.zRot = -1.2703F + 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.6F * (float)Math.PI);
+		this.leg_l_0_1.zRot = 1.2703F - 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.7F * (float)Math.PI);
+		
     	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
     		
@@ -245,6 +248,9 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
 	    	this.setRotateAngle(this.leg_l_0, -0.6863F, 0.4176F, -0.3257F);
 	    	this.setRotateAngle(this.leg_l_1, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
 	    	this.setRotateAngle(this.leg_l_2, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
+
+	    	this.setRotateAngle(this.leg_r_0_1, 0.0F, 0.0F, -1.3203F);
+	    	this.setRotateAngle(this.leg_l_0_1, 0.0F, 0.0F, 1.3203F);
 	    	
 	        this.leg_r_1.zRot = -0.58119464F;
 	        this.leg_l_1.zRot = 0.58119464F;
