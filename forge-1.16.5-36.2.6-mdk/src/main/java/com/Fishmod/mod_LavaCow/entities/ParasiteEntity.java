@@ -137,6 +137,24 @@ public class ParasiteEntity extends SpiderEntity {
         		this.remove();
         	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
+        } else if (this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
+        	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
+        	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
+
+        	if(!list.isEmpty()) {
+            	this.lifespawn = 5 * 20;
+        		
+        		if (!this.level.isClientSide) {		
+        			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+        			
+		    		VespaCocoonEntity pupa = FUREntityRegistry.BEELZEBUBPUPA.create(this.level);
+		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		this.level.addFreshEntity(pupa);
+        		}   
+        		
+        		this.remove();
+        	} else
+        		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         } else {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         }

@@ -98,16 +98,30 @@ public class FissionPotionItem extends FURItem {
 	    			}
 	    			
 			        flag = true;
-	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST) && target.getType().equals(FUREntityRegistry.PARASITE) && ((ParasiteEntity)target).getSkin() == 2) {
-	    			target.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
-        			
-		    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(playerIn.level);
-		    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
-		    		pupa.tame(playerIn);
-		    		playerIn.level.addFreshEntity(pupa);
-		    		target.remove();
-		    		
-	    			flag = true;
+	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST) && target.getType().equals(FUREntityRegistry.PARASITE)) {
+	    			VespaCocoonEntity pupa = null;
+	    			
+	    			switch(((ParasiteEntity)target).getSkin()) {
+	    				case 0:
+	    					pupa = FUREntityRegistry.BEELZEBUBPUPA.create(playerIn.level);
+	    					break;
+	    				case 2:
+	    					pupa = FUREntityRegistry.VESPACOCOON.create(playerIn.level);
+	    					break;
+	    				default:
+	    					break;
+	    			}
+	    			
+	    			if (pupa != null) {
+		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+	        			
+			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+			    		pupa.tame(playerIn);
+			    		playerIn.level.addFreshEntity(pupa);
+			    		target.remove();
+			    		
+		    			flag = true;
+	    			}
 	    		}             		
     		}
     		

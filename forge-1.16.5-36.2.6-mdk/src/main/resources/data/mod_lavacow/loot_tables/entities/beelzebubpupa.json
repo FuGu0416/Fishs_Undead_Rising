@@ -1,12 +1,12 @@
 {
     "pools":[
         {
-            "name":"mod_lavacow:vespacocoon",
+            "name":"mod_lavacow:beelzebub_pupa",
             "rolls":1,
             "entries":[
                 {
                     "type":"item",
-                    "name":"mod_lavacow:parasite_item_jungle",
+                    "name":"mod_lavacow:parasite_item_common",
                     "weight":1,
                     "functions":[
                         {
@@ -34,21 +34,21 @@
                 },
                 {
                     "type":"item",
-                    "name":"minecraft:string",
+                    "name":"mod_lavacow:chitin",
                     "weight":4,
                     "functions":[
                         {
                             "function":"minecraft:set_count",
                             "count":{
                                 "min":0,
-                                "max":4
+                                "max":2
                             }
                         },
                         {
                             "function":"minecraft:looting_enchant",
                             "count":{
                                 "min":0,
-                                "max":2
+                                "max":1
                             }
                         }
                     ]

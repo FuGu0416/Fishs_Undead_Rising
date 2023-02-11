@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -49,16 +50,26 @@ public class VespaCocoonEntity extends FURTameableEntity {
 	@Override
     public void aiStep() {
         super.aiStep();
-        if(this.tickCount >= Lifespan) {
+        
+        if (this.tickCount >= Lifespan) {
         	this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F);
         	
-    		if (!this.level.isClientSide) {		   			
-	    		VespaEntity adult = FUREntityRegistry.VESPA.create(this.level);
-	    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-	    		this.level.addFreshEntity(adult);
-	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
-	    			adult.tame((PlayerEntity) this.getOwner());
-	    		}
+    		if (!this.level.isClientSide) {		
+    			if (this.getType().equals(FUREntityRegistry.VESPACOCOON)) {
+		    		VespaEntity adult = FUREntityRegistry.VESPA.create(this.level);
+		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		this.level.addFreshEntity(adult);
+		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    		}
+    			} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA)) {
+		    		BeelzebubEntity adult = FUREntityRegistry.BEELZEBUB.create(this.level);
+		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		this.level.addFreshEntity(adult);
+		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    		}    				
+    			}
     		}
         	
     		this.remove();

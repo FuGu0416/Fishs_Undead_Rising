@@ -240,5 +240,6 @@ public class FUREntityRegistry {
         event.put(GHOSTSWARMER, GhostSwarmerEntity.createAttributes().build());
         event.put(SCARAB, ScarabEntity.createAttributes().build());
         event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
+        event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());
     }
 }

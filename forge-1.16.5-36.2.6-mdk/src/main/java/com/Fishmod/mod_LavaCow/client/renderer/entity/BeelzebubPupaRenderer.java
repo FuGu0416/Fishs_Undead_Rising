@@ -32,10 +32,10 @@ public class BeelzebubPupaRenderer extends MobRenderer<VespaCocoonEntity, Beelze
     
     @Override
 	protected void scale(VespaCocoonEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-    	float f = (1.2f + 0.2f * MathHelper.sin(entity.tickCount * 0.25F));
+    	float f = (0.85f + 0.15f * MathHelper.sin(entity.tickCount * 0.25F));
     	
     	if(!entity.isBaby())
-    		matrixStackIn.scale(1.5F, f, 1.5F);
+    		matrixStackIn.scale(1.0F, f, 1.0F);
 	}
     
     @Nullable
