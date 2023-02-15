@@ -64,6 +64,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
@@ -303,6 +305,15 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
     	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    }
+    
+    @Override
+    public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
+    	if (p_205022_2_.getBrightness(LightType.BLOCK, p_205022_1_) > 11) {
+    		return -1.0F;
+    	} else {
+    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    	}
     }
     
     protected PathNavigator createNavigation(World p_175447_1_) {

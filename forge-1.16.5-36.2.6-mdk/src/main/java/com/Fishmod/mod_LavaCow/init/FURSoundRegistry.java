@@ -130,6 +130,10 @@ public class FURSoundRegistry {
 	public static final SoundEvent SCARAB_AMBIENT = addSoundEvent("scarab_ambient");
 	public static final SoundEvent SCARAB_HURT = addSoundEvent("scarab_hurt");
 	public static final SoundEvent SCARAB_DEATH = addSoundEvent("scarab_death");
+
+	public static final SoundEvent BEELZEBUB_AMBIENT = addSoundEvent("beelzebub_ambient");
+	public static final SoundEvent BEELZEBUB_HURT = addSoundEvent("beelzebub_hurt");
+	public static final SoundEvent BEELZEBUB_DEATH = addSoundEvent("beelzebub_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);

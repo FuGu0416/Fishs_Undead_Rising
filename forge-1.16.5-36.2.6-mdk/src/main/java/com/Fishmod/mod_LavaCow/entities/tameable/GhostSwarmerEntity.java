@@ -53,6 +53,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
 public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnimal {
@@ -278,6 +280,15 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
         super.addAdditionalSaveData(compound);
     }
 	
+	@Override
+    public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
+    	if (p_205022_2_.getBrightness(LightType.BLOCK, p_205022_1_) > 11) {
+    		return -1.0F;
+    	} else {
+    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    	}
+    }
+	
     /**
      * Get this Entity's EnumCreatureAttribute
      */
@@ -360,7 +371,6 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
             if (vector3d != null) {
                GhostSwarmerEntity.this.navigation.moveTo(GhostSwarmerEntity.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
             }
-
     	}
 
     	@Nullable

@@ -191,6 +191,12 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Scarab_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Scarab_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Scarab_Lifespan;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Beelzebub;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Beelzebub;
+	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Beelzebub_Attack_Zombie;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
@@ -536,6 +542,14 @@ public final class FURConfig {
 		Scarab_Lifespan = BUILDER.comment("Amber Scarab lifespan [1-10000]").defineInRange("amber scarab lifespan", 60, 0, 10000);
 		Scarab_Health = BUILDER.comment("Maximum Amber Scarab health [1-1000]").defineInRange("amber scarab health", 8.0D, 1.0D, 1000.0D);
 		Scarab_Attack = BUILDER.comment("Amber Scarab strength [1-1000]").defineInRange("amber scarab attack", 1.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+		
+		BUILDER.push("Beelzebub");
+		pSpawnRate_Beelzebub = BUILDER.comment("Set the spawn rate of Beelzebub [0-100]").defineInRange("beelzebub spawn rate", 10, 0, 100);
+		pEvolveRate_Beelzebub = BUILDER.comment("Set the chance of Beelzebub transformed from a Parasite [0-100]").defineInRange("beelzebub evolve rate", 5, 0, 100);
+		Beelzebub_Health = BUILDER.comment("Maximum Beelzebub health [1-1000]").defineInRange("beelzebub health", 40.0D, 1.0D, 1000.0D);
+		Beelzebub_Attack = BUILDER.comment("Beelzebub strength [1-1000]").defineInRange("beelzebub attack", 5.0D, 1.0D, 1000.0D);
+		Beelzebub_Attack_Zombie = BUILDER.comment("Should Beelzebub attack zombies [false/true]").define("beelzebub attacks zombies", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

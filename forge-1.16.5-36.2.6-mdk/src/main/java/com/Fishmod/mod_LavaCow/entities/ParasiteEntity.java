@@ -64,7 +64,7 @@ public class ParasiteEntity extends SpiderEntity {
 	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.long_live = false;
-        this.lifespawn = 16*20; // Can live for 16s only, poor little one :(
+        this.lifespawn = 16 * 20; // Can live for 16s only, poor little one :(
         this.xpReward = 1;
     }
 	
@@ -137,7 +137,7 @@ public class ParasiteEntity extends SpiderEntity {
         		this.remove();
         	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
-        } else if (this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
+        } else if (this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get()) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 

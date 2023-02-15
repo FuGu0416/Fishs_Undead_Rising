@@ -64,7 +64,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof BeelzebubEntity);
         }).setUnseenMemoryTicks(160));
         
-        if (FURConfig.Vespa_Attack_Zombie.get()) {
+        if (FURConfig.Beelzebub_Attack_Zombie.get()) {
 	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
 	            return true;
 	        }).setUnseenMemoryTicks(160));
@@ -73,10 +73,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.1D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.08D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Vespa_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Vespa_Attack.get())
+        		.add(Attributes.MAX_HEALTH, FURConfig.Beelzebub_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Beelzebub_Attack.get())
         		.add(Attributes.FLYING_SPEED, 0.1D);
     }
 	
@@ -91,10 +91,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     	super.setTame(tamed);
         
         if (tamed) {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get() * 2.0D);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 2.0D);
         	this.setHealth(this.getHealth() * 2.0F);
         } else {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get());
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
         	this.setHealth(this.getHealth() * 0.5F);
         }
 	}
@@ -150,16 +150,16 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
  	   if (par1Entity instanceof ZombieEntity) {
- 		  this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get() * 2.0D);
+ 		  this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get() * 2.0D);
  	   } else {
-		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
+		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
  	   }
  	   
  	   if (super.doHurtTarget(par1Entity)) {
  		   if (par1Entity instanceof LivingEntity) {
  			   float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 
- 			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
+ 			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 6 * 20 * (int)local_difficulty, 2));
 				
  			   if(this.getRandom().nextInt(5) == 0) {
  				   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
@@ -191,8 +191,8 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
@@ -208,7 +208,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     
     @Override
 	protected double VehicleSpeedMod() {
-		return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
+		return (this.isInLava() || this.isInWater()) ? 0.2D : 1.8D;
 	}
 	
     /**
@@ -239,15 +239,15 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return FURSoundRegistry.VESPA_AMBIENT;
+		return FURSoundRegistry.BEELZEBUB_AMBIENT;
 	}
 
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return FURSoundRegistry.VESPA_HURT;
+		return FURSoundRegistry.BEELZEBUB_HURT;
 	}
 
 	protected SoundEvent getDeathSound() {
-		return FURSoundRegistry.VESPA_DEATH;
+		return FURSoundRegistry.BEELZEBUB_DEATH;
 	}
 	
 	protected SoundEvent getFlyingSound() {

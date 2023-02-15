@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.FleeSunGoal;
@@ -33,6 +34,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -201,6 +204,15 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
 	@Override
 	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
 	}
+	
+	@Override
+    public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
+    	if (p_205022_2_.getBrightness(LightType.BLOCK, p_205022_1_) > 11) {
+    		return -1.0F;
+    	} else {
+    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    	}
+    }
 	
     /**
      * Handler for {@link World#setEntityState}
@@ -377,15 +389,24 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             }
             
             for(int i = 0; i < 3; ++i) {
-               BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);
-               if (FloatingMobEntity.this.level.isEmptyBlock(blockpos1)) {
-                  FloatingMobEntity.this.moveControl.setWantedPosition((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 0.25D);
+            	Vector3d vector3d = this.findPos();
+               //BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);
+               if (vector3d != null) {
+                  FloatingMobEntity.this.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 0.25D);
                   if (FloatingMobEntity.this.getTarget() == null) {
-                     FloatingMobEntity.this.getLookControl().setLookAt((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                     FloatingMobEntity.this.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
                   }
                   break;
                }
             }
+        }
+        
+        @Nullable
+        private Vector3d findPos() {
+           Vector3d vector3d;
+           vector3d = FloatingMobEntity.this.getViewVector(0.0F);
+           Vector3d vector3d2 = RandomPositionGenerator.getAboveLandPos(FloatingMobEntity.this, 8, 7, vector3d, ((float)Math.PI / 2F), 2, 1);
+           return vector3d2 != null ? vector3d2 : RandomPositionGenerator.getAirPos(FloatingMobEntity.this, 8, 4, -2, vector3d, (double)((float)Math.PI / 2F));
         }
     }
 

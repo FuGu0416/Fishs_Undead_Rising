@@ -640,5 +640,26 @@
 		"category": "neutral",
 		"subtitle": "entity_scarab_death",
 		"sounds": [{"name": "mod_lavacow:entity/scarab/death","stream": true}]
+	},
+	
+	"beelzebub_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_ambient",
+		"sounds": ["mod_lavacow:entity/beelzebub/ambient0", "mod_lavacow:entity/beelzebub/ambient1"]
+	},
+	
+	"beelzebub_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_hurt",
+		"sounds": ["mod_lavacow:entity/beelzebub/hurt"]
+	},
+	
+	"beelzebub_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_death",
+		"sounds": [{"name": "mod_lavacow:entity/beelzebub/death","stream": true}]
 	}
 }

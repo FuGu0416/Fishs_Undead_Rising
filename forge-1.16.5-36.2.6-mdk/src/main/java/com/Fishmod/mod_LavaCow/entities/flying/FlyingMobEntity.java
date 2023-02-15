@@ -310,7 +310,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));                        
         return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
-    
+       
     class WanderGoal extends Goal {
         WanderGoal() {
            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
