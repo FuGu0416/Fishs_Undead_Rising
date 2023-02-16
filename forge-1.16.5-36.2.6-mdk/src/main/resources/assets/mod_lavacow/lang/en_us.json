@@ -273,10 +273,23 @@
 	"entity.mod_lavacow.graverobberghost": "Ghost of Grave Robber",
 	"entity.mod_lavacow.wraith": "Wraith",
 	"entity.mod_lavacow.ghostswarmer": "Ghost Swarmer",
+
+	"entity.mod_lavacow.warsmallfireball": "Fireball",
+	"entity.mod_lavacow.piranhalauncher": "Swarmer",
+	"entity.mod_lavacow.acidjet": "Gastric Fluid",
+	"entity.mod_lavacow.holygrenade": "Holy Grenade",
+	"entity.mod_lavacow.ghostbomb": "Ghost Bomb",
+	"entity.mod_lavacow.sonicbomb": "Sonic Bomb",
+	"entity.mod_lavacow.sludgejet": "Sludge Jet",
+	"entity.mod_lavacow.sandburst": "Sand Burst",
+	"entity.mod_lavacow.deathcoil": "Death Coil",
+	"entity.mod_lavacow.flamejet": "Flaming Fluid",
+	"entity.mod_lavacow.cactus_thorn": "Cactus Thorn",
 		
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
 	"entity_parasite_hurt": "Parasite hurts",
+	"entity_parasite_weave": "Parasite weaves",
 
 	"entity_foglet_ambient": "Foglet groans",
 	"entity_foglet_death": "Foglet dies",

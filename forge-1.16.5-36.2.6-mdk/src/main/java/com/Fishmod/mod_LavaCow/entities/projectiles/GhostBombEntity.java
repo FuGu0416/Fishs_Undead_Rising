@@ -55,8 +55,12 @@ public class GhostBombEntity extends ProjectileItemEntity {
 		super.onHit(result);
         if (!this.level.isClientSide()) {
         	WolfEntity Dummy = EntityType.WOLF.create(this.level);
-        	Dummy.setTame(true);
-        	Dummy.setOwnerUUID(this.getOwner().getUUID());
+        	
+        	if(this.getOwner() != null) {
+	        	Dummy.setTame(true);
+	        	Dummy.setOwnerUUID(this.getOwner().getUUID());
+        	}
+        	
         	Dummy.setCustomName(this.getName());
         	this.level.explode(Dummy, this.getX(), this.getY(), this.getZ(), 4.0F, false, Explosion.Mode.NONE);
         	Dummy.remove();
