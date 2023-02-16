@@ -4,7 +4,9 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
+import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.block.BlockState;
@@ -34,8 +36,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -45,6 +47,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BeelzebubEntity extends RidableFlyingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(BeelzebubEntity.class, DataSerializers.INT);
@@ -57,9 +61,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	protected void registerGoals() {
 		super.registerGoals();		
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
+		this.goalSelector.addGoal(4, new BeelzebubEntity.AIUseSpell());
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));	    
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof BeelzebubEntity);
         }).setUnseenMemoryTicks(160));
@@ -210,6 +215,22 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	protected double VehicleSpeedMod() {
 		return (this.isInLava() || this.isInWater()) ? 0.2D : 1.8D;
 	}
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+	@Override
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+		switch(id) {
+			case 10:
+				this.spellTicks = 30;
+				break;
+			default:
+				super.handleEntityEvent(id);
+				break;
+		}
+    }
 	
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -227,6 +248,100 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
+    }
+	
+	public class AIUseSpell extends Goal {
+        protected int spellWarmup;
+        protected int spellCooldown;
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean canUse() {
+            if (BeelzebubEntity.this.getTarget() == null) {
+                return false;
+            } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0) {
+                return false;
+            } else {
+                int i = BeelzebubEntity.this.level.getEntitiesOfClass(LilSludgeEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();
+            	return BeelzebubEntity.this.tickCount >= this.spellCooldown && i < FURConfig.SludgeLord_Ability_Max.get();
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return BeelzebubEntity.this.getTarget() != null && this.spellWarmup > 0;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.spellWarmup = this.getCastWarmupTime();
+            BeelzebubEntity.this.spellTicks = this.getCastingTime();
+            this.spellCooldown = BeelzebubEntity.this.tickCount + this.getCastingInterval();
+            SoundEvent soundevent = this.getSpellPrepareSound();
+            BeelzebubEntity.this.level.broadcastEntityEvent(BeelzebubEntity.this, (byte)10);         
+            if (soundevent != null) {
+                BeelzebubEntity.this.playSound(soundevent, 1.0F, 1.0F);
+            }
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            --this.spellWarmup;
+
+            if (this.spellWarmup == 0) {
+                this.castSpell();
+                BeelzebubEntity.this.playSound(BeelzebubEntity.this.getSpellSound(), 1.0F, 1.0F);
+            }
+        }
+
+        protected void castSpell() {
+            for (int i = 0; i < FURConfig.SludgeLord_Ability_Num.get(); ++i) {
+                BlockPos blockpos = BeelzebubEntity.this.blockPosition().offset(-2 + BeelzebubEntity.this.getRandom().nextInt(5), 1, -2 + BeelzebubEntity.this.getRandom().nextInt(5));
+                LilSludgeEntity entity = FUREntityRegistry.LILSLUDGE.create(BeelzebubEntity.this.level);
+                entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
+                entity.setHealth(entity.getMaxHealth());
+                entity.moveTo(blockpos, 0.0F, 0.0F);
+                entity.setOwnerUUID(BeelzebubEntity.this.getUUID());
+                entity.setTame(true);
+                entity.setLimitedLife(20 * (30 + BeelzebubEntity.this.getRandom().nextInt(90)));
+                
+                if(!BeelzebubEntity.this.level.isClientSide())
+                	BeelzebubEntity.this.level.addFreshEntity(entity);
+                
+                entity.setTarget(BeelzebubEntity.this.getTarget());
+                
+                for (int j = 0; j < 24; ++j) {
+                	double d0 = entity.getX() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+                	double d1 = entity.getY() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbHeight());
+                	double d2 = entity.getZ() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+                	BeelzebubEntity.this.level.addParticle(ParticleTypes.SPLASH, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
+
+        protected int getCastWarmupTime() {
+            return 80;
+        }
+
+        protected int getCastingTime() {
+            return 100;
+        }
+
+        protected int getCastingInterval() {
+        	return FURConfig.SludgeLord_Ability_Cooldown.get() * 20;
+        }
+
+        @Nullable
+        protected SoundEvent getSpellPrepareSound() {
+        	return SoundEvents.EVOKER_PREPARE_ATTACK;
+        }
     }
 	
 	@Override
@@ -249,6 +364,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	protected SoundEvent getDeathSound() {
 		return FURSoundRegistry.BEELZEBUB_DEATH;
 	}
+	
+    protected SoundEvent getSpellSound() {
+        return FURSoundRegistry.BEELZEBUB_SPELL;
+    }
 	
 	protected SoundEvent getFlyingSound() {
 		return FURSoundRegistry.VESPA_FLYING;

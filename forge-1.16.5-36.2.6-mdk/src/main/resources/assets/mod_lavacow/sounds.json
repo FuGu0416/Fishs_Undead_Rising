@@ -648,7 +648,14 @@
 		"subtitle": "entity_beelzebub_ambient",
 		"sounds": ["mod_lavacow:entity/beelzebub/ambient0", "mod_lavacow:entity/beelzebub/ambient1"]
 	},
-	
+
+	"beelzebub_spell":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_spell",
+		"sounds": ["mod_lavacow:entity/beelzebub/spell"]
+	},
+		
 	"beelzebub_hurt":
 	{
 		"category": "hostile",

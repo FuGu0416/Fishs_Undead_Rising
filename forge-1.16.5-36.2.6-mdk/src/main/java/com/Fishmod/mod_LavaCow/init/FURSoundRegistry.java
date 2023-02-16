@@ -132,6 +132,7 @@ public class FURSoundRegistry {
 	public static final SoundEvent SCARAB_DEATH = addSoundEvent("scarab_death");
 
 	public static final SoundEvent BEELZEBUB_AMBIENT = addSoundEvent("beelzebub_ambient");
+	public static final SoundEvent BEELZEBUB_SPELL = addSoundEvent("beelzebub_spell");
 	public static final SoundEvent BEELZEBUB_HURT = addSoundEvent("beelzebub_hurt");
 	public static final SoundEvent BEELZEBUB_DEATH = addSoundEvent("beelzebub_death");
 	

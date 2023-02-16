@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
+import java.util.EnumSet;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
@@ -12,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IEquipable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -32,6 +35,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
 	private static final DataParameter<Boolean> SADDLED = EntityDataManager.defineId(RidableFlyingMobEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> CONTROL_STATE = EntityDataManager.defineId(RidableFlyingMobEntity.class, DataSerializers.BYTE); // BIT(0): up, BIT(1): down, BIT(2): ability 
 	public int abilityCooldown;
+	protected int spellTicks;
 	
 	public RidableFlyingMobEntity(EntityType<? extends FlyingMobEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -44,6 +48,20 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
 		this.entityData.define(SADDLED, Boolean.valueOf(false));
 		this.entityData.define(CONTROL_STATE, Byte.valueOf((byte) 0));
 	}
+    
+    @Override
+    protected void registerGoals() {
+    	super.registerGoals();		
+        this.goalSelector.addGoal(1, new AICastingApell());
+    }
+    
+    public boolean isSpellcasting() {
+    	return this.spellTicks > 0;
+    }
+    
+    public int getSpellTicks() {
+        return this.spellTicks;
+    }
     
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
@@ -118,6 +136,11 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
 
         if (this.abilityCooldown > 0) {
         	this.abilityCooldown--;
+        }
+        
+        if (this.spellTicks > 0) {
+            --this.spellTicks;
+            this.setDeltaMovement(Vector3d.ZERO);
         }
         
     	if(this.isUp() && !this.isDown()) {
@@ -244,6 +267,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
+        this.spellTicks = compound.getInt("SpellTicks");
     }
 
     /**
@@ -253,5 +277,43 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Saddled", this.isSaddled());
+        compound.putInt("SpellTicks", this.spellTicks);
+    }
+	
+	public class AICastingApell extends Goal {	
+        public AICastingApell() {
+        	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean canUse() {
+            return RidableFlyingMobEntity.this.getSpellTicks() > 0;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            super.start();
+            RidableFlyingMobEntity.this.getNavigation().stop();
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            super.stop();
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (RidableFlyingMobEntity.this.getTarget() != null) {
+                RidableFlyingMobEntity.this.getLookControl().setLookAt(RidableFlyingMobEntity.this.getTarget(), (float)RidableFlyingMobEntity.this.getMaxHeadYRot(), (float)RidableFlyingMobEntity.this.getMaxHeadXRot());
+            }
+        }
     }
 }
