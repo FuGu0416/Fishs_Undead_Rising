@@ -196,6 +196,9 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Beelzebub;
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Num;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Max;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Beelzebub_Attack_Zombie;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
@@ -549,6 +552,9 @@ public final class FURConfig {
 		pEvolveRate_Beelzebub = BUILDER.comment("Set the chance of Beelzebub transformed from a Parasite [0-100]").defineInRange("beelzebub evolve rate", 5, 0, 100);
 		Beelzebub_Health = BUILDER.comment("Maximum Beelzebub health [1-1000]").defineInRange("beelzebub health", 40.0D, 1.0D, 1000.0D);
 		Beelzebub_Attack = BUILDER.comment("Beelzebub strength [1-1000]").defineInRange("beelzebub attack", 5.0D, 1.0D, 1000.0D);
+		Beelzebub_Ability_Num = BUILDER.comment("Set the number of Parasite summoned per cast [0-100]").defineInRange("beelzebub summon number", 6, 0, 100);
+		Beelzebub_Ability_Max = BUILDER.comment("Set the max number of Parasite summoned [0-100]").defineInRange("beelzebub summon max", 18, 0, 100);
+		Beelzebub_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Parasite [0-100]").defineInRange("beelzebub summon cooldown", 8, 0, 100);
 		Beelzebub_Attack_Zombie = BUILDER.comment("Should Beelzebub attack zombies [false/true]").define("beelzebub attacks zombies", true);
 		BUILDER.pop();
 		

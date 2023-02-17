@@ -3,8 +3,8 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
-import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -126,7 +126,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     
     @Override
 	public int abilityCooldown() {
-    	return 30;
+    	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
     }
     
     @Override
@@ -163,12 +163,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
  	   if (super.doHurtTarget(par1Entity)) {
  		   if (par1Entity instanceof LivingEntity) {
  			   float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-
  			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 6 * 20 * (int)local_difficulty, 2));
-				
- 			   if(this.getRandom().nextInt(5) == 0) {
- 				   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
- 			   }
  		   }
 
  		   return true;
@@ -250,6 +245,28 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         compound.putInt("Variant", getSkin());
     }
 	
+    public void castSpell() {
+        for (int i = 0; i < FURConfig.Beelzebub_Ability_Num.get(); ++i) {
+            BlockPos blockpos = this.blockPosition().offset(-2 + this.getRandom().nextInt(5), 1, -2 + this.getRandom().nextInt(5));
+            ParasiteEntity entity = FUREntityRegistry.PARASITE.create(this.level);
+            entity.moveTo(blockpos, 0.0F, 0.0F);
+            entity.setSkin(0);
+            entity.setSummoned(true);
+            
+            if(!this.level.isClientSide())
+            	this.level.addFreshEntity(entity);
+            
+            entity.setTarget(this.getTarget());
+            
+            for (int j = 0; j < 24; ++j) {
+            	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+            	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
+            	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+            	this.level.addParticle(ParticleTypes.FALLING_HONEY, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
+	
 	public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
@@ -263,8 +280,8 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0) {
                 return false;
             } else {
-                int i = BeelzebubEntity.this.level.getEntitiesOfClass(LilSludgeEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();
-            	return BeelzebubEntity.this.tickCount >= this.spellCooldown && i < FURConfig.SludgeLord_Ability_Max.get();
+                int i = BeelzebubEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();
+            	return BeelzebubEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Beelzebub_Ability_Max.get();
             }
         }
 
@@ -296,51 +313,26 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
-                this.castSpell();
-                BeelzebubEntity.this.playSound(BeelzebubEntity.this.getSpellSound(), 1.0F, 1.0F);
-            }
-        }
-
-        protected void castSpell() {
-            for (int i = 0; i < FURConfig.SludgeLord_Ability_Num.get(); ++i) {
-                BlockPos blockpos = BeelzebubEntity.this.blockPosition().offset(-2 + BeelzebubEntity.this.getRandom().nextInt(5), 1, -2 + BeelzebubEntity.this.getRandom().nextInt(5));
-                LilSludgeEntity entity = FUREntityRegistry.LILSLUDGE.create(BeelzebubEntity.this.level);
-                entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-                entity.setHealth(entity.getMaxHealth());
-                entity.moveTo(blockpos, 0.0F, 0.0F);
-                entity.setOwnerUUID(BeelzebubEntity.this.getUUID());
-                entity.setTame(true);
-                entity.setLimitedLife(20 * (30 + BeelzebubEntity.this.getRandom().nextInt(90)));
-                
-                if(!BeelzebubEntity.this.level.isClientSide())
-                	BeelzebubEntity.this.level.addFreshEntity(entity);
-                
-                entity.setTarget(BeelzebubEntity.this.getTarget());
-                
-                for (int j = 0; j < 24; ++j) {
-                	double d0 = entity.getX() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	double d1 = entity.getY() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbHeight());
-                	double d2 = entity.getZ() + (double)(BeelzebubEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	BeelzebubEntity.this.level.addParticle(ParticleTypes.SPLASH, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-                }
+            	BeelzebubEntity.this.castSpell();
+                BeelzebubEntity.this.playSound(BeelzebubEntity.this.getSpellSound(), 0.175F, 1.0F);
             }
         }
 
         protected int getCastWarmupTime() {
-            return 80;
+            return 10;
         }
 
         protected int getCastingTime() {
-            return 100;
+            return 10;
         }
 
         protected int getCastingInterval() {
-        	return FURConfig.SludgeLord_Ability_Cooldown.get() * 20;
+        	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
         }
 
         @Nullable
         protected SoundEvent getSpellPrepareSound() {
-        	return SoundEvents.EVOKER_PREPARE_ATTACK;
+        	return null;
         }
     }
 	
@@ -365,7 +357,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 		return FURSoundRegistry.BEELZEBUB_DEATH;
 	}
 	
-    protected SoundEvent getSpellSound() {
+    public SoundEvent getSpellSound() {
         return FURSoundRegistry.BEELZEBUB_SPELL;
     }
 	
@@ -392,6 +384,6 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	* Returns the volume for the sounds this mob makes.
 	*/
 	protected float getSoundVolume() {
-		return 0.7F;
+		return 0.5F;
 	}
 }

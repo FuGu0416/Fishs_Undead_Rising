@@ -134,18 +134,32 @@ public class EventHandler {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		ParasiteEntity passenger = ParasiteEntity.gotParasite(entity.getPassengers());
-    		if(event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))
-    			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
     		
-    		for(int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
+    		if (event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)) {
+    			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
+    		}
+    		
+    		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
         		ParasiteEntity ParasiteEntity = FUREntityRegistry.PARASITE.create(world);
-        		if(passenger != null)ParasiteEntity.setSkin(passenger.getSkin());
-        		else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.DRY)) ParasiteEntity.setSkin(1);
-        		else if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE) || killer instanceof VespaEntity) ParasiteEntity.setSkin(2);
-        		else ParasiteEntity.setSkin(0);
+        		
+        		if (passenger != null) { 
+        			ParasiteEntity.setSkin(passenger.getSkin());
+        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.DRY)) {
+        			ParasiteEntity.setSkin(1);
+        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE)) {
+        			ParasiteEntity.setSkin(2);
+        		} else if (killer != null && killer instanceof VespaEntity) {
+        			ParasiteEntity.setSkin(2);
+        			if(((VespaEntity)killer).isTame()) {
+        				ParasiteEntity.setSummoned(true);
+        			}
+        		} else {
+        			ParasiteEntity.setSkin(0);
+        		}
+        		
                 ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
                 world.addFreshEntity(ParasiteEntity);
     		}

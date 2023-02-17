@@ -203,7 +203,7 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {  	 	  	
     	float vibrate_rate = 0.5F;
-    	float i = (float)entityIn.getAttackTimer();
+    	float i = (float)entityIn.getSpellTicks() / 30.0F;
     	
     	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);    	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
@@ -228,8 +228,23 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
  
 		this.leg_r_0_1.zRot = -1.2703F + 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.6F * (float)Math.PI);
 		this.leg_l_0_1.zRot = 1.2703F - 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.7F * (float)Math.PI);
-		
-    	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
+
+    	this.Waist.zRot = 0.0F;
+    	this.UAbdomen1.zRot = 0.0F;
+    	this.UAbdomen2.zRot = 0.0F;
+    	this.UAbdomen3.zRot = 0.0F;
+    	
+    	if (i > 0.0F) {	    	
+	    	this.Waist.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen1.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen2.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
+	    	this.UAbdomen3.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;	
+	    	
+	    	this.Waist.zRot = 0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
+	    	this.UAbdomen1.zRot = -0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
+	    	this.UAbdomen2.zRot = 0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
+	    	this.UAbdomen3.zRot = -0.1F * MathHelper.sin(ageInTicks * vibrate_rate);    
+    	} else if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
     		
     		this.Throax_base.y = 12.0F;
@@ -272,28 +287,11 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
 	        this.leg_l_1.zRot += -f8;
 	        this.leg_r_2.zRot += f9;
 	        this.leg_l_2.zRot += -f9;	
-    	} else if (this.state.equals(FlyingBaseModel.State.FLYING)) {
+    	} else if (this.state.equals(FlyingBaseModel.State.FLYING) || this.state.equals(FlyingBaseModel.State.ATTACKING)) {
 	    	this.Waist.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen2.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen3.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;	   
-    	} else if (this.state.equals(FlyingBaseModel.State.ATTACKING)) {
-    		if (i > 8.0F) {
-    	    	this.Waist.xRot = GradientAnimation(0.0F, -1.0472F, (i - 8.0F) / 12.0F);
-    	    	this.UAbdomen1.xRot = GradientAnimation(0.2276F, -0.7323F, (i - 8.0F) / 12.0F);
-    	    	this.UAbdomen2.xRot = GradientAnimation(-0.2276F, -0.6203F, (i - 8.0F) / 12.0F);
-    	    	this.UAbdomen3.xRot = GradientAnimation(-0.2276F, -0.7512F, (i - 8.0F) / 12.0F);
-    		} else if (i > 5.0F) {
-    	    	this.Waist.xRot = -1.0472F;
-    	    	this.UAbdomen1.xRot = -0.7323F;
-    	    	this.UAbdomen2.xRot = -0.6203F;
-    	    	this.UAbdomen3.xRot = -0.7512F;
-    		} else if (i > 0.0F) {
-    	    	this.Waist.xRot = GradientAnimation_s(-1.0472F, 0.0F, i / 5.0F);
-    	    	this.UAbdomen1.xRot = GradientAnimation_s(-0.7323F, 0.2276F, i / 5.0F);
-    	    	this.UAbdomen2.xRot = GradientAnimation_s(-0.6203F, -0.2276F, i / 5.0F);
-    	    	this.UAbdomen3.xRot = GradientAnimation_s(-0.7512F, -0.2276F, i / 5.0F);
-    		}
     	} else if (this.state.equals(FlyingBaseModel.State.HOVERING)) {
 	    	this.Waist.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
 	    	this.UAbdomen1.xRot = -0.014F * (20 - entityIn.getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;

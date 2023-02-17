@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.SalamanderEntity;
 import net.minecraft.entity.Entity;
@@ -71,6 +72,13 @@ public class MessageMountSpecial {
 				((VespaEntity) entity).setAttackTimer(20);
 				((VespaEntity) entity).abilityCooldown = ((VespaEntity) entity).abilityCooldown();
 				entity.level.broadcastEntityEvent(entity, (byte)4);					
+			}
+			
+			if (entity instanceof BeelzebubEntity) {
+				((BeelzebubEntity) entity).abilityCooldown = ((BeelzebubEntity) entity).abilityCooldown();
+				((BeelzebubEntity) entity).castSpell();
+				entity.playSound(((BeelzebubEntity) entity).getSpellSound(), 0.175F, 1.0F);
+				entity.level.broadcastEntityEvent(entity, (byte)10);					
 			}
 		}
 	}

@@ -56,6 +56,7 @@ import net.minecraft.world.World;
 public class ParasiteEntity extends SpiderEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.INT);
 	private static final DataParameter<Direction> ATTACHED_BLK = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.DIRECTION);
+	private static final DataParameter<Boolean> SUMMONED = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.BOOLEAN);
 	private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 	private static final Item[] ParasiteDrop = { FURItemRegistry.PARASITE_COMMON, FURItemRegistry.PARASITE_DESERT, FURItemRegistry.PARASITE_JUNGLE, FURItemRegistry.PARASITE_COOKED };
 	public int lifespawn;
@@ -81,7 +82,9 @@ public class ParasiteEntity extends SpiderEntity {
 	
     protected void applyEntityAI() {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 0, true, true, (p_213440_0_) -> {
+            	return !p_213440_0_.isPassenger();
+        	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
 	  	      return p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() 
 	  	    		  && LootTableHandler.PARASITE_HOSTLIST.contains(p_210136_0_.getType().getRegistryName());
@@ -101,6 +104,7 @@ public class ParasiteEntity extends SpiderEntity {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(3)));
 		this.entityData.define(ATTACHED_BLK, Direction.DOWN);
+		this.entityData.define(SUMMONED, Boolean.valueOf(false));
 	}
 	
     @Nullable
@@ -119,7 +123,7 @@ public class ParasiteEntity extends SpiderEntity {
         	if(!long_live) {
         		this.lifespawn--;
         	}
-        } else if (this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
+        } else if (!this.isSummoned() && this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
@@ -137,7 +141,7 @@ public class ParasiteEntity extends SpiderEntity {
         		this.remove();
         	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
-        } else if (this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get()) {
+        } else if (!this.isSummoned() && this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get()) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
@@ -286,6 +290,14 @@ public class ParasiteEntity extends SpiderEntity {
     public void setSkin(int skinType) {
         this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
+    
+    public boolean isSummoned() {
+        return this.getEntityData().get(SUMMONED).booleanValue();
+    }
+
+    public void setSummoned(boolean i) {
+        this.getEntityData().set(SUMMONED, Boolean.valueOf(i));
+    }
 	
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -348,6 +360,16 @@ public class ParasiteEntity extends SpiderEntity {
     			return super.getDefaultLootTable();
     	}
     }
+    
+    @Override
+    protected boolean shouldDropExperience() {
+        return !this.isSummoned();
+	}
+
+    @Override
+	protected boolean shouldDropLoot() {
+        return !this.isSummoned();
+	}
     
     static class AttackGoal extends MeleeAttackGoal {
         public AttackGoal(ParasiteEntity p_i46676_1_) {
