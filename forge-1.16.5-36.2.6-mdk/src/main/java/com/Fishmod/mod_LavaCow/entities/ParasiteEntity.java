@@ -166,7 +166,7 @@ public class ParasiteEntity extends SpiderEntity {
         if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity && this.getVehicle().isAlive() && !this.level.isClientSide()) {
         	Entity mount = this.getVehicle();
         	
-        	if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED)) {
+        	if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED) && !this.isSummoned()) {
         		this.stopRiding();   		
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         	} else if (mount.isAlive() && mount.isOnFire()) {
@@ -240,7 +240,10 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
-			((LivingEntity) entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));			
+			if (!this.isSummoned()) {
+				((LivingEntity) entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));		
+			}
+			
 			if(this.getSkin() == 2) {
 				((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, 4*20, 0));
 			}
@@ -255,7 +258,9 @@ public class ParasiteEntity extends SpiderEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		if (entityIn instanceof LivingEntity && !(entityIn instanceof PlayerEntity) && LootTableHandler.PARASITE_HOSTLIST.contains(entityIn.getType().getRegistryName()) && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
-    		((LivingEntity) entityIn).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+			if (!this.isSummoned()) {
+				((LivingEntity) entityIn).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+			}
     		this.startRiding(entityIn);
             this.long_live = true;
         }
@@ -265,7 +270,9 @@ public class ParasiteEntity extends SpiderEntity {
 	public void playerTouch(PlayerEntity playerIn) {
 		super.playerTouch(playerIn);
 		if (!playerIn.isCreative() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
-			playerIn.addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+			if (!this.isSummoned()) {
+				playerIn.addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
+			}
     		this.startRiding(playerIn);
             this.long_live = true;
         } 	

@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -8,7 +10,6 @@ import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
@@ -42,7 +44,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -64,7 +65,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 		this.goalSelector.addGoal(4, new BeelzebubEntity.AIUseSpell());
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));	    
+	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));	   
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, ParasiteEntity.class, 0, true, true, (p_210136_0_) -> {
+	  	      return this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.2F;
+	  	   }));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof BeelzebubEntity);
         }).setUnseenMemoryTicks(160));
@@ -133,43 +137,45 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     public void tick() {
     	super.tick();
     	
-    	if(!this.onGround && this.tickCount % 20 == 0) {
+    	if (!this.onGround && this.tickCount % 20 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     	
-    	if (this.getAttackTimer() == 6 && this.abilityCooldown > 0 && this.deathTime <= 0) {
-			double d0 = this.getX() + 1.75D * this.getLookAngle().normalize().x;
-            double d1 = this.getY();
-            double d2 = this.getZ() + 1.75D * this.getLookAngle().normalize().z;
-    		      		        
-            for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(1.0D))) {
-            	if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
-            		this.doHurtTarget(entitylivingbase);
-                }
-            }	
-            
-            this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
+    	if (this.getHealth() <= BeelzebubEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
+    		List<ParasiteEntity> list = BeelzebubEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D));
+    		if (list.size() > 0) {
+    			this.setTarget(list.get(0));
+    		}
     	}
     }
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
- 	   if (par1Entity instanceof ZombieEntity) {
- 		  this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get() * 2.0D);
- 	   } else {
-		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
- 	   }
+    	if (par1Entity instanceof ZombieEntity) {
+    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get() * 2.0D);
+    	} else {
+    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
+    	}
  	   
- 	   if (super.doHurtTarget(par1Entity)) {
- 		   if (par1Entity instanceof LivingEntity) {
- 			   float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
- 			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 6 * 20 * (int)local_difficulty, 2));
- 		   }
-
- 		   return true;
- 	   } else {
-    	   return false;
-       }
+    	if (super.doHurtTarget(par1Entity)) {
+    		if (par1Entity instanceof ParasiteEntity) {
+    			par1Entity.remove();
+    			this.heal(this.getMaxHealth() * 0.05F);
+    		}
+ 		   
+    		if (par1Entity instanceof LivingEntity) {
+    			float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+    			((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 6 * 20 * (int)local_difficulty, 2));
+ 			   
+    			for (ParasiteEntity entity : BeelzebubEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D))) {
+    				entity.setTarget((LivingEntity) par1Entity);
+    			}
+    		}
+ 		   
+    		return true;
+    	} else {
+    		return false;
+    	}
 	}
 
     /**
@@ -277,7 +283,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         public boolean canUse() {
             if (BeelzebubEntity.this.getTarget() == null) {
                 return false;
-            } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0) {
+            } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0 || BeelzebubEntity.this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.4F) {
                 return false;
             } else {
                 int i = BeelzebubEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();
