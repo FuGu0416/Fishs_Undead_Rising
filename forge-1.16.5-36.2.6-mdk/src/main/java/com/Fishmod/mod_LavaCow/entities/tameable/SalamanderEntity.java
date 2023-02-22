@@ -175,7 +175,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	ItemStack itemstack = player.getItemInHand(hand);   	
         boolean flag = this.isFood(itemstack);
         
-        if (this.isTame() && itemstack.getItem() == Items.BLAZE_POWDER && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 1) {
+        if (this.isOwnedBy(player) && itemstack.getItem() == Items.BLAZE_POWDER && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 1) {
         	if (!player.isCreative()) {
         		itemstack.shrink(64);
         	}

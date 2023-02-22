@@ -1,7 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -9,6 +8,7 @@ import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
@@ -40,7 +40,9 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -53,9 +55,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BeelzebubEntity extends RidableFlyingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(BeelzebubEntity.class, DataSerializers.INT);
+	private static final DataParameter<Boolean> CAN_HARVEST = EntityDataManager.defineId(BeelzebubEntity.class, DataSerializers.BOOLEAN);
+	private int pheromoneTick;
 	
 	public BeelzebubEntity(EntityType<? extends BeelzebubEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+		pheromoneTick = 0;
 	}
 	
 	@Override
@@ -93,6 +98,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+    	this.getEntityData().define(CAN_HARVEST, Boolean.valueOf(false));
     }
     
     @Override
@@ -119,6 +125,33 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     }
     
     @Override
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    	ItemStack itemstack = player.getItemInHand(hand); 
+    	
+    	if (this.isOwnedBy(player) && itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive() && this.canHarvest() && !player.isCrouching()) {	 	
+        	this.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
+        	
+        	if (!player.level.isClientSide) {
+            	if (!player.isCreative()) {
+            		itemstack.shrink(1);
+            	}
+            	
+	            ItemStack itemstack2 = new ItemStack(FURItemRegistry.CHARMING_CATALYST);
+	            if (!player.inventory.add(itemstack2)) {
+	               player.drop(itemstack2, false);
+	            }
+        	}
+        	
+            this.setcanHarvest(false);
+            this.pheromoneTick = 0;
+            
+        	return ActionResultType.sidedSuccess(this.level.isClientSide);
+        }
+    	
+    	return super.mobInteract(player, hand);
+    }
+    
+    @Override
     public boolean isFood(ItemStack stack) {
         return stack.getItem() == Items.BEEF;
     }
@@ -139,6 +172,14 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     	
     	if (!this.onGround && this.tickCount % 20 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
+    	}
+    	
+    	if (this.pheromoneTick < 300 && this.tickCount % 20 == 0 && this.getRandom().nextFloat() <= 0.25F) {
+    		this.pheromoneTick++;
+    	}
+    	
+    	if (this.pheromoneTick >= 300) {
+    		this.setcanHarvest(true);
     	}
     	
     	if (this.getHealth() <= BeelzebubEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
@@ -212,6 +253,14 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
+    public boolean canHarvest() {
+    	return this.getEntityData().get(CAN_HARVEST).booleanValue();
+    }
+
+    public void setcanHarvest(boolean i) {
+    	this.getEntityData().set(CAN_HARVEST, Boolean.valueOf(i));
+    }
+    
     @Override
 	protected double VehicleSpeedMod() {
 		return (this.isInLava() || this.isInWater()) ? 0.2D : 1.8D;
@@ -240,6 +289,8 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
+        this.setcanHarvest(compound.getBoolean("CanHarvest"));
+        this.pheromoneTick = compound.getInt("PheromoneTick");
     }
 
     /**
@@ -248,7 +299,9 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	@Override
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
-        compound.putInt("Variant", getSkin());
+        compound.putInt("Variant", this.getSkin());
+        compound.putBoolean("CanHarvest", this.canHarvest());
+        compound.putInt("PheromoneTick", this.pheromoneTick);
     }
 	
     public void castSpell() {
