@@ -41,6 +41,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -453,6 +454,18 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     @Override
     public CreatureAttribute getMobType() {
         return CreatureAttribute.UNDEAD;
+    }
+    
+    @Nullable
+    @Override
+    protected ResourceLocation getDefaultLootTable() {
+    	switch(this.getSkin()) {
+    		case 1:
+    			return new ResourceLocation("mod_lavacow", "entities/sludgelord1");
+    		case 0:
+    		default:
+    			return super.getDefaultLootTable();
+    	}
     }
     
     /**

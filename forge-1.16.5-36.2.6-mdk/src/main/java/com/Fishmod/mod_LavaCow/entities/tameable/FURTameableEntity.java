@@ -88,7 +88,7 @@ public class FURTameableEntity extends TameableEntity {
 	
 	@Override
     protected boolean shouldDespawnInPeaceful() {
-	    return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
+	    return !this.isTame();
     }   
 	
 	@Override
@@ -254,6 +254,11 @@ public class FURTameableEntity extends TameableEntity {
             return null;
         }
     }
+    
+    @Override
+    public int getMaxHeadXRot() {
+        return this.isInSittingPose() ? 20 : super.getMaxHeadXRot();
+	}
     
     /**
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on

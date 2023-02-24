@@ -42,7 +42,8 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
 	private final ModelRenderer UAbdomen1;
 	private final ModelRenderer UAbdomen2;
 	private final ModelRenderer UAbdomen3;
-
+	public boolean isHarvestable = false;
+	
 	public BeelzebubModel() {
 		this.texWidth = 128;
 		this.texHeight = 128;
@@ -193,6 +194,16 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
         ImmutableList.of(this.Throax_base).forEach((modelRenderer) -> { 
             modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         });
+        
+        if(this.isHarvestable) {
+        	matrixStackIn.pushPose();
+        	matrixStackIn.scale(1.05F, 1.3F, 1.05F);
+        	this.Throax_base.translateAndRotate(matrixStackIn);
+        	this.Waist.translateAndRotate(matrixStackIn);
+        	matrixStackIn.translate(0.0D, -0.2D, -0.05D);
+        	this.UAbdomen1.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        	matrixStackIn.popPose();
+        }
     }
     
     /**

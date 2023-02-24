@@ -166,6 +166,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
     }
     
+    private int canHarvestLimit() {
+    	return 5;//300;
+    }
+    
     @Override
     public void tick() {
     	super.tick();
@@ -174,12 +178,20 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     	
-    	if (this.pheromoneTick < 300 && this.tickCount % 20 == 0 && this.getRandom().nextFloat() <= 0.25F) {
+    	if (this.isTame() && this.pheromoneTick < this.canHarvestLimit() && this.tickCount % 20 == 0 && this.getRandom().nextFloat() <= 0.25F) {
     		this.pheromoneTick++;
     	}
     	
-    	if (this.pheromoneTick >= 300) {
+    	if (this.pheromoneTick >= this.canHarvestLimit() && !this.canHarvest()) {
     		this.setcanHarvest(true);
+    		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+    		
+            for (int j = 0; j < 24; ++j) {
+            	double d0 = this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
+            	double d1 = this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight());
+            	double d2 = this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
+            	this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            }          
     	}
     	
     	if (this.getHealth() <= BeelzebubEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
@@ -315,14 +327,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             if(!this.level.isClientSide())
             	this.level.addFreshEntity(entity);
             
-            entity.setTarget(this.getTarget());
-            
-            for (int j = 0; j < 24; ++j) {
-            	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-            	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
-            	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-            	this.level.addParticle(ParticleTypes.FALLING_HONEY, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            }
+            entity.setTarget(this.getTarget());          
         }
     }
 	
