@@ -82,4 +82,17 @@ public class GastroAcidParticle extends SimpleAnimatedParticle {
 			return new GastroAcidParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 0.0F, 0.3F, 0.5F, 0.12F, this.sprites);
 		}
 	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public static class SapJetFactory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite sprites;
+
+		public SapJetFactory(IAnimatedSprite p_i50599_1_) {
+			this.sprites = p_i50599_1_;
+		}
+
+		public Particle createParticle(BasicParticleType p_199234_1_, ClientWorld p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
+			return new GastroAcidParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 1.0F, 0.68F, 0.20F, 0.19F, this.sprites);
+		}
+	}
 }

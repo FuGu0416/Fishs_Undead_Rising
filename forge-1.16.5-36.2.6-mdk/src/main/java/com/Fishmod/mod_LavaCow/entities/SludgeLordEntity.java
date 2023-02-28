@@ -32,6 +32,7 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -75,10 +76,8 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
 	
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AICastingApell());
-    	this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SLUDGEJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
-    	this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-    	this.goalSelector.addGoal(4, new SludgeLordEntity.AIUseSpell());
+        this.goalSelector.addGoal(1, new AICastingApell());    	
+    	this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));    	
     	if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -89,6 +88,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, true));
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -211,7 +211,14 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
  			   && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.OVERWORLD)) {
 		   this.setSkin(1);
  	   	}
-    	
+ 	   	
+ 	   	if (this.getSkin() == 1) {
+ 	   		this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SAPJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D));
+ 	   	} else {
+ 	   		this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SLUDGEJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
+ 	   		this.goalSelector.addGoal(4, new SludgeLordEntity.AIUseSpell());
+ 	   	}
+ 	   	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     

@@ -105,7 +105,7 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
     
     @Override
     protected Goal followGoal() {
-    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, true);
+    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, true, 24.0D);
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {

@@ -42,6 +42,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.GhostBombEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.HolyGrenadeEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.PiranhaLauncherEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SandBurstEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.SapJetEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SludgeJetEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SonicBombEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.WarSmallFireballEntity;
@@ -128,6 +129,7 @@ public class FUREntityRegistry {
 	public static final EntityType<DeathCoilEntity> DEATHCOIL = registerEntity(EntityType.Builder.<DeathCoilEntity>of(DeathCoilEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "deathcoil");
 	public static final EntityType<FlameJetEntity> FLAMEJET = registerEntity(EntityType.Builder.<FlameJetEntity>of(FlameJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "flamejet");
 	public static final EntityType<CactusThornEntity> CACTUS_THORN = registerEntity(EntityType.Builder.<CactusThornEntity>of(CactusThornEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "cactus_thorn");
+	public static final EntityType<SapJetEntity> SAPJET = registerEntity(EntityType.Builder.<SapJetEntity>of(SapJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sapjet");
 	
 	@SuppressWarnings("unchecked")
 	private static final <T extends Entity> EntityType<T> registerEntity(EntityType.Builder<T> builder, String entityName) {

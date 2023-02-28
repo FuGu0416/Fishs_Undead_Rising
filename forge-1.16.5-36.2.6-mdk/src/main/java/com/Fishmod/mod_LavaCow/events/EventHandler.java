@@ -184,7 +184,7 @@ public class EventHandler {
     }
     
     @SubscribeEvent
-    public void onEntityDrop(LivingDropsEvent event) {
+    public void onEntityDrop (LivingDropsEvent event) {
     	/**
          * Add bonus loot (Intestine) to various entities.
          **/

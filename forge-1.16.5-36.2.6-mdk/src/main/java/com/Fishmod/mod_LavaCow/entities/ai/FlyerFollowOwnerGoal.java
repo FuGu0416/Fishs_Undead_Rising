@@ -26,8 +26,9 @@ public class FlyerFollowOwnerGoal extends Goal {
 	private final float startDistance;
 	private float oldWaterCost;
 	private final boolean canFly;
-
-	public FlyerFollowOwnerGoal(TameableEntity p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
+	private final double teleportDistance;
+	
+	public FlyerFollowOwnerGoal(TameableEntity p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_, double teleportDisIn) {
 		this.tamable = p_i225711_1_;
 		this.level = p_i225711_1_.level;
 		this.speedModifier = p_i225711_2_;
@@ -35,6 +36,8 @@ public class FlyerFollowOwnerGoal extends Goal {
 		this.startDistance = p_i225711_4_;
 		this.stopDistance = p_i225711_5_;
 		this.canFly = p_i225711_6_;
+		this.teleportDistance = teleportDisIn;
+		
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 		if (!(p_i225711_1_.getNavigation() instanceof GroundPathNavigator) && !(p_i225711_1_.getNavigation() instanceof FlyingPathNavigator)) {
 			throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
@@ -84,7 +87,7 @@ public class FlyerFollowOwnerGoal extends Goal {
 		if (--this.timeToRecalcPath <= 0) {
 			this.timeToRecalcPath = 10;
 			if (!this.tamable.isLeashed() && !this.tamable.isPassenger()) {
-				if (this.tamable.distanceToSqr(this.owner) >= 576.0D) {
+				if (this.tamable.distanceToSqr(this.owner) >= this.teleportDistance * this.teleportDistance) {
 					this.teleportToOwner();
 				} else {
 					this.navigation.moveTo(this.owner.blockPosition().getX(), this.owner.blockPosition().above().above().getY(), this.owner.blockPosition().getZ(), this.speedModifier);

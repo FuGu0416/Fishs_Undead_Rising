@@ -245,17 +245,19 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
     	this.UAbdomen2.zRot = 0.0F;
     	this.UAbdomen3.zRot = 0.0F;
     	
-    	if (i > 0.0F) {	    	
-	    	this.Waist.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen1.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen2.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI;
-	    	this.UAbdomen3.xRot = 0.01F * MathHelper.cos(ageInTicks * vibrate_rate + 0.20F * (float)Math.PI) * (float)Math.PI;	
-	    	
+    	if (i > 0.0F) {	    		    	
 	    	this.Waist.zRot = 0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
 	    	this.UAbdomen1.zRot = -0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
 	    	this.UAbdomen2.zRot = 0.1F * MathHelper.sin(ageInTicks * vibrate_rate);
 	    	this.UAbdomen3.zRot = -0.1F * MathHelper.sin(ageInTicks * vibrate_rate);    
-    	} else if (this.state.equals(FlyingBaseModel.State.WAITING)) {
+    	} else {
+	    	this.Waist.zRot = 0.0F;
+	    	this.UAbdomen1.zRot = 0.0F;
+	    	this.UAbdomen2.zRot = 0.0F;
+	    	this.UAbdomen3.zRot = 0.0F;
+    	}
+    	
+    	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
     		
     		this.Throax_base.y = 12.0F;
@@ -278,6 +280,9 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
 	    	this.setRotateAngle(this.leg_r_0_1, 0.0F, 0.0F, -1.3203F);
 	    	this.setRotateAngle(this.leg_l_0_1, 0.0F, 0.0F, 1.3203F);
 	    	
+			this.leg_r_0_1.zRot = -1.2703F + 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.6F * (float)Math.PI);
+			this.leg_l_0_1.zRot = 1.2703F - 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.7F * (float)Math.PI);
+			
 	        this.leg_r_1.zRot = -0.58119464F;
 	        this.leg_l_1.zRot = 0.58119464F;
 	        this.leg_r_2.zRot = -0.58119464F;

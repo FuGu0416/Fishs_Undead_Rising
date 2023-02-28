@@ -121,7 +121,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     
     @Override
     protected Goal followGoal() {
-    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, false);
+    	return new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, false, 24.0D);
     }
     
     @Override

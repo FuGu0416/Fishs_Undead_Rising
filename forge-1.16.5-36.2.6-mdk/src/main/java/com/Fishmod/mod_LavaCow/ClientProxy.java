@@ -138,6 +138,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTUS_THORN, manager -> new CactusThornRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
@@ -174,5 +175,6 @@ public class ClientProxy extends CommonProxy {
 		instance.particleEngine.register(FURParticleRegistry.SLUDGE_JET, GastroAcidParticle.SludgeJetFactory::new);
 		instance.particleEngine.register(FURParticleRegistry.GHOST_FLAME, FlameParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.WITHER_FLAME, FlameParticle.Factory::new);
+		instance.particleEngine.register(FURParticleRegistry.SAP_JET, GastroAcidParticle.SapJetFactory::new);
     }
 }
