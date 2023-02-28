@@ -182,6 +182,6 @@ public class GhostRayEntity extends FlyingMobEntity {
 	* Returns the volume for the sounds this mob makes.
 	*/
 	protected float getSoundVolume() {
-		return 1.0F;
+		return 0.5F;
 	}
 }
