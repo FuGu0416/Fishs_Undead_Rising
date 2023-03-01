@@ -34,6 +34,8 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
 	private final ModelRenderer leg1_r;
 	private final ModelRenderer leg2_r;
 	private final ModelRenderer abdomen;
+	private final ModelRenderer saddle;
+	private final ModelRenderer saddle_top;
 
 	public EnigmothModel() {
 		texWidth = 128;
@@ -135,6 +137,16 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
 		base.addChild(abdomen);
 		setRotateAngle(abdomen, -0.3491F, 0.0F, 0.0F);
 		abdomen.texOffs(0, 34).addBox(-5.0F, -5.0F, -2.0F, 10.0F, 8.0F, 20.0F, 0.0F, false);
+		
+		saddle = new ModelRenderer(this);
+		saddle.setPos(-0.5F, 12.0F, 1.5F);
+		base.addChild(saddle);
+		saddle.texOffs(76, 4).addBox(-5.5F, -19.0F, -5.0F, 12.0F, 1.0F, 7.0F, 0.0F, false);
+
+		saddle_top = new ModelRenderer(this);
+		saddle_top.setPos(0.0F, -18.5F, -1.5F);
+		saddle.addChild(saddle_top);
+		saddle_top.texOffs(76, 12).addBox(-5.5F, -2.5F, 2.5F, 12.0F, 2.0F, 1.0F, 0.0F, false);
 	}
 
 
@@ -160,26 +172,25 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
     	
     	this.wing0_r.xRot = 0.0F;
     	this.wing0_r.yRot = 0.2087F;
-    	this.wing0_r.zRot = 0.5F * MathHelper.sin(1.0F * ageInTicks);
+    	this.wing0_r.zRot = 0.5F * MathHelper.sin(0.5F * ageInTicks);
     	this.wing1_r.xRot = 0.0F;
     	this.wing1_r.yRot = 0.4098F;
-    	this.wing1_r.zRot = 0.5F * MathHelper.sin(1.0F * ageInTicks + (float)Math.PI);
+    	this.wing1_r.zRot = 0.5F * MathHelper.sin(0.5F * ageInTicks + 0.15F * (float)Math.PI);
     	this.wing0_l.xRot = 0.0F;
     	this.wing0_l.yRot = -0.2087F;
-    	this.wing0_l.zRot = 0.5F * MathHelper.sin(1.0F * ageInTicks + (float)Math.PI);
+    	this.wing0_l.zRot = -0.5F * MathHelper.sin(0.5F * ageInTicks);
     	this.wing1_l.xRot = 0.0F;
     	this.wing1_l.yRot = -0.4098F;
-    	this.wing1_l.zRot = 0.5F * MathHelper.sin(1.0F * ageInTicks);
-
-      
+    	this.wing1_l.zRot = -0.5F * MathHelper.sin(0.5F * ageInTicks + 0.15F * (float)Math.PI);
+     
     	this.base.y = 7.0F + (entityIn.isVehicle() ? 5.0F : 5.0F * MathHelper.sin(ageInTicks * vibrate_rate));  	    	
     	
-    	this.setRotateAngle(this.leg0_r, 0.0F, -0.7854F, -0.7354F + 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI));
+    	this.setRotateAngle(this.leg0_r, 0.0F, 0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, -1.6845917940249266F);
     	this.setRotateAngle(this.leg1_r, 0.0F, 0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, -1.593485607070823F);
     	this.setRotateAngle(this.leg2_r, 0.0F, 1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, -1.3658946726107624F);
-    	this.setRotateAngle(this.leg0_l, 0.0F, 0.7854F, 0.7354F - 0.05F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI));
+    	this.setRotateAngle(this.leg0_l, 0.0F, -0.4553564018453205F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI, 1.6845917940249266F);
     	this.setRotateAngle(this.leg1_l, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
-    	this.setRotateAngle(this.leg2_l, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);    
+    	this.setRotateAngle(this.leg2_l, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);       
     	
     	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
     		vibrate_rate = 0.05F;
@@ -193,33 +204,43 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
     		this.setRotateAngle(wing1_r, 0.0F, 0.4098F, 0.0F);
     		this.setRotateAngle(wing1_l, 0.0F, -0.4098F, 0.0F);
     		
-    		this.setRotateAngle(this.leg0_r, -0.6863F, -0.4176F, 0.3257F);
+	    	this.setRotateAngle(this.leg0_r, 0.0F, -0.7853981633974483F, -0.7853981633974483F);
 	    	this.setRotateAngle(this.leg1_r, 0.0F, -0.39269908169872414F, -0.5811946409141118F);
 	    	this.setRotateAngle(this.leg2_r, 0.0F, 0.39269908169872414F, -0.5811946409141118F);
-	    	this.setRotateAngle(this.leg0_l, -0.6863F, 0.4176F, -0.3257F);
+	    	this.setRotateAngle(this.leg0_l, 0.0F, 0.7853981633974483F, 0.7853981633974483F);
 	    	this.setRotateAngle(this.leg1_l, 0.0F, 0.39269908169872414F, 0.5811946409141118F);
 	    	this.setRotateAngle(this.leg2_l, 0.0F, -0.39269908169872414F, 0.5811946409141118F);
 			
+	        this.leg0_r.zRot = -0.78539816F;
+	        this.leg0_l.zRot = 0.78539816F;
 	        this.leg1_r.zRot = -0.58119464F;
 	        this.leg1_l.zRot = 0.58119464F;
 	        this.leg2_r.zRot = -0.58119464F;
 	        this.leg2_l.zRot = 0.58119464F;
+	        this.leg0_r.yRot = -0.78539816F;
+	        this.leg0_l.yRot = 0.78539816F;
 	        this.leg1_r.yRot = -0.39269908F;
 	        this.leg1_l.yRot = 0.39269908F;
 	        this.leg2_r.yRot = 0.39269908F;
 	        this.leg2_l.yRot = -0.39269908F;
+	        float f3 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
 	        float f4 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * limbSwingAmount;
 	        float f5 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+	        float f7 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
 	        float f8 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float)Math.PI) * 0.4F) * limbSwingAmount;
 	        float f9 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float)Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+	        this.leg0_r.yRot += f3;
+	        this.leg0_l.yRot += -f3;
 	        this.leg1_r.yRot += f4;
 	        this.leg1_l.yRot += -f4;
 	        this.leg2_r.yRot += f5;
 	        this.leg2_l.yRot += -f5;
+	        this.leg0_r.zRot += f7;
+	        this.leg0_l.zRot += -f7;
 	        this.leg1_r.zRot += f8;
 	        this.leg1_l.zRot += -f8;
 	        this.leg2_r.zRot += f9;
-	        this.leg2_l.zRot += -f9;	
+	        this.leg2_l.zRot += -f9;			
     	} else if (this.state.equals(FlyingBaseModel.State.FLYING) || this.state.equals(FlyingBaseModel.State.ATTACKING)) {
 	    	this.abdomen.xRot = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI; 
     	} else if (this.state.equals(FlyingBaseModel.State.HOVERING)) {

@@ -340,6 +340,7 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
                 double d0 = vector3d.length();
                 if (d0 < FloatingMobEntity.this.getBoundingBox().getSize()) {
                    this.operation = MovementController.Action.WAIT;
+                   FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                    FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                    if (FloatingMobEntity.this.getTarget() == null) {

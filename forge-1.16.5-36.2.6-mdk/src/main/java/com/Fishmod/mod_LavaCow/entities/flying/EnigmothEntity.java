@@ -170,6 +170,16 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	return 5;//300;
     }
     
+	public void aiStep() {
+		if (this.level.isClientSide) {
+			for(int i = 0; i < 2; ++i) {
+				this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+			}
+		}
+		
+        super.aiStep();
+	}
+    
     @Override
     public void tick() {
     	super.tick();

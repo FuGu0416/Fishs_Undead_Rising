@@ -82,7 +82,7 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
         this.Hair_l = new ModelRenderer(this, 21, 48);
         this.Hair_l.mirror = true;
         this.Hair_l.setPos(4.0F, 0.1F, -4.0F);
-        this.Hair_l.addBox(-4.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+        this.Hair_l.addBox(-3.0F, -10.0F, 0.0F, 6, 10, 0, 0.0F);
         this.setRotateAngle(Hair_l, -1.1838568316277536F, 0.0F, 1.5707963267948966F);
         this.Hair_front = new ModelRenderer(this, 31, 37);
         this.Hair_front.setPos(0.0F, -3.0F, -5.0F);
@@ -93,7 +93,7 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
         this.Neck1.addBox(0.0F, 0.0F, 0.0F, 0, 0, 0, 0.0F);
         this.setRotateAngle(Neck1, -1.0471975511965976F, 0.045553093477052F, -0.18203784098300857F);
         this.Arm_r_Seg2 = new ModelRenderer(this, 0, 50);
-        this.Arm_r_Seg2.setPos(4.0F, 1.0F, 2.0F);
+        this.Arm_r_Seg2.setPos(0.0F, 1.0F, 2.0F);
         this.Arm_r_Seg2.addBox(0.0F, 0.0F, 0.0F, 0, 8, 6, 0.0F);
         this.Arm_r_Seg0 = new ModelRenderer(this, 48, 32);
         this.Arm_r_Seg0.setPos(-5.0F, -2.0F, 0.0F);
@@ -116,7 +116,7 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
         this.setRotateAngle(Body_lower_back, 0.27314402793711257F, 0.0F, 0.0F);
         this.Arm_l_Seg2 = new ModelRenderer(this, 0, 50);
         this.Arm_l_Seg2.mirror = true;
-        this.Arm_l_Seg2.setPos(-4.0F, 1.0F, 2.0F);
+        this.Arm_l_Seg2.setPos(0.0F, 1.0F, 2.0F);
         this.Arm_l_Seg2.addBox(0.0F, 0.0F, 0.0F, 0, 8, 6, 0.0F);
         this.Arm_l_Seg0 = new ModelRenderer(this, 48, 16);
         this.Arm_l_Seg0.setPos(5.0F, -2.0F, 0.0F);
@@ -178,11 +178,10 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     	SwingX_Sin(this.Hair_l, -1.1838568316277536F, ageInTicks, 0.19F, 0.07F, true, 0.0F);
     	this.SwingX_Sin(this.Jaw1, 0.091106186954104F, ageInTicks, -0.03F, 0.06F, false, 0.0F);
     	
-    	if(limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
+    	if (limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
     		this.Body_base.xRot -= 0.005F;
     		this.Head.xRot += 0.005F;
-    	}
-    	else if(limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
+    	} else if (limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
     		this.Body_base.xRot += 0.005F;
     		this.Head.xRot -= 0.005F;
     	}
@@ -198,15 +197,17 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     	boolean aggressive = entityIn.isAggressive();
     	float i = ((float)entityIn.getAttackTimer()) / 20.0F;
     	float j = ((float)entityIn.getSpellTicks()) / 30.0F;
-    	if(entityIn.isSpellcasting()) {
+    	if (entityIn.isSpellcasting()) {
     		Arm_r_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.yRot = 2.111673824703684F;
     		Arm_l_Seg0.yRot = -2.111673824703684F;
     		Arm_r_Seg0.zRot = 1.5627678282146893F;
     		Arm_l_Seg0.zRot = -1.5627678282146893F;
-    		if(this.Body_base.y > 5.0F)
+    		
+    		if (this.Body_base.y > 5.0F) {
     			this.Body_base.y -= 0.17F;
+    		}
     	} else if (i > 0) {
     		this.Jaw0.xRot = GradientAnimation((float)Math.toRadians(57.39D), (float)Math.toRadians(18.26D), i);
     		this.Body_chest.xRot = GradientAnimation((float)Math.toRadians(-2.61D), (float)Math.toRadians(44.35D), i);
@@ -219,18 +220,22 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     	} else if(aggressive) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);
-    		if(this.Body_base.y < 10.0F)
+    		
+    		if (this.Body_base.y < 10.0F) {
     			this.Body_base.y += 0.17F;
-    		else
-    			this.Body_base.y = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		} else {
+    			this.Body_base.y = 11.0F + MathHelper.sin(0.08F * ageInTicks);
+    		}
     	} else {
     		this.SwingX_Sin(this.Jaw0, 0.5918411493512771F, ageInTicks, -0.04F, 0.06F, false, 0.0F);
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
-    		if(this.Body_base.y < 10.0F)
+    		
+    		if (this.Body_base.y < 10.0F) {
     			this.Body_base.y += 0.17F;
-    		else
-    			this.Body_base.y = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		} else {
+    			this.Body_base.y = 11.0F + MathHelper.sin(0.08F * ageInTicks);
+    		}
     	}
     }
 

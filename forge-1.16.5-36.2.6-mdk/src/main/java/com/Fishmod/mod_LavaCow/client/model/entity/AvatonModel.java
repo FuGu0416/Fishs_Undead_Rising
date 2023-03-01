@@ -56,7 +56,7 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
         this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
         this.Arm_l_Seg2 = new ModelRenderer(this, 0, 50);
         this.Arm_l_Seg2.mirror = true;
-        this.Arm_l_Seg2.setPos(-4.0F, 1.0F, 2.0F);
+        this.Arm_l_Seg2.setPos(0.0F, 1.0F, 2.0F);
         this.Arm_l_Seg2.addBox(0.0F, 0.0F, 0.0F, 0, 8, 6, 0.0F);
         this.Arm_l_Seg0 = new ModelRenderer(this, 48, 16);
         this.Arm_l_Seg0.setPos(5.0F, -2.0F, 0.0F);
@@ -99,7 +99,7 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
         this.Head.setPos(0.0F, 0.0F, 0.0F);
         this.Head.addBox(-4.0F, -3.0F, -8.0F, 8, 7, 8, 0.0F);
         this.Arm_r_Seg2 = new ModelRenderer(this, 0, 50);
-        this.Arm_r_Seg2.setPos(4.0F, 1.0F, 2.0F);
+        this.Arm_r_Seg2.setPos(0.0F, 1.0F, 2.0F);
         this.Arm_r_Seg2.addBox(0.0F, 0.0F, 0.0F, 0, 8, 6, 0.0F);
         this.Neck0 = new ModelRenderer(this, 0, 26);
         this.Neck0.setPos(0.0F, -3.0F, 0.0F);
@@ -145,10 +145,10 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
     	SwingX_Sin(this.Hair_r, -1.4114477660878142F, ageInTicks, 0.09F, 0.067F, false, 0.25F * (float)Math.PI);
     	SwingX_Sin(this.Hair_l, -1.4114477660878142F, ageInTicks, 0.11F, 0.06F, true, 0.0F);
  
-    	if(limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
+    	if (limbSwingAmount < 0.08F && this.Body_base.xRot > 0.0F) {
     		this.Body_base.xRot -= 0.005F;
     		this.Head.xRot += 0.005F;
-    	} else if(limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
+    	} else if (limbSwingAmount >= 0.08F && this.Body_base.xRot < 0.35F) {
     		this.Body_base.xRot += 0.005F;
     		this.Head.xRot -= 0.005F;
     	}      
@@ -179,29 +179,35 @@ public class AvatonModel<T extends FloatingMobEntity> extends FURBaseModel<T> im
     	SwingY_Sin(this.Arm_r_Seg2, 0.0F, ageInTicks, 0.22F, 0.08F, false, 0.0F);
     	SwingY_Sin(this.Arm_l_Seg2, 0.0F, ageInTicks, 0.18F, 0.06F, true, 0.0F);
  	
-    	if(entityIn.isSpellcasting()) {
+    	if (entityIn.isSpellcasting()) {
     		Arm_r_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.xRot = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.yRot = 2.111673824703684F;
     		Arm_l_Seg0.yRot = -2.111673824703684F;
     		Arm_r_Seg0.zRot = 1.5627678282146893F;
     		Arm_l_Seg0.zRot = -1.5627678282146893F;
-    		if(this.Body_base.y > 5.0F)
+    		
+    		if (this.Body_base.y > 5.0F) {
     			this.Body_base.y -= 0.17F;
-    	} else if(entityIn.isAggressive()) {
+    		}
+    	} else if (entityIn.isAggressive()) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);
-    		if(this.Body_base.y < 10.0F)
+    		
+    		if (this.Body_base.y < 10.0F) {
     			this.Body_base.y += 0.17F;
-    		else
-    			this.Body_base.y = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		} else {
+    			this.Body_base.y = 11.0F + MathHelper.sin(0.08F * ageInTicks);
+    		}
     	} else {
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
-    		if(this.Body_base.y < 10.0F)
+    		
+    		if (this.Body_base.y < 10.0F) {
     			this.Body_base.y += 0.17F;
-    		else
-    			this.Body_base.y = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    		} else {
+    			this.Body_base.y = 11.0F + MathHelper.sin(0.08F * ageInTicks);
+    		}
     	}
     }
 

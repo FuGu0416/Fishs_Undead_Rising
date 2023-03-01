@@ -167,7 +167,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     }
     
     private int canHarvestLimit() {
-    	return 5;//300;
+    	return 300;
     }
     
     @Override
