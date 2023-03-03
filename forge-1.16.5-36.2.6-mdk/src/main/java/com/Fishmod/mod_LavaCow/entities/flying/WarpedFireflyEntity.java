@@ -23,6 +23,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
@@ -62,6 +63,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, EnigmothEntity.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.WARPED_FUNGUS, Items.WARPED_FUNGUS_ON_A_STICK), false));
 		this.goalSelector.addGoal(8, new WarpedFireflyEntity.WanderGoal());
 	}

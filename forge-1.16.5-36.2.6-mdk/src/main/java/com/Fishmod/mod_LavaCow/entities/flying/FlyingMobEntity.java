@@ -358,7 +358,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
          */
         public boolean canUse() {
             MovementController entitymovehelper = this.parentEntity.getMoveControl();
-            
+
             if (!entitymovehelper.hasWanted()) {
                 return true;
             } else if (this.parentEntity.getTarget() != null) {
@@ -368,6 +368,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
                 double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
                 double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+
                 return d3 < 1.0D || d3 > 3600.0D;
             }
         }
@@ -390,11 +391,11 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             double d2 = this.parentEntity.getZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             
             int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-            
+
             if (groundHeight > 0) {
 	            if (this.parentEntity.isInWaterRainOrBubble()) {
 	            	d1 = Math.min(d1, groundHeight + 3.0D);
-	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)FURConfig.FlyingHeight_limit.get() < d1) {
+	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < d1) {
 	            	d1 = Math.min(d1, groundHeight + FURConfig.FlyingHeight_limit.get());
 	            } else {
 	            	d1 = Math.max(d1, groundHeight + 3.0D);

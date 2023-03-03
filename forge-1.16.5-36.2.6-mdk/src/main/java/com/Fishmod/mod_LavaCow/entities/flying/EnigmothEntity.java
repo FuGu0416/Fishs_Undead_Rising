@@ -8,7 +8,6 @@ import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
-import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
@@ -24,7 +23,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
@@ -55,12 +53,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EnigmothEntity extends RidableFlyingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(EnigmothEntity.class, DataSerializers.INT);
-	private static final DataParameter<Boolean> CAN_HARVEST = EntityDataManager.defineId(EnigmothEntity.class, DataSerializers.BOOLEAN);
-	private int pheromoneTick;
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		pheromoneTick = 0;
 	}
 	
 	@Override
@@ -71,15 +66,12 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));	   
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, ParasiteEntity.class, 0, true, true, (p_210136_0_) -> {
-	  	      return this.getHealth() < EnigmothEntity.this.getMaxHealth() * 0.2F;
-	  	   }));
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof EnigmothEntity);
         }).setUnseenMemoryTicks(160));
         
         if (FURConfig.Beelzebub_Attack_Zombie.get()) {
-	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
+	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, WarpedFireflyEntity.class, false, (p_213440_0_) -> {
 	            return true;
 	        }).setUnseenMemoryTicks(160));
         }
@@ -98,7 +90,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
-    	this.getEntityData().define(CAN_HARVEST, Boolean.valueOf(false));
     }
     
     @Override
@@ -126,28 +117,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-    	ItemStack itemstack = player.getItemInHand(hand); 
-    	
-    	if (this.isOwnedBy(player) && itemstack.getItem() == Items.GLASS_BOTTLE && this.isAlive() && this.canHarvest() && !player.isCrouching()) {	 	
-        	this.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
-        	
-        	if (!player.level.isClientSide) {
-            	if (!player.isCreative()) {
-            		itemstack.shrink(1);
-            	}
-            	
-	            ItemStack itemstack2 = new ItemStack(FURItemRegistry.CHARMING_CATALYST);
-	            if (!player.inventory.add(itemstack2)) {
-	               player.drop(itemstack2, false);
-	            }
-        	}
-        	
-            this.setcanHarvest(false);
-            this.pheromoneTick = 0;
-            
-        	return ActionResultType.sidedSuccess(this.level.isClientSide);
-        }
-    	
     	return super.mobInteract(player, hand);
     }
     
@@ -166,10 +135,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
     }
     
-    private int canHarvestLimit() {
-    	return 5;//300;
-    }
-    
 	public void aiStep() {
 		if (this.level.isClientSide) {
 			for(int i = 0; i < 2; ++i) {
@@ -182,27 +147,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public void tick() {
-    	super.tick();
-    	
-    	if (!this.onGround && this.tickCount % 20 == 0) {
-    		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
-    	}
-    	
-    	if (this.isTame() && this.pheromoneTick < this.canHarvestLimit() && this.tickCount % 20 == 0 && this.getRandom().nextFloat() <= 0.25F) {
-    		this.pheromoneTick++;
-    	}
-    	
-    	if (this.pheromoneTick >= this.canHarvestLimit() && !this.canHarvest()) {
-    		this.setcanHarvest(true);
-    		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
-    		
-            for (int j = 0; j < 24; ++j) {
-            	double d0 = this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
-            	double d1 = this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight());
-            	double d2 = this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
-            	this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            }          
-    	}
+    	super.tick();    	
     	
     	if (this.getHealth() <= EnigmothEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
     		List<ParasiteEntity> list = EnigmothEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, EnigmothEntity.this.getBoundingBox().inflate(16.0D));
@@ -275,14 +220,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
-    public boolean canHarvest() {
-    	return this.getEntityData().get(CAN_HARVEST).booleanValue();
-    }
-
-    public void setcanHarvest(boolean i) {
-    	this.getEntityData().set(CAN_HARVEST, Boolean.valueOf(i));
-    }
-    
     @Override
 	protected double VehicleSpeedMod() {
 		return (this.isInLava() || this.isInWater()) ? 0.2D : 1.8D;
@@ -311,8 +248,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
-        this.setcanHarvest(compound.getBoolean("CanHarvest"));
-        this.pheromoneTick = compound.getInt("PheromoneTick");
     }
 
     /**
@@ -322,8 +257,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getSkin());
-        compound.putBoolean("CanHarvest", this.canHarvest());
-        compound.putInt("PheromoneTick", this.pheromoneTick);
     }
 	
     public void castSpell() {
@@ -436,7 +369,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     }
 	
 	protected SoundEvent getFlyingSound() {
-		return FURSoundRegistry.VESPA_FLYING;
+		return null;
 	}
 	
 	@Override
