@@ -49,7 +49,7 @@ public class BeelzebubModel<T extends BeelzebubEntity> extends FlyingBaseModel<T
 		this.texHeight = 128;
 
 		this.Throax_base = new ModelRenderer(this);
-		this.Throax_base.setPos(0.0F, 4.0F, 3.5F);
+		this.Throax_base.setPos(0.0F, 4.0F, 7.5F);
 		this.Throax_base.texOffs(57, 25).addBox(-5.5F, -5.5F, -4.0F, 11.0F, 11.0F, 8.0F, 0.0F, true);
 
 		this.Head = new ModelRenderer(this);

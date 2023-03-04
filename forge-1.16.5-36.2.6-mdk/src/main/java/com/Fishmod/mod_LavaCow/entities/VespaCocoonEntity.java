@@ -15,12 +15,16 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
-public class VespaCocoonEntity extends FURTameableEntity {	
+public class VespaCocoonEntity extends FURTameableEntity {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(VespaCocoonEntity.class, DataSerializers.INT);
 	private int Lifespan = 8 * 20;
 	
 	public VespaCocoonEntity(EntityType<? extends VespaCocoonEntity> p_i48549_1_, World worldIn) {
@@ -40,6 +44,12 @@ public class VespaCocoonEntity extends FURTameableEntity {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
+    @Override
+    protected void defineSynchedData() {
+    	super.defineSynchedData();
+    	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+    }
+    
     protected boolean isCommandable() {
     	return false;
     }
@@ -55,7 +65,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
         	this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F);
         	
     		if (!this.level.isClientSide) {		
-    			if (this.getType().equals(FUREntityRegistry.VESPACOCOON)) {
+    			if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 0) {
 		    		VespaEntity adult = FUREntityRegistry.VESPA.create(this.level);
 		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
 		    		this.level.addFreshEntity(adult);
@@ -86,6 +96,14 @@ public class VespaCocoonEntity extends FURTameableEntity {
         this.setDeltaMovement(0.0D, this.getDeltaMovement().y, 0.0D);
     }
     
+    public int getSkin() {
+    	return this.getEntityData().get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+    	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
     /**
      * Called when the entity is attacked.
      */
@@ -103,6 +121,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("lifespan", Lifespan);
+		compound.putInt("Variant", this.getSkin());
 	}
 
     /**
@@ -112,6 +131,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
 		super.readAdditionalSaveData(compound);
 		Lifespan = compound.getInt("lifespan");
+		this.setSkin(compound.getInt("Variant"));
 	}
     
     @Override

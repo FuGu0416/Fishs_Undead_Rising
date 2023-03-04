@@ -81,7 +81,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     public void doSitCommand(PlayerEntity playerIn) {
-    	if (SpawnUtil.getHeight(this).getY() > 0) {   		
+    	if (SpawnUtil.getHeight(this).getY() > 0 || this.isBaby()) {   		
     		this.setNoGravity(false);
     	}
     	super.doSitCommand(playerIn);
@@ -89,13 +89,19 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     public void doFollowCommand(PlayerEntity playerIn) {
-    	this.setNoGravity(true);
+    	if (!this.isBaby()) {
+    		this.setNoGravity(true);
+    	}
+    	
     	super.doFollowCommand(playerIn);
     }
     
     @Override
     public void doWanderCommand(PlayerEntity playerIn) {
-    	this.setNoGravity(true);
+    	if (!this.isBaby()) {
+    		this.setNoGravity(true);
+    	}
+    	
     	super.doWanderCommand(playerIn);
     }
 	
@@ -110,7 +116,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             --this.attackTimer;
         }
 		
-		if (!this.level.isClientSide) {
+		if (!this.level.isClientSide && !this.isBaby()) {
 	    	if (this.isOnGround()) {
 	    		if (this.getLandTimer() < 20) {
 	    			this.setLandTimer(this.getLandTimer() + 1);
@@ -119,6 +125,11 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	    		
 	    		if (this.isNoGravity()) {
 	    			this.setNoGravity(this.getTarget() != null);
+	    		}
+	    		
+	    		if (!this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
+	    			this.setNoGravity(true);
+	    			this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.25F, 0.0F));
 	    		}
 	    	} else {
 	    		if (this.getLandTimer() > 0) {
@@ -306,8 +317,8 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
      * Returns true if this entity should move as if it were on a ladder (either because it's actually on a ladder, or
      * for AI reasons)
      */
-    public boolean onClimbable() {
-        return false;
+    public boolean onClimbable() {    	
+        return this.isBaby() ? super.onClimbable() : false;
     }
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {         
@@ -383,26 +394,37 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void start() {
-            Random random = this.parentEntity.getRandom();
-
-            double d0 = this.parentEntity.getX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d1 = this.parentEntity.getY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d2 = this.parentEntity.getZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            
-            int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-
-            if (groundHeight > 0) {
-	            if (this.parentEntity.isInWaterRainOrBubble()) {
-	            	d1 = Math.min(d1, groundHeight + 3.0D);
-	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < d1) {
-	            	d1 = Math.min(d1, groundHeight + FURConfig.FlyingHeight_limit.get());
-	            } else {
-	            	d1 = Math.max(d1, groundHeight + 3.0D);
-	            }
+        public void start() {           
+            for(int i = 0; i < 3; ++i) {
+            	Vector3d vector3d = this.findPos();
+            	
+            	if (vector3d != null) {
+            		int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
+            		
+                    if (groundHeight > 0) {
+        	            if (this.parentEntity.isInWaterRainOrBubble()) {
+        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);
+        	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
+        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + FURConfig.FlyingHeight_limit.get()), vector3d.z);
+        	            }
+                    }            		
+                    
+            		this.parentEntity.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 1.0D);
+            		if (this.parentEntity.getTarget() == null) {
+            			this.parentEntity.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
+            		}
+            		
+            		break;
+            	}
             }
-            
-            this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
+        }
+        
+        @Nullable
+        private Vector3d findPos() {
+           Vector3d vector3d;
+           vector3d = this.parentEntity.getViewVector(0.0F);
+           Vector3d vector3d2 = RandomPositionGenerator.getAboveLandPos(this.parentEntity, 8, 7, vector3d, ((float)Math.PI / 2F), 2, 1);
+           return vector3d2 != null ? vector3d2 : RandomPositionGenerator.getAirPos(this.parentEntity, 8, 4, -2, vector3d, (double)((float)Math.PI / 2F));
         }
     }
     

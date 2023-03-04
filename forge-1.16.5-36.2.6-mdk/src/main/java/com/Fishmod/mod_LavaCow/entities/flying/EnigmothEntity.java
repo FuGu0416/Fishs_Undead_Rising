@@ -1,6 +1,8 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
 import java.util.List;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -10,6 +12,8 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,13 +25,12 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.BreedGoal;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -47,7 +50,9 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -56,16 +61,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+		this.moveControl = this.isBaby() ? new MovementController(this) : new FlyingMobEntity.FlyingMoveHelper(this);
 	}
 	
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
-		this.goalSelector.addGoal(4, new EnigmothEntity.AIUseSpell());
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));	   
+		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.CHORUS_FLOWER), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.END_ROD), false));
+		this.goalSelector.addGoal(4, new EnigmothEntity.AIUseSpell());  	    
+	    
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof EnigmothEntity);
         }).setUnseenMemoryTicks(160));
@@ -79,7 +85,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.08D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.05D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Beelzebub_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Beelzebub_Attack.get())
@@ -107,7 +113,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     protected Goal wanderGoal() {
-    	return new FlyingMobEntity.AIRandomFly(this);
+    	return this.isBaby() ? new WaterAvoidingRandomWalkingGoal(this, 1.0D) : new FlyingMobEntity.AIRandomFly(this);
     }
     
     @Override
@@ -122,8 +128,29 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.BEEF;
+        return stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT);
     }
+    
+    @Override
+    protected void ageBoundaryReached() {
+    	if(this.isBaby()) {
+    		this.setNoGravity(false);
+    		this.moveControl = new MovementController(this);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 0.2F);
+        	this.setHealth(this.getHealth() * 0.2F);
+    	} else {
+    		this.setNoGravity(true);
+    		this.moveControl = new FlyingMobEntity.FlyingMoveHelper(this);
+
+            if (this.isTame()) {
+            	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 2.0D);
+            	this.setHealth(this.getHealth() * 10.0F);
+            } else {
+            	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
+            	this.setHealth(this.getHealth() * 5.0F);
+            }
+    	}
+    }    
     
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
@@ -158,13 +185,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     }
    
     @Override
-	public boolean doHurtTarget(Entity par1Entity) {
-    	if (par1Entity instanceof ZombieEntity) {
-    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get() * 2.0D);
-    	} else {
-    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
-    	}
- 	   
+	public boolean doHurtTarget(Entity par1Entity) { 	   
     	if (super.doHurtTarget(par1Entity)) {
     		if (par1Entity instanceof ParasiteEntity) {
     			par1Entity.remove();
@@ -190,11 +211,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
      * Called when the entity is attacked.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {    	
-    	if(source.getEntity() instanceof ZombieEntity) {
-    		return super.hurt(source, amount * 0.5F);
-    	}
-    	   
+    public boolean hurt(DamageSource source, float amount) {    	    	   
  	   	return super.hurt(source, amount);
     }
     
@@ -222,8 +239,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
 	protected double VehicleSpeedMod() {
-		return (this.isInLava() || this.isInWater()) ? 0.2D : 1.8D;
+		return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
 	}
+    
+	@Override
+    public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
+    	if (p_205022_2_.getBlockState(p_205022_1_).getBlock().equals(Blocks.END_ROD)) {
+    		return 20.0F;
+    	} else {
+    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    	}
+    }
     
     /**
      * Handler for {@link World#setEntityState}
@@ -392,5 +418,18 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	*/
 	protected float getSoundVolume() {
 		return 0.5F;
+	}
+	
+    @Override
+	public EnigmothEntity getBreedOffspring(ServerWorld worldIn, AgeableEntity ageable) {
+    	EnigmothEntity entity = FUREntityRegistry.ENIGMOTH.create(worldIn);
+		UUID uuid = this.getOwnerUUID();
+		if (uuid != null) {
+			entity.setOwnerUUID(uuid);
+			entity.setTame(true);
+			entity.setHealth(this.getMaxHealth());
+		}
+
+		return entity;
 	}
 }

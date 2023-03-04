@@ -135,6 +135,7 @@ public class ParasiteEntity extends SpiderEntity {
         			
 		    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
 		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		pupa.setSkin(0);
 		    		this.level.addFreshEntity(pupa);
         		}   
         		

@@ -100,7 +100,7 @@ public class FUREntityRegistry {
 	public static final EntityType<UndertakerEntity> UNDERTAKER = registerEntity(EntityType.Builder.of(UndertakerEntity::new, EntityClassification.MONSTER).sized(1.8F, 2.4F), "undertaker");
 	public static final EntityType<UnburiedEntity> UNBURIED = registerEntity(EntityType.Builder.of(UnburiedEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "unburied");
 	public static final EntityType<GhostRayEntity> GHOSTRAY = registerEntity(EntityType.Builder.of(GhostRayEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.25F), "ghostray");
-	public static final EntityType<BansheeEntity> BANSHEE = registerEntity(EntityType.Builder.of(BansheeEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F), "banshee");
+	public static final EntityType<BansheeEntity> BANSHEE = registerEntity(EntityType.Builder.of(BansheeEntity::new, EntityClassification.MONSTER).sized(0.75F, 1.75F), "banshee");
 	public static final EntityType<WetaEntity> WETA = registerEntity(EntityType.Builder.of(WetaEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS), "weta");
 	public static final EntityType<AvatonEntity> AVATON = registerEntity(EntityType.Builder.of(AvatonEntity::new, EntityClassification.MONSTER).sized(1.25F, 1.5F), "avaton");
 	public static final EntityType<ForsakenEntity> FORSAKEN = registerEntity(EntityType.Builder.of(ForsakenEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).fireImmune(), "forsaken");
@@ -109,11 +109,11 @@ public class FUREntityRegistry {
 	public static final EntityType<CactyrantEntity> CACTYRANT = registerEntity(EntityType.Builder.of(CactyrantEntity::new, EntityClassification.MONSTER).sized(1.3F, 2.8F), "cactyrant");
 	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 1.1F), "cactoid");
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
-	public static final EntityType<SeaHagEntity> SEAHAG = registerEntity(EntityType.Builder.of(SeaHagEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "seahag");
+	public static final EntityType<SeaHagEntity> SEAHAG = registerEntity(EntityType.Builder.of(SeaHagEntity::new, EntityClassification.MONSTER).sized(0.75F, 1.75F).clientTrackingRange(8), "seahag");
 	public static final EntityType<WispEntity> WISP = registerEntity(EntityType.Builder.of(WispEntity::new, EntityClassification.MONSTER).sized(0.525F, 0.525F).clientTrackingRange(8).fireImmune(), "wisp");
 	public static final EntityType<GraveRobberEntity> GRAVEROBBER = registerEntity(EntityType.Builder.of(GraveRobberEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobber");
 	public static final EntityType<GraveRobberGhostEntity> GRAVEROBBERGHOST = registerEntity(EntityType.Builder.of(GraveRobberGhostEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobberghost");
-	public static final EntityType<WraithEntity> WRAITH = registerEntity(EntityType.Builder.of(WraithEntity::new, EntityClassification.MONSTER).sized(0.75F, 2.25F).clientTrackingRange(8), "wraith");
+	public static final EntityType<WraithEntity> WRAITH = registerEntity(EntityType.Builder.of(WraithEntity::new, EntityClassification.MONSTER).sized(0.75F, 1.75F).clientTrackingRange(8), "wraith");
 	public static final EntityType<GhostSwarmerEntity> GHOSTSWARMER = registerEntity(EntityType.Builder.of(GhostSwarmerEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.5F).clientTrackingRange(8).fireImmune(), "ghostswarmer");
 	public static final EntityType<ScarabEntity> SCARAB = registerEntity(EntityType.Builder.of(ScarabEntity::new, EntityClassification.MONSTER).sized(1.0F, 0.6F).clientTrackingRange(8), "scarab");
 	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");

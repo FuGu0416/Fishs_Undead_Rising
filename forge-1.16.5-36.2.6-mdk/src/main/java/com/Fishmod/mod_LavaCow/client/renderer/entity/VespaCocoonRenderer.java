@@ -16,9 +16,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class VespaCocoonRenderer extends MobRenderer<VespaCocoonEntity, VespaCocoonModel<VespaCocoonEntity>>  {
-	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa_cocoon.png");
+	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa_cocoon.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_cocoon.png"),
+	};
+
 	static{
-        System.out.println(TEXTURES.getPath());
+		for(ResourceLocation texture: TEXTURES)
+			System.out.println(texture.getPath());
     }
 
     public VespaCocoonRenderer(EntityRendererManager rendermanagerIn) {
@@ -27,7 +32,7 @@ public class VespaCocoonRenderer extends MobRenderer<VespaCocoonEntity, VespaCoc
     
     @Override
     public ResourceLocation getTextureLocation(VespaCocoonEntity entity) {
-        return TEXTURES;
+    	return TEXTURES[entity.getSkin()];
     }
     
     @Override

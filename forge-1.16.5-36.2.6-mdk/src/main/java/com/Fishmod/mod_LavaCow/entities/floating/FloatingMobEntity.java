@@ -391,14 +391,13 @@ public class FloatingMobEntity extends MonsterEntity implements IAggressive{
             
             for(int i = 0; i < 3; ++i) {
             	Vector3d vector3d = this.findPos();
-               //BlockPos blockpos1 = blockpos.offset(FloatingMobEntity.this.random.nextInt(15) - 7, y, FloatingMobEntity.this.random.nextInt(15) - 7);
-               if (vector3d != null) {
-                  FloatingMobEntity.this.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 0.25D);
-                  if (FloatingMobEntity.this.getTarget() == null) {
-                     FloatingMobEntity.this.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
-                  }
-                  break;
-               }
+            	if (vector3d != null) {
+            		FloatingMobEntity.this.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 0.25D);
+            		if (FloatingMobEntity.this.getTarget() == null) {
+            			FloatingMobEntity.this.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
+            		}
+            		break;
+            	}
             }
         }
         
