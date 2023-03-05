@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities;
 
 import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
+import com.Fishmod.mod_LavaCow.entities.flying.EnigmothEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -79,6 +80,17 @@ public class VespaCocoonEntity extends FURTameableEntity {
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			adult.tame((PlayerEntity) this.getOwner());
 		    		}    				
+    			} else if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 1) {
+    				EnigmothEntity adult = FUREntityRegistry.ENIGMOTH.create(this.level);
+		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		this.level.addFreshEntity(adult);
+		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    		}   
+		    		
+		    		if (this.serializeNBT().contains("EnigmothData")) {
+		    			adult.addAdditionalSaveData(this.serializeNBT().getCompound("EnigmothData"));
+		    		}
     			}
     		}
         	

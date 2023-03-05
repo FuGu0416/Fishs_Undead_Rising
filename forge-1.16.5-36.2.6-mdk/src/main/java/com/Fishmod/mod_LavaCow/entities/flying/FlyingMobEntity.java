@@ -30,6 +30,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.FlyingPathNavigator;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -369,7 +370,11 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
          */
         public boolean canUse() {
             MovementController entitymovehelper = this.parentEntity.getMoveControl();
-
+            
+            if (this.parentEntity.getNavigation() instanceof GroundPathNavigator) {
+            	return false;
+            }
+            
             if (!entitymovehelper.hasWanted()) {
                 return true;
             } else if (this.parentEntity.getTarget() != null) {

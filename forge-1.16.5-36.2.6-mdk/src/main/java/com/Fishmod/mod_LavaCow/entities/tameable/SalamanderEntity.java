@@ -406,7 +406,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		        if (this.getHealth() > this.getMaxHealth())
 		        	this.setHealth(this.getMaxHealth());
 		        
-		        if(this.isSaddleable()) {
+		        if(this.isSaddled()) {
 		        	this.setSaddled(false);
 		            this.spawnAtLocation(Items.SADDLE, 1);
 		        }

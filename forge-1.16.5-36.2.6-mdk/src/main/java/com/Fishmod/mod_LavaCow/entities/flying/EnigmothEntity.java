@@ -1,22 +1,20 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
+import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
-import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -40,7 +38,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -52,6 +50,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,15 +59,14 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(EnigmothEntity.class, DataSerializers.INT);
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, World worldIn) {
-		super(p_i48549_1_, worldIn);
-		this.moveControl = this.isBaby() ? new MovementController(this) : new FlyingMobEntity.FlyingMoveHelper(this);
+		super(p_i48549_1_, worldIn);		
 	}
 	
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.CHORUS_FLOWER), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.CHORUS_FRUIT, Items.POPPED_CHORUS_FRUIT), false));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.END_ROD), false));
 		this.goalSelector.addGoal(4, new EnigmothEntity.AIUseSpell());  	    
 	    
@@ -95,7 +93,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @Override
     protected void defineSynchedData() {
     	super.defineSynchedData();
-    	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+    	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	
     }
     
     @Override
@@ -113,7 +111,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     protected Goal wanderGoal() {
-    	return this.isBaby() ? new WaterAvoidingRandomWalkingGoal(this, 1.0D) : new FlyingMobEntity.AIRandomFly(this);
+    	return (this.isBaby() || this.getNavigation() instanceof GroundPathNavigator) ? new WaterAvoidingRandomWalkingGoal(this, 1.0D) : new FlyingMobEntity.AIRandomFly(this);
     }
     
     @Override
@@ -123,12 +121,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    	if (!this.level.isClientSide) {	
+	    	System.out.println(this.getNavigation().toString());
+	    	System.out.println(this.moveControl.toString());
+	    	System.out.println(this.wanderGoal().toString());
+    	}
     	return super.mobInteract(player, hand);
     }
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT);
+        return this.isTame() && (stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT));
     }
     
     @Override
@@ -136,19 +139,29 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	if(this.isBaby()) {
     		this.setNoGravity(false);
     		this.moveControl = new MovementController(this);
+    		this.navigation = new GroundPathNavigator(this, this.level);
+    		
+	        if(this.isSaddled()) {
+	        	this.setSaddled(false);
+	            this.spawnAtLocation(Items.SADDLE, 1);
+	        }
+    		
         	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 0.2F);
         	this.setHealth(this.getHealth() * 0.2F);
     	} else {
-    		this.setNoGravity(true);
-    		this.moveControl = new FlyingMobEntity.FlyingMoveHelper(this);
-
-            if (this.isTame()) {
-            	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 2.0D);
-            	this.setHealth(this.getHealth() * 10.0F);
-            } else {
-            	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
-            	this.setHealth(this.getHealth() * 5.0F);
-            }
+    		if (!this.level.isClientSide) {		
+    			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+    	        CompoundNBT compoundnbt = new CompoundNBT();
+    	        this.addAdditionalSaveData(compoundnbt);
+    	         	        
+	    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
+	    		pupa.serializeNBT().put("EnigmothData", compoundnbt);
+	    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+	    		pupa.setSkin(1);
+	    		this.level.addFreshEntity(pupa);
+    		}   
+    		
+    		this.remove();
     	}
     }    
     
@@ -163,7 +176,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     }
     
 	public void aiStep() {
-		if (this.level.isClientSide) {
+		if (this.level.isClientSide && !this.isBaby()) {
 			for(int i = 0; i < 2; ++i) {
 				this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
 			}
@@ -175,37 +188,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @Override
     public void tick() {
     	super.tick();    	
-    	
-    	if (this.getHealth() <= EnigmothEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
-    		List<ParasiteEntity> list = EnigmothEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, EnigmothEntity.this.getBoundingBox().inflate(16.0D));
-    		if (list.size() > 0) {
-    			this.setTarget(list.get(0));
-    		}
-    	}
     }
-   
-    @Override
-	public boolean doHurtTarget(Entity par1Entity) { 	   
-    	if (super.doHurtTarget(par1Entity)) {
-    		if (par1Entity instanceof ParasiteEntity) {
-    			par1Entity.remove();
-    			this.heal(this.getMaxHealth() * 0.05F);
-    		}
- 		   
-    		if (par1Entity instanceof LivingEntity) {
-    			float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-    			((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.SOILED, 6 * 20 * (int)local_difficulty, 2));
- 			   
-    			for (ParasiteEntity entity : EnigmothEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, EnigmothEntity.this.getBoundingBox().inflate(16.0D))) {
-    				entity.setTarget((LivingEntity) par1Entity);
-    			}
-    		}
- 		   
-    		return true;
-    	} else {
-    		return false;
-    	}
-	}
 
     /**
      * Called when the entity is attacked.
@@ -221,12 +204,16 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
      */
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
     	this.setHealth(this.getMaxHealth());
+ 
+    	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.END_HIGHLANDS) && p_213386_3_ != SpawnReason.SPAWN_EGG) {
+    		this.setBaby(this.level.getRandom().nextFloat() <= 0.8F);
+    	}
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
       
     public int getSkin() {

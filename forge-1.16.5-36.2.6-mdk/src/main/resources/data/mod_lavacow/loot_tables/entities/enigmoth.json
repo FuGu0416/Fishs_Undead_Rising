@@ -27,7 +27,7 @@
                 },
                 {
                     "type":"item",
-                    "name":"minecraft:silk",
+                    "name":"minecraft:string",
                     "weight":2,
                     "functions":[
                         {

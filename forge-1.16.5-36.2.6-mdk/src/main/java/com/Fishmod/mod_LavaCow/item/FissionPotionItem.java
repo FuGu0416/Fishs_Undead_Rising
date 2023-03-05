@@ -57,7 +57,7 @@ public class FissionPotionItem extends FURItem {
     }
 	
     public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-    	if(((!FURConfig.Fission_ModEntity.get() && isVanilla(target.getType().getRegistryName())) || (FURConfig.Fission_ModEntity.get() && target instanceof AgeableEntity)) && !target.isBaby()) {
+    	if(((!FURConfig.Fission_ModEntity.get() && isVanilla(target.getType().getRegistryName())) || (FURConfig.Fission_ModEntity.get() && target instanceof AgeableEntity))) {
 			
     		double dx = target.getX();
     		double dy = target.getY();
@@ -65,7 +65,7 @@ public class FissionPotionItem extends FURItem {
     		boolean flag = false;
     		
     		if(!playerIn.level.isClientSide) {
-	    		if (stack.getItem().equals(FURItemRegistry.FISSIONPOTION)) {	    			
+	    		if (stack.getItem().equals(FURItemRegistry.FISSIONPOTION) && !target.isBaby()) {	    			
 			    	AgeableEntity parent = (AgeableEntity)target;
 			    	AgeableEntity AgeableEntity = (AgeableEntity) parent.getType().create(playerIn.level);
 			    	CompoundNBT compoundnbt = new CompoundNBT();
@@ -83,7 +83,7 @@ public class FissionPotionItem extends FURItem {
 			        AgeableEntity.playAmbientSound();
 			        
 			        flag = true;
-	    		} else if (stack.getItem().equals(FURItemRegistry.POTION_OF_MOOTEN_LAVA) && target instanceof CowEntity && !(target instanceof LavaCowEntity)) {
+	    		} else if (stack.getItem().equals(FURItemRegistry.POTION_OF_MOOTEN_LAVA) && target instanceof CowEntity && !(target instanceof LavaCowEntity) && !target.isBaby()) {
 	    			
 	    			if (!target.hasEffect(Effects.FIRE_RESISTANCE)) {
 	    				target.setSecondsOnFire(12);
@@ -107,6 +107,7 @@ public class FissionPotionItem extends FURItem {
 	    					break;
 	    				case 2:
 	    					pupa = FUREntityRegistry.VESPACOCOON.create(playerIn.level);
+	    					pupa.setSkin(0);
 	    					break;
 	    				default:
 	    					break;
@@ -122,7 +123,21 @@ public class FissionPotionItem extends FURItem {
 			    		
 		    			flag = true;
 	    			}
-	    		}             		
+	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST) && target.getType().equals(FUREntityRegistry.ENIGMOTH) && target.isBaby()) {
+	    			VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(playerIn.level);
+	    			
+	    			if (pupa != null) {
+		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+	        			
+			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+			    		pupa.tame(playerIn);
+			    		pupa.setSkin(1);
+			    		playerIn.level.addFreshEntity(pupa);
+			    		target.remove();
+			    		
+		    			flag = true;
+	    			}
+	    		}            		
     		}
     		
     		if (!playerIn.isCreative() && flag) {		
@@ -130,12 +145,14 @@ public class FissionPotionItem extends FURItem {
     			stack.shrink(1);
     		}
 	    	
-    		playerIn.playSound(this.using_sound, 1.0F, 1.0F);
-    		for (int i = 0; i < 5; ++i) {
-    			double d0 = new Random().nextGaussian() * 0.02D;
-    			double d1 = new Random().nextGaussian() * 0.02D;
-    			double d2 = new Random().nextGaussian() * 0.02D;
-    			playerIn.level.addParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), dy + 1.0D + (double)(new Random().nextFloat() * playerIn.getBbHeight()), dz + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), d0, d1, d2);
+    		if (flag) {
+	    		playerIn.playSound(this.using_sound, 1.0F, 1.0F);
+	    		for (int i = 0; i < 5; ++i) {
+	    			double d0 = new Random().nextGaussian() * 0.02D;
+	    			double d1 = new Random().nextGaussian() * 0.02D;
+	    			double d2 = new Random().nextGaussian() * 0.02D;
+	    			playerIn.level.addParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), dy + 1.0D + (double)(new Random().nextFloat() * playerIn.getBbHeight()), dz + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), d0, d1, d2);
+	    		}
     		}
     		
     		return flag ? ActionResultType.sidedSuccess(playerIn.level.isClientSide) : ActionResultType.PASS;
