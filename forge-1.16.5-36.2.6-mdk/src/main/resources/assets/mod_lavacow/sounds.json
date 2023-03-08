@@ -668,5 +668,33 @@
 		"category": "hostile",
 		"subtitle": "entity_beelzebub_death",
 		"sounds": [{"name": "mod_lavacow:entity/beelzebub/death","stream": true}]
+	},
+	
+	"enigmoth_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_ambient",
+		"sounds": ["mod_lavacow:entity/enigmoth/ambient0", "mod_lavacow:entity/enigmoth/ambient1"]
+	},
+
+	"enigmoth_flap":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_flap",
+		"sounds": ["mod_lavacow:entity/enigmoth/flap"]
+	},
+		
+	"enigmoth_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_hurt",
+		"sounds": ["mod_lavacow:entity/enigmoth/hurt"]
+	},
+	
+	"enigmoth_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_death",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/death","stream": true}]
 	}
 }

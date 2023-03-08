@@ -187,7 +187,11 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public void tick() {
-    	super.tick();    	
+    	super.tick();    
+    	
+    	if (!this.onGround && this.tickCount % 60 == 0) {
+    		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
+    	}
     }
 
     /**
@@ -331,10 +335,21 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
          */
         public void tick() {
             --this.spellWarmup;
-
+            
+    		if (EnigmothEntity.this.level.isClientSide && EnigmothEntity.this.isBaby()) {
+    			for(int i = 0; i < 2; ++i) {
+    				EnigmothEntity.this.level.addParticle(ParticleTypes.PORTAL, EnigmothEntity.this.getRandomX(0.5D), EnigmothEntity.this.getRandomY() - 0.25D, EnigmothEntity.this.getRandomZ(0.5D), (EnigmothEntity.this.random.nextDouble() - 0.5D) * 2.0D, -EnigmothEntity.this.random.nextDouble(), (EnigmothEntity.this.random.nextDouble() - 0.5D) * 2.0D);
+    			}
+    		}
+    		
             if (this.spellWarmup == 0) {
-            	EnigmothEntity.this.castSpell();
-                EnigmothEntity.this.playSound(EnigmothEntity.this.getSpellSound(), 0.175F, 1.0F);
+            	EnigmothEntity.this.playSound(EnigmothEntity.this.getSpellSound(), 0.175F, 1.0F);
+            	if (EnigmothEntity.this.isBaby()) {
+            		EnigmothEntity.this.remove();
+            	} else {
+            		EnigmothEntity.this.castSpell();
+            	}
+                
             }
         }
 
@@ -366,23 +381,23 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return FURSoundRegistry.BEELZEBUB_AMBIENT;
+		return FURSoundRegistry.ENIGMOTH_AMBIENT;
 	}
 
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return FURSoundRegistry.BEELZEBUB_HURT;
+		return FURSoundRegistry.ENIGMOTH_HURT;
 	}
 
 	protected SoundEvent getDeathSound() {
-		return FURSoundRegistry.BEELZEBUB_DEATH;
+		return FURSoundRegistry.ENIGMOTH_DEATH;
 	}
 	
     public SoundEvent getSpellSound() {
-        return FURSoundRegistry.BEELZEBUB_SPELL;
+        return this.isBaby() ? SoundEvents.ENDERMAN_TELEPORT : FURSoundRegistry.ENIGMOTH_FLAP;
     }
 	
 	protected SoundEvent getFlyingSound() {
-		return null;
+		return FURSoundRegistry.ENIGMOTH_FLAP;
 	}
 	
 	@Override

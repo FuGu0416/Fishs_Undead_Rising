@@ -135,6 +135,11 @@ public class FURSoundRegistry {
 	public static final SoundEvent BEELZEBUB_SPELL = addSoundEvent("beelzebub_spell");
 	public static final SoundEvent BEELZEBUB_HURT = addSoundEvent("beelzebub_hurt");
 	public static final SoundEvent BEELZEBUB_DEATH = addSoundEvent("beelzebub_death");
+
+	public static final SoundEvent ENIGMOTH_AMBIENT = addSoundEvent("enigmoth_ambient");
+	public static final SoundEvent ENIGMOTH_FLAP = addSoundEvent("enigmoth_flap");
+	public static final SoundEvent ENIGMOTH_HURT = addSoundEvent("enigmoth_hurt");
+	public static final SoundEvent ENIGMOTH_DEATH = addSoundEvent("enigmoth_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);
