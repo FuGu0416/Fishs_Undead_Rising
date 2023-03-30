@@ -125,29 +125,28 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
         super.aiStep();
         
         BlockState state = this.level.getBlockState(this.blockPosition().below());
-        if(this.isWalking()) {
+        if (this.isWalking()) {
 	        if (state.getMaterial().isSolid()) {
 	            if (this.level.isClientSide()) {
-	            	for(int i = 0; i < 4; i++)
+	            	for (int i = 0; i < 4; i++)
 	            		this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(this.blockPosition().below()), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 	            }
 	        }
+	        
 	        if (this.tickCount % 10 == 0) {
 	            this.playSound(SoundEvents.SAND_BREAK, 1, 0.5F);
-	        }
-	        
+	        }	        
         }
         
-        if(!this.level.isClientSide()) {
-	        if(this.LocationFix > 0 && !this.isUnderGround() && !this.isDigging()) {
+        if (!this.level.isClientSide()) {
+	        if (this.LocationFix > 0 && !this.isUnderGround() && !this.isDigging()) {
 	        	this.clearFire();
 	        	this.diggingTimer[0] = 30;
 	        	this.setUnderGround(true);
 	        	this.level.broadcastEntityEvent(this, (byte)6);
 	        	this.playSound(FURSoundRegistry.BONEWORM_BURROW, 0.25F, 1.0F);
 	        	this.clearFire();
-	        }
-	        else if(this.LocationFix <= 1.5D && this.isUnderGround() && !this.isDigging()) {
+	        } else if (this.LocationFix <= 1.5D && this.isUnderGround() && !this.isDigging()) {
 	        	this.diggingTimer[1] = 20;
 	        	this.setUnderGround(false);
 	        	this.level.broadcastEntityEvent(this, (byte)7);
@@ -155,14 +154,15 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 	        }
         }
         
-		if(this.isWalking() && state.getMaterial().isSolid()) {
-			if(this.LocationFix <= 3.5D)this.LocationFix += 0.125D;
+		if (this.isWalking() && state.getMaterial().isSolid()) {
+			if (this.LocationFix <= 3.5D)
+				this.LocationFix += 0.125D;
+			
 			if (this.level.isClientSide())
 				for(int i = 0; i < 4; i++)
 					this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(this.blockPosition().below()), this.getX() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getY() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getZ() + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.1D, this.getRandom().nextGaussian() * 0.02D);
 			EntitySize.scalable(this.getBbWidth(), Math.max(2.0F - (float)this.LocationFix, 0.5F));
-		}
-		else if(this.LocationFix > 0.0D && state.getMaterial().isSolid()) {
+		} else if (this.LocationFix > 0.0D && state.getMaterial().isSolid()) {
 			this.LocationFix -= 0.125D;
 			if (this.level.isClientSide())
 				for(int i = 0; i < 4; i++)
@@ -180,7 +180,6 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 			if (this.avoid_cooldown > 0)
 				this.avoid_cooldown--;
 		}
-
     }
     
     /**
@@ -207,14 +206,14 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     		this.setSecondsOnFire(8);
         }
     	
-    	if(this.isWalking())this.clearFire();
+    	if(this.isWalking())
+    		this.clearFire();
     	
         super.tick();
     }
     
     @OnlyIn(Dist.CLIENT)
-    public double getLocationFix()
-    {
+    public double getLocationFix() {
     	return this.LocationFix;
     }
     
@@ -223,12 +222,9 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
      */
     @Override
     public boolean hurt(DamageSource source, float amount) {
-    	if (this.LocationFix > 3.0D)
-        {
+    	if (this.LocationFix > 3.0D) {
             return false;
-        }
-        else
-        {
+        } else {
         	return super.hurt(source, amount);
         }
     }
@@ -236,6 +232,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     private void spit(LivingEntity target) {
     	ProjectileItemEntity entitysnowball;
     	SoundEvent sound;
+    	
         if(this.getSkin() == 1) {
         	entitysnowball = new FlameJetEntity(FUREntityRegistry.FLAMEJET, this, this.level);
         	sound = SoundEvents.BLAZE_SHOOT;
@@ -264,6 +261,8 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 	}
     
     public void setRunning(int CD) {
+    	this.avoid_player = new AvoidEntityGoal<PlayerEntity>(this, PlayerEntity.class, 10.0F, 1.0D, 1.2D);
+    	
     	this.goalSelector.removeGoal(this.range_atk);
 		this.goalSelector.addGoal(1, this.avoid_player);
 		this.avoid_cooldown = CD;
@@ -285,6 +284,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
 	protected void dropCustomDeathLoot(DamageSource p_213333_1_, int p_213333_2_, boolean p_213333_3_) {
 		super.dropCustomDeathLoot(p_213333_1_, p_213333_2_, p_213333_3_);
         Entity entity = p_213333_1_.getEntity();
+        
         if (entity instanceof CreeperEntity) {
            CreeperEntity creeperentity = (CreeperEntity)entity;
            if (creeperentity.canDropMobsSkull()) {
@@ -342,15 +342,15 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.BoneWorm_Health.get());
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.BoneWorm_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.BoneWorm_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
     	if(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
     	   this.setSkin(1);
-       }
+    	}
           
-       return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 
     @Override
@@ -359,20 +359,17 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.BONEWORM_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FURSoundRegistry.BONEWORM_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.BONEWORM_DEATH;
     }
 
