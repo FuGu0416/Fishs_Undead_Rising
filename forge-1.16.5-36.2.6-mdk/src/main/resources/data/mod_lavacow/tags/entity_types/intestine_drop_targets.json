@@ -1,0 +1,26 @@
+{
+  "__comment": "mobs that do not drop (or should drop) intestine.",
+  "replace": false,
+  "values": [
+	"#minecraft:skeletons",
+	"#mod_lavacow:specters",
+	"minecraft:chicken",
+	"minecraft:squid",
+	"minecraft:snow_golem",
+	"minecraft:iron_golem",
+	"minecraft:skeleton_horse",
+	"minecraft:enderman",
+	"minecraft:silverfish",
+	"minecraft:endermite",
+	"minecraft:shulker",
+	"minecraft:blaze",
+	"minecraft:slime",
+	"minecraft:magma_cube",
+	"minecraft:ender_dragon",
+	"minecraft:wither",
+	"mod_lavacow:sludgelord",
+	"mod_lavacow:lilsludge",
+	"mod_lavacow:scarecrow",
+	"mod_lavacow:parasite"
+  ]
+}

@@ -21,6 +21,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
@@ -60,6 +61,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
@@ -188,8 +191,10 @@ public class EventHandler {
     	/**
          * Add bonus loot (Intestine) to various entities.
          **/
-    	if (event.getEntityLiving() instanceof LivingEntity && event.getEntityLiving().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_Intestine.get()) {          
-	        if (!(FURConfig.Intestine_banlist.get().contains(event.getEntityLiving().getType().getRegistryName().toString()))) {
+    	ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.INTESTINE_DROP_TARGETS);
+    	
+    	if (event.getEntityLiving() instanceof LivingEntity && tag != null && event.getEntityLiving().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_Intestine.get()) {          
+	        if ((FURConfig.Intestine_banlist.get() && !(event.getEntityLiving().getType().is(tag))) || (!FURConfig.Intestine_banlist.get() && event.getEntityLiving().getType().is(tag))) {
 	            event.getEntityLiving().spawnAtLocation(FURItemRegistry.INTESTINE, 1);
 	        }
         }

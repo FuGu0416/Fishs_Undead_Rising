@@ -1,0 +1,15 @@
+{
+  "__comment": "all specter mobs.",
+  "replace": false,
+  "values": [
+    "minecraft:vex",
+    "minecraft:ghast",
+    "mod_lavacow:ghostray",
+    "mod_lavacow:banshee",
+    "mod_lavacow:avaton",
+    "mod_lavacow:seahag",
+    "mod_lavacow:wisp",
+    "mod_lavacow:wraith",
+    "mod_lavacow:ghostswarmer"
+  ]
+}

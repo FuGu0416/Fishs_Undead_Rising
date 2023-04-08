@@ -217,7 +217,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_lt;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_banlist;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Intestine_banlist;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Raven_Loot;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Seagull_Loot;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spectral_Raven_Loot;
@@ -577,36 +577,7 @@ public final class FURConfig {
 						"minecraft:iron_nugget,0.05",
 						"minecraft:diamond,0.01"), 
 				o -> o instanceof String);
-		Intestine_banlist = BUILDER.comment("Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \\\"minecraft:slime\\\" or \\\"mod_lavacow:vespa\\\"").defineList("mobs that intestine should not drop from", 
-				Lists.newArrayList(
-						"minecraft:chicken",
-						"minecraft:squid",
-						"minecraft:snowman",
-						"minecraft:villager_golem",
-						"minecraft:skeleton_horse",
-						"minecraft:enderman",
-						"minecraft:silverfish",
-						"minecraft:endermite",
-						"minecraft:shulker",
-						"minecraft:blaze",
-			      		"minecraft:slime",
-			      		"minecraft:magma_cube",
-			      		"minecraft:ender_dragon",
-			      		"minecraft:wither",
-			      		"minecraft:ghast",
-			      		"minecraft:skeleton",
-			      		"minecraft:wither_skeleton",
-			      		"minecraft:stray",
-			      		"mod_lavacow:avaton",
-			      		"mod_lavacow:banshee",
-			      		"mod_lavacow:sludgelord",
-			      		"mod_lavacow:lilsludge",
-			      		"mod_lavacow:scarecrow",
-			      		"mod_lavacow:ghostray",
-			      		"mod_lavacow:skeletonking",
-			      		"mod_lavacow:forsaken"
-			      		), 
-				o -> o instanceof String);
+		Intestine_banlist = BUILDER.comment("The list of \\\"intestine_drop_targets.json\\\" should be a banlist. (false then only the mobs in the list drop Intestine) [false/true]").define("intestine drop banlist", true);
 		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 duribility per tick , 0 = Infinite [0-100]").defineInRange("golden heart duribility", 100, 0, 100);
 		GoldenHeart_bl = BUILDER.comment("BlackBanlist for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"mod_lavacow:moltenhammer\\\"").defineList("banlisted items from golden heart", 
 				Lists.newArrayList(), o -> o instanceof String);		
