@@ -10,6 +10,8 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -26,7 +28,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -37,6 +38,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -74,11 +77,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof BeelzebubEntity);
         }).setUnseenMemoryTicks(160));
         
-        if (FURConfig.Beelzebub_Attack_Zombie.get()) {
-	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
-	            return true;
-	        }).setUnseenMemoryTicks(160));
-        }
+    	this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.VESPA_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    	}).setUnseenMemoryTicks(160));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -200,7 +202,9 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
-    	if (par1Entity instanceof ZombieEntity) {
+    	ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.BEELZEBUB_TARGETS);
+
+    	if (tag != null && par1Entity instanceof LivingEntity && par1Entity.getType().is(tag)) {
     		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get() * 2.0D);
     	} else {
     		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
@@ -232,7 +236,9 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
      */
     @Override
     public boolean hurt(DamageSource source, float amount) {    	
-    	if(source.getEntity() instanceof ZombieEntity) {
+    	ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.BEELZEBUB_TARGETS);
+    	
+    	if (tag != null && source.getEntity() instanceof LivingEntity && source.getEntity().getType().is(tag)) {
     		return super.hurt(source, amount * 0.5F);
     	}
     	   

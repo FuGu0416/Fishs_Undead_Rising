@@ -20,7 +20,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Parasite;
 	public static final ForgeConfigSpec.ConfigValue<Double> Parasite_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Parasite_Attack;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Parasite_Hostlist;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_UndeadSwine;
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Health;
@@ -70,7 +69,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Vespa;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Attack;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Vespa_Attack_Zombie;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Scarecrow;
 	public static final ForgeConfigSpec.ConfigValue<Double> Scarecrow_Health;
@@ -199,11 +197,9 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Num;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Max;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Beelzebub_Attack_Zombie;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Wendigo_AnimalAttack;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Attach;
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_Intestine;
@@ -213,7 +209,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> GoldenHeart_RepairsEquipment;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Glowshroom;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpreadRate_Glowshroom;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Piranha_AnimalAttack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_lt;
@@ -269,15 +264,6 @@ public final class FURConfig {
 		Parasite_Attack = BUILDER.comment("Parasite strength [1-1000]").defineInRange("parasite attack", 1.0D, 1.0D, 1000.0D);
 		Parasite_SandSpawn = BUILDER.comment("Rate of spawning Parasite when destroying sand blocks in the desert [0-100]").defineInRange("parasite from sand blocks", 2, 0, 100);
 		Parasite_Attach = BUILDER.comment("Parasite will attack their target by attaching on them [false/true]").define("parasite attacks by attaching onto target", true);
-		Parasite_Hostlist = BUILDER.comment("Allow Parasite to spawn from listed mob. Ex. \\\"minecraft:zombie\\\" or \\\"mod_lavacow:frigid\\\"").defineList("available host for parasite", 
-				Lists.newArrayList(
-						"minecraft:zombie",
-						"minecraft:husk",
-						"mod_lavacow:frigid",
-						"mod_lavacow:mycosis",
-						"mod_lavacow:unburied",
-						"mod_lavacow:mummy"), 
-				o -> o instanceof String);
 		BUILDER.pop();
 		
 		BUILDER.push("Undead Swine");
@@ -307,7 +293,6 @@ public final class FURConfig {
 		
 		BUILDER.push("Wendigo");
 		pSpawnRate_Wendigo = BUILDER.comment("Set the spawn rate of Wendigo [0-10000]").defineInRange("wendigo spawn rate", 15, 0, 10000);
-		Wendigo_AnimalAttack = BUILDER.comment("Should Wendigo attack innocent animals [false/true]").define("wendigo attacks animals", true);
 		Wendigo_Health = BUILDER.comment("Maximum Wendigo health [1-1000]").defineInRange("wendigo health", 60.0D, 1.0D, 1000.0D);
 		Wendigo_Attack = BUILDER.comment("Wendigo strength [1-1000]").defineInRange("wendigo attack", 8.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -380,7 +365,6 @@ public final class FURConfig {
 		pEvolveRate_Vespa = BUILDER.comment("Set the chance of Vespa transformed from a Parasite [0-100]").defineInRange("vespa evolve rate", 20, 0, 100);
 		Vespa_Health = BUILDER.comment("Maximum Vespa health [1-1000]").defineInRange("vespa health", 20.0D, 1.0D, 1000.0D);
 		Vespa_Attack = BUILDER.comment("Vespa strength [1-1000]").defineInRange("vespa attack", 5.0D, 1.0D, 1000.0D);
-		Vespa_Attack_Zombie = BUILDER.comment("Should Vespa attack zombies [false/true]").define("vespa attacks zombies", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Scarecrow");
@@ -394,7 +378,6 @@ public final class FURConfig {
 		pSpawnRate_Swarmer = BUILDER.comment("Set the spawn rate of Swarmer [0-10000]").defineInRange("swarmer spawn rate", 5, 0, 10000);
 		Swarmer_Health = BUILDER.comment("Maximum Swarmer health [1-1000]").defineInRange("swarmer health", 8.0D, 1.0D, 1000.0D);
 		Swarmer_Attack = BUILDER.comment("Swarmer strength [1-1000]").defineInRange("swarmer attack", 1.0D, 1.0D, 1000.0D);
-		Piranha_AnimalAttack = BUILDER.comment("Should Piranha and Swarmer attack injured animals [false/true]").define("piranha attacks animals", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Piranha");
@@ -555,7 +538,6 @@ public final class FURConfig {
 		Beelzebub_Ability_Num = BUILDER.comment("Set the number of Parasite summoned per cast [0-100]").defineInRange("beelzebub summon number", 6, 0, 100);
 		Beelzebub_Ability_Max = BUILDER.comment("Set the max number of Parasite summoned [0-100]").defineInRange("beelzebub summon max", 18, 0, 100);
 		Beelzebub_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Parasite [0-100]").defineInRange("beelzebub summon cooldown", 8, 0, 100);
-		Beelzebub_Attack_Zombie = BUILDER.comment("Should Beelzebub attack zombies [false/true]").define("beelzebub attacks zombies", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

@@ -1,0 +1,7 @@
+{
+  "__comment": "all non-player targets of Vespa.",
+  "replace": false,
+  "values": [
+	"#mod_lavacow:zombies"
+  ]
+}

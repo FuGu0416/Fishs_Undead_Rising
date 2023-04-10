@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
@@ -22,7 +23,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -33,6 +33,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -59,11 +61,10 @@ public class VespaEntity extends RidableFlyingMobEntity {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof VespaEntity);
         }).setUnseenMemoryTicks(160));
         
-        if (FURConfig.Vespa_Attack_Zombie.get()) {
-	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, ZombieEntity.class, false, (p_213440_0_) -> {
-	            return true;
-	        }).setUnseenMemoryTicks(160));
-        }
+    	this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.VESPA_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    	}).setUnseenMemoryTicks(160));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -144,27 +145,29 @@ public class VespaEntity extends RidableFlyingMobEntity {
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {
- 	   if (par1Entity instanceof ZombieEntity) {
- 		  this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get() * 2.0D);
- 	   } else {
-		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
- 	   }
+    	ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.VESPA_TARGETS);
+
+    	if (tag != null && par1Entity instanceof LivingEntity && par1Entity.getType().is(tag)) {
+    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get() * 2.0D);
+    	} else {
+    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
+    	}
  	   
- 	   if (super.doHurtTarget(par1Entity)) {
- 		   if (par1Entity instanceof LivingEntity) {
- 			   float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+    	if (super.doHurtTarget(par1Entity)) {
+    		if (par1Entity instanceof LivingEntity) {
+    			float local_difficulty = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
 
- 			   ((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
+    			((LivingEntity) par1Entity).addEffect(new EffectInstance(Effects.POISON, 6 * 20 * (int)local_difficulty, 0));
 				
- 			   if(this.getRandom().nextInt(5) == 0) {
- 				   ((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
- 			   }
- 		   }
+    			if(this.getRandom().nextInt(5) == 0) {
+    				((LivingEntity) par1Entity).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 6 * 20 * (int)local_difficulty, 0));
+    			}
+    		}
 
- 		   return true;
- 	   } else {
-    	   return false;
-       }
+    		return true;
+    	} else {
+    		return false;
+    	}
 	}
 
     /**
@@ -172,7 +175,9 @@ public class VespaEntity extends RidableFlyingMobEntity {
      */
     @Override
     public boolean hurt(DamageSource source, float amount) {    	
-    	if(source.getEntity() instanceof ZombieEntity) {
+    	ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.VESPA_TARGETS);
+    	
+    	if (tag != null && source.getEntity() instanceof LivingEntity && source.getEntity().getType().is(tag)) {
     		return super.hurt(source, amount * 0.5F);
     	}
     	   

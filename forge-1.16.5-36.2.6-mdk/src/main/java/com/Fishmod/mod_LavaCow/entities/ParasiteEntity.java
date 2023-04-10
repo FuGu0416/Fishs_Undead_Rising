@@ -8,8 +8,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
-import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
-
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -40,6 +39,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
@@ -86,9 +87,9 @@ public class ParasiteEntity extends SpiderEntity {
             	return !p_213440_0_.isPassenger();
         	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
-	  	      return p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() 
-	  	    		  && LootTableHandler.PARASITE_HOSTLIST.contains(p_210136_0_.getType().getRegistryName());
-	  	   }));
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    	}));	
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -258,7 +259,9 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
     public void push(Entity entityIn) {		
 		super.push(entityIn);
-		if (entityIn instanceof LivingEntity && !(entityIn instanceof PlayerEntity) && LootTableHandler.PARASITE_HOSTLIST.contains(entityIn.getType().getRegistryName()) && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
+		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
+
+		if (tag != null && FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof PlayerEntity) && entityIn.getType().is(tag) && !this.isPassenger()) {
 			if (!this.isSummoned()) {
 				((LivingEntity) entityIn).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
 			}

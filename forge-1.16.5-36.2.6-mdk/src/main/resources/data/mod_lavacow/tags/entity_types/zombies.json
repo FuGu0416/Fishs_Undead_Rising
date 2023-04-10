@@ -1,0 +1,14 @@
+{
+  "__comment": "all zombie-related mobs.",
+  "replace": false,
+  "values": [
+    "minecraft:drowned",
+    "minecraft:husk",
+    "minecraft:zombie",
+    "minecraft:zombified_piglin",
+    "minecraft:zombie_villager",
+    "mod_lavacow:mycosis",
+    "mod_lavacow:frigid",
+    "mod_lavacow:mummy"
+  ]
+}

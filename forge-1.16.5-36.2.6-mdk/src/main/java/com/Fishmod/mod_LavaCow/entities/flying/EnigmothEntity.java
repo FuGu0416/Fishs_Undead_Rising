@@ -11,6 +11,8 @@ import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
@@ -18,6 +20,7 @@ import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
@@ -39,6 +42,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -72,13 +77,12 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	    
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof EnigmothEntity);
-        }).setUnseenMemoryTicks(160));
+        }).setUnseenMemoryTicks(160));        
         
-        if (FURConfig.Beelzebub_Attack_Zombie.get()) {
-	        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, WarpedFireflyEntity.class, false, (p_213440_0_) -> {
-	            return true;
-	        }).setUnseenMemoryTicks(160));
-        }
+    	this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.ENIGMOTH_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    	}).setUnseenMemoryTicks(160));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {

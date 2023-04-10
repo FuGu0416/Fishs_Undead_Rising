@@ -10,7 +10,8 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
-import net.minecraft.entity.AgeableEntity;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
+
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -28,15 +29,13 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -70,15 +69,10 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_210136_0_) -> {
             return !this.requiresCustomPersistence();
     	}));
-    	if(FURConfig.Piranha_AnimalAttack.get()) {
-    		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, SquidEntity.class, true));
-    		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AgeableEntity.class, 10, true, false, (p_210136_0_) -> {
-                    return !(p_210136_0_ instanceof TameableEntity) && ((AgeableEntity)p_210136_0_).getHealth() < ((AgeableEntity)p_210136_0_).getMaxHealth();
-            }));
-    	}
-    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, 0, true, true, (p_210136_0_) -> {
-                return !(p_210136_0_ instanceof SwarmerEntity || p_210136_0_ instanceof CreeperEntity) && ((MonsterEntity)p_210136_0_).getHealth() < ((MonsterEntity)p_210136_0_).getMaxHealth();
-        }));
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.SWARMER_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    	}));	
     	this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
 

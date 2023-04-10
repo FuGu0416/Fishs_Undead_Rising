@@ -48,7 +48,6 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -113,7 +112,8 @@ public class EventHandler {
     	Entity killer = event.getSource().getDirectEntity();
 	    World world = event.getEntityLiving().level;
 	    int Armor_Famine_lvl = 0;
-		
+		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
+	
 	    if(killer != null) {
 			for(ItemStack S : killer.getArmorSlots()) {
 				if(S.getItem() instanceof FamineArmorItem) {
@@ -130,10 +130,10 @@ public class EventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
-    	if (!world.isClientSide() && 
-    			(((LootTableHandler.PARASITE_HOSTLIST.contains(entity.getType().getRegistryName()) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get())) 
+    	if (!world.isClientSide() && tag != null && 
+    			(((entity instanceof LivingEntity && entity.getType().is(tag)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
     			|| (ParasiteEntity.gotParasite(entity.getPassengers()) != null)
-    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)))) {
+    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		ParasiteEntity passenger = ParasiteEntity.gotParasite(entity.getPassengers());
@@ -492,8 +492,10 @@ public class EventHandler {
     
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-    	if(FURConfig.Wendigo_AnimalAttack.get() && event.getEntity() != null && event.getEntity() instanceof AgeableEntity && !(event.getEntity() instanceof TameableEntity)) {
-    		((AgeableEntity)event.getEntity()).goalSelector.addGoal(1, new AvoidEntityGoal<>((AgeableEntity)event.getEntity(), WendigoEntity.class, 8.0F, 0.8D, 0.8D));
+		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.WENDIGO_TARGETS);
+		
+    	if(event.getEntity() != null && event.getEntity() instanceof CreatureEntity && tag != null && event.getEntity().getType().is(tag)) {
+    		((CreatureEntity)event.getEntity()).goalSelector.addGoal(1, new AvoidEntityGoal<>((CreatureEntity)event.getEntity(), WendigoEntity.class, 8.0F, 0.8D, 0.8D));
     	}
     	
     	if(event.getEntity() != null && event.getEntity() instanceof VillagerEntity)

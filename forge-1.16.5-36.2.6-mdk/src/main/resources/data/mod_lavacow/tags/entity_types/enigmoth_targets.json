@@ -1,0 +1,7 @@
+{
+  "__comment": "all non-player targets of Enigmoth.",
+  "replace": false,
+  "values": [
+	"mod_lavacow:warpedfirefly"
+  ]
+}

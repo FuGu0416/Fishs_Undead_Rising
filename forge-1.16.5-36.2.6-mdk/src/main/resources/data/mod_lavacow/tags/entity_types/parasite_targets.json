@@ -1,0 +1,7 @@
+{
+  "__comment": "all non-player targets of Parasite.",
+  "replace": false,
+  "values": [
+	"#mod_lavacow:zombies"
+  ]
+}

@@ -7,12 +7,14 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.FogletEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIDropRider;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
+import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
@@ -20,12 +22,13 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -43,7 +46,6 @@ public class PteraEntity extends FlyingMobEntity {
 	
 	public PteraEntity(EntityType<? extends PteraEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		//this.moveControl = new FlyingMovementController(this, 30, true);
 	}
 
     @Override
@@ -59,7 +61,10 @@ public class PteraEntity extends FlyingMobEntity {
 			this.goalSelector.addGoal(1, new EntityAIDropRider(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true).setUnseenMemoryTicks(160));
-		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractFishEntity.class, 120, true, true, null).setUnseenMemoryTicks(160));
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 120, true, true, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PTERA_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    	}).setUnseenMemoryTicks(160));
 	}
 	
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -110,10 +115,13 @@ public class PteraEntity extends FlyingMobEntity {
 
    @Override
    public boolean doHurtTarget(Entity par1Entity) {
-	   if(par1Entity instanceof AbstractFishEntity)
-		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1000.0D);
-	   else
+	   ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PTERA_TARGETS);
+
+	   if (tag != null && par1Entity instanceof LivingEntity && par1Entity.getType().is(tag)) {
+		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get() * 2.0D);
+	   } else {
 		   this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
+	   }
 	   
 	   return super.doHurtTarget(par1Entity);
    }
