@@ -2,6 +2,9 @@
   "__comment": "all non-player targets of Wendigo.",
   "replace": false,
   "values": [
-	"#mod_lavacow:livestocks"
+	"#mod_lavacow:livestocks",
+	"#minecraft:raiders",
+	"minecraft:villager",
+	"minecraft:wandering_trader"
   ]
 }
