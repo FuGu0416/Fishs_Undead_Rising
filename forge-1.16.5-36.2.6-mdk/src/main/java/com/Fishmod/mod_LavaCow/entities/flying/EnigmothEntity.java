@@ -47,6 +47,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -424,6 +425,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	*/
 	protected float getSoundVolume() {
 		return 0.5F;
+	}
+	
+    @Nullable
+    @Override
+    protected ResourceLocation getDefaultLootTable() {
+    	return this.isBaby() ? new ResourceLocation("mod_lavacow", "entities/enigmoth_larva") : super.getDefaultLootTable();
+    }
+
+    @Override
+	protected boolean shouldDropLoot() {
+    	return true;
 	}
 	
     @Override

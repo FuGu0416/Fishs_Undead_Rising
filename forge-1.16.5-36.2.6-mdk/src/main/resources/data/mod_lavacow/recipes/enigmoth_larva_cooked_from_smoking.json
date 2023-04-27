@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+	"item": "mod_lavacow:enigmoth_larva"
+  },
+  "result": "mod_lavacow:enigmoth_larva_cooked",
+  "experience": 0.35,
+  "cookingtime": 100
+}
