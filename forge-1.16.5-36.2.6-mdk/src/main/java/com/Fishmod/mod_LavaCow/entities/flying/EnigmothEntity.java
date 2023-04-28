@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
+import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -33,6 +34,7 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -282,18 +284,11 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     }
 	
     public void castSpell() {
-        for (int i = 0; i < FURConfig.Beelzebub_Ability_Num.get(); ++i) {
-            BlockPos blockpos = this.blockPosition().offset(-2 + this.getRandom().nextInt(5), 1, -2 + this.getRandom().nextInt(5));
-            ParasiteEntity entity = FUREntityRegistry.PARASITE.create(this.level);
-            entity.moveTo(blockpos, 0.0F, 0.0F);
-            entity.setSkin(0);
-            entity.setSummoned(true);
-            
-            if(!this.level.isClientSide())
-            	this.level.addFreshEntity(entity);
-            
-            entity.setTarget(this.getTarget());          
-        }
+   	 	for(int i = 0 ; i < 8 ; i++) {
+   	 		SmallFireballEntity entityammo = new SmallFireballEntity(EnigmothEntity.this.level, EnigmothEntity.this, EnigmothEntity.this.getLookAngle().x * (7.0D + new Random().nextGaussian() * 2.0D), EnigmothEntity.this.getLookAngle().y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, EnigmothEntity.this.getLookAngle().z * (7.0D + new Random().nextGaussian() * 2.0D));
+   	 		entityammo.setPos(EnigmothEntity.this.getX() + EnigmothEntity.this.getLookAngle().x * 2.0D, EnigmothEntity.this.getY() + (double)(EnigmothEntity.this.getBbHeight() / 2.0F) + 1.5D, EnigmothEntity.this.getZ() + EnigmothEntity.this.getLookAngle().z * 2.0D);
+   	 		EnigmothEntity.this.level.addFreshEntity(entityammo);	
+   	 	}	
     }
 	
 	public class AIUseSpell extends Goal {
@@ -359,7 +354,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         }
 
         protected int getCastWarmupTime() {
-            return 10;
+            return EnigmothEntity.this.isBaby() ? 60 : 10;
         }
 
         protected int getCastingTime() {
