@@ -15,18 +15,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 public class EnigmothRenderer extends MobRenderer<EnigmothEntity, EnigmothModel<EnigmothEntity>> {
-	private static final ResourceLocation TEXTURES_EYE  = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes.png");
+	private static final ResourceLocation[] TEXTURES_EYE = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes1.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes2.png")
+	};
 	private static final ResourceLocation TEXTURES_EYE_CHILD  = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva_glow.png");
-	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth.png"),
-	};
-	private static final ResourceLocation[] TEXTURES_CHILD = new ResourceLocation[] {
-			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva.png"),
-	};
+	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth.png");
+	private static final ResourceLocation TEXTURES_CHILD = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva.png");
 
 	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
+        System.out.println(TEXTURES.getPath());
     }
 
     public EnigmothRenderer(EntityRendererManager rendermanagerIn) {
@@ -37,7 +36,7 @@ public class EnigmothRenderer extends MobRenderer<EnigmothEntity, EnigmothModel<
     
     @Override
     public ResourceLocation getTextureLocation(EnigmothEntity entity) {
-    	return entity.isBaby() ? TEXTURES_CHILD[entity.getSkin()] : TEXTURES[entity.getSkin()];
+    	return entity.isBaby() ? TEXTURES_CHILD : TEXTURES;
     }
     
     @Override
@@ -52,7 +51,7 @@ public class EnigmothRenderer extends MobRenderer<EnigmothEntity, EnigmothModel<
         }
 
         public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EnigmothEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        	IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(entitylivingbaseIn.isBaby() ? TEXTURES_EYE_CHILD : TEXTURES_EYE));
+        	IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(entitylivingbaseIn.isBaby() ? TEXTURES_EYE_CHILD : TEXTURES_EYE[entitylivingbaseIn.getSkin()]));
             this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }

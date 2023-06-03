@@ -179,7 +179,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
 	public int abilityCooldown() {
-    	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
+    	return 10;//FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
     }
     
 	public void aiStep() {
