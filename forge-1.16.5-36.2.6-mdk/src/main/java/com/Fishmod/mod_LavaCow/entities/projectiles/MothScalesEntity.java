@@ -4,17 +4,15 @@ import net.minecraft.entity.LivingEntity;
 
 import java.util.List;
 
-import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
-
 import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.Potions;
@@ -22,11 +20,14 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MothScalesEntity extends AbstractFireballEntity {	
 	private float damage = 6.0F;
 	public int scaleType = 0;
+	private float[][] scaleColor = {{0.42F, 0.4F, 1.00F}, {1.00F, 0.59F, 0.11F}, {0.99F, 0.0F, 0.02F}};
 	
 	public MothScalesEntity(EntityType<? extends MothScalesEntity> p_i48540_1_, World worldIn) {
 		super(p_i48540_1_, worldIn);
@@ -45,10 +46,10 @@ public class MothScalesEntity extends AbstractFireballEntity {
 		super.tick();
 		if(!this.horizontalCollision && !this.verticalCollision)
 			this.yPower -= 0.006D;
-
+		
 		if(this.level.isClientSide())
 			for(int i = 0 ; i < 4 + this.random.nextInt(4) ; i++) {
-				this.level.addParticle(this.getParticleType(), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
+				this.level.addParticle(this.getParticleType(this.scaleType), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
 			}
 	}
 
@@ -118,8 +119,8 @@ public class MothScalesEntity extends AbstractFireballEntity {
 		return this.damage;
 	}	   
 	   
-	protected BasicParticleType getParticleType() {
-		return FURParticleRegistry.MOTH_SCALES;
+	protected RedstoneParticleData getParticleType(int Skin) {		
+		return new RedstoneParticleData(this.scaleColor[Skin][0], this.scaleColor[Skin][1], this.scaleColor[Skin][2], 0.66F);
 	}	
 
     @Override
@@ -134,8 +135,24 @@ public class MothScalesEntity extends AbstractFireballEntity {
 
     @Override
 	protected IParticleData getTrailParticle() {
-		return ParticleTypes.SQUID_INK;
+		return ParticleTypes.ASH;
 	}
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+	@OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+    	if (id == 6) {
+            this.scaleType = 0;
+        } else if (id == 7) {
+            this.scaleType = 1;
+        } else if (id == 8) {
+            this.scaleType = 2;
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
     
     public void addAdditionalSaveData(CompoundNBT p_213281_1_) {
     	super.addAdditionalSaveData(p_213281_1_);

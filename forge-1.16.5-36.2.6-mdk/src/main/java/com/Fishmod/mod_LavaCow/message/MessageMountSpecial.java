@@ -83,8 +83,9 @@ public class MessageMountSpecial {
 		   	 	for (int i = 0 ; i < 5 ; i++) {
 		   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES, (LivingEntity)entity, 0.0D, 0.0D, 0.0D, entity.level);
 		   	 		entityammo.setPos(message.posX - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()), message.posY - (double)(entity.getBbHeight() / 2.0F), message.posZ - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()));
-		   	 		entityammo.scaleType = ((EnigmothEntity) entity).getSkin();
+		   	 		entityammo.scaleType = ((EnigmothEntity) entity).getSkin(); 	 		
 		   	 		entity.level.addFreshEntity(entityammo);	
+		   	 		entity.level.broadcastEntityEvent(entityammo, (byte) (entityammo.scaleType + 6));
 		   	 	}	
 		   	 	entity.level.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.EVOKER_CAST_SPELL, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 		   	 	((EnigmothEntity) entity).setSkin(player.getRandom().nextInt(3));

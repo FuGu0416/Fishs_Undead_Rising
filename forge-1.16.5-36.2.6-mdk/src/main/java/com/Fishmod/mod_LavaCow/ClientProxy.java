@@ -179,6 +179,5 @@ public class ClientProxy extends CommonProxy {
 		instance.particleEngine.register(FURParticleRegistry.GHOST_FLAME, FlameParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.WITHER_FLAME, FlameParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.SAP_JET, GastroAcidParticle.SapJetFactory::new);
-		instance.particleEngine.register(FURParticleRegistry.MOTH_SCALES, GastroAcidParticle.SludgeJetFactory::new);
     }
 }
