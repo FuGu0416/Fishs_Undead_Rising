@@ -52,6 +52,15 @@ public class MothScalesEntity extends AbstractFireballEntity {
 				this.level.addParticle(this.getParticleType(this.scaleType), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
 			}
 	}
+	
+	@Override
+	protected void onHitEntity(EntityRayTraceResult p_213868_1_) {
+		super.onHitEntity(p_213868_1_);
+		
+		if (!this.level.isClientSide && this.scaleType == 0) {
+			
+		}
+	}
 
 	/**
 	 * Called when this EntityFireball hits a block or entity.
@@ -62,8 +71,12 @@ public class MothScalesEntity extends AbstractFireballEntity {
         Entity entity = this.getOwner();
         
 		if (!this.level.isClientSide && (p_70227_1_.getType() != RayTraceResult.Type.MISS || !((EntityRayTraceResult)p_70227_1_).getEntity().is(entity))) {
-			switch (this.scaleType) {
-    		    case 0 :
+			switch (this.scaleType) {    		   
+    		    case 1 :
+    	            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner());
+    	            this.level.explode((Entity)null, this.getX(), this.getY(), this.getZ(), 1.0F, flag, Explosion.Mode.NONE);
+    	            this.remove();
+    		    	break;
     		    case 2 :
 	        		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
 	             	AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.level, this.getX(), this.getY(), this.getZ());
@@ -76,7 +89,7 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	             	areaeffectcloudentity.setWaitTime(10);
 	             	areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float)areaeffectcloudentity.getDuration());
 	             	areaeffectcloudentity.setPotion((this.scaleType == 0) ? Potions.POISON : Potions.STRENGTH);
-	             	areaeffectcloudentity.addEffect(new EffectInstance((this.scaleType == 0) ? Effects.POISON : Effects.DAMAGE_BOOST, (2 + this.scaleType * 9) * 20, 0));	   
+	             	areaeffectcloudentity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));	   
 	             	
 	             	if (!list.isEmpty()) {
 	             		for(LivingEntity livingentity : list) {
@@ -89,12 +102,8 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	             	}
 	
 	             	this.level.addFreshEntity(areaeffectcloudentity);
-    		    	break;
-    		    case 1 :
-    	            boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner());
-    	            this.level.explode((Entity)null, this.getX(), this.getY(), this.getZ(), 1.0F, flag, Explosion.Mode.NONE);
-    	            this.remove();
-    		    	break;	
+    		    	break;  
+    		    case 0 :
     		    default :
     		    	break;
 			}               
@@ -120,7 +129,7 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	}	   
 	   
 	protected RedstoneParticleData getParticleType(int Skin) {		
-		return new RedstoneParticleData(this.scaleColor[Skin][0], this.scaleColor[Skin][1], this.scaleColor[Skin][2], 0.66F);
+		return new RedstoneParticleData(this.scaleColor[Skin][0] + this.random.nextFloat() * 0.3F, this.scaleColor[Skin][1] + this.random.nextFloat() * 0.3F, this.scaleColor[Skin][2] + this.random.nextFloat() * 0.3F, 0.66F + this.random.nextFloat() * 0.33F);
 	}	
 
     @Override
