@@ -173,11 +173,11 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
     		ChildModel.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     	} else {
 	    	float vibrate_rate = 0.5F;
-	    	//float i = (float)entityIn.getSpellTicks() / 30.0F;
+	    	float i = (float)entityIn.getSpellTicks() / 15.0F;
 	    	
 	    	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);    	
 	    	this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
-	    	
+	    		    	
 	    	this.wing0_r.xRot = 0.0F;
 	    	this.wing0_r.yRot = 0.2087F;
 	    	this.wing0_r.zRot = 0.5F * MathHelper.sin(0.5F * ageInTicks);
@@ -200,7 +200,12 @@ public class EnigmothModel<T extends EnigmothEntity> extends FlyingBaseModel<T> 
 	    	this.setRotateAngle(this.leg1_l, 0.0F, -0.7740535232594852F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.10F * (float)Math.PI) * (float)Math.PI, 1.593485607070823F);
 	    	this.setRotateAngle(this.leg2_l, 0.0F, -1.2292353921796064F + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.15F * (float)Math.PI) * (float)Math.PI, 1.3658946726107624F);       
 	    	
-	    	if (this.state.equals(FlyingBaseModel.State.WAITING)) {
+	    	if (i > 0.0F) {
+		    	this.wing0_r.zRot = 1.0F * MathHelper.sin(0.88F * ageInTicks);
+		    	this.wing1_r.zRot = 1.0F * MathHelper.sin(0.88F * ageInTicks + 0.15F * (float)Math.PI);
+		    	this.wing0_l.zRot = -1.0F * MathHelper.sin(0.88F * ageInTicks);
+		    	this.wing1_l.zRot = -1.0F * MathHelper.sin(0.88F * ageInTicks + 0.15F * (float)Math.PI); 
+	    	} else if (this.state.equals(FlyingBaseModel.State.WAITING)) {
 	    		vibrate_rate = 0.05F;
 	    		
 	    		this.base.y = 12.0F;

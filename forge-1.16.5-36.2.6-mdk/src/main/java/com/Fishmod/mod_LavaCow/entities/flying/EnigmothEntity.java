@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
+import com.Fishmod.mod_LavaCow.entities.projectiles.MothScalesEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
@@ -34,7 +34,7 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -44,6 +44,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
@@ -65,6 +67,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EnigmothEntity extends RidableFlyingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(EnigmothEntity.class, DataSerializers.INT);
+
+	private int skinFixedTick;
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);		
@@ -84,7 +88,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         
     	this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
     		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.ENIGMOTH_TARGETS);
-    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    		return tag != null && !this.isBaby() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
     	}).setUnseenMemoryTicks(160));
 	}
 	
@@ -92,15 +96,15 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.05D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Beelzebub_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Beelzebub_Attack.get())
+        		.add(Attributes.MAX_HEALTH, FURConfig.Enigmoth_Health.get())
+        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Enigmoth_Attack.get())
         		.add(Attributes.FLYING_SPEED, 0.1D);
     }
 	
     @Override
     protected void defineSynchedData() {
     	super.defineSynchedData();
-    	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	
+    	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	   	
     }
     
     @Override
@@ -108,10 +112,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	super.setTame(tamed);
         
         if (tamed) {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 2.0D);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * 2.0D);
         	this.setHealth(this.getHealth() * 2.0F);
         } else {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get());
         	this.setHealth(this.getHealth() * 0.5F);
         }
 	}
@@ -128,12 +132,68 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-    	if (!this.level.isClientSide) {	
-	    	System.out.println(this.getNavigation().toString());
-	    	System.out.println(this.moveControl.toString());
-	    	System.out.println(this.wanderGoal().toString());
+    	ItemStack itemstack = player.getItemInHand(hand);
+    	Item item = itemstack.getItem();
+
+    	if (this.isTame() && this.isOwnedBy(player) && !this.isBaby()) {
+			if (item.equals(Items.NETHER_WART)) { 	
+				this.skinFixedTick = 2 * 60 * 20;
+				this.level.broadcastEntityEvent(this, (byte)39);
+				this.setSkin(2);
+				if (!player.abilities.instabuild) {
+					itemstack.shrink(1);
+				}
+				
+	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+
+	        	for (int i = 0; i < 16; ++i) {
+	                double d0 = new Random().nextGaussian() * 0.02D;
+	                double d1 = new Random().nextGaussian() * 0.02D;
+	                double d2 = new Random().nextGaussian() * 0.02D;
+	                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+	            }	
+	        	
+				return ActionResultType.SUCCESS;
+			} else if (item.equals(Items.BLAZE_POWDER)) { 	
+				this.skinFixedTick = 2 * 60 * 20;
+				this.level.broadcastEntityEvent(this, (byte)39);
+				this.setSkin(1);
+				if (!player.abilities.instabuild) {
+					itemstack.shrink(1);
+                }
+
+	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+
+	        	for (int i = 0; i < 16; ++i) {
+	                double d0 = new Random().nextGaussian() * 0.02D;
+	                double d1 = new Random().nextGaussian() * 0.02D;
+	                double d2 = new Random().nextGaussian() * 0.02D;
+	                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+	            }	
+	        	
+				return ActionResultType.SUCCESS;
+			} else if (item.equals(Items.ENDER_PEARL)) { 	
+				this.skinFixedTick = 2 * 60 * 20;
+				this.level.broadcastEntityEvent(this, (byte)39);
+				this.setSkin(0);
+				if (!player.abilities.instabuild) {
+					itemstack.shrink(1);
+				}
+
+	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+
+	        	for (int i = 0; i < 16; ++i) {
+	                double d0 = new Random().nextGaussian() * 0.02D;
+	                double d1 = new Random().nextGaussian() * 0.02D;
+	                double d2 = new Random().nextGaussian() * 0.02D;
+	                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+	            }	
+	        	
+				return ActionResultType.SUCCESS;
+			}			
     	}
-    	return super.mobInteract(player, hand);
+
+    	return super.mobInteract(player, hand); 	
     }
     
     @Override
@@ -153,8 +213,9 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	            this.spawnAtLocation(Items.SADDLE, 1);
 	        }
     		
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get() * 0.2F);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * 0.2F);
         	this.setHealth(this.getHealth() * 0.2F);
+        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * 0.25F);
     	} else {
     		if (!this.level.isClientSide) {		
     			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
@@ -179,14 +240,24 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
 	public int abilityCooldown() {
-    	return 10;//FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
+    	return FURConfig.Enigmoth_Ability_Cooldown_Mount.get() * 20;
     }
     
 	public void aiStep() {
-		if (this.level.isClientSide && !this.isBaby()) {
-			for(int i = 0; i < 2; ++i) {
-				this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+		if (this.level.isClientSide) {
+			if (!this.isBaby()) {
+				for(int i = 0; i < 2; ++i) {
+					this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+				}
+			} else if (this.isBaby() && this.getSpellTicks() > 0) {
+				for(int i = 0; i < 2 + ((60 - this.getSpellTicks()) / 5); ++i) {
+					this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+				}				
 			}
+		}
+		
+		if (this.skinFixedTick > 0) {
+			--this.skinFixedTick;
 		}
 		
         super.aiStep();
@@ -216,8 +287,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Beelzebub_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Beelzebub_Attack.get());
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * (this.isBaby() ? 0.2F : 1.0F));
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
     	this.setHealth(this.getMaxHealth());
  
     	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.END_HIGHLANDS) && p_213386_3_ != SpawnReason.SPAWN_EGG) {
@@ -233,6 +304,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 
     public void setSkin(int skinType) {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
+    public int getSkinFixedTick() {
+       return this.skinFixedTick;
     }
     
     @Override
@@ -257,7 +332,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void handleEntityEvent(byte id) {
 		switch(id) {
 			case 10:
-				this.spellTicks = 30;
+				this.spellTicks = 15;
+				break;
+			case 39:
+				this.skinFixedTick = 2 * 60 * 20;
 				break;
 			default:
 				super.handleEntityEvent(id);
@@ -272,6 +350,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
+        this.skinFixedTick = compound.getInt("SkinFixedTick");
     }
 
     /**
@@ -281,16 +360,9 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getSkin());
+        compound.putInt("SkinFixedTick", this.skinFixedTick);
     }
-	
-    public void castSpell() {
-   	 	for(int i = 0 ; i < 8 ; i++) {
-   	 		SmallFireballEntity entityammo = new SmallFireballEntity(EnigmothEntity.this.level, EnigmothEntity.this, EnigmothEntity.this.getLookAngle().x * (7.0D + new Random().nextGaussian() * 2.0D), EnigmothEntity.this.getLookAngle().y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, EnigmothEntity.this.getLookAngle().z * (7.0D + new Random().nextGaussian() * 2.0D));
-   	 		entityammo.setPos(EnigmothEntity.this.getX() + EnigmothEntity.this.getLookAngle().x * 2.0D, EnigmothEntity.this.getY() + (double)(EnigmothEntity.this.getBbHeight() / 2.0F) + 1.5D, EnigmothEntity.this.getZ() + EnigmothEntity.this.getLookAngle().z * 2.0D);
-   	 		EnigmothEntity.this.level.addFreshEntity(entityammo);	
-   	 	}	
-    }
-	
+		
 	public class AIUseSpell extends Goal {
         protected int spellWarmup;
         protected int spellCooldown;
@@ -298,14 +370,13 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean canUse() {
+        public boolean canUse() {       	
             if (EnigmothEntity.this.getTarget() == null) {
                 return false;
-            } else if (EnigmothEntity.this.isSpellcasting() || EnigmothEntity.this.getAttackTimer() > 0 || EnigmothEntity.this.getHealth() < EnigmothEntity.this.getMaxHealth() * 0.4F) {
+            } else if (EnigmothEntity.this.isSpellcasting() || EnigmothEntity.this.getAttackTimer() > 0 || EnigmothEntity.this.distanceTo(EnigmothEntity.this.getTarget()) > (EnigmothEntity.this.isBaby() ? 8.0F : 3.0F)) {
                 return false;
             } else {
-                int i = EnigmothEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, EnigmothEntity.this.getBoundingBox().inflate(16.0D)).size();
-            	return EnigmothEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Beelzebub_Ability_Max.get();
+            	return EnigmothEntity.this.tickCount >= this.spellCooldown;
             }
         }
 
@@ -334,23 +405,39 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
-            --this.spellWarmup;
-            
-    		if (EnigmothEntity.this.level.isClientSide && EnigmothEntity.this.isBaby()) {
-    			for(int i = 0; i < 2; ++i) {
-    				EnigmothEntity.this.level.addParticle(ParticleTypes.PORTAL, EnigmothEntity.this.getRandomX(0.5D), EnigmothEntity.this.getRandomY() - 0.25D, EnigmothEntity.this.getRandomZ(0.5D), (EnigmothEntity.this.random.nextDouble() - 0.5D) * 2.0D, -EnigmothEntity.this.random.nextDouble(), (EnigmothEntity.this.random.nextDouble() - 0.5D) * 2.0D);
-    			}
-    		}
+            --this.spellWarmup;          
     		
             if (this.spellWarmup == 0) {
             	EnigmothEntity.this.playSound(EnigmothEntity.this.getSpellSound(), 0.175F, 1.0F);
             	if (EnigmothEntity.this.isBaby()) {
             		EnigmothEntity.this.remove();
             	} else {
-            		EnigmothEntity.this.castSpell();
+            		this.castSpell();
             	}
                 
             }
+        }
+        
+        protected void castSpell() {
+       	 	for(int i = 0 ; i < 8 ; i++) {
+       	 		Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
+       	 		Double d1 = new Random().nextDouble() * 8.0D - 4.0D;
+       	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES, EnigmothEntity.this, d0, - 2.4D, d1, EnigmothEntity.this.level);
+       	 		entityammo.setPos(EnigmothEntity.this.getX() + d0 * 0.25D, EnigmothEntity.this.getY() + (double)(EnigmothEntity.this.getBbHeight() / 2.0F) + 1.5D, EnigmothEntity.this.getZ() + d1 * 0.25D);
+	       	 	
+       	 		if(!EnigmothEntity.this.level.isClientSide()) {
+	       	 		EnigmothEntity.this.level.addFreshEntity(entityammo);	
+	       	 		entityammo.setScaleType(EnigmothEntity.this.getSkin());
+	       	 	}
+       	 	}	
+       	 	
+       	 	if (EnigmothEntity.this.getSkin() == 2) {
+       	 		EnigmothEntity.this.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));
+       	 	}
+
+       	 	if (EnigmothEntity.this.getSkinFixedTick() == 0) {
+       	 		EnigmothEntity.this.setSkin(EnigmothEntity.this.getRandom().nextInt(3));
+       	 	}
         }
 
         protected int getCastWarmupTime() {
@@ -358,11 +445,11 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         }
 
         protected int getCastingTime() {
-            return 10;
+            return EnigmothEntity.this.isBaby() ? 60: 15;
         }
 
         protected int getCastingInterval() {
-        	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
+        	return FURConfig.Enigmoth_Ability_Cooldown.get() * 20;
         }
 
         @Nullable
@@ -393,7 +480,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	}
 	
     public SoundEvent getSpellSound() {
-        return this.isBaby() ? SoundEvents.ENDERMAN_TELEPORT : FURSoundRegistry.ENIGMOTH_FLAP;
+        return this.isBaby() ? SoundEvents.ENDERMAN_TELEPORT : SoundEvents.EVOKER_CAST_SPELL;
     }
 	
 	protected SoundEvent getFlyingSound() {

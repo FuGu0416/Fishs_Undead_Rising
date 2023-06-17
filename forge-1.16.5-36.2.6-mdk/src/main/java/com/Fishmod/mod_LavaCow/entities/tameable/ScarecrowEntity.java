@@ -201,12 +201,12 @@ public class ScarecrowEntity extends FURTameableEntity {
             DyeColor dyecolor = ((DyeItem)item).getDyeColor();
             
             if (dyecolor != this.getCollarColor()) {
-               this.setCollarColor(dyecolor);
-               if (!player.abilities.instabuild) {
-                  itemstack.shrink(1);
-               }
+            	this.setCollarColor(dyecolor);
+            	if (!player.abilities.instabuild) {
+            		itemstack.shrink(1);
+            	}
 
-               return ActionResultType.CONSUME;
+            	return ActionResultType.CONSUME;
             }
     	} else if (this.isTame() && this.isOwnedBy(player) && !this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
     		for(Entity passenger : player.getPassengers()) {

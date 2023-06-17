@@ -198,6 +198,12 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Max;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Cooldown;
 	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Enigmoth;
+	public static final ForgeConfigSpec.ConfigValue<Double> Enigmoth_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Enigmoth_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown_Mount;
+	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
@@ -538,6 +544,14 @@ public final class FURConfig {
 		Beelzebub_Ability_Num = BUILDER.comment("Set the number of Parasite summoned per cast [0-100]").defineInRange("beelzebub summon number", 6, 0, 100);
 		Beelzebub_Ability_Max = BUILDER.comment("Set the max number of Parasite summoned [0-100]").defineInRange("beelzebub summon max", 18, 0, 100);
 		Beelzebub_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Parasite [0-100]").defineInRange("beelzebub summon cooldown", 8, 0, 100);
+		BUILDER.pop();
+		
+		BUILDER.push("Enigmoth");
+		pSpawnRate_Enigmoth = BUILDER.comment("Set the spawn rate of Enigmoth [0-100]").defineInRange("enigmoth spawn rate", 1, 0, 100);
+		Enigmoth_Health = BUILDER.comment("Maximum Enigmoth health [1-1000]").defineInRange("enigmoth health", 50.0D, 1.0D, 1000.0D);
+		Enigmoth_Attack = BUILDER.comment("Enigmoth strength [1-1000]").defineInRange("enigmoth attack", 8.0D, 1.0D, 1000.0D);
+		Enigmoth_Ability_Cooldown = BUILDER.comment("Set the cooldown of spreading scales [0-100]").defineInRange("enigmoth spell cooldown", 8, 0, 100);
+		Enigmoth_Ability_Cooldown_Mount = BUILDER.comment("Set the cooldown of spreading scales when mounted [0-100]").defineInRange("mounted enigmoth spell cooldown", 4, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

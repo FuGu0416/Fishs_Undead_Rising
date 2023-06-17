@@ -296,8 +296,8 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}
 		
-		if(FURConfig.pSpawnRate_WarpedFirefly.get() > 0 && biomeKey.equals(Biomes.WARPED_FOREST) || FURConfig.pSpawnRate_WarpedFirefly.get() > 0 && biomeKey.equals(Biomes.END_HIGHLANDS)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.ENIGMOTH, FURConfig.pSpawnRate_WarpedFirefly.get(), 1, 2));
+		if(FURConfig.pSpawnRate_Enigmoth.get() > 0 && (biomeKey.equals(Biomes.WARPED_FOREST) || biomeKey.equals(Biomes.END_HIGHLANDS))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.ENIGMOTH, FURConfig.pSpawnRate_Enigmoth.get(), 1, 2));
 		}
 	}
 	

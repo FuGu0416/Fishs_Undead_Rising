@@ -16,6 +16,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
@@ -82,13 +84,21 @@ public class MessageMountSpecial {
 			} else if (entity instanceof EnigmothEntity) {
 		   	 	for (int i = 0 ; i < 5 ; i++) {
 		   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES, (LivingEntity)entity, 0.0D, 0.0D, 0.0D, entity.level);
-		   	 		entityammo.setPos(message.posX - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()), message.posY - (double)(entity.getBbHeight() / 2.0F), message.posZ - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()));
-		   	 		entityammo.scaleType = ((EnigmothEntity) entity).getSkin(); 	 		
+		   	 		entityammo.setPos(message.posX - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()), message.posY - (double)(entity.getBbHeight() / 2.0F), message.posZ - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()));		   	 			
 		   	 		entity.level.addFreshEntity(entityammo);	
-		   	 		entity.level.broadcastEntityEvent(entityammo, (byte) (entityammo.scaleType + 6));
+		   	 		entityammo.setScaleType(((EnigmothEntity) entity).getSkin());
 		   	 	}	
 		   	 	entity.level.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.EVOKER_CAST_SPELL, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
-		   	 	((EnigmothEntity) entity).setSkin(player.getRandom().nextInt(3));
+		   	 	entity.level.broadcastEntityEvent(entity, (byte)10);
+		   	 	
+	       	 	if (((EnigmothEntity) entity).getSkin() == 2) {
+	       	 		((EnigmothEntity) entity).addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));
+	       	 		player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));
+	       	 	}
+	       	 	
+		   	 	if (((EnigmothEntity) entity).getSkinFixedTick() == 0) {
+		   	 		((EnigmothEntity) entity).setSkin(player.getRandom().nextInt(3));
+		   	 	}
 			}
 		}
 	}

@@ -374,6 +374,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	                itemstack.shrink(1);
 	            }
 	        	this.setSkin(3);
+	        	this.playSound(SoundEvents.PARROT_EAT, 1.0F, 1.0F);
 	        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
