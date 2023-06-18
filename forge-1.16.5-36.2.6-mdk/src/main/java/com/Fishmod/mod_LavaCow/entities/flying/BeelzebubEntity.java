@@ -78,7 +78,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         }).setUnseenMemoryTicks(160));
         
     	this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
-    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.VESPA_TARGETS);
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.BEELZEBUB_TARGETS);
     		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
     	}).setUnseenMemoryTicks(160));
 	}
@@ -89,7 +89,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Beelzebub_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Beelzebub_Attack.get())
-        		.add(Attributes.FLYING_SPEED, 0.1D);
+        		.add(Attributes.FLYING_SPEED, 0.08D);
     }
 	
     @Override
@@ -151,7 +151,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.BEEF;
+        return false;
     }
     
     @Override
@@ -161,7 +161,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     
     @Override
 	public int abilityCooldown() {
-    	return FURConfig.Beelzebub_Ability_Cooldown.get() * 20;
+    	return FURConfig.Beelzebub_Ability_Cooldown_Mount.get() * 20;
     }
     
     private int canHarvestLimit() {
@@ -213,6 +213,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     	if (super.doHurtTarget(par1Entity)) {
     		if (par1Entity instanceof ParasiteEntity) {
     			par1Entity.remove();
+    			this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
     			this.heal(this.getMaxHealth() * 0.05F);
     		}
  		   

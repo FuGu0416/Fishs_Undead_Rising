@@ -98,7 +98,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Enigmoth_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Enigmoth_Attack.get())
-        		.add(Attributes.FLYING_SPEED, 0.1D);
+        		.add(Attributes.FLYING_SPEED, 0.067D);
     }
 	
     @Override

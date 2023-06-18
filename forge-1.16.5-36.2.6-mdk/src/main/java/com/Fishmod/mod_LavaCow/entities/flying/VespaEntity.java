@@ -107,7 +107,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.BEEF;
+        return false;
     }
     
     @Override
