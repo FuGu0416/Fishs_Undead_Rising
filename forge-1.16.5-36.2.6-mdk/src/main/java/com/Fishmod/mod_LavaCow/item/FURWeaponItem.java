@@ -26,7 +26,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -57,8 +56,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo.Spawners;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -149,7 +146,7 @@ public class FURWeaponItem extends SwordItem {
 	*/
 	@Override
 	public ActionResultType useOn(ItemUseContext p_195939_1_) {
-		if(!p_195939_1_.getLevel().isClientSide()) {
+		/*if(!p_195939_1_.getLevel().isClientSide()) {
 			Biome biome = p_195939_1_.getLevel().getBiome(p_195939_1_.getClickedPos());
 			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.MONSTER)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
@@ -166,7 +163,7 @@ public class FURWeaponItem extends SwordItem {
 			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_CREATURE)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-		}
+		}*/
 		
 		return super.useOn(p_195939_1_);
 	}

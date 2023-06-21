@@ -30,14 +30,13 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 	private final ModelRenderer leg2_l;
 	private final ModelRenderer wing_r;
 	private final ModelRenderer wing_l;
-	private final ModelRenderer jewel;
 
 	public ScarabModel() {
 		texWidth = 32;
 		texHeight = 32;
 
 		base = new ModelRenderer(this);
-		base.setPos(0.0F, 23.0F, 3.0F);
+		base.setPos(0.0F, 23.5F, 5.0F);
 		base.texOffs(0, 0).addBox(-2.5F, -3.5F, -4.0F, 5.0F, 3.0F, 6.0F, 0.0F, false);
 
 		Head = new ModelRenderer(this);
@@ -49,14 +48,14 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 		Jaw_l = new ModelRenderer(this);
 		Jaw_l.setPos(-1.5F, -0.25F, -2.0F);
 		Head.addChild(Jaw_l);
-		this.setRotateAngle(Jaw_l, 0.0F, 0.2618F, 0.0F);
-		Jaw_l.texOffs(0, 16).addBox(-0.4F, -0.5F, -5.0F, 1.0F, 1.0F, 5.0F, 0.0F, true);
+		this.setRotateAngle(Jaw_l, 0.0F, -0.1745F, 0.0F);
+		Jaw_l.texOffs(2, 18).addBox(-0.9176F, -0.5F, -3.0681F, 1.0F, 1.0F, 3.0F, 0.0F, true);
 
 		Jaw_r = new ModelRenderer(this);
 		Jaw_r.setPos(1.5F, 0.0F, -2.0F);
 		Head.addChild(Jaw_r);
-		this.setRotateAngle(Jaw_r, 0.0F, -0.2618F, 0.0F);
-		Jaw_r.texOffs(0, 16).addBox(-0.6F, -0.75F, -5.0F, 1.0F, 1.0F, 5.0F, 0.0F, false);
+		this.setRotateAngle(Jaw_r, 0.0F, 0.1745F, 0.0F);
+		Jaw_r.texOffs(2, 18).addBox(-0.0824F, -0.75F, -3.0681F, 1.0F, 1.0F, 3.0F, 0.0F, false);
 
 		elytra_r = new ModelRenderer(this);
 		elytra_r.setPos(0.0F, -3.5F, -2.0F);
@@ -71,40 +70,40 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 		elytra_l.texOffs(0, 9).addBox(0.0F, 0.0F, 0.0F, 3.0F, 3.0F, 4.0F, 0.0F, false);
 
 		leg0_r = new ModelRenderer(this);
-		leg0_r.setPos(2.0F, -0.5F, -2.0F);
+		leg0_r.setPos(1.0F, -1.0F, -2.0F);
 		base.addChild(leg0_r);
 		this.setRotateAngle(leg0_r, 0.0F, 0.7854F, 0.7854F);
-		leg0_r.texOffs(16, 4).addBox(-1.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg0_r.texOffs(16, 4).addBox(-0.5F, 0.2929F, -0.5F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		leg1_r = new ModelRenderer(this);
-		leg1_r.setPos(2.0F, -0.5F, -1.0F);
+		leg1_r.setPos(1.0F, -1.0F, -1.0F);
 		base.addChild(leg1_r);
 		this.setRotateAngle(leg1_r, 0.0F, 0.3927F, 0.5812F);
-		leg1_r.texOffs(16, 2).addBox(-1.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg1_r.texOffs(16, 2).addBox(-0.2278F, 0.451F, -0.6802F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		leg2_r = new ModelRenderer(this);
-		leg2_r.setPos(2.0F, -0.5F, 0.0F);
+		leg2_r.setPos(1.0F, -1.0F, 0.0F);
 		base.addChild(leg2_r);
 		this.setRotateAngle(leg2_r, 0.0F, -0.3927F, 0.5812F);
-		leg2_r.texOffs(16, 0).addBox(-1.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg2_r.texOffs(16, 0).addBox(-0.2278F, 0.451F, -1.3198F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		leg0_l = new ModelRenderer(this);
-		leg0_l.setPos(-2.0F, -0.5F, -2.0F);
+		leg0_l.setPos(-1.0F, -1.0F, -2.0F);
 		base.addChild(leg0_l);
 		this.setRotateAngle(leg0_l, 0.0F, -0.7854F, -0.7854F);
-		leg0_l.texOffs(16, 4).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg0_l.texOffs(16, 4).addBox(-2.5F, 0.2929F, -0.5F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		leg1_l = new ModelRenderer(this);
-		leg1_l.setPos(-2.0F, -0.5F, -1.0F);
+		leg1_l.setPos(-1.0F, -1.0F, -1.0F);
 		base.addChild(leg1_l);
 		this.setRotateAngle(leg1_l, 0.0F, -0.3927F, -0.5812F);
-		leg1_l.texOffs(16, 2).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg1_l.texOffs(16, 2).addBox(-2.7722F, 0.451F, -0.6802F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		leg2_l = new ModelRenderer(this);
-		leg2_l.setPos(-2.0F, -0.5F, 0.0F);
+		leg2_l.setPos(-1.0F, -1.0F, 0.0F);
 		base.addChild(leg2_l);
 		this.setRotateAngle(leg2_l, 0.0F, 0.3927F, -0.5812F);
-		leg2_l.texOffs(16, 0).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+		leg2_l.texOffs(16, 0).addBox(-2.7722F, 0.451F, -1.3198F, 3.0F, 0.0F, 1.0F, 0.0F, false);
 
 		wing_r = new ModelRenderer(this);
 		wing_r.setPos(0.0F, -3.5F, -2.0F);
@@ -117,11 +116,6 @@ public class ScarabModel<T extends ScarabEntity> extends FURBaseModel<T> impleme
 		base.addChild(wing_l);
 		this.setRotateAngle(wing_l, 0.0853F, 0.153F, -0.2497F);
 		wing_l.texOffs(6, 9).addBox(0.0F, 0.0F, 0.0F, 3.0F, 0.0F, 4.0F, 0.0F, false);
-
-		jewel = new ModelRenderer(this);
-		jewel.setPos(0.0F, -3.5F, -2.75F);
-		base.addChild(jewel);
-		jewel.texOffs(16, 10).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 1.0F, 2.0F, 0.0F, false);
 	}
 
 	@Override
