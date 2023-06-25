@@ -126,6 +126,8 @@
 	"item.mod_lavacow.diseased_bread": "Diseased Bread",
 	"item.mod_lavacow.pheromone_gland": "Pheromone Gland",
 	"item.mod_lavacow.charming_catalyst": "Charming Catalyst",
+	"item.mod_lavacow.enigmoth_larva": "Enigmoth Caterpillar",
+	"item.mod_lavacow.enigmoth_larva_cooked": "Cooked Enigmoth Caterpillar",
 					
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
@@ -167,7 +169,10 @@
 	"item.mod_lavacow.spawn_egg_graverobberghost": "Ghost of Grave Robber Spawn Egg",
 	"item.mod_lavacow.spawn_egg_wraith": "Wraith Spawn Egg",
 	"item.mod_lavacow.spawn_egg_ghostswarmer": "Ghost Swarmer Spawn Egg",
-	
+	"item.mod_lavacow.spawn_egg_scarab": "Amber Scarab Spawn Egg",
+	"item.mod_lavacow.spawn_egg_beelzebub": "Beelzebub Spawn Egg",
+	"item.mod_lavacow.spawn_egg_enigmoth": "Enigmoth Spawn Egg",
+		
 	"item.mod_lavacow.banner_pattern_skeletonking": "Banner Pattern",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "Skeleton King",
 	"item.mod_lavacow.banner_pattern_wendigo": "Banner Pattern",
@@ -179,11 +184,11 @@
 	"material.mod_lavacow.ectoplasm": "Ectoplasm",
 
 	"modifier.mod_lavacow.broodmother": "Broodmother",
-	"modifier.mod_lavacow.broodmother.desc": "¡±oEnjoy a Wormy Cuddle¡±r\nSpawn a Vespa larva during combat or when a block is harvested.",
+	"modifier.mod_lavacow.broodmother.desc": "ï¿½ï¿½oEnjoy a Wormy Cuddleï¿½ï¿½r\nSpawn a Vespa larva during combat or when a block is harvested.",
 	"modifier.mod_lavacow.famine": "Famine",
-	"modifier.mod_lavacow.famine.desc": "¡±oHorseman of Famine¡±r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block.", 
+	"modifier.mod_lavacow.famine.desc": "ï¿½ï¿½oHorseman of Famineï¿½ï¿½r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block.", 
 	"modifier.mod_lavacow.unholytouch": "Unholy Touch",
-	"modifier.mod_lavacow.unholytouch.desc": "¡±oDamn to the livings!¡±r\nDeals bonus damage to non-undead entity and applies Weakness", 
+	"modifier.mod_lavacow.unholytouch.desc": "ï¿½ï¿½oDamn to the livings!ï¿½ï¿½r\nDeals bonus damage to non-undead entity and applies Weakness", 
 
 	"block.minecraft.banner.skeletonking.white": "White Skeleton King",
 	"block.minecraft.banner.skeletonking.orange": "Orange Skeleton King",
@@ -273,7 +278,10 @@
 	"entity.mod_lavacow.graverobberghost": "Ghost of Grave Robber",
 	"entity.mod_lavacow.wraith": "Wraith",
 	"entity.mod_lavacow.ghostswarmer": "Ghost Swarmer",
-
+	"entity.mod_lavacow.scarab": "Amber Scarab",
+	"entity.mod_lavacow.beelzebub": "Beelzebub",
+	"entity.mod_lavacow.enigmoth": "Enigmoth",
+	
 	"entity.mod_lavacow.warsmallfireball": "Fireball",
 	"entity.mod_lavacow.piranhalauncher": "Swarmer",
 	"entity.mod_lavacow.acidjet": "Gastric Fluid",
@@ -664,7 +672,7 @@
 	"advancements.mod_lavacow.kill_graverobberghost.description": "Kill the Ghost of Grave Robber",
 	"advancements.mod_lavacow.kill_wraith.title": "Ghostbuster",
 	"advancements.mod_lavacow.kill_wraith.description": "Kill a Wraith",
-	"advancements.mod_lavacow.kill_ghostswarmer.title": "Jungle Cruise III¡GVengeful Spirit",
+	"advancements.mod_lavacow.kill_ghostswarmer.title": "Jungle Cruise IIIï¿½GVengeful Spirit",
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "Kill a Ghost Swarmer",
 	
 	"death.mod_lavacow.timeup": "%1$s return to dust"
