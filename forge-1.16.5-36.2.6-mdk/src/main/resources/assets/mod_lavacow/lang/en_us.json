@@ -293,7 +293,9 @@
 	"entity.mod_lavacow.deathcoil": "Death Coil",
 	"entity.mod_lavacow.flamejet": "Flaming Fluid",
 	"entity.mod_lavacow.cactus_thorn": "Cactus Thorn",
-		
+	"entity.mod_lavacow.sapjet": "Sap Jet",
+	"entity.mod_lavacow.moth_scales": "Moth Scales",
+			
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
 	"entity_parasite_hurt": "Parasite hurts",
@@ -407,7 +409,21 @@
 
 	"entity_wraith_ambient": "Wraith whispers",
 	"entity_wraith_death": "Wraith dies",
-		
+
+	"entity_scarab_ambient": "Amber Scarab chirps",
+	"entity_scarab_death": "Amber Scarab dies",
+	"entity_scarab_hurt": "Amber Scarab hurts",
+	
+	"entity_beelzebub_ambient": "Beelzebub chirps",
+	"entity_beelzebub_spell": "Beelzebub poops",
+	"entity_beelzebub_death": "Beelzebub dies",
+	"entity_beelzebub_hurt": "Beelzebub hurts",
+	
+	"entity_enigmoth_ambient": "Enigmoth chirps",
+	"entity_enigmoth_flap": "Enigmoth flaps",
+	"entity_enigmoth_death": "Enigmoth dies",
+	"entity_enigmoth_hurt": "Enigmoth hurts",
+			
 	"tootip.mod_lavacow:bonesword": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
 	"tootip.mod_lavacow:netherstew": "Gives random effects(0:40) when eaten.",
 	"tootip.mod_lavacow:goldenheart": "Gives Regeneration and repairs (+1/sec) all equipment when in the hotbar.",
@@ -417,7 +433,7 @@
 	"tootip.mod_lavacow:fissionpotion": "Turn Animal into two individuals.",
 	"tootip.mod_lavacow:green_bacon_and_eggs": "Gives Haste(1:00) when eaten.",
 	"tootip.mod_lavacow:reapers_scythe": "All attacks sweep target, and their damage bypasses any armors.",
-	"tootip.mod_lavacow:famine": "Gives Hunger. Restore 1 hunger points when hitting a non-undead entity.  ",    
+	"tootip.mod_lavacow:famine": "Gives Hunger. Restore 1 hunger points when hitting a non-undead entity.",    
 	"tootip.mod_lavacow:frozenthigh": "Is edible. Attacks give target SlownessIII(0:04)",
 	"tootip.mod_lavacow:sludge_wand": "Right click to summon a loyal Lil'Sludge",
 	"tootip.mod_lavacow:war": "Raise a war between you and your friend who built a wood cabin (need Fire Charge as ammunition)",
@@ -480,7 +496,11 @@
 	"tootip.mod_lavacow:ghostlyarmor.l2": "Set(4): +20%% to entities with higher HP",
 	"tootip.mod_lavacow:forsaken_staff": "Right click to fire a death coil at target.",
 	"tootip.mod_lavacow:illager_nose": "Illagers will be neutral to player",
-			
+	"tootip.mod_lavacow:scarab_scepter": "Right click to summon a swarm of Amber Scarab.",
+	"tootip.mod_lavacow:diseased_bread": "Transform villager into zombie villager, or just eat it.",
+	"tootip.mod_lavacow:pheromone_gland": "Gives Charming Pheromone(1:00) and NauseaII(0:10) when eaten.",
+	"tootip.mod_lavacow:charming_catalyst": "Gives Charming Pheromone(0:30) when consuming, or uses to trigger some larvae's growth.",
+				
 	"command.mod_lavacow.sitting": "%s is waiting",
 	"command.mod_lavacow.following": "%s is following",
 	"command.mod_lavacow.wandering": "%s is wandering",
@@ -517,9 +537,17 @@
 	"effect.mod_lavacow.fear": "Fear",
 	"description.effect.mod_lavacow:fear": "Apply weakness and slowness, non-player entities will flee aimlessly instead.",
 	"effect.mod_lavacow.thorned": "Thorned",
+	"effect.mod_lavacow.strong_thorned": "Thorned II",
+	"effect.mod_lavacow.long_thorned": "Thorned",
 	"description.effect.mod_lavacow:thorned": "Deal damage to attacking entities",
 	"effect.mod_lavacow.immolation": "Immolation",
+	"effect.mod_lavacow.strong_immolation": "Immolation II",
+	"effect.mod_lavacow.long_immolation": "Immolation",
 	"description.effect.mod_lavacow:immolation": "Gain fire resistance, also set entities nearby ablaze.",
+	"effect.mod_lavacow.charming_pheromone": "Charming Pheromone",
+	"description.effect.mod_lavacow:charming_pheromone": "All arthropods will be neutral to player. They will try to follow instead.",
+	"effect.mod_lavacow.flourished": "Flourished",
+	"description.effect.mod_lavacow:flourished": "Enhance all healing received.",
 			
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
@@ -672,8 +700,14 @@
 	"advancements.mod_lavacow.kill_graverobberghost.description": "Kill the Ghost of Grave Robber",
 	"advancements.mod_lavacow.kill_wraith.title": "Ghostbuster",
 	"advancements.mod_lavacow.kill_wraith.description": "Kill a Wraith",
-	"advancements.mod_lavacow.kill_ghostswarmer.title": "Jungle Cruise III�GVengeful Spirit",
+	"advancements.mod_lavacow.kill_ghostswarmer.title": "Jungle Cruise III : Vengeful Spirit",
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "Kill a Ghost Swarmer",
-	
+	"advancements.mod_lavacow.kill_scarab.title": "Not Again!",
+	"advancements.mod_lavacow.kill_scarab.description": "Kill a Amber Scarab",	
+	"advancements.mod_lavacow.kill_beelzebub.title": "Not Again!",
+	"advancements.mod_lavacow.kill_beelzebub.description": "Kill a Beelzebub",
+	"advancements.mod_lavacow.kill_enigmoth.title": "Not Again!",
+	"advancements.mod_lavacow.kill_enigmoth.description": "Kill a Enigmoth",
+			
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }
