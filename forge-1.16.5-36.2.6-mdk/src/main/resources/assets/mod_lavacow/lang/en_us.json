@@ -702,12 +702,8 @@
 	"advancements.mod_lavacow.kill_wraith.description": "Kill a Wraith",
 	"advancements.mod_lavacow.kill_ghostswarmer.title": "Jungle Cruise III : Vengeful Spirit",
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "Kill a Ghost Swarmer",
-	"advancements.mod_lavacow.kill_scarab.title": "Not Again!",
-	"advancements.mod_lavacow.kill_scarab.description": "Kill a Amber Scarab",	
-	"advancements.mod_lavacow.kill_beelzebub.title": "Not Again!",
-	"advancements.mod_lavacow.kill_beelzebub.description": "Kill a Beelzebub",
-	"advancements.mod_lavacow.kill_enigmoth.title": "Not Again!",
-	"advancements.mod_lavacow.kill_enigmoth.description": "Kill a Enigmoth",
+	"advancements.mod_lavacow.entomophobia.title": "Entomophobia",
+	"advancements.mod_lavacow.entomophobia.description": "Slay all types of insects",	
 			
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }
