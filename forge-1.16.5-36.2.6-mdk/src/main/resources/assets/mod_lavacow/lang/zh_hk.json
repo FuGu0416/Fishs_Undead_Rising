@@ -120,7 +120,15 @@
 	"item.mod_lavacow.forsaken_staff": "被遺忘者法杖",
 	"item.mod_lavacow.sinister_whetstone": "怨念磨刀石",
 	"item.mod_lavacow.illager_nose": "窳鼻",
-			
+	"item.mod_lavacow.ancient_amber": "遠古琥珀",
+	"item.mod_lavacow.scarab_scepter": "聖甲蟲權杖",
+	"item.mod_lavacow.diseased_wheat": "染疫小麥",
+	"item.mod_lavacow.diseased_bread": "染疫麵包",
+	"item.mod_lavacow.pheromone_gland": "費洛蒙腺體",
+	"item.mod_lavacow.charming_catalyst": "迷情催化藥水",
+	"item.mod_lavacow.enigmoth_larva": "謎影蛾幼蟲",
+	"item.mod_lavacow.enigmoth_larva_cooked": "炙燒謎影蛾幼蟲",
+				
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -161,7 +169,10 @@
 	"item.mod_lavacow.spawn_egg_graverobberghost": "盜墓賊亡魂生怪蛋",
 	"item.mod_lavacow.spawn_egg_wraith": "怨靈生怪蛋",
 	"item.mod_lavacow.spawn_egg_ghostswarmer": "鬼靈群獵者生怪蛋",
-	
+	"item.mod_lavacow.spawn_egg_scarab": "琥珀聖甲蟲生怪蛋",
+	"item.mod_lavacow.spawn_egg_beelzebub": "魔王蠅生怪蛋",
+	"item.mod_lavacow.spawn_egg_enigmoth": "謎影蛾生怪蛋",
+		
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
 	"item.mod_lavacow.banner_pattern_wendigo": "旗幟圖案",
@@ -267,7 +278,25 @@
 	"entity.mod_lavacow.graverobberghost": "盜墓賊亡魂",
 	"entity.mod_lavacow.wraith": "怨靈",
 	"entity.mod_lavacow.ghostswarmer": "鬼靈群獵者",
-	
+	"entity.mod_lavacow.scarab": "琥珀聖甲蟲",
+	"entity.mod_lavacow.beelzebub": "魔王蠅",
+	"entity.mod_lavacow.beelzebubpupa": "魔王蠅蛹",
+	"entity.mod_lavacow.enigmoth": "謎影蛾",
+
+	"entity.mod_lavacow.warsmallfireball": "火球",
+	"entity.mod_lavacow.piranhalauncher": "群獵者",
+	"entity.mod_lavacow.acidjet": "胃酸液",
+	"entity.mod_lavacow.holygrenade": "神聖手榴彈",
+	"entity.mod_lavacow.ghostbomb": "鬼靈炸彈",
+	"entity.mod_lavacow.sonicbomb": "音爆彈",
+	"entity.mod_lavacow.sludgejet": "泥漿彈",
+	"entity.mod_lavacow.sandburst": "砂流葬",
+	"entity.mod_lavacow.deathcoil": "死纏影",
+	"entity.mod_lavacow.flamejet": "炎酸液",
+	"entity.mod_lavacow.cactus_thorn": "仙人掌刺",
+	"entity.mod_lavacow.sapjet": "樹液彈",
+	"entity.mod_lavacow.moth_scales": "蛾鱗粉",
+			
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",
 	"entity_parasite_hurt": "屍蛆受傷",
@@ -380,7 +409,21 @@
 
 	"entity_wraith_ambient": "怨靈低語聲",
 	"entity_wraith_death": "怨靈死亡",
-				
+
+	"entity_scarab_ambient": "琥珀聖甲蟲窸窣聲",
+	"entity_scarab_death": "琥珀聖甲蟲死亡",
+	"entity_scarab_hurt": "琥珀聖甲蟲受傷",
+	
+	"entity_beelzebub_ambient": "魔王蠅窸窣聲",
+	"entity_beelzebub_spell": "魔王蠅噗一聲",
+	"entity_beelzebub_death": "魔王蠅死亡",
+	"entity_beelzebub_hurt": "魔王蠅受傷",
+	
+	"entity_enigmoth_ambient": "謎影蛾窸窣聲",
+	"entity_enigmoth_flap": "謎影蛾拍翼聲",
+	"entity_enigmoth_death": "謎影蛾死亡",
+	"entity_enigmoth_hurt": "謎影蛾受傷",
+					
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",
@@ -453,7 +496,11 @@
 	"tootip.mod_lavacow:ghostlyarmor.l2": "套裝(4)：對生命比你高的單位傷害+20%%",
 	"tootip.mod_lavacow:forsaken_staff": "右鍵向目標發射一枚死亡纏繞",
 	"tootip.mod_lavacow:illager_nose": "大部分窳民不再將你視為敵人",
-		
+	"tootip.mod_lavacow:scarab_scepter": "右鍵點擊以召喚聽命於玩家的聖甲蟲群",
+	"tootip.mod_lavacow:diseased_bread": "將村民轉化為殭屍村民，或是直接食用",
+	"tootip.mod_lavacow:pheromone_gland": "食用後獲得迷情費洛蒙(1:00)與噁心II(0:10)",
+	"tootip.mod_lavacow:charming_catalyst": "食用後獲得迷情費洛蒙(0:30)，或用於刺激某些幼蟲的成長",
+			
 	"command.mod_lavacow.sitting": "%s現在於原地待命",
 	"command.mod_lavacow.following": "%s正在跟隨",
 	"command.mod_lavacow.wandering": "%s進入徘徊狀態",
@@ -490,10 +537,18 @@
 	"effect.mod_lavacow.fear": "恐懼",
 	"description.effect.mod_lavacow:fear": "賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄",
 	"effect.mod_lavacow.thorned": "荊棘",
+	"effect.mod_lavacow.strong_thorned": "荊棘 II",
+	"effect.mod_lavacow.long_thorned": "荊棘",	
 	"description.effect.mod_lavacow:thorned": "對發動近戰攻擊的單位造成傷害",
 	"effect.mod_lavacow.immolation": "燒灼",
+	"effect.mod_lavacow.strong_immolation": "燒灼 II",
+	"effect.mod_lavacow.long_immolation": "燒灼",
 	"description.effect.mod_lavacow:immolation": "獲得火焰抗性，並使附近的單位燃燒",
-			
+	"effect.mod_lavacow.charming_pheromone": "迷情費洛蒙",
+	"description.effect.mod_lavacow:charming_pheromone": "所有節肢動物將會對單位中立，並試圖跟隨其後",
+	"effect.mod_lavacow.flourished": "繁茂",
+	"description.effect.mod_lavacow:flourished": "提升醫療回復量",
+				
 	"item.minecraft.potion.effect.corrosive": "腐蝕藥水",
 	"item.minecraft.splash_potion.effect.corrosive": "飛濺 腐蝕藥水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滯留 腐蝕藥水",
@@ -651,6 +706,8 @@
 	"advancements.mod_lavacow.kill_wraith.description": "殺死一頭怨靈",
 	"advancements.mod_lavacow.kill_ghostswarmer.title": "叢林巡航III：復仇亡靈",
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "殺死一隻鬼靈群獵者",
-
+	"advancements.mod_lavacow.entomophobia.title": "昆蟲恐懼症",
+	"advancements.mod_lavacow.entomophobia.description": "殺死所有種類的昆蟲",	
+	
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }
