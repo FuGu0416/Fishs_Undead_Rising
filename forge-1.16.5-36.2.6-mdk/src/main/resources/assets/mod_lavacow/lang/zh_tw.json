@@ -708,6 +708,8 @@
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "殺死一隻鬼靈群獵者",
 	"advancements.mod_lavacow.entomophobia.title": "昆蟲恐懼症",
 	"advancements.mod_lavacow.entomophobia.description": "殺死所有種類的昆蟲",	
-	
+	"advancements.mod_lavacow.tame_flying_mount.title": "是鳥？是飛機？還是...？",
+	"advancements.mod_lavacow.tame_flying_mount.description": "馴服所有可騎乘的昆蟲",
+		
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }

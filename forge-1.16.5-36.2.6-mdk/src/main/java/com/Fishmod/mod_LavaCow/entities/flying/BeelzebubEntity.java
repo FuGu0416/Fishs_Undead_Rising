@@ -25,13 +25,12 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -66,9 +65,10 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.BEEF), false));
 		this.goalSelector.addGoal(4, new BeelzebubEntity.AIUseSpell());
-  
+		
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ParasiteEntity.class)); 
+		
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, ParasiteEntity.class, 0, true, true, (p_210136_0_) -> {
 	  	      return this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.2F;
 	  	   }));

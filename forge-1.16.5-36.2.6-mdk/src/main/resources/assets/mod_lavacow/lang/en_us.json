@@ -705,6 +705,8 @@
 	"advancements.mod_lavacow.kill_ghostswarmer.description": "Kill a Ghost Swarmer",
 	"advancements.mod_lavacow.entomophobia.title": "Entomophobia",
 	"advancements.mod_lavacow.entomophobia.description": "Slay all types of insects",	
-			
+	"advancements.mod_lavacow.tame_flying_mount.title": "It's a Bird...It's a Plane...It's...",
+	"advancements.mod_lavacow.tame_flying_mount.description": "Tame all types of ridable insects",
+				
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

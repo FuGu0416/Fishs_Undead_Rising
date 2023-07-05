@@ -15,7 +15,6 @@ import net.minecraft.entity.IEquipable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -56,7 +55,6 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     protected void registerGoals() {
     	super.registerGoals();		
         this.goalSelector.addGoal(1, new AICastingApell());
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     }

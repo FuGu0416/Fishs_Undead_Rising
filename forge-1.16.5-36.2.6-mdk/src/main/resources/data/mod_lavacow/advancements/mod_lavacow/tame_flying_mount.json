@@ -1,0 +1,40 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:saddle"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.tame_flying_mount.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.tame_flying_mount.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/kill_vespa",
+    "criteria": {
+		"mod_lavacow:vespa": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:vespa"
+		        }
+		      }
+        },       
+        "mod_lavacow:beelzebub": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:beelzebub"
+		        }
+		      }
+        },
+        "mod_lavacow:enigmoth": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:enigmoth"
+		        }
+		      }
+        }        
+    }
+}
