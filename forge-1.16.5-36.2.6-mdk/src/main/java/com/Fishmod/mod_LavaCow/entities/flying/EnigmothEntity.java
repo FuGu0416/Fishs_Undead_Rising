@@ -81,7 +81,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.CHORUS_FRUIT, Items.POPPED_CHORUS_FRUIT), false));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.END_ROD), false));
 		this.goalSelector.addGoal(4, new EnigmothEntity.AIUseSpell());  	    
-	    
+		
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, PlayerEntity.class, false, (p_213440_0_) -> {
             return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof EnigmothEntity);
         }).setUnseenMemoryTicks(160));        
@@ -267,7 +267,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void tick() {
     	super.tick();    
     	
-    	if (!this.onGround && this.tickCount % 60 == 0) {
+    	if (!this.isBaby() && !this.onGround && this.tickCount % 60 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     }
@@ -332,7 +332,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     public void handleEntityEvent(byte id) {
 		switch(id) {
 			case 10:
-				this.spellTicks = 15;
+				this.spellTicks = this.isBaby() ? 60: 15;
 				break;
 			case 39:
 				this.skinFixedTick = 2 * 60 * 20;
@@ -468,15 +468,15 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return FURSoundRegistry.ENIGMOTH_AMBIENT;
+		return this.isBaby() ? FURSoundRegistry.PARASITE_AMBIENT : FURSoundRegistry.ENIGMOTH_AMBIENT;
 	}
 
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return FURSoundRegistry.ENIGMOTH_HURT;
+		return this.isBaby() ? FURSoundRegistry.PARASITE_HURT : FURSoundRegistry.ENIGMOTH_HURT;
 	}
 
 	protected SoundEvent getDeathSound() {
-		return FURSoundRegistry.ENIGMOTH_DEATH;
+		return this.isBaby() ? FURSoundRegistry.PARASITE_DEATH : FURSoundRegistry.ENIGMOTH_DEATH;
 	}
 	
     public SoundEvent getSpellSound() {

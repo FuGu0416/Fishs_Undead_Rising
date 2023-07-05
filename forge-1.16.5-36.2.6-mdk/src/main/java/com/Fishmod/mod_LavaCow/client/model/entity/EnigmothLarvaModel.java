@@ -51,8 +51,21 @@ public class EnigmothLarvaModel<T extends EnigmothEntity> extends FURBaseModel<T
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    	this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
-    	this.abdomen.z = 1.0F + (0.2F * MathHelper.sin(0.03F * ageInTicks)) + (1.0F * MathHelper.sin(limbSwingAmount));
+    	int i = entityIn.getSpellTicks();
+    	
+    	if (i > 0) {
+    		this.head.xRot = -0.4363F;
+    		this.head.yRot = 0.75F * MathHelper.sin(0.88F * ageInTicks);
+    		
+    		this.base.yRot = 0.2F * MathHelper.sin(0.88F * ageInTicks);
+    		
+    		this.abdomen.xRot = 0.6545F;
+    		this.abdomen.yRot = 0.75F * MathHelper.sin(0.88F * ageInTicks);
+    	} else {
+    		this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    		this.abdomen.z = 1.0F + (0.2F * MathHelper.sin(0.03F * ageInTicks)) + (1.0F * MathHelper.sin(limbSwingAmount));
+    		this.abdomen.xRot = 0.0F;
+    	}
     }
 
 	@Override
