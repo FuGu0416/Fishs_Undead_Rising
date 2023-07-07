@@ -71,10 +71,12 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -85,6 +87,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -416,15 +419,15 @@ public class EventHandler {
     	}
     	
     	if(source.isExplosion() && source.getEntity() instanceof WolfEntity) {
-    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().getString().equals("entity.mod_lavacow.holygrenade")) {
+    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.holygrenade"))) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
-    		} else if (source.getEntity().getName().getString().equals("entity.mod_lavacow.ghostbomb")) {
+    		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.ghostbomb"))) {
     			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
     			Attacked.addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if (source.getEntity().getName().getString().equals("entity.mod_lavacow.sonicbomb")) {
-    			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2));
+    		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.sonicbomb"))) {
+    			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2, false, false, true, null));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else
     			event.setAmount(event.getAmount() * 0.15F);
@@ -837,5 +840,15 @@ public class EventHandler {
         		((MobEntity) event.getEntityLiving()).setTarget(null);
         	}
         }
+    } 
+    
+    @SubscribeEvent
+    public void onELiving(LivingEvent event) { 
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0)) {
+			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.SOUL, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
+    	}  
     }
 }
