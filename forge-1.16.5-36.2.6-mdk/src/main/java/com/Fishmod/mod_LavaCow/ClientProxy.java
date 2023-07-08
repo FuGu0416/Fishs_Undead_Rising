@@ -4,6 +4,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.concurrent.Callable;
 
+import com.Fishmod.mod_LavaCow.client.particle.FearParticle;
 import com.Fishmod.mod_LavaCow.client.particle.GastroAcidParticle;
 import com.Fishmod.mod_LavaCow.client.particle.LocustSwarmParticle;
 import com.Fishmod.mod_LavaCow.client.renderer.FURItemstackRenderer;
@@ -179,5 +180,6 @@ public class ClientProxy extends CommonProxy {
 		instance.particleEngine.register(FURParticleRegistry.GHOST_FLAME, FlameParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.WITHER_FLAME, FlameParticle.Factory::new);
 		instance.particleEngine.register(FURParticleRegistry.SAP_JET, GastroAcidParticle.SapJetFactory::new);
+		instance.particleEngine.register(FURParticleRegistry.FEAR, FearParticle.Factory::new);
     }
 }

@@ -21,6 +21,7 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
@@ -286,6 +287,13 @@ public class EventHandler {
         if ((player.level.getGameTime() & 0x1FL) > 0L) {
             return;
         }     
+        
+    	if (player.hasEffect(FUREffectRegistry.FEAR) && (player.level instanceof ServerWorld)) {
+			double d0 = player.getRandom().nextGaussian() * 0.02D;
+			double d1 = player.getRandom().nextGaussian() * 0.02D;
+			double d2 = player.getRandom().nextGaussian() * 0.02D;
+			((ServerWorld) player.level).sendParticles(FURParticleRegistry.FEAR, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
+    	}
 		
 		if(player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F)
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
@@ -846,11 +854,11 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onELiving(LivingEvent event) { 
-    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
+    	if (!(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
 			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.SOUL, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
+			((ServerWorld) event.getEntityLiving().level).sendParticles(FURParticleRegistry.FEAR, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}  
     }
 }

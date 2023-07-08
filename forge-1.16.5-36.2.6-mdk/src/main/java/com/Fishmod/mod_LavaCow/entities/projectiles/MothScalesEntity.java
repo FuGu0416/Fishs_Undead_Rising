@@ -103,6 +103,22 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	            }
 	         }			
 		}
+		
+		if (!this.level.isClientSide && this.getScaleType() == 1) {
+			Entity entity1 = this.getOwner();
+			if (entity1 == null || !(entity1 instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getEntity())) {
+				BlockPos blockpos = entity.blockPosition();
+				for(int i = -2 ; i < 2 ; i++) {
+					for(int j = -2 ; j < 2 ; j++) {
+						for(int k = -2 ; k < 2 ; k++) {					
+				            if (this.random.nextFloat() < 0.15F && this.level.isEmptyBlock(blockpos.offset(i, j, k))) {
+				            	this.level.setBlockAndUpdate(blockpos.offset(i, j, k), AbstractFireBlock.getState(this.level, blockpos.offset(i, j, k)));
+				            }
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Override

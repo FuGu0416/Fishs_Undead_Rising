@@ -4,6 +4,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
@@ -338,7 +339,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
                 	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
                 	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
                 	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	((ServerWorld) this.level).sendParticles(ParticleTypes.DRIPPING_HONEY, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+                	((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
                 	
                 }
             }
@@ -355,7 +356,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         public boolean canUse() {
             if (BeelzebubEntity.this.getTarget() == null) {
                 return false;
-            } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0 || BeelzebubEntity.this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.4F) {
+            } else if (BeelzebubEntity.this.isSpellcasting() || BeelzebubEntity.this.getAttackTimer() > 0 || BeelzebubEntity.this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.4F || BeelzebubEntity.this.getY() < SpawnUtil.getHeight(BeelzebubEntity.this).getY() + 4.0D) {
                 return false;
             } else {
                 int i = BeelzebubEntity.this.level.getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();
