@@ -49,6 +49,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -330,7 +331,17 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             if(!this.level.isClientSide())
             	this.level.addFreshEntity(entity);
             
-            entity.setTarget(this.getTarget());          
+            entity.setTarget(this.getTarget()); 
+            
+            if (this.level instanceof ServerWorld) {
+                for (int j = 0; j < 4; ++j) {
+                	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+                	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
+                	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+                	((ServerWorld) this.level).sendParticles(ParticleTypes.DRIPPING_HONEY, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+                	
+                }
+            }
         }
     }
 	

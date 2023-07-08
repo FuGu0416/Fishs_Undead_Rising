@@ -47,6 +47,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.server.ServerWorld;
 
 public class SeaHagEntity extends FloatingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(SeaHagEntity.class, DataSerializers.INT);
@@ -203,7 +204,17 @@ public class SeaHagEntity extends FloatingMobEntity {
                 	SeaHagEntity.this.level.addFreshEntity(entityvex);
                 
                 if(SeaHagEntity.this.getTarget() != null)
-                	entityvex.setTarget(SeaHagEntity.this.getTarget());                	
+                	entityvex.setTarget(SeaHagEntity.this.getTarget());     
+                
+                if (SeaHagEntity.this.level instanceof ServerWorld) {
+	                for (int j = 0; j < 4; ++j) {
+	                	double d0 = entityvex.getX() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
+	                	double d1 = entityvex.getY() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbHeight());
+	                	double d2 = entityvex.getZ() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
+	                	((ServerWorld) SeaHagEntity.this.level).sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+	                	
+	                }
+                }
             }
         }
 

@@ -52,6 +52,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
@@ -399,11 +400,14 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
                 
                 entity.setTarget(SludgeLordEntity.this.getTarget());
                 
-                for (int j = 0; j < 24; ++j) {
-                	double d0 = entity.getX() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	double d1 = entity.getY() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbHeight());
-                	double d2 = entity.getZ() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	SludgeLordEntity.this.level.addParticle(ParticleTypes.SPLASH, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+                if (SludgeLordEntity.this.level instanceof ServerWorld) {
+	                for (int j = 0; j < 4; ++j) {
+	                	double d0 = entity.getX() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+	                	double d1 = entity.getY() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbHeight());
+	                	double d2 = entity.getZ() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+	                	((ServerWorld) SludgeLordEntity.this.level).sendParticles(ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+	                	
+	                }
                 }
             }
         }

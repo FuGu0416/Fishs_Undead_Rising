@@ -136,6 +136,12 @@ public class SandBurstEntity extends Entity
                    if (this.getOwner() != null && ((MobEntity) this.getOwner()).getTarget() != null) {
                 	   entityvex.setTarget(((MobEntity) this.getOwner()).getTarget());
                    }
+                   
+                   if (this.level instanceof ServerWorld) {
+                	   for (int j = 0; j < 4; ++j) {
+                		   ((ServerWorld) this.level).sendParticles(ParticleTypes.LARGE_SMOKE, this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), this.getY() + this.random.nextDouble() * (double)this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), 15, 0.0D, this.random.nextDouble() * 0.5D, 0.0D, 0.0D);
+                	   }
+                   }
         	   }
         	   
         	   this.remove();

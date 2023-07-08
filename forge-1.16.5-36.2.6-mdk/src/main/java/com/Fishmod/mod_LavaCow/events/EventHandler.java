@@ -744,6 +744,7 @@ public class EventHandler {
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.FOUL_BRISTLE, 1, 3, 12, 1));
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_THORN, 1, 4, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ANCIENT_AMBER, 4, 1, 12, 1));
 	        if(FURConfig.pSpawnRate_Cactoid.get() > 0)
 	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_FRUIT, 8, 1, 12, 1));
 	        if(FURConfig.pSpawnRate_Piranha.get() > 0)
@@ -754,6 +755,7 @@ public class EventHandler {
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.UNDYINGHEART, 30, 1, 4, 20));
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ACIDICHEART, 30, 1, 4, 20));
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
+	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PHEROMONE_GLAND, 18, 1, 4, 20));
 	        if(FURConfig.pSpawnRate_Wisp.get() > 0)
 	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.WISP_IN_A_BOTTLE, 3, 1, 12, 1));
     	}
@@ -844,7 +846,7 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onELiving(LivingEvent event) { 
-    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0)) {
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
 			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;

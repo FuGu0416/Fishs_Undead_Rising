@@ -244,10 +244,16 @@ public class FURWeaponItem extends SwordItem {
         	entity.readAdditionalSaveData(CompoundNBT);
         	entity.tame(playerIn);
         	entity.setLimitedLife(FURConfig.LilSludge_Lifespan.get() * 20);
-        	entity.setSkin((fire_aspect > 0) ? 1 : 0);
-        		
-            LavaBurst(worldIn, entity.getX(), entity.getY(), entity.getZ(), 1.0D, fire_aspect > 0 ? ParticleTypes.FLAME : ParticleTypes.BUBBLE_COLUMN_UP);
-			
+        	entity.setSkin((fire_aspect > 0) ? 1 : 0);        	
+
+            for (int j = 0; j < 4; ++j) {
+            	double d0 = entity.getX() + (double)(entity.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+            	double d1 = entity.getY() + (double)(entity.getRandom().nextFloat() * entity.getBbHeight());
+            	double d2 = entity.getZ() + (double)(entity.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+            	((ServerWorld) worldIn).sendParticles(fire_aspect > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+            	
+            }
+            
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
     			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
     		});

@@ -30,6 +30,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.DamageSource;
@@ -43,6 +46,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class ForsakenEntity extends AbstractSkeletonEntity {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(ForsakenEntity.class, DataSerializers.INT);
 	private final EntityChargeAttackGoal entityAICharge = new EntityChargeAttackGoal(this);
 	private final RangedAttackGoal staffGoal = new RangedAttackGoal(this, 1.25D, 40, 20.0F) {
 		public void stop() {
@@ -59,6 +63,12 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 	public ForsakenEntity(EntityType<? extends ForsakenEntity> p_i48555_1_, World worldIn) {
 		super(p_i48555_1_, worldIn);
 	}
+	
+	@Override
+    protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(4)));
+    }
 
     public static boolean checkForsakenSpawnRules(EntityType<? extends ForsakenEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
@@ -197,7 +207,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Forsaken_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-        switch(this.getRandom().nextInt(4)) {
+        switch(this.getSkin()) {
         	case 0:     		
         		this.setItemSlot(EquipmentSlotType.OFFHAND, shield);
                 this.getAttribute(Attributes.ARMOR).setBaseValue(4.0D);
@@ -215,6 +225,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
         		this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(FURItemRegistry.FORSAKEN_STAFF));
         		break;
         }
+        
         this.getMainHandItem().setDamageValue(this.getRandom().nextInt(this.getMainHandItem().getMaxDamage()));
         this.populateDefaultEquipmentEnchantments(difficulty);
         this.reassessWeaponGoal();
@@ -271,4 +282,30 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
 
         return abstractarrowentity;
 	}
+    
+    public int getSkin() {
+        return this.getEntityData().get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.getEntityData().set(SKIN_TYPE, skinType);
+    }
+    
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+		this.setSkin(compound.getInt("Variant"));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+	@Override
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("Variant", getSkin());
+    }
 }

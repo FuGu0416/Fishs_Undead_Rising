@@ -33,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class AvatonEntity extends FloatingMobEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(AvatonEntity.class, DataSerializers.INT);
@@ -166,7 +167,17 @@ public class AvatonEntity extends FloatingMobEntity {
                 	AvatonEntity.this.level.addFreshEntity(entityvex);
                 
                 if(AvatonEntity.this.getTarget() != null)
-                	entityvex.setTarget(AvatonEntity.this.getTarget());                	
+                	entityvex.setTarget(AvatonEntity.this.getTarget());  
+                
+                if (AvatonEntity.this.level instanceof ServerWorld) {
+	                for (int j = 0; j < 4; ++j) {
+	                	double d0 = entityvex.getX() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
+	                	double d1 = entityvex.getY() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbHeight());
+	                	double d2 = entityvex.getZ() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
+	                	((ServerWorld) AvatonEntity.this.level).sendParticles(FURParticleRegistry.LOCUST_SWARM, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+	                	
+	                }
+                }
             }
         }
         
