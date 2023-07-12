@@ -13,6 +13,7 @@ import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.AreaEffectCloudEntity;
@@ -59,6 +60,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
@@ -616,10 +618,10 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         public boolean canUse() {
             if (FogletEntity.this.getTarget() == null || FogletEntity.this.getSkin() != 2) {
                 return false;
-            } else if (FogletEntity.this.isSpellcasting() || FogletEntity.this.hasEffect(FUREffectRegistry.IMMOLATION)) {
+            } else if (FogletEntity.this.isSpellcasting()) {
                 return false;
             } else {
-            	return FogletEntity.this.tickCount >= this.spellCooldown;
+            	return FogletEntity.this.tickCount >= this.spellCooldown && FogletEntity.this.distanceTo(FogletEntity.this.getTarget()) < 3.0F;
             }
         }
 
@@ -655,9 +657,43 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
+                this.castSpell();
                 FogletEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
-                FogletEntity.this.addEffect(new EffectInstance(FUREffectRegistry.IMMOLATION, 2 * 60 * 20));
+                FogletEntity.this.addEffect(new EffectInstance(FUREffectRegistry.IMMOLATION, 8 * 20));
             }
+        }
+        
+        protected void castSpell() {
+        	List<Entity> list = FogletEntity.this.level.getEntities(FogletEntity.this, FogletEntity.this.getBoundingBox().inflate(3.0D));
+        	
+        	if (FogletEntity.this.level instanceof ServerWorld) {
+        		((ServerWorld) FogletEntity.this.level).sendParticles(ParticleTypes.EXPLOSION, FogletEntity.this.getX(), FogletEntity.this.getY() + FogletEntity.this.getBbHeight(), FogletEntity.this.getZ(), 15, 0.0D, 1.0D, 0.0D, 0.0D);
+        	}
+        	
+        	if (!FogletEntity.this.level.isClientSide) {
+    			if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(FogletEntity.this.level, FogletEntity.this)) {
+    				BlockPos blockpos = FogletEntity.this.blockPosition();
+    				for(int i = -3 ; i < 3 ; i++) {
+    					for(int j = -3 ; j < 3 ; j++) {
+    						for(int k = -3 ; k < 3 ; k++) {					
+    				            if (FogletEntity.this.random.nextFloat() < 0.3F && FogletEntity.this.level.isEmptyBlock(blockpos.offset(i, j, k))) {
+    				            	FogletEntity.this.level.setBlockAndUpdate(blockpos.offset(i, j, k), AbstractFireBlock.getState(FogletEntity.this.level, blockpos.offset(i, j, k)));
+    				            }
+    						}
+    					}
+    				}
+    			}
+    			
+            	for (Entity entity1 : list) {
+            		if (entity1 instanceof LivingEntity) {                 
+            			if (!((LivingEntity)entity1).fireImmune()) {        				
+            				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(FogletEntity.this).setMagic(), (float) FogletEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
+            					((LivingEntity)entity1).setRemainingFireTicks(4);
+            				}       							
+            			}
+            		}
+            	}
+    		}
         }
 
         protected int getCastWarmupTime() {
@@ -665,11 +701,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         }
 
         protected int getCastingTime() {
-            return 20;
+            return 100;
         }
 
         protected int getCastingInterval() {
-            return 12 * 20;
+            return 200;
         }
 
         @Nullable

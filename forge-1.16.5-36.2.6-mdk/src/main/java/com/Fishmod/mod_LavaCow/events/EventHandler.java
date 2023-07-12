@@ -294,7 +294,14 @@ public class EventHandler {
 			double d2 = player.getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) player.level).sendParticles(FURParticleRegistry.FEAR, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}
-		
+
+    	if (player.hasEffect(FUREffectRegistry.IMMOLATION) && (player.level instanceof ServerWorld)) {
+			double d0 = player.getRandom().nextGaussian() * 0.02D;
+			double d1 = player.getRandom().nextGaussian() * 0.02D;
+			double d2 = player.getRandom().nextGaussian() * 0.02D;
+			((ServerWorld) player.level).sendParticles(ParticleTypes.FLAME, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
+    	}
+    	
 		if(player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F)
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
 		    	if(((ItemEntity) ItemEntity).getItem().getItem().isEdible() && ((ItemEntity) ItemEntity).getItem().getItem().getFoodProperties().isMeat()) {	
@@ -860,5 +867,12 @@ public class EventHandler {
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) event.getEntityLiving().level).sendParticles(FURParticleRegistry.FEAR, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}  
+    	
+    	if (!(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
+			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
+			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.FLAME, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
+    	} 
     }
 }
