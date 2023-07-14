@@ -861,18 +861,18 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onELiving(LivingEvent event) { 
-    	if (!(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
+    	if (event.getEntity() instanceof LivingEntity && !(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
 			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) event.getEntityLiving().level).sendParticles(FURParticleRegistry.FEAR, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}  
     	
-    	if (!(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
+    	if (event.getEntity() instanceof LivingEntity && !(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
 			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.FLAME, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	} 
+    	}
     }
 }
