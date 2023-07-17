@@ -32,8 +32,10 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DrinkHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 
 public class FissionPotionItem extends FURItem {
@@ -74,12 +76,15 @@ public class FissionPotionItem extends FURItem {
 			    	AgeableEntity.setBaby(true);
 			        AgeableEntity.moveTo(target.getX(), target.getY() + 0.2F, target.getZ(), target.yRot, target.xRot);
 			        parent.level.addFreshEntity(AgeableEntity);
-			        if(AgeableEntity.getClass() == parent.getClass())parent.setBaby(true);
-			        if(parent instanceof TameableEntity 
-			        		&& ((TameableEntity)parent).isTame()
-			        		&& AgeableEntity instanceof TameableEntity 
-			        		&& !((TameableEntity)AgeableEntity).isTame())
+			        
+			        if(AgeableEntity.getClass() == parent.getClass()) {
+			        	parent.setBaby(true);
+			        }
+			        
+			        if(parent instanceof TameableEntity && ((TameableEntity)parent).isTame() && AgeableEntity instanceof TameableEntity && !((TameableEntity)AgeableEntity).isTame()) {
 			        	((TameableEntity)AgeableEntity).tame(playerIn);
+			        }
+			        
 			        AgeableEntity.playAmbientSound();
 			        
 			        flag = true;
@@ -139,19 +144,19 @@ public class FissionPotionItem extends FURItem {
 	    			}
 	    		}            		
     		}
-    		
-    		if (!playerIn.isCreative() && flag) {		
-    			this.finishUsingItem(stack, playerIn.level, playerIn);
-    			stack.shrink(1);
-    		}
+    		  		
+    		if (flag) {		
+    			this.returnItem(stack, playerIn.level, playerIn);
+    			playerIn.addItem(new ItemStack(Items.GLASS_BOTTLE));
+    		}   		
 	    	
-    		if (flag) {
-	    		playerIn.playSound(this.using_sound, 1.0F, 1.0F);
+    		if (playerIn.level instanceof ServerWorld && flag) {	 
+    			playerIn.level.playSound(null, playerIn.blockPosition(), this.using_sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
 	    		for (int i = 0; i < 5; ++i) {
 	    			double d0 = new Random().nextGaussian() * 0.02D;
 	    			double d1 = new Random().nextGaussian() * 0.02D;
 	    			double d2 = new Random().nextGaussian() * 0.02D;
-	    			playerIn.level.addParticle(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), dy + 1.0D + (double)(new Random().nextFloat() * playerIn.getBbHeight()), dz + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), d0, d1, d2);
+	    			((ServerWorld) playerIn.level).sendParticles(this.using_particle, dx + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), dy + 1.0D + (double)(new Random().nextFloat() * playerIn.getBbHeight()), dz + (double)(new Random().nextFloat() * playerIn.getBbWidth() * 2.0F) - (double)playerIn.getBbWidth(), 15, 0.0D, d0, d1, d2);
 	    		}
     		}
     		
@@ -169,17 +174,33 @@ public class FissionPotionItem extends FURItem {
         return DrinkHelper.useDrink(p_77659_1_, p_77659_2_, p_77659_3_);
 	}
     
+    private ItemStack returnItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+        PlayerEntity playerentity = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
+        if (playerentity instanceof ServerPlayerEntity) {
+           CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)playerentity, stack);
+        }
+        
+        if (playerentity != null) {
+        	playerentity.awardStat(Stats.ITEM_USED.get(this));
+            if (!playerentity.abilities.instabuild) {
+               stack.shrink(1);
+               if (stack.isEmpty()) {
+                   return new ItemStack(Items.GLASS_BOTTLE);
+               }
+               
+               playerentity.inventory.add(new ItemStack(Items.GLASS_BOTTLE));
+            }
+        }
+       
+    	return stack;
+    }
+    
     /**
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
      * the Item before the action is complete.
      */
     @Override  
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
-        PlayerEntity playerentity = entityLiving instanceof PlayerEntity ? (PlayerEntity)entityLiving : null;
-        if (playerentity instanceof ServerPlayerEntity) {
-           CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)playerentity, stack);
-        }
-
         if (!worldIn.isClientSide) {
         	if (stack.getItem().equals(FURItemRegistry.FISSIONPOTION)) {	 
         		entityLiving.addEffect(new EffectInstance(Effects.REGENERATION, 225, 2));
@@ -190,24 +211,7 @@ public class FissionPotionItem extends FURItem {
         	}
         }
 
-        if (playerentity != null) {
-           playerentity.awardStat(Stats.ITEM_USED.get(this));
-           if (!playerentity.abilities.instabuild) {
-              stack.shrink(1);
-           }
-        }
-
-        if (playerentity == null || !playerentity.abilities.instabuild) {
-           if (stack.isEmpty()) {
-              return new ItemStack(Items.GLASS_BOTTLE);
-           }
-
-           if (playerentity != null) {
-              playerentity.inventory.add(new ItemStack(Items.GLASS_BOTTLE));
-           }
-        }
-
-        return stack;
+        return this.returnItem(stack, worldIn, entityLiving); 
     }
 
 }

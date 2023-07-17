@@ -11,7 +11,6 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -64,7 +63,7 @@ public class HolyGrenadeEntity extends ProjectileItemEntity {
         	Dummy.setCustomName(this.getName());
         	this.level.explode(Dummy, this.getX(), this.getY(), this.getZ(), 4.0F, false, Explosion.Mode.NONE);
         	Dummy.remove();
-        	this.level.playSound(null, new BlockPos(this.getX(), this.getY(), this.getZ()), SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+        	this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
         	this.remove();
         }
 	}

@@ -93,7 +93,6 @@ public class FURItem extends Item {
             
     		if(!playerIn.isCreative()) {		
     			this.finishUsingItem(stack, playerIn.level, playerIn);
-    			stack.shrink(1);
     		}
     		
     		return ActionResultType.SUCCESS;
