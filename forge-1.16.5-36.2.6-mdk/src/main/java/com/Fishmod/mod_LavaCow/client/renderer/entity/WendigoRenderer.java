@@ -30,6 +30,6 @@ public class WendigoRenderer extends MobRenderer<WendigoEntity, WendigoModel<Wen
 	protected void scale(WendigoEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
     	if(!entity.isBaby()) {
     		matrixStackIn.scale(1.5F, 1.5F, 1.5F);
-    	}
+    	} 	
 	}
 }

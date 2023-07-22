@@ -317,10 +317,10 @@
 
 	"entity_zombiepiranha_attack": "Mimicrab snaps",
 
-	"entity_wendigo_ambient": "Ithaqua barks",
-	"entity_wendigo_attack": "Ithaqua howls",
-	"entity_wendigo_death": "Ithaqua dies",
-	"entity_wendigo_hurt": "Ithaqua hurts",
+	"entity_wendigo_ambient": "Wendigo barks",
+	"entity_wendigo_attack": "Wendigo howls",
+	"entity_wendigo_death": "Wendigo dies",
+	"entity_wendigo_hurt": "Wendigo hurts",
 
 	"entity_mimic_ambient": "Mimicrab clicks",
 	"entity_mimic_death": "Mimicrab dies",

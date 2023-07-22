@@ -37,6 +37,9 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
@@ -45,6 +48,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -54,6 +58,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WendigoEntity extends MonsterEntity implements IAggressive {
+	private static final DataParameter<Boolean> POUNCING = EntityDataManager.defineId(WendigoEntity.class, DataSerializers.BOOLEAN);
+	
 	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
 	private int jumpTimer;
@@ -64,6 +70,12 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
         super(p_i48549_1_, worldIn);
         this.xpReward = 20;
     }
+	
+    @Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(POUNCING, Boolean.valueOf(false));
+	}
 	
     @Override
     protected void registerGoals() {
@@ -131,6 +143,10 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
             --this.jumpTimer;
         }
         
+        if (this.isPouncing() && this.isOnGround()) {
+        	this.setPouncing(false);
+        }
+        
     	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(40);
         } 
@@ -190,10 +206,6 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
         
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
-    
-    protected float getJumpPower() {
-        return 2.0F * super.getJumpPower();
-    }
         
     public int getAttackTimer() {
     	return this.attackTimer;
@@ -214,6 +226,14 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     	return this.AttackStance;
     }
     
+    public void setPouncing(boolean pouncing) {
+    	this.getEntityData().set(POUNCING, Boolean.valueOf(pouncing));
+    }
+    
+    public boolean isPouncing() {
+    	return this.getEntityData().get(POUNCING).booleanValue();
+    }
+    
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -230,15 +250,12 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     
     static class AIWendigoLeapAtTarget extends Goal {
  	   /** The entity that is leaping. */
- 	   private final LivingEntity leaper;
+ 	   private final WendigoEntity leaper;
  	   /** The entity that the leaper is leaping towards. */
  	   private LivingEntity leapTarget;
- 	   /** The entity's motionY after leaping. */
- 	   private final float leapMotionY;
 
- 	   public AIWendigoLeapAtTarget(LivingEntity leapingEntity, float leapMotionYIn) {
+ 	   public AIWendigoLeapAtTarget(WendigoEntity leapingEntity, float leapMotionYIn) {
  	      this.leaper = leapingEntity;
- 	      this.leapMotionY = leapMotionYIn;
  	      this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
  	   }
  	   
@@ -246,12 +263,12 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	    * Returns whether the EntityAIBase should begin execution.
  	    */
  	   public boolean canUse() {
- 		   this.leapTarget = ((MobEntity) this.leaper).getTarget();
- 	       if (this.leapTarget == null || ((WendigoEntity)this.leaper).jumpTimer > 0/* || this.leapTarget.getY() > this.leaper.getY()*/) {
+ 		   this.leapTarget = this.leaper.getTarget();
+ 	       if (this.leapTarget == null || this.leaper.jumpTimer > 0) {
  	    	   return false;
  	       } else {
- 	    	   double d0 = this.leaper.distanceTo(this.leapTarget);
- 	    	   if (!(d0 < 26.0D) && !(d0 > 36.0D)) {
+ 	    	   float d0 = this.leaper.distanceTo(this.leapTarget);
+ 	    	   if (!(d0 < 12.0F) && !(d0 > 20.0F)) {
     			   return this.leaper.isOnGround();
  	    	   } else {
  	    		   return false;
@@ -263,29 +280,38 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
  	   public boolean canContinueToUse() {
- 		   return !this.leaper.isOnGround();
+ 		   return this.leaper.isOnGround() && this.leaper.jumpTimer >= 235;
  	   }
  	   
  	   /**
  	    * Keep ticking a continuous task that has already been started
  	    */
  	   public void tick() {
+ 		   Vector3d vector3d1 = new Vector3d(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
+ 		   float d0 = this.leaper.distanceTo(this.leapTarget);	
+
+ 		   if (this.leaper.jumpTimer == 235) {
+ 	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
+ 	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
+ 	 		   }
+
+ 	 		   this.leaper.setDeltaMovement(vector3d1.x, vector3d1.y + 0.3F + 0.1F * MathHelper.clamp(this.leapTarget.getEyeY() - this.leaper.getY(), 0, 2), vector3d1.z);
+ 	 		   this.leaper.setPouncing(true);
+ 		   }
  	   }
 
  	   /**
  	    * Execute a one shot task or start executing a continuous task
  	    */
  	   public void start() {		   
- 		   Vector3d vector3d = this.leaper.getDeltaMovement();
- 		   Vector3d vector3d1 = new Vector3d(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
- 		   ((MobEntity) this.leaper).getLookControl().setLookAt(this.leapTarget, 100.0F, 100.0F); 
- 		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK, 4.0F, 1.0F);
- 		   ((WendigoEntity)this.leaper).jumpTimer = 240;
- 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
- 			   vector3d1 = vector3d1.normalize().scale(4.2D).add(vector3d.scale(8.4D));
- 		   }
-
- 		   this.leaper.setDeltaMovement(vector3d1.x, (double)this.leapMotionY, vector3d1.z);
+ 		   Vector3d vector3d = this.leapTarget.position().subtract(this.leaper.position());
+ 		     
+           this.leaper.getNavigation().stop();
+           this.leaper.setYHeadRot(-((float) Math.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI));
+           this.leaper.yBodyRot = this.leaper.getYHeadRot(); 
+ 		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK, 0.75F, 0.8F);
+ 		   
+ 		   this.leaper.jumpTimer = 240;
  	   }  	
  	   
        /**

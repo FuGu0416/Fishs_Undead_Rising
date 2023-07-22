@@ -371,7 +371,12 @@ public class WendigoModel<T extends WendigoEntity> extends FURBaseModel<T> imple
         this.Head.yRot = netHeadYaw * 0.017453292F;
         this.Head.y = -0.3F * MathHelper.sin(0.03F * ageInTicks);
     	this.Jaw_lower.xRot = 0.275F + (-0.07F * MathHelper.sin(0.03F * ageInTicks));
+    	
+    	this.Arm_l.xRot = 0.5462880425584197F;
 
+    	this.Pelvis.y = 7.8F + 0.05F * MathHelper.cos(limbSwing * 0.3F + 0.3F * (float)Math.PI) * 0.7F * limbSwingAmount;
+    	this.Pelvis.zRot = 0.06F * MathHelper.cos(limbSwing * 0.3F + 0.3F * (float)Math.PI) * 0.7F * limbSwingAmount;
+    	
     	this.Leg_r.xRot = 0.40980330836826856F - MathHelper.cos(limbSwing * 0.3F + 0.3F * (float)Math.PI) * 0.7F * limbSwingAmount;
     	this.Leg_l.xRot = 0.40980330836826856F - MathHelper.cos(limbSwing * 0.3F + 1.3F * (float)Math.PI) * 0.7F * limbSwingAmount;
     	this.Feet_r.xRot = 0.06736970912698112F + MathHelper.cos(limbSwing * 0.3F + 0.5F * (float)Math.PI) * 0.7F * limbSwingAmount;
@@ -384,20 +389,42 @@ public class WendigoModel<T extends WendigoEntity> extends FURBaseModel<T> imple
         	this.Thigh_r.xRot = -1.5481070465189704F + MathHelper.cos(limbSwing * 0.3F) * 0.7F * limbSwingAmount;
         	this.Thigh_l.xRot = -1.5481070465189704F + MathHelper.cos(limbSwing * 0.3F + (float)Math.PI) * 0.7F * limbSwingAmount;   		
     	}
-    	
-    	if (i > 10) {  		
+    	if (entityIn.isPouncing()) {
+    		this.Head.xRot = -0.35185837453889574F;
+    		this.Jaw_lower.xRot = 1.13376586611655F;
+    		
+    		this.Arm_l.xRot = 0.780860336637035F;
+    		
+    		this.Pelvis.y = 8.0F;
+    		this.Pelvis.zRot = 0.0F;
+    		
+    		this.Humerus_r.xRot = -0.5160938544884011F;
+    		this.Humerus_r.yRot = 0.326202046518804F;
+    		this.Humerus_r.zRot = 0.591841146688116F;
+    		this.Humerus_l.xRot = -0.8670795777171051F;
+    		this.Humerus_l.yRot = -0.4043927890186667F;
+    		this.Humerus_l.zRot = -0.591841146688116F;
+    		
+    		this.Thigh_r.xRot = -0.6098180166783689F;
+    		this.Thigh_l.xRot = -0.9225810532568469F;
+    		
+    		this.Leg_r.xRot = 0.40980330836826856F;
+    		this.Leg_l.xRot = 1.4266320932959098F;
+    		
+    		this.Feet_r.xRot = 0.731991064317972F;
+    	} else if (i > 10) {  		
     		if (j == (byte)4 || j == (byte)5) {
 	    		this.Humerus_r.xRot = -0.27314402793711257F;
 	    		this.Humerus_r.yRot = -0.18203784098300857F + 2.8F * MathHelper.sin((float)Math.PI * 0.125F * (i - 11));
 	    		this.Humerus_r.zRot = 1.3203415791337103F;
-	    		this.Chest.yRot = GradientAnimation(1.1383037381507017F, 0.0F, (i - 10.0F)/10.0F);
+	    		this.Chest.yRot = GradientAnimation(1.3F, -0.2F, (i - 10.0F)/10.0F);
     		}
     		
     		if (j == (byte)4 || j == (byte)6) {
 	    		this.Humerus_l.xRot = -0.27314402793711257F;
 	    		this.Humerus_l.yRot = 0.18203784098300857F - 2.8F * MathHelper.sin((float)Math.PI * 0.125F * (i - 11));
 	    		this.Humerus_l.zRot = -1.3203415791337103F;
-	    		this.Chest.yRot = GradientAnimation(-1.1383037381507017F, 0.0F, (i - 10.0F)/10.0F);
+	    		this.Chest.yRot = GradientAnimation(-1.3F, 0.2F, (i - 10.0F)/10.0F);
     		}
     		
     		if (j == (byte)4) {
@@ -418,9 +445,13 @@ public class WendigoModel<T extends WendigoEntity> extends FURBaseModel<T> imple
 	        	this.Humerus_l.yRot = 0.18203784098300857F;// + 0.8F * this.triangleWave((float)i/* - ageInTicks*/, 11.0F);
 	        	this.Humerus_l.zRot = -0.22759093446006054F;
         	}
-        } else {      	
-        	this.setRotateAngle(Humerus_r, 0.22759093446006054F, -0.18203784098300857F, 0.5918411493512771F);
-        	this.setRotateAngle(Humerus_l, 0.22759093446006054F, 0.18203784098300857F, -0.5918411493512771F);
+        } else {      	       	
+    		this.Humerus_r.xRot = 0.22759093446006054F - 0.3F * MathHelper.cos(limbSwing * 0.3F + 1.7F * (float)Math.PI) * 0.7F * limbSwingAmount;
+    		this.Humerus_r.yRot = -0.18203784098300857F;
+    		this.Humerus_r.zRot = 0.591841146688116F;
+    		this.Humerus_l.xRot = 0.22759093446006054F - 0.3F * MathHelper.cos(limbSwing * 0.3F + 0.7F * (float)Math.PI) * 0.7F * limbSwingAmount;
+    		this.Humerus_l.yRot = 0.18203784098300857F;
+    		this.Humerus_l.zRot = -0.591841146688116F;
         	
         	this.Humerus_r.y = 1.0F + (-0.55F  * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI)); 
         	this.Humerus_l.y = 1.0F + (-0.55F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));   
