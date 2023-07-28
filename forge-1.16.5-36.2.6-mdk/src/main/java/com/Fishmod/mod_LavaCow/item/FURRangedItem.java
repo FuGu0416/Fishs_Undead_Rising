@@ -21,7 +21,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -91,17 +90,15 @@ public class FURRangedItem extends BowItem {
 	@Override
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack stack = playerIn.getItemInHand(handIn);
-		boolean flag = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0 || this.ammo == null;
+		boolean flag = playerIn.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
         ItemStack itemstack = this.getProjectile(stack, playerIn);
         
-     	if (!itemstack.isEmpty() || flag) {
+     	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
      		if (itemstack.isEmpty()) {
      			itemstack = new ItemStack(this.ammo);
  			}
 	    } else return ActionResult.fail(playerIn.getItemInHand(handIn));
 	         
-     	boolean flag1 = playerIn.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, playerIn));
-
         if (!worldIn.isClientSide) {
 			Vector3d lookVec = playerIn.getLookAngle();
 			int power_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
@@ -124,14 +121,18 @@ public class FURRangedItem extends BowItem {
                    abstractarrowentity.setSecondsOnFire(100);
                 }
                 
-                stack.hurtAndBreak(1, playerIn, (p_220009_1_) -> {
-                    p_220009_1_.broadcastBreakEvent(playerIn.getUsedItemHand());
-                });
-                if (flag1) {
+                if (random.nextFloat() < 0.25F) {
+	                stack.hurtAndBreak(1, playerIn, (p_220009_1_) -> {
+	                    p_220009_1_.broadcastBreakEvent(playerIn.getUsedItemHand());
+	                });
+                }
+                
+                if (flag) {
                     abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
                 }
+                
                 playerIn.level.addFreshEntity(abstractarrowentity);
-				if (!flag1 && !playerIn.isCreative()) {
+				if (!flag && !playerIn.isCreative()) {
 					itemstack.shrink(1);
 					if (itemstack.isEmpty()) {
 						playerIn.inventory.removeItem(itemstack);
@@ -191,7 +192,7 @@ public class FURRangedItem extends BowItem {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
-				if (!flag1 && !playerIn.isCreative()) {
+				if (!flag && !playerIn.isCreative()) {
 					itemstack.shrink(1);
 					if (itemstack.isEmpty()) {
 						playerIn.inventory.removeItem(itemstack);

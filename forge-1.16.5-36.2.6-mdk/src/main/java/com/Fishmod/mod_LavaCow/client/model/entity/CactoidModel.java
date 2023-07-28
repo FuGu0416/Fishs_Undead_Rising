@@ -21,6 +21,10 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 	private final ModelRenderer root_r;
 	private final ModelRenderer root_l;
 	/* Skin-0 */
+	private final ModelRenderer spike3_r1;
+	private final ModelRenderer spike2_r1;
+	private final ModelRenderer spike1_r1;
+	private final ModelRenderer spike0_r1;
 	private final ModelRenderer crest_0;
 	private final ModelRenderer flower0_0;
 	private final ModelRenderer flower1_0;
@@ -70,6 +74,30 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		this.root_l.texOffs(0, 0).addBox(1.0F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, false);
 
 		/* Skin-0 */
+		spike3_r1 = new ModelRenderer(this);
+		spike3_r1.setPos(-4.0F, -5.0F, 4.0F);
+		body_base.addChild(spike3_r1);
+		this.setRotateAngle(spike3_r1, 0.0F, 0.7854F, 0.0F);
+		spike3_r1.texOffs(0, 24).addBox(-1.0F, -3.0F, 0.0F, 1.0F, 6.0F, 0.0F, 0.0F, false);
+
+		spike2_r1 = new ModelRenderer(this);
+		spike2_r1.setPos(4.0F, -5.0F, 4.0F);
+		body_base.addChild(spike2_r1);
+		this.setRotateAngle(spike2_r1, 0.0F, -0.7854F, 0.0F);
+		spike2_r1.texOffs(0, 24).addBox(0.0F, -3.0F, 0.0F, 1.0F, 6.0F, 0.0F, 0.0F, true);
+
+		spike1_r1 = new ModelRenderer(this);
+		spike1_r1.setPos(4.0F, -5.0F, -4.0F);
+		body_base.addChild(spike1_r1);
+		this.setRotateAngle(spike1_r1, 0.0F, 0.7854F, 0.0F);
+		spike1_r1.texOffs(0, 24).addBox(0.0F, -3.0F, 0.0F, 1.0F, 6.0F, 0.0F, 0.0F, true);
+
+		spike0_r1 = new ModelRenderer(this);
+		spike0_r1.setPos(-4.0F, -5.0F, -4.0F);
+		body_base.addChild(spike0_r1);
+		this.setRotateAngle(spike0_r1, 0.0F, -0.7854F, 0.0F);
+		spike0_r1.texOffs(0, 24).addBox(-1.0F, -3.0F, 0.0F, 1.0F, 6.0F, 0.0F, 0.0F, false);
+		
 		this.crest_0 = new ModelRenderer(this);
 		this.crest_0.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.crest_0);
@@ -107,13 +135,13 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		this.flower0_1 = new ModelRenderer(this);
 		this.flower0_1.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower0_1);
-		this.flower0_1.texOffs(20, 19).addBox(-3.0F, -20.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, false);
+		this.flower0_1.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, false);
 
 		this.flower1_1 = new ModelRenderer(this);
 		this.flower1_1.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower1_1);
 		this.setRotateAngle(this.flower1_1, 0.0F, -1.5708F, 0.0F);
-		this.flower1_1.texOffs(20, 19).addBox(-3.0F, -20.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, true);
+		this.flower1_1.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, true);
 
 		this.fruit_1 = new ModelRenderer(this);
 		this.fruit_1.setPos(0.0F, -8.0F, 0.0F);
@@ -221,6 +249,10 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		switch(entity.getSkin()) {
 	    	case 1:
+	    		this.spike3_r1.visible = false;
+	    		this.spike2_r1.visible = false;
+	    		this.spike1_r1.visible = false;
+	    		this.spike0_r1.visible = false;
 	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
@@ -303,6 +335,10 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 				}
 	    		break;
 	    	case 2:
+	    		this.spike3_r1.visible = false;
+	    		this.spike2_r1.visible = false;
+	    		this.spike1_r1.visible = false;
+	    		this.spike0_r1.visible = false;
 	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
@@ -385,6 +421,10 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 				}
 	    		break;
 	    	case 3:
+	    		this.spike3_r1.visible = false;
+	    		this.spike2_r1.visible = false;
+	    		this.spike1_r1.visible = false;
+	    		this.spike0_r1.visible = false;
 	    		this.crest_0.visible = false;
 		    	this.flower0_0.visible = false;
 		    	this.flower1_0.visible = false;
@@ -467,6 +507,10 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 				}
 	    		break;
 			default:
+	    		this.spike3_r1.visible = true;
+	    		this.spike2_r1.visible = true;
+	    		this.spike1_r1.visible = true;
+	    		this.spike0_r1.visible = true;
 				this.crest_0.visible = true;
 		    	this.flower0_0.visible = true;
 		    	this.flower1_0.visible = true;
@@ -551,11 +595,11 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		}
 		  	
 		if (entity.isSilent()) {  
-			this.body_base.y = 24.0F;
+			this.body_base.y = 26.0F;
 			this.root_r.visible = false;
 			this.root_l.visible = false;
 		} else {
-			this.body_base.y = 22.0F;
+			this.body_base.y = 22.0F + MathHelper.cos(limbSwing) * 0.2F * limbSwingAmount;
 			this.root_r.visible = true;
 			this.root_l.visible = true;
 	        this.root_r.z = MathHelper.cos(limbSwing) * 2.5F * limbSwingAmount;
