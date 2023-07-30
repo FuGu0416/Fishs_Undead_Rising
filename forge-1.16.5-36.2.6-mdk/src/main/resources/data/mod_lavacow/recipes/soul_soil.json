@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DDD",
+        "D#D",
+        "DDD"
+    ],
+    "key": {
+        "D": {
+            "item": "minecraft:dirt"
+        },
+        "#": {
+            "item": "mod_lavacow:ectoplasm_mass"
+        }
+    },
+    "result": {
+        "item": "minecraft:soul_soil",
+        "count": 8
+    }
+}

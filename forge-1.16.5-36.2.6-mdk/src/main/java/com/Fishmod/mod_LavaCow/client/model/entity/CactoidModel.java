@@ -107,13 +107,13 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		this.flower0_0.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower0_0);
 		this.setRotateAngle(this.flower0_0, 0.0F, -0.7854F, 0.0F);
-		this.flower0_0.texOffs(20, 17).addBox(-3.0F, -14.0F, 0.0F, 6.0F, 6.0F, 0.0F, 0.0F, false);
+		this.flower0_0.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, false);
 
 		this.flower1_0 = new ModelRenderer(this);
 		this.flower1_0.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower1_0);
 		this.setRotateAngle(this.flower1_0, 0.0F, 0.7854F, 0.0F);
-		this.flower1_0.texOffs(20, 17).addBox(-3.0F, -14.0F, 0.0F, 6.0F, 6.0F, 0.0F, 0.0F, true);
+		this.flower1_0.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, true);
 
 		this.fruit_0 = new ModelRenderer(this);
 		this.fruit_0.setPos(0.0F, 0.0F, 0.0F);
@@ -135,13 +135,13 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		this.flower0_1 = new ModelRenderer(this);
 		this.flower0_1.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower0_1);
-		this.flower0_1.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, false);
+		this.flower0_1.texOffs(20, 19).addBox(-3.0F, -20.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, false);
 
 		this.flower1_1 = new ModelRenderer(this);
 		this.flower1_1.setPos(0.0F, 0.0F, 0.0F);
 		this.body_base.addChild(this.flower1_1);
 		this.setRotateAngle(this.flower1_1, 0.0F, -1.5708F, 0.0F);
-		this.flower1_1.texOffs(16, 17).addBox(-4.0F, -14.0F, 0.0F, 8.0F, 6.0F, 0.0F, 0.0F, true);
+		this.flower1_1.texOffs(20, 19).addBox(-3.0F, -20.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, true);
 
 		this.fruit_1 = new ModelRenderer(this);
 		this.fruit_1.setPos(0.0F, -8.0F, 0.0F);
@@ -595,7 +595,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		}
 		  	
 		if (entity.isSilent()) {  
-			this.body_base.y = 26.0F;
+			this.body_base.y = 25.0F;
 			this.root_r.visible = false;
 			this.root_l.visible = false;
 		} else {

@@ -33,6 +33,7 @@ import com.Fishmod.mod_LavaCow.misc.EmeraldForItemsTrade;
 import com.Fishmod.mod_LavaCow.misc.ItemsForEmeraldsAndItemsTrade;
 import com.Fishmod.mod_LavaCow.misc.ItemsForEmeraldsTrade;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -88,8 +89,8 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -187,7 +188,7 @@ public class EventHandler {
     			
     			((MimicEntity)entity).inventory.getItem(ItemPos).shrink(1);
     		}
-    	}
+    	}   
     }
     
     @SubscribeEvent
@@ -860,7 +861,7 @@ public class EventHandler {
     } 
     
     @SubscribeEvent
-    public void onELiving(LivingEvent event) { 
+    public void onELiving(LivingUpdateEvent event) { 
     	if (event.getEntity() instanceof LivingEntity && !(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
 			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
@@ -873,6 +874,6 @@ public class EventHandler {
 			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.FLAME, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	}
+    	}			
     }
 }

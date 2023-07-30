@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DDD",
+        "D#D",
+        "DDD"
+    ],
+    "key": {
+        "D": {
+            "tag": "forge:sand"
+        },
+        "#": {
+            "item": "mod_lavacow:ectoplasm_mass"
+        }
+    },
+    "result": {
+        "item": "minecraft:soul_sand",
+        "count": 8
+    }
+}
