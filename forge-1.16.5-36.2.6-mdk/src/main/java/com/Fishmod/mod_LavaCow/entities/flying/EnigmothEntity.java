@@ -211,7 +211,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     		this.moveControl = new MovementController(this);
     		this.navigation = new GroundPathNavigator(this, this.level);
     		
-	        if(this.isSaddled()) {
+	        if (this.isSaddled()) {
 	        	this.setSaddled(false);
 	            this.spawnAtLocation(Items.SADDLE, 1);
 	        }

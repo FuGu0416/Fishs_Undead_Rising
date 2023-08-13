@@ -3,8 +3,10 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 
@@ -25,6 +27,7 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -141,6 +144,30 @@ public class VespaEntity extends RidableFlyingMobEntity {
             this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
     	}
     }
+    
+    @Override
+    protected void ageBoundaryReached() {
+    	if(this.isBaby()) {
+	        if (this.isSaddled()) {
+	        	this.setSaddled(false);
+	            this.spawnAtLocation(Items.SADDLE, 1);
+	        }
+	        
+    		if (!this.level.isClientSide) {		   	         	        
+    			ParasiteEntity larva = FUREntityRegistry.PARASITE.create(this.level);
+    			larva.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+    			larva.setSkin(2);
+    			
+	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+	    			larva.tame((PlayerEntity) this.getOwner());
+	    		}
+    			
+	    		this.level.addFreshEntity(larva);
+    		}
+	        
+	        this.remove();
+    	}
+    }    
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {

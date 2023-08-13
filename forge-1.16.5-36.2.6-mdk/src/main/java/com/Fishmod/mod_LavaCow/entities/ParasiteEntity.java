@@ -1,6 +1,9 @@
 package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -9,6 +12,7 @@ import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -39,6 +43,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
@@ -57,7 +62,8 @@ import net.minecraft.world.World;
 public class ParasiteEntity extends SpiderEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.INT);
 	private static final DataParameter<Direction> ATTACHED_BLK = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.DIRECTION);
-	private static final DataParameter<Boolean> SUMMONED = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.BOOLEAN);
+	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.BYTE);
+	protected static final DataParameter<Optional<UUID>> DATA_OWNERUUID_ID = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.OPTIONAL_UUID);
 	private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 	private static final Item[] ParasiteDrop = { FURItemRegistry.PARASITE_COMMON, FURItemRegistry.PARASITE_DESERT, FURItemRegistry.PARASITE_JUNGLE, FURItemRegistry.PARASITE_COOKED };
 	public int lifespawn;
@@ -84,11 +90,11 @@ public class ParasiteEntity extends SpiderEntity {
     protected void applyEntityAI() {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 0, true, true, (p_213440_0_) -> {
-            	return !p_213440_0_.isPassenger();
+            	return !p_213440_0_.isPassenger() && !this.isTame();
         	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
     		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
-    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag) && !this.isTame();
     	}));	
     }
     
@@ -105,7 +111,13 @@ public class ParasiteEntity extends SpiderEntity {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(3)));
 		this.entityData.define(ATTACHED_BLK, Direction.DOWN);
-		this.entityData.define(SUMMONED, Boolean.valueOf(false));
+		this.entityData.define(DATA_FLAGS_ID, (byte)0);
+		this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+	}
+    
+    @Override
+	public boolean canBeLeashed(PlayerEntity p_184652_1_) {
+    	return !this.isLeashed() && this.isTame();
 	}
 	
     @Nullable
@@ -124,7 +136,7 @@ public class ParasiteEntity extends SpiderEntity {
         	if(!long_live) {
         		this.lifespawn--;
         	}
-        } else if (!this.isSummoned() && this.getSkin() == 2 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get()) {
+        } else if (!this.isSummoned() && this.getSkin() == 2 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get() || this.isTame())) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
@@ -137,13 +149,18 @@ public class ParasiteEntity extends SpiderEntity {
 		    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
 		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
 		    		pupa.setSkin(0);
+		    		
+		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			pupa.tame((PlayerEntity) this.getOwner());
+		    		}
+		    		
 		    		this.level.addFreshEntity(pupa);
         		}   
         		
         		this.remove();
         	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
-        } else if (!this.isSummoned() && this.getSkin() == 0 && this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get()) {
+        } else if (!this.isSummoned() && this.getSkin() == 0 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get() || this.isTame())) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
@@ -155,6 +172,11 @@ public class ParasiteEntity extends SpiderEntity {
         			
 		    		VespaCocoonEntity pupa = FUREntityRegistry.BEELZEBUBPUPA.create(this.level);
 		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+		    		
+		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			pupa.tame((PlayerEntity) this.getOwner());
+		    		}
+		    		
 		    		this.level.addFreshEntity(pupa);
         		}   
         		
@@ -211,7 +233,7 @@ public class ParasiteEntity extends SpiderEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
-        if (itemstack.isEmpty()) {
+        if (itemstack.isEmpty() && !this.isTame()) {
         	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
         	
         	if (!player.inventory.add(new ItemStack(ParasiteDrop[this.getSkin()]))) {
@@ -303,20 +325,81 @@ public class ParasiteEntity extends SpiderEntity {
     }
     
     public boolean isSummoned() {
-        return this.getEntityData().get(SUMMONED).booleanValue();
+    	return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
     }
 
     public void setSummoned(boolean i) {
-        this.getEntityData().set(SUMMONED, Boolean.valueOf(i));
+		byte b0 = this.entityData.get(DATA_FLAGS_ID);
+		if (i) {
+			this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 1));
+		} else {
+			this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
+		}        
     }
+
+	public boolean isTame() {
+		return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+	}
+
+	public void setTame(boolean i) {
+		byte b0 = this.entityData.get(DATA_FLAGS_ID);
+		if (i) {
+			this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 4));
+		} else {
+			this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -5));
+		}
+	}
 	
+	public void tame(PlayerEntity p_193101_1_) {
+		this.setTame(true);
+		this.setOwnerUUID(p_193101_1_.getUUID());
+	}
+
+	@Nullable
+	public UUID getOwnerUUID() {
+		return this.entityData.get(DATA_OWNERUUID_ID).orElse((UUID)null);
+	}
+
+	public void setOwnerUUID(@Nullable UUID p_184754_1_) {
+		this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(p_184754_1_));
+	}
+	
+	@Nullable
+	public LivingEntity getOwner() {
+		try {
+			UUID uuid = this.getOwnerUUID();
+			return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+		} catch (IllegalArgumentException illegalargumentexception) {
+			return null;
+		}
+	}
+	   
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
+        UUID uuid;
+        
         this.setSkin(compound.getInt("Variant"));
+        
+        if (compound.hasUUID("Owner")) {
+           uuid = compound.getUUID("Owner");
+        } else {
+           String s = compound.getString("Owner");
+           uuid = PreYggdrasilConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+
+        if (uuid != null) {
+           try {
+              this.setOwnerUUID(uuid);
+              this.setTame(true);
+           } catch (Throwable throwable) {
+              this.setTame(false);
+           }
+        }
+
     }
 
     /**
@@ -326,6 +409,10 @@ public class ParasiteEntity extends SpiderEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
+        
+        if (this.getOwnerUUID() != null) {
+        	compound.putUUID("Owner", this.getOwnerUUID());
+        }
     }
     
 	@Override

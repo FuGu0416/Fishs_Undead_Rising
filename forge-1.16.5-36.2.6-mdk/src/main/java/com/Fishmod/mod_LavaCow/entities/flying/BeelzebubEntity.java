@@ -201,6 +201,30 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     		}
     	}
     }
+    
+    @Override
+    protected void ageBoundaryReached() {
+    	if(this.isBaby()) {
+	        if (this.isSaddled()) {
+	        	this.setSaddled(false);
+	            this.spawnAtLocation(Items.SADDLE, 1);
+	        }
+	        
+    		if (!this.level.isClientSide) {		   	         	        
+    			ParasiteEntity larva = FUREntityRegistry.PARASITE.create(this.level);
+    			larva.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+    			larva.setSkin(0);
+    			
+	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+	    			larva.tame((PlayerEntity) this.getOwner());
+	    		}
+    			
+	    		this.level.addFreshEntity(larva);
+    		}
+	        
+	        this.remove();
+    	}
+    }
    
     @Override
 	public boolean doHurtTarget(Entity par1Entity) {

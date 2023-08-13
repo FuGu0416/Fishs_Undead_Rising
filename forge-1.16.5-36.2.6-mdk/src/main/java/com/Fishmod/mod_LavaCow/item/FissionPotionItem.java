@@ -13,6 +13,7 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.IEquipable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -69,15 +70,21 @@ public class FissionPotionItem extends FURItem {
     		if(!playerIn.level.isClientSide) {
 	    		if (stack.getItem().equals(FURItemRegistry.FISSIONPOTION) && !target.isBaby()) {	    			
 			    	AgeableEntity parent = (AgeableEntity)target;
-			    	AgeableEntity AgeableEntity = (AgeableEntity) parent.getType().create(playerIn.level);
+			    	AgeableEntity AgeableEntity = (AgeableEntity) parent.getType().create(playerIn.level);			    	    	
 			    	CompoundNBT compoundnbt = new CompoundNBT();
-			    	parent.addAdditionalSaveData(compoundnbt);
-			    	AgeableEntity.readAdditionalSaveData(compoundnbt);
-			    	AgeableEntity.setBaby(true);
+			    	
+			    	parent.addAdditionalSaveData(compoundnbt);			    			    	
+			    	
+			    	if (AgeableEntity instanceof IEquipable && ((IEquipable)AgeableEntity).isSaddled()) {
+			    		compoundnbt.putBoolean("Saddled", false);
+			    	}
+			    
+			    	AgeableEntity.readAdditionalSaveData(compoundnbt);				    	
 			        AgeableEntity.moveTo(target.getX(), target.getY() + 0.2F, target.getZ(), target.yRot, target.xRot);
 			        parent.level.addFreshEntity(AgeableEntity);
+			        AgeableEntity.setBaby(true);
 			        
-			        if(AgeableEntity.getClass() == parent.getClass()) {
+			        if (AgeableEntity.getClass() == parent.getClass()) {
 			        	parent.setBaby(true);
 			        }
 			        
