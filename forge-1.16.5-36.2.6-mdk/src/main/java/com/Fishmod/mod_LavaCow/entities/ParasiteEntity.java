@@ -115,6 +115,21 @@ public class ParasiteEntity extends SpiderEntity {
 		this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
 	}
     
+	@Override
+    protected boolean shouldDespawnInPeaceful() {
+	    return !this.isTame();
+    } 
+	
+	@Override
+	public boolean removeWhenFarAway(double p_213397_1_) {
+		return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
+	}
+	
+	@Override
+	public boolean requiresCustomPersistence() {
+		return (this.isTame() && this.getOwner() instanceof PlayerEntity) || super.requiresCustomPersistence();
+	}
+    
     @Override
 	public boolean canBeLeashed(PlayerEntity p_184652_1_) {
     	return !this.isLeashed() && this.isTame();
@@ -140,7 +155,7 @@ public class ParasiteEntity extends SpiderEntity {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
-        	if(!list.isEmpty()) {
+        	if(!list.isEmpty() || this.isTame()) {
             	this.lifespawn = 5 * 20;
         		
         		if (!this.level.isClientSide) {		
@@ -164,7 +179,7 @@ public class ParasiteEntity extends SpiderEntity {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 
-        	if(!list.isEmpty()) {
+        	if(!list.isEmpty() || this.isTame()) {
             	this.lifespawn = 5 * 20;
         		
         		if (!this.level.isClientSide) {		

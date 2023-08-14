@@ -23,7 +23,8 @@ public class ParasiteRenderer extends MobRenderer<ParasiteEntity, ParasiteModel<
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite1.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite2.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite2.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite3.png")
 	};
 	
 	static{

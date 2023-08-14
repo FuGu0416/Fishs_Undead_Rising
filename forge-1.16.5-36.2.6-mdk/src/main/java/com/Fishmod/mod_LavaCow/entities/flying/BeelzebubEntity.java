@@ -218,8 +218,8 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 	    			larva.tame((PlayerEntity) this.getOwner());
 	    		}
-    			
-	    		this.level.addFreshEntity(larva);
+	    		
+	    		this.level.addFreshEntity(larva);	    		
     		}
 	        
 	        this.remove();

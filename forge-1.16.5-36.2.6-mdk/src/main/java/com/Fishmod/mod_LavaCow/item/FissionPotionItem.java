@@ -75,13 +75,14 @@ public class FissionPotionItem extends FURItem {
 			    	
 			    	parent.addAdditionalSaveData(compoundnbt);			    			    	
 			    	
-			    	if (AgeableEntity instanceof IEquipable && ((IEquipable)AgeableEntity).isSaddled()) {
+			    	if (AgeableEntity instanceof IEquipable) {			    		
 			    		compoundnbt.putBoolean("Saddled", false);
 			    	}
 			    
 			    	AgeableEntity.readAdditionalSaveData(compoundnbt);				    	
 			        AgeableEntity.moveTo(target.getX(), target.getY() + 0.2F, target.getZ(), target.yRot, target.xRot);
-			        parent.level.addFreshEntity(AgeableEntity);
+			        parent.level.addFreshEntity(AgeableEntity);			        			       
+			        
 			        AgeableEntity.setBaby(true);
 			        
 			        if (AgeableEntity.getClass() == parent.getClass()) {
