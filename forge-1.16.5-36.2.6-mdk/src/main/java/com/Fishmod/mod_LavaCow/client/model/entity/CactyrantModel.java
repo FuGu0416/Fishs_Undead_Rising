@@ -50,7 +50,7 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
     public CactyrantModel() {
         this.texWidth = 128;
         this.texHeight = 64;
-        this.Body_Seg2 = new ModelRenderer(this, 32, 26);
+        this.Body_Seg2 = new ModelRenderer(this, 64, 26);
         this.Body_Seg2.setPos(0.0F, -11.0F, 0.0F);
         this.Body_Seg2.addBox(-4.0F, -12.0F, -4.0F, 8, 12, 8, 0.0F);
         this.Limb0_Fruit1 = new ModelRenderer(this, 0, 0);
