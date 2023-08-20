@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
     maven {
       name = "forge"
-      url = "http://files.minecraftforge.net/maven"
+      url = "https://maven.minecraftforge.net"
     }
     maven {
       name = "sonatype"
@@ -15,7 +15,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+    classpath "com.anatawa12.forge:ForgeGradle:2.3-1.0.8"
   }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -46,22 +46,24 @@ minecraft {
 
 repositories {
         mavenCentral()
- 		maven { url = "http://maven.mcmoddev.com"}
-  		maven { name = "Mobius Repo"
-                url = "http://tehnut.info/maven"}
-  		maven { name = "JEI"
-    			url = "http://dvs1.progwml6.com/files/maven"}
+        maven { name = "Curse Maven"
+        url = "https://cursemaven.com" }
+ 		maven { url = "https://maven.mcmoddev.com"}
+//  		maven { name = "Mobius Repo"
+//                url = "http://tehnut.info/maven"}
+//  		maven { name = "JEI"
+//    			url = "https://dvs1.progwml6.com/files/maven"}
   		maven { name = "gegy1000"
     			url = "https://maven.gegy1000.net"}
   		maven { name "Jared"
-        		url "http://maven.blamejared.com/"}
+        		url "https://maven.blamejared.com/"}
     	maven { name 'tterrag'
         		url "https://maven.tterrag.com/"}
-    	maven { // location of the maven that hosts JEI files
-        		name = "Progwml6 maven"
-        		url = "http://dvs1.progwml6.com/files/maven"}
-    	maven { name = 'DVS1 Maven FS'
-        		url = 'http://dvs1.progwml6.com/files/maven'}
+//    	maven { // location of the maven that hosts JEI files
+//        		name = "Progwml6 maven"
+//        		url = "https://dvs1.progwml6.com/files/maven"}
+//    	maven { name = 'DVS1 Maven FS'
+//        		url = 'https://dvs1.progwml6.com/files/maven'}
     	maven { url = "https://minecraft.curseforge.com/api/maven/"}
     	maven { // location of a maven mirror for JEI files, as a fallback
         		name = "ModMaven"
@@ -90,10 +92,13 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    deobfCompile "com.github.azanor:Baubles:${baubles_version}"
+    //deobfCompile "com.github.azanor:Baubles:${baubles_version}"
 	//deobfCompile "baubles:Baubles:1.12:${baubles_version}"
-	deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.21"
-    deobfCompile "slimeknights:TConstruct:1.12.2-2.9.1.70"
+    //deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.21"
+    //deobfCompile "slimeknights:TConstruct:1.12.2-2.9.1.70"
+    deobfCompile "curse.maven:baubles-227083:2518667"
+    deobfCompile "curse.maven:mantle-74924:2713386"
+    deobfCompile "curse.maven:tinkers-construct-74072:2902483"
 }
 
 processResources {

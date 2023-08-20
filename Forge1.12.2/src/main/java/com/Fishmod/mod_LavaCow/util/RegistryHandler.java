@@ -22,6 +22,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 @EventBusSubscriber
 public class RegistryHandler {
@@ -62,7 +63,9 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_STRAW), Modblocks.SCARECROWHEAD_STRAW.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
-        );        
+        );
+
+		OreDictionary.registerOre("ectoplasm", FishItems.ECTOPLASM);
     }
     
     @SubscribeEvent
