@@ -163,6 +163,12 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
     	if (this.level.isClientSide) {
             this.ClientControl();
         }
+    	
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+               this.heal(1.0F);
+            }
+        }
     }
     
     @OnlyIn(Dist.CLIENT)

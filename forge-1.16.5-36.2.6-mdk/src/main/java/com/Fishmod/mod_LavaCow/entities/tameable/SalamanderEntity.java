@@ -63,6 +63,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -353,6 +354,31 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
             this.ClientControl();
         }
     }
+    
+    public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
+    	if (p_225503_1_ > 1.0F) {
+    		this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
+    	}
+
+    	int i = this.calculateFallDamage(p_225503_1_, p_225503_2_);
+    	if (i <= 0) {
+    		return false;
+    	} else {
+    		this.hurt(DamageSource.FALL, (float)i);
+    		if (this.isVehicle()) {
+    			for(Entity entity : this.getIndirectPassengers()) {
+    				entity.hurt(DamageSource.FALL, (float)i);
+    			}
+    		}
+
+    		this.playBlockFallSound();
+    		return true;
+    	}
+	}
+
+	protected int calculateFallDamage(float p_225508_1_, float p_225508_2_) {
+		return MathHelper.ceil((p_225508_1_ * 0.5F - 3.0F) * p_225508_2_);
+	}
     
     @OnlyIn(Dist.CLIENT)
     private void ClientControl() {

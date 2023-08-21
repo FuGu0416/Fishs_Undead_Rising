@@ -331,7 +331,7 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     	this.poisonous = compound.getInt("poisonous");
     	this.corrosive = compound.getInt("corrosive");
     	this.unbreaking = compound.getInt("unbreaking");   
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.LilSludge_Health.get() + ((float)this.unbreaking * 2.0F));
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get() + ((float)this.unbreaking * 2.0F));
     }
 
     /**
