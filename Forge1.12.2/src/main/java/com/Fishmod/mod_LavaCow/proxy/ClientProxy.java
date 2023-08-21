@@ -2,7 +2,6 @@ package com.Fishmod.mod_LavaCow.proxy;
 
 import com.Fishmod.mod_LavaCow.client.particle.ParticalLocustSwarm;
 import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
-import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -38,7 +37,8 @@ public class ClientProxy implements IProxy {
     	Modkeys.init();
     }
  
-    public void postInit(FMLPostInitializationEvent event) {
+    @SuppressWarnings("deprecation")
+	public void postInit(FMLPostInitializationEvent event) {
     	ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(Modblocks.SCARECROWHEAD_COMMON), 0, TileEntityScarecrowHead_common.class);
     	ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(Modblocks.SCARECROWHEAD_STRAW), 0, TileEntityScarecrowHead_straw.class);
     	ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(Modblocks.SCARECROWHEAD_PLAGUE), 0, TileEntityScarecrowHead_plague.class);

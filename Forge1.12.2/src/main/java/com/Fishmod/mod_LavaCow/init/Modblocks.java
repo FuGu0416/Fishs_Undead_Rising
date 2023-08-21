@@ -5,6 +5,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -102,11 +103,11 @@ public class Modblocks {
 				}
             }
 	        
-	        GameRegistry.registerTileEntity(TileEntityMimic.class, "mod_lavacow:tileEntityMimic");
-	        GameRegistry.registerTileEntity(TileEntityScarecrowHead.class, "mod_lavacow:tileEntityScarecrowHead");
-	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_common.class, "mod_lavacow:tileEntityScarecrowHead_common");
-	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_straw.class, "mod_lavacow:tileEntityScarecrowHead_straw");
-	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_plague.class, "mod_lavacow:tileEntityScarecrowHead_plague");
+	        GameRegistry.registerTileEntity(TileEntityMimic.class, new ResourceLocation("mod_lavacow:tileEntityMimic"));
+	        GameRegistry.registerTileEntity(TileEntityScarecrowHead.class, new ResourceLocation("mod_lavacow:tileEntityScarecrowHead"));
+	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_common.class, new ResourceLocation("mod_lavacow:tileEntityScarecrowHead_common"));
+	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_straw.class, new ResourceLocation("mod_lavacow:tileEntityScarecrowHead_straw"));
+	        GameRegistry.registerTileEntity(TileEntityScarecrowHead_plague.class, new ResourceLocation("mod_lavacow:tileEntityScarecrowHead_plague"));
 	    }
 		
 		/**
