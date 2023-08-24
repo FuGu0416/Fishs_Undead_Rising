@@ -89,7 +89,7 @@ public class ItemNetherStew extends ItemFishCustomFood
     	{
     		entityLiving.setVelocity(0.0D, 2.0D, 0.0D);
     		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 2));
-    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6 * 20, 4));
+    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6 * 20, 3));
     		entityLiving.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
     	}
     	
