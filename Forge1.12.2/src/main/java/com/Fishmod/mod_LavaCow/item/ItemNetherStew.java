@@ -19,6 +19,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -84,6 +85,14 @@ public class ItemNetherStew extends ItemFishCustomFood
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
+    	if (this.equals(FishItems.GHOSTJELLY)) 
+    	{
+    		entityLiving.setVelocity(0.0D, 2.0D, 0.0D);
+    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 2));
+    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6 * 20, 4));
+    		entityLiving.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
+    	}
+    	
         if(!worldIn.isRemote && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
         	((EntityPlayer)entityLiving).inventory.addItemStackToInventory(new ItemStack(Items.BOWL));
     	return super.onItemUseFinish(stack, worldIn, entityLiving);
