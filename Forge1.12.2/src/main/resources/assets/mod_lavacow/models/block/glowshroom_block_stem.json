@@ -2,6 +2,6 @@
     "parent": "block/cube_column",
     "textures": {
         "side": "mod_lavacow:blocks/glowshroom_block_stem",
-        "end": "blocks/mushroom_block_inside"
+        "end": "mod_lavacow:blocks/glowshroom_block_inside"
     }
 }
