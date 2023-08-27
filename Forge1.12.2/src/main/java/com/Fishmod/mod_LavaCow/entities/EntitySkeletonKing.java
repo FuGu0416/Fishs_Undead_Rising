@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -673,21 +674,18 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
      */
 	@Override
     public void onDeath(DamageSource cause) {
-		BlockPos position = new BlockPos(this.getPosition());
 		super.onDeath(cause);
 		
-		while(this.world.getBlockState(position.down()).getBlock() == Blocks.AIR)
-			position = position.down();
-		
-		while(this.world.getBlockState(position).getBlock() != Blocks.AIR)
-			position = position.up();
-		
-		this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 8 | 4 | 2 | 1);
-        if (this.world.getBlockState(position).getBlock() instanceof BlockChest) {
-            TileEntity tileentity = this.world.getTileEntity(position);
-            if (tileentity instanceof TileEntityChest && !tileentity.isInvalid()) {
-                ((TileEntityChest) tileentity).setLootTable(LootTableHandler.SKELETON_KING, rand.nextLong());
-            }
-        }
+		if (Modconfig.SkeletonKing_Loot_Option && !this.world.isRemote) {
+			BlockPos position = SpawnUtil.getHeight(this);
+			
+			this.world.setBlockState(position, Blocks.CHEST.getDefaultState(), 8 | 4 | 2 | 1);
+	        if (this.world.getBlockState(position).getBlock() instanceof BlockChest) {
+	            TileEntity tileentity = this.world.getTileEntity(position);
+	            if (tileentity instanceof TileEntityChest && !tileentity.isInvalid()) {
+	                ((TileEntityChest) tileentity).setLootTable(LootTableHandler.SKELETON_KING, rand.nextLong());
+	            }
+	        }
+		}
     }
 }

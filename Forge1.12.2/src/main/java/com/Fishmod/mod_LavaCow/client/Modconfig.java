@@ -139,6 +139,7 @@ public class Modconfig {
 	public static boolean pSpawnRate_SkeletonKing;
 	public static double SkeletonKing_Health;
 	public static double SkeletonKing_Attack;
+	public static boolean SkeletonKing_Loot_Option;
 	
 	public static int pSpawnRate_Mummy;
 	public static double Mummy_Health;
@@ -347,7 +348,8 @@ public class Modconfig {
 		pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
 		SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 360.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(360.0D);
 		SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
-	
+		SkeletonKing_Loot_Option = config.get("Skeleton King", "skeleton king loot in chest", true, "Should Skeleton King drop its loots inside a chest [false/true]").getBoolean(true);
+		
 		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);
 		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
 		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);

@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +41,20 @@ public class SpawnUtil {
 	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
-    	return entityIn.world.getHeight(entityIn.getPosition());
+    	World worldIn = entityIn.getEntityWorld();
+    	BlockPos pos = worldIn.getHeight(entityIn.getPosition());
+    	
+    	if (!worldIn.provider.hasSkyLight()) {
+    		do {
+    			pos = pos.down();
+    		} while (!worldIn.getBlockState(pos).getMaterial().equals(Material.AIR));
+
+    		do {
+    			pos = pos.up();
+            } while (worldIn.getBlockState(pos).getMaterial().equals(Material.AIR) && pos.getY() > 0);
+    	}
+
+    	return pos;
     }
     
     public static boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
