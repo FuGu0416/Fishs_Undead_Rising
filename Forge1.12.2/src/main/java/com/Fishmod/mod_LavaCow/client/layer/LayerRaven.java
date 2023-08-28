@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,10 +60,18 @@ public class LayerRaven <T extends EntityRaven> implements LayerRenderer<T>{
         //GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
         GlStateManager.translate(0.0F, -0.1F, -0.5F);
-        if(itemstack.getItem().equals(Items.BONE)) {
+        
+        if (itemstack.getItem().equals(Items.BONE)) {
         	GlStateManager.translate(-0.25F, 0.5F, 1.0F);
         	GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);        	
         }
+        
+        if (itemstack.getItem() instanceof ItemBlock) {
+        	GlStateManager.translate(0.0F, 0.75F, 0.5F);    
+        	GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        	GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);        	
+        }
+        
         Minecraft.getMinecraft().getItemRenderer().renderItemSide(entitylivingbaseIn, itemstack, ItemCameraTransforms.TransformType.HEAD, true);
         GlStateManager.popMatrix();
     }
