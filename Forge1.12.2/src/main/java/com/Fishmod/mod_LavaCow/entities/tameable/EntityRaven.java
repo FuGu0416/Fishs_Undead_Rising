@@ -68,7 +68,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRaven.class, DataSerializers.VARINT);
-    private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
+    private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE, FishItems.PARASITE_ITEM, FishItems.PARASITE_ITEM_COOKED);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
