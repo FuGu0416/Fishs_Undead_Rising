@@ -9,7 +9,6 @@ import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead_common;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead_plague;
 import com.Fishmod.mod_LavaCow.tileentity.TileEntityScarecrowHead_straw;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -20,7 +19,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -118,8 +116,9 @@ public class BlockScarecrowHead extends BlockContainer {
      */
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if(!player.isCreative())
+        if(!player.isCreative()) {
         	this.dropBlockAsItem(worldIn, pos, state, 0);
+    	}
 
         super.onBlockHarvested(worldIn, pos, state, player);
     }
@@ -129,24 +128,6 @@ public class BlockScarecrowHead extends BlockContainer {
      */
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-		Block blocks;
-    	
-    	switch(this.type) {
-			case 0:
-				blocks = Blocks.LIT_PUMPKIN;
-				break;
-			case 1:
-				blocks = Blocks.HAY_BLOCK;
-				break;
-			case 2:
-				blocks = Blocks.COAL_BLOCK;
-				break;
-			default:
-				blocks = Blocks.LIT_PUMPKIN;
-				break;
-		}
-    	
-    	worldIn.playEvent(2001, pos, Block.getStateId(blocks.getDefaultState()));
     	super.breakBlock(worldIn, pos, state);
     }
     

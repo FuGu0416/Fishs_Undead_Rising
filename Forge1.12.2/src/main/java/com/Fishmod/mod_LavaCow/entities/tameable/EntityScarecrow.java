@@ -27,6 +27,10 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -45,8 +49,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityScarecrow  extends EntityFishTameable{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityScarecrow.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.<Integer>createKey(EntityScarecrow.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	private int attackTimer;
+	private int cleaveTimer;
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
 	
@@ -63,6 +69,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
+        this.getDataManager().register(DATA_COLLAR_COLOR, Integer.valueOf(EnumDyeColor.BROWN.getDyeDamage()));
      }
 	
     protected void initEntityAI()
@@ -73,7 +80,7 @@ public class EntityScarecrow  extends EntityFishTameable{
     	
     	super.initEntityAI();
     	this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(2, new EntityScarecrow.AIScarecrowAttackMelee(this, 1.0D, true));
         this.tasks.addTask(5, this.move);
         this.tasks.addTask(8, this.watch);
         this.tasks.addTask(8, this.look);
@@ -128,6 +135,10 @@ public class EntityScarecrow  extends EntityFishTameable{
         if (this.attackTimer > 0) {
             --this.attackTimer;
          }
+        
+    	if (this.cleaveTimer > 0) {
+    		--this.cleaveTimer;
+    	}
 
     	if (!this.world.isRemote && !this.isTamed()) {
 			float f = this.getBrightness();
@@ -187,13 +198,59 @@ public class EntityScarecrow  extends EntityFishTameable{
         super.onLivingUpdate();
     }
     
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    	ItemStack itemstack = player.getHeldItem(hand);
+    	Item item = itemstack.getItem();
+
+    	if (this.isTamed() && item instanceof ItemDye) {          
+            EnumDyeColor dyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
+
+            if (dyecolor != this.getCollarColor())
+            {
+                this.setCollarColor(dyecolor);
+
+                if (!player.capabilities.isCreativeMode)
+                {
+                    itemstack.shrink(1);
+                }
+                
+                return true;
+            }
+    	} else if (this.isTamed() && this.isOwner(player)) {
+    	    for (Entity passenger : (this.isBeingRidden() ? this : player).getPassengers()) {
+    	        if (passenger instanceof EntityRaven) {
+    	            if (!this.isBeingRidden()) passenger.startRiding(this, true);
+    	            else passenger.startRiding(player, true);
+    	        }
+    	    }
+    	    return true;
+    	}
+    	
+		return super.processInteract(player, hand);	
+    }
+    
+    @Override
+    public double getMountedYOffset() {
+        return 2.45D;
+    }
+    
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        this.attackTimer = 15;
-        this.AttackStance = this.rand.nextFloat() < 0.4F ? (byte)5 : (byte)4;
-        this.world.setEntityState(this, this.AttackStance);
-        
-        return true;
+    	if (this.attackTimer == 0) {
+	        this.attackTimer = 15;
+	        if(this.cleaveTimer == 0) {
+	        	this.AttackStance = (byte)5;
+	        	this.cleaveTimer = 140;
+	        } else {
+	        	this.AttackStance = (byte)4;
+	        }
+	        this.world.setEntityState(this, this.AttackStance);
+	        
+	        return true;
+    	}
+    	
+    	return false;
     }
     
     @Override
@@ -301,6 +358,20 @@ public class EntityScarecrow  extends EntityFishTameable{
     public void setSkin(int skinType)
     {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+        
+    	if (skinType == 2) {
+    		this.setCollarColor(EnumDyeColor.BLACK);
+    	}
+    }
+    
+    public EnumDyeColor getCollarColor()
+    {
+        return EnumDyeColor.byDyeDamage(((Integer)this.dataManager.get(DATA_COLLAR_COLOR)).intValue() & 15);
+    }
+
+    public void setCollarColor(EnumDyeColor collarcolor)
+    {
+        this.dataManager.set(DATA_COLLAR_COLOR, Integer.valueOf(collarcolor.getDyeDamage()));
     }
     
     /**
@@ -367,12 +438,16 @@ public class EntityScarecrow  extends EntityFishTameable{
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		this.setSkin(compound.getInteger("Variant"));
+        if (compound.hasKey("CollarColor", 99)) {
+            this.setCollarColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
+        }
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setInteger("Variant", getSkin());
+        compound.setByte("CollarColor", (byte)this.getCollarColor().getDyeDamage());
 	}
     
     @Override
@@ -440,21 +515,14 @@ public class EntityScarecrow  extends EntityFishTameable{
 			super(creature, speedIn, useLongMemory);
 		}
 		
-	    protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_)
+	    public boolean shouldExecute()
 	    {
-	        double d0 = this.getAttackReachSqr(p_190102_1_);
-
-	        if (p_190102_2_ <= d0 && this.attackTick <= 0)
-	        {
-	            this.attackTick = 40;
-	            this.attacker.swingArm(EnumHand.MAIN_HAND);
-	            this.attacker.attackEntityAsMob(p_190102_1_);
-	        }
+        	return !this.attacker.isSilent() && super.shouldExecute();
 	    }
 
 	    protected double getAttackReachSqr(EntityLivingBase attackTarget)
 	    {
-	        return (double)(this.attacker.width * 3.0F * this.attacker.width * 3.0F + attackTarget.width);
+	        return (double)(this.attacker.width * 4.0F * this.attacker.width * 4.0F + attackTarget.width);
 	    }
     	
     }
