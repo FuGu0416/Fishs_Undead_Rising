@@ -167,6 +167,7 @@ public class ParasiteEntity extends SpiderEntity {
 		    		
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			pupa.tame((PlayerEntity) this.getOwner());
+		    			pupa.setCustomName(this.getCustomName());
 		    		}
 		    		
 		    		this.level.addFreshEntity(pupa);
@@ -190,6 +191,7 @@ public class ParasiteEntity extends SpiderEntity {
 		    		
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			pupa.tame((PlayerEntity) this.getOwner());
+		    			pupa.setCustomName(this.getCustomName());
 		    		}
 		    		
 		    		this.level.addFreshEntity(pupa);

@@ -160,6 +160,7 @@ public class VespaEntity extends RidableFlyingMobEntity {
     			
 	    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 	    			larva.tame((PlayerEntity) this.getOwner());
+	    			larva.setCustomName(this.getCustomName());
 	    		}
     			
 	    		this.level.addFreshEntity(larva);

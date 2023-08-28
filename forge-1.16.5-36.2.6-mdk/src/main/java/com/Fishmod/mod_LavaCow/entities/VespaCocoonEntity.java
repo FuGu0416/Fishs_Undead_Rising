@@ -72,6 +72,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
 		    		this.level.addFreshEntity(adult);
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
 		    		}
     			} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA)) {
 		    		BeelzebubEntity adult = FUREntityRegistry.BEELZEBUB.create(this.level);
@@ -79,6 +80,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
 		    		this.level.addFreshEntity(adult);
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
 		    		}    				
     			} else if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 1) {
     				EnigmothEntity adult = FUREntityRegistry.ENIGMOTH.create(this.level);
@@ -86,6 +88,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
 		    		this.level.addFreshEntity(adult);
 		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
 		    		}   
 		    		
 		    		if (this.serializeNBT().contains("EnigmothData")) {
