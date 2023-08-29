@@ -512,7 +512,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-       return stack.getItem().equals(FishItems.CANEROTTENMEAT);
+       return stack.getItem().equals(FishItems.CANEROTTENMEAT) || stack.getItem().equals(FishItems.PTERA_WING) || stack.getItem().equals(FishItems.PTERA_WING_COOKED);
     }
     
     /**

@@ -24,6 +24,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIFollow;
 import net.minecraft.entity.ai.EntityAIFollowOwnerFlying;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -67,7 +68,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRaven.class, DataSerializers.VARINT);
-    private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
+    private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE, FishItems.PARASITE_ITEM, FishItems.PARASITE_ITEM_COOKED);
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -102,6 +103,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAIFollow(this, 1.0D, 3.0F, 7.0F));
         this.applyEntityAI();
     }
     

@@ -28,6 +28,10 @@ public class FishModelBase extends ModelBase {
     	float y = (float) (1.0D / Math.pow(1.2D * TickIn + 1.0D, 4.5D));
     	return AnimStart * (1.0F - y) + AnimEnd * y;
     }
+    
+    protected float GradientAnimation_s(float AnimStart, float AnimEnd, float TickIn) {
+    	return AnimStart * MathHelper.sin((float)Math.PI * 0.5F * TickIn) + AnimEnd * (1.0F - MathHelper.sin((float)Math.PI * 0.5F * TickIn));
+    }
 	
     /**
      * This is a helper function from Tabula to set the rotation of model parts

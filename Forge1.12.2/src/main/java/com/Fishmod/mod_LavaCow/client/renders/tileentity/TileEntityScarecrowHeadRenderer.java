@@ -17,14 +17,20 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntityScarecrowHeadRenderer extends TileEntitySpecialRenderer<TileEntityScarecrowHead> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow.png");
+	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow1.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow2.png")
+	};
 	private ModelBase modelbase;
+	private ResourceLocation texture;
 	private final ModelScarecrowHead_common MODEL_COMMON = new ModelScarecrowHead_common();
 	private final ModelScarecrowHead_straw MODEL_STRAW = new ModelScarecrowHead_straw();
 	private final ModelScarecrowHead_plague MODEL_PLAGUE = new ModelScarecrowHead_plague();
 	public static TileEntityScarecrowHeadRenderer instance;
 	
 	public TileEntityScarecrowHeadRenderer(int skullType) {
+		this.texture = TEXTURES[skullType];
     	switch (skullType) {
 			case 0:
 				modelbase = MODEL_COMMON;
@@ -61,7 +67,7 @@ public class TileEntityScarecrowHeadRenderer extends TileEntitySpecialRenderer<T
     
 	private void renderTileAsItem(double x, double y, double z) {
 		GlStateManager.pushMatrix();
-		bindTexture(TEXTURE);
+		bindTexture(texture);
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		//GlStateManager.rotate(210.0F, 0.0F, 0.0F, 1.0F);
 		//GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
@@ -79,7 +85,7 @@ public class TileEntityScarecrowHeadRenderer extends TileEntitySpecialRenderer<T
 
     public void renderSkull(float x, float y, float z, EnumFacing facing, float rotationIn, int skullType, int destroyStage)
     {  	
-    	bindTexture(TEXTURE);
+    	bindTexture(texture);
     	
 		if(facing == null)
 			return;
