@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.item.BlockItem;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -95,12 +96,28 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     	this.setupAnim(getState(entityIn), entityIn.tickCount, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     	
-        if(entityIn.callTimer > 0 && entityIn.getMainHandItem().isEmpty()) {
-        	this.beak1.xRot = -0.18F;
-        	this.beak2.xRot = 0.18F;
+    	if (entityIn.getMainHandItem().isEmpty()) {        	
+            if (entityIn.callTimer > 0) {
+            	this.beak1.xRot = -0.18F;
+            	this.beak1.y = -0.7F;
+            	this.beak2.xRot = 0.18F;
+            	this.beak2.y = 1.0F;
+            } else {
+            	this.beak1.xRot = 0.0F;
+            	this.beak1.y = -0.5F;
+            	this.beak2.xRot = 0.0F;
+            	this.beak2.y = 0.5F;
+            }                    	
+    	} else if (entityIn.getMainHandItem().getItem() instanceof BlockItem) {	        	
+        	this.beak1.xRot = -0.2037433592119174F;
+        	this.beak1.y = -0.7F;
+        	this.beak2.xRot = 0.08552113334772216F;
+        	this.beak2.y = 1.0F;
         } else {
         	this.beak1.xRot = 0.0F;
+        	this.beak1.y = -0.5F;
         	this.beak2.xRot = 0.0F;
+        	this.beak2.y = 0.5F;	        	
         }
     }
 
