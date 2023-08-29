@@ -76,6 +76,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     private boolean partyParrot;
     private BlockPos jukeboxPosition;
     private int ridingCooldown;
+    public int callTimer;
     
     private float TargetLocationX = -1.0F;
     private float TargetLocationY = -1.0F;
@@ -171,6 +172,10 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     public void onLivingUpdate()
     { 	
     	super.onLivingUpdate();
+    	
+    	if (this.callTimer > 0 ) {
+    		this.callTimer--;
+    	}
     	
         if (this.jukeboxPosition == null || this.jukeboxPosition.distanceSq(this.posX, this.posY, this.posZ) > 12.0D || this.world.getBlockState(this.jukeboxPosition).getBlock() != Blocks.JUKEBOX)
         {
@@ -430,6 +435,12 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         	return FishItems.ENTITY_SEAGULL_DEATH;
         else
         	return FishItems.ENTITY_RAVEN_DEATH;
+    }
+    
+    @Override 
+    public void playLivingSound() {
+    	super.playLivingSound();
+    	this.callTimer = 10;
     }
 
     protected void playStepSound(BlockPos pos, Block blockIn)
