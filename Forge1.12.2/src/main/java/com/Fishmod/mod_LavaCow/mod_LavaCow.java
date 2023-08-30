@@ -4,6 +4,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
+import com.Fishmod.mod_LavaCow.compat.jer.FURJERIntegration;
+import com.Fishmod.mod_LavaCow.compat.ModIntegrationRegistry;
 import com.Fishmod.mod_LavaCow.compat.QuarkCompatBridge;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;
 import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
@@ -18,6 +20,7 @@ import com.Fishmod.mod_LavaCow.worldgen.StructureGenerator;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -89,6 +92,10 @@ public class mod_LavaCow {
     	PROXY.postInit(event);
     	
     	TinkersCompatBridge.loadTinkersPostInitCompat();
+    	
+    	if(Loader.isModLoaded("jeresources")) {
+    		ModIntegrationRegistry.registerModIntegration(new FURJERIntegration());
+    	}  
     }
     
 }

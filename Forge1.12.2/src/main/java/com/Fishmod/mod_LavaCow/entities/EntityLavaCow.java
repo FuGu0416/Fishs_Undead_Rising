@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
 import net.minecraft.entity.EntityAgeable;
@@ -146,19 +146,10 @@ public class EntityLavaCow extends EntityCow
         return new EntityLavaCow(this.world);
     }
 	
-	@Override
-	protected void dropFewItems(boolean recentlyHit, int looting) {
-		if (recentlyHit) {
-			int chance = rand.nextInt(3) + rand.nextInt(1 + looting);
-			for (int amount = 0; amount < chance; ++amount)
-				entityDropItem(new ItemStack(FishItems.MOLTENBEEF), 0.0F);
-		}
-	}
-	
 	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
-		return null;
+		return LootTableHandler.LAVACOW;
 	}
 	
     /**

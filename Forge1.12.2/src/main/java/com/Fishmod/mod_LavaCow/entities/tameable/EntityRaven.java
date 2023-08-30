@@ -693,7 +693,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
-		return null;
+		return (this.getSkin() == 2) ? LootTableHandler.SEAGULL : LootTableHandler.RAVEN;
 	}
 
     public boolean isFlying()

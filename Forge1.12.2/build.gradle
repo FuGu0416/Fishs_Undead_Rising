@@ -99,6 +99,7 @@ dependencies {
     deobfCompile "curse.maven:baubles-227083:2518667"
     deobfCompile "curse.maven:mantle-74924:2713386"
     deobfCompile "curse.maven:tinkers-construct-74072:2902483"
+    deobfCompile "curse.maven:jer-240630:2728585"
 }
 
 processResources {

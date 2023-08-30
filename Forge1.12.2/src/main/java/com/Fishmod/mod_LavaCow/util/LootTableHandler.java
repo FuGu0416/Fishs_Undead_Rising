@@ -26,7 +26,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 
 public class LootTableHandler {
-	
+	public static ResourceLocation LAVACOW = null;
 	public static ResourceLocation ZOMBIEMUSHROOM = null;
 	public static ResourceLocation PARASITE = null;
 	public static ResourceLocation PARASITE1 = null;
@@ -39,6 +39,8 @@ public class LootTableHandler {
 	public static ResourceLocation WENDIGO = null;
 	public static ResourceLocation MIMIC = null;
 	public static ResourceLocation SLUDGELORD = null;
+	public static ResourceLocation RAVEN = null;
+	public static ResourceLocation SEAGULL = null;
 	public static ResourceLocation PTERA = null;
 	public static ResourceLocation PTERA1 = null;
 	public static ResourceLocation VESPA = null;
@@ -96,6 +98,7 @@ public class LootTableHandler {
 	@SuppressWarnings("unchecked")
 	public static void addLootTable()
 	{
+		LAVACOW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "lavacow"));
 		ZOMBIEMUSHROOM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "zombiemushroom"));
 		PARASITE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite"));
 		PARASITE1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "parasite1"));
@@ -108,6 +111,8 @@ public class LootTableHandler {
 		WENDIGO = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "wendigo"));
 		MIMIC = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "mimic"));
 		SLUDGELORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "sludgelord"));
+		RAVEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "raven"));
+		SEAGULL = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "seagull"));
 		PTERA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera"));
 		PTERA1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "ptera1"));
 		VESPA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "vespa"));

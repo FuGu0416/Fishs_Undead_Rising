@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderLavaCow extends RenderLiving<EntityLavaCow>  {
-	private static ResourceLocation LAVACOW_TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/lavacow.png");
+	private static ResourceLocation LAVACOW_TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/moogma.png");
 	static{
         System.out.println(LAVACOW_TEXTURES.getResourcePath());
     }
