@@ -88,6 +88,7 @@ item.mod_lavacow.sonicbomb.name=Bomba sonica
 item.mod_lavacow.weta_hoe.name=Zappa di Weta
 item.mod_lavacow.bonestew.name=Stufato di ossa
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Carne rovente
 material.mod_lavacow.vespa_carapace.name=Carapace di Vespa
 material.mod_lavacow.scythe_claw.name=Artiglio a Falce

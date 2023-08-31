@@ -74,5 +74,11 @@ public class FURJERIntegration implements ModIntegration {
 		jerAPI.getMobRegistry().register(new EntityForsaken(world), LightLevel.hostile, LootTableHandler.FORSAKEN);
 		jerAPI.getMobRegistry().register(new EntitySkeletonKing(world), LightLevel.hostile, LootTableHandler.SKELETON_KING);
 		jerAPI.getMobRegistry().register(new EntityMummy(world), LightLevel.hostile, LootTableHandler.MUMMY);
+		
+		//Chest loot
+		jerAPI.getDungeonRegistry().registerCategory("cemetery_chest", "JER.catagory.mod_lavacow.cemetery_chest");
+		jerAPI.getDungeonRegistry().registerChest("cemetery_chest", LootTableHandler.CEMETERY_CHEST);
+		jerAPI.getDungeonRegistry().registerCategory("desert_tomb_chest", "JER.catagory.mod_lavacow.desert_tomb_chest");
+		jerAPI.getDungeonRegistry().registerChest("desert_tomb_chest", LootTableHandler.DESERT_TOMB_CHEST);
 	}
 }

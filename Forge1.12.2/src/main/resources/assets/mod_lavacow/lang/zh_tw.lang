@@ -101,6 +101,7 @@ item.mod_lavacow.hatred_shard.name=萬軍追憶
 item.mod_lavacow.curseweave_cloth.name=咒織布
 item.mod_lavacow.skeletonking_mace.name=『死亡』
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
 material.mod_lavacow.scythe_claw.name=鐮刀爪
@@ -112,6 +113,10 @@ modifier.mod_lavacow.famine.name=飢荒
 modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
 modifier.mod_lavacow.unholytouch.name=不潔之觸
 modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
+
+#JER Integration
+JER.catagory.mod_lavacow.cemetery_chest=小型墓地
+JER.catagory.mod_lavacow.desert_tomb_chest=沙漠墓穴
 
 ###########
 # BANNERS #

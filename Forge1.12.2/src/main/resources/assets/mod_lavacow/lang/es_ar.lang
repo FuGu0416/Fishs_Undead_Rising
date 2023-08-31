@@ -59,6 +59,7 @@ item.mod_lavacow.swinearmor_chestplate.name=Túnica porcina
 item.mod_lavacow.swinearmor_leggings.name=Pantalón porcino
 item.mod_lavacow.swinearmor_boots.name=Botas porcinas
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Carne ígnea
 material.mod_lavacow.vespa_carapace.name=Caparazón de Vespa
 

@@ -88,6 +88,7 @@ item.mod_lavacow.sonicbomb.name=Ослабляющая бомба
 item.mod_lavacow.weta_hoe.name=Мотыга из хитина саранчи
 item.mod_lavacow.bonestew.name=Суп с косточками
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Пламенное мясо
 material.mod_lavacow.vespa_carapace.name=Панцирь веспы
 material.mod_lavacow.scythe_claw.name=Лезвие косы

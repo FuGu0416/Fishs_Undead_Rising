@@ -70,6 +70,7 @@ item.mod_lavacow.shattered_ice.name=Glace brisée
 item.mod_lavacow.halo_necklace.name=Pendentif du Halo
 item.mod_lavacow.dreamcatcher.name=Attrape-rêves
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Viande brûlante
 material.mod_lavacow.vespa_carapace.name=Carapace de Vespa
 material.mod_lavacow.scythe_claw.name=Lame de faux
