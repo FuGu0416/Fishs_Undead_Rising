@@ -145,6 +145,15 @@ public class Modconfig {
 	public static double Mummy_Health;
 	public static double Mummy_Attack;
 	
+	public static int pSpawnRate_Cactyrant;
+	public static double Cactyrant_Health;
+	public static double Cactyrant_Attack;
+	public static int Cactyrant_Ability_Cooldown;
+
+	public static int pSpawnRate_Cactoid;
+	public static double Cactoid_Health;
+	public static double Cactoid_Attack;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -358,6 +367,15 @@ public class Modconfig {
 		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);
 		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
 		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
+		
+		pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 8, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(8);
+		Cactyrant_Health = config.get("Cactyrant", "cactyrant health", 60.0D, "Maximum Cactyrant health [1-1000]", 1, 1000).getDouble(60.0D);
+		Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
+		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant spawn rate", 3, "Set the spawn rate of Cactyrant [0-100]", 0, 100).getInt(3);
+		
+		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid [0-10000]", 0, 10000).getInt(10);
+		Cactoid_Health = config.get("Cactoid", "cactoid health", 20.0D, "Maximum Cactoid health [1-1000]", 1, 1000).getDouble(20.0D);
+		Cactoid_Attack = config.get("Cactoid", "cactoid attack", 4.0D, "Cactoid strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
