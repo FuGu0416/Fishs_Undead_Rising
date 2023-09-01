@@ -229,7 +229,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	        	}
 	        }
 	        
-	    	if(!this.isInSittingPose() && !this.isPassenger() && this.getMainHandItem().isEmpty() && this.tickCount % 200 == 0/* && this.getRandom().nextFloat() < 0.02f*/) {
+	    	if(!this.isInSittingPose() && !this.isPassenger() && this.getMainHandItem().isEmpty() && this.tickCount % 200 == 0 && this.getRandom().nextFloat() < 0.02f) {
 	    	    ItemStack chosenDrop = null;
                 Map<ItemStack, Float> lootTable = null;
 
@@ -342,7 +342,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         ItemStack itemstack = player.getItemInHand(hand);
         
         if(this.isOwnedBy(player) && hand.equals(Hand.MAIN_HAND)) {      	
-        	 if (!this.level.isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {     	
+        	if (!this.level.isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {     	
              	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
              	
              	if (!player.inventory.add(this.getMainHandItem().copy())) {

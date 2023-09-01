@@ -172,7 +172,7 @@ public class FURTameableEntity extends TameableEntity {
 	
 	            return ActionResultType.CONSUME;
 	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && this.getUsedItemHand().equals(hand)) {  
-	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty() && !this.level.isClientSide) {
+	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty()) {
 	    			if (this.state.equals(FURTameableEntity.State.WANDERING)) {
 	    				if (this.canSitCondition()) {
 	    					this.doSitCommand(player);
