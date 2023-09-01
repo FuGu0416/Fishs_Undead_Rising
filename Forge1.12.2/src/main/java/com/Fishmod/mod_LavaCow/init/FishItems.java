@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.init;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.item.ItemFishCustomWeapon;
@@ -14,6 +15,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFissionPotion;
 import com.Fishmod.mod_LavaCow.item.ItemFrozenThigh;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemBaubleTrinket;
+import com.Fishmod.mod_LavaCow.item.ItemCactusFruit;
 import com.Fishmod.mod_LavaCow.item.ItemCrown;
 import com.Fishmod.mod_LavaCow.item.ItemHolyGrenade;
 import com.Fishmod.mod_LavaCow.item.ItemIntestine;
@@ -48,9 +50,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @ObjectHolder(mod_LavaCow.MODID)
 public class FishItems {
 	public static final Item NETHERSTEW = new ItemNetherStew("netherstew").setRandPotionEffect(ItemNetherStew.Effect_nethersoup);
-	public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
-	public static final Item CANEPORK = new ItemFishCustomFood("canepork", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
-	public static final Item CANEROTTENMEAT = new ItemFishCustomFood("canerottenmeat", 5, 0.5F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0), 1.0F);
+	public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true);
+	public static final Item CANEPORK = new ItemFishCustomFood("canepork", 5, 0.5F, true, 16, true);
+	public static final Item CANEROTTENMEAT = new ItemFishCustomFood("canerottenmeat", 3, 0.3F, true, 16, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 30*20, 0), 0.8F);
 	public static final Item FISSIONPOTION = new ItemFissionPotion("fissionpotion", SoundEvents.ENTITY_SLIME_SQUISH, EnumParticleTypes.VILLAGER_HAPPY, EnumRarity.COMMON, false);
 	public static final Item HYPHAE = new ItemFishCustom("hyphae", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item PARASITE_ITEM = new ItemParasite("parasite_item", 2, 0.3F, false, 32, false);
@@ -120,9 +122,9 @@ public class FishItems {
 	public static final Item FAMINEARMOR_LEGGINGS = new ItemFamineArmor("faminearmor_leggings", 2, EntityEquipmentSlot.LEGS);
 	public static final Item FAMINEARMOR_BOOTS = new ItemFamineArmor("faminearmor_boots", 2, EntityEquipmentSlot.FEET);
 	public static final Item FOUL_BRISTLE = new ItemFishCustom("foul_bristle", null, mod_LavaCow.TAB_ITEMS, false);
-	public static final Item CRABCAKE = new ItemFishCustomFood("crabcake", 5, 0.8F, true, 32, false);
+	public static final Item CRABCAKE = new ItemFishCustomFood("crabcake", 5, 0.8F, true, 24, false);
 	public static final Item ECTOPLASM = new ItemFishCustom("ectoplasm", null, mod_LavaCow.TAB_ITEMS, false);
-	public static final Item GHOSTJELLY = new ItemNetherStew("ghostjelly").setRandPotionEffect(null);
+	public static final Item GHOSTJELLY = new ItemNetherStew("ghostjelly");
 	public static final Item BANSHEE_VOCAL_CORD = new ItemRareLoot("banshee_vocal_cord", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
 	public static final Item WETA_JAW = new ItemFishCustom("weta_jaw", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item CHITIN = new ItemFishCustom("chitin", null, mod_LavaCow.TAB_ITEMS, false);

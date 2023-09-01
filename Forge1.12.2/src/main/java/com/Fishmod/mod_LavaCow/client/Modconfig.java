@@ -145,6 +145,15 @@ public class Modconfig {
 	public static double Mummy_Health;
 	public static double Mummy_Attack;
 	
+	public static int pSpawnRate_Cactyrant;
+	public static double Cactyrant_Health;
+	public static double Cactyrant_Attack;
+	public static int Cactyrant_Ability_Cooldown;
+
+	public static int pSpawnRate_Cactoid;
+	public static double Cactoid_Health;
+	public static double Cactoid_Attack;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -191,6 +200,9 @@ public class Modconfig {
 	public static int SpawnRate_Desert_Tomb; 
 	public static boolean Generate_Cemetery;
 	public static boolean Generate_Desert_Tomb; 
+	public static boolean Bowls_Stack;
+	public static int Parasite_Lifespan;
+	public static boolean Parasite_Pickup;
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -225,6 +237,8 @@ public class Modconfig {
 		Parasite_SandSpawn = config.get("Parasite", "parasite from sand blocks", 2, "Rate of spawning Parasite when destroying sand blocks in the desert [0-100]", 0, 100).getInt(2);
 		Parasite_Plague = config.get("Parasite", "parasite attacks everything", false, "Should Parasite attack ALL livings [false/true]").getBoolean(false);
 		Parasite_Attach = config.get("Parasite", "parasite attacks by attaching onto target", true, "Parasite will attack their target by attaching on them [false/true]").getBoolean(true);
+		Parasite_Lifespan = config.get("Parasite", "parasite lifespan", 16, "The amount of seconds before parasites naturally die or form into cocoons").getInt(16);
+		Parasite_Pickup = config.get("Parasite", "parasite pickup", true, "You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(true);
 		Parasite_Hostlist = config.getStringList("available host for parasite", "Parasite", 
 				new String[] {
 						"minecraft:zombie",
@@ -354,6 +368,15 @@ public class Modconfig {
 		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
 		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
+		pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 8, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(8);
+		Cactyrant_Health = config.get("Cactyrant", "cactyrant health", 60.0D, "Maximum Cactyrant health [1-1000]", 1, 1000).getDouble(60.0D);
+		Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
+		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant spawn rate", 3, "Set the spawn rate of Cactyrant [0-100]", 0, 100).getInt(3);
+		
+		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid [0-10000]", 0, 10000).getInt(10);
+		Cactoid_Health = config.get("Cactoid", "cactoid health", 20.0D, "Maximum Cactoid health [1-1000]", 1, 1000).getDouble(20.0D);
+		Cactoid_Attack = config.get("Cactoid", "cactoid attack", 4.0D, "Cactoid strength [1-1000]", 1, 1000).getDouble(4.0D);
+		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
 		General_Intestine = config.get(Configuration.CATEGORY_GENERAL, "entity drop intestine", 4, "Set the drop rate of Intestine [0-100]", 0, 100).getInt(4);
@@ -454,6 +477,8 @@ public class Modconfig {
 		
 		SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [0-10000]", 0, 10000).getInt(750);
 		Generate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "generate desert tomb", true, "Generate Desert Tomb in the Overworld. [false/true]").getBoolean(true);
+		
+		Bowls_Stack = config.get(Configuration.CATEGORY_GENERAL, "bowls stack", true, "All bowl food items from the mod will stack up to 64. [false/true]").getBoolean(true);
 		
 		if (config.hasChanged())
 			config.save();

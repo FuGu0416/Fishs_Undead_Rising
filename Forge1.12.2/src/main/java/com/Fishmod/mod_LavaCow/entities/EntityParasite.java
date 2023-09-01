@@ -57,7 +57,7 @@ public class EntityParasite extends EntitySpider{
         super(worldIn);
         this.setSize(0.8F, 0.3F);
         this.long_live = false;
-        this.lifespawn = 16*20;//Can live for only 16secs, poor little one:(
+        this.lifespawn = Modconfig.Parasite_Lifespan * 20; // Can live for only a short time, poor little one :(
         this.experienceValue = 1;
     }
 	
@@ -66,7 +66,7 @@ public class EntityParasite extends EntitySpider{
         super(worldIn);
         this.setSize(0.4F, 0.3F);
         this.long_live = t;
-        this.lifespawn = 16*20;//Can live for only 16secs, poor little one:(
+        this.lifespawn = Modconfig.Parasite_Lifespan * 20; // Can live for only a short time, poor little one :(
         this.experienceValue = 1;
     }
 	
@@ -189,7 +189,7 @@ public class EntityParasite extends EntitySpider{
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (itemstack.isEmpty())
+        if (hand == EnumHand.MAIN_HAND && itemstack.isEmpty() && player.isSneaking() && Modconfig.Parasite_Pickup)
         {
         	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         	
@@ -366,5 +366,9 @@ public class EntityParasite extends EntitySpider{
             return (double)(attackTarget.width + 0.1F);
         }
     }
-
+    
+    @Override
+    protected boolean canDropLoot() {
+       return !(this.lifespawn <= 0);
+    }
 }

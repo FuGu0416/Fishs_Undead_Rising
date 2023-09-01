@@ -1,57 +1,56 @@
 {
-    "pools": [
+  "pools": [
+	{
+      "name": "mod_lavacow:zombiepiranha_item",
+      "rolls": 1,
+      "entries": [
         {
-            "name": "mod_lavacow:zombiepiranha",
-            "rolls": 1,
-            "entries": [
+          "type": "item",
+          "name": "mod_lavacow:zombiepiranha_item",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "furnace_smelt",
+              "conditions": [
                 {
-                    "type": "item",
-                    "weight": 7,
-                    "name": "mod_lavacow:zombiepiranha_item",
-                    "functions": [
-		                {
-			              "function": "furnace_smelt",
-			              "conditions": [
-			                {
-			                  "condition": "entity_properties",
-			                  "entity": "this",
-			                  "properties": {
-			                    "on_fire": true
-			                  }
-			                }
-			              ]
-			            }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mod_lavacow:sharptooth",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 0,
-                                "max": 1
-                            }
-                        },
-                        {
-                            "function": "looting_enchant",
-                            "count": {
-                                "min": 1,
-                                "max": 1
-                            }
-                        }
-                    ],
-                    "conditions": [
-                        {
-                            "condition": "random_chance_with_looting",
-                            "chance": 1.0,
-                            "looting_multiplier": 0.0
-                        }
-                    ]
+                  "condition": "entity_properties",
+                  "entity": "this",
+                  "properties": {
+                    "on_fire": true
+                  }
                 }
-            ]
+              ]
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "mod_lavacow:sharptooth",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:sharptooth",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": -1,
+                "max": 1
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

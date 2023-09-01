@@ -29,10 +29,7 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -106,28 +103,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
      */
     public void onLivingUpdate() {
     	super.onLivingUpdate();
-    }
-    
-	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
-        ItemStack itemstack = player.getHeldItem(player.swingingHand);
-
-        if (itemstack.isEmpty())
-        {
-        	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-        	
-        	if (!player.inventory.addItemStackToInventory(new ItemStack(this.PickupItem())))
-            {
-                player.dropItem(new ItemStack(this.PickupItem()), false);
-            }
-        	this.setDead();
-            return true;
-        }
-        else
-        {
-            return super.processInteract(player, hand);
-        }
     }
     
     @Override
@@ -276,10 +251,6 @@ public class EntityZombiePiranha extends EntityAquaMob{
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableHandler.ZOMBIEPIRANHA;
-    }
-    
-    protected Item PickupItem() {
-    	return FishItems.ZOMBIEPIRANHA_ITEM;
     }
     
     /**

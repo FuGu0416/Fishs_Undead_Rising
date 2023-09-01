@@ -6,6 +6,7 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.google.common.collect.Lists;
 
@@ -41,7 +42,7 @@ public class ItemNetherStew extends ItemFishCustomFood
 	public ItemNetherStew(String registryName) {
     	super(registryName, 6, 0.6F, false, 32, true);
         this.setAlwaysEdible();
-        this.setMaxStackSize(64);
+        this.setMaxStackSize(Modconfig.Bowls_Stack ? 64 : 1);
     }
     
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
@@ -85,6 +86,8 @@ public class ItemNetherStew extends ItemFishCustomFood
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
+    	super.onItemUseFinish(stack, worldIn, entityLiving);
+    	
     	if (this.equals(FishItems.GHOSTJELLY)) 
     	{
     		entityLiving.setVelocity(0.0D, 2.0D, 0.0D);
@@ -93,9 +96,10 @@ public class ItemNetherStew extends ItemFishCustomFood
     		entityLiving.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
     	}
     	
-        if(!worldIn.isRemote && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
+        if(!worldIn.isRemote && Modconfig.Bowls_Stack && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
         	((EntityPlayer)entityLiving).inventory.addItemStackToInventory(new ItemStack(Items.BOWL));
-    	return super.onItemUseFinish(stack, worldIn, entityLiving);
+    	
+        return Modconfig.Bowls_Stack ? stack : new ItemStack(Items.BOWL);
     }
 
 }

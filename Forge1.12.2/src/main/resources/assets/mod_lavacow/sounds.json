@@ -550,5 +550,19 @@
 		"category": "entity",
 		"subtitle": "entity_skeletonking_spell_toss",
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_toss","stream": true}]
+	},
+	
+	"entity.cactyrant.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_cactyrant_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/cactyrant/ambient","stream": true}]
+	},
+	
+	"entity.cactyrant.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_cactyrant_death",
+		"sounds": [{"name": "mod_lavacow:entity/cactyrant/death","stream": true}]
 	}
 }

@@ -186,6 +186,7 @@ entity.mod_lavacow.avaton.name=Avaton
 entity.mod_lavacow.skeletonking.name=Skeleton King
 entity.mod_lavacow.mummy.name=Mummy
 entity.mod_lavacow.forsaken.name=Forsaken
+entity.mod_lavacow.cactyrant.name=Cactyrant
 
 ##########
 # Sounds #
@@ -293,6 +294,9 @@ entity_skeletonking_death=Skeleton King dies
 entity_skeletonking_spell_summon=Skeleton King casts a spell
 entity_skeletonking_spell_teleport=Skeleton King teleports
 entity_skeletonking_spell_toss=Skeleton King casts a spell
+
+entity_cactyrant_ambient=Cactyrant hisses
+entity_cactyrant_death=Cactyrant dies
 
 ############
 # Tooltips #
