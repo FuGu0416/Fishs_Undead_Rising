@@ -157,8 +157,18 @@ public class EntityWeta extends EntityFishTameable implements IAggressive{
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-       Item item = stack.getItem();
-       return item == FishItems.CANEPORK;
+       return stack.getItem().equals(FishItems.CANEPORK) || stack.getItem().equals(FishItems.PLAGUED_PORKCHOP) || stack.getItem().equals(FishItems.GREEN_BACON_AND_EGGS);
+    }
+    
+    @Override
+    protected int TameRate(ItemStack stack) {
+    	if (stack.getItem().equals(FishItems.PLAGUED_PORKCHOP)) {
+    		return 3;
+    	} else if (stack.getItem().equals(FishItems.GREEN_BACON_AND_EGGS)) {
+    		return 1;
+    	} else {
+    		return super.TameRate(stack);
+    	}
     }
     
     /**

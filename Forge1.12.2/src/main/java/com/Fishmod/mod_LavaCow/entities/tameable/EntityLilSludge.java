@@ -130,7 +130,8 @@ public class EntityLilSludge extends EntityFishTameable{
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
-    protected boolean isCommandItem(Item itemIn) {
+	@Override
+    protected boolean isCommandable() {
     	return false;
     }
 	

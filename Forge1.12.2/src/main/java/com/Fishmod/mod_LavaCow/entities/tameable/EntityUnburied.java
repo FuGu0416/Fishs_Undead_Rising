@@ -142,7 +142,8 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
         return this.spellTicks;
     }
         
-    protected boolean isCommandItem(Item itemIn) {
+    @Override
+    protected boolean isCommandable() {
     	return false;
     }
 	

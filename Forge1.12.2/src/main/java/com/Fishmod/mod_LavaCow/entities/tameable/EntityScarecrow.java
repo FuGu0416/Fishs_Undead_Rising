@@ -206,12 +206,10 @@ public class EntityScarecrow  extends EntityFishTameable{
     	if (this.isTamed() && item instanceof ItemDye) {          
             EnumDyeColor dyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
 
-            if (dyecolor != this.getCollarColor())
-            {
+            if (dyecolor != this.getCollarColor()) {
                 this.setCollarColor(dyecolor);
 
-                if (!player.capabilities.isCreativeMode)
-                {
+                if (!player.capabilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }
                 

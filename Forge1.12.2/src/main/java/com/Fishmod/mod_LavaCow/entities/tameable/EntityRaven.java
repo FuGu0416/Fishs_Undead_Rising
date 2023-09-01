@@ -293,40 +293,48 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         this.flap += this.flapping * 2.0F;
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         
-        if(this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {
-        	
-	    	if (itemstack.interactWithEntity(player, this, hand)) {
-	    		return true;
-	    	}
-	    	else if(this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+        if (this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {
+        	if (this.isServerWorld() && itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty()) {     	
+             	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+             	
+            	if (!player.inventory.addItemStackToInventory(this.getHeldItemMainhand().copy())) {
+                    player.dropItem(this.getHeldItemMainhand().copy(), false);
+                }
+            	
+            	this.getHeldItemMainhand().shrink(this.getHeldItemMainhand().getCount());
+        		
+        		return true;	            
+ 	        } else if (Modconfig.Raven_Perch && player.isSneaking() && player.getPassengers().isEmpty()) {
+                this.startRiding(player);
+                this.ridingCooldown = 20;
+                if(player instanceof EntityPlayerMP && ((EntityPlayerMP) player).connection != null) {
+                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player));
+                }
+                return true;
+            } else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 	        	
-	            if (!player.capabilities.isCreativeMode)
-	            {
+	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
 	            }
 	
-	            if (!this.isSilent())
-	            {
-	                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+	            if (!this.isSilent()) {
+	            	this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
 	            }
 	        	
 	        	this.heal(2.0F);
 	        	
 	        	return true;
-	        }
-	        else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.getSkin() == 0) {
-	            if (!player.capabilities.isCreativeMode)
-	            {
+	        } else if (itemstack.getItem() == FishItems.GHOSTJELLY && this.getSkin() == 0) {
+	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
 	            }
 	        	this.setSkin(3);
+	        	this.playSound(SoundEvents.ENTITY_PARROT_EAT, 1.0F, 1.0F);
 	        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
-	        	for (int i = 0; i < 16; ++i)
-	            {
+	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
@@ -335,22 +343,9 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	        	
 	        	return true;
 	        }
-	        else if (!this.world.isRemote && itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty())
-	        {     	
-            	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-            	
-            	if (!player.inventory.addItemStackToInventory(this.getHeldItemMainhand().copy()))
-                {
-                    player.dropItem(this.getHeldItemMainhand().copy(), false);
-                }
-            	
-            	this.getHeldItemMainhand().shrink(this.getHeldItemMainhand().getCount());
-        		
-        		return true;	            
-	        }
         }
         
-        return super.processInteract(player, hand);
+        return super.processInteract(player, hand);       	        
     }
 
     /**
@@ -483,26 +478,6 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     public boolean canBePushed()
     {
         return true;
-    }
-
-    protected void collideWithEntity(Entity entityIn)
-    {
-        if(Modconfig.Raven_Perch && entityIn instanceof EntityLivingBase
-        		&& this.isOwner((EntityLivingBase) entityIn) 
-        		&& !entityIn.isBeingRidden() 
-        		&& !entityIn.isSneaking() 
-        		&& !this.isSitting() 
-        		&& this.ridingCooldown == 0) {
-        	this.startRiding(entityIn, false);
-            this.isJumping = false;
-            this.navigator.clearPath();
-            this.setAttackTarget((EntityLivingBase)null);
-            if(entityIn instanceof EntityPlayerMP && ((EntityPlayerMP) entityIn).connection != null) {
-                ((EntityPlayerMP) entityIn).connection.sendPacket(new SPacketSetPassengers(entityIn));
-              }
-        }
-        else
-        	super.collideWithEntity(entityIn);
     }
 
     /**

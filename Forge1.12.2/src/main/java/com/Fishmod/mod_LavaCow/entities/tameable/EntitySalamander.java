@@ -146,32 +146,28 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);
-    	
-    	if(this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {    	
-	    	if (this.canBeSteered() && itemstack.isEmpty()) {	    		
-	    		if(player.isSneaking()) {
-	    			this.setSaddled(false);
-	    			if(!this.world.isRemote)this.dropItem(Items.SADDLE, 1);
-	    		}
-	    		else if(!player.isRiding())
-	    			player.startRiding(this, true);
-	    			
-	    		return true;
-	    	}
-	    	else if (itemstack.interactWithEntity(player, this, hand))
-        	{
-        		return true;
-        	}
-	    	else if (!this.canBeSteered() && !this.isChild() && itemstack.getItem() == Items.SADDLE) {
-	    		this.setSaddled(true);
-                if(!this.world.isRemote)this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PIG_SADDLE, SoundCategory.NEUTRAL, 0.5F, 1.0F);
-                
-                itemstack.shrink(1);    
-                
-	    		return true;
-	    	}
-    	}
-    	return super.processInteract(player, hand);
+    	boolean flag = this.isBreedingItem(itemstack);
+
+        if (!flag && this.isOwner(player) && this.canBeSteered() && !this.isBeingRidden()) {
+        	if (itemstack.getItem().equals(Items.SHEARS)) {
+    			this.setSaddled(false); 
+    			if (!this.world.isRemote) {
+    				this.dropItem(Items.SADDLE, 1);
+    			}
+    			return true;
+    		} else if (!player.isSneaking() && !player.isRiding()) {
+        	   player.startRiding(this);        	   
+        	   return true;
+    		}    	
+        }
+        
+        boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
+        
+        if (actionResultType) {
+        	return actionResultType;
+        }
+        
+        return super.processInteract(player, hand);
     }
     
     protected boolean canTameCondition() {
@@ -183,8 +179,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-       Item item = stack.getItem();
-       return item == FishItems.CANEBEEF;
+    	return stack.getItem().equals(FishItems.CANEBEEF);
     }
     
     /**

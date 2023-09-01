@@ -18,7 +18,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -114,8 +114,12 @@ public class EntityFishTameable extends EntityTameable{
         return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }
     
-    protected boolean isCommandItem(Item itemIn) {
-    	return itemIn.equals(Items.STICK);
+    protected boolean isCommandable() {
+    	return true;
+    }
+    
+    protected boolean canSitCondition() {
+    	return true;
     }
     
     protected void doSitCommand(EntityPlayer playerIn) {
@@ -155,49 +159,52 @@ public class EntityFishTameable extends EntityTameable{
 			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
     }
     
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    protected int TameRate(ItemStack stack) {
+    	return 3;
+    }
+    
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {       
         ItemStack itemstack = player.getHeldItem(hand);
-            	
-    	if(this.isServerWorld() && this.isTamed() && this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {    	
-	    	if (this.isCommandItem(itemstack.getItem()) && !this.isBeingRidden()) {
-	    		if(this.state.equals(EntityFishTameable.State.WANDERING)) {
-	    			this.doSitCommand(player);
-	    		}
-	    		else if(this.state.equals(EntityFishTameable.State.SITTING)) {
-	    			this.doFollowCommand(player);
-	    		}
-	    		else if(this.state.equals(EntityFishTameable.State.FOLLOWING)) {
-	    			this.doWanderCommand(player);
-	    		}
-	    		
-	    		return true;
-	    	}
-    	}
         
-        if(this.canTameCondition()) {
-	        if (this.isBreedingItem(itemstack)) {
-	           if (!player.capabilities.isCreativeMode) {
-	              itemstack.shrink(1);
-	           }
+        if (this.isServerWorld()) {  
+	    	if (this.isBreedingItem(itemstack) && canTameCondition()) {
+	            if (!player.capabilities.isCreativeMode) {	               
+	               if(itemstack.getItem() instanceof ItemBucket) {
+	            	   itemstack.shrink(1);
+	            	   player.setHeldItem(hand, new ItemStack(Items.BUCKET));
+	               } else {
+	            	   itemstack.shrink(1);
+	               }
+	            }
 	
-	           if (!this.world.isRemote) {
-	              if (this.rand.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-	            	  this.setTamedBy(player);
-	                 this.navigator.clearPath();
-	                 this.setAttackTarget((EntityLivingBase)null);
-	                 this.setHealth(this.getMaxHealth());
-	                 this.playTameEffect(true);
-	                 this.world.setEntityState(this, (byte)7);
-	              } else {
-	                 this.playTameEffect(false);
-	                 this.world.setEntityState(this, (byte)6);
-	              }
-	           }
+	            if (this.rand.nextInt(this.TameRate(itemstack)) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+	               this.setTamedBy(player);
+	               this.navigator.clearPath();
+	               this.setAttackTarget((EntityLivingBase)null);
+	               this.setHealth(this.getMaxHealth());
+	               this.world.setEntityState(this, (byte)7);
+	            } else {
+	               this.world.setEntityState(this, (byte)6);
+	            }
 	
-	           return true;
-	        }
+	            return true;
+	    	} else if (this.isTamed() && this.isOwner(player) && this.isCommandable() && this.getActiveHand().equals(hand)) {  
+	    		if (!this.isBreedingItem(itemstack) && this.getPassengers().isEmpty()) {
+	    			if (this.state.equals(EntityFishTameable.State.WANDERING)) {
+	    				if (this.canSitCondition()) {
+	    					this.doSitCommand(player);
+	    				}
+	    			} else if (this.state.equals(EntityFishTameable.State.SITTING)) {
+	    				this.doFollowCommand(player);
+	    			} else if (this.state.equals(EntityFishTameable.State.FOLLOWING)) {
+	    				this.doWanderCommand(player);
+	    			}
+			    		
+	    			return true;
+	    		}
+	    	}
         }
-	        
+
         return super.processInteract(player, hand);
     }
     

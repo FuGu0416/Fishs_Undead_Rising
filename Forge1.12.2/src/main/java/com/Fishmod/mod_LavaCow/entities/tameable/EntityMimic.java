@@ -395,30 +395,26 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         
-        if (itemstack.getItem() == Items.SPAWN_EGG)
-        {
+        if (itemstack.getItem() == Items.SPAWN_EGG) {
             return super.processInteract(player, hand);
-        }
-        else if(this.isTamed())
-        {
-        	if (player.isSneaking())
-        	{
-        		if(!this.world.isRemote) {
-        			if(this.getSkin() == getVoidSkin()) {	
+        } else if(this.isTamed() && this.getOwner().equals(player)) {
+        	if (player.isSneaking()) {
+        		if (!this.world.isRemote) {
+        			if (this.getSkin() == getVoidSkin()) {	
         				player.displayGUIChest(player.getInventoryEnderChest());
         				this.playSound(SoundEvents.BLOCK_ENDERCHEST_OPEN, 1.0F, 1.0F);
-        			}
-        			else
+        			} else {
         				player.displayGUIChest(new TileEntityMimic(this));
                 	}
                     return true;
                 }
+        	}
 
-            if (!itemstack.isEmpty())
-            {
-            	if (itemstack.interactWithEntity(player, this, hand))
-            	{
-            		return true;
+            if (!itemstack.isEmpty()) {
+            	boolean actionresulttype = itemstack.interactWithEntity(player, this, hand);
+
+            	if (actionresulttype) {
+            		return actionresulttype;
             	}
             	
             	if (item instanceof ItemFood) {
@@ -432,41 +428,37 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
                        this.heal((float)itemfood.getHealAmount(itemstack));
                        return true;
                     }
-            	}
-                else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == Items.ENDER_EYE) {
+            	} else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == Items.ENDER_EYE) {
              	   if (!player.capabilities.isCreativeMode) {
                         itemstack.shrink(1);
-                     }
+             	   }
              	   this.setSkin(getVoidSkin());
              	   this.setCanPickUpLoot(false);
              	   
-	       			for (ItemStack is : this.inventory)
-	    				if (!is.isEmpty()) {
-	    					this.entityDropItem(is.copy(), 0.2F);
-	    					is.shrink(is.getCount());
-	    				}
+             	   for (ItemStack is : this.inventory) {
+             		   if (!is.isEmpty()) {
+             			   this.entityDropItem(is.copy(), 0.2F);
+             			   is.shrink(is.getCount());
+             		   }
+             	   }
  	       			
- 		        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
- 		        	for (int i = 0; i < 16; ++i)
- 		            {
- 		                double d0 = new Random().nextGaussian() * 0.02D;
- 		                double d1 = new Random().nextGaussian() * 0.02D;
- 		                double d2 = new Random().nextGaussian() * 0.02D;
- 		                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
- 		            }
+             	   this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+             	   for (int i = 0; i < 16; ++i) {
+             		   double d0 = new Random().nextGaussian() * 0.02D;
+             		   double d1 = new Random().nextGaussian() * 0.02D;
+             		   double d2 = new Random().nextGaussian() * 0.02D;
+             		   this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+             	   }
 
- 	       			return true;
-                }
-                else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == FishItems.MOOTENHEART) {
+             	   return true;
+            	} else if (this.isOwner(player) && this.getSkin() != getVoidSkin() && item == FishItems.MOOTENHEART) {
                 	if (!player.capabilities.isCreativeMode) {
                 		itemstack.shrink(1);
                 	}
 					this.setSkin(6);
-					this.isImmuneToFire = true;
-              	   
+					this.isImmuneToFire = true;            	   
 					this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
-					for (int i = 0; i < 16; ++i)
-					{
+					for (int i = 0; i < 16; ++i) {
 					    double d0 = new Random().nextGaussian() * 0.02D;
 					    double d1 = new Random().nextGaussian() * 0.02D;
 					    double d2 = new Random().nextGaussian() * 0.02D;
@@ -474,29 +466,21 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 					}
 
   	       			return true;
-                 }
+            	}           	            	
             }
-
-            if (this.isChild())
-            {
-                return super.processInteract(player, hand);
-            }
-            else if (itemstack.interactWithEntity(player, this, hand))
-            {
-                return true;
-            }
+            
+            return super.processInteract(player, hand);
         }
         
-        if(!this.isTamed() && this.getDistanceSq(player) < 2.0D) {
+        if (!this.isTamed() && this.getDistanceSq(player) < 2.0D) {
 	        this.playSound(SoundEvents.BLOCK_CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FishItems.ENTITY_MIMIC_AMBIENT, 0.4F, 1.0F);
-	        this.setAttackTarget(player);
-	        
+	        this.setAttackTarget(player);	        
 	        this.setSitting(false);
         }
 
         return super.processInteract(player, hand);
-     }
+	}
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
  	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.NETHER)) {
