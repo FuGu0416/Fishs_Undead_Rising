@@ -10,7 +10,8 @@
             "item": "mod_lavacow:shattered_ice"
         },
         "D": {
-            "item": "mod_lavacow:mossy_stick"
+    		"type": "forge:ore_dict",
+    		"ore": "stickWood"
         }
     },
     "result": {

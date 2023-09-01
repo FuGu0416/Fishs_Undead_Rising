@@ -30,10 +30,14 @@ import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
+import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.worldgen.WorldGenGlowShroom;
 import com.google.common.base.Predicate;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -59,6 +63,8 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -93,6 +99,7 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -567,7 +574,7 @@ public class ModEventHandler {
     	}
     	
     	if(event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
-    		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
+    		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
     	event.setAmount(event.getAmount() * effectlevel);
     }
@@ -873,6 +880,18 @@ public class ModEventHandler {
 			player.world.spawnEntity(mobEntity);
 			mobEntity.onInitialSpawn(player.world.getDifficultyForLocation(new BlockPos(spawn.getX(), spawn.getY(), spawn.getZ())), null);
 			mobEntity.playLivingSound();
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onBlockBroken(BlockEvent.BreakEvent event) {
+		EntityPlayer player = event.getPlayer();
+        Block block = event.getState().getBlock();
+		ItemStack stack = player.getHeldItemMainhand();
+		
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemWetaHoe && block instanceof BlockBush | block instanceof BlockCrops) {	
+			player.spawnSweepParticles();
+			player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.world.rand.nextFloat() * 0.4F + 0.8F));
 		}
 	}
 

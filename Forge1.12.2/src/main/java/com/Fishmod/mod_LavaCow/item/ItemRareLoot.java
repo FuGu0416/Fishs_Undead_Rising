@@ -29,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemRareLoot extends ItemFishCustom{
 	
@@ -75,7 +76,9 @@ public class ItemRareLoot extends ItemFishCustom{
 	*/
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(player.getHeldItem(hand).getItem() == FishItems.UNDYINGHEART) {
+		ItemStack itemstack = player.getHeldItem(hand);
+	
+		if(itemstack.getItem() == FishItems.UNDYINGHEART || OreDictionary.containsMatch(false, OreDictionary.getOres("heartUndying"), itemstack)) {
 			
 			if((worldIn.getBlockState(pos.up()).getBlock().equals(Modblocks.SCARECROWHEAD_COMMON) || worldIn.getBlockState(pos.up()).getBlock().equals(Modblocks.SCARECROWHEAD_STRAW) || worldIn.getBlockState(pos.up()).getBlock().equals(Modblocks.SCARECROWHEAD_PLAGUE)) && worldIn.getBlockState(pos.down()).getBlock().equals(Blocks.HAY_BLOCK) && worldIn.getBlockState(pos).getBlock().equals(Blocks.HAY_BLOCK)) {
 				BlockScarecrowHead block = ((BlockScarecrowHead)worldIn.getBlockState(pos.up()).getBlock());

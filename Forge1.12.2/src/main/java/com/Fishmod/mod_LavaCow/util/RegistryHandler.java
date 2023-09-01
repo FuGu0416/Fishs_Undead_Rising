@@ -62,10 +62,8 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_COMMON), Modblocks.SCARECROWHEAD_COMMON.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_STRAW), Modblocks.SCARECROWHEAD_STRAW.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
+                BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)        
         );
-
-		OreDictionary.registerOre("ectoplasm", FishItems.ECTOPLASM);
     }
     
     @SubscribeEvent

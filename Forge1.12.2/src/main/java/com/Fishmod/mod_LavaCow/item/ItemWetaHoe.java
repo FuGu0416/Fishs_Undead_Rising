@@ -34,7 +34,7 @@ public class ItemWetaHoe extends ItemHoe{
      */
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && entityLiving.world.rand.nextFloat() < 0.5F)
         {
             stack.damageItem(1, entityLiving);
         }
