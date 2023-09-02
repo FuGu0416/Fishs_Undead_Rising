@@ -369,6 +369,6 @@ public class EntityParasite extends EntitySpider{
     
     @Override
     protected boolean canDropLoot() {
-       return !(this.lifespawn <= 0);
+       return this.lifespawn > 0;
     }
 }

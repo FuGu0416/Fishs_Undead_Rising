@@ -31,6 +31,8 @@ public class Modconfig {
 	public static double Parasite_Health;
 	public static double Parasite_Attack;
 	public static String[] Parasite_Hostlist = new String[0];
+	public static int Parasite_Lifespan;
+	public static boolean Parasite_Pickup;
 	
 	public static int pSpawnRate_UndeadSwine;
 	public static double UndeadSwine_Health;
@@ -201,8 +203,6 @@ public class Modconfig {
 	public static boolean Generate_Cemetery;
 	public static boolean Generate_Desert_Tomb; 
 	public static boolean Bowls_Stack;
-	public static int Parasite_Lifespan;
-	public static boolean Parasite_Pickup;
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 

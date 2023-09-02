@@ -96,10 +96,10 @@ public class ItemNetherStew extends ItemFishCustomFood
     		entityLiving.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
     	}
     	
-        if(!worldIn.isRemote && Modconfig.Bowls_Stack && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
+        if(!worldIn.isRemote && (Modconfig.Bowls_Stack || stack.getCount() > stack.getMaxStackSize()) && entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).isCreative())
         	((EntityPlayer)entityLiving).inventory.addItemStackToInventory(new ItemStack(Items.BOWL));
     	
-        return Modconfig.Bowls_Stack ? stack : new ItemStack(Items.BOWL);
+        return (Modconfig.Bowls_Stack || stack.getCount() > stack.getMaxStackSize()) ? stack : new ItemStack(Items.BOWL);
     }
 
 }
