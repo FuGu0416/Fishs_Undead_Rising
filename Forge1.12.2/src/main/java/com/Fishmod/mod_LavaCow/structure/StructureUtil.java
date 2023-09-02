@@ -11,6 +11,8 @@ import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockRedSandstone;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
@@ -32,6 +34,8 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public class StructureUtil {
+	private static final IBlockState RED_SAND = Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND);
+	
     private static ResourceLocation[] Desert_Tomb_SpawnEntityID = { 
     		EntityList.getKey(EntityUnburied.class), 
     		EntityList.getKey(EntityAvaton.class), 
@@ -58,10 +62,9 @@ public class StructureUtil {
         PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE);
         Template template = templateManager.getTemplate(server, structure);
 
-        template.addBlocksToWorld(world, pos, new DesertTombBlockProcessor(pos, settings, loot), settings, 2);
+        template.addBlocksToWorld(world, pos, new DesertTombBlockProcessor(pos, settings, loot, false), settings, 2);
     }
     
-    @SuppressWarnings("deprecation")
 	public static void GenDesertTomb(ResourceLocation structure, ResourceLocation loot, World world, BlockPos pos) {
         EnumFacing facing = EnumFacing.getHorizontal(world.rand.nextInt(4));
         Rotation rotation = getRotationFromFacing(facing);
@@ -69,8 +72,28 @@ public class StructureUtil {
         TemplateManager templateManager = world.getSaveHandler().getStructureTemplateManager();
         PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE);
         Template template = templateManager.getTemplate(server, structure);
-
-        template.addBlocksToWorld(world, pos, new DesertTombBlockProcessor(pos, settings, loot), settings, 2);
+        Boolean isBadland = false;
+        
+        for(int i = -8; i < 8; i++) {
+        	for(int j = -8; j < 8; j++) {
+        		for(int k = -8; k < 8; k++) {
+        			if (world.getBlockState(pos.add(i, j, k)).equals(RED_SAND)) {
+        				isBadland = true;
+        				break;
+        			}
+        		}
+        		
+        		if(isBadland) {
+        			break;
+        		}
+        	}
+        	
+    		if(isBadland) {
+    			break;
+    		}
+        }
+        
+        template.addBlocksToWorld(world, pos, new DesertTombBlockProcessor(pos, settings, loot, isBadland), settings, 2);
         
         Map<BlockPos, String> map = template.getDataBlocks(pos, settings);
         int GenMimic = world.rand.nextInt(4);
@@ -85,17 +108,25 @@ public class StructureUtil {
         		}
         		
         		if ("chest1".equals(entry.getValue())) {
-        			 world.setBlockState(blockpos, Blocks.SANDSTONE.getStateFromMeta(BlockSandStone.EnumType.CHISELED.getMetadata()), 3);
+        			if (isBadland) {
+        				world.setBlockState(blockpos, Blocks.RED_SANDSTONE.getDefaultState().withProperty(BlockRedSandstone.TYPE, BlockRedSandstone.EnumType.CHISELED), 3);       				
+        			} else {
+        				world.setBlockState(blockpos, Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED), 3);
+        			}
         		}
         		
         		if ("chest2".equals(entry.getValue())) {
-        			 world.setBlockState(blockpos, Blocks.SANDSTONE.getStateFromMeta(BlockSandStone.EnumType.CHISELED.getMetadata()), 3);
+        			if (isBadland) {
+        				world.setBlockState(blockpos, Blocks.RED_SANDSTONE.getDefaultState().withProperty(BlockRedSandstone.TYPE, BlockRedSandstone.EnumType.CHISELED), 3);       				
+        			} else {
+        				world.setBlockState(blockpos, Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED), 3);
+        			}
         		}
         		
         		if ("chest3".equals(entry.getValue())) {
         			 world.setBlockState(blockpos, Blocks.SANDSTONE.getDefaultState(), 3);
         		}
-        		
+        		        		
         		if(i == GenMimic) {
         			EnumFacing Chestfacing = (EnumFacing)world.getBlockState(blockpos.down()).getValue(BlockChest.FACING);
         			world.setBlockState(blockpos.down(), Blocks.AIR.getDefaultState(), 3);
@@ -121,7 +152,7 @@ public class StructureUtil {
                 {
                     ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(Desert_Tomb_SpawnEntityID[world.rand.nextInt(Desert_Tomb_SpawnEntityID.length)]);
                 }
-        	}
+        	}        	
         }
     }
     
