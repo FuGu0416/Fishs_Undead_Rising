@@ -28,13 +28,6 @@ public class RenderRaven extends RenderLiving<EntityRaven>{
     public RenderRaven(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelRaven(), 0.3F);
         this.addLayer(new LayerRaven<>(this));
-        /*this.addLayer(new LayerHeldItem(this)
-        {
-            protected void translateToHand(EnumHandSide p_191361_1_)
-            {
-                //((ModelRaven)this.livingEntityRenderer.getMainModel()).beak1.render(scale);.getArm(p_191361_1_).postRender(0.0625F);
-            }
-        });*/
     }
     
     @Override

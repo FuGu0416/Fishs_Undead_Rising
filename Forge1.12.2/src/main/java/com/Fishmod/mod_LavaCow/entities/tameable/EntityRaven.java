@@ -199,7 +199,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 	        		this.getRidingEntity().motionY *= 0.5D;
 	        	}
 	        	
-	        	if(this.getRidingEntity().isSneaking() || this.getRidingEntity().isInWater()) {
+	        	if(this.ridingCooldown == 0 && (this.getRidingEntity().isSneaking() || this.getRidingEntity().isInWater())) {
 	        		this.SetDismount(this.getRidingEntity());
 	        	}
 	        }
@@ -295,10 +295,10 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        
-        if (this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {
-        	if (this.isServerWorld() && itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty()) {     	
-             	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+
+        if (this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {      	
+        	if (itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty()) {    
+             	player.world.playSound(player, this.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 1.0F, 1.0F);
              	
             	if (!player.inventory.addItemStackToInventory(this.getHeldItemMainhand().copy())) {
                     player.dropItem(this.getHeldItemMainhand().copy(), false);
@@ -315,7 +315,6 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
                 }
                 return true;
             } else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
-	        	
 	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
 	            }
@@ -353,7 +352,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-       return TAME_ITEMS.contains(stack.getItem());
+       return (this.getSkin() == 2) ? stack.getItem().equals(Items.FISH) : TAME_ITEMS.contains(stack.getItem());
     }
     
     @Override
@@ -534,8 +533,6 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
  	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.BEACH)) {
- 		   this.TAME_ITEMS.clear();
- 		   this.TAME_ITEMS.add(Items.FISH);
  		   this.setSkin(2);
  	   }
  	   return super.onInitialSpawn(difficulty, entityLivingData);
@@ -674,6 +671,11 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     public boolean isFlying()
     {
         return (!this.onGround && !this.isRiding()) || (this.getRidingEntity() != null && !this.getRidingEntity().onGround && this.getRidingEntity().motionY < 0.0D);
+    }
+    
+    @Override
+    public boolean isPreventingPlayerRest(EntityPlayer playerIn) {
+        return false;
     }
     
 	/**

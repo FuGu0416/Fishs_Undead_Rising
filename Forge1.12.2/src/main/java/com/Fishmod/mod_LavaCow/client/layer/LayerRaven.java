@@ -66,6 +66,12 @@ public class LayerRaven <T extends EntityRaven> implements LayerRenderer<T>{
         	GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);        	
         }
         
+        if (itemstack.getItem().equals(Items.FISH) && itemstack.getItem().getDamage(itemstack) == 0) {
+        	GlStateManager.translate(0.25F, 0.25F, 1.0F);
+        	GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);  
+        	GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+        }
+        
         if (itemstack.getItem() instanceof ItemBlock) {
         	GlStateManager.translate(0.0F, 0.75F, 0.5F);    
         	GlStateManager.scale(0.5F, 0.5F, 0.5F);
