@@ -1,12 +1,14 @@
 package com.Fishmod.mod_LavaCow.structure;
 
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStoneSlabNew;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +28,7 @@ public class DesertTombBlockProcessor implements ITemplateProcessor {
         this.isBadland = isBadland;
     }
     
+	@SuppressWarnings("deprecation")
 	@Override
 	public BlockInfo processBlock(World worldIn, BlockPos pos, BlockInfo blockInfoIn) {				
         if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {
@@ -59,6 +62,10 @@ public class DesertTombBlockProcessor implements ITemplateProcessor {
 			
 			if (blockInfoIn.blockState.getBlock().equals(Blocks.STONE_SLAB)) {
 				return new Template.BlockInfo(pos, Blocks.STONE_SLAB2.getDefaultState().withProperty(BlockStoneSlabNew.VARIANT, BlockStoneSlabNew.EnumType.RED_SANDSTONE), null);
+			}
+			
+			if (blockInfoIn.blockState.getBlock().equals(Blocks.STAINED_HARDENED_CLAY)) {
+				return new Template.BlockInfo(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.YELLOW), null);
 			}
         }
 
