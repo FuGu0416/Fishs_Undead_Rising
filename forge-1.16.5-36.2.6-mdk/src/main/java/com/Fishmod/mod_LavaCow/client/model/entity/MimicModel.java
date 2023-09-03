@@ -295,12 +295,17 @@ public class MimicModel<T extends MimicEntity> extends FURBaseModel<T> {
         		this.showAllBodyPart(false); 
         		if(Entity.isTame() || Entity.IdleTimer > 0) {
 	        		this.Chest_top.xRot = -0.2F + (-0.02F * MathHelper.sin(0.12F * ageInTicks + 0.1F)); 
-	
+		    		this.Chest_Base.yRot = 0.0F;
+		    		this.Chest_Base.y = 18.0F;
+		    		
 	            	this.Chest_Base.setPos(0.0F, 18.0F, 1.0F);
 	            	this.Eye_r.setPos(-2.0F, -4.0F, -5.0F);
 	            	this.Eye_l.setPos(2.0F, -4.0F, -5.0F);
 	        	} else {
 	            	this.Chest_top.xRot = 0.0F;
+		    		this.Chest_Base.yRot = 0.0F;
+		    		this.Chest_Base.y = 18.0F;
+		    		
 	            	this.Chest_Base.setPos(0.0F, 19.0F, 1.0F);
 	            	this.Eye_r.setPos(0.0F, 0.0F, 0.0F);
 	            	this.Eye_l.setPos(0.0F, 0.0F, 0.0F);
