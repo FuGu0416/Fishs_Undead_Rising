@@ -20,6 +20,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Parasite;
 	public static final ForgeConfigSpec.ConfigValue<Double> Parasite_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Parasite_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Attach;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_Lifespan;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Pickup;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_UndeadSwine;
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Health;
@@ -206,9 +210,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown_Mount;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_SandSpawn;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Attach;
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_Intestine;
 	public static final ForgeConfigSpec.ConfigValue<Integer> GoldenHeart_dur;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> GoldenHeart_bl;
@@ -271,6 +273,8 @@ public final class FURConfig {
 		Parasite_Attack = BUILDER.comment("Parasite strength [1-1000]").defineInRange("parasite attack", 1.0D, 1.0D, 1000.0D);
 		Parasite_SandSpawn = BUILDER.comment("Rate of spawning Parasite when destroying sand blocks in the desert [0-100]").defineInRange("parasite from sand blocks", 2, 0, 100);
 		Parasite_Attach = BUILDER.comment("Parasite will attack their target by attaching on them [false/true]").define("parasite attacks by attaching onto target", true);
+		Parasite_Lifespan = BUILDER.comment("The amount of seconds before parasites naturally die or form into cocoons").defineInRange("parasite lifespan", 16, 0, 10000);
+		Parasite_Pickup = BUILDER.comment("You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").define("parasite pickup", true);
 		BUILDER.pop();
 		
 		BUILDER.push("Undead Swine");

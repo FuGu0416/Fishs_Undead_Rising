@@ -41,7 +41,7 @@ public class WraithEntity extends FloatingMobEntity {
     protected void registerGoals() {
     	super.registerGoals();      
     	this.goalSelector.addGoal(0, new SwimGoal(this));
-    	this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
+    	//this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
     }
     

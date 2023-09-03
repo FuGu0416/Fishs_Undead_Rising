@@ -49,7 +49,7 @@ public class DesertTombStructure extends Structure<NoFeatureConfig> {
 
 		@Override
 		public void generatePieces(DynamicRegistries dynamicRegistries, ChunkGenerator chunkGenerator, TemplateManager templateManagerIn, 
-				int x, int z, Biome biomeIn, NoFeatureConfig featureConfig) {
+				int x, int z, Biome biomeIn, NoFeatureConfig featureConfig) {			
 			if(FURConfig.Generate_Desert_Tomb.get()) {
 	            int k = (x << 4) + 7;
 	            int l = (z << 4) + 7;
@@ -58,9 +58,9 @@ public class DesertTombStructure extends Structure<NoFeatureConfig> {
 	            int k1 = chunkGenerator.getBaseHeight(k - 7, l + 7, Heightmap.Type.WORLD_SURFACE_WG);
 	            int l1 = chunkGenerator.getBaseHeight(k + 7, l + 7, Heightmap.Type.WORLD_SURFACE_WG);
 	            int i2 = Math.min(Math.min(i1, j1), Math.min(k1, l1));
-				BlockPos blockpos = new BlockPos(k, i2 - 9, l);
-			
-	            JigsawManager.addPieces(dynamicRegistries,
+				BlockPos blockpos = new BlockPos(k, i2 - 9, l);			
+		        
+				JigsawManager.addPieces(dynamicRegistries,
 	                    new VillageConfig(() -> dynamicRegistries.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
 	                    		.get(new ResourceLocation(mod_LavaCow.MODID, "desert_tomb/start_pool")),
 	                            10), AbstractVillagePiece::new, chunkGenerator, templateManagerIn,

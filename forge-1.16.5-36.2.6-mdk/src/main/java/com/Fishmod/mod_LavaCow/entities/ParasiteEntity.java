@@ -72,7 +72,7 @@ public class ParasiteEntity extends SpiderEntity {
 	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.long_live = false;
-        this.lifespawn = 16 * 20; // Can live for 16s only, poor little one :(
+        this.lifespawn = FURConfig.Parasite_Lifespan.get() * 20; // Can live for 16s only, poor little one :(
         this.xpReward = 1;
     }
 	
@@ -250,7 +250,7 @@ public class ParasiteEntity extends SpiderEntity {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
-        if (itemstack.isEmpty() && !this.isTame()) {
+        if (itemstack.isEmpty() && !this.isTame() && player.isCrouching() && FURConfig.Parasite_Pickup.get()) {
         	player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
         	
         	if (!player.inventory.add(new ItemStack(ParasiteDrop[this.getSkin()]))) {
@@ -483,7 +483,7 @@ public class ParasiteEntity extends SpiderEntity {
 
     @Override
 	protected boolean shouldDropLoot() {
-        return !this.isSummoned();
+        return !this.isSummoned() && this.lifespawn > 0;
 	}
     
     static class AttackGoal extends MeleeAttackGoal {

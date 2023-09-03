@@ -28,13 +28,17 @@ public class DesertTombProcessor extends StructureProcessor {
     public static final Codec<DesertTombProcessor> CODEC = Codec.unit(() -> INSTANCE);
     
     private static List<EntityType<?>> Desert_Tomb_SpawnEntityID = Lists.newArrayList( 
-    		FUREntityRegistry.AVATON, FUREntityRegistry.MUMMY, EntityType.SPIDER, EntityType.CAVE_SPIDER, /*TO BE ADDED FUREntityRegistry.SCARAB*/FUREntityRegistry.UNBURIED
+    			FUREntityRegistry.AVATON, 
+    			FUREntityRegistry.MUMMY, 
+    			EntityType.SPIDER, 
+    			EntityType.CAVE_SPIDER, 
+    			FUREntityRegistry.SCARAB
     		);
     
     @Override
     public Template.BlockInfo process(IWorldReader worldReader, BlockPos pos, BlockPos pos2, Template.BlockInfo infoIn1, Template.BlockInfo infoIn2, PlacementSettings settings,@Nullable Template template) {
         Random rand = settings.getRandom(infoIn2.pos);
-        
+
         if (infoIn2.state.getBlock() == Blocks.SPAWNER) {
             CompoundNBT tag = new CompoundNBT();
             CompoundNBT spawnData = new CompoundNBT();

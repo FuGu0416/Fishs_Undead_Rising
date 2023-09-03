@@ -35,10 +35,34 @@ public class DesertTombPiece extends ScatteredStructurePiece {
 			BlockPos pos;
 	        int GenMimic = rand.nextInt(4);
 	        int l = 1;		
-
+			Boolean isBadland = false;
+			
+	        /*for(int i = -8; i < 8; i++) {
+	        	for(int j = -8; j < 8; j++) {
+	        		for(int k = -8; k < 8; k++) {
+	        			if (p_230383_1_.getBlockState(p_230383_7_.offset(i, j, k)).getBlock().equals(Blocks.RED_SAND) || p_230383_1_.getBlockState(p_230383_7_.offset(i, j, k)).getBlock().equals(Blocks.RED_SANDSTONE)) {
+	        				isBadland = true;
+	        				break;
+	        			}
+	        		}
+	        		
+	        		if(isBadland) {
+	        			break;
+	        		}
+	        	}
+	        	
+	    		if(isBadland) {
+	    			break;
+	    		}
+	        }*/
+	        
 	        for(int k1 = 0; k1 < this.width; ++k1) {
 	            for(int j = 0; j < this.depth; ++j) {
-	               this.fillColumnDown(p_230383_1_, Blocks.SAND.defaultBlockState(), k1, -8, j, p_230383_5_);
+	            	if(isBadland) {
+	            		this.fillColumnDown(p_230383_1_, Blocks.RED_SAND.defaultBlockState(), k1, -8, j, p_230383_5_);
+	            	} else {
+	            		this.fillColumnDown(p_230383_1_, Blocks.SAND.defaultBlockState(), k1, -8, j, p_230383_5_);
+	            	}
 	            }
 	        }
 	        
@@ -64,6 +88,45 @@ public class DesertTombPiece extends ScatteredStructurePiece {
 							l++;
 						}
 					}
+			
+			if(isBadland) {
+	            for(int i = this.boundingBox.x0; i <= this.boundingBox.x1; ++i) {
+	                for(int j = this.boundingBox.y0; j <= this.boundingBox.y1; ++j) {
+	                	for(int k = this.boundingBox.z0 ; k <= this.boundingBox.z1; k++) {
+	                		pos = new BlockPos(i, j, k);
+	                		if (p_230383_5_.isInside(pos)) {
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.SAND)) {
+		            				p_230383_1_.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 2);
+		            			}
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.SANDSTONE)) {
+		            				p_230383_1_.setBlock(pos, Blocks.RED_SANDSTONE.defaultBlockState(), 2);
+		            			}
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.CHISELED_SANDSTONE)) {
+		            				p_230383_1_.setBlock(pos, Blocks.CHISELED_RED_SANDSTONE.defaultBlockState(), 2);
+		            			}
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.SMOOTH_SANDSTONE)) {
+		            				p_230383_1_.setBlock(pos, Blocks.SMOOTH_RED_SANDSTONE.defaultBlockState(), 2);
+		            			}
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.SANDSTONE_STAIRS)) {
+		            				p_230383_1_.setBlock(pos, Blocks.RED_SANDSTONE_STAIRS.defaultBlockState(), 2);
+		            			}         			
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.SANDSTONE_SLAB)) {
+		            				p_230383_1_.setBlock(pos, Blocks.RED_SANDSTONE_SLAB.defaultBlockState(), 2);
+		            			}
+		            			
+		            			if (p_230383_1_.getBlockState(pos).getBlock().equals(Blocks.BROWN_TERRACOTTA)) {
+		            				p_230383_1_.setBlock(pos, Blocks.YELLOW_TERRACOTTA.defaultBlockState(), 2);
+		            			}
+	                		}
+	                	}              	
+	                }
+	            }
+			}
 	
 			return true;
 		}
