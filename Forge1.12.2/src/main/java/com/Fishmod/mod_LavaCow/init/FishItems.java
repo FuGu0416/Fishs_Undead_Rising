@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.init;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-//import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.item.ItemFishCustomWeapon;
@@ -15,7 +15,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFissionPotion;
 import com.Fishmod.mod_LavaCow.item.ItemFrozenThigh;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemBaubleTrinket;
-//import com.Fishmod.mod_LavaCow.item.ItemCactusFruit;
+import com.Fishmod.mod_LavaCow.item.ItemCactusFruit;
 import com.Fishmod.mod_LavaCow.item.ItemCrown;
 import com.Fishmod.mod_LavaCow.item.ItemHolyGrenade;
 import com.Fishmod.mod_LavaCow.item.ItemIntestine;
