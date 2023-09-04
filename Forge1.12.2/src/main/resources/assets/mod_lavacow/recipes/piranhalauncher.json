@@ -18,7 +18,8 @@
 		      "ore": "dyeGray"
         },
         "D": {
-            "item": "mod_lavacow:war"
+            "item": "mod_lavacow:war",
+			"data": 32767
         },
         "/": {
             "type": "forge:ore_dict",

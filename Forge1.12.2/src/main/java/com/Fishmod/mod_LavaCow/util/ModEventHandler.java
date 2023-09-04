@@ -576,6 +576,14 @@ public class ModEventHandler {
     	if(event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
+    	if(event.getSource().getTrueSource() != null && event.getEntityLiving().isPotionActive(ModMobEffects.THORNED)) {
+    		if(event.getSource() == DamageSource.CACTUS || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).getIsThornsDamage())) {
+    			event.setCanceled(true);
+    		} else if (!event.getSource().isMagicDamage() && !event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityLiving) {
+    			event.getSource().getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(event.getEntityLiving()), 1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.THORNED).getAmplifier());
+            }
+    	}
+    		
     	event.setAmount(event.getAmount() * effectlevel);
     }
     

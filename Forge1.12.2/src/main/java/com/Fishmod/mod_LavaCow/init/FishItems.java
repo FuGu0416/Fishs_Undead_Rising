@@ -143,6 +143,10 @@ public class FishItems {
 	public static final Item CURSEWEAVE_CLOTH = new ItemFishCustom("curseweave_cloth", null, mod_LavaCow.TAB_ITEMS, false);
 	public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", ToolMaterial.IRON, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE);
 	public static final Item SKELETONKING_MACE = new ItemFishCustomWeapon("skeletonking_mace", ToolMaterial.DIAMOND, 12.0F, -3.2F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
+	public static final Item CACTUS_THORN = new ItemFishCustom("cactus_thorn", null, mod_LavaCow.TAB_ITEMS, false);
+	public static final Item CACTUS_FRUIT = new ItemCactusFruit("cactus_fruit", 4, 0.2F, true, 32, true).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 30 * 20, 0), 1.0F);
+	public static final Item THORN_SHOOTER = new ItemPiranhaLauncher("thorn_shooter", CACTUS_THORN.getUnlocalizedName(), EntityCactusThorn.class, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(768);
+	public static final Item BAOBING = new ItemNetherStew("baobing").setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 60 * 20, 1), 1.0F);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
@@ -245,4 +249,10 @@ public class FishItems {
 	public static final SoundEvent ENTITY_SKELETONKING_SPELL_SUMMON = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_summon")).setRegistryName("entity_skeletonking_spell_summon");
 	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TELEPORT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_teleport")).setRegistryName("entity_skeletonking_spell_teleport");
 	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TOSS = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_toss")).setRegistryName("entity_skeletonking_spell_toss");
+	
+	public static final SoundEvent CACTYRANT_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.attack")).setRegistryName("entity_cactyrant_ambient");
+	public static final SoundEvent CACTYRANT_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.death")).setRegistryName("entity_cactyrant_death");
+	
+	public static final SoundEvent PIRANHA_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.piranha_shoot")).setRegistryName("random_piranha_shoot");
+	public static final SoundEvent THORN_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.thorn_shoot")).setRegistryName("random_thorn_shoot");
 }

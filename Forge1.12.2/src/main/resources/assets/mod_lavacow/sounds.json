@@ -564,5 +564,19 @@
 		"category": "entity",
 		"subtitle": "entity_cactyrant_death",
 		"sounds": [{"name": "mod_lavacow:entity/cactyrant/death","stream": true}]
+	},
+	
+	"random.piranha_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_piranha_shoot",
+		"sounds": [{"name": "mod_lavacow:random/piranha_shoot","stream": true}]
+	},
+	
+	"random.thorn_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_thorn_shoot",
+		"sounds": [{"name": "mod_lavacow:random/thorn_shoot","stream": true}]
 	}
 }

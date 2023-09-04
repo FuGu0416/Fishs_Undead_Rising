@@ -98,6 +98,16 @@ public class AddRecipes {
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_FRAGILE));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_FRAGILE));
 	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_FRAGILE));
+	        
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_THORN));
+	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_THORN));
 	    }
 	    
 	    public static void addTrading() {
