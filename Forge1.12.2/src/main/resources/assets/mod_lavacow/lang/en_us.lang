@@ -103,6 +103,7 @@ item.mod_lavacow.thorn_shooter.name=Thorn Shooter
 item.mod_lavacow.cactoid_pot.name=Cactoid Pot
 item.mod_lavacow.baobing.name=Baobing
 
+#Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
 material.mod_lavacow.scythe_claw.name=Scythe Claw
@@ -114,6 +115,10 @@ modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger point when hitting a non-undead entity or harvesting a block. 
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
 modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entities and applies Weakness 
+
+#JER Integration
+JER.catagory.mod_lavacow.cemetery_chest=Small Cemetery
+JER.catagory.mod_lavacow.desert_tomb_chest=Desert Tomb
 
 ###########
 # BANNERS #
