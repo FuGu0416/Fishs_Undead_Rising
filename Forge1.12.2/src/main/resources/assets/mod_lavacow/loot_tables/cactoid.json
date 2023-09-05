@@ -38,6 +38,13 @@
               }
             },
             {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
               "function": "furnace_smelt",
               "conditions": [
                 {

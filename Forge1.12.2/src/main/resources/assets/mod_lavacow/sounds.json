@@ -556,7 +556,7 @@
 	{
 		"category": "entity",
 		"subtitle": "entity_cactyrant_ambient",
-		"sounds": [{"name": "mod_lavacow:entity/cactyrant/ambient","stream": true}]
+		"sounds": ["mod_lavacow:entity/cactyrant/ambient0", "mod_lavacow:entity/cactyrant/ambient1"]
 	},
 	
 	"entity.cactyrant.death":
@@ -564,6 +564,20 @@
 		"category": "entity",
 		"subtitle": "entity_cactyrant_death",
 		"sounds": [{"name": "mod_lavacow:entity/cactyrant/death","stream": true}]
+	},
+	
+	"entity.cactyrant.grow":
+	{
+		"category": "entity",
+		"subtitle": "entity_cactyrant_grow",
+		"sounds": [{"name": "mod_lavacow:entity/cactyrant/grow","stream": true}]
+	},
+	
+	"random.fruit_plant":
+	{
+		"category": "neutral",
+		"subtitle": "subtitles.block.generic.place",
+		"sounds": [{"name": "mod_lavacow:random/fruit_plant","stream": true}]
 	},
 	
 	"random.piranha_shoot":

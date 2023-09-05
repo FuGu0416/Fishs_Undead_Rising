@@ -250,9 +250,11 @@ public class FishItems {
 	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TELEPORT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_teleport")).setRegistryName("entity_skeletonking_spell_teleport");
 	public static final SoundEvent ENTITY_SKELETONKING_SPELL_TOSS = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.skeletonking.spell_toss")).setRegistryName("entity_skeletonking_spell_toss");
 	
-	public static final SoundEvent CACTYRANT_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.attack")).setRegistryName("entity_cactyrant_ambient");
-	public static final SoundEvent CACTYRANT_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.death")).setRegistryName("entity_cactyrant_death");
+	public static final SoundEvent ENTITY_CACTYRANT_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.ambient")).setRegistryName("entity_cactyrant_ambient");
+	public static final SoundEvent ENTITY_CACTYRANT_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.death")).setRegistryName("entity_cactyrant_death");
+	public static final SoundEvent ENTITY_CACTYRANT_GROW = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.grow")).setRegistryName("entity_cactyrant_grow");
 	
-	public static final SoundEvent PIRANHA_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.piranha_shoot")).setRegistryName("random_piranha_shoot");
-	public static final SoundEvent THORN_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.thorn_shoot")).setRegistryName("random_thorn_shoot");
+	public static final SoundEvent RANDOM_FRUIT_PLANT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.fruit_plant")).setRegistryName("random_fruit_plant");
+	public static final SoundEvent RANDOM_PIRANHA_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.piranha_shoot")).setRegistryName("random_piranha_shoot");
+	public static final SoundEvent RANDOM_THORN_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.thorn_shoot")).setRegistryName("random_thorn_shoot");
 }

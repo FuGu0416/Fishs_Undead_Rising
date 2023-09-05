@@ -6,6 +6,8 @@ import javax.annotation.Nonnull;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
+import com.Fishmod.mod_LavaCow.init.FishItems;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSoulSand;
 import net.minecraft.block.SoundType;
@@ -13,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -48,7 +49,7 @@ public class BlockCactoidSprout extends Block {
                 EntityCactoid cactoid = new EntityCactoid(world);
                 cactoid.setGrowingAge(-24000);
                 cactoid.setLocationAndAngles((double)pos.getX() + 0.3D, (double)pos.getY(), (double)pos.getZ() + 0.3D, 0.0F, 0.0F);
-                cactoid.playSound(SoundEvents.BLOCK_CHORUS_FLOWER_DEATH, 1.0F, 1.0F);
+                cactoid.playSound(FishItems.ENTITY_CACTYRANT_GROW, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
                 
             	// Nether (Basalt Deltas) Variant
                 if(world.provider.doesWaterVaporize() || sand instanceof BlockSoulSand) {

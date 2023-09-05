@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,6 +32,7 @@ public class ItemCactusFruit extends ItemFishCustomFood {
         if (facing == EnumFacing.UP && world.isAirBlock(pos.up()) && sand.getMaterial(state) == Material.SAND | sand instanceof BlockSoulSand) {
             world.setBlockState(pos.up(), Modblocks.CACTOID_SPROUT.getDefaultState());
             
+            world.playSound(player, pos, FishItems.RANDOM_FRUIT_PLANT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
             if (player instanceof EntityPlayerMP) {
                 CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos.up(), itemstack);
             }

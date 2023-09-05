@@ -152,7 +152,7 @@ public class ItemPiranhaLauncher extends ItemBow {
 									playerIn.inventory.deleteStack(itemstack);
 								}
 							}
-							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.THORN_SHOOT, SoundCategory.PLAYERS, 0.95F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 0.8F));
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.RANDOM_THORN_SHOOT, SoundCategory.PLAYERS, 0.95F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 0.8F));
 						} else if (this.shot.equals(EntityDeathCoil.class)) {
 							EntityDeathCoil entitysnowball = (EntityDeathCoil) EntityList.newEntity(this.shot, worldIn);
 			        		entitysnowball.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height),playerIn.posZ + lookVec.z * 1.0D);
@@ -193,7 +193,7 @@ public class ItemPiranhaLauncher extends ItemBow {
 							
 				            worldIn.spawnEntity(entityammo);
 				            stack.damageItem(1, playerIn);
-							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.PIRANHA_SHOOT, SoundCategory.PLAYERS, 0.85F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 0.85F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
 							if (!flag && !playerIn.isCreative()) {
 								itemstack.shrink(1);
 									if (itemstack.isEmpty()) {

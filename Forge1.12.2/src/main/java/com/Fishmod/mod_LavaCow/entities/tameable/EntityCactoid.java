@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -41,7 +42,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,7 +73,7 @@ public class EntityCactoid extends EntityFishTameable {
     	super.initEntityAI();
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.5D, true));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(10, this.watch);
         this.tasks.addTask(10, this.look);
 
@@ -95,7 +97,7 @@ public class EntityCactoid extends EntityFishTameable {
     public boolean getCanSpawnHere() {
     	BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
         	       
-        return SpawnUtil.isAllowedDimension(-1) || SpawnUtil.isAllowedDimension(this.dimension)
+        return SpawnUtil.isAllowedDimension(this.dimension)
         		&& this.world.canSeeSky(pos) 
         		&& super.getCanSpawnHere();
     }
@@ -127,24 +129,29 @@ public class EntityCactoid extends EntityFishTameable {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-    	if (!this.isTamed()) {
-    		if (this.getSkin() == 3)
-    			return stack.equals(FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME))); // FIX THIS
-    		else
-    			return stack.equals(FluidUtil.getFilledBucket(new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME)));
-    	} else
-    		return stack.equals(new ItemStack(Items.DYE, 1, 0));
+        if (!this.isTamed()) {
+            if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                FluidStack fluidStack = fluidHandlerItem.drain(Fluid.BUCKET_VOLUME, false);
+                if (fluidStack != null) {
+                    if (this.getSkin() == 3 && fluidStack.getFluid() == FluidRegistry.LAVA) {
+                        return true;
+                    } else if (this.getSkin() != 3 && fluidStack.getFluid() == FluidRegistry.WATER) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+        	return stack.isItemEqual(new ItemStack(Items.DYE, 1, 15));
+        }
+    	return false;
     }
     
     @Override
     protected void collideWithEntity(Entity entity) {
-        if (entity instanceof EntityPlayer && this.getAttackTarget() == null && !this.isTamed() && !(entity.world.getDifficulty() == EnumDifficulty.PEACEFUL)) {
+        if (entity instanceof EntityLivingBase && !(entity instanceof EntityCactoid) && !(entity instanceof EntityCactyrant) && this.getAttackTarget() == null && !this.isTamed() && !(entity.world.getDifficulty() == EnumDifficulty.PEACEFUL)) {
             entity.attackEntityFrom(DamageSource.CACTUS, 1.0F);
         }
 
@@ -186,13 +193,13 @@ public class EntityCactoid extends EntityFishTameable {
 	        } else if (this.growingAge < 0) {
 	        	if(this.getGrowingStage() != 1) {
 	        		this.setGrowingStage(1);
-	        		this.playSound(SoundEvents.BLOCK_CHORUS_FLOWER_DEATH, 1.0F, 1.0F);
+	        		this.playSound(FishItems.ENTITY_CACTYRANT_GROW, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
 	        		this.world.setEntityState(this, (byte)14);
 	        	}       	
 	        } else if (this.growingAge == 0) {
 	        	if(this.getGrowingStage() != 2) {
 	        		this.setGrowingStage(2);
-	        		this.playSound(SoundEvents.BLOCK_CHORUS_FLOWER_DEATH, 1.0F, 1.0F);
+	        		this.playSound(FishItems.ENTITY_CACTYRANT_GROW, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
 	        		this.world.setEntityState(this, (byte)14);
 	        	}       	
 	        }
@@ -203,7 +210,7 @@ public class EntityCactoid extends EntityFishTameable {
     
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        if (this.isTamed() && this.getGrowingStage() == 2) {
+        if (!player.world.isRemote && this.isTamed() && this.getGrowingStage() == 2) {
     		this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
     		this.entityDropItem(new ItemStack(FishItems.CACTUS_FRUIT), 0.0F);
     		this.setGrowingStage(0);
@@ -243,6 +250,8 @@ public class EntityCactoid extends EntityFishTameable {
 	*/
     @Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
+    	if (source == DamageSource.CACTUS) return false;
+    	
         if (!source.isMagicDamage() && source.getImmediateSource() instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase)source.getImmediateSource();
             
@@ -303,25 +312,22 @@ public class EntityCactoid extends EntityFishTameable {
 	
     @SideOnly(Side.CLIENT)
 	protected void addParticlesAroundSelf(EnumParticleTypes type) {
-    	double xRandom = ((posX + width * 1.0D) * 2.0D * this.rand.nextDouble() - 1.0D) * 1.0D;
-    	double yRandom = (posX + height * 1.0D) * 2.0D * this.rand.nextDouble();
-    	double zRandom = ((posZ + width * 1.0D) * 2.0D * this.rand.nextDouble() - 1.0D) * 1.0D;
-		for(int i = 0; i < 5; ++i) {
-			double d0 = this.rand.nextGaussian() * 0.02D;
-			double d1 = this.rand.nextGaussian() * 0.02D;
-			double d2 = this.rand.nextGaussian() * 0.02D;
-			this.world.spawnParticle(type, xRandom, yRandom + 1.0D, zRandom, d0, d1, d2);
-		}
+        for (int i = 0; i < 5; ++i) {
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            this.world.spawnParticle(type, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+        }
 	}
 	
     /**
      * Handler for {@link World#setEntityState}
      */
-    @SideOnly(Side.CLIENT)
 	@Override
+    @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
 		if (id == 14) {
-            this.addParticlesAroundSelf(EnumParticleTypes.DRIP_WATER);
+            this.addParticlesAroundSelf(EnumParticleTypes.WATER_WAKE);
         } else {
             super.handleStatusUpdate(id);
         }
@@ -339,7 +345,7 @@ public class EntityCactoid extends EntityFishTameable {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FishItems.CACTYRANT_DEATH;
+        return FishItems.ENTITY_CACTYRANT_DEATH;
     }
 
 	@Override

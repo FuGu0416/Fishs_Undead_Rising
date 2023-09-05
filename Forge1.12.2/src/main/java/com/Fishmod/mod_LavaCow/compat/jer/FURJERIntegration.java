@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.compat.ModIntegration;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
+import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
@@ -23,6 +24,7 @@ import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
@@ -74,6 +76,8 @@ public class FURJERIntegration implements ModIntegration {
 		jerAPI.getMobRegistry().register(new EntityForsaken(world), LightLevel.hostile, LootTableHandler.FORSAKEN);
 		jerAPI.getMobRegistry().register(new EntitySkeletonKing(world), LightLevel.hostile, LootTableHandler.SKELETON_KING);
 		jerAPI.getMobRegistry().register(new EntityMummy(world), LightLevel.hostile, LootTableHandler.MUMMY);
+		jerAPI.getMobRegistry().register(new EntityCactoid(world), LootTableHandler.CACTOID);
+		jerAPI.getMobRegistry().register(new EntityCactyrant(world), LootTableHandler.CACTYRANT);
 		
 		//Chest loot
 		jerAPI.getDungeonRegistry().registerCategory("cemetery_chest", "JER.catagory.mod_lavacow.cemetery_chest");
