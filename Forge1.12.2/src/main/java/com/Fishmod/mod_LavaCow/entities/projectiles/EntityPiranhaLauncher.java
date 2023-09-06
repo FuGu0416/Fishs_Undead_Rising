@@ -1,7 +1,10 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -9,8 +12,9 @@ import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
+public class EntityPiranhaLauncher extends EntityEnchantableFireBall implements IEntityAdditionalSpawnData {
 	
 	   public EntityPiranhaLauncher(World worldIn) {
 		   super(worldIn);
@@ -31,19 +35,26 @@ public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
 	    {
 	        EntityFireball.registerFixesFireball(fixer, "PiranhaLauncher");
 	    }
+	    
+	    @Override
+	    public void writeSpawnData(ByteBuf data) {
+	        data.writeInt(shootingEntity != null ? shootingEntity.getEntityId() : -1);
+	    }
+
+	    @Override
+	    public void readSpawnData(ByteBuf data) {
+	        final Entity shooter = world.getEntityByID(data.readInt());
+
+	        if (shooter instanceof EntityLivingBase) {
+	            this.shootingEntity = (EntityLivingBase)shooter;
+	        }
+	    }
 	   
-	   @Override
+	    @Override
 	    public void onUpdate() {
 	       super.onUpdate();
 	       if(!this.collided)this.accelerationY -= 0.002f;
 	    }
-	   
-	   /**
-	    * Return the motion factor for this projectile. The factor is multiplied by the original motion.
-	    */
-	   protected float getMotionFactor() {
-	      return 0.8F;
-	   }
 
 	   /**
 	    * Called when this EntityFireball hits a block or entity.
@@ -52,7 +63,7 @@ public class EntityPiranhaLauncher extends EntityEnchantableFireBall {
 	      if (!this.world.isRemote) {
 	    	  EntityZombiePiranha entityzombie = new EntityZombiePiranha(this.world);
 	    	  entityzombie.setIsAmmo(true);
-	    	  if(result.entityHit != null && result.entityHit instanceof EntityLivingBase) {
+	    	  if(result.entityHit != null && result.entityHit instanceof EntityLivingBase && !(result.entityHit instanceof EntityPlayer)) {
 	    		  entityzombie.setPosition(result.entityHit.posX, result.entityHit.posY + result.entityHit.height, result.entityHit.posZ);	    		  
 	    		  entityzombie.startRiding(result.entityHit);
 	    		  this.world.spawnEntity(entityzombie);

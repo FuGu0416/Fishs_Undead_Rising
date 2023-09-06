@@ -1,0 +1,6 @@
+{       
+	"parent": "mod_lavacow:block/sprout",
+    "textures": {
+		"all": "mod_lavacow:blocks/cactoid_sprout"
+    }
+}

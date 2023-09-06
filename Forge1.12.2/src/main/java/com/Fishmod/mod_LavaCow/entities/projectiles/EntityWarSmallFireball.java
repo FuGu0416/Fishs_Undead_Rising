@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -14,8 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityWarSmallFireball extends EntityEnchantableFireBall {
+public class EntityWarSmallFireball extends EntityEnchantableFireBall implements IEntityAdditionalSpawnData {
 	
 	   public EntityWarSmallFireball(World worldIn) {
 	      super(worldIn);
@@ -28,6 +31,20 @@ public class EntityWarSmallFireball extends EntityEnchantableFireBall {
 	   public EntityWarSmallFireball(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
 	      super(worldIn, x, y, z, accelX, accelY, accelZ);
 	   }
+	   
+	    @Override
+	    public void writeSpawnData(ByteBuf data) {
+	        data.writeInt(shootingEntity != null ? shootingEntity.getEntityId() : -1);
+	    }
+
+	    @Override
+	    public void readSpawnData(ByteBuf data) {
+	        final Entity shooter = world.getEntityByID(data.readInt());
+
+	        if (shooter instanceof EntityLivingBase) {
+	            this.shootingEntity = (EntityLivingBase)shooter;
+	        }
+	    }
 	   
 	    public static void registerFixesSmallFireball(DataFixer fixer)
 	    {

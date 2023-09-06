@@ -371,7 +371,7 @@ public class Modconfig {
 		pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 8, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(8);
 		Cactyrant_Health = config.get("Cactyrant", "cactyrant health", 60.0D, "Maximum Cactyrant health [1-1000]", 1, 1000).getDouble(60.0D);
 		Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
-		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant spawn rate", 3, "Set the spawn rate of Cactyrant [0-100]", 0, 100).getInt(3);
+		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant summon cooldown", 3, "Set the cooldown of thorn barrage [0-100]", 0, 100).getInt(3);
 		
 		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid [0-10000]", 0, 10000).getInt(10);
 		Cactoid_Health = config.get("Cactoid", "cactoid health", 20.0D, "Maximum Cactoid health [1-1000]", 1, 1000).getDouble(20.0D);
@@ -397,7 +397,9 @@ public class Modconfig {
 		Intestine_banlist = config.getStringList("mobs that intestine should not drop from", Configuration.CATEGORY_GENERAL,
 				new String[] {	"minecraft:blaze",
 					      		"minecraft:slime",
-					      		"minecraft:skeleton"},
+					      		"minecraft:skeleton",
+					      		"mod_lavacow:cactoid",
+					      		"mod_lavacow:cactyrant"},
 				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
 
 		Raven_Loot = config.getStringList("loot table for ravens", Configuration.CATEGORY_GENERAL,

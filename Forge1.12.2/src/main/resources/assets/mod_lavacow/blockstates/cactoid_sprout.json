@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "age=0": { "model": "mod_lavacow:cactoid_sprout" },
+        "age=1": { "model": "mod_lavacow:cactoid_sprout" },
+        "age=2": { "model": "mod_lavacow:cactoid_sprout" }
+    }
+}

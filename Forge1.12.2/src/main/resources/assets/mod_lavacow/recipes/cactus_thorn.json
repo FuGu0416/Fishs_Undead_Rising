@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "blockCactus"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "blockCactus"
+        }
+    ],
+    "result": {
+        "item": "mod_lavacow:cactus_thorn",
+        "count": 3
+    }
+}

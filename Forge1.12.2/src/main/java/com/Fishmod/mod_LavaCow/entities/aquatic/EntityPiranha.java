@@ -65,7 +65,7 @@ public class EntityPiranha extends EntityZombiePiranha{
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_GUARDIAN_AMBIENT;
+        return null;
      }
     
     @Override

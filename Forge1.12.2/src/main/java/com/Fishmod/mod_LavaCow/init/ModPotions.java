@@ -17,4 +17,7 @@ public class ModPotions {
 	public static final PotionType FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 600)).setRegistryName(mod_LavaCow.MODID + ":fragile");
 	public static final PotionType STRONG_FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_fragile");
 	public static final PotionType LONG_FRAGILE = new PotionType(mod_LavaCow.MODID + ":fragile", new PotionEffect(ModMobEffects.FRAGILE, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_fragile");
+	public static final PotionType THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 1800)).setRegistryName(mod_LavaCow.MODID + ":thorn");
+	public static final PotionType STRONG_THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_thorn");
+	public static final PotionType LONG_THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 3600)).setRegistryName(mod_LavaCow.MODID + ":long_thorn");
 }

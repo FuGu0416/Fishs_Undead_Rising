@@ -4,6 +4,9 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactoid;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactusThorn;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactyrant;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderDeathCoil;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderForsaken;
@@ -42,6 +45,7 @@ import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
+import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntityMummy;
@@ -62,6 +66,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
@@ -70,6 +75,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
@@ -128,6 +134,9 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntitySandBurst.class, RenderFactoryEntitySandBurst.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityDeathCoil.class, RenderFactoryEntityDeathCoil.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, RenderFactoryEntityMummy.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCactoid.class, RenderFactoryEntityCactoid.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCactyrant.class, RenderFactoryEntityCactyrant.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCactusThorn.class, RenderFactoryEntityCactusThorn.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
         FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
@@ -663,6 +672,48 @@ public class RenderFactories {
         public Render<EntityMummy> createRenderFor(RenderManager manager)
         {
         	return new RenderMummy(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityCactusThorn implements IRenderFactory<EntityCactusThorn>
+    {
+        public final static RenderFactoryEntityCactusThorn INSTANCE = new RenderFactoryEntityCactusThorn();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderCactusThorn createRenderFor(RenderManager manager)
+        {
+        	return new RenderCactusThorn(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityCactoid implements IRenderFactory<EntityCactoid>
+    {
+        public final static RenderFactoryEntityCactoid INSTANCE = new RenderFactoryEntityCactoid();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityCactoid> createRenderFor(RenderManager manager)
+        {
+        	return new RenderCactoid(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityCactyrant implements IRenderFactory<EntityCactyrant>
+    {
+        public final static RenderFactoryEntityCactyrant INSTANCE = new RenderFactoryEntityCactyrant();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityCactyrant> createRenderFor(RenderManager manager)
+        {
+        	return new RenderCactyrant(manager);
         }
     }
 }

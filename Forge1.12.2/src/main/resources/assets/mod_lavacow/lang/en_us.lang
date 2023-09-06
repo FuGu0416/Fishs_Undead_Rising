@@ -4,9 +4,9 @@
 #########
 
 item.mod_lavacow.netherstew.name=Nether Stew
-item.mod_lavacow.canebeef.name=Cane Beef
-item.mod_lavacow.canepork.name=Cane Pork
-item.mod_lavacow.canerottenmeat.name=Cane Rotten Flesh
+item.mod_lavacow.canebeef.name=Caned Beef
+item.mod_lavacow.canepork.name=Caned Pork
+item.mod_lavacow.canerottenmeat.name=Caned Rotten Flesh
 item.mod_lavacow.fissionpotion.name=Potion of Fission
 item.mod_lavacow.hyphae.name=Hyphae
 item.mod_lavacow.parasite_item.name=Parasite
@@ -15,7 +15,7 @@ item.mod_lavacow.piranha.name=Piranha
 item.mod_lavacow.piranha_cooked.name=Cooked Piranha
 item.mod_lavacow.cheirolepis.name=Cheirolepis
 item.mod_lavacow.cheirolepis_cooked.name=Cooked Cheirolepis
-item.mod_lavacow.mousse.name=Minced meat
+item.mod_lavacow.mousse.name=Minced Meat
 item.mod_lavacow.meatball.name=Meat Ball
 item.mod_lavacow.sharptooth.name=Fangtooth
 item.mod_lavacow.bonesword.name=Bone Sword
@@ -55,7 +55,7 @@ item.mod_lavacow.vespa_carapace.name=Vespa Carapace
 item.mod_lavacow.tooth_dagger.name=Tooth Dagger 
 item.mod_lavacow.vespa_dagger.name=Bee Sting
 item.mod_lavacow.sausage_roll.name=Sausage Roll
-item.mod_lavacow.swinearmor_chestplate.name=Swine Tunics
+item.mod_lavacow.swinearmor_chestplate.name=Swine Tunic
 item.mod_lavacow.swinearmor_leggings.name=Swine Pants
 item.mod_lavacow.swinearmor_boots.name=Swine Boots
 item.mod_lavacow.zombiepiranha_item.name=Swarmer
@@ -73,7 +73,7 @@ item.mod_lavacow.undertaker_shovel.name=Midnight Mourne
 item.mod_lavacow.raven_whistle.name=Raven Whistle
 item.mod_lavacow.acidicheart.name=Acidic Heart
 item.mod_lavacow.faminearmor_helmet.name=Famine Helmet
-item.mod_lavacow.faminearmor_chestplate.name=Famine Tunics
+item.mod_lavacow.faminearmor_chestplate.name=Famine Tunic
 item.mod_lavacow.faminearmor_leggings.name=Famine Pants
 item.mod_lavacow.faminearmor_boots.name=Famine Boots
 item.mod_lavacow.foul_bristle.name=Foul Bristle
@@ -97,6 +97,11 @@ item.mod_lavacow.beast_claw.name=Beast Claw
 item.mod_lavacow.hatred_shard.name=Memory of a Thousand Armies
 item.mod_lavacow.curseweave_cloth.name=Curseweave Cloth
 item.mod_lavacow.skeletonking_mace.name="Death"
+item.mod_lavacow.cactus_thorn.name=Cactus Thorn
+item.mod_lavacow.cactus_fruit.name=Prickly Pear
+item.mod_lavacow.thorn_shooter.name=Thorn Shooter
+item.mod_lavacow.cactoid_pot.name=Cactoid Pot
+item.mod_lavacow.baobing.name=Baobing
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
@@ -107,9 +112,9 @@ material.mod_lavacow.ectoplasm.name=Ectoplasm
 modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
 modifier.mod_lavacow.famine.name=Famine
-modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger points when hitting a non-undead entity or harvesting a block. 
+modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger point when hitting a non-undead entity or harvesting a block. 
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
-modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entity and applies Weakness 
+modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entities and applies Weakness.
 
 #JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=Small Cemetery
@@ -127,7 +132,7 @@ item.banner.skeletonking.yellow=Yellow Skeleton King
 item.banner.skeletonking.lime=Lime Skeleton King
 item.banner.skeletonking.pink=Pink Skeleton King
 item.banner.skeletonking.gray=Gray Skeleton King
-item.banner.skeletonking.silver=Silver Skeleton King
+item.banner.skeletonking.silver=Light Gray Skeleton King
 item.banner.skeletonking.cyan=Cyan Skeleton King
 item.banner.skeletonking.purple=Purple Skeleton King
 item.banner.skeletonking.blue=Blue Skeleton King
@@ -151,6 +156,7 @@ tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
+tile.mod_lavacow.cactoid_sprout.name=Cactoid Sprout
 
 ############
 # Entities #
@@ -166,7 +172,7 @@ entity.mod_lavacow.salamander.name=Salamander
 entity.mod_lavacow.ithaqua.name=Ithaqua
 entity.mod_lavacow.mimic.name=Mimicrab
 entity.mod_lavacow.sludgelord.name=Sludge Lord
-entity.mod_lavacow.lilsludge.name=Lil'Sludge
+entity.mod_lavacow.lilsludge.name=Lil' Sludge
 entity.mod_lavacow.raven.name=Raven
 entity.mod_lavacow.ptera.name=Ptera
 entity.mod_lavacow.vespa.name=Vespa
@@ -186,6 +192,7 @@ entity.mod_lavacow.avaton.name=Avaton
 entity.mod_lavacow.skeletonking.name=Skeleton King
 entity.mod_lavacow.mummy.name=Mummy
 entity.mod_lavacow.forsaken.name=Forsaken
+entity.mod_lavacow.cactoid.name=Cactoid
 entity.mod_lavacow.cactyrant.name=Cactyrant
 
 ##########
@@ -225,9 +232,9 @@ entity_sludgelord_attack=Sludge Lord vomits
 entity_sludgelord_death=Sludge Lord dies
 entity_sludgelord_hurt=Sludge Lord hurts
 
-entity_lilsludge_ambient=Lil'Sludge hisses
-entity_lilsludge_death=Lil'Sludge dies
-entity_lilsludge_hurt=Lil'Sludge hurts
+entity_lilsludge_ambient=Lil' Sludge hisses
+entity_lilsludge_death=Lil' Sludge dies
+entity_lilsludge_hurt=Lil' Sludge hurts
 
 entity_raven_ambient=Raven calls
 entity_raven_call=Whistle calls
@@ -297,79 +304,87 @@ entity_skeletonking_spell_toss=Skeleton King casts a spell
 
 entity_cactyrant_ambient=Cactyrant hisses
 entity_cactyrant_death=Cactyrant dies
+entity_cactyrant_grow=Plant grows
+
+random_piranha_shoot=Piranha fired
+random_thorn_shoot=Thorn fired
 
 ############
 # Tooltips #
 ############
 
-tootip.mod_lavacow.bonesword=Deals additional %d%% of target's maximum HP as damage (Max %d).
-tootip.mod_lavacow.canebeef=Gives Regeneration(0:08) when eaten, is also Salamander's favorite.
-tootip.mod_lavacow.canepork=Gives Regeneration(0:08) when eaten, is also Weta's favorite.
-tootip.mod_lavacow.canerottenmeat=Gives Regeneration(0:08) when eaten, is also Mimicrab's favorite.
-tootip.mod_lavacow.netherstew=Gives random effects(0:40) when eaten.
-tootip.mod_lavacow.goldenheart=Gives Regeneration and repairs(+1/sec) all equipments when equipped.
-tootip.mod_lavacow.moltenaxe=Get charcoal when chopping down logs.
-tootip.mod_lavacow.moltenhammer=Right click to deal damage to creatures around player.
+tootip.mod_lavacow.bonesword=Deals additional damage that is %d%% of the target's maximum HP (Max: %d).
+tootip.mod_lavacow.canebeef=Salamanders might enjoy this!
+tootip.mod_lavacow.canepork=Wetas might enjoy this!
+tootip.mod_lavacow.canerottenmeat=Mimicrabs might enjoy this!
+tootip.mod_lavacow.netherstew=Gives random effects (0:40) when eaten.
+tootip.mod_lavacow.goldenheart=Gives Regeneration and repairs all equipped gear (+1/sec).
+tootip.mod_lavacow.moltenaxe=Chopped logs will drop charcoal.
+tootip.mod_lavacow.moltenhammer=Right-click to deal damage to creatures around the player.
 tootip.mod_lavacow.potion_of_mooten_lava=Try feeding this to a cow with Fire Resistance. :)
-tootip.mod_lavacow.fissionpotion=Turn Animal into two individuals.
-tootip.mod_lavacow.green_bacon_and_eggs=Gives Haste(1:00) when eaten.
-tootip.mod_lavacow.reapers_scythe=All attacks sweep target, and their damage bypasses any armors.
-tootip.mod_lavacow.famine=Gives Hunger. Restore 1 hunger points when hitting a non-undead entity.      
-tootip.mod_lavacow.frozenthigh=Is edible. Attacks give target SlownessIII(0:04)
-tootip.mod_lavacow.sludge_wand=Right click to summon a loyal Lil'Sludge
-tootip.mod_lavacow.war=Raise a war between you and your friend who built a wood cabin (need Fire Charge as ammunition)
-tootip.mod_lavacow.moltenpan=Used to make special cuisines
-tootip.mod_lavacow.intestine=Right click to find what's inside it
-tootip.mod_lavacow.felarmor=Damage to burning mobs+
-tootip.mod_lavacow.felarmor.l2=Fire damage to player-
-tootip.mod_lavacow.swinearmor=Set(2): Time of consuming food -20%%.
-tootip.mod_lavacow.swinearmor.l2=Set(4): Remove negative potion effects after consuming food.
-tootip.mod_lavacow.piranhalauncher=Right click to launch a Swarmer at target. (need Swarmer as ammunition)
-tootip.mod_lavacow.cursed_bandage.0.desc0=Heal
-tootip.mod_lavacow.cursed_bandage.0.desc1=Heals 2 HP to your pet
+tootip.mod_lavacow.fissionpotion=Splits an animal into two individual baby ones.
+tootip.mod_lavacow.green_bacon_and_eggs=Gives Haste (1:00) when eaten.
+tootip.mod_lavacow.reapers_scythe=All attacks will sweep targets and damage will bypass any armor.
+tootip.mod_lavacow.famine=Gives Hunger. Restores 1 hunger point when hitting a non-undead entity.  
+tootip.mod_lavacow.frozenthigh=Is edible. Attacks give target Slowness III (0:04).
+tootip.mod_lavacow.sludge_wand=Right-click to summon a loyal Lil' Sludge.
+
+tootip.mod_lavacow.war=Raise a war between you and your friend who just built a wood cabin! (Ammo: Fire Charge)
+tootip.mod_lavacow.moltenpan=Used to make special cuisines.
+tootip.mod_lavacow.intestine=Right-click to search inside it.
+tootip.mod_lavacow.felarmor=Bonus Fire Damage: +
+tootip.mod_lavacow.felarmor.l2=Fire Damage Protection: -
+tootip.mod_lavacow.swinearmor=Set(2): -20%% Food Consumption Time
+tootip.mod_lavacow.swinearmor.l2=Set(4): Removes all negative potion effects after consuming food
+tootip.mod_lavacow.piranhalauncher=Right-click to launch a Swarmer at the target. (Ammo: Swarmer)
+tootip.mod_lavacow.cursed_bandage.0.desc0=Healing
+tootip.mod_lavacow.cursed_bandage.0.desc1=Heals 2 HP to your pet.
 tootip.mod_lavacow.cursed_bandage.1.desc0=Strength
-tootip.mod_lavacow.cursed_bandage.1.desc1=Heals 2 HP to your pet, as well as inflicting Strength(3:00) 
-tootip.mod_lavacow.cursed_bandage.2.desc0=Heal+
-tootip.mod_lavacow.cursed_bandage.2.desc1=Heals 6 HP to your pet
+tootip.mod_lavacow.cursed_bandage.1.desc1=Heals 2 HP and inflicts Strength (3:00) to your pet.
+tootip.mod_lavacow.cursed_bandage.2.desc0=Healing+
+tootip.mod_lavacow.cursed_bandage.2.desc1=Heals 6 HP to your pet.
 tootip.mod_lavacow.cursed_bandage.3.desc0=Resistance
-tootip.mod_lavacow.cursed_bandage.3.desc1=Heals 2 HP to your pet, as well as inflicting Resistance(3:00)
-tootip.mod_lavacow.holy_grenade=Throw at target location and cause explosion. Undead within 300%% damage and get burned(0:08)
-tootip.mod_lavacow.halo_necklace=Damage to undead mobs+%d%%
-tootip.mod_lavacow.dreamcatcher=Catches the nightmarish creature from the dream.
-tootip.mod_lavacow.undertaker_shovel=Right click to summon an army of Unburied.
-tootip.mod_lavacow.raven_whistle=Right click to bind with a raven and order it to move to target location.
-tootip.mod_lavacow.faminearmor=Set(2): +2 damage when in Hunger state.
-tootip.mod_lavacow.faminearmor.l2=Set(4): No longer be able to eat, but +4 Hunger +1 Health when killing an entity.
-tootip.mod_lavacow.ghostjelly=Transform your Raven into Ghost Raven.
-tootip.mod_lavacow.ghostbomb=Throw at target location and cause explosion. Entities within also receive Levitate(0:01)
-tootip.mod_lavacow.sonicbomb=Throw at target location and cause explosion. Entities within also receive WeaknessIII(0:04)
-tootip.mod_lavacow.weta_hoe=When harvesting, also destroy nearby crops or grasses in 3x3 area.
+tootip.mod_lavacow.cursed_bandage.3.desc1=Heals 2 HP and inflicts Resistance (3:00) to your pet.
+tootip.mod_lavacow.holy_grenade=Causes an explosion at thrown target location. Undead within will receive over 300%% of damage and start burning (0:08).
+tootip.mod_lavacow.halo_necklace=Bonus Damage to Undead: +%d%%
+tootip.mod_lavacow.dreamcatcher=Catches nightmarish creatures from within your dreams.
+tootip.mod_lavacow.undertaker_shovel=Right-click to summon an army of Unburied.
+tootip.mod_lavacow.raven_whistle=Right-click to bind with a raven and order it to move to a target location.
+tootip.mod_lavacow.faminearmor=Set(2): +2 damage while the Hunger effect is active.
+tootip.mod_lavacow.faminearmor.l2=Set(4): Removes the ability to eat, but you gain +4 Hunger and +1 Health when killing an entity.
+tootip.mod_lavacow.ghostjelly=Transform your Raven into a Ghost Raven! Alternatively you can soar up!
+tootip.mod_lavacow.ghostbomb=Causes an explosion at thrown target location. Entities within will receive Levitation (0:01).
+tootip.mod_lavacow.sonicbomb=Causes an explosion at thrown target location. Entities within will receive Weakness III (0:04).
+tootip.mod_lavacow.weta_hoe=Destroys nearby crops or grass in a 3x3 area while breaking them.
 tootip.mod_lavacow.parasite.0=Common
 tootip.mod_lavacow.parasite.1=Desert
 tootip.mod_lavacow.parasite.2=Jungle
-tootip.mod_lavacow.bonestew=Gives Resistance(0:20) & AbsorptionII(0:20) when eaten
-tootip.mod_lavacow.mootenheart=Fire damage to player-%d%%. Can be used to brew 
-tootip.mod_lavacow.vespa_shield=Blocking damage, as well as dealing 2 damage to the attacker and inflicts it with Poison(0:06).
-tootip.mod_lavacow.frozen_dagger=Regenerate durability when in water.
-tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage vs non-undead
+tootip.mod_lavacow.bonestew=Gives Resistance (0:20) & Absorption II (0:20) when eaten.
+tootip.mod_lavacow.mootenheart=Can be used to brew. Fire Damage Protection: -%d%%
+tootip.mod_lavacow.vespa_shield=Blocks damage like a regular shield, while also dealing 2 damage and inflicting Poison (0:06) to the attacker.
+tootip.mod_lavacow.frozen_dagger=Regenerates durability while in water.
+tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage against non-undead!
 tootip.mod_lavacow.kings_crown.0=Stained
-tootip.mod_lavacow.kings_crown.0.desc0=With a gem most people desired
-tootip.mod_lavacow.kings_crown.0.desc1=Filled with memories from the past
-tootip.mod_lavacow.kings_crown.0.desc2=The king shall ruled his kingdom, once again
+tootip.mod_lavacow.kings_crown.0.desc0=With a gem most people desired.
+tootip.mod_lavacow.kings_crown.0.desc1=Filled with memories from the past.
+tootip.mod_lavacow.kings_crown.0.desc2=The king shall rule his kingdom, once again.
 tootip.mod_lavacow.kings_crown.1=Cursed
 tootip.mod_lavacow.kings_crown.1.desc0=A king does not need his body
 tootip.mod_lavacow.kings_crown.1.desc1=As long as the soul is imbued in his crown
 tootip.mod_lavacow.kings_crown.1.desc2=Even a dead corpse can fulfill his ambition
-tootip.mod_lavacow.skeletonking_crown=Force nearby skeleton to become your loyal servant.
-tootip.mod_lavacow.beast_claw.desc0=Pouncing forward.
-tootip.mod_lavacow.beast_claw.desc1=Set(2): Also gives Strength(0:03) & Haste(0:03) after pouncing
-tootip.mod_lavacow.skeletonking_mace=Inflicts target with DeathtouchV(0:10).
+tootip.mod_lavacow.skeletonking_crown=Forces nearby skeletons to become your loyal servants.
+tootip.mod_lavacow.beast_claw.desc0=Right-click to pounce forward.
+tootip.mod_lavacow.beast_claw.desc1=Set(2): Gives Strength (0:03) & Haste (0:03) after pouncing
+tootip.mod_lavacow.skeletonking_mace=Inflicts target with Deathtouched V (0:10)!
+tootip.mod_lavacow.cactus_fruit=Can be used to brew a Potion of Thorn, or as a seed to plant in the sand.
+tootip.mod_lavacow.thorn_shooter=Barrage cactus thorns with rapid speed! (Ammo: Cactus Thorn)
+tootip.mod_lavacow.baobing=Gives Thorned II (1:00) and extinguishes fire when eaten.
 
 message.mod_lavacow.metamorphosis= is evolving!
-command.mod_lavacow.sitting= is waiting
-command.mod_lavacow.following= is following
-command.mod_lavacow.wandering= is wandering
-command.mod_lavacow.whistle= is now the whistle target
+command.mod_lavacow.sitting= is waiting.
+command.mod_lavacow.following= is following.
+command.mod_lavacow.wandering= is wandering.
+command.mod_lavacow.whistle= is now the whistle target.
 command.mod_lavacow.whistle_err= is too far away.
 itemGroup.mod_lavacow_items=Fish's Undead Rising
 key.mod_lavacow.special=Mount Special Ability
@@ -379,24 +394,31 @@ key.mod_lavacow.special=Mount Special Ability
 ################
 
 enchantment.mod_lavacow.poisonous=Poisonous
-enchantment.mod_lavacow.poisonous.desc=Inflicts the target with Poison
+enchantment.mod_lavacow.poisonous.desc=Inflicts poison when used to attack a mob.
 enchantment.mod_lavacow.lifesteal=Lifesteal
-enchantment.mod_lavacow.lifesteal.desc=Heals the player while dealing damage to targets
+enchantment.mod_lavacow.lifesteal.desc=Heals you while you deal damage.
 enchantment.mod_lavacow.corrosive=Corrosive
-enchantment.mod_lavacow.corrosive.desc=Weakens the target, causing it to receive more damage from any source
+enchantment.mod_lavacow.corrosive.desc=Weakens the target and will make it receive more damage from any source.
 
 ##############
 # MobEffects #
 ##############
 
 mob_effect.mod_lavacow:corroded=Corroded
-description.mob_effect.mod_lavacow:corroded=Increase income damage.
+description.mob_effect.mod_lavacow:corroded=Increases damage taken.
+effect.mod_lavacow:corroded.0.desc=Amplifies any incoming damage by +20%% per level.
 mob_effect.mod_lavacow:soiled=Soiled
-description.mob_effect.mod_lavacow:soiled=Prevent from eating or drinking.
+description.mob_effect.mod_lavacow:soiled=Prevents eating and drinking.
+effect.mod_lavacow:soiled.0.desc=Fully prevents eating or drinking.
 mob_effect.mod_lavacow:infested=Infested
-description.mob_effect.mod_lavacow:infested=Apply hunger and slowness, also spawn parasites when dead.
-mob_effect.mod_lavacow:fragile=Deathtouch
-description.mob_effect.mod_lavacow:fragile=Cause instant death when health is low.
+description.mob_effect.mod_lavacow:infested=Afflicts hunger and slowness. Parasites will spawn on death.
+effect.mod_lavacow:infested.0.desc=Something is crawling inside... It might burst out once the host dies. -10%% Speed per level and hungers 1 point per (40/lvl) second.
+mob_effect.mod_lavacow:fragile=Deathtouched
+description.mob_effect.mod_lavacow:fragile=Causes instant death once health becomes low enough.
+effect.mod_lavacow:fragile.0.desc=Instantly kills once health gets dropped under (5*lvl)% of maximum health.
+mob_effect.mod_lavacow:thorned=Thorned
+description.mob_effect.mod_lavacow:thorned=Grants immunity to cactus and thorns enchantment damage. Attackers will end up getting thorned. 
+effect.mod_lavacow:thorned.0.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
 
 ##############
 # Potions #
@@ -418,6 +440,10 @@ potion.effect.mod_lavacow:fragile=Potion of Deathtouch
 splash_potion.effect.mod_lavacow:fragile=Splash Potion of Deathtouch
 lingering_potion.effect.mod_lavacow:fragile=Lingering Potion of Deathtouch
 tipped_arrow.effect.mod_lavacow:fragile=Arrow of Deathtouch
+potion.effect.mod_lavacow:thorn=Potion of Thorn
+splash_potion.effect.mod_lavacow:thorned=Splash Potion of Thorn
+lingering_potion.effect.mod_lavacow:thorned=Lingering Potion of Thorn
+tipped_arrow.effect.mod_lavacow:thorned=Arrow of Thorn
 
 ################
 # Advancements #
@@ -426,40 +452,40 @@ tipped_arrow.effect.mod_lavacow:fragile=Arrow of Deathtouch
 advancements.mod_lavacow.root.title=The Dark Night
 advancements.mod_lavacow.root.description=Enter a world of undead
 advancements.mod_lavacow.slimy_tasty.title=Slimy, Yet Satisfying
-advancements.mod_lavacow.slimy_tasty.description=Eat a raw parasite.
+advancements.mod_lavacow.slimy_tasty.description=Eat a raw Parasite
 advancements.mod_lavacow.kill_parasite.title=Get it OFFFFF!
-advancements.mod_lavacow.kill_parasite.description=Kill a Parasite.
+advancements.mod_lavacow.kill_parasite.description=Kill a Parasite
 advancements.mod_lavacow.kill_vespa.title=NOT THE BEES!
-advancements.mod_lavacow.kill_vespa.description=Kill a Vespa.
+advancements.mod_lavacow.kill_vespa.description=Kill a Vespa
 advancements.mod_lavacow.kill_zombiemushroom.title=The Last of Me
-advancements.mod_lavacow.kill_zombiemushroom.description=Kill a Mycosis.
+advancements.mod_lavacow.kill_zombiemushroom.description=Kill a Mycosis
 advancements.mod_lavacow.kill_piranha.title=Jungle Cruise
-advancements.mod_lavacow.kill_piranha.description=Kill a Piranha.
-advancements.mod_lavacow.kill_zombiepiranha.title=Jungle Cruise II : Mutation
-advancements.mod_lavacow.kill_zombiepiranha.description=Kill a Swarmer.
+advancements.mod_lavacow.kill_piranha.description=Kill a Piranha
+advancements.mod_lavacow.kill_zombiepiranha.title=Jungle Cruise II: Mutation
+advancements.mod_lavacow.kill_zombiepiranha.description=Kill a Swarmer
 advancements.mod_lavacow.kill_undertaker.title=This is My Yard
-advancements.mod_lavacow.kill_undertaker.description=K.O. an Undertaker.
+advancements.mod_lavacow.kill_undertaker.description=K.O. an Undertaker
 advancements.mod_lavacow.get_fissionpotion.title=Divided We...
 advancements.mod_lavacow.get_fissionpotion.description=Get a Potion of Fission
-advancements.mod_lavacow.summon_lavacow.title=I summon thee
+advancements.mod_lavacow.summon_lavacow.title=I Summon Thee
 advancements.mod_lavacow.summon_lavacow.description=Get a Potion of MOOten Lava
 advancements.mod_lavacow.kill_zombiefrozen.title=Let it Go
 advancements.mod_lavacow.kill_zombiefrozen.description=Kill a Frigid
 advancements.mod_lavacow.kill_foglet.title=Mistery
 advancements.mod_lavacow.kill_foglet.description=Kill a Foglet
-advancements.mod_lavacow.kill_wendigo.title=Faster Than the Wind
+advancements.mod_lavacow.kill_wendigo.title=Faster than the Wind
 advancements.mod_lavacow.kill_wendigo.description=Kill an Ithaqua
 advancements.mod_lavacow.kill_undeadswine.title=Boar Rider
 advancements.mod_lavacow.kill_undeadswine.description=Kill an Undead Swine
 advancements.mod_lavacow.kill_salamander.title=Kaboom, baby!
 advancements.mod_lavacow.kill_salamander.description=Kill a Salamander
-advancements.mod_lavacow.kill_mimic.title=The Chest that Pinches
+advancements.mod_lavacow.kill_mimic.title=The Chest That Pinches
 advancements.mod_lavacow.kill_mimic.description=Kill a Mimic
 advancements.mod_lavacow.kill_sludgelord.title=Botany Crisis
 advancements.mod_lavacow.kill_sludgelord.description=Kill a Sludge Lord
 advancements.mod_lavacow.kill_scarecrow.title=Not Halloween yet 
 advancements.mod_lavacow.kill_scarecrow.description=Kill a Scarecrow
-advancements.mod_lavacow.tame_raven.title=Raven, not Crow
+advancements.mod_lavacow.tame_raven.title=Raven, Not Crow
 advancements.mod_lavacow.tame_raven.description=Tame a Raven
 advancements.mod_lavacow.tame_salamander.title=Beef is Good
 advancements.mod_lavacow.tame_salamander.description=Tame a Salamander
@@ -479,7 +505,7 @@ advancements.mod_lavacow.kill_avaton.title=Pest Control
 advancements.mod_lavacow.kill_avaton.description=Kill an Avaton
 advancements.mod_lavacow.kill_skeletonking.title=Long Live the King
 advancements.mod_lavacow.kill_skeletonking.description=Kill the Skeleton King
-advancements.mod_lavacow.kill_mummy.title=Death Is Only The Beginning
+advancements.mod_lavacow.kill_mummy.title=Death Is Only the Beginning
 advancements.mod_lavacow.kill_mummy.description=Kill a Mummy
 advancements.mod_lavacow.kill_forsaken.title=I Remember...
 advancements.mod_lavacow.kill_forsaken.description=Kill a Forsaken
@@ -490,4 +516,4 @@ advancements.mod_lavacow.get_hatred_shard.description=Get Memory of a Thousand A
 # Death Message #
 #################
 
-death.mod_lavacow.timeup=%1$s return to dust
+death.mod_lavacow.timeup=%1$s returned to dust

@@ -7,6 +7,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
+import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntityMummy;
@@ -27,6 +28,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
@@ -35,6 +37,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
@@ -162,7 +165,7 @@ public class ModEntities {
             .entity(EntityWarSmallFireball.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "warsmallfireball"), id++)
             .name(mod_LavaCow.MODID + "." + "warsmallfireball")
-            .tracker(64, 1, true)
+            .tracker(64, 10, true)
             .build(),
             
             EntityEntryBuilder.create()
@@ -225,7 +228,7 @@ public class ModEntities {
             .entity(EntityPiranhaLauncher.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "piranhalauncher"), id++)
             .name(mod_LavaCow.MODID + "." + "piranhalauncher")
-            .tracker(64, 1, true)
+            .tracker(64, 10, true)
             .build(),
             
             EntityEntryBuilder.create()
@@ -356,6 +359,29 @@ public class ModEntities {
             .name(mod_LavaCow.MODID + "." + "mummy")
             .tracker(80, 3, false)
             .egg(0xE9DAAE, 0x9A8157)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityCactoid.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "cactoid"), id++)
+            .name(mod_LavaCow.MODID + "." + "cactoid")
+            .tracker(80, 3, false)
+            .egg(0x649832, 0xFFF25F)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityCactyrant.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "cactyrant"), id++)
+            .name(mod_LavaCow.MODID + "." + "cactyrant")
+            .tracker(80, 3, false)
+            .egg(0x649832, 0x426520)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityCactusThorn.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "cactusthorn"), id++)
+            .name(mod_LavaCow.MODID + "." + "cactusthorn")
+            .tracker(64, 20, true)
             .build()
             );
 
@@ -424,6 +450,8 @@ public class ModEntities {
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
 		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityForsaken.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Forsaken, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityCactyrant.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactyrant, 1, 2, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityCactoid.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactoid, 4, 8, BiomeDictionary.Type.SANDY);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

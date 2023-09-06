@@ -1,11 +1,16 @@
 package com.Fishmod.mod_LavaCow.item;
 
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityEnchantableFireBall;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
+import com.Fishmod.mod_LavaCow.init.FishItems;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,10 +19,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
@@ -32,7 +37,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemPiranhaLauncher extends ItemBow{
+public class ItemPiranhaLauncher extends ItemBow {
 		
 		private String ammo = null;
 		private EnumRarity Rarity;
@@ -59,6 +64,7 @@ public class ItemPiranhaLauncher extends ItemBow{
 	        return this.Rarity;
 	    }
 		
+	    @Override
 	    protected ItemStack findAmmo(EntityPlayer player)
 	    {
 	        if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
@@ -107,68 +113,138 @@ public class ItemPiranhaLauncher extends ItemBow{
 		             }
 		         }
 		         else return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
-		         
-		         boolean flag1 = playerIn.isCreative() || (this.isArrow(itemstack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0);
 	
 		         if (!worldIn.isRemote) {
 					 Vec3d lookVec = playerIn.getLookVec();
 					 
-					 Entity entityammo = EntityList.newEntity(this.shot, worldIn);
-					 ((EntityFireball)entityammo).shootingEntity = playerIn;
-					 
-					 entityammo.addVelocity(lookVec.x * 2.5D, lookVec.y * 2.5D, lookVec.z * 2.5D);
-					 
-					 int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-					 if (j > 0) {
-						 ((EntityEnchantableFireBall) entityammo).setDamage(((EntityEnchantableFireBall) entityammo).getDamage() * (1.0F + (j + 1) * 0.25F));
-					 }
-					  
-					 int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
-					 if (k > 0) {
-						 ((EntityEnchantableFireBall) entityammo).setKnockbackStrength(k);
-					 }
-					  
-					 if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
-						 ((EntityEnchantableFireBall) entityammo).setFlame(true);
-					  }
-					 				 
-					 entityammo.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height), playerIn.posZ + lookVec.z * 1.0D);
-					 worldIn.spawnEntity(entityammo);
-					 stack.damageItem(1, playerIn);
-					 worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
-					 if (!flag1 && !playerIn.isCreative()) {
-						itemstack.shrink(1);
-						if (itemstack.isEmpty()) {
-							playerIn.inventory.deleteStack(itemstack);
+			         int power_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
+			         int punch_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
+			         int flame_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack);
+			         
+			         if (this.shot.equals(EntityCactusThorn.class)) {
+				        	EntityCactusThorn abstractarrowentity = new EntityCactusThorn(playerIn.world, playerIn);
+				        	abstractarrowentity.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 2.0F, 2.0F);                       
+				        	        	
+			                if (power_lvl > 0) {
+			                   abstractarrowentity.setDamage(abstractarrowentity.getDamage() + (double)power_lvl * 0.1D + 0.1D);
+			                }
+			           
+			                if (punch_lvl > 0) {
+			                   abstractarrowentity.setKnockbackStrength(punch_lvl);
+			                }
+
+			                if (flame_lvl > 0) {
+			                   abstractarrowentity.setFire(100);
+			                }
+			                
+			                if (playerIn.world.rand.nextFloat() < 0.25F) {
+					            stack.damageItem(1, playerIn);
+			                }
+			                
+			                if (flag) {
+			                    abstractarrowentity.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+			                }
+			                
+			                playerIn.world.spawnEntity(abstractarrowentity);
+							if (!flag && !playerIn.isCreative()) {
+								itemstack.shrink(1);
+								if (itemstack.isEmpty()) {
+									playerIn.inventory.deleteStack(itemstack);
+								}
+							}
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.RANDOM_THORN_SHOOT, SoundCategory.PLAYERS, 0.95F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 0.8F));
+						} else if (this.shot.equals(EntityDeathCoil.class)) {
+							EntityDeathCoil entitysnowball = (EntityDeathCoil) EntityList.newEntity(this.shot, worldIn);
+			        		entitysnowball.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height),playerIn.posZ + lookVec.z * 1.0D);
+				            entitysnowball.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.75F, 1.0F);
+				            
+							if (power_lvl > 0) {
+								((EntityDeathCoil) entitysnowball).setDamage(((EntityDeathCoil) entitysnowball).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+							}
+							  
+							if (punch_lvl > 0) {
+								//((EntityDeathCoil) entitysnowball).setKnockbackStrength(punch_lvl);
+							}
+							  
+							if (flame_lvl > 0) {
+								((EntityDeathCoil) entitysnowball).setFire(100);
+							}
+							
+				            worldIn.spawnEntity(entitysnowball);
+				            stack.damageItem(1, playerIn);
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.ENTITY_SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
+							playerIn.getCooldownTracker().setCooldown(this, 40 - (power_lvl * 2));
+						} else if (this.shot.equals(EntityPiranhaLauncher.class)) {
+							EntityPiranhaLauncher entityammo = (EntityPiranhaLauncher) EntityList.newEntity(this.shot, worldIn);
+							entityammo.addVelocity(lookVec.x * 2.0D, lookVec.y * 2.0D, lookVec.z * 2.0D);
+							entityammo.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height), playerIn.posZ + lookVec.z * 1.0D);
+				            
+							if (power_lvl > 0) {
+								((EntityPiranhaLauncher)entityammo).setDamage(((EntityPiranhaLauncher) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+							}
+							  
+							if (punch_lvl > 0) {
+								((EntityPiranhaLauncher)entityammo).setKnockbackStrength(punch_lvl);
+							}
+							  
+							if (flame_lvl > 0) {
+								((EntityPiranhaLauncher)entityammo).setFire(100);
+							}
+							
+				            worldIn.spawnEntity(entityammo);
+				            stack.damageItem(1, playerIn);
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 0.85F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
+							if (!flag && !playerIn.isCreative()) {
+								itemstack.shrink(1);
+									if (itemstack.isEmpty()) {
+										playerIn.inventory.deleteStack(itemstack);
+									}
+								}
+							playerIn.getCooldownTracker().setCooldown(this, 40 - (power_lvl * 2));
+			        	} else {			 
+							Entity entityammo = EntityList.newEntity(this.shot, worldIn);
+							((EntityFireball)entityammo).shootingEntity = playerIn;
+							
+							if(this.shot.equals(EntityWarSmallFireball.class)) {
+								entityammo.addVelocity(lookVec.x * 2.5D, lookVec.y * 2.5D, lookVec.z * 2.5D);
+								entityammo.setPosition(playerIn.posX + lookVec.x * 1.0D, playerIn.posY + (double)(playerIn.height), playerIn.posZ + lookVec.z * 1.0D);
+							}
+							 
+							if (power_lvl > 0) {
+								((EntityEnchantableFireBall) entityammo).setDamage(((EntityEnchantableFireBall) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+							}
+							  
+							if (punch_lvl > 0) {
+								((EntityEnchantableFireBall) entityammo).setKnockbackStrength(punch_lvl);
+							}
+							  
+							if (flame_lvl > 0) {
+								((EntityEnchantableFireBall) entityammo).setFlame(true);
+							}
+							 				 
+							worldIn.spawnEntity(entityammo);
+				            stack.damageItem(1, playerIn);
+							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
+							if (!flag && !playerIn.isCreative()) {
+								itemstack.shrink(1);
+									if (itemstack.isEmpty()) {
+										playerIn.inventory.deleteStack(itemstack);
+									}
+								}
+								playerIn.getCooldownTracker().setCooldown(this, 20 - (power_lvl * 2));
+							}
+			         
+			         			return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+			        		}
+		         
+		         			return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
 						}
-					 }
-					 playerIn.getCooldownTracker().setCooldown(this, 20 - (j * 2));
-					  
-					 return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		         }
-			
-			return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
-		}
-		
-		/**
-		 * Gets the velocity of the arrow entity from the bow's charge
-		 */
-		public static float getArrowVelocity(int charge) {
-		      return 0.0F;
-		}
 	
 	   /**
 	    * How long it takes to use or consume an item
 	    */
 	   public int getUseDuration(ItemStack stack) {
 	      return 320;
-	   }
-	   
-	   /**
-	    * returns the action that specifies what animation to play when the items is being used
-	    */
-	   public EnumAction getUseAction(ItemStack stack) {
-	      return EnumAction.BOW;
 	   }
 	   
 		@Override
