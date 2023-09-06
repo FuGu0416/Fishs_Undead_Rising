@@ -29,7 +29,7 @@ public class ItemCactusFruit extends ItemFishCustomFood {
         IBlockState state = world.getBlockState(pos);
         Block sand = world.getBlockState(pos).getBlock();
         
-        if (facing == EnumFacing.UP && world.isAirBlock(pos.up()) && sand.getMaterial(state) == Material.SAND | sand instanceof BlockSoulSand) {
+        if (player.isSneaking() && facing == EnumFacing.UP && world.isAirBlock(pos.up()) && sand.getMaterial(state) == Material.SAND | sand instanceof BlockSoulSand) {
             world.setBlockState(pos.up(), Modblocks.CACTOID_SPROUT.getDefaultState());
             
             world.playSound(player, pos, FishItems.RANDOM_FRUIT_PLANT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
