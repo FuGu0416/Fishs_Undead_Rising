@@ -107,8 +107,8 @@ public class FURRangedItem extends BowItem {
 			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN)) {
 	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(playerIn.level, playerIn);
 	        	abstractarrowentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 2.0F, 2.0F);                       
-	        	playerIn.playSound(FURSoundRegistry.RANDOM_THORN_SHOOT, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
-	        	        	
+	        	worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+	        	
                 if (power_lvl > 0) {
                    abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
                 }

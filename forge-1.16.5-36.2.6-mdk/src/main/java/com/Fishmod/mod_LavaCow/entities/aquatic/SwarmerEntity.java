@@ -34,6 +34,9 @@ import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
@@ -49,10 +52,16 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class SwarmerEntity extends AbstractGroupFishEntity {
-	private boolean isAmmo = false;
+	private static final DataParameter<Boolean> IS_AMMO = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.BOOLEAN);
 
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);   
+    }
+    
+	@Override
+    protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(IS_AMMO, Boolean.valueOf(false));
     }
     
     @Override
@@ -108,6 +117,10 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     @Override
     public void tick() {
     	super.tick();
+    	
+    	if (this.tickCount >= 8 * 20 && this.getIsAmmo()) {
+    		this.setHealth(-1.0F);
+    	}
     }
     
     public boolean doHurtTarget(Entity p_70652_1_) {
@@ -225,8 +238,37 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 		return this.getBbHeight() * 0.5F;
 	}
 	
-	public void setIsAmmo(boolean t) {
-		this.isAmmo = t;
+    public boolean getIsAmmo() {
+        return this.getEntityData().get(IS_AMMO).booleanValue();
+    }
+
+    public void setIsAmmo(boolean t) {
+        this.getEntityData().set(IS_AMMO, t);
+    }
+    
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+		this.setIsAmmo(compound.getBoolean("is_Ammo"));
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+	@Override
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("is_Ammo", this.getIsAmmo());
+    }
+	
+	@Override
+	protected void dropExperience() {
+		if(!this.getIsAmmo()) {
+			super.dropExperience();
+		}
 	}
        
     /**
@@ -234,6 +276,6 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
      */
     @Override
     protected boolean shouldDropLoot() {
-       return !this.isAmmo;
+       return !this.getIsAmmo();
     }
 }

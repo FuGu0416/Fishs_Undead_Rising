@@ -5,6 +5,7 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -32,21 +33,24 @@ public class CactusFruitItem extends FURItem {
         BlockState blockstate = worldIn.getBlockState(blockpos);
         BlockState blockstate1 = worldIn.getBlockState(blockpos.above());
         
-        if (!blockstate.is(BlockTags.SAND) || !blockstate1.getMaterial().equals(Material.AIR)) {
+        if (!(blockstate.is(BlockTags.SAND) || blockstate.getBlock().equals(Blocks.SOUL_SAND)) || !blockstate1.getMaterial().equals(Material.AIR)) {
         	return super.useOn(p_195939_1_);
         }
         
-        worldIn.playSound(player, blockpos, FURSoundRegistry.RANDOM_FRUIT_PLANT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-        if (!worldIn.isClientSide) {
-            if(player == null || !player.isCreative()){
-            	itemstack.shrink(1);
-            }
-            
-            worldIn.setBlock(blockpos.above(), FURBlockRegistry.CACTOID_SPROUT.defaultBlockState(), 3);
-                      
-            if (player instanceof ServerPlayerEntity) {
-                  CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos, itemstack);
-            }          
+        if (player.isShiftKeyDown()) {
+	        worldIn.playSound(player, blockpos, FURSoundRegistry.RANDOM_FRUIT_PLANT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+	        
+	        if (!worldIn.isClientSide) {
+	            if (player == null || !player.isCreative()){
+	            	itemstack.shrink(1);
+	            }
+	            
+	            worldIn.setBlock(blockpos.above(), FURBlockRegistry.CACTOID_SPROUT.defaultBlockState(), 3);
+	                      
+	            if (player instanceof ServerPlayerEntity) {
+	                  CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos, itemstack);
+	            }          
+	        }
         }
              
         return ActionResultType.sidedSuccess(worldIn.isClientSide);
