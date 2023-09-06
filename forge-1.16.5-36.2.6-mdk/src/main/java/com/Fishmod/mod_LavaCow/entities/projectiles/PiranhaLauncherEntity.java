@@ -31,7 +31,7 @@ public class PiranhaLauncherEntity extends EnchantableFireBallEntity {
 	public PiranhaLauncherEntity(EntityType<? extends PiranhaLauncherEntity> p_i50163_1_, double x, double y, double z, double accelX, double accelY, double accelZ, World worldIn) {
 		super(p_i50163_1_, x, y, z, accelX, accelY, accelZ, worldIn);
 		this.setDamage(this.getDamage() + 3.0F);
-	}
+	}	
 	   
 	@Override
 	public void tick() {

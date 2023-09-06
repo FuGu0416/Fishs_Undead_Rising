@@ -1,13 +1,16 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EnchantableFireBallEntity extends AbstractFireballEntity {
+public class EnchantableFireBallEntity extends AbstractFireballEntity implements IEntityAdditionalSpawnData {
 	private float damage = 5.0F;
 	protected int knockbackStrength;
 	protected int flame = 0;
@@ -25,6 +28,20 @@ public class EnchantableFireBallEntity extends AbstractFireballEntity {
 
 	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> p_i50163_1_, double x, double y, double z, double accelX, double accelY, double accelZ, World worldIn) {
 		super(p_i50163_1_, x, y, z, accelX, accelY, accelZ, worldIn);
+	}
+	
+	@Override
+	public void writeSpawnData(PacketBuffer buffer) {
+		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);		
+	}
+
+	@Override
+	public void readSpawnData(PacketBuffer additionalData) {
+        final Entity shooter = this.level.getEntity(additionalData.readInt());
+
+        if (shooter != null) {
+            this.setOwner(shooter);
+        }
 	}
 	   
 	@Override
