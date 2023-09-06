@@ -39,7 +39,7 @@ public class BlockCactoidSprout extends Block {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         Block sand = world.getBlockState(pos.down()).getBlock();
         
-		if (sand.getMaterial(state) == Material.SAND | sand instanceof BlockSoulSand && !(world.getDifficulty() == EnumDifficulty.PEACEFUL)) {
+		if ((sand.getMaterial(state) == Material.SAND || sand instanceof BlockSoulSand) && !(world.getDifficulty() == EnumDifficulty.PEACEFUL)) {
 			int i = (int)(world.getWorldTime() % 24000L);
 			if (i >= 21600 && i <= 22550 || world.rand.nextInt(500) == 0) {
 				world.setBlockState(pos, state.withProperty(HATCH, Integer.valueOf(i + 1)), 2);
@@ -55,7 +55,8 @@ public class BlockCactoidSprout extends Block {
                 if(world.provider.doesWaterVaporize() || sand instanceof BlockSoulSand) {
                 	cactoid.setSkin(3);
                 	cactoid.setFireImmunity();
-                 }
+                }
+                
                 world.spawnEntity(cactoid);
 			}
 		}
