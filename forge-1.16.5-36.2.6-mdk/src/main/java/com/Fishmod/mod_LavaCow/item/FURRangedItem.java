@@ -107,7 +107,7 @@ public class FURRangedItem extends BowItem {
 			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN)) {
 	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(playerIn.level, playerIn);
 	        	abstractarrowentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 2.0F, 2.0F);                       
-	        	playerIn.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
+	        	playerIn.playSound(FURSoundRegistry.RANDOM_THORN_SHOOT, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
 	        	        	
                 if (power_lvl > 0) {
                    abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
@@ -169,10 +169,12 @@ public class FURRangedItem extends BowItem {
 				if(this.shot.equals(FUREntityRegistry.WAR_SMALL_FIREBALL)) {
 					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D)));
 					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()), playerIn.getZ() + lookVec.z * 1.0D);
+					worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
 				}
 				if(this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
 					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
 					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) - 0.5D, playerIn.getZ() + lookVec.z * 1.0D);
+					worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
 				}
 				 
 				if (power_lvl > 0) {
@@ -191,7 +193,7 @@ public class FURRangedItem extends BowItem {
 	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
-				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+				
 				if (!flag && !playerIn.isCreative()) {
 					itemstack.shrink(1);
 					if (itemstack.isEmpty()) {

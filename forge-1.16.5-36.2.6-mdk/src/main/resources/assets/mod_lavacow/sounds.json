@@ -696,5 +696,26 @@
 		"category": "hostile",
 		"subtitle": "entity_enigmoth_death",
 		"sounds": [{"name": "mod_lavacow:entity/enigmoth/death","stream": true}]
+	},
+
+	"random.fruit_plant":
+	{
+		"category": "neutral",
+		"subtitle": "subtitles.block.generic.place",
+		"sounds": [{"name": "mod_lavacow:random/fruit_plant","stream": true}]
+	},
+	
+	"random.piranha_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_piranha_shoot",
+		"sounds": [{"name": "mod_lavacow:random/piranha_shoot","stream": true}]
+	},
+	
+	"random.thorn_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_thorn_shoot",
+		"sounds": [{"name": "mod_lavacow:random/thorn_shoot","stream": true}]
 	}
 }
