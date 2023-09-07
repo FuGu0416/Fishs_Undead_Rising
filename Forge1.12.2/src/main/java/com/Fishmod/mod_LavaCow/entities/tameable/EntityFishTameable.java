@@ -36,7 +36,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
-public class EntityFishTameable extends EntityTameable{
+public class EntityFishTameable extends EntityTameable {
 	protected static final DataParameter<Float> DATA_HEALTH = EntityDataManager.createKey(EntityFishTameable.class, DataSerializers.FLOAT);
 	protected EntityFishTameable.State state;
 	protected EntityAIWanderAvoidWater wander;

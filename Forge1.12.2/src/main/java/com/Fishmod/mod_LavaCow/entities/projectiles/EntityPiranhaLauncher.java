@@ -2,10 +2,12 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.init.Enchantments;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.datafix.DataFixer;
@@ -61,8 +63,10 @@ public class EntityPiranhaLauncher extends EntityEnchantableFireBall implements 
 	    */
 	   protected void onImpact(RayTraceResult result) { 
 	      if (!this.world.isRemote) {
+	    	  boolean isInfinite = (this.shootingEntity != null) && ((EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, this.shootingEntity.getHeldItemMainhand()) > 0) || (EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, this.shootingEntity.getHeldItemOffhand()) > 0));
 	    	  EntityZombiePiranha entityzombie = new EntityZombiePiranha(this.world);
 	    	  entityzombie.setIsAmmo(true);
+	    	  entityzombie.setIsInfinite(isInfinite);
 	    	  if(result.entityHit != null && result.entityHit instanceof EntityLivingBase && !(result.entityHit instanceof EntityPlayer)) {
 	    		  entityzombie.setPosition(result.entityHit.posX, result.entityHit.posY + result.entityHit.height, result.entityHit.posZ);	    		  
 	    		  entityzombie.startRiding(result.entityHit);

@@ -29,6 +29,10 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -38,17 +42,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityZombiePiranha extends EntityAquaMob{
-	
+public class EntityZombiePiranha extends EntityAquaMob {
+	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.createKey(EntityZombiePiranha.class, DataSerializers.BYTE);
 	private boolean isAggressive = false;
-	private boolean isAmmo = false;
-	
-    public EntityZombiePiranha(World worldIn)
-    {
+	public EntityZombiePiranha(World worldIn) {
         super(worldIn);   
         this.setSize(1.0F, 0.8F);
         this.BeachedLife = -1;
     }
+    
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(DATA_FLAGS_ID, (byte)0);
+	}
     
     protected void initEntityAI() {
         super.initEntityAI();
@@ -103,6 +110,10 @@ public class EntityZombiePiranha extends EntityAquaMob{
      */
     public void onLivingUpdate() {
     	super.onLivingUpdate();
+    	
+    	if (this.ticksExisted >= 8 * 20 && this.getIsAmmo()) {
+    		this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
+    	}
     }
     
     @Override
@@ -242,10 +253,51 @@ public class EntityZombiePiranha extends EntityAquaMob{
 		return this.height * 0.5F;
 	}
 	
-	public void setIsAmmo(boolean t)
-	{
-		this.isAmmo = t;
-	}
+    public boolean getIsAmmo() {
+    	return (this.getDataManager().get(DATA_FLAGS_ID) & 1) != 0;
+    }
+
+    public void setIsAmmo(boolean t) {
+        byte b0 = this.getDataManager().get(DATA_FLAGS_ID);
+        if (t) {
+           this.getDataManager().set(DATA_FLAGS_ID, (byte)(b0 | 1));
+        } else {
+           this.getDataManager().set(DATA_FLAGS_ID, (byte)(b0 & -2));
+        }
+    }
+    
+    public boolean getIsInfinite() {
+    	return (this.getDataManager().get(DATA_FLAGS_ID) & 4) != 0;
+    }
+
+    public void setIsInfinite(boolean t) {
+        byte b0 = this.getDataManager().get(DATA_FLAGS_ID);
+        if (t) {
+           this.getDataManager().set(DATA_FLAGS_ID, (byte)(b0 | 4));
+        } else {
+           this.getDataManager().set(DATA_FLAGS_ID, (byte)(b0 & -5));
+        }
+    }
+    
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setBoolean("is_Ammo", this.getIsAmmo());
+        compound.setBoolean("is_Infinite", this.getIsInfinite());
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+		this.setIsAmmo(compound.getBoolean("is_Ammo"));
+		this.setIsInfinite(compound.getBoolean("is_Infinite"));
+    }
     
     @Override
     @Nullable
@@ -258,6 +310,10 @@ public class EntityZombiePiranha extends EntityAquaMob{
      */
     @Override
     protected boolean canDropLoot() {
-       return !this.isAmmo;
+		if(this.getIsAmmo()) {
+			this.experienceValue = 0;
+		}
+		
+    	return !this.getIsInfinite();
     }
 }
