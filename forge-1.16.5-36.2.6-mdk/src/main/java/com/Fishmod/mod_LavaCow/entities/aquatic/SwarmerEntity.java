@@ -52,8 +52,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class SwarmerEntity extends AbstractGroupFishEntity {
-	private static final DataParameter<Boolean> IS_AMMO = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.BOOLEAN);
-
+	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.BYTE);
+	
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);   
     }
@@ -61,7 +61,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(IS_AMMO, Boolean.valueOf(false));
+		this.entityData.define(DATA_FLAGS_ID, (byte)0);
     }
     
     @Override
@@ -119,7 +119,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     	super.tick();
     	
     	if (this.tickCount >= 8 * 20 && this.getIsAmmo()) {
-    		this.setHealth(-1.0F);
+    		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor(), this.getMaxHealth());
     	}
     }
     
@@ -239,11 +239,29 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 	}
 	
     public boolean getIsAmmo() {
-        return this.getEntityData().get(IS_AMMO).booleanValue();
+    	return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
     }
 
     public void setIsAmmo(boolean t) {
-        this.getEntityData().set(IS_AMMO, t);
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (t) {
+           this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 1));
+        } else {
+           this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
+        }
+    }
+    
+    public boolean getIsInfinite() {
+    	return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+    }
+
+    public void setIsInfinite(boolean t) {
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (t) {
+           this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 4));
+        } else {
+           this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -5));
+        }
     }
     
     /**
@@ -253,6 +271,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
 		this.setIsAmmo(compound.getBoolean("is_Ammo"));
+		this.setIsInfinite(compound.getBoolean("is_Infinite"));
     }
 
     /**
@@ -262,6 +281,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("is_Ammo", this.getIsAmmo());
+        compound.putBoolean("is_Infinite", this.getIsInfinite());
     }
 	
 	@Override
@@ -275,7 +295,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
      * Entity won't drop items or experience points if this returns false
      */
     @Override
-    protected boolean shouldDropLoot() {
-       return !this.getIsAmmo();
+    protected boolean shouldDropLoot() {   	
+    	return !this.getIsInfinite();
     }
 }

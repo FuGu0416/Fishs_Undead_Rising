@@ -4,6 +4,8 @@ import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.IPacket;
@@ -43,16 +45,20 @@ public class PiranhaLauncherEntity extends EnchantableFireBallEntity {
 	/**
 	 * Return the motion factor for this projectile. The factor is multiplied by the original motion.
 	 */
+	@Override
 	protected float getInertia() {
 		return 0.8F;
 	}
 	
+	@Override
 	protected void onHitEntity(EntityRayTraceResult result) {
 		super.onHitEntity(result);
 		if (!this.level.isClientSide()) {
+			boolean isInfinite = (this.getOwner() != null) && (this.getOwner() instanceof LivingEntity) && (EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY_ARROWS, (LivingEntity) this.getOwner()) > 0);
 			Entity entity = result.getEntity();
 			SwarmerEntity entityzombie = FUREntityRegistry.SWARMER.create(this.level);
 			entityzombie.setIsAmmo(true);
+			entityzombie.setIsInfinite(isInfinite);
 			if(entity != null && entity instanceof LivingEntity) {
 				entityzombie.moveTo(entity.getX(), entity.getY() + entity.getBbHeight(), entity.getZ());	    		  
 				entityzombie.startRiding(entity);
@@ -77,12 +83,16 @@ public class PiranhaLauncherEntity extends EnchantableFireBallEntity {
 		}
 	}
 
+	@Override
 	protected void onHitBlock(BlockRayTraceResult result) {
 		super.onHitBlock(result);
+		boolean isInfinite = (this.getOwner() != null) && (this.getOwner() instanceof LivingEntity) && (EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY_ARROWS, (LivingEntity) this.getOwner()) > 0);
 		SwarmerEntity entityzombie = FUREntityRegistry.SWARMER.create(this.level);
+		entityzombie.setIsAmmo(true);
+		entityzombie.setIsInfinite(isInfinite);
 		entityzombie.moveTo(result.getLocation().x, result.getLocation().y + 1.5D, result.getLocation().z);
 		this.level.addFreshEntity(entityzombie);	    		  
-	}
+	}	
 	   
 	@Override
 	protected IParticleData getTrailParticle() {
