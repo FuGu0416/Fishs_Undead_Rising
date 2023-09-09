@@ -5,11 +5,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
-import com.Fishmod.mod_LavaCow.entities.projectiles.GhostBombEntity;
-import com.Fishmod.mod_LavaCow.entities.projectiles.HolyGrenadeEntity;
-import com.Fishmod.mod_LavaCow.entities.projectiles.SonicBombEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.BasicBombEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,22 +46,23 @@ public class FURThrowableItem extends Item {
 
         worldIn.playSound((PlayerEntity)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         
-        if (!worldIn.isClientSide)
-        {
-        	if(itemstack.getItem().equals(FURItemRegistry.HOLY_GRENADE)) {
-	        	HolyGrenadeEntity entitysnowball = new HolyGrenadeEntity(FUREntityRegistry.HOLY_GRENADE, playerIn, worldIn);
-	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
-	            worldIn.addFreshEntity(entitysnowball);
-        	} else if(itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB)) {
-	        	GhostBombEntity entitysnowball = new GhostBombEntity(FUREntityRegistry.GHOSTBOMB, playerIn, worldIn);
-	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
-	            worldIn.addFreshEntity(entitysnowball);
-        	} else if(itemstack.getItem().equals(FURItemRegistry.SONICBOMB)) {
-	        	SonicBombEntity entitysnowball = new SonicBombEntity(FUREntityRegistry.SONICBOMB, playerIn, worldIn);
-	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
-	            worldIn.addFreshEntity(entitysnowball);
-        	}
-        }
+    	if (itemstack.getItem().equals(FURItemRegistry.HOLY_GRENADE)) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE, playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+            worldIn.addFreshEntity(entitysnowball);
+    	} else if(itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB)) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB, playerIn, worldIn, FURSoundRegistry.BANSHEE_HURT, 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+            worldIn.addFreshEntity(entitysnowball);
+    	} else if(itemstack.getItem().equals(FURItemRegistry.SONICBOMB)) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB, playerIn, worldIn, FURSoundRegistry.BANSHEE_ATTACK, 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+            worldIn.addFreshEntity(entitysnowball);
+    	} else if(itemstack.getItem().equals(FURItemRegistry.BASIC_BOMB)) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.BASIC_BOMB, playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 2.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+            worldIn.addFreshEntity(entitysnowball);
+    	}
 
         playerIn.awardStat(Stats.ITEM_USED.get(this));
         

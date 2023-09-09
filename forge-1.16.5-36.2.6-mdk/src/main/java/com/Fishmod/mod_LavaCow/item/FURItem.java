@@ -76,6 +76,11 @@ public class FURItem extends Item {
     }
     
     @Override
+    public boolean isFoil(ItemStack stack) {
+    	return super.isFoil(stack) || stack.getItem().equals(FURItemRegistry.HOLY_WATER);
+    }
+    
+    @Override
     public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity entityIn, Hand handIn) {
     	if (playerIn.level instanceof ServerWorld && playerIn.getItemInHand(handIn).getItem().equals(FURItemRegistry.DISEASED_BREAD) && entityIn instanceof VillagerEntity && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(entityIn, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
     		VillagerEntity villagerentity = (VillagerEntity)entityIn;

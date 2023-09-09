@@ -225,48 +225,55 @@ public class EventHandler {
     	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
     	int ench_lvl = 1;
     	
-    	if(Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
+    	if (Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl * 2);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
+    	} else if (Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(ench_lvl * 2);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FUREnchantmentRegistry.POISONOUS.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
+    	} else if (FUREnchantmentRegistry.POISONOUS.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FUREnchantmentRegistry.LIFESTEAL.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
+    	} else if (FUREnchantmentRegistry.LIFESTEAL.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
     		ench_lvl = 3;
     		event.setOutput(outputStack);
     		event.setCost(13);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FUREnchantmentRegistry.CORROSIVE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
+    	} else if (FUREnchantmentRegistry.CORROSIVE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
     		ench_lvl = 1;
     		event.setOutput(outputStack);
     		event.setCost(4);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
     		event.setMaterialCost(1);
-    	} else if(FUREnchantmentRegistry.CRITICALBOOST.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
+    	} else if (FUREnchantmentRegistry.CRITICALBOOST.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
     		CompoundNBT compoundnbt = ench.getTag();
     		ench_lvl = compoundnbt == null ? 1 : compoundnbt.getInt("level");
     		event.setOutput(outputStack);
     		event.setCost(4 * ench_lvl);
 			event.setOutput(event.getLeft().copy());
 			event.getOutput().enchant(FUREnchantmentRegistry.CRITICALBOOST, ench_lvl);		
+    		event.setMaterialCost(1);
+    	} else if (Enchantments.SMITE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.HOLY_WATER && !currentEnchantments.containsKey(Enchantments.SMITE)) {
+    		ench_lvl = 3;
+    		event.setOutput(outputStack);
+    		event.setCost(1 * ench_lvl);
+			event.setOutput(event.getLeft().copy());
+			event.getOutput().enchant(Enchantments.SMITE, ench_lvl);		
     		event.setMaterialCost(1);
     	}
     }
@@ -370,12 +377,12 @@ public class EventHandler {
 	    int Armor_Famine_lvl = 0;
 	    int Armor_Chitin_lvl = 0;
 	    
-	    if(event.getSource().isFire() && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION)) {
+	    if (event.getSource().isFire() && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION)) {
 	    	event.setCanceled(true);
 	    	return;
 	    }
 	    
-	    if(Attacker != null) {
+	    if (Attacker != null) {
 			for(ItemStack S : Attacker.getArmorSlots()) {
 				if(S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
@@ -383,21 +390,21 @@ public class EventHandler {
 			}
 	    }
 		
-		for(ItemStack S : Attacked.getArmorSlots()) {
+		for (ItemStack S : Attacked.getArmorSlots()) {
 			if (S.getItem() instanceof ChitinArmorItem) {
 				Armor_Chitin_lvl++;
 			}
 		}
 		
-		if(Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
+		if (Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
 		}
 
-		if((Armor_Chitin_lvl >= 2) && source.equals(DamageSource.FALL)) {
+		if ((Armor_Chitin_lvl >= 2) && source.equals(DamageSource.FALL)) {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
-		if(Attacker != null && Attacker instanceof LilSludgeEntity) {
+		if (Attacker != null && Attacker instanceof LilSludgeEntity) {
 			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();			
 			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
 			if(Owner != null)
@@ -409,15 +416,15 @@ public class EventHandler {
 				Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
 		}
     	
-    	if(Attacker != null && Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
-    		for(ItemStack S : Attacker.getArmorSlots()) {
-    			if(S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
+    	if (Attacker != null && Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
+    		for (ItemStack S : Attacker.getArmorSlots()) {
+    			if (S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
     		}
     	}
     	
-    	if(Attacked instanceof PlayerEntity && !Attacked.fireImmune() && source.isFire()) {    		
-    		for(ItemStack S : Attacked.getArmorSlots()) {
-    			if(S.getItem() instanceof FelArmorItem)effectlevel -= ((FelArmorItem)S.getItem()).fireprooflevel;
+    	if (Attacked instanceof PlayerEntity && !Attacked.fireImmune() && source.isFire()) {    		
+    		for (ItemStack S : Attacked.getArmorSlots()) {
+    			if (S.getItem() instanceof FelArmorItem)effectlevel -= ((FelArmorItem)S.getItem()).fireprooflevel;
     		}
     		
     		boolean have_Heart = false;
@@ -426,16 +433,16 @@ public class EventHandler {
     				have_Heart = true;
     		}*/
     		
-    		for(int i = 0; i < 9 ; i++)
+    		for (int i = 0; i < 9 ; i++)
     			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART) || ((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
 					have_Heart = true;
     		
-    		if(have_Heart)
+    		if (have_Heart)
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     	}
     	
-    	if(source.isExplosion() && source.getEntity() instanceof WolfEntity) {
-    		if(Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.holygrenade"))) {
+    	if (source.isExplosion() && source.getEntity() instanceof WolfEntity) {
+    		if (Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.holygrenade"))) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
     		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.ghostbomb"))) {
@@ -445,23 +452,24 @@ public class EventHandler {
     		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.sonicbomb"))) {
     			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2, false, false, true, null));
     			event.setAmount(event.getAmount() * 0.33F);
-    		} else
+    		} else {
     			event.setAmount(event.getAmount() * 0.15F);
+    		}
     	}
     	
-    	if(Attacker != null && Attacker instanceof LivingEntity) {
+    	if (Attacker != null && Attacker instanceof LivingEntity) {
     		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
-    		if(heldItem.equals(FURItemRegistry.BONESWORD))
+    		if (heldItem.equals(FURItemRegistry.BONESWORD))
     			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
-    		else if(heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
+    		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
     			event.setAmount(event.getAmount() + 2.0F);
     	}
     	
-    	if(Attacked.hasEffect(FUREffectRegistry.CORRODED))
+    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
     	
-    	if(Attacker != null && Attacked.hasEffect(FUREffectRegistry.THORNED)) {
-    		if(source == DamageSource.CACTUS || source == DamageSource.SWEET_BERRY_BUSH || (source instanceof EntityDamageSource && ((EntityDamageSource) source).isThorns())) {
+    	if (Attacker != null && Attacked.hasEffect(FUREffectRegistry.THORNED)) {
+    		if (source == DamageSource.CACTUS || source == DamageSource.SWEET_BERRY_BUSH || (source instanceof EntityDamageSource && ((EntityDamageSource) source).isThorns())) {
     			event.setCanceled(true);
     		} else if (!source.isMagic() && !source.isExplosion() && Attacker instanceof LivingEntity) {
     			Attacker.hurt(DamageSource.thorns(Attacked), 1.0F + Attacked.getEffect(FUREffectRegistry.THORNED).getAmplifier());
@@ -470,26 +478,26 @@ public class EventHandler {
     	
 		int Armor_Ghostly_lvl = 0;
 		
-		for(ItemStack S : Attacked.getArmorSlots()) {
-			if(S.getItem() instanceof GhostlyArmorItem) {
+		for (ItemStack S : Attacked.getArmorSlots()) {
+			if (S.getItem() instanceof GhostlyArmorItem) {
 				Armor_Ghostly_lvl++;
 			}
 		}
 		
-		if(Armor_Ghostly_lvl >= 2) {
+		if (Armor_Ghostly_lvl >= 2) {
 			Attacked.heal(event.getAmount() * 0.2F);
 		}
 		
 		if (source.getEntity() != null && Attacked != null && source.getEntity() instanceof LivingEntity && (((LivingEntity) source.getEntity()).getHealth() < Attacked.getHealth())) {
 			Armor_Ghostly_lvl = 0;
 			
-			for(ItemStack S : source.getEntity().getArmorSlots()) {
-				if(S.getItem() instanceof GhostlyArmorItem) {
+			for (ItemStack S : source.getEntity().getArmorSlots()) {
+				if (S.getItem() instanceof GhostlyArmorItem) {
 					Armor_Ghostly_lvl++;
 				}
 			}
 			
-			if(Armor_Ghostly_lvl >= 4) {
+			if (Armor_Ghostly_lvl >= 4) {
 				event.setAmount(event.getAmount() * 1.2F);
 			}
 		}

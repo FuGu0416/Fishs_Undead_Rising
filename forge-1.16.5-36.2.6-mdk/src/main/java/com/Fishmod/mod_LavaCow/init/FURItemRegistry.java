@@ -200,6 +200,8 @@ public class FURItemRegistry {
 	public static final Item CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("mod_lavacow:charming_catalyst");
 	public static final Item ENIGMOTH_LARVA = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).build())).setRegistryName("mod_lavacow:enigmoth_larva");
 	public static final Item ENIGMOTH_LARVA_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:enigmoth_larva_cooked");
+	public static final Item HOLY_WATER = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:holy_water");
+	public static final Item BASIC_BOMB = new FURThrowableItem("mod_lavacow:basic_bomb");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");
