@@ -256,13 +256,9 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 			}
 			
 			this.posX = MathHelper.floor(posX) + 0.5;
-			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
 			this.rotationYaw = prevRotationYaw = this.rotationAngle;
 			this.renderYawOffset = prevRenderYawOffset = 0F;		
-			
-			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
-				posY -= 1;
 
 			this.setSilent(true);
 			this.setAIMoveSpeed(0.0F);
@@ -326,7 +322,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     public void travel(float strafe, float vertical, float forward) {
 		if((!isAggressive && !this.isTamed()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
             this.motionX = 0.0D;
-            this.motionY = 0.0D;
             this.motionZ = 0.0D;
 		}
 		else
