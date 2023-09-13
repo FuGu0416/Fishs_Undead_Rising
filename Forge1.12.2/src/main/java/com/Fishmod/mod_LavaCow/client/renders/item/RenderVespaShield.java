@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderVespaShield extends TileEntityItemStackRenderer {
     private final ModelVespaShield MODEL_SHIELD = new ModelVespaShield();
-    private final ResourceLocation SHIELD_PARTS_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa.png");
+    private final ResourceLocation SHIELD_PARTS_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png");
 
     @Override
     public void renderByItem(ItemStack stack) {

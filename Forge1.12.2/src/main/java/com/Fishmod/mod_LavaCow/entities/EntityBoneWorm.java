@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -29,9 +30,14 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -43,8 +49,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
-	
+public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
+	private static final DataParameter<Boolean> UNDERGROUND = EntityDataManager.createKey(EntityBoneWorm.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityBoneWorm.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	public double LocationFix;
 	public int attackTimer[] = {0, 0};
@@ -91,6 +98,12 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
+    protected void entityInit() {
+    	super.entityInit();
+		this.getDataManager().register(UNDERGROUND, false);
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
+    }
+    
     @Override
 	public boolean getCanSpawnHere() {
 		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
@@ -128,16 +141,17 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
         }
         
         if(this.isServerWorld()) {
-	        if(this.LocationFix > 0 && !this.isImmuneToFire && !this.isDigging()) {
+	        if(this.LocationFix > 0 && !this.isUnderground() && !this.isDigging()) {
 	        	this.extinguish();
-	        	this.isImmuneToFire = true;
 	        	this.diggingTimer[0] = 30;
+	        	this.setUnderground(true);
 	        	this.world.setEntityState(this, (byte)6);
 	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
+	        	this.extinguish();
 	        }
-	        else if(this.LocationFix <= 1.5D && this.isImmuneToFire && !this.isDigging()) {
-	        	this.isImmuneToFire = false;
+	        else if(this.LocationFix <= 1.5D && this.isUnderground() && !this.isDigging()) {
 	        	this.diggingTimer[1] = 20;
+	        	this.setUnderground(false);
 	        	this.world.setEntityState(this, (byte)7);
 	        	this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
 	        }
@@ -191,7 +205,8 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
         if (this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget()) && this.getAttackTimer(0) == 7 && this.deathTime <= 0 && this.LocationFix == 0) {
         	this.spit(this.getAttackTarget());
         }
-    	        
+    	 
+        // TODO
     	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
         	{
         		float f = this.getBrightness();
@@ -224,16 +239,25 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
         }
     }
     
-    private void spit(EntityLivingBase target)
-    {
-        EntityAcidJet entitysnowball = new EntityAcidJet(this.world, this);
+    private void spit(EntityLivingBase target) {
+    	EntityThrowable entitysnowball;
+    	SoundEvent sound;
+    	
+        if(this.getSkin() == 1) {
+        	entitysnowball = new EntityFlameJet(this.world, this);
+        	sound = SoundEvents.ENTITY_BLAZE_SHOOT;
+        } else {
+        	entitysnowball = new EntityAcidJet(this.world, this);
+        	sound = FishItems.ENTITY_BONEWORM_ATTACK;
+        }
+        
         double d0 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D;
         double d1 = target.posX - this.posX;
         double d2 = d0 - entitysnowball.posY;
         double d3 = target.posZ - this.posZ;
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
         entitysnowball.shoot(d1, d2 + (double)f, d3, 1.6F, 1.0F);
-        this.playSound(FishItems.ENTITY_BONEWORM_ATTACK, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound((SoundEvent)sound, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entitysnowball);
         
     	if(target instanceof EntityPlayer)
@@ -278,12 +302,36 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
-    {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.BoneWorm_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.BoneWorm_Attack);
+        this.setHealth(this.getMaxHealth());
+        
+   		// Nether (Soul Sand Valley) Variant
+        if (this.world.provider.isNether()) {
+     	   this.setSkin(1);
+     	   setFireImmunity();
+        }
 
-        return livingdata;
+        return super.onInitialSpawn(difficulty, livingdata);
     }
+    
+    public boolean setFireImmunity() {
+       	return this.isImmuneToFire = true;
+    }
+ 	
+ 	@Override
+ 	public void writeEntityToNBT(NBTTagCompound compound) {
+ 		super.writeEntityToNBT(compound);
+ 		compound.setInteger("Variant", getSkin());
+ 	}
+
+ 	@Override
+ 	public void readEntityFromNBT(NBTTagCompound compound) {
+ 		super.readEntityFromNBT(compound);
+ 		setSkin(compound.getInteger("Variant"));
+ 	}
     
     /**
      * Called when the mob's health reaches 0.
@@ -326,14 +374,29 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob{
         	}
     }
     
-    public boolean isAggressive()
-    {
+    public boolean isAggressive() {
     	return isAggressive;
+    }
+    
+    public int getSkin() {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
     public int getAttackTimer(int i) {
        return this.attackTimer[i];
     }
+    
+    public boolean isUnderground() {
+        return this.dataManager.get(UNDERGROUND);
+     }
+
+     public void setUnderground(boolean i) {
+        this.dataManager.set(UNDERGROUND, i);
+     }
     
     /**
      * Handler for {@link World#setEntityState}

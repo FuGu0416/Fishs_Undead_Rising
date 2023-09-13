@@ -1,33 +1,33 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "  #",
-        "HCD",
-        " //"
-    ],
-    "key": {
-        "#": {
-		      "type": "forge:ore_dict",
-		      "ore": "blockGlass"
-        },
-        "H": {
-            "item": "mod_lavacow:zombiepiranha_item"
-        },
-        "C": {
-		      "type": "forge:ore_dict",
-		      "ore": "dyeGray"
-        },
-        "D": {
-            "item": "mod_lavacow:war",
-			"data": 32767
-        },
-        "/": {
-            "type": "forge:ore_dict",
-    		"ore": "stickWood"
-        }
- 	},
-    "result": {
-        "item": "mod_lavacow:piranhalauncher",
-        "count": 1
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    "HCD",
+    " //"
+  ],
+  "key": {
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlass"
+    },
+    "H": {
+      "item": "mod_lavacow:zombiepiranha_item"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "dyeGray"
+    },
+    "D": {
+      "item": "mod_lavacow:war",
+      "data": 32767
+    },
+    "/": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
+  },
+  "result": {
+    "item": "mod_lavacow:piranhalauncher",
+    "count": 1
+  }
 }

@@ -25,6 +25,11 @@ public class RenderWeta extends RenderLiving<EntityWeta>{
     }
     
     @Override
+	protected float getDeathMaxRotation(EntityWeta entity) {
+		return 180F;
+	}
+    
+    @Override
     protected ResourceLocation getEntityTexture(EntityWeta entity) {
     	return TEXTURES[entity.isChild()? 1 : 0];
     }

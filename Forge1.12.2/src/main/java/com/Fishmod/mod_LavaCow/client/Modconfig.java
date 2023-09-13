@@ -22,6 +22,7 @@ public class Modconfig {
 	
 	public static int pSpawnRate_Lavacow;
 	public static double Lavacow_Health;
+	public static boolean Lavacow_Bucket;
 	
 	public static int pSpawnRate_Foglet;
 	public static double Foglet_Health;
@@ -73,10 +74,12 @@ public class Modconfig {
 	public static int pSpawnRate_Ptera;
 	public static double Ptera_Health;
 	public static double Ptera_Attack;
+	public static int Ptera_FlyingHeight_limit;
 	
 	public static int pSpawnRate_Vespa;
 	public static double Vespa_Health;
 	public static double Vespa_Attack;
+	public static int Vespa_FlyingHeight_limit;
 	
 	public static int pSpawnRate_Scarecrow;
 	public static double Scarecrow_Health;
@@ -97,6 +100,7 @@ public class Modconfig {
 	public static int pSpawnRate_Pingu;
 	public static double Pingu_Health;
 	public static double Pingu_Attack;
+	public static boolean Pingu_Extra_Ice;
 	
 	public static int pSpawnRate_Undertaker;
 	public static double Undertaker_Health;
@@ -106,7 +110,10 @@ public class Modconfig {
 	public static int Undertaker_Ability_Cooldown;
 	
 	public static int pSpawnRate_GhostRay;
+	public static int pSpawnRate_GhostRay_End;
 	public static double GhostRay_Health;
+	public static int GhostRay_FlyingHeight_limit;
+	public static boolean GhostRay_Middle_End_Island;
 
 	public static int pSpawnRate_DeathMimic;
 	
@@ -114,6 +121,7 @@ public class Modconfig {
 	public static double Banshee_Health;
 	public static double Banshee_Attack;
 	public static double Banshee_Ability_Radius;
+	public static int Banshee_FlyingHeight_limit;
 	
 	public static int pSpawnRate_Weta;
 	public static double Weta_Health;
@@ -156,6 +164,21 @@ public class Modconfig {
 	public static double Cactoid_Health;
 	public static double Cactoid_Attack;
 	
+	public static int pSpawnRate_Enigmoth;
+	public static double Enigmoth_Health;
+	public static double Enigmoth_Attack;
+	public static int Enigmoth_Ability_Cooldown;
+	public static int Enigmoth_Ability_Cooldown_Mount;
+	public static int Enigmoth_FlyingHeight_limit;
+	public static boolean Enigmoth_Middle_End_Island;
+	
+	public static int pSpawnRate_Enigmoth_Larva;
+	public static double Enigmoth_Larva_Health;
+	public static double Enigmoth_Larva_Attack;
+	public static int Enigmoth_Larva_Ability_Cooldown;
+	public static boolean Enigmoth_Larva_Middle_End_Island;
+	public static boolean Enigmoth_Larva_Pickup;
+	
 	public static boolean pFoglet_SpawnAlly;
 	public static boolean MoltenHammer_PVP;
 	public static int Parasite_SandSpawn;
@@ -173,7 +196,6 @@ public class Modconfig {
 	public static int pSpawnRate_Glowshroom;
 	public static int pSpreadRate_Glowshroom;
 	public static boolean Piranha_AnimalAttack;
-	public static int FlyingHeight_limit;
 	public static int BoneSword_Damage;
 	public static int HaloNecklace_Damage;
 	public static String[] Intestine_lt = new String[0];
@@ -225,6 +247,7 @@ public class Modconfig {
 		
 		pSpawnRate_Lavacow = config.get("Moogma", "moogma spawn rate", 0, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(0);
 		Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
+		Lavacow_Bucket = config.get("Moogma", "moogma lava source", true, "Should lava buckets be obtainable from Moogma [false/true]").getBoolean(true);
 		
 		pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
 		Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);
@@ -237,8 +260,8 @@ public class Modconfig {
 		Parasite_SandSpawn = config.get("Parasite", "parasite from sand blocks", 2, "Rate of spawning Parasite when destroying sand blocks in the desert [0-100]", 0, 100).getInt(2);
 		Parasite_Plague = config.get("Parasite", "parasite attacks everything", false, "Should Parasite attack ALL livings [false/true]").getBoolean(false);
 		Parasite_Attach = config.get("Parasite", "parasite attacks by attaching onto target", true, "Parasite will attack their target by attaching on them [false/true]").getBoolean(true);
-		Parasite_Lifespan = config.get("Parasite", "parasite lifespan", 16, "The amount of seconds before parasites naturally die or form into cocoons").getInt(16);
-		Parasite_Pickup = config.get("Parasite", "parasite pickup", true, "You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(true);
+		Parasite_Lifespan = config.get("Parasite", "parasite lifespan", 16, "The amount of seconds before Parasites naturally die or form into cocoons").getInt(16);
+		Parasite_Pickup = config.get("Parasite", "parasite pickup", true, "You can pick up Parasites by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(true);
 		Parasite_Hostlist = config.getStringList("available host for parasite", "Parasite", 
 				new String[] {
 						"minecraft:zombie",
@@ -297,10 +320,12 @@ public class Modconfig {
 		pSpawnRate_Ptera = config.get("Ptera", "ptera spawn rate", 20, "Set the spawn rate of Ptera [0-10000]", 0, 10000).getInt(20);
 		Ptera_Health = config.get("Ptera", "ptera health", 10.0D, "Maximum Ptera health [1-1000]", 1, 1000).getDouble(10.0D);
 		Ptera_Attack = config.get("Ptera", "ptera attack", 3.0D, "Ptera strength [1-1000]", 1, 1000).getDouble(3.0D);
+		Ptera_FlyingHeight_limit = config.get("Ptera", "ptera height limit", 16, "Set the height limit to X blocks above the ground for Pteras, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
 		pSpawnRate_Vespa = config.get("Vespa", "vespa spawn rate", 20, "Set the spawn rate of Vespa [0-100]", 0, 100).getInt(20);
 		Vespa_Health = config.get("Vespa", "vespa health", 20.0D, "Maximum Vespa health [1-1000]", 1, 1000).getDouble(20.0D);
 		Vespa_Attack = config.get("Vespa", "vespa attack", 5.0D, "Vespa strength [1-1000]", 1, 1000).getDouble(5.0D);
+		Vespa_FlyingHeight_limit = config.get("Vespa", "vespa height limit", 16, "Set the height limit to X blocks above the ground for Vespas, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
 		pSpawnRate_Scarecrow = config.get("Scarecrow", "scarecrow spawn rate", 15, "Set the spawn rate of Scarecrow [0-100]", 0, 100).getInt(15);
 		Scarecrow_Health = config.get("Scarecrow", "scarecrow health", 40.0D, "Maximum Scarecrow health [1-1000]", 1, 1000).getDouble(40.0D);
@@ -324,6 +349,7 @@ public class Modconfig {
 		pSpawnRate_Pingu = config.get("Penghoul", "penghoul spawn rate", 20, "Set the spawn rate of Penghoul [0-100]", 0, 100).getInt(20);
 		Pingu_Health = config.get("Penghoul", "penghoul health", 10.0D, "Maximum Penghoul health [1-1000]", 1, 1000).getDouble(10.0D);
 		Pingu_Attack = config.get("Penghoul", "penghoul attack", 3.0D, "Penghoul strength [1-1000]", 1, 1000).getDouble(3.0D);
+		Pingu_Extra_Ice = config.get("Penghoul", "penghoul extra ice", false, "Should Penghoul drop extra shattered ice while their ice armor is breaking [false/true]").getBoolean(false);
 		
 		pSpawnRate_Undertaker = config.get("Undertaker", "undertaker spawn rate", 8, "Set the spawn rate of Undertaker [0-100]", 0, 100).getInt(8);
 		Undertaker_Health = config.get("Undertaker", "undertaker health", 40.0D, "Maximum Undertaker health [1-1000]", 1, 1000).getDouble(40.0D);
@@ -337,12 +363,16 @@ public class Modconfig {
 		Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
 		
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
+		pSpawnRate_GhostRay_End = config.get("Ghost Ray", "ghost ray end dimension spawn rate", 4, "Set the spawn rate of Ghost Ray in the End dimension [0-100]", 0, 100).getInt(4);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Ghost Ray health [1-1000]", 1, 1000).getDouble(20.0D);
+		GhostRay_FlyingHeight_limit = config.get("Ghost Ray", "ghost ray height limit", 48, "Set the height limit to X blocks above the ground for Ghost Rays, 0 = Infinite [0-100]", 0, 100).getInt(48);
+		GhostRay_Middle_End_Island = config.get("Ghost Ray", "ghost ray middle end island spawn", false, "Should Ghost Rays spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
 
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
 		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
 		Banshee_Attack = config.get("Banshee", "banshee attack", 7.0D, "Banshee strength [1-1000]", 1, 1000).getDouble(7.0D);
 		Banshee_Ability_Radius = config.get("Banshee", "banshee scream radius", 3.0D, "Set the effect radius of Banshee scream [1-1000]", 1, 1000).getDouble(3.0D);
+		Banshee_FlyingHeight_limit = config.get("Banshee", "banshee height limit", 16, "Set the height limit to X blocks above the ground for Banshees, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
 		pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
 		Weta_Health = config.get("Weta", "weta health", 12.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
@@ -373,9 +403,24 @@ public class Modconfig {
 		Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
 		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant summon cooldown", 3, "Set the cooldown of thorn barrage [0-100]", 0, 100).getInt(3);
 		
-		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid [0-10000]", 0, 10000).getInt(10);
+		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid  [0-10000]", 0, 10000).getInt(10);
 		Cactoid_Health = config.get("Cactoid", "cactoid health", 20.0D, "Maximum Cactoid health [1-1000]", 1, 1000).getDouble(20.0D);
 		Cactoid_Attack = config.get("Cactoid", "cactoid attack", 4.0D, "Cactoid strength [1-1000]", 1, 1000).getDouble(4.0D);
+		
+		pSpawnRate_Enigmoth = config.get("Enigmoth", "enigmoth spawn rate", 1, "Set the spawn rate of Enigmoth [0-10000]", 0, 10000).getInt(1);
+		Enigmoth_Health = config.get("Enigmoth", "enigmoth health", 60.0D, "Maximum Enigmoth health [1-1000]", 1, 1000).getDouble(60.0D);
+		Enigmoth_Attack = config.get("Enigmoth", "enigmoth attack", 8.0D, "Enigmoth strength [1-1000]", 1, 1000).getDouble(8.0D);
+		Enigmoth_Ability_Cooldown = config.get("Enigmoth", "enigmoth spell cooldown", 6, "Set the cooldown of spreading scales [0-100]", 0, 100).getInt(6);
+		Enigmoth_Ability_Cooldown_Mount = config.get("Enigmoth", "mounted enigmoth spell cooldown", 6, "Set the cooldown of spreading scales when mounted [0-100]", 0, 100).getInt(6);
+		Enigmoth_FlyingHeight_limit = config.get("Enigmoth", "enigmoth height limit", 16, "Set the height limit to X blocks above the ground for Enigmoths, 0 = Infinite [0-100]", 0, 100).getInt(16);
+		Enigmoth_Middle_End_Island = config.get("Enigmoth", "enigmoth middle end island spawn", false, "Should Enigmoths spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
+		
+		pSpawnRate_Enigmoth_Larva = config.get("Enigmoth Caterpillar", "enigmoth caterpillar spawn rate", 1, "Set the spawn rate of Enigmoth Caterpillar [0-10000]", 0, 10000).getInt(1);
+		Enigmoth_Larva_Health = config.get("Enigmoth Caterpillar", "enigmoth caterpillar health", 12.0D, "Maximum Enigmoth Caterpillar health [1-1000]", 1, 1000).getDouble(12.0D);
+		Enigmoth_Larva_Attack = config.get("Enigmoth Caterpillar", "enigmoth caterpillar attack", 2.0D, "Enigmoth Caterpillar strength [1-1000]", 1, 1000).getDouble(2.0D);
+		Enigmoth_Larva_Ability_Cooldown = config.get("Enigmoth Caterpillar", "enigmoth caterpillar spell cooldown", 6, "Set the cooldown of vanishing [0-100]", 0, 100).getInt(6);
+		Enigmoth_Larva_Middle_End_Island = config.get("Enigmoth Caterpillar", "enigmoth caterpillar middle end island spawn", false, "Should Enigmoth Caterpillars spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
+		Enigmoth_Larva_Pickup = config.get("Enigmoth Caterpillar", "enigmoth caterpillar pickup", false, "You can pick up Enigmoth Caterpillars by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(false);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
 		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "fission potion works on entities from other mods", false, "Allow Potion of Fission to be used on entites from other mods [false/true]").getBoolean(false);
@@ -397,7 +442,29 @@ public class Modconfig {
 		Intestine_banlist = config.getStringList("mobs that intestine should not drop from", Configuration.CATEGORY_GENERAL,
 				new String[] {	"minecraft:blaze",
 					      		"minecraft:slime",
+					      		"minecraft:magma_cube",
+					      		"minecraft:ender_dragon",
+					      		"minecraft:wither",
 					      		"minecraft:skeleton",
+					      		"minecraft:stray",
+					      		"minecraft:chicken",
+					      		"minecraft:squid",
+					      		"minecraft:snow_golem",
+					      		"minecraft:iron_golem",
+					      		"minecraft:skeleton_horse",
+					      		"minecraft:enderman",
+					      		"minecraft:silverfish",
+					      		"minecraft:endermite",
+					      		"minecraft:shulker",
+					      		"mod_lavacow:sludgelord",
+					      		"mod_lavacow:lilsludge",
+					      		"mod_lavacow:scarecrow",
+					      		"mod_lavacow:parasite",
+					      		"mod_lavacow:ghostray",
+					      		"mod_lavacow:banshee",
+					      		"mod_lavacow:avaton",
+					      		"mod_lavacow:forsaken",
+					      		"mod_lavacow:skeletonking",
 					      		"mod_lavacow:cactoid",
 					      		"mod_lavacow:cactyrant"},
 				"Customize the banlist for which mobs that intestines shouldn't drop from. Ex. \"minecraft:slime\" or \"mod_lavacow:vespa\"");
@@ -431,8 +498,6 @@ public class Modconfig {
 		GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that Golden Heart are unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
 		GoldenHeart_GrantsRegeneration = config.get(Configuration.CATEGORY_GENERAL, "golden heart grants regeneration", true, "Enables the Regeneration effect of the Golden Heart. [false/true]").getBoolean(true);
 		GoldenHeart_RepairsEquipment = config.get(Configuration.CATEGORY_GENERAL, "golden heart repairs equipment", true, "Allow the Golden Heart to repair worn equipment. [false/true]").getBoolean(true);
-
-		FlyingHeight_limit = config.get(Configuration.CATEGORY_GENERAL, "flying height limit", 16, "Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		
 		BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bonesword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
 		

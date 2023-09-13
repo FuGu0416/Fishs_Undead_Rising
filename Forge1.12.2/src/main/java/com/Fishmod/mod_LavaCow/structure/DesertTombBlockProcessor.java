@@ -28,7 +28,6 @@ public class DesertTombBlockProcessor implements ITemplateProcessor {
         this.isBadland = isBadland;
     }
     
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockInfo processBlock(World worldIn, BlockPos pos, BlockInfo blockInfoIn) {				
         if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {

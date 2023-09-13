@@ -61,8 +61,8 @@ public class EntityCactoid extends EntityFishTameable {
 	@Override
     protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
-		this.dataManager.register(GROWING_STAGE, Integer.valueOf(0));
+		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
+		this.getDataManager().register(GROWING_STAGE, Integer.valueOf(0));
     }
 	
     @Override
@@ -175,7 +175,7 @@ public class EntityCactoid extends EntityFishTameable {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onLivingUpdate() {   	
+    public void onUpdate() {   	
     	if (!this.world.isRemote && !this.isTamed() && this.getAttackTarget() == null) {
     		if (this.isInDaylight()) {
     			this.doSitCommand(null);
@@ -205,7 +205,7 @@ public class EntityCactoid extends EntityFishTameable {
 	        }
     	}
     	
-    	super.onLivingUpdate();
+    	super.onUpdate();
     }
     
     @Override
@@ -276,10 +276,13 @@ public class EntityCactoid extends EntityFishTameable {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Cactoid_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Cactoid_Attack);
+    	this.setHealth(this.getMaxHealth());
     	this.setGrowingAge(-24000);
     	
     	// Nether (Basalt Deltas) Variant
-        if (this.world.provider.doesWaterVaporize()) {
+        if (this.world.provider.isNether()) {
      	   this.setSkin(3);
      	   setFireImmunity();
         }

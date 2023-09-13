@@ -20,6 +20,13 @@
 		"sounds": [{"name": "mod_lavacow:entity/parasite/death","stream": true}]
 	},
 	
+	"entity.parasite.weave":
+	{
+		"category": "entity",
+		"subtitle": "entity_parasite_weave",
+		"sounds": [{"name": "mod_lavacow:entity/parasite/weave","stream": true}]
+	},
+	
 	"entity.foglet.ambient":
 	{
 		"category": "entity",
@@ -269,7 +276,7 @@
 	{
 		"category": "entity",
 		"subtitle": "entity_vespa_ambient",
-		"sounds": ["mod_lavacow:entity/vespa/ambient0","mod_lavacow:entity/vespa/ambient1"]
+		"sounds": [{"name": "mod_lavacow:entity/vespa/ambient1","stream": true}]
 	},
 	
 	"entity.vespa.hurt":
@@ -284,6 +291,12 @@
 		"category": "entity",
 		"subtitle": "entity_vespa_death",
 		"sounds": [{"name": "mod_lavacow:entity/vespa/death","stream": true}]
+	},
+	
+	"entity.vespa.flying":
+	{
+		"category": "entity",
+		"sounds": [{"name": "mod_lavacow:entity/vespa/ambient0","stream": true}]
 	},
 	
 	"entity.scarecrow.ambient":
@@ -571,6 +584,33 @@
 		"category": "entity",
 		"subtitle": "entity_cactyrant_grow",
 		"sounds": [{"name": "mod_lavacow:entity/cactyrant/grow","stream": true}]
+	},
+	
+	"entity.enigmoth.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_vespa_ambient",
+		"sounds": ["mod_lavacow:entity/enigmoth/ambient0", "mod_lavacow:entity/enigmoth/ambient1"]
+	},
+	
+	"entity.enigmoth.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_vespa_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/hurt","stream": true}]
+	},
+	
+	"entity.enigmoth.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_vespa_death",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/death","stream": true}]
+	},
+	
+	"entity.enigmoth.flying":
+	{
+		"category": "entity",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/flap","stream": true}]
 	},
 	
 	"random.fruit_plant":

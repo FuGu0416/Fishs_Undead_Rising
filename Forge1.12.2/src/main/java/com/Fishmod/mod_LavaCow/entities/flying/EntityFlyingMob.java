@@ -4,8 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -16,12 +16,15 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,33 +34,67 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityFlyingMob extends EntityMob {
+public class EntityFlyingMob extends EntityFishTameable {
 
 	private int attackTimer;
+	private int hoverTimer;
+	private int landTimer;
+	public static int heightLimit;
 	
-	public EntityFlyingMob(World worldIn) {
+	public EntityFlyingMob(World worldIn, int heightLimit) {
 		super(worldIn);
 		
+		EntityFlyingMob.heightLimit = heightLimit;
 		this.moveHelper = new EntityFlyingMob.FlyingMoveHelper(this);
-		setPathPriority(PathNodeType.WATER, -8F);
-		setPathPriority(PathNodeType.BLOCKED, -8.0F);
-		setPathPriority(PathNodeType.OPEN, 8.0F);
-		setPathPriority(PathNodeType.FENCE, -8.0F);
+		setPathPriority(PathNodeType.DANGER_FIRE, 16.0F);
+		setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
 	}
+
+	/*@Override
+    protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.setNoGravity(true);
+	}*/
 	
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(8, new EntityAILookIdle(this));
 	}
 	
     @Override
 	public boolean getCanSpawnHere() {
 		return SpawnUtil.isAllowedDimension(this.dimension)
-				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
+				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) || this.world.provider.isNether()
 				&& super.getCanSpawnHere();
 	}
+    
+    protected void doSitCommand(EntityPlayer playerIn) {
+    	if (SpawnUtil.getHeight(this).getY() > 0 || this.isChild()) {   		
+    		this.setNoGravity(false);
+    	}
+    	
+    	super.doSitCommand(playerIn);
+    }
+    
+    protected void doFollowCommand(EntityPlayer playerIn) {
+    	if (!this.isChild()) {
+    		this.setNoGravity(true);
+    	}
+    	
+    	super.doFollowCommand(playerIn);
+    }
+    
+    protected void doWanderCommand(EntityPlayer playerIn) {
+    	if (!this.isChild()) {
+    		this.setNoGravity(true);
+    	}
+    	
+    	super.doWanderCommand(playerIn);
+    }
 	
     /**
      * Called to update the entity's position/logic.
@@ -70,6 +107,39 @@ public class EntityFlyingMob extends EntityMob {
 		if (this.attackTimer > 0) {
             --this.attackTimer;
          }
+		
+		if (!this.world.isRemote && !this.isChild()) {
+	    	if (this.onGround) {
+	    		if (this.getLandTimer() < 20) {
+	    			this.setLandTimer(this.getLandTimer() + 1);
+	    			this.world.setEntityState(this, (byte)40);
+	    		}
+	    		
+	    		if (this.hasNoGravity()) {
+	    			this.setNoGravity(this.getAttackTarget() != null);
+	    		}
+	    		
+	    		if (!this.hasNoGravity() && !this.isSitting() && this.rand.nextFloat() < 0.15F) {
+	    			this.setNoGravity(true);
+	        		this.motionY += 0.25F;
+	    		}
+	    	} else {
+	    		if (this.getLandTimer() > 0) {
+	    			this.setLandTimer(this.getLandTimer() - 1);
+	    			this.world.setEntityState(this, (byte)41);
+	    		}
+	    		
+	    		if (!this.hasNoGravity()) {
+	    			this.setNoGravity(true);
+	    		}
+	    	}
+	    		    	
+	        if (this.isSitting() && this.getAttackTarget() == null) {	        	
+	        	if (!this.onGround && SpawnUtil.getHeight(this).getY() > 0) {
+	        		this.motionY += -0.025F;
+	        	}
+	        }
+		}
     }
 	
     public boolean attackEntityAsMob(Entity entityIn)
@@ -84,19 +154,40 @@ public class EntityFlyingMob extends EntityMob {
     public int getAttackTimer() {
     	return this.attackTimer;
     }
+	
+	public int getHoverTimer() {
+		return this.hoverTimer;
+	}
+    
+	public void setHoverTimer(int i) {
+		this.hoverTimer = i;
+	}
+
+	public int getLandTimer() {
+		return this.landTimer;
+	}
+    
+	public void setLandTimer(int i) {
+		this.landTimer = i;
+	}
     
     /**
      * Handler for {@link World#setEntityState}
      */
-    @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-    	if (id == 4) 
-    	{
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id) {
+    	if (id == 4)  {
             this.attackTimer = 20;
-        }
-        else
-        {
+        } else if (id == 40)  {
+    		if (this.getLandTimer() < 20) {
+    			this.setLandTimer(this.getLandTimer() + 1);
+    		}
+        } else if (id == 41)  {
+    		if (this.getLandTimer() > 0) {
+    			this.setLandTimer(this.getLandTimer() - 1);
+    		}
+        } else {
             super.handleStatusUpdate(id);
         }
     }
@@ -145,7 +236,7 @@ public class EntityFlyingMob extends EntityMob {
     	// If the lowest passenger is colliding with the ground, get them out!
         Entity lowestPassenger = this.getLowestPassenger();
 
-        if (lowestPassenger != null) {
+        if (lowestPassenger != null && !(lowestPassenger instanceof EntityPlayer)) {
             AxisAlignedBB passengerBounds = lowestPassenger.getEntityBoundingBox();
 
             if (!lowestPassenger.world.getCollisionBoxes(lowestPassenger, passengerBounds).isEmpty()) {
@@ -154,6 +245,7 @@ public class EntityFlyingMob extends EntityMob {
         }
     	
     	if (this.getAttackTarget() != null) {
+    		this.moveRelative(strafe, vertical, forward, 0.02F);
     		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
     		this.motionX *= 1.05D;
     		this.motionY *= 1.05D;
@@ -224,7 +316,7 @@ public class EntityFlyingMob extends EntityMob {
      */
     public boolean isOnLadder()
     {
-        return false;
+        return this.isChild() ? super.isOnLadder() : false;
     }
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
@@ -233,6 +325,24 @@ public class EntityFlyingMob extends EntityMob {
  	   return super.onInitialSpawn(difficulty, entityLivingData);
  	}
     
+    class EntityAIWander extends EntityAIBase {
+        private final EntityFlyingMob parentEntity;
+        
+        public EntityAIWander(EntityFlyingMob entityFlyingMob)
+        {
+            this.parentEntity = entityFlyingMob;
+            this.setMutexBits(1);
+        }
+
+        public boolean shouldExecute() {
+           return this.parentEntity.navigator.noPath() && this.parentEntity.rand.nextInt(10) == 0;
+        }
+
+        public boolean shouldContinueExecuting() {
+           return false;
+        }
+    }
+        
     static class AIRandomFly extends EntityAIBase
     {
         private final EntityFlyingMob parentEntity;
@@ -249,6 +359,10 @@ public class EntityFlyingMob extends EntityMob {
         public boolean shouldExecute()
         {
             EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+            
+            if (this.parentEntity.getNavigator() instanceof PathNavigateGround) {
+            	return false;
+            }
 
             if (!entitymovehelper.isUpdating())
             {
@@ -278,20 +392,25 @@ public class EntityFlyingMob extends EntityMob {
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void startExecuting()
-        {
-            Random random = this.parentEntity.getRNG();
+        public void startExecuting() {
+            for(int i = 0; i < 3; ++i) {
+            	int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
+                BlockPos blockpos = new BlockPos(parentEntity).add(parentEntity.rand.nextInt(15) - 7, parentEntity.rand.nextInt(11) - 5, parentEntity.rand.nextInt(15) - 7);
+            	Random random = this.parentEntity.getRNG();
 
-            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            	double y = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             
-            if(this.parentEntity.isWet())
-            	d1 = SpawnUtil.getHeight(this.parentEntity).getY() + 3.0D;
-            else if(Modconfig.FlyingHeight_limit != 0 && (double)Modconfig.FlyingHeight_limit < d1)
-            	d1 = (double)(SpawnUtil.getHeight(this.parentEntity).getY() + Modconfig.FlyingHeight_limit);
+            	if (groundHeight > 0) {
+                    if (this.parentEntity.isWet()) {
+                    	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
+                    } else if(heightLimit != 0) {
+                    	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + heightLimit, y);
+            		}
+            	}
             
-            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+                if (parentEntity.world.isAirBlock(blockpos))
+                this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
+            }
         }
     }
     
@@ -299,7 +418,7 @@ public class EntityFlyingMob extends EntityMob {
     {
         private final EntityFlyingMob parentEntity;
         private int courseChangeCooldown;
-		IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
+        IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
 		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 0.1D;
 		
         public FlyingMoveHelper(EntityFlyingMob flyer)

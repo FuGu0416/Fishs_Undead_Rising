@@ -46,7 +46,7 @@ public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBaub
 		if(stack.getItem().equals(FishItems.HALO_NECKLACE))
 			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.HaloNecklace_Damage));
 		else if(stack.getItem().equals(FishItems.MOOTENHEART))
-			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.MootenHeart_Damage) + I18n.format("item.mod_lavacow.potion_of_mooten_lava.name"));
+			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.MootenHeart_Damage));
 	}
 	
     /**

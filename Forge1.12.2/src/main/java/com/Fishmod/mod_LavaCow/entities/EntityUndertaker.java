@@ -39,7 +39,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,7 +51,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
 	
 	public EntityUndertaker(World worldIn) {
 		super(worldIn);
-		this.setSize(1.8F, 2.0F);
+		this.setSize(1.8F, 2.4F);
 		this.experienceValue = 12;
 	}
 	
@@ -484,7 +483,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableList.ENTITIES_ZOMBIE;
+        return LootTableHandler.UNDERTAKER;
     }
     
     /**

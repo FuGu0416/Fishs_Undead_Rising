@@ -55,8 +55,7 @@ public class BlockCactoidSprout extends Block {
                 if(world.provider.doesWaterVaporize() || sand instanceof BlockSoulSand) {
                 	cactoid.setSkin(3);
                 	cactoid.setFireImmunity();
-                }
-                
+                 }
                 world.spawnEntity(cactoid);
 			}
 		}
@@ -98,6 +97,10 @@ public class BlockCactoidSprout extends Block {
     }
 	
     public int getMetaFromState(IBlockState state) {
+        return this.getAge(state);
+    }
+    
+    public int getStateFromMeta(IBlockState state) {
         return this.getAge(state);
     }
 	

@@ -51,7 +51,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntitySkeletonKing extends EntityMob implements IAggressive{
+public class EntitySkeletonKing extends EntityMob implements IAggressive {
 	private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS)).setDarkenSky(false);
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.<BlockPos>createKey(EntitySkeletonKing.class, DataSerializers.BLOCK_POS);
 	private int attackTimer;
@@ -81,7 +81,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     
     protected void applyEntityAI()
     {
-    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityForsaken.class}));
     	this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
     
@@ -240,6 +240,26 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive{
     	}
     		
     	return super.attackEntityFrom(source, amount);
+    }
+    
+	@Override
+	public boolean isOnSameTeam(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        else if (entity == this) {
+            return true;
+        }
+        else if (super.isOnSameTeam(entity)) {
+            return true;
+        }
+        else if (entity instanceof EntitySkeletonKing || entity instanceof EntityForsaken)
+        {
+            return this.getTeam() == null && entity.getTeam() == null;
+        }
+        else {
+            return false;
+        }
     }
 	
     /**

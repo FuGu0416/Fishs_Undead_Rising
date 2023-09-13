@@ -15,16 +15,17 @@ import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
-import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
+import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
@@ -37,7 +38,6 @@ import jeresources.api.IJERAPI;
 import jeresources.api.JERPlugin;
 import jeresources.api.conditionals.LightLevel;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 
 public class FURJERIntegration implements ModIntegration {	
 	@JERPlugin
@@ -62,13 +62,12 @@ public class FURJERIntegration implements ModIntegration {
 		jerAPI.getMobRegistry().register(new EntityPtera(world), LightLevel.hostile, LootTableHandler.PTERA);
 		jerAPI.getMobRegistry().register(new EntityVespa(world), LightLevel.hostile, LootTableHandler.VESPA);
 		jerAPI.getMobRegistry().register(new EntityScarecrow(world), LightLevel.hostile, LootTableHandler.SCARECROW);
-		jerAPI.getMobRegistry().register(new EntityVespaCocoon(world), LightLevel.hostile, LootTableHandler.PARASITE2);
 		jerAPI.getMobRegistry().register(new EntityPiranha(world), LootTableHandler.PIRANHA);
 		jerAPI.getMobRegistry().register(new EntityZombiePiranha(world), LootTableHandler.ZOMBIEPIRANHA);
 		jerAPI.getMobRegistry().register(new EntityBoneWorm(world), LightLevel.hostile, LootTableHandler.BONEWORM);
 		jerAPI.getMobRegistry().register(new EntityPingu(world), LootTableHandler.PINGU);
-		jerAPI.getMobRegistry().register(new EntityUndertaker(world), LightLevel.hostile, LootTableList.ENTITIES_ZOMBIE);
-		jerAPI.getMobRegistry().register(new EntityUnburied(world), LightLevel.hostile, LootTableList.ENTITIES_ZOMBIE);
+		jerAPI.getMobRegistry().register(new EntityUndertaker(world), LightLevel.hostile, LootTableHandler.UNDERTAKER);
+		jerAPI.getMobRegistry().register(new EntityUnburied(world), LightLevel.hostile, LootTableHandler.UNBURIED);
 		jerAPI.getMobRegistry().register(new EntityGhostRay(world), LightLevel.hostile, LootTableHandler.GHOSTRAY);
 		jerAPI.getMobRegistry().register(new EntityBanshee(world), LightLevel.hostile, LootTableHandler.BANSHEE);
 		jerAPI.getMobRegistry().register(new EntityWeta(world), LightLevel.hostile, LootTableHandler.WETA);
@@ -78,6 +77,8 @@ public class FURJERIntegration implements ModIntegration {
 		jerAPI.getMobRegistry().register(new EntityMummy(world), LightLevel.hostile, LootTableHandler.MUMMY);
 		jerAPI.getMobRegistry().register(new EntityCactoid(world), LootTableHandler.CACTOID);
 		jerAPI.getMobRegistry().register(new EntityCactyrant(world), LootTableHandler.CACTYRANT);
+		jerAPI.getMobRegistry().register(new EntityEnigmoth(world), LootTableHandler.ENIGMOTH);
+		jerAPI.getMobRegistry().register(new EntityEnigmothLarva(world), LootTableHandler.ENIGMOTH_LARVA);
 		
 		//Chest loot
 		jerAPI.getDungeonRegistry().registerCategory("cemetery_chest", "JER.catagory.mod_lavacow.cemetery_chest");
