@@ -257,9 +257,9 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 					this.level.broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
 				}
 			
-				this.setPos(MathHelper.floor(this.getX()) + 0.5, MathHelper.floor(this.getY()), MathHelper.floor(this.getZ()) + 0.5);
+				this.setPos(MathHelper.floor(this.getX()) + 0.5D, MathHelper.floor(this.getY()), MathHelper.floor(this.getZ()) + 0.55D);
 				this.yRot = this.yRotO = this.rotationAngle;
-				this.yBodyRot = this.yBodyRotO = 0F;		
+				this.yBodyRot = this.yBodyRotO = 0F;	
 				
 				if (this.level.getBlockState(this.blockPosition().below()).getMaterial().equals(Material.AIR))
 					this.setPos(this.getX(), this.getY() - 1, this.getZ());
