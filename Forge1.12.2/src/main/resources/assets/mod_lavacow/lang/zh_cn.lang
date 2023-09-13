@@ -100,6 +100,14 @@ item.mod_lavacow.beast_claw.name=蛮兽爪
 item.mod_lavacow.hatred_shard.name=万军追忆
 item.mod_lavacow.curseweave_cloth.name=咒织布
 item.mod_lavacow.skeletonking_mace.name=『死亡』
+item.mod_lavacow.cactus_thorn.name=仙人掌刺
+item.mod_lavacow.cactus_fruit.name=仙人掌果
+item.mod_lavacow.thorn_shooter.name=仙人掌枪
+item.mod_lavacow.cactoid_pot.name=幼人掌盆栽
+item.mod_lavacow.baobing.name=刨冰
+item.mod_lavacow.ectoplasm_mass.name=灵质团块
+item.mod_lavacow.enigmoth_larva_item.name=谜影蛾幼虫
+item.mod_lavacow.enigmoth_larva_item_cooked.name=炙烧谜影蛾幼虫
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
@@ -154,6 +162,7 @@ tile.mod_lavacow.scarecrowhead_common.name=稻草人头
 tile.mod_lavacow.scarecrowhead_straw.name=稻草人头
 tile.mod_lavacow.scarecrowhead_plague.name=稻草人头
 tile.mod_lavacow.tombstone.name=墓碑
+tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
 
 ############
 # Entities #
@@ -189,6 +198,10 @@ entity.mod_lavacow.avaton.name=艾薇妲
 entity.mod_lavacow.skeletonking.name=骷髅王
 entity.mod_lavacow.mummy.name=木乃伊
 entity.mod_lavacow.forsaken.name=被遗忘者
+entity.mod_lavacow.cactoid.name=幼人掌
+entity.mod_lavacow.cactyrant.name=暴君掌
+entity.mod_lavacow.enigmoth.name=谜影蛾
+entity.mod_lavacow.enigmoth_larva.name=谜影蛾幼虫
 
 ##########
 # Sounds #
@@ -197,6 +210,7 @@ entity.mod_lavacow.forsaken.name=被遗忘者
 entity_parasite_ambient=尸蛆：骚动
 entity_parasite_death=尸蛆：死亡
 entity_parasite_hurt=尸蛆：受伤
+entity_parasite_weave=尸蛆：吐丝
 
 entity_foglet_ambient=雾妖：低吼
 entity_foglet_death=雾妖：死亡
@@ -294,6 +308,18 @@ entity_skeletonking_spell_summon=骷髅王：施法
 entity_skeletonking_spell_teleport=骷髅王：传送
 entity_skeletonking_spell_toss=骷髅王：施法
 
+entity_cactyrant_ambient=暴君掌：沙沙聲
+entity_cactyrant_death=暴君掌：死亡
+entity_cactyrant_grow=植物：生長
+
+entity_enigmoth_ambient=謎影蛾：窸窣聲
+entity_enigmoth_flap=謎影蛾：拍翼聲
+entity_enigmoth_death=謎影蛾：死亡
+entity_enigmoth_hurt=謎影蛾：受傷
+
+random_piranha_shoot=群獵者：發射
+random_thorn_shoot=尖刺：發射
+
 ############
 # Tooltips #
 ############
@@ -360,6 +386,9 @@ tootip.mod_lavacow.skeletonking_crown=强迫周遭的骷髅成为你忠实的奴
 tootip.mod_lavacow.beast_claw.desc0=向前跳扑
 tootip.mod_lavacow.beast_claw.desc1=套装(2)：跳扑同时能赋予力量（0:03）与加速（0:03）
 tootip.mod_lavacow.skeletonking_mace=攻击同时赋予目标死亡之触 V（0:10）
+tootip.mod_lavacow.cactus_fruit=可用于酿造荆棘药水，或是种植于沙中
+tootip.mod_lavacow.thorn_shooter=快速将仙人掌刺射出
+tootip.mod_lavacow.baobing=食用后可熄灭身上的火焰，并获得荆棘II(1:00)
 
 message.mod_lavacow.metamorphosis=的外型正在变化！
 command.mod_lavacow.sitting=现在于原地待命
@@ -387,12 +416,19 @@ enchantment.mod_lavacow.corrosive.desc=攻击时能侵蚀目标，提高它接�
 
 mob_effect.mod_lavacow:corroded=腐蚀
 description.mob_effect.mod_lavacow:corroded=提高所受伤害
+effect.mod_lavacow:corroded.0.desc=所受到的伤害每等级+20%%
 mob_effect.mod_lavacow:soiled=玷污
 description.mob_effect.mod_lavacow:soiled=防止进食或饮用
+effect.mod_lavacow:soiled.0.desc=防止进食或饮用
 mob_effect.mod_lavacow:infested=感染
 description.mob_effect.mod_lavacow:infested=产生饥饿与缓慢效果，且死亡时会有尸蛆爬出
+effect.mod_lavacow:infested.0.desc=有东西在体内蠕动...伺机等待于寄主死亡时窜出。被寄生的单位移动速度每等级-10%%且每(40/lvl)秒减少1饱食度
 mob_effect.mod_lavacow:fragile=死亡之触
 description.mob_effect.mod_lavacow:fragile=当生命低于一定程度时，立即死亡
+effect.mod_lavacow:fragile.0.desc=当生命低于(5*lvl)%时，立即死亡
+mob_effect.mod_lavacow:thorned=荆棘
+description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的伤害，并对发动近战攻击的单位造成反伤
+effect.mod_lavacow:thorned.0.desc=免疫仙人掌及尖刺附魔的伤害，并对发动近战攻击的单位造成(1*lvl)点伤害
 
 ##############
 # Potions #
@@ -414,6 +450,10 @@ potion.effect.mod_lavacow:fragile=死亡之触药水
 splash_potion.effect.mod_lavacow:fragile=喷溅型死亡之触药水
 lingering_potion.effect.mod_lavacow:fragile=滞留型死亡之触药水
 tipped_arrow.effect.mod_lavacow:fragile=死亡之触之箭
+potion.effect.mod_lavacow:thorn=荆棘药水
+splash_potion.effect.mod_lavacow:thorned=喷溅型荆棘药水
+lingering_potion.effect.mod_lavacow:thorned=滞留型荆棘药水
+tipped_arrow.effect.mod_lavacow:thorned=荆棘之箭
 
 ################
 # Advancements #

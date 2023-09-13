@@ -13,7 +13,6 @@ import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
