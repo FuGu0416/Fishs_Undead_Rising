@@ -65,7 +65,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         this.watch = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
         this.look = new EntityAILookIdle(this);
         
-        this.tasks.addTask(1, new AICastingApell());
+        this.tasks.addTask(1, new AICastingSpell());
         this.tasks.addTask(2, new EntityCactyrant.AIUseSpell());
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));
         this.tasks.addTask(6, this.move);
@@ -96,10 +96,10 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
 	@Override
     protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(DATA_IS_CAMOUFLAGING, false);
-		this.dataManager.register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
-		this.dataManager.register(GROWING_STAGE, Integer.valueOf(0));
-		this.dataManager.register(HUGGING_CD, Integer.valueOf(0));
+		this.getDataManager().register(DATA_IS_CAMOUFLAGING, false);
+		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
+		this.getDataManager().register(GROWING_STAGE, Integer.valueOf(0));
+		this.getDataManager().register(HUGGING_CD, Integer.valueOf(0));
     }
 	
     @Override
@@ -175,8 +175,8 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
+    public void onUpdate() {
+        super.onUpdate();
     	EntityLivingBase target = this.getAttackTarget();
     	
         if (this.attackTimer > 0) {
@@ -330,7 +330,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     	this.setHealth(this.getMaxHealth());
     	
     	// Nether Variant
-        if (this.world.provider.doesWaterVaporize()) {
+        if (this.world.provider.isNether()) {
      	   this.setSkin(2);
      	   setFireImmunity();
         }
@@ -378,7 +378,6 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         }
     }
 	
-	// TODO
 	@Override
 	public boolean isOnSameTeam(Entity entity) {
         if (entity == null) {
@@ -399,8 +398,8 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         }
     }
     
-    public class AICastingApell extends EntityAIBase {
-        public AICastingApell() {
+    public class AICastingSpell extends EntityAIBase {
+        public AICastingSpell() {
         	this.setMutexBits(3);
         }
         

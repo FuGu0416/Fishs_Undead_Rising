@@ -147,8 +147,17 @@ public class EntityParasite extends EntitySpider{
             	this.lifespawn = 5 * 20;
         		
         		if (!this.world.isRemote) {
+                	this.playSound(FishItems.ENTITY_PARASITE_WEAVE, 1.0F, 1.0F);
+                	
 		        	EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
-		    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+		    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.prevRotationPitch);
+		    		pupa.setSkin(0);
+		    		
+		    		/*if (this.isTamed() && this.getOwner() instanceof PlayerEntity) {
+		    			pupa.tame((PlayerEntity) this.getOwner());
+		    			pupa.setCustomName(this.getCustomName());
+		    		}*/
+		    		
 		    		this.world.spawnEntity(pupa);
         		}
         		this.setDead();
@@ -292,12 +301,6 @@ public class EntityParasite extends EntitySpider{
     }
 	
 	@Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-	
-	@Override
     protected SoundEvent getAmbientSound()
     {
         return FishItems.ENTITY_PARASITE_AMBIENT;
@@ -324,23 +327,22 @@ public class EntityParasite extends EntitySpider{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-    	switch(this.getSkin()) { 
+    	switch(this.getSkin()) {
+        default: 
 	        case 0: 
 	        	return LootTableHandler.PARASITE;
 	        case 1: 
 	            return LootTableHandler.PARASITE1;
 	        case 2: 
 	        	return LootTableHandler.PARASITE2;
-	        default: 
-	            return null; 
 	    } 
     }
     
     static class AIParasiteAttack extends EntityAIAttackMelee
     {
-        public AIParasiteAttack(EntityParasite spider)
+        public AIParasiteAttack(EntityParasite parasite)
         {
-            super(spider, 1.0D, true);
+            super(parasite, 1.0D, true);
         }
 
         /**

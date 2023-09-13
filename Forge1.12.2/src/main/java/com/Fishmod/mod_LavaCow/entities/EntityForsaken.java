@@ -191,4 +191,24 @@ public class EntityForsaken extends AbstractSkeleton{
         
         return entityarrow;
     }
+    
+	@Override
+	public boolean isOnSameTeam(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        else if (entity == this) {
+            return true;
+        }
+        else if (super.isOnSameTeam(entity)) {
+            return true;
+        }
+        else if (entity instanceof EntitySkeletonKing || entity instanceof EntityForsaken)
+        {
+            return this.getTeam() == null && entity.getTeam() == null;
+        }
+        else {
+            return false;
+        }
+    }
 }

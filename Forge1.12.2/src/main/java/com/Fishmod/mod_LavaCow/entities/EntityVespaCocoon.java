@@ -2,26 +2,26 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
-import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.util.LootTableHandler;
-
-import net.minecraft.block.Block;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class EntityVespaCocoon  extends EntityMob{
+public class EntityVespaCocoon  extends EntityFishTameable {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityVespa.class, DataSerializers.VARINT);
 	
 	private int Lifespan = 8 * 20;
 	
@@ -45,11 +45,14 @@ public class EntityVespaCocoon  extends EntityMob{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        //this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
-        //this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        //this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
+    }
+    
+    protected void entityInit() {
+    	super.entityInit();
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
     
     @Override
@@ -68,14 +71,36 @@ public class EntityVespaCocoon  extends EntityMob{
         	this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F);
         	
         	if (!this.world.isRemote) {
-	        	EntityVespa pupa = new EntityVespa(this.world);
-	    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-	    		this.world.spawnEntity(pupa);
-	    		pupa.addVelocity(0.0D, 0.2D, 0.0D);
+        		// Vespa
+    			if (this.getSkin() == 0) {
+    				EntityVespa adult = new EntityVespa(this.world);
+    				adult.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+    				this.world.spawnEntity(adult);
+    				adult.addVelocity(0.0D, 0.2D, 0.0D);
+		    		if (this.isTamed() && this.getOwner() instanceof EntityPlayer) {
+		    			adult.setTamedBy((EntityPlayer) this.getOwner());
+		    			adult.setCustomNameTag(this.getCustomNameTag());
+		    		}
+		    		
+		    	// Enigmoth
+    			} else if (this.getSkin() == 1) {
+    				EntityEnigmoth adult = new EntityEnigmoth(this.world);
+    				adult.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+    				this.world.spawnEntity(adult);
+    				adult.addVelocity(0.0D, 0.2D, 0.0D);
+		    		if (this.isTamed() && this.getOwner() instanceof EntityPlayer) {
+		    			adult.setTamedBy((EntityPlayer) this.getOwner());
+		    			adult.setCustomNameTag(this.getCustomNameTag());
+		    		}
+		    		
+		    		if (this.serializeNBT().hasKey("EnigmothData")) {
+		    			adult.writeToNBT(this.serializeNBT().getCompoundTag("EnigmothData"));
+		    		}		
+    			}
         	}
-    		this.setDead();
+        	this.setDead();
         }
-    }
+     }
     
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
@@ -127,17 +152,32 @@ public class EntityVespaCocoon  extends EntityMob{
         return livingdata;
     }
     
+    public int getSkin() {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		nbt.setInteger("lifespan", Lifespan);
+ 		nbt.setInteger("Variant", getSkin());
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		Lifespan = nbt.getInteger("lifespan");
+ 		setSkin(nbt.getInteger("Variant"));
 	}
+	  
+    @Override
+    public boolean isMovementBlocked() {
+    	return false;
+    }
     
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
@@ -162,29 +202,19 @@ public class EntityVespaCocoon  extends EntityMob{
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return FishItems.ENTITY_PARASITE_AMBIENT;
+        return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return FishItems.ENTITY_PARASITE_HURT;
+        return SoundEvents.ENTITY_SILVERFISH_STEP;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return FishItems.ENTITY_PARASITE_DEATH;
-    }
-
-    protected SoundEvent getStepSound()
-    {
-        return SoundEvents.ENTITY_SILVERFISH_STEP;
-    }
-
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+        return SoundEvents.ENTITY_SLIME_DEATH;
     }
 
     /**
@@ -193,11 +223,5 @@ public class EntityVespaCocoon  extends EntityMob{
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
-    }
-    
-    @Override
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LootTableHandler.PARASITE;
     }
 }

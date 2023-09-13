@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
+import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderCactyrant extends RenderLiving<EntityCactyrant> {
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant_glow.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant1.png"),
@@ -25,6 +27,7 @@ public class RenderCactyrant extends RenderLiving<EntityCactyrant> {
     public RenderCactyrant(RenderManager render)
     {
     	super(render, new ModelCactyrant(), 0.5F);
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
 
     /**

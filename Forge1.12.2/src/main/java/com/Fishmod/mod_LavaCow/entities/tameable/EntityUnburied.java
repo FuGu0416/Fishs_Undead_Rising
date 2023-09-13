@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -49,7 +50,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -498,7 +498,7 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-    	return LootTableList.ENTITIES_ZOMBIE;
+    	return LootTableHandler.UNBURIED;
     }
     
     /**

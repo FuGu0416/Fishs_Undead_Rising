@@ -130,18 +130,22 @@ public class EntityPingu  extends EntityMob{
         if(this.getHealth() < this.getMaxHealth() * 0.3F && !this.HPbelow30) {
     		if (this.isServerWorld() && !this.isBurning()) {
     			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
-    			int chance = rand.nextInt(2) + 1;
-    			for (int amount = 0; amount < chance; ++amount)
-    				entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    			if (Modconfig.Pingu_Extra_Ice) {
+    				int chance = rand.nextInt(2) + 1;
+    				for (int amount = 0; amount < chance; ++amount)
+    					entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    			}
     		}
         	this.HPbelow30 = true;
         }
         else if(this.getHealth() < this.getMaxHealth() * 0.5F && !this.HPbelow50) {
     		if (this.isServerWorld() && !this.isBurning()) {
     			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
-    			int chance = rand.nextInt(2) + 1;
-    			for (int amount = 0; amount < chance; ++amount)
-    				entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    			if (Modconfig.Pingu_Extra_Ice) {
+    				int chance = rand.nextInt(2) + 1;
+    				for (int amount = 0; amount < chance; ++amount)
+    					entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+    			}
     		}
         	this.HPbelow50 = true;
         }

@@ -45,6 +45,7 @@ public class AddRecipes {
 	    	Smelt_Recipe.add(new ImmutableTriple<Item, Item, Integer>(FishItems.MIMIC_CLAW, FishItems.MIMIC_CLAW_COOKED, 1));
 	    	Smelt_Recipe.add(new ImmutableTriple<Item, Item, Integer>(FishItems.PTERA_WING, FishItems.PTERA_WING_COOKED, 1));
 	    	Smelt_Recipe.add(new ImmutableTriple<Item, Item, Integer>(FishItems.ZOMBIEPIRANHA_ITEM, FishItems.ZOMBIEPIRANHA_ITEM_COOKED, 1));
+	    	Smelt_Recipe.add(new ImmutableTriple<Item, Item, Integer>(FishItems.ENIGMOTH_LARVA_ITEM, FishItems.ENIGMOTH_LARVA_ITEM_COOKED, 1));
 	    	
     		for (final Triple<Item, Item, Integer> item : Smelt_Recipe) {
     			GameRegistry.addSmelting(item.getLeft(), new ItemStack(item.getMiddle(), item.getRight()), 0.35f);

@@ -1,14 +1,14 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
+import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModelFlyingBase extends ModelBase {
+public class ModelFlyingBase extends FishModelBase {
 	protected ModelFlyingBase.State state = ModelFlyingBase.State.FLYING;
 	protected int HoverCounter = 10;
     /**
@@ -21,20 +21,24 @@ public class ModelFlyingBase extends ModelBase {
     		
     		EntityFlyingMob entity = (EntityFlyingMob)entitylivingbaseIn;
     	
-	    	if(entity.getAttackTimer() > 0) {
+	    	if (entity.getLandTimer() > 10) {
+	    		this.state = ModelFlyingBase.State.WAITING;
+	    	} else if (entity.getAttackTimer() > 0) {
 	    		this.state = ModelFlyingBase.State.ATTACKING;
-	    	}
-	    	else if(HoverCounter < 10) {
+	    	} else if (entity.getHoverTimer() < 20) {
 	    		this.state = ModelFlyingBase.State.HOVERING;
-	    	}
-	    	else {
+	    	} else {
 	    		this.state = ModelFlyingBase.State.FLYING;	    		
 	    	}
 	    	
-	    	if(entity.lastTickPosX == entity.posX && entity.lastTickPosZ == entity.posZ) {
-	    		if(HoverCounter > 0)HoverCounter--;
-	    	}
-    		else if(HoverCounter < 10) HoverCounter++;
+	    	if (entity.onGround) {
+	    		entity.setHoverTimer(30);	    		
+	    	} else if (entity.lastTickPosX <= 0.05D && entity.lastTickPosZ <= 0.05D) {
+	    		if(entity.getHoverTimer() > 0)
+	    			entity.setHoverTimer(entity.getHoverTimer() - 1);
+	    	} else if (entity.getHoverTimer() < 60) {
+	    		entity.setHoverTimer(entity.getHoverTimer() + 1);
+	    	}	
     	}
     }
     
@@ -52,6 +56,7 @@ public class ModelFlyingBase extends ModelBase {
     {
         FLYING,
         HOVERING,
-        ATTACKING;
+        ATTACKING,
+        WAITING;
     }
 }

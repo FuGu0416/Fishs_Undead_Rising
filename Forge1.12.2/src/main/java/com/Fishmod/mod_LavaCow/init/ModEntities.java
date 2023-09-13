@@ -24,20 +24,24 @@ import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
+import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
@@ -48,6 +52,8 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -247,6 +253,13 @@ public class ModEntities {
             .build(),
             
             EntityEntryBuilder.create()
+            .entity(EntityFlameJet.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "flamejet"), id++)
+            .name(mod_LavaCow.MODID + "." + "flamejet")
+            .tracker(64, 1, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
             .entity(EntityHolyGrenade.class)
             .id(new ResourceLocation(mod_LavaCow.MODID, "holygrenade"), id++)
             .name(mod_LavaCow.MODID + "." + "holygrenade")
@@ -382,6 +395,29 @@ public class ModEntities {
             .id(new ResourceLocation(mod_LavaCow.MODID, "cactusthorn"), id++)
             .name(mod_LavaCow.MODID + "." + "cactusthorn")
             .tracker(64, 20, true)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityEnigmoth.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "enigmoth"), id++)
+            .name(mod_LavaCow.MODID + "." + "enigmoth")
+            .tracker(80, 3, true)
+            .egg(0x0D0B11, 0xA675E9)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityEnigmothLarva.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "enigmoth_larva"), id++)
+            .name(mod_LavaCow.MODID + "." + "enigmoth_larva")
+            .tracker(80, 3, true)
+            .egg(0x797AA0, 0xD2AAD5)
+            .build(),
+            
+            EntityEntryBuilder.create()
+            .entity(EntityMothScales.class)
+            .id(new ResourceLocation(mod_LavaCow.MODID, "moth_scales"), id++)
+            .name(mod_LavaCow.MODID + "." + "moth_scales")
+            .tracker(64, 1, true)
             .build()
             );
 
@@ -441,6 +477,7 @@ public class ModEntities {
 		tweakEntitySpawn(EntityPingu.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Pingu, 4, 8, BiomeDictionary.Type.SNOWY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.DRY);
 		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.OCEAN);
+		tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay_End, 1, 2, BiomeDictionary.Type.END);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityWeta.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Weta, 4, 8, BiomeDictionary.Type.SAVANNA);
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, Type.RARE);	
@@ -452,6 +489,39 @@ public class ModEntities {
 		tweakEntitySpawn(EntityForsaken.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Forsaken, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityCactyrant.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactyrant, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityCactoid.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactoid, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityEnigmoth.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth, 1, 2, BiomeDictionary.Type.END);
+		tweakEntitySpawn(EntityEnigmothLarva.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth_Larva, 1, 2, BiomeDictionary.Type.END);
+		
+        EntitySpawnPlacementRegistry.setPlacementType(EntityLavaCow.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityZombieMushroom.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityParasite.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityFoglet.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityZombieFrozen.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityUndeadSwine.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntitySalamander.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityWendigo.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityMimic.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntitySludgeLord.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityRaven.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityPtera.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityVespa.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityScarecrow.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityPiranha.class, SpawnPlacementType.IN_WATER);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityZombiePiranha.class, SpawnPlacementType.IN_WATER);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityBoneWorm.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityPingu.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityScarecrow.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityUndertaker.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityGhostRay.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityBanshee.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityWeta.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityAvaton.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityForsaken.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntitySkeletonKing.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityMummy.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityCactyrant.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityCactoid.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityEnigmoth.class, SpawnPlacementType.IN_AIR);
     }
     
     private static boolean isInHell(Biome BiomeIn) {

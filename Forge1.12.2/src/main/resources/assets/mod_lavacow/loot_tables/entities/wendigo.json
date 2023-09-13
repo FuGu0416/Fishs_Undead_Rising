@@ -1,0 +1,58 @@
+{
+  "pools": [
+    {
+      "name": "claw",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:scythe_claw",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bristle",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:foul_bristle",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

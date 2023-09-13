@@ -1,0 +1,49 @@
+{
+  "pools": [
+    {
+      "name": "carapace",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:vespa_carapace",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stinger",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "mod_lavacow:poisonstinger",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance_with_looting",
+              "chance": 0.2,
+              "looting_multiplier": 0.05
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

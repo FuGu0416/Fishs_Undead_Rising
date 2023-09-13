@@ -583,8 +583,8 @@ public class EntityBanshee extends EntityMob implements IAggressive{
             BlockPos blockpos = new BlockPos(EntityBanshee.this);
             int y = EntityBanshee.this.rand.nextInt(11) - 5;
             
-            if(Modconfig.FlyingHeight_limit != 0)
-            	y = Math.min(SpawnUtil.getHeight(EntityBanshee.this).getY() + Modconfig.FlyingHeight_limit, y);
+            if(Modconfig.Banshee_FlyingHeight_limit != 0)
+            	y = Math.min(SpawnUtil.getHeight(EntityBanshee.this).getY() + Modconfig.Banshee_FlyingHeight_limit, y);
             
             for (int i = 0; i < 3; ++i)
             {

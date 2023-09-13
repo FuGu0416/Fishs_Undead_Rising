@@ -1,6 +1,10 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
+import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
+import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
+//import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
+import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,10 +20,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerGenericGlowing<T extends EntityLiving> implements LayerRenderer<T>{
     private ResourceLocation SPIDER_EYES;
     private final RenderLiving<T> Renderer;
-    private static ResourceLocation[] TEXTURES_EYE = {
+    private static ResourceLocation[] TEXTURES_GLOW_SALAMANDER = {
     		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_glow.png"),
     		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser_glow.png")
     };
+    
+	private static final ResourceLocation[] TEXTURES_GLOW_BONE_WORM = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm_glow.png")
+	};
+    
+	/*private static final ResourceLocation[] TEXTURES_GLOW_SLUDGE_LORD = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow1.png")
+	};*/
+	
+	private static final ResourceLocation[] TEXTURES_GLOW_CACTYRANT = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant_glow.png")
+	};
+    
+	private static final ResourceLocation[] TEXTURES_GLOW_ENIGMOTH = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes1.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes2.png")
+	};
     
     public LayerGenericGlowing(RenderLiving<T> RendererIn, ResourceLocation TextureIn)
     {
@@ -34,11 +57,39 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
         
         if(entitylivingIn instanceof EntitySalamander) {
         	if(((EntitySalamander)entitylivingIn).isNymph()) {
-        		SPIDER_EYES = TEXTURES_EYE[1];
+        		SPIDER_EYES = TEXTURES_GLOW_SALAMANDER[1];
         	} else {
-        		SPIDER_EYES = TEXTURES_EYE[0];
+        		SPIDER_EYES = TEXTURES_GLOW_SALAMANDER[0];
         	}
         }
+        
+        if(entitylivingIn instanceof EntityBoneWorm) {
+        	if (((EntityBoneWorm)entitylivingIn).getSkin() == 1) {
+        		SPIDER_EYES = TEXTURES_GLOW_BONE_WORM[0];
+        	} else {
+        		return;
+        	}
+        }
+        
+        if(entitylivingIn instanceof EntityEnigmoth) {
+        		SPIDER_EYES = TEXTURES_GLOW_ENIGMOTH[((EntityEnigmoth)entitylivingIn).getSkin()];
+        }
+        
+        if(entitylivingIn instanceof EntityCactyrant) {
+        	if (((EntityCactyrant)entitylivingIn).getSkin() == 2) {
+        		SPIDER_EYES = TEXTURES_GLOW_CACTYRANT[0];
+        	} else {
+        		return;
+        	}
+        }
+        
+        /*if(entitylivingIn instanceof EntitySludgeLord) {
+        	if (((EntitySludgeLord)entitylivingIn).getSkin() == 1) {
+        		SPIDER_EYES = TEXTURES_GLOW_SLUDGE_LORD[1];
+        	} else {
+        		SPIDER_EYES = TEXTURES_GLOW_SLUDGE_LORD[0];
+        	}
+        }*/
         
     	this.Renderer.bindTexture(SPIDER_EYES);
         GlStateManager.enableBlend();

@@ -147,10 +147,14 @@ public class FishItems {
 	public static final Item CACTUS_FRUIT = new ItemCactusFruit("cactus_fruit", 4, 0.2F, true, 32, true).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 30 * 20, 0), 1.0F);
 	public static final Item THORN_SHOOTER = new ItemPiranhaLauncher("thorn_shooter", CACTUS_THORN.getUnlocalizedName(), EntityCactusThorn.class, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(768);
 	public static final Item BAOBING = new ItemNetherStew("baobing").setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 60 * 20, 1), 1.0F);
+	public static final Item ECTOPLASM_MASS = new ItemFishCustom("ectoplasm_mass", null,  mod_LavaCow.TAB_ITEMS, false);
+	public static final Item ENIGMOTH_LARVA_ITEM = new ItemFishCustomFood("enigmoth_larva_item", 2, 0.3F, false, 32, false);
+	public static final Item ENIGMOTH_LARVA_ITEM_COOKED = new ItemFishCustomFood("enigmoth_larva_item_cooked", 6, 0.6F, false, 32, false);
 	
 	public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
 	public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");
 	public static final SoundEvent ENTITY_PARASITE_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.death")).setRegistryName("entity_parasite_death");
+	public static final SoundEvent ENTITY_PARASITE_WEAVE = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.weave")).setRegistryName("entity_parasite_weave");
 	
 	public static final SoundEvent ENTITY_FOGLET_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.foglet.ambient")).setRegistryName("entity_foglet_ambient");
 	public static final SoundEvent ENTITY_FOGLET_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.foglet.hurt")).setRegistryName("entity_foglet_hurt");
@@ -200,6 +204,7 @@ public class FishItems {
 	public static final SoundEvent ENTITY_VESPA_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.vespa.ambient")).setRegistryName("entity_vespa_ambient");
 	public static final SoundEvent ENTITY_VESPA_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.vespa.hurt")).setRegistryName("entity_vespa_hurt");
 	public static final SoundEvent ENTITY_VESPA_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.vespa.death")).setRegistryName("entity_vespa_death");
+	public static final SoundEvent ENTITY_VESPA_FLYING = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.vespa.flying")).setRegistryName("entity_vespa_flying");
 	
 	public static final SoundEvent ENTITY_SCARECROW_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.ambient")).setRegistryName("entity_scarecrow_ambient");
 	public static final SoundEvent ENTITY_SCARECROW_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.hurt")).setRegistryName("entity_scarecrow_hurt");
@@ -253,6 +258,11 @@ public class FishItems {
 	public static final SoundEvent ENTITY_CACTYRANT_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.ambient")).setRegistryName("entity_cactyrant_ambient");
 	public static final SoundEvent ENTITY_CACTYRANT_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.death")).setRegistryName("entity_cactyrant_death");
 	public static final SoundEvent ENTITY_CACTYRANT_GROW = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.cactyrant.grow")).setRegistryName("entity_cactyrant_grow");
+	
+	public static final SoundEvent ENTITY_ENIGMOTH_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.ambient")).setRegistryName("entity_enigmoth_ambient");
+	public static final SoundEvent ENTITY_ENIGHMOTH_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.hurt")).setRegistryName("entity_enigmoth_hurt");
+	public static final SoundEvent ENTITY_ENIGMOTH_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.death")).setRegistryName("entity_enigmoth_death");
+	public static final SoundEvent ENTITY_ENIGMOTH_FLYING = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.flying")).setRegistryName("entity_enigmoth_flying");
 	
 	public static final SoundEvent RANDOM_FRUIT_PLANT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.fruit_plant")).setRegistryName("random_fruit_plant");
 	public static final SoundEvent RANDOM_PIRANHA_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.piranha_shoot")).setRegistryName("random_piranha_shoot");

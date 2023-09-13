@@ -1,0 +1,77 @@
+{
+  "pools": [
+    {
+      "name": "ectoplasm",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:ectoplasm",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fabric",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:cursed_fabric",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rare",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "mod_lavacow:banshee_vocal_cord",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance_with_looting",
+              "chance": 0.2,
+              "looting_multiplier": 0.05
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

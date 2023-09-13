@@ -34,7 +34,7 @@ public class EntityPtera extends EntityFlyingMob {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityPtera.class, DataSerializers.VARINT);
 	
 	public EntityPtera(World worldIn) {
-		super(worldIn);
+		super(worldIn, Modconfig.Ptera_FlyingHeight_limit);
 		this.setSize(1.6F, 0.8F);
 	}
 

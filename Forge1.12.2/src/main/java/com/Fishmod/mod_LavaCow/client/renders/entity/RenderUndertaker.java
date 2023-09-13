@@ -5,11 +5,12 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderUndertaker extends RenderLiving<EntityUndertaker>{
+public class RenderUndertaker extends RenderLiving<EntityUndertaker> {
 	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/undertaker/undertaker_eyes.png");
 	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/undertaker/undertaker.png");
 	static{
@@ -29,5 +30,7 @@ public class RenderUndertaker extends RenderLiving<EntityUndertaker>{
     
     @Override
 	protected void preRenderCallback(EntityUndertaker entity, float partialTickTime) {
+        GlStateManager.scale(1.33F, 1.33F, 1.33F);
+        super.preRenderCallback(entity, partialTickTime);
 	}
 }

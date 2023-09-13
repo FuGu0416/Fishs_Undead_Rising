@@ -61,6 +61,10 @@ public class ClientProxy implements IProxy {
         if (particleName.equals("locust_swarm")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticalLocustSwarm(world, x, y, z, vecX, vecY, vecZ));
         }
+        
+		if (particleName.equals("ectoplasm")) {
+			fx = new ParticleBreaking.Factory().createParticle(EnumParticleTypes.SLIME.getParticleID(), world, x, y, z, vecX, vecY, vecZ, Item.getIdFromItem(FishItems.ECTOPLASM_MASS), 0);
+		}
 		
 		if (fx != null) {
 			fx.setRBGColorF(((float)(Math.random() * 0.20000000298023224D) + 0.8F) * r * f, ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * g * f, ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * b * f);

@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
@@ -39,8 +40,8 @@ import net.minecraft.world.World;
 public class EntityFishTameable extends EntityTameable {
 	protected static final DataParameter<Float> DATA_HEALTH = EntityDataManager.createKey(EntityFishTameable.class, DataSerializers.FLOAT);
 	protected EntityFishTameable.State state;
-	protected EntityAIWanderAvoidWater wander;
-	protected EntityAIFollowOwner follow;
+	protected EntityAIBase wander;
+	protected EntityAIBase follow;
 	
 	public EntityFishTameable(World worldIn) {
 		super(worldIn);
@@ -54,8 +55,8 @@ public class EntityFishTameable extends EntityTameable {
 	}
     
     protected void initEntityAI() {   	
-    	this.wander = new EntityAIWanderAvoidWater(this, 1.0D, 0.0F);
-    	this.follow = new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
+    	this.wander = this.wanderGoal();
+    	this.follow = this.followGoal();
     	this.aiSit = new EntityAISit(this);
     	
         this.tasks.addTask(7, this.wander);
@@ -150,6 +151,14 @@ public class EntityFishTameable extends EntityTameable {
 		this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
 		if(playerIn != null)
 			playerIn.sendStatusMessage(new TextComponentTranslation(this.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.wandering")), true);
+    }
+    
+    protected EntityAIBase wanderGoal() {
+    	return new EntityAIWanderAvoidWater(this, 1.0D, 0.0F);
+    }
+    
+    protected EntityAIBase followGoal() {
+    	return new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
     }
     
     protected int TameRate(ItemStack stack) {

@@ -102,6 +102,9 @@ item.mod_lavacow.cactus_fruit.name=Prickly Pear
 item.mod_lavacow.thorn_shooter.name=Thorn Shooter
 item.mod_lavacow.cactoid_pot.name=Cactoid Pot
 item.mod_lavacow.baobing.name=Baobing
+item.mod_lavacow.ectoplasm_mass.name=Ectoplasm Mass
+item.mod_lavacow.enigmoth_larva_item.name=Enigmoth Caterpillar
+item.mod_lavacow.enigmoth_larva_item_cooked.name=Cooked Enigmoth Caterpillar
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
@@ -194,6 +197,8 @@ entity.mod_lavacow.mummy.name=Mummy
 entity.mod_lavacow.forsaken.name=Forsaken
 entity.mod_lavacow.cactoid.name=Cactoid
 entity.mod_lavacow.cactyrant.name=Cactyrant
+entity.mod_lavacow.enigmoth.name=Enigmoth
+entity.mod_lavacow.enigmoth_larva.name=Enigmoth Caterpillar
 
 ##########
 # Sounds #
@@ -202,6 +207,7 @@ entity.mod_lavacow.cactyrant.name=Cactyrant
 entity_parasite_ambient=Parasite squirms
 entity_parasite_death=Parasite dies
 entity_parasite_hurt=Parasite hurts
+entity_parasite_weave=Parasite weaves
 
 entity_foglet_ambient=Foglet groans
 entity_foglet_death=Foglet dies
@@ -306,6 +312,11 @@ entity_cactyrant_ambient=Cactyrant hisses
 entity_cactyrant_death=Cactyrant dies
 entity_cactyrant_grow=Plant grows
 
+entity_enigmoth_ambient=Enigmoth chirps
+entity_enigmoth_flap=Enigmoth flaps
+entity_enigmoth_death=Enigmoth dies
+entity_enigmoth_hurt=Enigmoth hurts
+
 random_piranha_shoot=Piranha fired
 random_thorn_shoot=Thorn fired
 
@@ -324,7 +335,7 @@ tootip.mod_lavacow.moltenhammer=Right-click to deal damage to creatures around t
 tootip.mod_lavacow.potion_of_mooten_lava=Try feeding this to a cow with Fire Resistance. :)
 tootip.mod_lavacow.fissionpotion=Splits an animal into two individual baby ones.
 tootip.mod_lavacow.green_bacon_and_eggs=Gives Haste (1:00) when eaten.
-tootip.mod_lavacow.reapers_scythe=All attacks will sweep targets and damage will bypass any armor.
+tootip.mod_lavacow.reapers_scythe=All attacks will sweep targets and damage will bypass armor.
 tootip.mod_lavacow.famine=Gives Hunger. Restores 1 hunger point when hitting a non-undead entity.  
 tootip.mod_lavacow.frozenthigh=Is edible. Attacks give target Slowness III (0:04).
 tootip.mod_lavacow.sludge_wand=Right-click to summon a loyal Lil' Sludge.
@@ -335,7 +346,7 @@ tootip.mod_lavacow.intestine=Right-click to search inside it.
 tootip.mod_lavacow.felarmor=Bonus Fire Damage: +
 tootip.mod_lavacow.felarmor.l2=Fire Damage Protection: -
 tootip.mod_lavacow.swinearmor=Set(2): -20%% Food Consumption Time
-tootip.mod_lavacow.swinearmor.l2=Set(4): Removes all negative potion effects after consuming food
+tootip.mod_lavacow.swinearmor.l2=Set(4): Removes all negative potion effects after consuming food.
 tootip.mod_lavacow.piranhalauncher=Right-click to launch a Swarmer at the target. (Ammo: Swarmer)
 tootip.mod_lavacow.cursed_bandage.0.desc0=Healing
 tootip.mod_lavacow.cursed_bandage.0.desc1=Heals 2 HP to your pet.
@@ -360,7 +371,7 @@ tootip.mod_lavacow.parasite.0=Common
 tootip.mod_lavacow.parasite.1=Desert
 tootip.mod_lavacow.parasite.2=Jungle
 tootip.mod_lavacow.bonestew=Gives Resistance (0:20) & Absorption II (0:20) when eaten.
-tootip.mod_lavacow.mootenheart=Can be used to brew. Fire Damage Protection: -%d%%
+tootip.mod_lavacow.mootenheart=Can be used to brew a Potion of MOOten Lava. Fire Damage Protection: -%d%%
 tootip.mod_lavacow.vespa_shield=Blocks damage like a regular shield, while also dealing 2 damage and inflicting Poison (0:06) to the attacker.
 tootip.mod_lavacow.frozen_dagger=Regenerates durability while in water.
 tootip.mod_lavacow.spectral_dagger=Has infinite durability, +2 damage against non-undead!
@@ -374,7 +385,7 @@ tootip.mod_lavacow.kings_crown.1.desc1=As long as the soul is imbued in his crow
 tootip.mod_lavacow.kings_crown.1.desc2=Even a dead corpse can fulfill his ambition
 tootip.mod_lavacow.skeletonking_crown=Forces nearby skeletons to become your loyal servants.
 tootip.mod_lavacow.beast_claw.desc0=Right-click to pounce forward.
-tootip.mod_lavacow.beast_claw.desc1=Set(2): Gives Strength (0:03) & Haste (0:03) after pouncing
+tootip.mod_lavacow.beast_claw.desc1=Set(2): Gives Strength (0:03) & Haste (0:03) after pouncing.
 tootip.mod_lavacow.skeletonking_mace=Inflicts target with Deathtouched V (0:10)!
 tootip.mod_lavacow.cactus_fruit=Can be used to brew a Potion of Thorn, or as a seed to plant in the sand.
 tootip.mod_lavacow.thorn_shooter=Barrage cactus thorns with rapid speed! (Ammo: Cactus Thorn)
@@ -479,7 +490,7 @@ advancements.mod_lavacow.kill_undeadswine.title=Boar Rider
 advancements.mod_lavacow.kill_undeadswine.description=Kill an Undead Swine
 advancements.mod_lavacow.kill_salamander.title=Kaboom, baby!
 advancements.mod_lavacow.kill_salamander.description=Kill a Salamander
-advancements.mod_lavacow.kill_mimic.title=The Chest That Pinches
+advancements.mod_lavacow.kill_mimic.title=The Chest that Pinches
 advancements.mod_lavacow.kill_mimic.description=Kill a Mimic
 advancements.mod_lavacow.kill_sludgelord.title=Botany Crisis
 advancements.mod_lavacow.kill_sludgelord.description=Kill a Sludge Lord
@@ -493,7 +504,7 @@ advancements.mod_lavacow.kill_pingu.title=Let's Kick Some Ice
 advancements.mod_lavacow.kill_pingu.description=Kill a Penghoul
 advancements.mod_lavacow.kill_ptera.title=Vultursaur
 advancements.mod_lavacow.kill_ptera.description=Kill a Ptera
-advancements.mod_lavacow.kill_boneworm.title=The one Re-bone
+advancements.mod_lavacow.kill_boneworm.title=The One Re-Bone
 advancements.mod_lavacow.kill_boneworm.description=Kill an Osvermis
 advancements.mod_lavacow.kill_ghostray.title=Fish Night
 advancements.mod_lavacow.kill_ghostray.description=Kill a Ghost Ray
@@ -510,7 +521,7 @@ advancements.mod_lavacow.kill_mummy.description=Kill a Mummy
 advancements.mod_lavacow.kill_forsaken.title=I Remember...
 advancements.mod_lavacow.kill_forsaken.description=Kill a Forsaken
 advancements.mod_lavacow.get_hatred_shard.title=In the Depths of Memory
-advancements.mod_lavacow.get_hatred_shard.description=Get Memory of a Thousand Armies
+advancements.mod_lavacow.get_hatred_shard.description=Get a Memory of a Thousand Armies
 
 #################
 # Death Message #

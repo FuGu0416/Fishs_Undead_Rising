@@ -1,0 +1,70 @@
+{
+  "pools": [
+    {
+      "name": "thorn",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "mod_lavacow:cactus_thorn",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 3,
+                "max": 6
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cactus",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:cactus",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
+              "function": "furnace_smelt",
+              "conditions": [
+                {
+                  "condition": "entity_properties",
+                  "entity": "this",
+                  "properties": {
+                    "on_fire": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

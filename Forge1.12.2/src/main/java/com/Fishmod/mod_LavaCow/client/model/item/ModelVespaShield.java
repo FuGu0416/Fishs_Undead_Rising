@@ -19,7 +19,7 @@ public class ModelVespaShield extends ModelBase {
     public ModelVespaShield() {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.Stinger3 = new ModelRenderer(this, 56, 26);
+        this.Stinger3 = new ModelRenderer(this, 84, 36);
         this.Stinger3.setRotationPoint(0.0F, 0.5F, 3.6F);
         this.Stinger3.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(Stinger3, 1.5707963267948966F, 0.0F, 0.0F);
@@ -39,12 +39,12 @@ public class ModelVespaShield extends ModelBase {
         this.UAbdomen3.setRotationPoint(0.0F, 0.0F, 6.0F);
         this.UAbdomen3.addBox(-4.0F, -1.5F, 0.0F, 8, 3, 6, 0.0F);
         this.setRotateAngle(UAbdomen3, -0.22759093446006054F, 0.0F, 0.0F);
-        this.Stinger2 = new ModelRenderer(this, 56, 26);
+        this.Stinger2 = new ModelRenderer(this, 84, 36);
         this.Stinger2.mirror = true;
         this.Stinger2.setRotationPoint(0.0F, -1.0F, 4.0F);
         this.Stinger2.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(Stinger2, 1.5707963267948966F, 0.0F, 0.0F);
-        this.Stinger1 = new ModelRenderer(this, 56, 26);
+        this.Stinger1 = new ModelRenderer(this, 84, 36);
         this.Stinger1.setRotationPoint(0.0F, 1.0F, 3.0F);
         this.Stinger1.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 6, 0.0F);
         this.setRotateAngle(Stinger1, 1.5707963267948966F, 0.0F, 0.0F);
