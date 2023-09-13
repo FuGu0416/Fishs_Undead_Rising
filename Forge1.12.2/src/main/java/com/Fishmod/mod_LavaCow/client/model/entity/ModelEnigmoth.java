@@ -25,7 +25,6 @@ public class ModelEnigmoth extends ModelFlyingBase {
 	private final ModelRenderer abdomen;
 	private final ModelRenderer saddle;
 	private final ModelRenderer saddle_top;
-	private ModelEnigmothLarva ChildModel = new ModelEnigmothLarva();
 	
 	public ModelEnigmoth() {
 		textureWidth = 128;
@@ -141,11 +140,7 @@ public class ModelEnigmoth extends ModelFlyingBase {
     
     @Override
     public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-    	if (this.isChild) { // young?
-        	this.ChildModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        } else {
-        	this.base.render(scale);
-        }
+    	this.base.render(scale);
     }
     
     /**
@@ -155,9 +150,6 @@ public class ModelEnigmoth extends ModelFlyingBase {
      */
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) { 	 	  	
-    	if (this.isChild) { // young?
-    		ChildModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
-    	} else {
 	    	float vibrate_rate = 0.5F;
 	    	float i = (float)((EntityEnigmoth)entity).getSpellTicks() / 15.0F;
 	    	
@@ -244,7 +236,6 @@ public class ModelEnigmoth extends ModelFlyingBase {
 		    	this.abdomen.rotateAngleX = 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI; 
 	    	} else if (this.state.equals(ModelFlyingBase.State.HOVERING)) {
 		    	this.abdomen.rotateAngleX = -0.014F * (20 - ((EntityEnigmoth)entity).getHoverTimer()) + 0.02F * MathHelper.cos(ageInTicks * vibrate_rate + 0.5F * (float)Math.PI) * (float)Math.PI;   
-	    	}
     	}
     }
 }
