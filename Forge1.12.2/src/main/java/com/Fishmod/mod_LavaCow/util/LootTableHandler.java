@@ -66,6 +66,7 @@ public class LootTableHandler {
 	public static ResourceLocation ENIGMOTH_LARVA = null;
 	public static ResourceLocation UNBURIED = null;
 	public static ResourceLocation UNDERTAKER = null;
+	public static ResourceLocation LIL_SLUDGE = null;
 	public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
 	public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
 	public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
@@ -142,6 +143,7 @@ public class LootTableHandler {
 		ENIGMOTH_LARVA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth_larva"));
 		UNBURIED = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/unburied"));
 		UNDERTAKER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/undertaker"));
+		LIL_SLUDGE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/lil_sludge"));
 		
 		CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest"));
 		DESERT_TOMB_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest"));

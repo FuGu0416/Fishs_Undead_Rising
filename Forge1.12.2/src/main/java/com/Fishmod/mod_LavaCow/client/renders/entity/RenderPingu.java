@@ -26,7 +26,6 @@ public class RenderPingu extends RenderLiving<EntityPingu>{
     
     @Override
 	protected void preRenderCallback(EntityPingu entity, float partialTickTime) {
-    	//if(!entity.isChild())GlStateManager.scale(1.8F, 1.8F, 1.8F);
     	if(entity.isAggressive() || entity.isOverWater()) {
     		GlStateManager.rotate(75.0F, 1.0F, 0.0F, 0.0F);
     		GlStateManager.translate(0.0F, 0.0F, 0.25F);

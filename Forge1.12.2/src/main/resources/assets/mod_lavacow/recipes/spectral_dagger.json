@@ -2,12 +2,11 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "#",
-        "#",
         "D"
     ],
     "key": {
         "#": {
-            "item": "mod_lavacow:ectoplasm"
+            "item": "mod_lavacow:ectoplasm_ingot"
         },
         "D": {
     		"type": "forge:ore_dict",

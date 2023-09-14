@@ -25,6 +25,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
+import com.Fishmod.mod_LavaCow.item.ItemChitinArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
@@ -92,6 +93,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -470,16 +472,30 @@ public class ModEventHandler {
     public void onEDamage(LivingDamageEvent event) {
     	float effectlevel = 1.0F;
 	    boolean Armor_Famine_lvl = false;
-	    if(event.getSource().getTrueSource() != null)
+	    boolean Armor_Chitin_lvl = false;
+	    
+	    if(event.getSource().getTrueSource() != null) {
 			for(ItemStack S : event.getSource().getTrueSource().getArmorInventoryList()) {
 				if(S.getItem() instanceof ItemFamineArmor && ((ItemFamineArmor)S.getItem()).getSetBonus() >= 2) {
 					Armor_Famine_lvl = true;
 					break;
 				}
 			}
+		}
+	    
+		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
+			if(S.getItem() instanceof ItemChitinArmor && ((ItemChitinArmor)S.getItem()).getSetBonus() >= 2) {
+				Armor_Chitin_lvl = true;
+				break;
+			}
+		}
 		
 		if(Armor_Famine_lvl && event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase) event.getSource().getTrueSource()).isPotionActive(MobEffects.HUNGER)) {
 			event.setAmount(event.getAmount() + 2.0F);
+		}
+		
+		if(Armor_Chitin_lvl && event.getSource().equals(DamageSource.FALL)) {
+			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
 		if(event.getSource().getTrueSource() instanceof EntityLilSludge) {
@@ -579,7 +595,7 @@ public class ModEventHandler {
     	if(event.getSource().getTrueSource() != null && event.getEntityLiving().isPotionActive(ModMobEffects.THORNED)) {
     		if(event.getSource() == DamageSource.CACTUS || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).getIsThornsDamage())) {
     			event.setCanceled(true);
-    		} else if (!event.getSource().isMagicDamage() && !event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityLiving) {
+    		} else if (!event.getSource().isMagicDamage() && !event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityLivingBase) {
     			event.getSource().getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(event.getEntityLiving()), 1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.THORNED).getAmplifier());
             }
     	}
@@ -902,6 +918,21 @@ public class ModEventHandler {
 			player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.world.rand.nextFloat() * 0.4F + 0.8F));
 		}
 	}
+	
+    @SubscribeEvent
+    public void onEJump(LivingJumpEvent event) {
+	    int Armor_Chitin_lvl = 0;
+	    
+		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {			
+			if(S.getItem() instanceof ItemChitinArmor) {
+				Armor_Chitin_lvl++;
+			}
+		}   
+		
+		if(Armor_Chitin_lvl >= 4 && event.getEntity() instanceof EntityLivingBase) {
+			event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.SPEED, 3 * 20, 0));
+		}
+    }
 
     /**
      * Young Simba:Everything the light touches... But what about that dark greeny place?

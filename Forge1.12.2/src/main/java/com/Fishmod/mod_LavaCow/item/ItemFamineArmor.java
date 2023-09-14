@@ -30,7 +30,7 @@ public class ItemFamineArmor extends ItemArmor {
 	private String armorTexture;
 	
 	public ItemFamineArmor(String registryName, int renderIndex, EntityEquipmentSlot slot) {
-		super(ArmorMaterial.DIAMOND, renderIndex, slot);
+		super(FishItems.ARMOR_FAMINE, renderIndex, slot);
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);

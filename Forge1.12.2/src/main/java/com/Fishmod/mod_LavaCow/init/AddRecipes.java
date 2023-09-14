@@ -50,6 +50,8 @@ public class AddRecipes {
     		for (final Triple<Item, Item, Integer> item : Smelt_Recipe) {
     			GameRegistry.addSmelting(item.getLeft(), new ItemStack(item.getMiddle(), item.getRight()), 0.35f);
     		}
+    		
+			GameRegistry.addSmelting(new ItemStack(FishItems.ECTOPLASM_MASS), new ItemStack(FishItems.ECTOPLASM_INGOT), 0.7f);
 	    }
 	    
 	    public static void addBrewing() {

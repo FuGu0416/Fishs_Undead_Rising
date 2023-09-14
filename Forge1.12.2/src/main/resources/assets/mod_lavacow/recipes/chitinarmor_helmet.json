@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "* *"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:chitin"
+        },
+        "*": {
+            "item": "mod_lavacow:weta_jaw"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:chitinarmor_helmet"
+    }
+}

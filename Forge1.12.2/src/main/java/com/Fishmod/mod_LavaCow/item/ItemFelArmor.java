@@ -37,7 +37,7 @@ public class ItemFelArmor extends ItemArmor {
 	private String armorTexture;
 	
 	public ItemFelArmor(String registryName, int renderIndex, EntityEquipmentSlot slot, float effectlevelIn) {
-		super(ArmorMaterial.DIAMOND, renderIndex, slot);
+		super(FishItems.ARMOR_FEL, renderIndex, slot);
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);

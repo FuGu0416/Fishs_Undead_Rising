@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "mod_lavacow:ectoplasm_block" },
+        "inventory": {"model": "mod_lavacow:ectoplasm_block"}
+    }
+}

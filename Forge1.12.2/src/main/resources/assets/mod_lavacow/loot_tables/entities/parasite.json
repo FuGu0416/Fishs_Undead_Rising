@@ -7,7 +7,7 @@
         {
           "type": "item",
           "name": "mod_lavacow:parasite_item",
-          "weight": 2,
+          "weight": 1,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -36,7 +36,7 @@
         },
         {
           "type": "empty",
-          "weight": 6
+          "weight": 3
         }
       ]
     }

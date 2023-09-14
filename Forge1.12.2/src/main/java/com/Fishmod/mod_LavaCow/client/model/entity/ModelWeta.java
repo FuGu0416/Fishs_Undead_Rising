@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 /**
  * ModelWeta - Fish0416
@@ -169,6 +170,9 @@ public class ModelWeta extends FishModelBase {
      * and third as in the setRotationAngles method.
      */
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    	this.Body_base.rotationPointY = 20.0F - 0.5F * MathHelper.sin(limbSwing * 1.3F);
+    	
     	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
     	this.SwingY_Sin(this.Jaw_l, -0.7740535232594852F, ageInTicks, 0.125F, 0.4F, true, 0.0F);
     	this.SwingY_Sin(this.Jaw_r, 0.7740535232594852F, ageInTicks, 0.125F, 0.4F, false, 0.0F);
