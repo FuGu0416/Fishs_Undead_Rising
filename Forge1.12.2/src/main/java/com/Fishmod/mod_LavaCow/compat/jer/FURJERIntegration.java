@@ -26,6 +26,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
@@ -57,6 +58,7 @@ public class FURJERIntegration implements ModIntegration {
 		jerAPI.getMobRegistry().register(new EntitySalamander(world), LightLevel.hostile, LootTableHandler.SALAMANDER);
 		jerAPI.getMobRegistry().register(new EntityWendigo(world), LightLevel.hostile, LootTableHandler.WENDIGO);
 		jerAPI.getMobRegistry().register(new EntityMimic(world), LootTableHandler.MIMIC);
+		jerAPI.getMobRegistry().register(new EntityLilSludge(world), LootTableHandler.LIL_SLUDGE);
 		jerAPI.getMobRegistry().register(new EntitySludgeLord(world), LightLevel.hostile, LootTableHandler.SLUDGELORD);
 		jerAPI.getMobRegistry().register(new EntityRaven(world), LootTableHandler.RAVEN);
 		jerAPI.getMobRegistry().register(new EntityPtera(world), LightLevel.hostile, LootTableHandler.PTERA);

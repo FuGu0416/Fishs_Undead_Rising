@@ -29,7 +29,7 @@ public class ItemSwineArmor extends ItemArmor {
 	private String armorTexture;
 	
 	public ItemSwineArmor(String registryName, int renderIndex, EntityEquipmentSlot slot, float effectlevelIn) {
-		super(ArmorMaterial.IRON, renderIndex, slot);
+		super(FishItems.ARMOR_SWINE, renderIndex, slot);
 		setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);

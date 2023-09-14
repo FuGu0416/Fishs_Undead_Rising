@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+		[
+	        {
+	            "item": "mod_lavacow:ectoplasm_block"
+	        }	
+		]
+    ],
+    "result": {
+        "item": "mod_lavacow:ectoplasm_ingot",
+        "count": 9
+    }
+}

@@ -97,12 +97,17 @@ item.mod_lavacow.beast_claw.name=Beast Claw
 item.mod_lavacow.hatred_shard.name=Memory of a Thousand Armies
 item.mod_lavacow.curseweave_cloth.name=Curseweave Cloth
 item.mod_lavacow.skeletonking_mace.name="Death"
+item.mod_lavacow.chitinarmor_helmet.name=Weta Helmet
+item.mod_lavacow.chitinarmor_chestplate.name=Weta Chestplate
+item.mod_lavacow.chitinarmor_leggings.name=Weta Leggings
+item.mod_lavacow.chitinarmor_boots.name=Weta Boots
 item.mod_lavacow.cactus_thorn.name=Cactus Thorn
 item.mod_lavacow.cactus_fruit.name=Prickly Pear
 item.mod_lavacow.thorn_shooter.name=Thorn Shooter
 item.mod_lavacow.cactoid_pot.name=Cactoid Pot
 item.mod_lavacow.baobing.name=Baobing
 item.mod_lavacow.ectoplasm_mass.name=Ectoplasm Mass
+item.mod_lavacow.ectoplasm_ingot.name=Ectoplasm Ingot
 item.mod_lavacow.enigmoth_larva_item.name=Enigmoth Caterpillar
 item.mod_lavacow.enigmoth_larva_item_cooked.name=Cooked Enigmoth Caterpillar
 
@@ -160,6 +165,7 @@ tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
 tile.mod_lavacow.cactoid_sprout.name=Cactoid Sprout
+tile.mod_lavacow.ectoplasm_block.name=Block of Ectoplasm
 
 ############
 # Entities #
@@ -345,8 +351,8 @@ tootip.mod_lavacow.moltenpan=Used to make special cuisines.
 tootip.mod_lavacow.intestine=Right-click to search inside it.
 tootip.mod_lavacow.felarmor=Bonus Fire Damage: +
 tootip.mod_lavacow.felarmor.l2=Fire Damage Protection: -
-tootip.mod_lavacow.swinearmor=Set(2): -20%% Food Consumption Time
-tootip.mod_lavacow.swinearmor.l2=Set(4): Removes all negative potion effects after consuming food.
+tootip.mod_lavacow.swinearmor=Set Bonus (2): -20%% Food Consumption Time
+tootip.mod_lavacow.swinearmor.l2=Set Bonus (4): Removes all negative potion effects after consuming food.
 tootip.mod_lavacow.piranhalauncher=Right-click to launch a Swarmer at the target. (Ammo: Swarmer)
 tootip.mod_lavacow.cursed_bandage.0.desc0=Healing
 tootip.mod_lavacow.cursed_bandage.0.desc1=Heals 2 HP to your pet.
@@ -361,8 +367,8 @@ tootip.mod_lavacow.halo_necklace=Bonus Damage to Undead: +%d%%
 tootip.mod_lavacow.dreamcatcher=Catches nightmarish creatures from within your dreams.
 tootip.mod_lavacow.undertaker_shovel=Right-click to summon an army of Unburied.
 tootip.mod_lavacow.raven_whistle=Right-click to bind with a raven and order it to move to a target location.
-tootip.mod_lavacow.faminearmor=Set(2): +2 damage while the Hunger effect is active.
-tootip.mod_lavacow.faminearmor.l2=Set(4): Removes the ability to eat, but you gain +4 Hunger and +1 Health when killing an entity.
+tootip.mod_lavacow.faminearmor=Set Bonus (2): +2 damage while the Hunger effect is active.
+tootip.mod_lavacow.faminearmor.l2=Set Bonus (4): Removes the ability to eat, but you gain +4 Hunger and +1 Health when killing an entity.
 tootip.mod_lavacow.ghostjelly=Transform your Raven into a Ghost Raven! Alternatively you can soar up!
 tootip.mod_lavacow.ghostbomb=Causes an explosion at thrown target location. Entities within will receive Levitation (0:01).
 tootip.mod_lavacow.sonicbomb=Causes an explosion at thrown target location. Entities within will receive Weakness III (0:04).
@@ -385,8 +391,10 @@ tootip.mod_lavacow.kings_crown.1.desc1=As long as the soul is imbued in his crow
 tootip.mod_lavacow.kings_crown.1.desc2=Even a dead corpse can fulfill his ambition
 tootip.mod_lavacow.skeletonking_crown=Forces nearby skeletons to become your loyal servants.
 tootip.mod_lavacow.beast_claw.desc0=Right-click to pounce forward.
-tootip.mod_lavacow.beast_claw.desc1=Set(2): Gives Strength (0:03) & Haste (0:03) after pouncing.
+tootip.mod_lavacow.beast_claw.desc1=Set Bonus (2): Gives Strength (0:03) & Haste (0:03) after pouncing.
 tootip.mod_lavacow.skeletonking_mace=Inflicts target with Deathtouched V (0:10)!
+tootip.mod_lavacow.chitinarmor=Set Bonus (2): -50%% Falling Damage
+tootip.mod_lavacow.chitinarmor.l2=Set Bonus (4): Grants Speed (0:03) after jumping.
 tootip.mod_lavacow.cactus_fruit=Can be used to brew a Potion of Thorn, or as a seed to plant in the sand.
 tootip.mod_lavacow.thorn_shooter=Barrage cactus thorns with rapid speed! (Ammo: Cactus Thorn)
 tootip.mod_lavacow.baobing=Gives Thorned II (1:00) and extinguishes fire when eaten.
@@ -417,19 +425,19 @@ enchantment.mod_lavacow.corrosive.desc=Weakens the target and will make it recei
 
 mob_effect.mod_lavacow:corroded=Corroded
 description.mob_effect.mod_lavacow:corroded=Increases damage taken.
-effect.mod_lavacow:corroded.0.desc=Amplifies any incoming damage by +20%% per level.
+mob_effect.mod_lavacow:corroded.4.desc=Amplifies any incoming damage by +20%% per level.
 mob_effect.mod_lavacow:soiled=Soiled
 description.mob_effect.mod_lavacow:soiled=Prevents eating and drinking.
-effect.mod_lavacow:soiled.0.desc=Fully prevents eating or drinking.
+mob_effect.mod_lavacow:soiled.4.desc=Fully prevents eating or drinking.
 mob_effect.mod_lavacow:infested=Infested
 description.mob_effect.mod_lavacow:infested=Afflicts hunger and slowness. Parasites will spawn on death.
-effect.mod_lavacow:infested.0.desc=Something is crawling inside... It might burst out once the host dies. -10%% Speed per level and hungers 1 point per (40/lvl) second.
+mob_effect.mod_lavacow:infested.4.desc=Something is crawling inside... It might burst out once the host dies. -10%% Speed per level and hungers 1 point per (40/lvl) second.
 mob_effect.mod_lavacow:fragile=Deathtouched
 description.mob_effect.mod_lavacow:fragile=Causes instant death once health becomes low enough.
-effect.mod_lavacow:fragile.0.desc=Instantly kills once health gets dropped under (5*lvl)% of maximum health.
+mob_effect.mod_lavacow:fragile.4.desc=Instantly kills once health gets dropped under (5*lvl)% of maximum health.
 mob_effect.mod_lavacow:thorned=Thorned
 description.mob_effect.mod_lavacow:thorned=Grants immunity to cactus and thorns enchantment damage. Attackers will end up getting thorned. 
-effect.mod_lavacow:thorned.0.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
+mob_effect.mod_lavacow:thorned.4.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
 
 ##############
 # Potions #
@@ -522,6 +530,14 @@ advancements.mod_lavacow.kill_forsaken.title=I Remember...
 advancements.mod_lavacow.kill_forsaken.description=Kill a Forsaken
 advancements.mod_lavacow.get_hatred_shard.title=In the Depths of Memory
 advancements.mod_lavacow.get_hatred_shard.description=Get a Memory of a Thousand Armies
+advancements.mod_lavacow.kill_cactyrant.title=Cactsus
+advancements.mod_lavacow.kill_cactyrant.description=Kill a Cactyrant
+advancements.mod_lavacow.tame_cactoid.title=Desert Agriculture
+advancements.mod_lavacow.tame_cactoid.description=Tame a Cactoid
+advancements.mod_lavacow.get_thorn_shooter.title=Say Hello to My Little Friend...
+advancements.mod_lavacow.get_thorn_shooter.description=Acquire the almighty Thorn Shooter!
+advancements.mod_lavacow.get_piranha_launcher.title=It Fired From the Gun
+advancements.mod_lavacow.get_piranha_launcher.description=Obtain the Swarmer Launcher
 
 #################
 # Death Message #

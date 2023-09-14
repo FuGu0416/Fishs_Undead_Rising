@@ -7,12 +7,12 @@
         {
           "type": "item",
           "name": "mod_lavacow:enigmoth_larva_item",
-          "weight": 2,
+          "weight": 1,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": -2,
+                "min": 0,
                 "max": 1
               }
             },
@@ -29,6 +29,10 @@
               ]
             }
           ]
+        },
+        {
+          "type": "empty",
+          "weight": 3
         }
       ]
     }

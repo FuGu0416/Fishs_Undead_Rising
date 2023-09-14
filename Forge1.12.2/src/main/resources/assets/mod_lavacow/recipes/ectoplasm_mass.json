@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "##"
+    ],
+    "key": {
+        "#": {
+			"item": "mod_lavacow:ectoplasm"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:ectoplasm_mass"
+    }
+}

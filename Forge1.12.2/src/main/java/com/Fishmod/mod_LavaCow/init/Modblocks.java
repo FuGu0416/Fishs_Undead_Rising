@@ -23,6 +23,7 @@ import java.util.Locale;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.blocks.BlockBasic;
 import com.Fishmod.mod_LavaCow.blocks.BlockCactoidSprout;
+import com.Fishmod.mod_LavaCow.blocks.BlockEctoplasm;
 import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroom;
 import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroomHuge;
 import com.Fishmod.mod_LavaCow.blocks.BlockPileofSludge;
@@ -49,6 +50,7 @@ public class Modblocks {
 	public static final BlockScarecrowHead SCARECROWHEAD_PLAGUE = new BlockScarecrowHead(2);
 	public static final BlockTombStone TOMBSTONE = new BlockTombStone();
 	public static final BlockCactoidSprout CACTOID_SPROUT = new BlockCactoidSprout();
+	public static final BlockEctoplasm ECTOPLASM_BLOCK = new BlockEctoplasm();
 	
 	@ObjectHolder("glowshroom")
     public static final ItemBlock item_block_glowshroom = null;
@@ -74,6 +76,8 @@ public class Modblocks {
 	public static final ItemBlock tombstone = null;
 	@ObjectHolder("cactoid_sprout")
 	public static final ItemBlock item_block_cactoid_sprout = null;
+	@ObjectHolder("ectoplasm_block")
+	public static final ItemBlock item_block_ectoplasm = null;
 	
 	@EventBusSubscriber(modid = mod_LavaCow.MODID)
     public static class RegistrationHandler
