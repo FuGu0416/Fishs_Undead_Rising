@@ -190,8 +190,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onLivingUpdate()
-    {
+    public void onLivingUpdate() {   	
         for(int i = 0 ; i < 2; i++) {
 	    	if (this.attackTimer[i] > 0) {
 	            --this.attackTimer[i];
@@ -206,9 +205,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
         	this.spit(this.getAttackTarget());
         }
     	 
-        // TODO
-    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
-        	{
+    	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote && this.getSkin() != 1) {
         		float f = this.getBrightness();
         		if (f > 0.5F && !this.isImmuneToFire && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
         	}
@@ -216,6 +213,16 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
     	if(this.isWalking())this.extinguish();
     	
         super.onLivingUpdate();
+    }
+    
+    @Override
+    public void onEntityUpdate() {
+    	// Proper check to make sure that they're always immune to fire
+    	if (this.getSkin() == 1) {
+    		this.isImmuneToFire = true;
+    	}
+    	
+    	super.onEntityUpdate();
     }
     
     @SideOnly(Side.CLIENT)
@@ -309,7 +316,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
         this.setHealth(this.getMaxHealth());
         
    		// Nether (Soul Sand Valley) Variant
-        if (this.world.provider.isNether()) {
+        if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(1);
      	   setFireImmunity();
         }
@@ -318,7 +325,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
     }
     
     public boolean setFireImmunity() {
-       	return this.isImmuneToFire = true;
+    	return this.isImmuneToFire = true;
     }
  	
  	@Override
@@ -478,7 +485,7 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.BONEWORM;
+        return this.getSkin() == 1 ? LootTableHandler.BONEWORM_NETHER : LootTableHandler.BONEWORM;
     }
 
 	@Override

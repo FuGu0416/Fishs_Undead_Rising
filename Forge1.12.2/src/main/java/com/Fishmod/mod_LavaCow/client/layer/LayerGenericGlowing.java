@@ -22,7 +22,12 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
     private final RenderLiving<T> Renderer;
     private static ResourceLocation[] TEXTURES_GLOW_SALAMANDER = {
     		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_glow.png"),
-    		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser_glow.png")
+    		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_glow1.png")
+    };
+    
+    private static ResourceLocation[] TEXTURES_GLOW_SALAMANDER_CHILD = {
+    		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser_glow.png"),
+    		new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser_glow1.png")
     };
     
 	private static final ResourceLocation[] TEXTURES_GLOW_BONE_WORM = new ResourceLocation[] {
@@ -57,7 +62,7 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
         
         if(entitylivingIn instanceof EntitySalamander) {
         	if(((EntitySalamander)entitylivingIn).isNymph()) {
-        		SPIDER_EYES = TEXTURES_GLOW_SALAMANDER[1];
+        		SPIDER_EYES = TEXTURES_GLOW_SALAMANDER_CHILD[0];
         	} else {
         		SPIDER_EYES = TEXTURES_GLOW_SALAMANDER[0];
         	}

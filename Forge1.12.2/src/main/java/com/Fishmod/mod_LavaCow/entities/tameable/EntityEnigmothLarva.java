@@ -25,6 +25,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -282,10 +283,10 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 		return entity;
 	}
     
-	// Immune to Corroded.
+	// Immune to Corroded and Poison
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
 	}
     
     public class AICastingSpell extends EntityAIBase {

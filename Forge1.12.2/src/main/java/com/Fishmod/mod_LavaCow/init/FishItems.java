@@ -181,6 +181,7 @@ public class FishItems {
 	public static final SoundEvent ENTITY_SALAMANDER_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.salamander.ambient")).setRegistryName("entity_salamander_ambient");
 	public static final SoundEvent ENTITY_SALAMANDER_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.salamander.hurt")).setRegistryName("entity_salamander_hurt");
 	public static final SoundEvent ENTITY_SALAMANDER_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.salamander.death")).setRegistryName("entity_salamander_death");
+	public static final SoundEvent ENTITY_SALAMANDER_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.salamander.shoot")).setRegistryName("entity_salamander_shoot");
 	
 	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranha.ambient")).setRegistryName("entity_zombiepiranha_ambient");
 	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranha.attack")).setRegistryName("entity_zombiepiranha_attack");
@@ -222,6 +223,8 @@ public class FishItems {
 	public static final SoundEvent ENTITY_SCARECROW_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.ambient")).setRegistryName("entity_scarecrow_ambient");
 	public static final SoundEvent ENTITY_SCARECROW_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.hurt")).setRegistryName("entity_scarecrow_hurt");
 	public static final SoundEvent ENTITY_SCARECROW_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.death")).setRegistryName("entity_scarecrow_death");
+	public static final SoundEvent ENTITY_SCARECROW_SCYTHE = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.scythe")).setRegistryName("entity_scarecrow_scythe");
+	public static final SoundEvent ENTITY_SCARECROW_SPIN = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.scarecrow.spin")).setRegistryName("entity_scarecrow_spin");
 	
 	public static final SoundEvent ENTITY_ZOMBIEFROZEN_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiefrozen.ambient")).setRegistryName("entity_zombiefrozen_ambient");
 	public static final SoundEvent ENTITY_ZOMBIEFROZEN_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiefrozen.hurt")).setRegistryName("entity_zombiefrozen_hurt");

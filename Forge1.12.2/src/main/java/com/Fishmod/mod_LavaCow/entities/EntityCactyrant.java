@@ -241,6 +241,16 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     }
 	
     @Override
+    public void onEntityUpdate() {
+    	// Proper check to make sure that they're always immune to fire
+    	if (this.getSkin() == 2) {
+    		this.isImmuneToFire = true;
+    	}
+    	
+    	super.onEntityUpdate();
+    }
+	
+    @Override
     public boolean canRiderInteract() {
         return true;
     }
@@ -330,7 +340,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     	this.setHealth(this.getMaxHealth());
     	
     	// Nether Variant
-        if (this.world.provider.isNether()) {
+        if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(2);
      	   setFireImmunity();
         }
@@ -541,7 +551,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.CACTYRANT;
+        return this.getSkin() == 2 ? LootTableHandler.CACTYRANT_NETHER : LootTableHandler.CACTYRANT;
     }
     
     @Override

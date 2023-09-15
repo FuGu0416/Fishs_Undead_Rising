@@ -47,7 +47,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityScarecrow  extends EntityFishTameable{
+public class EntityScarecrow  extends EntityFishTameable {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityScarecrow.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.<Integer>createKey(EntityScarecrow.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
@@ -159,10 +159,15 @@ public class EntityScarecrow  extends EntityFishTameable{
 
     	// Should always return EntityLivingBase (according to the documentation).
     	EntityLivingBase target = this.getAttackTarget();
-
+    	
+    	if(target != null && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.AttackStance == (byte)4) {
+    		this.playSound(FishItems.ENTITY_SCARECROW_SCYTHE, 1.0F, 0.85F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+    	} else if (target != null && this.getAttackTimer() == 14 && this.deathTime <= 0 && this.AttackStance == (byte)5) {
+    		this.playSound(FishItems.ENTITY_SCARECROW_SPIN, 1.0F, 0.85F);
+    	}
+    	
         if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
         	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
-        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         	
         	if(this.AttackStance == (byte)4) {
         		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue())) {

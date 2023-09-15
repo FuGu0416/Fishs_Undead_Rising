@@ -86,6 +86,20 @@ public class EntityFishAIAttackRange extends EntityAIBase {
         this.Zoffset = ZIn;
         this.setMutexBits(3);
      }
+    
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
+        this.shooter = shooterIn;
+        this.shot = shotIn;
+        this.sound = soundIn;
+        this.shot_times = timesIn;
+        this.attackCD = attackCDIn;
+        this.curve = 0.0D;
+        this.range = this.shooter.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getBaseValue();
+        this.Xoffset = XIn;
+        this.Yoffset = YIn;
+        this.Zoffset = ZIn;
+        this.setMutexBits(3);
+     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
@@ -148,7 +162,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                  if (this.attackStep > 1) {
                     float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.1F;
 
-                    this.shooter.playSound(this.sound, 1.0F, 1.0F);
+                    this.shooter.playSound(this.sound, 1.0F, 1.0F / (this.shooter.world.rand.nextFloat() * 0.4F + 0.8F));
                     double t1 = d1 + this.shooter.getRNG().nextGaussian() * (double)f;
                     double t2 = d2 + (this.curve * d0 / 64.0D);
                     double t3 = d3 + this.shooter.getRNG().nextGaussian() * (double)f;

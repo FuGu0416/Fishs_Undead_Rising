@@ -95,6 +95,16 @@ public class EntityGhostRay extends EntityFlyingMob {
    	super.onLivingUpdate();
    }
    
+   @Override
+   public void onEntityUpdate() {
+   	// Proper check to make sure that they're always immune to fire
+   	if (this.getSkin() == 1) {
+   		this.isImmuneToFire = true;
+   	}
+   	
+   	super.onEntityUpdate();
+   }
+   
    @Nullable
    @Override
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
@@ -102,7 +112,7 @@ public class EntityGhostRay extends EntityFlyingMob {
        this.setHealth(this.getMaxHealth());
    	
    		// Nether (Soul Sand Valley) Variant
-       if (this.world.provider.isNether()) {
+       if (this.world.provider.doesWaterVaporize()) {
     	   this.setSkin(1);
     	   setFireImmunity();
        }

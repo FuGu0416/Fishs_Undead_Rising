@@ -186,7 +186,7 @@ public class ItemFishCustomWeapon extends ItemSword{
                 }
             }
 
-            attacker.world.playSound((EntityPlayer)null, attacker.posX, attacker.posY, attacker.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, attacker.getSoundCategory(), 1.0F, 1.0F);
+            attacker.world.playSound((EntityPlayer)null, attacker.posX, attacker.posY, attacker.posZ, FishItems.ENTITY_SCARECROW_SCYTHE, attacker.getSoundCategory(), 1.0F, 1.0F / (attacker.world.rand.nextFloat() * 0.4F + 0.8F));
             ((EntityPlayer) attacker).spawnSweepParticles();
 		}
 		else if(attacker instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && target.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {

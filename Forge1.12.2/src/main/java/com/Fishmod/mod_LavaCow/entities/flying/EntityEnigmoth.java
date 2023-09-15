@@ -322,18 +322,11 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	protected ResourceLocation getLootTable() {
 		return LootTableHandler.ENIGMOTH;
 	}
-
-	/**
-	* Returns the volume for the sounds this mob makes.
-	*/
-	protected float getSoundVolume() {
-		return 0.5F;
-	}
 	
-	// Immune to Corroded.
+	// Immune to Corroded and Poison
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
 	}
 	
     public class AIUseSpell extends EntityAIBase {

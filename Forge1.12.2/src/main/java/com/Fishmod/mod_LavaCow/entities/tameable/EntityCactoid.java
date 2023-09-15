@@ -209,6 +209,16 @@ public class EntityCactoid extends EntityFishTameable {
     }
     
     @Override
+    public void onEntityUpdate() {
+    	// Proper check to make sure that they're always immune to fire
+    	if (this.getSkin() == 3) {
+    		this.isImmuneToFire = true;
+    	}
+    	
+    	super.onEntityUpdate();
+    }
+    
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote && this.isTamed() && this.getGrowingStage() == 2) {
     		this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
@@ -282,7 +292,7 @@ public class EntityCactoid extends EntityFishTameable {
     	this.setGrowingAge(-24000);
     	
     	// Nether (Basalt Deltas) Variant
-        if (this.world.provider.isNether()) {
+        if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(3);
      	   setFireImmunity();
         }

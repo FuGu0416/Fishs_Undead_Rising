@@ -2,12 +2,13 @@ package com.Fishmod.mod_LavaCow.message;
 
 import java.util.Random;
 
+import com.Fishmod.mod_LavaCow.init.FishItems;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -43,7 +44,7 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 			entityammo.posZ = message.posZ + lookVec.z * 2.0D;
 			entity.world.spawnEntity(entityammo);			
    	 	}
-   	 	entity.world.playSound(null, message.posX, message.posY, message.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+   	 	entity.world.playSound(null, message.posX, message.posY, message.posZ, FishItems.ENTITY_SALAMANDER_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 		return null;
 	}
 
