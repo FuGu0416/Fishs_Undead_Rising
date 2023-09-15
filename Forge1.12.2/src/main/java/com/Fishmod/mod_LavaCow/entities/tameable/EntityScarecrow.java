@@ -164,9 +164,7 @@ public class EntityScarecrow  extends EntityFishTameable {
     		this.playSound(FishItems.ENTITY_SCARECROW_SCYTHE, 1.0F, 0.85F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
     	} else if (target != null && this.getAttackTimer() == 14 && this.deathTime <= 0 && this.AttackStance == (byte)5) {
     		this.playSound(FishItems.ENTITY_SCARECROW_SPIN, 1.0F, 0.85F);
-    	}
-    	
-        if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
+    	} else if (target != null && this.getDistanceSq(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
         	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
         	
         	if(this.AttackStance == (byte)4) {
