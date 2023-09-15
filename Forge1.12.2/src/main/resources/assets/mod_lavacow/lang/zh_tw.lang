@@ -224,6 +224,7 @@ entity_undeadswine_hurt=疫豬受傷
 entity_salamander_ambient=炎熔螈低吼聲
 entity_salamander_death=炎熔螈死亡
 entity_salamander_hurt=炎熔螈受傷
+entity_salamander_shoot=炎熔螈射擊
 
 entity_zombiepiranha_attack=擬箱蟹夾擊
 
@@ -261,6 +262,8 @@ entity_vespa_hurt=巨蜂受傷
 entity_scarecrow_ambient=稻草人沙沙聲
 entity_scarecrow_death=稻草人死亡
 entity_scarecrow_hurt=稻草人受傷
+entity_scarecrow_scythe=稻草人揮砍
+entity_scarecrow_spin=稻草人橫劈
 
 entity_zombiepiranha_ambient=群獵者喀喀聲
 entity_zombiepiranha_death=群獵者死亡
@@ -419,19 +422,19 @@ enchantment.mod_lavacow.corrosive.desc=攻擊時能侵蝕目標，提高它接�
 
 mob_effect.mod_lavacow:corroded=腐蝕
 description.mob_effect.mod_lavacow:corroded=提高所受傷害
-effect.mod_lavacow:corroded.0.desc=所受到的傷害每等級+20%%
+mob_effect.mod_lavacow:corroded.4.desc=所受到的傷害每等級+20%%
 mob_effect.mod_lavacow:soiled=玷汙
 description.mob_effect.mod_lavacow:soiled=防止進食或飲用
-effect.mod_lavacow:soiled.0.desc=防止進食或飲用
+mob_effect.mod_lavacow:soiled.4.desc=防止進食或飲用
 mob_effect.mod_lavacow:infested=感染
 description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡時會有屍蛆爬出
-effect.mod_lavacow:infested.0.desc=有東西在體內蠕動...伺機等待於寄主死亡時竄出。被寄生的單位移動速度每等級-10%%且每(40/lvl)秒減少1飽食度
+mob_effect.mod_lavacow:infested.4.desc=有東西在體內蠕動...伺機等待於寄主死亡時竄出。被寄生的單位移動速度每等級-10%%且每(40/lvl)秒減少1飽食度
 mob_effect.mod_lavacow:fragile=死亡之觸
 description.mob_effect.mod_lavacow:fragile=當生命低於一定程度時，立即死亡
-effect.mod_lavacow:fragile.0.desc=當生命低於(5*lvl)%時，立即死亡
+mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%時，立即死亡
 mob_effect.mod_lavacow:thorned=荊棘
 description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成反傷
-effect.mod_lavacow:thorned.0.desc=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成(1*lvl)點傷害
+mob_effect.mod_lavacow:thorned.4.desc=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成(1*lvl)點傷害
 
 ##############
 # Potions #
@@ -524,6 +527,14 @@ advancements.mod_lavacow.kill_forsaken.title=但我還記得
 advancements.mod_lavacow.kill_forsaken.description=殺死一頭被遺忘者
 advancements.mod_lavacow.get_hatred_shard.title=在那記憶的深處
 advancements.mod_lavacow.get_hatred_shard.description=獲得萬軍追憶
+advancements.mod_lavacow.kill_cactyrant.title=仙人詐騙
+advancements.mod_lavacow.kill_cactyrant.description=殺死一棵暴君掌
+advancements.mod_lavacow.tame_cactoid.title=沙漠農業
+advancements.mod_lavacow.tame_cactoid.description=馴服一株幼人掌
+advancements.mod_lavacow.get_thorn_shooter.title=與我的小朋友打聲招呼吧
+advancements.mod_lavacow.get_thorn_shooter.description=獲得一把仙人掌槍
+advancements.mod_lavacow.get_piranha_launcher.title=槍裡面有魚
+advancements.mod_lavacow.get_piranha_launcher.description=獲得一把群獵者發射器
 
 #################
 # Death Message #
