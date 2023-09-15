@@ -35,7 +35,9 @@ public class LootTableHandler {
 	public static ResourceLocation ZOMBIEFROZEN = null;
 	public static ResourceLocation UNDEADSWINE = null;
 	public static ResourceLocation SALAMANDER = null;
+	public static ResourceLocation SALAMANDER_BLUE = null;
 	public static ResourceLocation SALAMANDERLESSER = null;
+	public static ResourceLocation SALAMANDERLESSER_BLUE = null;
 	public static ResourceLocation WENDIGO = null;
 	public static ResourceLocation MIMIC = null;
 	public static ResourceLocation SLUDGELORD = null;
@@ -50,6 +52,7 @@ public class LootTableHandler {
 	public static ResourceLocation ZOMBIEPIRANHA = null;
 	public static ResourceLocation PIRANHA = null;
 	public static ResourceLocation BONEWORM = null;
+	public static ResourceLocation BONEWORM_NETHER = null;
 	public static ResourceLocation PINGU = null;
 	public static ResourceLocation GHOSTRAY = null;
 	public static ResourceLocation CEMETERY_CHEST = null;
@@ -62,6 +65,7 @@ public class LootTableHandler {
 	public static ResourceLocation FORSAKEN = null;
 	public static ResourceLocation CACTOID = null;
 	public static ResourceLocation CACTYRANT = null;
+	public static ResourceLocation CACTYRANT_NETHER = null;
 	public static ResourceLocation ENIGMOTH = null;
 	public static ResourceLocation ENIGMOTH_LARVA = null;
 	public static ResourceLocation UNBURIED = null;
@@ -114,7 +118,9 @@ public class LootTableHandler {
 		ZOMBIEFROZEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/frigid"));
 		UNDEADSWINE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/undead_swine"));
 		SALAMANDER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/salamander"));
+		SALAMANDER_BLUE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/salamander_blue"));
 		SALAMANDERLESSER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/salamander_nymph"));
+		SALAMANDERLESSER_BLUE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/salamander_nymph_blue"));
 		WENDIGO = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/wendigo"));
 		MIMIC = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/mimic"));
 		SLUDGELORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/sludge_lord"));
@@ -129,6 +135,7 @@ public class LootTableHandler {
 		ZOMBIEPIRANHA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/swarmer"));
 		PIRANHA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/piranha"));
 		BONEWORM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/boneworm"));
+		BONEWORM_NETHER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/boneworm_nether"));
 		PINGU = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/pingu"));
 		GHOSTRAY = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ghost_ray"));
 		BANSHEE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/banshee"));
@@ -139,6 +146,7 @@ public class LootTableHandler {
 		FORSAKEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/forsaken"));
 		CACTOID = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactoid"));
 		CACTYRANT = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactyrant"));
+		CACTYRANT_NETHER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactyrant_nether"));
 		ENIGMOTH = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth"));
 		ENIGMOTH_LARVA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth_larva"));
 		UNBURIED = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/unburied"));

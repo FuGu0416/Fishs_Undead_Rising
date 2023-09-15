@@ -11,10 +11,15 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderSalamander extends RenderLiving<EntitySalamander>{
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_glow.png");	
+	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_glow.png");
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander1.png")
+	};
+	
+	private static final ResourceLocation[] TEXTURES_CHILD = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser1.png")
 	};
 	
 	static{
@@ -31,9 +36,9 @@ public class RenderSalamander extends RenderLiving<EntitySalamander>{
     @Override
     protected ResourceLocation getEntityTexture(EntitySalamander entity) {
         if(!entity.isNymph())
-        	return TEXTURES[0];
+        	return TEXTURES[entity.getSkin()];
         else
-        	return TEXTURES[1];
+        	return TEXTURES_CHILD[entity.getSkin()];
     }
     
     @Override

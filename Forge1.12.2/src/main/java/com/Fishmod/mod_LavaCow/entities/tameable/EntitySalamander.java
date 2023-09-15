@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -43,6 +44,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -52,7 +54,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntitySalamander extends EntityFishTameable implements IAggressive{
+public class EntitySalamander extends EntityFishTameable implements IAggressive {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntitySalamander.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> ATTACK_TIMER = EntityDataManager.createKey(EntitySalamander.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(EntitySalamander.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.createKey(EntitySalamander.class, DataSerializers.VARINT);
@@ -66,7 +69,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     {
         super(worldIn);
         
-        this.setSize(2.0F, 1.6F);    
+        this.setSize(1.95F, 1.6F);    
         this.isImmuneToFire = true;
         this.setPathPriority(PathNodeType.WATER, -1.0F);
         this.setPathPriority(PathNodeType.LAVA, 8.0F);
@@ -78,6 +81,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	
 	protected void entityInit() {
 		super.entityInit();
+        this.dataManager.register(SKIN_TYPE, Integer.valueOf(0));
 		this.dataManager.register(SADDLED, Boolean.valueOf(false));
 		this.dataManager.register(ATTACK_TIMER, Integer.valueOf(0));
 		this.dataManager.register(GROWING_STAGE, Integer.valueOf(-1));
@@ -87,9 +91,9 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     {   	
     	super.initEntityAI();
     	if(this.isNymph())
-    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 8, 5, 2.5D, 1.0D, 2.5D);
-    	else
     		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
+    	else
+    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 6, 5, 2.5D, 1.0D, 2.5D);
     	
     	this.tasks.addTask(0, new EntityAISwimming(this));
     	this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -97,7 +101,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)
@@ -126,7 +130,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      * Gets how bright this entity is.
      */
     public float getBrightness() {
-       return 0.25F;
+       return 1.0F;
     }
         
     @Override
@@ -139,24 +143,62 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      */
     @Override
     public int getMaxSpawnedInChunk() {
-       return 1;
+       return 4;
     }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);
     	boolean flag = this.isBreedingItem(itemstack);
 
-        if (!flag && this.isOwner(player) && this.canBeSteered() && !this.isBeingRidden()) {
+        if (!flag && this.isOwner(player) && this.isTamed() && this.canBeSteered() && !this.isChild() && !this.isBeingRidden()) {
         	if (itemstack.getItem().equals(Items.SHEARS)) {
     			this.setSaddled(false); 
     			if (!this.world.isRemote) {
+    				this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
     				this.dropItem(Items.SADDLE, 1);
     			}
     			return true;
     		} else if (!player.isSneaking() && !player.isRiding()) {
         	   player.startRiding(this);        	   
         	   return true;
-    		}    	
+    		}
+        }
+        
+        if (!flag && this.isOwner(player) && this.isTamed() && !this.canBeSteered() && !this.isChild() && itemstack.getItem().equals(Items.SADDLE)) {
+    		this.setSaddled(true);
+            itemstack.shrink(1);
+            if(!this.world.isRemote) {
+            	this.playSound(SoundEvents.ENTITY_HORSE_SADDLE, 0.5F, 1.0F);
+            }
+            return true;
+		}
+        
+        if (!flag && this.isOwner(player) && this.isTamed() && itemstack.getItem() == Items.BLAZE_POWDER && itemstack.getCount() >= 64 && this.isEntityAlive() && this.getSkin() == 1) {
+        	if (!player.isCreative()) {
+        		itemstack.shrink(64);
+        	}
+        	this.setSkin(0);      	
+        	this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            }
+        	return true;
+        } else if (!flag && this.isOwner(player) && this.isTamed() && itemstack.getItem() == FishItems.ECTOPLASM && itemstack.getCount() >= 64 && this.isEntityAlive() && this.getSkin() == 0) {
+        	if (!player.isCreative()) {
+        		itemstack.shrink(64);
+        	}
+        	this.setSkin(1);  	
+        	this.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = new Random().nextGaussian() * 0.02D;
+                double d1 = new Random().nextGaussian() * 0.02D;
+                double d2 = new Random().nextGaussian() * 0.02D;
+                mod_LavaCow.PROXY.spawnCustomParticle("ectoplasm", world, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2, 1.0F, 1.0F, 1.0F);
+            }
+        	return true;
         }
         
         boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
@@ -185,7 +227,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
      */
     public double getMountedYOffset()
     {
-        return (double)this.height * 1.3D;
+        return (double)this.height * 1.75D;
     }
     
     public void updatePassenger(Entity passenger) {
@@ -232,6 +274,12 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
             {
                 this.heal(1.0F);
             }
+            
+    		/*if (this.isBeingRidden() && this.getControllingPassenger() instanceof EntityLivingBase && this.ticksExisted % 40 == 0) {
+    			if (!((EntityLivingBase) this.getControllingPassenger()).isPotionActive(MobEffects.FIRE_RESISTANCE)) {
+    				((EntityLivingBase) this.getControllingPassenger()).addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 3 * 20, 0));
+    			}
+    		}*/
         }
     	
     	if(this.isServerWorld()) {
@@ -369,18 +417,20 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
-        if (id == 11)
-        {
-            this.isAggressive = true;
-        }
-        else if (id == 34)
-        {
-            this.isAggressive = false;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
+ 		switch(id) {
+ 		case 5:
+ 			this.setAttackTimer(80);
+ 			break;
+ 		case 11:
+ 			this.isAggressive = true;
+ 			break;
+ 		case 34:
+ 			this.isAggressive = false;
+ 			break;
+ 		default:
+ 			super.handleStatusUpdate(id);
+ 			break;
+ 		}
     }
     
     /**
@@ -429,7 +479,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 	    	
 	    	this.tasks.removeTask(this.avoid_entity);
 	    	this.tasks.removeTask(this.range_atk);
-	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 8, 5, 2.5D, 1.0D, 2.5D);
+	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 8, 5, 2.5D, 1.0D, 2.5D);
 	    	this.tasks.addTask(4, this.range_atk);
 	    	
 	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
@@ -455,6 +505,9 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
 			entity.setTamed(true);
 			entity.setChild(true);
 		}
+		
+		entity.setHealth(entity.getMaxHealth());
+		entity.setSkin(this.rand.nextBoolean() ? this.getSkin() : ((EntitySalamander) ageable).getSkin());
 
 		return entity;
 	}
@@ -570,6 +623,11 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     }
     
     @Override
+    public boolean isMovementBlocked() {
+    	return this.isSitting();
+    }
+    
+    @Override
     public int getAttackTimer() {
        return dataManager.get(ATTACK_TIMER).intValue();
     }
@@ -578,6 +636,14 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     public void setAttackTimer(int i) {
         dataManager.set(ATTACK_TIMER, i);
 	}
+    
+    public int getSkin() {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
     
     @Override
     protected SoundEvent getAmbientSound()
@@ -626,7 +692,11 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return this.isChild() ? LootTableHandler.SALAMANDERLESSER : LootTableHandler.SALAMANDER;
+    	if (this.isChild()) {
+    		return this.getSkin() == 1 ? LootTableHandler.SALAMANDERLESSER_BLUE : LootTableHandler.SALAMANDERLESSER;
+    	} else {
+    		return this.getSkin() == 1 ? LootTableHandler.SALAMANDER_BLUE : LootTableHandler.SALAMANDER;
+    	}
     }
     
     /**
@@ -675,6 +745,8 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
        super.writeEntityToNBT(compound);
        compound.setBoolean("Saddled", this.canBeSteered());
        compound.setInteger("GrowingStage", this.getGrowingStage());
+       compound.setInteger("Variant", getSkin());
+       
     }
 
     /**
@@ -684,5 +756,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive{
        super.readEntityFromNBT(compound);
        this.setSaddled(compound.getBoolean("Saddled"));
        this.setGrowingStage(compound.getInteger("GrowingStage"));
+       this.setSkin(compound.getInteger("Variant"));
     }
 }

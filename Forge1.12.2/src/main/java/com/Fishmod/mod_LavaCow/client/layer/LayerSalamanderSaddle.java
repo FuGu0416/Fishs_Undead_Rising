@@ -9,12 +9,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerSalamanderSaddle implements LayerRenderer<EntitySalamander> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamander_saddle.png");
-    private final RenderSalamander pigRenderer;
-    private final ModelSalamander pigModel = new ModelSalamander();
+    private final RenderSalamander salamanderRenderer;
+    private final ModelSalamander salamanderModel = new ModelSalamander();
 
-    public LayerSalamanderSaddle(RenderSalamander pigRendererIn)
+    public LayerSalamanderSaddle(RenderSalamander salamanderRendererIn)
     {
-        this.pigRenderer = pigRendererIn;
+        this.salamanderRenderer = salamanderRendererIn;
     }
 
     public boolean shouldCombineTextures()
@@ -27,9 +27,9 @@ public class LayerSalamanderSaddle implements LayerRenderer<EntitySalamander> {
 			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (entitylivingbaseIn.canBeSteered())
         {
-            this.pigRenderer.bindTexture(TEXTURE);
-            this.pigModel.setModelAttributes(this.pigRenderer.getMainModel());
-            this.pigModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.salamanderRenderer.bindTexture(TEXTURE);
+            this.salamanderModel.setModelAttributes(this.salamanderRenderer.getMainModel());
+            this.salamanderModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }		
 	}
 }

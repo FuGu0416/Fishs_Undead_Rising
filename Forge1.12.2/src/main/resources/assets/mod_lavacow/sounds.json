@@ -97,6 +97,13 @@
 		"sounds": ["mod_lavacow:entity/salamander/death0","mod_lavacow:entity/salamander/death1","mod_lavacow:entity/salamander/death2"]
 	},
 	
+	"entity.salamander.shoot":
+	{
+		"category": "entity",
+		"subtitle": "entity_salamander_shoot",
+		"sounds": [{"name": "mod_lavacow:entity/salamander/shoot","stream": true}]
+	},
+	
 	"entity.zombiepiranha.ambient":
 	{
 		"category": "entity",
@@ -318,6 +325,20 @@
 		"category": "entity",
 		"subtitle": "entity_scarecrow_death",
 		"sounds": ["mod_lavacow:entity/scarecrow/death0","mod_lavacow:entity/scarecrow/death1"]
+	},
+	
+	"entity.scarecrow.scythe":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarecrow_scythe",
+		"sounds": [{"name": "mod_lavacow:entity/scarecrow/scythe","stream": true}]
+	},
+	
+	"entity.scarecrow.spin":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarecrow_spin",
+		"sounds": [{"name": "mod_lavacow:entity/scarecrow/spin","stream": true}]
 	},
 	
 	"entity.zombiefrozen.ambient":
