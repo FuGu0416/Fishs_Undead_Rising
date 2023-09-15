@@ -81,7 +81,7 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
         }
         
         if(entitylivingIn instanceof EntityCactyrant) {
-        	if (((EntityCactyrant)entitylivingIn).getSkin() == 2) {
+        	if (((EntityCactyrant)entitylivingIn).getSkin() == 2 && !((EntityCactyrant)entitylivingIn).isCamouflaging()) {
         		SPIDER_EYES = TEXTURES_GLOW_CACTYRANT[0];
         	} else {
         		return;
