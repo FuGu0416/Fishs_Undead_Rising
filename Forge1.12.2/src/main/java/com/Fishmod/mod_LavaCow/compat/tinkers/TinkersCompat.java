@@ -90,7 +90,7 @@ public class TinkersCompat {
         
 		TinkerMaterials.materials.add(ECTOPLASM);
         TinkerRegistry.integrate(ECTOPLASM).preInit();
-        ECTOPLASM.addItem(FishItems.ECTOPLASM_INGOT, 1, Material.VALUE_Shard);
+        ECTOPLASM.addItem(FishItems.ECTOPLASM_INGOT, 1, Material.VALUE_Ingot);
         ECTOPLASM.setRepresentativeItem(FishItems.ECTOPLASM_INGOT);
         ECTOPLASM.setCraftable(true);
         ECTOPLASM.setCastable(false);
