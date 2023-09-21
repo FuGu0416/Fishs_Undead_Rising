@@ -300,6 +300,7 @@
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",
 	"entity_parasite_hurt": "屍蛆受傷",
+	"entity_parasite_weave": "屍蛆吐絲",
 
 	"entity_foglet_ambient": "霧妖低吼聲",
 	"entity_foglet_death": "霧妖死亡",
@@ -423,7 +424,10 @@
 	"entity_enigmoth_flap": "謎影蛾拍翼聲",
 	"entity_enigmoth_death": "謎影蛾死亡",
 	"entity_enigmoth_hurt": "謎影蛾受傷",
-					
+	
+	"random_piranha_shoot": "群獵者發射",
+	"random_thorn_shoot": "尖刺發射",
+				
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",
@@ -539,7 +543,7 @@
 	"effect.mod_lavacow.thorned": "荊棘",
 	"effect.mod_lavacow.strong_thorned": "荊棘 II",
 	"effect.mod_lavacow.long_thorned": "荊棘",	
-	"description.effect.mod_lavacow:thorned": "對發動近戰攻擊的單位造成傷害",
+	"description.effect.mod_lavacow:thorned": "免疫仙人掌、甜漿果叢及尖刺附魔的傷害，並對發動近戰攻擊的單位造成反傷",
 	"effect.mod_lavacow.immolation": "燒灼",
 	"effect.mod_lavacow.strong_immolation": "燒灼 II",
 	"effect.mod_lavacow.long_immolation": "燒灼",
