@@ -15,6 +15,7 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha/piranha.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha2.png")
 	};
 	
 	static{
@@ -29,7 +30,7 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
     @Override
 	public ResourceLocation getTextureLocation(SwarmerEntity entity) {
         if(entity instanceof PiranhaEntity)return TEXTURES[1];
-        else return TEXTURES[0];
+        else return TEXTURES[entity.getSkin()];
     }
     
     @Override

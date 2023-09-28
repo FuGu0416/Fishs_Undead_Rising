@@ -156,7 +156,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_Salamander.get() > 0 && biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SALAMANDER, FURConfig.pSpawnRate_Salamander.get() / 10, 4, 8));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.SALAMANDER, Math.max(FURConfig.pSpawnRate_Salamander.get() / 10, 1), 4, 8));
 		}
 		
 		if(FURConfig.pSpawnRate_Wendigo.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
@@ -221,7 +221,7 @@ public class FURWorldRegistry {
 		}
 
 		if(FURConfig.pSpawnRate_BoneWorm.get() > 0 && biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONEWORM, FURConfig.pSpawnRate_BoneWorm.get() / 10, 1, 2));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONEWORM, Math.max(FURConfig.pSpawnRate_BoneWorm.get() / 10, 1), 1, 2));
 		}
 		
 		if(FURConfig.pSpawnRate_Pingu.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
@@ -240,7 +240,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, FURConfig.pSpawnRate_GhostRay.get() / 3, 1, 1));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 3, 1), 1, 1));
 		}
 		
 		if(FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
@@ -298,6 +298,10 @@ public class FURWorldRegistry {
 		
 		if(FURConfig.pSpawnRate_Enigmoth.get() > 0 && (biomeKey.equals(Biomes.WARPED_FOREST) || biomeKey.equals(Biomes.END_HIGHLANDS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.ENIGMOTH, FURConfig.pSpawnRate_Enigmoth.get(), 1, 2));
+		}
+		
+		if(FURConfig.pSpawnRate_MummifiedCod.get() > 0 && biomeKey.equals(Biomes.DESERT_LAKES)) {
+			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.MUMMIFIEDCOD, FURConfig.pSpawnRate_MummifiedCod.get(), 3, 6));
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
@@ -50,9 +51,12 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class SwarmerEntity extends AbstractGroupFishEntity {
 	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.INT);
 	
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);   
@@ -62,6 +66,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(DATA_FLAGS_ID, (byte)0);
+		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
     }
     
     @Override
@@ -144,6 +149,10 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Swarmer_Health.get());
 	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Swarmer_Attack.get());
 	    	this.setHealth(this.getMaxHealth());
+    	}
+    	
+    	if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.SWAMP) && !this.getIsAmmo()) {
+    		this.setSkin(2);
     	}
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
@@ -238,6 +247,14 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 		return this.getBbHeight() * 0.5F;
 	}
 	
+    public int getSkin() {
+        return this.getEntityData().get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+	
     public boolean getIsAmmo() {
     	return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
     }
@@ -272,6 +289,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
         super.readAdditionalSaveData(compound);
 		this.setIsAmmo(compound.getBoolean("is_Ammo"));
 		this.setIsInfinite(compound.getBoolean("is_Infinite"));
+		this.setSkin(compound.getInt("Variant"));
     }
 
     /**
@@ -282,6 +300,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("is_Ammo", this.getIsAmmo());
         compound.putBoolean("is_Infinite", this.getIsInfinite());
+        compound.putInt("Variant", getSkin());
     }
 	
 	@Override

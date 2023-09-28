@@ -209,6 +209,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown_Mount;
 	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_MummifiedCod;
+	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_Intestine;
@@ -558,6 +560,10 @@ public final class FURConfig {
 		Enigmoth_Attack = BUILDER.comment("Enigmoth strength [1-1000]").defineInRange("enigmoth attack", 8.0D, 1.0D, 1000.0D);
 		Enigmoth_Ability_Cooldown = BUILDER.comment("Set the cooldown of spreading scales [0-100]").defineInRange("enigmoth spell cooldown", 8, 0, 100);
 		Enigmoth_Ability_Cooldown_Mount = BUILDER.comment("Set the cooldown of spreading scales when mounted [0-100]").defineInRange("mounted enigmoth spell cooldown", 4, 0, 100);
+		BUILDER.pop();
+		
+		BUILDER.push("Fish");
+		pSpawnRate_MummifiedCod = BUILDER.comment("Set the spawn rate of Mummified Cod [0-100]").defineInRange("mummified cod spawn rate", 1, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");
