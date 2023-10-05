@@ -588,7 +588,7 @@ public final class FURConfig {
 						"minecraft:diamond,0.01"), 
 				o -> o instanceof String);
 		Intestine_banlist = BUILDER.comment("The list of \\\"intestine_drop_targets.json\\\" should be a banlist. (false then only the mobs in the list drop Intestine) [false/true]").define("intestine drop banlist", true);
-		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 duribility per tick , 0 = Infinite [0-100]").defineInRange("golden heart duribility", 100, 0, 100);
+		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 durability per tick , 0 = Infinite [0-100]").defineInRange("golden heart durability", 100, 0, 100);
 		GoldenHeart_bl = BUILDER.comment("BlackBanlist for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"mod_lavacow:moltenhammer\\\"").defineList("banlisted items from golden heart", 
 				Lists.newArrayList(), o -> o instanceof String);		
 		GoldenHeart_GrantsRegeneration = BUILDER.comment("Enables the Regeneration effect of the Golden Heart. [false/true]").define("golden heart grants regeneration", true);
@@ -608,7 +608,7 @@ public final class FURConfig {
 						"mod_lavacow:banshee,20,1,1",
 						"mod_lavacow:avaton,20,1,1"), 
 				o -> o instanceof String);
-		DreamCatcher_dur = BUILDER.comment("Set the duribility of Dreamcatcher, 0 = Infinite [0-10000]").defineInRange("dreamcatcher duribility", 80, 0, 10000);				
+		DreamCatcher_dur = BUILDER.comment("The durability lost each time when the Dreamcatcher is triggered, 0 = Infinite [0-120]").defineInRange("dreamcatcher durability drop", 30, 0, 120);				
 		SludgeWand_Cooldown = BUILDER.comment("Ability cooldown of \\\"Pestilence\\\" [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Midnight Mourne [1-10000]").defineInRange("midnight mourne cooldown", 60, 0, 10000);							
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		

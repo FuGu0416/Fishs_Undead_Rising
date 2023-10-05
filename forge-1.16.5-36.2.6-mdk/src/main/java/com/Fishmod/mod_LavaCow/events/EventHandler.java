@@ -572,7 +572,7 @@ public class EventHandler {
 				have_DreamCatcher = baubles.api.BaublesApi.getBaublesHandler(player).getItem(i);
 		}*/
 		
-		if (!event.updateWorld()) {
+		if (!event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			for(int i = 0; i < 9 ; i++) {
 				if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER)) {
 					have_DreamCatcher = player.inventory.getItem(i);
@@ -581,7 +581,7 @@ public class EventHandler {
 			}
 		}
 		
-		if (!world.isClientSide() && have_DreamCatcher != null && !event.updateWorld()) {
+		if (!world.isClientSide() && have_DreamCatcher != null && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
 
 			Entity LivingEntity = Result.type.create(world);
@@ -603,11 +603,11 @@ public class EventHandler {
 					has_spawn = true;
 				}
 				
-				if (has_spawn) {
+				if (has_spawn && FURConfig.DreamCatcher_dur.get() > 0) {
 					world.playSound((PlayerEntity)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
 					
 					if (!player.isCreative())
-						have_DreamCatcher.hurtAndBreak(20, event.getEntityLiving(), (p_220045_0_) -> {
+						have_DreamCatcher.hurtAndBreak(FURConfig.DreamCatcher_dur.get(), event.getEntityLiving(), (p_220045_0_) -> {
 			    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 			    		});
 				}

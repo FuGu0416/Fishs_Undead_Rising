@@ -11,8 +11,6 @@ public class DreamCatcherItem extends FURItem /*implements baubles.api.IBauble*/
 
 	public DreamCatcherItem(Properties PropertiesIn) {
 		super(PropertiesIn, 0, UseAction.NONE, 1);
-		//this.setMaxStackSize(1);
-		//this.setMaxDamage(Modconfig.DreamCatcher_dur);
 	}
 	
 	@Override

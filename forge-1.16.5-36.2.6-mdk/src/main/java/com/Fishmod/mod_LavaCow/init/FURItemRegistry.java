@@ -134,7 +134,7 @@ public class FURItemRegistry {
 	public static final Item HOLY_GRENADE = new FURThrowableItem("mod_lavacow:holy_grenade");
 	public static final Item FEATHER_BLACK = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:feather_black");
 	public static final Item SHATTERED_ICE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(1.8F).build()), 32, UseAction.DRINK, 0).setRegistryName("mod_lavacow:shattered_ice");
-	public static final Item DREAMCATCHER = new DreamCatcherItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(0)).setRegistryName("mod_lavacow:dreamcatcher");	
+	public static final Item DREAMCATCHER = new DreamCatcherItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final Item RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().tab(mod_LavaCow.TAB).stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");
 	public static final Item ACIDICHEART = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:acidicheart");
 	public static final Item FAMINEARMOR_HELMET = new FamineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:faminearmor_helmet");
