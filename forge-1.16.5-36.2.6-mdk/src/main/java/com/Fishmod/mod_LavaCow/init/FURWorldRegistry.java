@@ -85,9 +85,7 @@ public class FURWorldRegistry {
 		
 		if(biomeKey == null)
 			return;
-		
-		
-		
+				
 		if(FURConfig.pSpawnRate_Glowshroom.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				!(BiomeDictionary.getTypes(biomeKey).contains(Type.COLD)) && 
 				!(BiomeDictionary.getTypes(biomeKey).contains(Type.DRY))) {
@@ -240,6 +238,10 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && biomeKey.equals(Biomes.SOUL_SAND_VALLEY)) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 3, 1), 1, 1));
+		}
+		
+		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.END)) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 3, 1), 1, 1));
 		}
 		

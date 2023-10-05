@@ -157,7 +157,7 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
     public void aiStep() {
         super.aiStep();
         
-        if(this.tickCount % 2 == 0 && this.ParticleType() != null) {
+        if (this.tickCount % 2 == 0 && this.ParticleType() != null) {
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;

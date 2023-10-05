@@ -61,10 +61,6 @@ public class LavaCowEntity extends CowEntity
 		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 	
-	public float getBrightness() {
-		return 1.0F;
-	}
-	
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
 		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, FURConfig.Lavacow_Health.get()).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
 	}	

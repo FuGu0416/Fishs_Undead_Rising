@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 public class VespaRenderer extends MobRenderer<VespaEntity, VespaModel<VespaEntity>> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa1.png")
 	};
 	
 	static{

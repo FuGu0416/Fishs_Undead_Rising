@@ -49,6 +49,7 @@ import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
+import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,6 +85,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -883,5 +885,18 @@ public class EventHandler {
 			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
 			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.FLAME, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}			
+    }
+    
+    @SubscribeEvent
+    public void onELightning(EntityStruckByLightningEvent event) { 
+    	if (event.getEntity().level.getDifficulty() != Difficulty.PEACEFUL && event.getEntity() instanceof BeeEntity && (new Random().nextInt(100) < FURConfig.pBeeConvertRate_Vespa.get())) {
+            VespaEntity entity = FUREntityRegistry.VESPA.create(event.getEntity().level);
+            entity.finalizeSpawn((ServerWorld)event.getEntity().level, event.getEntity().level.getCurrentDifficultyAt(entity.blockPosition()), SpawnReason.CONVERSION, null, (CompoundNBT)null);
+            entity.moveTo(event.getEntity().blockPosition(), 0.0F, 0.0F);
+            entity.setSkin(1);
+            entity.setPersistenceRequired();
+            event.getEntity().level.addFreshEntity(entity);
+            event.getEntity().remove();
+    	}
     }
 }

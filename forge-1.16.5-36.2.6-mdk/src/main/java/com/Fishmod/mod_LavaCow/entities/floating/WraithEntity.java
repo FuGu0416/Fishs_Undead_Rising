@@ -51,11 +51,6 @@ public class WraithEntity extends FloatingMobEntity {
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
     }
     
-    @Override
-	public float getBrightness() {
-		return 1.0F;
-	}
-    
     @Nullable
     @Override
     protected IParticleData ParticleType() {

@@ -31,6 +31,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class GhostRayEntity extends FlyingMobEntity {
 	public static final float[] SIZE = {1.0F, 1.4F, 1.8F, 2.2F};
@@ -55,13 +57,6 @@ public class GhostRayEntity extends FlyingMobEntity {
         		.add(Attributes.ATTACK_DAMAGE, 0.0D)
         		.add(Attributes.FLYING_SPEED, 0.03D);
     }
-
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness() {
-       return 1.0F;
-    }
     
     @Override
     protected void defineSynchedData() {
@@ -69,6 +64,14 @@ public class GhostRayEntity extends FlyingMobEntity {
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
     	this.getEntityData().define(SIZE_VARIANT, Integer.valueOf(this.getRandom().nextInt(GhostRayEntity.SIZE.length)));
     }	
+    
+	@Override
+    public void tick() {
+    	this.noPhysics = true;
+    	super.tick();
+        this.noPhysics = false;
+        this.setNoGravity(true);
+	}
     
     public float getScale() {
         return GhostRayEntity.SIZE[this.getSize()];
@@ -94,22 +97,26 @@ public class GhostRayEntity extends FlyingMobEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GhostRay_Health.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
+    	if (SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.SOUL_SAND_VALLEY)) {
 		   this.setSkin(1);
-    	}
+    	} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.END)) {
+ 		   this.setSkin(2);
+     	}
     	
-    	if (this.random.nextFloat() < 0.01F * (float)FURConfig.pSpawnRate_GhostSwarmer.get()) {
-	    	for(int i = 0; i < 2 + this.random.nextInt(2); ++i) {
-	    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
-	    		GhostSwarmerEntity entity = FUREntityRegistry.GHOSTSWARMER.create(this.level);
-		        entity.moveTo(blockpos, this.yRot, 0.0F);
-		        entity.finalizeSpawn(worldIn, difficulty, SpawnReason.REINFORCEMENT, (ILivingEntityData)null, (CompoundNBT)null);
-		        entity.setOwnerUUID(this.getUUID());
-		        entity.doSitCommand(null);
-		        entity.doFollowCommand(null);
-		    	
-	            if(!this.level.isClientSide())
-	            	this.level.addFreshEntity(entity);
+    	if (this.getSkin() != 2) {
+	    	if (this.random.nextFloat() < 0.01F * (float)FURConfig.pSpawnRate_GhostSwarmer.get()) {
+		    	for(int i = 0; i < 2 + this.random.nextInt(2); ++i) {
+		    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
+		    		GhostSwarmerEntity entity = FUREntityRegistry.GHOSTSWARMER.create(this.level);
+			        entity.moveTo(blockpos, this.yRot, 0.0F);
+			        entity.finalizeSpawn(worldIn, difficulty, SpawnReason.REINFORCEMENT, (ILivingEntityData)null, (CompoundNBT)null);
+			        entity.setOwnerUUID(this.getUUID());
+			        entity.doSitCommand(null);
+			        entity.doFollowCommand(null);
+			    	
+		            if(!this.level.isClientSide())
+		            	this.level.addFreshEntity(entity);
+		    	}
 	    	}
     	}
     	

@@ -15,7 +15,8 @@ import net.minecraft.util.math.BlockPos;
 public class GhostRayRenderer extends MobRenderer<GhostRayEntity, GhostRayModel<GhostRayEntity>> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray2.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray2.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray3.png")
 	};
 	
 	static{
@@ -39,6 +40,7 @@ public class GhostRayRenderer extends MobRenderer<GhostRayEntity, GhostRayModel<
     	}
 	}
     
+    @Override
     protected int getBlockLightLevel(GhostRayEntity p_225624_1_, BlockPos p_225624_2_) {
         return 15;
     }

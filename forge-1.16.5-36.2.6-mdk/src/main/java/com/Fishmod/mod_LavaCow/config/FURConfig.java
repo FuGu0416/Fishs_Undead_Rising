@@ -73,6 +73,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Vespa;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pBeeConvertRate_Vespa;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Scarecrow;
 	public static final ForgeConfigSpec.ConfigValue<Double> Scarecrow_Health;
@@ -379,6 +380,7 @@ public final class FURConfig {
 		pEvolveRate_Vespa = BUILDER.comment("Set the chance of Vespa transformed from a Parasite [0-100]").defineInRange("vespa evolve rate", 20, 0, 100);
 		Vespa_Health = BUILDER.comment("Maximum Vespa health [1-1000]").defineInRange("vespa health", 20.0D, 1.0D, 1000.0D);
 		Vespa_Attack = BUILDER.comment("Vespa strength [1-1000]").defineInRange("vespa attack", 5.0D, 1.0D, 1000.0D);
+		pBeeConvertRate_Vespa = BUILDER.comment("Set the chance of Vespa converted from a lightning-struck Bee [0-100]").defineInRange("vespa convert rate", 10, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Scarecrow");
