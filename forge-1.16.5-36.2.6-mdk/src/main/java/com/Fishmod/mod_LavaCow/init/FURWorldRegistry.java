@@ -303,6 +303,10 @@ public class FURWorldRegistry {
 		if(FURConfig.pSpawnRate_MummifiedCod.get() > 0 && biomeKey.equals(Biomes.DESERT_LAKES)) {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.MUMMIFIEDCOD, FURConfig.pSpawnRate_MummifiedCod.get(), 3, 6));
 		}
+		
+		if(FURConfig.pSpawnRate_MummifiedCod.get() > 0 && biomeKey.equals(Biomes.RIVER)) {
+			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONETROUT, FURConfig.pSpawnRate_BoneTrout.get(), 3, 6));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

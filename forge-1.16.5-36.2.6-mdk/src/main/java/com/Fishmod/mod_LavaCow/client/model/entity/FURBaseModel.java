@@ -49,6 +49,10 @@ public class FURBaseModel<T extends Entity> extends EntityModel<T> {
         modelRenderer.zRot = z;
     }
     
+    protected void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    	this.setRotateAngle(modelRenderer, x, y, z);
+    }
+    
     public void translateToHand(HandSide side, MatrixStack p_225599_2_) {
         this.getArm(side).translateAndRotate(p_225599_2_);
     }

@@ -20,7 +20,7 @@ import com.Fishmod.mod_LavaCow.entities.UndeadSwineEntity;
 import com.Fishmod.mod_LavaCow.entities.UndertakerEntity;
 import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
-import com.Fishmod.mod_LavaCow.entities.aquatic.MummifiedCodEntity;
+import com.Fishmod.mod_LavaCow.entities.aquatic.UndeadFishEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
 import com.Fishmod.mod_LavaCow.entities.floating.AvatonEntity;
@@ -75,7 +75,6 @@ import net.minecraft.world.gen.Heightmap;
 
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FUREntityRegistry {
-
 	public static final EntityType<LavaCowEntity> LAVACOW = registerEntity(EntityType.Builder.of(LavaCowEntity::new, EntityClassification.CREATURE).sized(0.9F, 1.4F).fireImmune(), "lavacow");
 	public static final EntityType<MycosisEntity> MYCOSIS = registerEntity(EntityType.Builder.of(MycosisEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mycosis");
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
@@ -94,8 +93,8 @@ public class FUREntityRegistry {
 	public static final EntityType<VespaEntity> VESPA = registerEntity(EntityType.Builder.of(VespaEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "vespa");
 	public static final EntityType<ScarecrowEntity> SCARECROW = registerEntity(EntityType.Builder.of(ScarecrowEntity::new, EntityClassification.MONSTER).sized(0.8F, 3.0F), "scarecrow");
 	public static final EntityType<VespaCocoonEntity> VESPACOCOON = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "vespacocoon");
-	public static final EntityType<PiranhaEntity> PIRANHA = registerEntity(EntityType.Builder.of(PiranhaEntity::new, EntityClassification.WATER_AMBIENT).sized(1.0F, 0.8F), "piranha");
-	public static final EntityType<SwarmerEntity> SWARMER = registerEntity(EntityType.Builder.of(SwarmerEntity::new, EntityClassification.WATER_AMBIENT).sized(0.7F, 0.5F), "swarmer");
+	public static final EntityType<PiranhaEntity> PIRANHA = registerEntity(EntityType.Builder.of(PiranhaEntity::new, EntityClassification.WATER_AMBIENT).sized(0.7F, 0.5F), "piranha");
+	public static final EntityType<SwarmerEntity> SWARMER = registerEntity(EntityType.Builder.of(SwarmerEntity::new, EntityClassification.WATER_AMBIENT).sized(1.0F, 0.8F), "swarmer");
 	public static final EntityType<BoneWormEntity> BONEWORM = registerEntity(EntityType.Builder.of(BoneWormEntity::new, EntityClassification.MONSTER).sized(0.8F, 2.0F), "boneworm");
 	public static final EntityType<PinguEntity> PINGU = registerEntity(EntityType.Builder.of(PinguEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.8F), "pingu");
 	public static final EntityType<UndertakerEntity> UNDERTAKER = registerEntity(EntityType.Builder.of(UndertakerEntity::new, EntityClassification.MONSTER).sized(1.8F, 2.4F), "undertaker");
@@ -120,7 +119,8 @@ public class FUREntityRegistry {
 	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");
 	public static final EntityType<VespaCocoonEntity> BEELZEBUBPUPA = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "beelzebubpupa");
 	public static final EntityType<EnigmothEntity> ENIGMOTH = registerEntity(EntityType.Builder.of(EnigmothEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F).fireImmune(), "enigmoth");
-	public static final EntityType<MummifiedCodEntity> MUMMIFIEDCOD = registerEntity(EntityType.Builder.of(MummifiedCodEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "mummified_cod");
+	public static final EntityType<UndeadFishEntity> MUMMIFIEDCOD = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "mummified_cod");
+	public static final EntityType<UndeadFishEntity> BONETROUT = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "bone_trout");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -161,7 +161,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(PTERA, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
         EntitySpawnPlacementRegistry.register(VESPA, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
         EntitySpawnPlacementRegistry.register(SCARECROW, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ScarecrowEntity::checkScarecrowSpawnRules);
-        EntitySpawnPlacementRegistry.register(PIRANHA, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules);
+        EntitySpawnPlacementRegistry.register(PIRANHA, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PiranhaEntity::checkPiranhaSpawnRules);
         EntitySpawnPlacementRegistry.register(SWARMER, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules);
         EntitySpawnPlacementRegistry.register(BONEWORM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BoneWormEntity::checkBoneWormSpawnRules);
         EntitySpawnPlacementRegistry.register(PINGU, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
@@ -184,7 +184,8 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(GHOSTSWARMER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GhostSwarmerEntity::checkWispSpawnRules);
         EntitySpawnPlacementRegistry.register(BEELZEBUB, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
         EntitySpawnPlacementRegistry.register(ENIGMOTH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRulesNoSky);
-        EntitySpawnPlacementRegistry.register(MUMMIFIEDCOD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MummifiedCodEntity::checkFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(MUMMIFIEDCOD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(BONETROUT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -253,5 +254,6 @@ public class FUREntityRegistry {
         event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());
         event.put(ENIGMOTH, BeelzebubEntity.createAttributes().build());
         event.put(MUMMIFIEDCOD, CodEntity.createAttributes().build());
+        event.put(BONETROUT, CodEntity.createAttributes().build());
     }
 }

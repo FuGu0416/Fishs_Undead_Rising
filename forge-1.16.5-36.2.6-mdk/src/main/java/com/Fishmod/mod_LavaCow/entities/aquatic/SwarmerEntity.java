@@ -50,6 +50,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -108,8 +109,17 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
        return 2;
     }
     
+    public static boolean isDarkEnoughToSpawn(IServerWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {
+        if (p_223323_0_.getBrightness(LightType.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
+           return false;
+        } else {
+           int i = p_223323_0_.getLevel().isThundering() ? p_223323_0_.getMaxLocalRawBrightness(p_223323_1_, 10) : p_223323_0_.getMaxLocalRawBrightness(p_223323_1_);
+           return i <= p_223323_2_.nextInt(8);
+        }
+	}
+    
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return p_223316_4_.nextInt(15) == 0 && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
+        return p_223316_4_.nextInt(15) == 0 && isDarkEnoughToSpawn((IServerWorld) p_223316_1_, p_223316_3_, p_223316_4_) && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
     }
     
     public int getMaxSchoolSize() {

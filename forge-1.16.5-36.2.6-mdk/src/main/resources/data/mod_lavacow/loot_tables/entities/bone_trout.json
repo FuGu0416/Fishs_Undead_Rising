@@ -1,0 +1,14 @@
+{
+    "pools":[
+        {
+            "name":"mod_lavacow:bone_trout",
+            "rolls":1,
+            "entries":[
+                {
+                    "type":"item",
+                    "name":"mod_lavacow:bone_trout"
+                }
+            ]
+        }
+    ]
+}

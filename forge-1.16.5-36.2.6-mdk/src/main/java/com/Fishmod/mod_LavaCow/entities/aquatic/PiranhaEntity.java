@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.aquatic;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -18,6 +20,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.EntityTypeTags;
@@ -25,8 +28,11 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class PiranhaEntity extends SwarmerEntity {
@@ -52,6 +58,10 @@ public class PiranhaEntity extends SwarmerEntity {
         		.add(Attributes.FOLLOW_RANGE, 8.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Piranha_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Piranha_Attack.get());
+    }
+    
+    public static boolean checkPiranhaSpawnRules(EntityType<? extends PiranhaEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+        return p_223316_4_.nextInt(15) == 0 && AbstractFishEntity.checkFishSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public int getMaxSchoolSize() {

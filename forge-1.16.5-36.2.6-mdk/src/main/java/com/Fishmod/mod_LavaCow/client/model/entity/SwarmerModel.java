@@ -84,14 +84,16 @@ public class SwarmerModel<T extends Entity> extends FURBaseModel<T> implements I
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-       float f = 1.0F;
-       if (!entityIn.isInWater()) {
-          f = 1.5F;
-       }
-
-       this.Body2.yRot = -f * 0.15F * MathHelper.sin(0.6F * ageInTicks);
-       this.Fin_caudal.yRot = this.Body2.yRot * 1.2F;
-       this.Jaw.xRot = -0.36425021489121656F + (-f * 0.45F * MathHelper.sin(0.6F * ageInTicks));
+    	float f = 1.0F;
+    	if (!entityIn.isInWater()) {
+    		f = 1.5F;
+    	}
+		
+    	this.Body2.yRot = -f * 0.15F * MathHelper.sin(0.6F * ageInTicks);
+    	this.Fin_pectoral_r.yRot = 0.7285F - f * 0.25F * MathHelper.sin(0.6F * ageInTicks);
+    	this.Fin_pectoral_l.yRot = -0.7285F - f * 0.25F * MathHelper.sin(0.6F * ageInTicks + 0.3F * (float)Math.PI);
+    	this.Fin_caudal.yRot = this.Body2.yRot * 1.2F;
+    	this.Jaw.xRot = -0.36425021489121656F + (-f * 0.45F * MathHelper.sin(0.6F * ageInTicks));
     }
 
 	@Override
