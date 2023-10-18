@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class ParasiteModel<T extends ParasiteEntity> extends FURBaseModel<T> implements IHasHead {
-	
 	private final ModelRenderer[] Parasite_Seg;
 	
     public ModelRenderer Mandible0;
@@ -100,38 +99,36 @@ public class ParasiteModel<T extends ParasiteEntity> extends FURBaseModel<T> imp
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-       for(int i = 1; i < this.Parasite_Seg.length; i++) {
-          
-          if(this.state == ParasiteModel.State.RIDING) {
-        	  this.Parasite_Seg[i].y = 20.0F + Math.abs((float)i - 2.0F) + MathHelper.sin(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.2F * (float)Math.abs(i - 2);
-          	  this.Parasite_Seg[i].yRot = 0.0F;
-          }
-          else {
-        	  this.Parasite_Seg[i].y = 20.0F + Math.abs((float)i - 2.0F);
-        	  this.Parasite_Seg[i].yRot = MathHelper.cos(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.05F * (float)(1 + Math.abs(i - 2));
-        	  this.Parasite_Seg[i].x = MathHelper.sin(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.2F * (float)Math.abs(i - 2);
-          }
-          
-       }
+    	for (int i = 1; i < this.Parasite_Seg.length; i++) {      
+    		if (this.state == ParasiteModel.State.RIDING) {
+    			this.Parasite_Seg[i].y = 20.0F + Math.abs((float)i - 2.0F) + MathHelper.sin(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.2F * (float)Math.abs(i - 2);
+    			this.Parasite_Seg[i].yRot = 0.0F;
+    		} else {
+    			this.Parasite_Seg[i].y = 20.0F + Math.abs((float)i - 2.0F);
+    			this.Parasite_Seg[i].yRot = MathHelper.cos(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.05F * (float)(1 + Math.abs(i - 2));
+    			this.Parasite_Seg[i].x = MathHelper.sin(ageInTicks * 0.9F + (float)i * 0.15F * (float)Math.PI) * (float)Math.PI * 0.2F * (float)Math.abs(i - 2);
+    		}        
+    	}
        
-       if(this.state == ParasiteModel.State.RIDING)
-    	   this.Parasite_Seg[0].xRot = 1.0F;
-       else
+    	if (this.state == ParasiteModel.State.RIDING) {
+    		this.Parasite_Seg[0].xRot = 1.0F;
+    	} else {
     	   this.Parasite_Seg[0].xRot = 0.0F;
+    	}
        
-       this.Mandible0.xRot = -0.7285004297824331F + 0.35F * MathHelper.sin(ageInTicks * 0.9F);
-       this.Mandible1.yRot = 0.26F * MathHelper.sin(ageInTicks * 0.9F);
-       this.Mandible2.yRot = -0.26F * MathHelper.sin(ageInTicks * 0.9F);
+    	this.Mandible0.xRot = -0.7285004297824331F + 0.35F * MathHelper.sin(ageInTicks * 0.9F);
+    	this.Mandible1.yRot = 0.26F * MathHelper.sin(ageInTicks * 0.9F);
+    	this.Mandible2.yRot = -0.26F * MathHelper.sin(ageInTicks * 0.9F);
        
-	   if (entityIn.getVehicle() != null)
+    	if (entityIn.getVehicle() != null) {
 		   this.state = ParasiteModel.State.RIDING;
-	   else
+    	} else {
 		   this.state = ParasiteModel.State.NORMAL;
+    	}
     }
        
     @OnlyIn(Dist.CLIENT)
-    static enum State
-    {
+    static enum State {
         RIDING,
         NORMAL;
     }

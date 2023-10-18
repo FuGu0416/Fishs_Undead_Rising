@@ -18,8 +18,8 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha/zombiepiranha2.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
+	static {
+		for (ResourceLocation texture: TEXTURES)
 			System.out.println(texture.getPath());
     }
 
@@ -29,8 +29,7 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
     
     @Override
 	public ResourceLocation getTextureLocation(SwarmerEntity entity) {
-        if(entity instanceof PiranhaEntity)return TEXTURES[1];
-        else return TEXTURES[entity.getSkin()];
+    	return TEXTURES[(entity instanceof PiranhaEntity) ? 1 : entity.getSkin()];
     }
     
     @Override
@@ -46,5 +45,5 @@ public class SwarmerRenderer extends MobRenderer<SwarmerEntity, SwarmerModel<Swa
         	p_225621_2_.translate(0.1F, -0.3F, -0.1F);
         	p_225621_2_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
         }        
-     }
+	}
 }
