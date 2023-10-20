@@ -12,6 +12,8 @@
     "mod_lavacow:piranha_item",
     "mod_lavacow:piranha_item_cooked",
     "mod_lavacow:ghostswarmer_item",
-    "mod_lavacow:mummified_cod"
+    "mod_lavacow:mummified_cod",
+    "mod_lavacow:lamprey",
+    "mod_lavacow:lamprey_cooked"
   ]
 }

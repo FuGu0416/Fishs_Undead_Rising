@@ -17,6 +17,7 @@ import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
@@ -69,8 +70,15 @@ public class FURItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
     	
-		if((stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || stack.getItem().equals(FURItemRegistry.BOABING)) && entityLiving.isOnFire())
+		if((stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || stack.getItem().equals(FURItemRegistry.BOABING)) && entityLiving.isOnFire()) {
 			entityLiving.clearFire();
+		}
+		
+        if (!worldIn.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI) && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
+        	if (!((PlayerEntity)entityLiving).inventory.add(new ItemStack(Items.STICK, 2))) {
+        		((PlayerEntity)entityLiving).spawnAtLocation(new ItemStack(Items.STICK, 2));
+            }
+        }
 		
     	return super.finishUsingItem(stack, worldIn, entityLiving);
     }

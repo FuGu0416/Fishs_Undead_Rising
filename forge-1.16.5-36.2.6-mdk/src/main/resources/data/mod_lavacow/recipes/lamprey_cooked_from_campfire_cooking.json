@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+	"item": "mod_lavacow:lamprey"
+  },
+  "result": "mod_lavacow:lamprey_cooked",
+  "experience": 0.35,
+  "cookingtime": 600
+}

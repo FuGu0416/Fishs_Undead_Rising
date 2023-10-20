@@ -69,12 +69,13 @@ public class NetherStewItem extends FURItem {
     		entityLiving.addEffect(new EffectInstance(Effects.SLOW_FALLING, 6 * 20, 2));
     		entityLiving.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
     	}
-        if(!worldIn.isClientSide && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
+    	
+        if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
         	if (!((PlayerEntity)entityLiving).inventory.add(new ItemStack(Items.BOWL))) {
         		((PlayerEntity)entityLiving).spawnAtLocation(new ItemStack(Items.BOWL));
             }
         }
+        
     	return super.finishUsingItem(stack, worldIn, entityLiving);
     }
-
 }
