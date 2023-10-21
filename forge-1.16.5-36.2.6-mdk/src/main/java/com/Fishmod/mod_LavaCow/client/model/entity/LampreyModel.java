@@ -119,9 +119,9 @@ public class LampreyModel<T extends LampreyEntity> extends FURBaseModel<T> imple
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		float f = 1.0F;
+		float f = 0.8F;
 		if (!entity.isInWater()) {
-			f = 1.5F;
+			f = 1.2F;
 		}
 	      
 		for (int i = 1; i < this.Parasite_Seg.length; i++) {	           
