@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
+import com.Fishmod.mod_LavaCow.entities.aquatic.LampreyEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
 import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
@@ -119,8 +120,9 @@ public class EventHandler {
     	Entity killer = event.getSource().getDirectEntity();
 	    World world = event.getEntityLiving().level;
 	    int Armor_Famine_lvl = 0;
-		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
-	
+		ITag<EntityType<?>> tag_parasite = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
+		ITag<EntityType<?>> tag_lamprey = EntityTypeTags.getAllTags().getTag(FURTagRegistry.LAMPREY_TARGETS);
+		
 	    if(killer != null) {
 			for(ItemStack S : killer.getArmorSlots()) {
 				if(S.getItem() instanceof FamineArmorItem) {
@@ -135,15 +137,15 @@ public class EventHandler {
 		}
 
     	/**
-         * Give a chance to spawn horde of Parasites when a zombie dies.
+         * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
-    	if (!world.isClientSide() && tag != null && 
-    			(((entity instanceof LivingEntity && entity.getType().is(tag)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
-    			|| (ParasiteEntity.gotParasite(entity.getPassengers()) != null)
+    	if (!world.isClientSide() && tag_parasite != null && !entity.isInWaterOrBubble() &&
+    			(((entity instanceof LivingEntity && entity.getType().is(tag_parasite)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
+    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE) != null)
     			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
-    		ParasiteEntity passenger = ParasiteEntity.gotParasite(entity.getPassengers());
+    		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE);
     		
     		if (event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)) {
     			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
@@ -154,6 +156,7 @@ public class EventHandler {
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
         		ParasiteEntity ParasiteEntity = FUREntityRegistry.PARASITE.create(world);
+        		ParasiteEntity.finalizeSpawn(ParasiteEntity.getServer().overworld(), world.getCurrentDifficultyAt(ParasiteEntity.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
         		
         		if (passenger != null) { 
         			ParasiteEntity.setSkin(passenger.getSkin());
@@ -169,11 +172,36 @@ public class EventHandler {
         		} else {
         			ParasiteEntity.setSkin(0);
         		}
-        		
+        		       		
                 ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
                 world.addFreshEntity(ParasiteEntity);
     		}
     	}			
+
+    	/**
+         * Give a chance to spawn horde of Lampreys when a listed target dies.
+         **/
+    	if (!world.isClientSide() && tag_lamprey != null && entity.isInWaterOrBubble() &&
+    			(((entity instanceof LivingEntity && entity.getType().is(tag_lamprey)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get()))
+    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.LAMPREY) != null)
+    			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
+    		int var2 = 3 + new Random().nextInt(3), var6 = 0;
+    		float var4,var5;
+    		
+    		if (event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)) {
+    			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
+    		}
+    		
+    		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
+    			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
+                var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
+                
+        		LampreyEntity ParasiteEntity = FUREntityRegistry.LAMPREY.create(world);       		       		
+        		ParasiteEntity.finalizeSpawn(ParasiteEntity.getServer().overworld(), world.getCurrentDifficultyAt(ParasiteEntity.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
+        		ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
+                world.addFreshEntity(ParasiteEntity);
+    		}
+    	}	
     	
     	if (entity instanceof MimicEntity) {
     		int ItemPos = ((MimicEntity)entity).containsItem(Items.TOTEM_OF_UNDYING);

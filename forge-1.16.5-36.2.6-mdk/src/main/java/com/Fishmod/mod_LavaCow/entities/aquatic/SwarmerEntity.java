@@ -126,7 +126,10 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
         return 12;
     }
     
-    protected void handleAirSupply(int p_209207_1_) {    	
+    protected void handleAirSupply(int p_209207_1_) {   
+    	if (!this.getType().equals(FUREntityRegistry.SWARMER)) {
+    		super.handleAirSupply(p_209207_1_);
+    	}
     }
     
     @Override
@@ -142,7 +145,9 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
         boolean flag = p_70652_1_.hurt(DamageSource.mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
            this.doEnchantDamageEffects(this, p_70652_1_);
-           this.playSound(FURSoundRegistry.SWARMER_ATTACK, 1.0F, 1.0F);
+           if (!this.getType().equals(FUREntityRegistry.LAMPREY)) {
+        	   this.playSound(FURSoundRegistry.SWARMER_ATTACK, 1.0F, 1.0F);
+           }
         }
 
         return flag;

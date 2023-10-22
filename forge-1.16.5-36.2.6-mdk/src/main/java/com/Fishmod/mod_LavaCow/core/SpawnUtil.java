@@ -1,13 +1,14 @@
 package com.Fishmod.mod_LavaCow.core;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
@@ -107,6 +108,16 @@ public class SpawnUtil {
 
     	return null;
     }
+    
+	public static Entity gotRiderEntity(List<Entity> listIn, EntityType<? extends Entity> typeIn) {
+		for(Entity C : listIn) {
+			if (C.getType().equals(typeIn)) {
+				return C;	
+			}
+		}
+		
+		return null;
+	}
     
     public static TranslationTextComponent TimeupDeathMessage(Entity entityIn) {
     	return new TranslationTextComponent("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});

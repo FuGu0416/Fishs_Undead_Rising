@@ -32,6 +32,9 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -67,11 +70,9 @@ public class ParasiteEntity extends SpiderEntity {
 	private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 	private static final Item[] ParasiteDrop = { FURItemRegistry.PARASITE_COMMON, FURItemRegistry.PARASITE_DESERT, FURItemRegistry.PARASITE_JUNGLE, FURItemRegistry.PARASITE_COOKED };
 	public int lifespawn;
-	private boolean long_live;
 	
 	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.long_live = false;
         this.lifespawn = FURConfig.Parasite_Lifespan.get() * 20; // Can live for 16s only, poor little one :(
         this.xpReward = 1;
     }
@@ -148,7 +149,7 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
 	public void tick() {
         if (this.lifespawn > 0) {
-        	if(!long_live) {
+        	if (this.getVehicle() == null) {
         		this.lifespawn--;
         	}
         } else if (!this.isSummoned() && this.getSkin() == 2 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get() || this.isTame())) {
@@ -198,8 +199,9 @@ public class ParasiteEntity extends SpiderEntity {
         		}   
         		
         		this.remove();
-        	} else
+        	} else {
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
+        	}
         } else {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         }
@@ -217,8 +219,6 @@ public class ParasiteEntity extends SpiderEntity {
         		this.doHurtTarget(mount);
         	}
         	
-        } else if (getVehicle() == null && this.long_live) {
-        	this.long_live = false;
         }
              
         if (!this.level.isClientSide()) {
@@ -268,7 +268,7 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
 	public double getMyRidingOffset() {		
 		if (this.isPassenger()) {
-			if (this.getVehicle() instanceof PlayerEntity || this.getVehicle() instanceof ZombieEntity) {
+			if ((this.getVehicle() instanceof PlayerEntity || this.getVehicle() instanceof ZombieEntity || this.getVehicle() instanceof AbstractVillagerEntity || this.getVehicle() instanceof AbstractRaiderEntity || this.getVehicle() instanceof AbstractSkeletonEntity) && !((LivingEntity)this.getVehicle()).isBaby()) {
 				return this.getVehicle().getBbHeight()/2  - 0.85F;
 			} else {
 				return this.getVehicle().getBbHeight() * 0.65D - 1.0D;
@@ -305,7 +305,6 @@ public class ParasiteEntity extends SpiderEntity {
 				((LivingEntity) entityIn).addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
 			}
     		this.startRiding(entityIn);
-            this.long_live = true;
         }
     }
 	
@@ -317,16 +316,7 @@ public class ParasiteEntity extends SpiderEntity {
 				playerIn.addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
 			}
     		this.startRiding(playerIn);
-            this.long_live = true;
         } 	
-	}
-	
-	public static ParasiteEntity gotParasite(List<Entity> listIn) {
-		for(Entity C : listIn)
-			if(C instanceof ParasiteEntity)
-				return (ParasiteEntity)C;	
-		
-		return null;
 	}
 	
     public Direction getAttachedBlock() {
@@ -492,7 +482,7 @@ public class ParasiteEntity extends SpiderEntity {
         }
 
         public boolean canUse() {
-           return super.canUse() && !this.mob.isVehicle();
+           return super.canUse() && !this.mob.isPassenger();
         }
 
         public boolean canContinueToUse() {

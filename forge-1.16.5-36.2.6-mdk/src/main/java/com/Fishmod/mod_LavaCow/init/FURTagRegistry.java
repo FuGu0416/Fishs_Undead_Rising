@@ -12,4 +12,5 @@ public class FURTagRegistry {
     public static final ResourceLocation SWARMER_TARGETS = new ResourceLocation("mod_lavacow", "swarmer_targets");
     public static final ResourceLocation VESPA_TARGETS = new ResourceLocation("mod_lavacow", "vespa_targets");
     public static final ResourceLocation WENDIGO_TARGETS = new ResourceLocation("mod_lavacow", "wendigo_targets");
+    public static final ResourceLocation LAMPREY_TARGETS = new ResourceLocation("mod_lavacow", "lamprey_targets");
 }

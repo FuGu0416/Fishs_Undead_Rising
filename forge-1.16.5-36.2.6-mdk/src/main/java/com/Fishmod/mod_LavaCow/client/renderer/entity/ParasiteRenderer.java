@@ -53,7 +53,11 @@ public class ParasiteRenderer extends MobRenderer<ParasiteEntity, ParasiteModel<
 			matrixStackIn.translate(0.0F, 0.0F, -0.4F);
 			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 			if((entity.getVehicle() instanceof PlayerEntity || entity.getVehicle() instanceof ZombieEntity || entity.getVehicle() instanceof AbstractVillagerEntity || entity.getVehicle() instanceof AbstractRaiderEntity || entity.getVehicle() instanceof AbstractSkeletonEntity) && !((LivingEntity)entity.getVehicle()).isBaby()) {
-				if(!(entity.getVehicle() instanceof PlayerEntity))matrixStackIn.translate(0.0F, 0.3F, -0.3F);
+				if (!(entity.getVehicle() instanceof PlayerEntity)) {
+					matrixStackIn.translate(0.0F, 0.3F, -0.3F);
+				} else {
+					matrixStackIn.translate(0.0F, 0.5F, -0.3F);
+				}
 				matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
 				
 			}

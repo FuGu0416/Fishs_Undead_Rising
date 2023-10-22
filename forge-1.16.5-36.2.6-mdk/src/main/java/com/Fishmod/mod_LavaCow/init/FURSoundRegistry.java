@@ -144,6 +144,10 @@ public class FURSoundRegistry {
 	public static final SoundEvent RANDOM_FRUIT_PLANT = addSoundEvent("random_fruit_plant");
 	public static final SoundEvent RANDOM_PIRANHA_SHOOT = addSoundEvent("random_piranha_shoot");
 	public static final SoundEvent RANDOM_THORN_SHOOT = addSoundEvent("random_thorn_shoot");
+
+	public static final SoundEvent LAMPREY_AMBIENT = addSoundEvent("lamprey_ambient");
+	public static final SoundEvent LAMPREY_HURT = addSoundEvent("lamprey_hurt");
+	public static final SoundEvent LAMPREY_DEATH = addSoundEvent("lamprey_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);

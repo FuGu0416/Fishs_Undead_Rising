@@ -717,5 +717,26 @@
 		"category": "neutral",
 		"subtitle": "random_thorn_shoot",
 		"sounds": [{"name": "mod_lavacow:random/thorn_shoot","stream": true}]
+	},
+	
+	"lamprey_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_ambient",
+		"sounds": ["mod_lavacow:entity/lamprey/ambient0", "mod_lavacow:entity/lamprey/ambient1"]
+	},
+	
+	"lamprey_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_hurt",
+		"sounds": ["mod_lavacow:entity/lamprey/hurt"]
+	},
+	
+	"lamprey_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_death",
+		"sounds": [{"name": "mod_lavacow:entity/lamprey/death","stream": true}]
 	}
 }

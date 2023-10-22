@@ -212,6 +212,12 @@ public final class FURConfig {
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_MummifiedCod;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_BoneTrout;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Lamprey;
+	public static final ForgeConfigSpec.ConfigValue<Double> Lamprey_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Lamprey_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Lamprey_Attach;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Lamprey_Lifespan;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
@@ -568,6 +574,14 @@ public final class FURConfig {
 		BUILDER.push("Fish");
 		pSpawnRate_MummifiedCod = BUILDER.comment("Set the spawn rate of Mummified Cod [0-100]").defineInRange("mummified cod spawn rate", 1, 0, 100);
 		pSpawnRate_BoneTrout = BUILDER.comment("Set the spawn rate of Bone Trout [0-100]").defineInRange("bone trout spawn rate", 1, 0, 100);
+		BUILDER.pop();
+		
+		BUILDER.push("Lamprey");
+		pSpawnRate_Lamprey = BUILDER.comment("Set the spawn rate of Lamprey [0-100]").defineInRange("lamprey spawn rate", 10, 0, 100);
+		Lamprey_Health = BUILDER.comment("Maximum Lamprey health [1-1000]").defineInRange("lamprey health", 6.0D, 1.0D, 1000.0D);
+		Lamprey_Attack = BUILDER.comment("Lamprey strength [1-1000]").defineInRange("lamprey attack", 1.0D, 1.0D, 1000.0D);
+		Lamprey_Attach = BUILDER.comment("Lamprey will attack their target by attaching on them [false/true]").define("lamprey attacks by attaching onto target", true);
+		Lamprey_Lifespan = BUILDER.comment("The amount of seconds before Lamprey naturally die").defineInRange("lamprey lifespan", 16, 0, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");
