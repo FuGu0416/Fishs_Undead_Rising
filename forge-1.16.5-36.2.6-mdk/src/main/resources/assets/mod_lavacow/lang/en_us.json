@@ -128,7 +128,17 @@
 	"item.mod_lavacow.charming_catalyst": "Charming Catalyst",
 	"item.mod_lavacow.enigmoth_larva": "Enigmoth Caterpillar",
 	"item.mod_lavacow.enigmoth_larva_cooked": "Cooked Enigmoth Caterpillar",
-					
+	"item.mod_lavacow.holy_water": "Holy Water",
+	"item.mod_lavacow.basic_bomb": "Basic Bomb",
+	"item.mod_lavacow.mummified_cod": "Mummified Cod",
+	"item.mod_lavacow.mummified_cod_bucket": "Bucket of Mummified Cod",
+	"item.mod_lavacow.bone_trout": "Bone Trout",
+	"item.mod_lavacow.bone_trout_bucket": "Bucket of Bone Trout",
+	"item.mod_lavacow.lamprey": "Lamprey",
+	"item.mod_lavacow.lamprey_cooked": "Cooked Lamprey",
+	"item.mod_lavacow.lamprey_kabayaki": "Lamprey Kabayaki",
+	"item.mod_lavacow.lamprey_bucket": "Bucket of Lamprey",
+						
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
 	"item.mod_lavacow.spawn_egg_parasite": "Parasite Spawn Egg",
@@ -172,6 +182,9 @@
 	"item.mod_lavacow.spawn_egg_scarab": "Amber Scarab Spawn Egg",
 	"item.mod_lavacow.spawn_egg_beelzebub": "Beelzebub Spawn Egg",
 	"item.mod_lavacow.spawn_egg_enigmoth": "Enigmoth Spawn Egg",
+	"item.mod_lavacow.spawn_egg_mummified_cod": "Mummified Cod Spawn Egg",
+	"item.mod_lavacow.spawn_egg_bone_trout": "Bone Trout Spawn Egg",
+	"item.mod_lavacow.spawn_egg_lamprey": "Lamprey Spawn Egg",
 		
 	"item.mod_lavacow.banner_pattern_skeletonking": "Banner Pattern",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "Skeleton King",
@@ -282,7 +295,10 @@
 	"entity.mod_lavacow.beelzebub": "Beelzebub",
 	"entity.mod_lavacow.beelzebubpupa": "Beelzebub Pupa",
 	"entity.mod_lavacow.enigmoth": "Enigmoth",
-	
+	"entity.mod_lavacow.mummified_cod": "Mummified Cod",
+	"entity.mod_lavacow.bone_trout": "Bone Trout",
+	"entity.mod_lavacow.lamprey": "Lamprey",
+			
 	"entity.mod_lavacow.warsmallfireball": "Fireball",
 	"entity.mod_lavacow.piranhalauncher": "Swarmer",
 	"entity.mod_lavacow.acidjet": "Gastric Fluid",
@@ -424,7 +440,14 @@
 	"entity_enigmoth_flap": "Enigmoth flaps",
 	"entity_enigmoth_death": "Enigmoth dies",
 	"entity_enigmoth_hurt": "Enigmoth hurts",
-			
+
+	"random_piranha_shoot": "swarm shot",
+	"random_thorn_shoot": "thorn shot",
+
+	"entity_lamprey_ambient": "Lamprey chirps",
+	"entity_lamprey_death": "Lamprey dies",
+	"entity_lamprey_hurt": "Lamprey hurts",
+				
 	"tootip.mod_lavacow:bonesword": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
 	"tootip.mod_lavacow:netherstew": "Gives random effects(0:40) when eaten.",
 	"tootip.mod_lavacow:goldenheart": "Gives Regeneration and repairs (+1/sec) all equipment when in the hotbar.",

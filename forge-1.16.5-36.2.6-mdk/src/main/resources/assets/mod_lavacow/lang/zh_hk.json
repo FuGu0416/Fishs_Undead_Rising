@@ -128,7 +128,17 @@
 	"item.mod_lavacow.charming_catalyst": "迷情催化藥水",
 	"item.mod_lavacow.enigmoth_larva": "謎影蛾幼蟲",
 	"item.mod_lavacow.enigmoth_larva_cooked": "炙燒謎影蛾幼蟲",
-				
+	"item.mod_lavacow.holy_water": "聖水",
+	"item.mod_lavacow.basic_bomb": "基礎炸彈",
+	"item.mod_lavacow.mummified_cod": "木乃伊魚",
+	"item.mod_lavacow.mummified_cod_bucket": "木乃伊魚桶",
+	"item.mod_lavacow.bone_trout": "骷髏鱒",
+	"item.mod_lavacow.bone_trout_bucket": "骷髏鱒桶",
+	"item.mod_lavacow.lamprey": "七鰓鰻",
+	"item.mod_lavacow.lamprey_cooked": "烤七鰓鰻",
+	"item.mod_lavacow.lamprey_kabayaki": "蒲燒鰻",
+	"item.mod_lavacow.lamprey_bucket": "七鰓鰻桶",
+					
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -172,6 +182,9 @@
 	"item.mod_lavacow.spawn_egg_scarab": "琥珀聖甲蟲生怪蛋",
 	"item.mod_lavacow.spawn_egg_beelzebub": "魔王蠅生怪蛋",
 	"item.mod_lavacow.spawn_egg_enigmoth": "謎影蛾生怪蛋",
+	"item.mod_lavacow.spawn_egg_mummified_cod": "木乃伊魚生怪蛋",
+	"item.mod_lavacow.spawn_egg_bone_trout": "骷髏鱒生怪蛋",
+	"item.mod_lavacow.spawn_egg_lamprey": "七鰓鰻生怪蛋",
 		
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
@@ -282,7 +295,10 @@
 	"entity.mod_lavacow.beelzebub": "魔王蠅",
 	"entity.mod_lavacow.beelzebubpupa": "魔王蠅蛹",
 	"entity.mod_lavacow.enigmoth": "謎影蛾",
-
+	"entity.mod_lavacow.mummified_cod": "木乃伊魚",
+	"entity.mod_lavacow.bone_trout": "骷髏鱒",
+	"entity.mod_lavacow.lamprey": "七鰓鰻",
+	
 	"entity.mod_lavacow.warsmallfireball": "火球",
 	"entity.mod_lavacow.piranhalauncher": "群獵者",
 	"entity.mod_lavacow.acidjet": "胃酸液",
@@ -296,6 +312,7 @@
 	"entity.mod_lavacow.cactus_thorn": "仙人掌刺",
 	"entity.mod_lavacow.sapjet": "樹液彈",
 	"entity.mod_lavacow.moth_scales": "蛾鱗粉",
+	"entity.mod_lavacow.basic_bomb": "炸彈",
 			
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",
@@ -344,7 +361,7 @@
 	"entity_ptera_death": "翼生獸死亡",
 	"entity_ptera_hurt": "翼生獸受傷",
 
-	"entity_vespa_ambient": "巨蜂振翅聲",
+	"entity_vespa_ambient": "巨蜂窸窣聲",
 	"entity_vespa_death": "巨蜂死亡",
 	"entity_vespa_hurt": "巨蜂受傷",
 
@@ -427,7 +444,11 @@
 	
 	"random_piranha_shoot": "群獵者發射",
 	"random_thorn_shoot": "尖刺發射",
-				
+
+	"entity_lamprey_ambient": "七鰓鰻窸窣聲",
+	"entity_lamprey_death": "七鰓鰻死亡",
+	"entity_lamprey_hurt": "七鰓鰻受傷",
+					
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",

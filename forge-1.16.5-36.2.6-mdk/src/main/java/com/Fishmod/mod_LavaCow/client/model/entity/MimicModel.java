@@ -256,25 +256,26 @@ public class MimicModel<T extends MimicEntity> extends FURBaseModel<T> {
     	MimicEntity Entity = (MimicEntity)entityIn;
     	float i = ((float)Entity.getSitTimer()) / 20.0F;
     	float j = ((float)Entity.getAttackTimer()) / 5.0F;
-
+    	float f = 0.5F;
+    	
     	if((Entity.isAggressive() || Entity.isTame()) && !Entity.isInSittingPose()) {   		
     		this.showAllBodyPart(true); 
     		if(i <= 1.0F)
     			this.toCamouflagePose(i);
     		
     		if(i == 1.0F) {
-	    		this.Chest_top.xRot = -0.2F + (-0.02F * MathHelper.sin(0.12F * ageInTicks + 0.1F)); 
-	    		this.Chest_Base.yRot = 0.12F * MathHelper.cos(limbSwing);
-	    		this.Chest_Base.y = 18.0F + MathHelper.cos(limbSwing);
+	    		this.Chest_top.xRot = -0.2F + (-0.02F * MathHelper.sin(0.12F * ageInTicks + 0.1F)) + (0.06F * MathHelper.cos(limbSwing * f) * limbSwingAmount); 
+	    		this.Chest_Base.zRot = 0.08F * MathHelper.cos(limbSwing * f) * limbSwingAmount;
+	    		this.Chest_Base.y = 18.0F + MathHelper.cos(limbSwing * f);
 	
 	        	this.Chest_Base.setPos(0.0F, 18.0F, 1.0F);
 	        	this.Eye_r.setPos(-2.0F, -4.0F, -5.0F);
 	        	this.Eye_l.setPos(2.0F, -4.0F, -5.0F);
 	        	
-	        	this.Leg0_r_Seg0.zRot = -0.5F + MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
-	        	this.Leg0_l_Seg0.zRot = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
-	        	this.Leg1_r_Seg0.zRot = -0.5F + MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        	this.Leg1_l_Seg0.zRot = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
+	        	this.Leg0_r_Seg0.zRot = -0.5F + MathHelper.cos(limbSwing * f) * 0.7F * limbSwingAmount;
+	        	this.Leg0_l_Seg0.zRot = 0.5F + MathHelper.cos(limbSwing * f + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
+	        	this.Leg1_r_Seg0.zRot = -0.5F + MathHelper.cos(limbSwing * f + (float)Math.PI) * 0.7F * limbSwingAmount;
+	        	this.Leg1_l_Seg0.zRot = 0.5F + MathHelper.cos(limbSwing * f + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
     		}
     		
     		if(j > 0.0F) {
@@ -295,7 +296,7 @@ public class MimicModel<T extends MimicEntity> extends FURBaseModel<T> {
         		this.showAllBodyPart(false); 
         		if(Entity.isTame() || Entity.IdleTimer > 0) {
 	        		this.Chest_top.xRot = -0.2F + (-0.02F * MathHelper.sin(0.12F * ageInTicks + 0.1F)); 
-		    		this.Chest_Base.yRot = 0.0F;
+		    		this.Chest_Base.zRot = 0.0F;
 		    		this.Chest_Base.y = 18.0F;
 		    		
 	            	this.Chest_Base.setPos(0.0F, 18.0F, 1.0F);
@@ -303,7 +304,7 @@ public class MimicModel<T extends MimicEntity> extends FURBaseModel<T> {
 	            	this.Eye_l.setPos(2.0F, -4.0F, -5.0F);
 	        	} else {
 	            	this.Chest_top.xRot = 0.0F;
-		    		this.Chest_Base.yRot = 0.0F;
+		    		this.Chest_Base.zRot = 0.0F;
 		    		this.Chest_Base.y = 18.0F;
 		    		
 	            	this.Chest_Base.setPos(0.0F, 19.0F, 1.0F);

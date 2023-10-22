@@ -100,9 +100,8 @@ public class PinguEntity extends MonsterEntity implements ISemiAquatic {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick()
-    {
-    	if(this.isInWater()) {
+    public void tick() {
+    	if (this.isInWaterOrBubble()) {
     		SwimTimer++;
     		if(!this.isAquaticMove) {
     			this.moveControl = new AquaticMovementController(this);

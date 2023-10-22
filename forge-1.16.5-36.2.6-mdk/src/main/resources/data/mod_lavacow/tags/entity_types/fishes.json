@@ -1,0 +1,16 @@
+{
+  "__comment": "all fishes.",
+  "replace": false,
+  "values": [
+	"minecraft:cod",
+    "minecraft:pufferfish",
+    "minecraft:salmon",
+    "minecraft:tropical_fish",
+    "mod_lavacow:piranha",
+    "mod_lavacow:swarmer",
+    "mod_lavacow:ghostswarmer",
+    "mod_lavacow:mummified_cod",
+    "mod_lavacow:bone_trout",
+    "mod_lavacow:lamprey"
+  ]
+}

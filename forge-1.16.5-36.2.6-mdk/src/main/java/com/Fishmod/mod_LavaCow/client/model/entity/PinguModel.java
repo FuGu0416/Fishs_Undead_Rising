@@ -127,9 +127,10 @@ public class PinguModel<T extends PinguEntity> extends FURBaseModel<T> implement
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    	if (entityIn.isAggressive() || entityIn.isInWater()) {
+    	if (entityIn.isAggressive() || entityIn.isInWaterOrBubble()) {
     		this.Head_Looking(this.head, -1.5707963267948966F, 0.0F, netHeadYaw, headPitch);
     		this.head.z = -1.0F;
+    		this.head.zRot = 0.0F;
     		this.body.zRot = 0.0F;
     		this.wing_l.y = -5.5F;
     		wing_l.xRot = 1.5707963267948966F;
@@ -142,6 +143,7 @@ public class PinguModel<T extends PinguEntity> extends FURBaseModel<T> implement
     	} else {
     		this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
     		this.head.z = 2.5F;
+    		this.head.zRot = -MathHelper.cos(limbSwing * 0.8F) * 0.7F * limbSwingAmount;
     		this.body.zRot = MathHelper.cos(limbSwing * 0.8F) * 0.7F * limbSwingAmount;
     		
     		this.wing_l.y = -7.0F;

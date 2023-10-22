@@ -79,11 +79,15 @@ public class LilSludgeModel<T extends LilSludgeEntity> extends FURBaseModel<T> i
      */
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    	float f = 0.67F;
+    	
     	this.Head_base.y = -6.0F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
     	this.Head_skull.xRot = headPitch * 0.017453292F;
     	this.Head_skull.yRot = netHeadYaw * 0.017453292F;        
     	this.Head_skull.y = -5.5F + 0.5F * MathHelper.sin(0.03F * ageInTicks);
 
+    	this.Body.zRot = MathHelper.cos(limbSwing * f) * 0.2F * limbSwingAmount;
+    	
     	if (this.riding) {
     		this.Leg_r.setPos(-2.0F, -0.5F, -2.0F);
     		this.Leg_r.xRot = -1.602910321115726F;
@@ -91,17 +95,19 @@ public class LilSludgeModel<T extends LilSludgeEntity> extends FURBaseModel<T> i
     		this.Leg_l.xRot = -1.602910321115726F;
     	} else {
     		this.Leg_r.setPos(-2.0F, 0.0F, 0.0F);
-            this.Leg_r.xRot = MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
+            this.Leg_r.xRot = MathHelper.cos(limbSwing * f) * 0.7F * limbSwingAmount;
+            this.Leg_r.zRot = MathHelper.cos(limbSwing * f) * 0.2F * limbSwingAmount;
             this.Leg_l.setPos(2.0F, 0.0F, 0.0F);
-            this.Leg_l.xRot = MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;   		
+            this.Leg_l.xRot = MathHelper.cos(limbSwing * f + (float)Math.PI) * 0.7F * limbSwingAmount;  
+            this.Leg_l.zRot = MathHelper.cos(limbSwing * f) * 0.2F * limbSwingAmount;
     	}
                
         if (entityIn.isAggressive()) {
         	this.Arm_r.xRot = -1.6390387005478748F;
         	this.Arm_l.xRot = -1.6390387005478748F;
         } else {
-	        this.Arm_r.xRot = MathHelper.cos(limbSwing + (float)Math.PI);
-	        this.Arm_l.xRot = MathHelper.cos(limbSwing);
+	        this.Arm_r.xRot = MathHelper.cos(limbSwing * f + (float)Math.PI);
+	        this.Arm_l.xRot = MathHelper.cos(limbSwing * f);
         }
     }
 
