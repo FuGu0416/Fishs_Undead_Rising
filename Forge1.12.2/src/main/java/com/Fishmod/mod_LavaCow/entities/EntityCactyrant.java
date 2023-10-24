@@ -44,9 +44,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityCactyrant extends EntityMob implements IAggressive {	
 	private static final DataParameter<Boolean> DATA_IS_CAMOUFLAGING = EntityDataManager.createKey(EntityCactyrant.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityCactoid.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityCactyrant.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.createKey(EntityCactyrant.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> HUGGING_CD = EntityDataManager.createKey(EntityCactyrant.class, DataSerializers.VARINT);
+	private boolean isAggressive = false;
 	private int attackTimer;
 	protected int spellTicks;
 	private EntityAIWanderAvoidWater move;
@@ -277,6 +278,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         this.world.setEntityState(this, (byte)4);
         return true;
     }
+	
 	/**
 	* Called when the entity is attacked.
 	*/
@@ -377,15 +379,26 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
 	@Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-    	if (id == 4) {
-            this.attackTimer = 15;
-        } else if (id == 10) {
-        	this.spellTicks = 20;
-        } else if (id == 14) {
+		switch(id) {
+		case 10:
+			this.spellTicks = 20;
+			break;
+		case 4:
+			this.attackTimer = 15;
+			break;
+		case 14:
             this.addParticlesAroundSelf(EnumParticleTypes.WATER_WAKE);
-        } else {
-            super.handleStatusUpdate(id);
-        }
+			break;
+		case 11:
+			this.isAggressive = true;
+			break;
+		case 34:
+			this.isAggressive = false;
+			break;
+		default:
+			super.handleStatusUpdate(id);
+			break;
+		}
     }
 	
 	@Override
@@ -511,7 +524,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         }
 
         protected int getCastWarmupTime() {
-            return 10;
+            return 5;
         }
 
         protected int getCastingTime() {
@@ -570,9 +583,22 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     public boolean canDropLoot() {
     	return this.isBurning() || this.attackingPlayer != null;
     }
+    
+    protected void updateAITasks() {
+        super.updateAITasks();
+        
+        if(this.getAttackTarget() != null) {       		
+        		isAggressive = true;
+        		this.world.setEntityState(this, (byte)11);
+        	}
+        else {
+        		isAggressive = false;
+        		this.world.setEntityState(this, (byte)34);
+        	}
+    }
 
 	@Override
 	public boolean isAggressive() {
-		return false;
+		return isAggressive;
 	}
 }

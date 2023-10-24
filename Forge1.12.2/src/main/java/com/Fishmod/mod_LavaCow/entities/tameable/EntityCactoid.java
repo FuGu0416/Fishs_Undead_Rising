@@ -339,11 +339,14 @@ public class EntityCactoid extends EntityFishTameable {
 	@Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-		if (id == 14) {
-            this.addParticlesAroundSelf(EnumParticleTypes.WATER_WAKE);
-        } else {
-            super.handleStatusUpdate(id);
-        }
+		switch(id) {
+		case 14:
+			this.addParticlesAroundSelf(EnumParticleTypes.WATER_WAKE);
+			break;
+		default:
+			super.handleStatusUpdate(id);
+			break;
+		}
     }
     
     @Override

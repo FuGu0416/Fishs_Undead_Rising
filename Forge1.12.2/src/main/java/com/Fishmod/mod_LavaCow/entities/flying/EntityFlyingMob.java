@@ -46,8 +46,12 @@ public class EntityFlyingMob extends EntityFishTameable {
 		
 		EntityFlyingMob.heightLimit = heightLimit;
 		this.moveHelper = new EntityFlyingMob.FlyingMoveHelper(this);
-		setPathPriority(PathNodeType.DANGER_FIRE, 16.0F);
-		setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
+		this.setPathPriority(PathNodeType.DANGER_FIRE, 16.0F);
+		this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
+		this.setPathPriority(PathNodeType.WATER, -8.0F);
+		this.setPathPriority(PathNodeType.BLOCKED, -8.0F);
+		this.setPathPriority(PathNodeType.OPEN, 8.0F);
+		this.setPathPriority(PathNodeType.FENCE, -8.0F);
 	}
 
 	/*@Override
@@ -68,7 +72,7 @@ public class EntityFlyingMob extends EntityFishTameable {
     @Override
 	public boolean getCanSpawnHere() {
 		return SpawnUtil.isAllowedDimension(this.dimension)
-				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) || this.world.provider.isNether()
+				&& this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
 				&& super.getCanSpawnHere();
 	}
     
@@ -320,7 +324,8 @@ public class EntityFlyingMob extends EntityFishTameable {
     }
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
- 	   this.motionY += 0.5D;
+ 	   //this.motionY += 0.5D;
+ 	   this.motionY += 1.0D;
     	
  	   return super.onInitialSpawn(difficulty, entityLivingData);
  	}
