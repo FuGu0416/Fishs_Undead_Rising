@@ -7,12 +7,15 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.FishBrewingRecipe;
 import com.Fishmod.mod_LavaCow.util.TradeHandler;
 
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.ResourceLocation;
@@ -55,62 +58,33 @@ public class AddRecipes {
 	    }
 	    
 	    public static void addBrewing() {
-	    //add brewing recipes
-	      	/** We can make custom brewing recipes now!!! */
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HYPHAE), new ItemStack(FishItems.FISSIONPOTION));
+	    	/* Brew into special potions */
+	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION), new ItemStack(FishItems.HYPHAE), new ItemStack(FishItems.FISSIONPOTION)));
 	        BrewingRecipeRegistry.addRecipe(new ItemStack(FishItems.FISSIONPOTION), new ItemStack(FishItems.MOOTENHEART), new ItemStack(FishItems.POTION_OF_MOOTEN_LAVA));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.PTERA_WING), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LEAPING));
 	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.ACIDICHEART), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.ACIDICHEART), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.ACIDICHEART), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.CORROSIVE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.CORROSIVE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.CORROSIVE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.CORROSIVE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.CORROSIVE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_CORROSIVE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.CORROSIVE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_CORROSIVE));
-	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.FOUL_BRISTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FOULODOR));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.FOUL_BRISTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FOULODOR));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.FOUL_BRISTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FOULODOR));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FOULODOR), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_FOULODOR));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FOULODOR), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_FOULODOR));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FOULODOR), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_FOULODOR));
-	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_POISON));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.LONG_POISON));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.POISONSPORE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.LONG_POISON));
-	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.PARASITE_ITEM), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.INFESTATION), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.INFESTATION), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.INFESTATION), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.INFESTATION), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.INFESTATION), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_INFESTATION));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.INFESTATION), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_INFESTATION));
-	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.HATRED_SHARD), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_FRAGILE));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.FRAGILE), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_FRAGILE));
-	        
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.AWKWARD), new ItemStack(FishItems.CACTUS_FRUIT), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.LONG_THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.LONG_THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN), new ItemStack(Items.REDSTONE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.LONG_THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), ModPotions.STRONG_THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION), ModPotions.STRONG_THORN));
-	        BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.THORN), new ItemStack(Items.GLOWSTONE_DUST), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), ModPotions.STRONG_THORN));
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.PTERA_WING), PotionTypes.SWIFTNESS);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ACIDICHEART), ModPotions.CORROSIVE);
+			PotionHelper.addMix(ModPotions.CORROSIVE, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_CORROSIVE);
+			PotionHelper.addMix(ModPotions.CORROSIVE, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_CORROSIVE);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.FOUL_BRISTLE), ModPotions.FOULODOR);
+			PotionHelper.addMix(ModPotions.FOULODOR, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_FOULODOR);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.POISONSPORE), PotionTypes.LONG_POISON);
+			
+			PotionHelper.addMix(PotionTypes.SLOWNESS, Ingredient.fromItem(FishItems.PARASITE_ITEM), ModPotions.INFESTATION);
+			PotionHelper.addMix(PotionTypes.LONG_SLOWNESS, Ingredient.fromItem(FishItems.PARASITE_ITEM), ModPotions.LONG_INFESTATION);
+			PotionHelper.addMix(ModPotions.INFESTATION, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_INFESTATION);
+			PotionHelper.addMix(ModPotions.INFESTATION, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_INFESTATION);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.HATRED_SHARD), ModPotions.FRAGILE);
+			PotionHelper.addMix(ModPotions.FRAGILE, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_FRAGILE);
+			PotionHelper.addMix(ModPotions.FRAGILE, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_FRAGILE);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.CACTUS_FRUIT), ModPotions.THORN);
+			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_THORN);
+			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_THORN);
 	    }
 	    
 	    public static void addTrading() {

@@ -21,7 +21,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityVespaCocoon  extends EntityFishTameable {
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityVespa.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityVespaCocoon.class, DataSerializers.VARINT);
 	
 	private int Lifespan = 8 * 20;
 	
@@ -176,7 +176,7 @@ public class EntityVespaCocoon  extends EntityFishTameable {
 	  
     @Override
     public boolean isMovementBlocked() {
-    	return false;
+    	return true;
     }
     
     /**
