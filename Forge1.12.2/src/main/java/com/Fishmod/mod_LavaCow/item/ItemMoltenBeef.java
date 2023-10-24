@@ -54,6 +54,6 @@ public class ItemMoltenBeef extends ItemFlintAndSteel
 	@Override
     public int getItemBurnTime(ItemStack itemStack)
     {
-        return 16000;
+        return 8 * 200;
     }
 }
