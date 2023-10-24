@@ -70,7 +70,6 @@ public class AddRecipes {
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.FOUL_BRISTLE), ModPotions.FOULODOR);
 			PotionHelper.addMix(ModPotions.FOULODOR, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_FOULODOR);
-			PotionHelper.addMix(ModPotions.FOULODOR, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_FOULODOR);
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.POISONSPORE), PotionTypes.LONG_POISON);
 			
