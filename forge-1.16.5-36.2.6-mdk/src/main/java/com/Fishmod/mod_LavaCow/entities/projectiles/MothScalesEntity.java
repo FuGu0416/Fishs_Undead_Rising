@@ -2,10 +2,9 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
-
 import java.util.List;
+
+import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.entity.AreaEffectCloudEntity;
@@ -22,14 +21,11 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -79,31 +75,6 @@ public class MothScalesEntity extends AbstractFireballEntity {
 		super.onHitEntity(p_213868_1_);
 		Entity entity = p_213868_1_.getEntity();
 		
-		if (!this.level.isClientSide && this.getScaleType() == 0 && entity != null && entity instanceof LivingEntity && entity != this.getOwner()) {
-	         double d0 = entity.getX();
-	         double d1 = entity.getY();
-	         double d2 = entity.getZ();
-	         LivingEntity livingEntity = (LivingEntity)entity;
-	         
-	         for(int i = 0; i < 16; ++i) {
-	            double d3 = entity.getX() + (livingEntity.getRandom().nextDouble() - 0.5D) * 16.0D;
-	            double d4 = MathHelper.clamp(entity.getY() + (double)(livingEntity.getRandom().nextInt(16) - 8), 0.0D, (double)(this.level.getHeight() - 1));
-	            double d5 = entity.getZ() + (livingEntity.getRandom().nextDouble() - 0.5D) * 16.0D;
-	            if (entity.isPassenger()) {
-	               entity.stopRiding();
-	            }
-
-	            net.minecraftforge.event.entity.living.EntityTeleportEvent.ChorusFruit event = net.minecraftforge.event.ForgeEventFactory.onChorusFruitTeleport(livingEntity, d3, d4, d5);
-	            if (event.isCanceled()) return;
-	            if (livingEntity.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true)) {
-	               SoundEvent soundevent = entity instanceof FoxEntity ? SoundEvents.FOX_TELEPORT : SoundEvents.CHORUS_FRUIT_TELEPORT;
-	               this.level.playSound((PlayerEntity)null, d0, d1, d2, soundevent, SoundCategory.PLAYERS, 1.0F, 1.0F);
-	               entity.playSound(soundevent, 1.0F, 1.0F);
-	               break;
-	            }
-	         }			
-		}
-		
 		if (!this.level.isClientSide && this.getScaleType() == 1) {
 			Entity entity1 = this.getOwner();
 			if (entity1 == null || !(entity1 instanceof MobEntity) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getEntity())) {
@@ -151,7 +122,8 @@ public class MothScalesEntity extends AbstractFireballEntity {
                 
 		if (!this.level.isClientSide && (p_70227_1_.getType() != RayTraceResult.Type.MISS || !((EntityRayTraceResult)p_70227_1_).getEntity().is(entity))) {
 			switch (this.getScaleType()) {    		   
-    		    case 2 :
+				case 0 :					
+				case 2 :
 	        		List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
 	             	AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.level, this.getX(), this.getY(), this.getZ());
 	             	if (entity instanceof LivingEntity) {
@@ -162,8 +134,14 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	             	areaeffectcloudentity.setRadiusOnUse(-0.5F);
 	             	areaeffectcloudentity.setWaitTime(10);
 	             	areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float)areaeffectcloudentity.getDuration());
-	             	areaeffectcloudentity.setPotion(Potions.STRENGTH);
-	             	areaeffectcloudentity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));	   
+	             	
+	             	if (this.getScaleType() == 0) {
+	             		areaeffectcloudentity.setPotion(new Potion(new EffectInstance(FUREffectRegistry.VOID_SCALES, 3600)));
+	             		areaeffectcloudentity.addEffect(new EffectInstance(FUREffectRegistry.VOID_SCALES, 4 * 20, 4));	   	             		
+	             	} else {
+	             		areaeffectcloudentity.setPotion(Potions.STRENGTH);
+	             		areaeffectcloudentity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));	   
+	             	}
 	             	
 	             	if (!list.isEmpty()) {
 	             		for(LivingEntity livingentity : list) {
@@ -177,7 +155,7 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	
 	             	this.level.addFreshEntity(areaeffectcloudentity);
     		    	break;  
-    		    case 0 :
+    		    
     		    default :
     		    	break;
 			}               

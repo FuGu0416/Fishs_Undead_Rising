@@ -117,8 +117,7 @@ public class PinguEntity extends MonsterEntity implements ISemiAquatic {
     		}
     	}
     	
-    	if(!FURConfig.SunScreen_Mode.get() && !this.level.isClientSide() && this.tickCount % 20 == 0 && !this.isInWaterRainOrBubble())
-        {
+    	if (!FURConfig.SunScreen_Mode.get() && !this.level.isClientSide() && this.tickCount % 20 == 0 && !this.isInWaterRainOrBubble()) {
             int i = MathHelper.floor(this.getX());
             int j = MathHelper.floor(this.getY());
             int k = MathHelper.floor(this.getZ());

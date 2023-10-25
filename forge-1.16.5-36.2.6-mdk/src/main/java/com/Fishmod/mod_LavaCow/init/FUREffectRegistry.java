@@ -14,6 +14,7 @@ import com.Fishmod.mod_LavaCow.effect.EffectImmolation;
 import com.Fishmod.mod_LavaCow.effect.EffectInfested;
 import com.Fishmod.mod_LavaCow.effect.EffectSoiled;
 import com.Fishmod.mod_LavaCow.effect.EffectThorned;
+import com.Fishmod.mod_LavaCow.effect.EffectVoidScales;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -42,6 +43,7 @@ public class FUREffectRegistry {
 	public static final Effect IMMOLATION = new EffectImmolation();
 	public static final Effect CHARMING_PHEROMONE = new EffectCharmingPheromone();
 	public static final Effect FLOURISHED = new EffectFlourished();
+	public static final Effect VOID_SCALES = new EffectVoidScales();
 	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
 	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
 	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
