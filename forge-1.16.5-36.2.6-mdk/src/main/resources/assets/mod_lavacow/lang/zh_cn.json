@@ -574,7 +574,9 @@
 	"description.effect.mod_lavacow:charming_pheromone": "所有节肢动物将会对单位中立，并试图跟随其后",
 	"effect.mod_lavacow.flourished": "繁茂",
 	"description.effect.mod_lavacow:flourished": "提升医疗回复量",
-			
+	"effect.mod_lavacow.void_scales": "虚无鳞粉",
+	"description.effect.mod_lavacow:void_scales": "定时随机传送至附近地点",
+				
 	"item.minecraft.potion.effect.corrosive": "腐蚀药水",
 	"item.minecraft.splash_potion.effect.corrosive": "喷溅型腐蚀药水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滞留型腐蚀药水",

@@ -572,7 +572,9 @@
 	"description.effect.mod_lavacow:charming_pheromone": "All arthropods will be neutral to player. They will try to follow instead.",
 	"effect.mod_lavacow.flourished": "Flourished",
 	"description.effect.mod_lavacow:flourished": "Enhance all healing received.",
-			
+	"effect.mod_lavacow.void_scales": "Void Scales",
+	"description.effect.mod_lavacow:void_scales": "Teleport to a nearby random location periodically.",
+				
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
 	"item.minecraft.lingering_potion.effect.corrosive": "Lingering Potion of Corrosion",
