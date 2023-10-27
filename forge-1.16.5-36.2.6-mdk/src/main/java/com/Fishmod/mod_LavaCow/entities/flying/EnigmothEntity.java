@@ -12,6 +12,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.MothScalesEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
+import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 
@@ -203,6 +204,16 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @Override
     public boolean isFood(ItemStack stack) {
         return this.isTame() && (stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT));
+    }
+    
+    @Override
+    protected int TameRate(ItemStack stack) {
+    	if(stack.getItem().equals(FURItemRegistry.IMP_HORN))
+    		return 3;
+    	else if(stack.getItem().equals(FURItemRegistry.KUNG_PAO_CHICKEN))
+    		return 1;
+    	else
+    		return super.TameRate(stack);
     }
     
     @Override

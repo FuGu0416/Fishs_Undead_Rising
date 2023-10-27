@@ -242,7 +242,7 @@ public class FURWorldRegistry {
 		}
 		
 		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.END)) {
-			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 3, 1), 1, 1));
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 10, 1), 1, 1));
 		}
 		
 		if(FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
@@ -298,7 +298,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}
 		
-		if(FURConfig.pSpawnRate_Enigmoth.get() > 0 && (biomeKey.equals(Biomes.WARPED_FOREST) || biomeKey.equals(Biomes.END_HIGHLANDS))) {
+		if(FURConfig.pSpawnRate_Enigmoth.get() > 0 && (biomeKey.equals(Biomes.WARPED_FOREST) || biomeKey.equals(Biomes.END_HIGHLANDS) || biomeKey.equals(Biomes.END_MIDLANDS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.ENIGMOTH, FURConfig.pSpawnRate_Enigmoth.get(), 1, 2));
 		}
 		
