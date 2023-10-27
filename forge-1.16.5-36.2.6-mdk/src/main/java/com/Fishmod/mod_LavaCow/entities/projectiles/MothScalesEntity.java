@@ -21,7 +21,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -136,8 +135,8 @@ public class MothScalesEntity extends AbstractFireballEntity {
 	             	areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float)areaeffectcloudentity.getDuration());
 	             	
 	             	if (this.getScaleType() == 0) {
-	             		areaeffectcloudentity.setPotion(new Potion(new EffectInstance(FUREffectRegistry.VOID_SCALES, 3600)));
-	             		areaeffectcloudentity.addEffect(new EffectInstance(FUREffectRegistry.VOID_SCALES, 4 * 20, 4));	   	             		
+	             		areaeffectcloudentity.setPotion(FUREffectRegistry.VOID_DUST_POTION);
+	             		areaeffectcloudentity.addEffect(new EffectInstance(FUREffectRegistry.VOID_DUST, 4 * 20, 4));	   	             		
 	             	} else {
 	             		areaeffectcloudentity.setPotion(Potions.STRENGTH);
 	             		areaeffectcloudentity.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 20, 0));	   

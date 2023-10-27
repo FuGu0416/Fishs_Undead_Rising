@@ -12,11 +12,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
-public class EffectVoidScales extends Effect {
+public class EffectVoidDust extends Effect {
 
-	public EffectVoidScales() {
+	public EffectVoidDust() {
         super(EffectType.HARMFUL, 0xD146FF);
-        this.setRegistryName(mod_LavaCow.MODID, "void_scales");
+        this.setRegistryName(mod_LavaCow.MODID, "void_dust");
 	}
 	
     @Override

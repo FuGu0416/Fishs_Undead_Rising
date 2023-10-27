@@ -138,7 +138,7 @@
 	"item.mod_lavacow.lamprey_cooked": "Cooked Lamprey",
 	"item.mod_lavacow.lamprey_kabayaki": "Lamprey Kabayaki",
 	"item.mod_lavacow.lamprey_bucket": "Bucket of Lamprey",
-						
+		
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
 	"item.mod_lavacow.spawn_egg_parasite": "Parasite Spawn Egg",
@@ -572,8 +572,8 @@
 	"description.effect.mod_lavacow:charming_pheromone": "All arthropods will be neutral to player. They will try to follow instead.",
 	"effect.mod_lavacow.flourished": "Flourished",
 	"description.effect.mod_lavacow:flourished": "Enhance all healing received.",
-	"effect.mod_lavacow.void_scales": "Void Scales",
-	"description.effect.mod_lavacow:void_scales": "Teleport to a nearby random location periodically.",
+	"effect.mod_lavacow.void_dust": "Void Scales",
+	"description.effect.mod_lavacow:void_dust": "Teleport to a nearby random location periodically.",
 				
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
@@ -643,7 +643,19 @@
 	"item.minecraft.splash_potion.effect.long_immolation": "Splash Potion of Immolation",
 	"item.minecraft.lingering_potion.effect.long_immolation": "Lingering Potion of Immolation",
 	"item.minecraft.tipped_arrow.effect.long_immolation": "Arrow of Immolation",
-				
+	"item.minecraft.potion.effect.void_dust": "Potion of Void Rift",
+	"item.minecraft.splash_potion.effect.void_dust": "Splash Potion of Void Rift",
+	"item.minecraft.lingering_potion.effect.void_dust": "Lingering Potion of Void Rift",
+	"item.minecraft.tipped_arrow.effect.void_dust": "Arrow of Void Rift",
+	"item.minecraft.potion.effect.strong_void_dust": "Potion of Void Rift",
+	"item.minecraft.splash_potion.effect.strong_void_dust": "Splash Potion of Void Rift",
+	"item.minecraft.lingering_potion.effect.strong_void_dust": "Lingering Potion of Void Rift",
+	"item.minecraft.tipped_arrow.effect.strong_void_dust": "Arrow of Void Rift",
+	"item.minecraft.potion.effect.long_void_dust": "Potion of Void Rift",
+	"item.minecraft.splash_potion.effect.long_void_dust": "Splash Potion of Void Rift",
+	"item.minecraft.lingering_potion.effect.long_void_dust": "Lingering Potion of Void Rift",
+	"item.minecraft.tipped_arrow.effect.long_void_dust": "Arrow of Void Rift",
+					
 	"advancements.mod_lavacow.root.title": "The Dark Night",
 	"advancements.mod_lavacow.root.description": "Enter a world of undead",
 	"advancements.mod_lavacow.slimy_tasty.title": "Slimy, Yet Satisfying",

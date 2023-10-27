@@ -14,7 +14,7 @@ import com.Fishmod.mod_LavaCow.effect.EffectImmolation;
 import com.Fishmod.mod_LavaCow.effect.EffectInfested;
 import com.Fishmod.mod_LavaCow.effect.EffectSoiled;
 import com.Fishmod.mod_LavaCow.effect.EffectThorned;
-import com.Fishmod.mod_LavaCow.effect.EffectVoidScales;
+import com.Fishmod.mod_LavaCow.effect.EffectVoidDust;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -43,7 +43,7 @@ public class FUREffectRegistry {
 	public static final Effect IMMOLATION = new EffectImmolation();
 	public static final Effect CHARMING_PHEROMONE = new EffectCharmingPheromone();
 	public static final Effect FLOURISHED = new EffectFlourished();
-	public static final Effect VOID_SCALES = new EffectVoidScales();
+	public static final Effect VOID_DUST = new EffectVoidDust();
 	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
 	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
 	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
@@ -62,6 +62,9 @@ public class FUREffectRegistry {
 	public static final Potion IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 3600)).setRegistryName(mod_LavaCow.MODID + ":immolation");
 	public static final Potion STRONG_IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_immolation");
 	public static final Potion LONG_IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 9600)).setRegistryName(mod_LavaCow.MODID + ":long_immolation");
+	public static final Potion VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 900)).setRegistryName(mod_LavaCow.MODID + ":void_dust");
+	public static final Potion STRONG_VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 450, 2)).setRegistryName(mod_LavaCow.MODID + ":strong_void_dust");
+	public static final Potion LONG_VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_void_dust");
 	
     @SubscribeEvent
     public static void registerEffects(RegistryEvent.Register<Effect> event) {
@@ -181,5 +184,15 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.LONG_FIRE_RESISTANCE)), Ingredient.of(new ItemStack(FURItemRegistry.IMP_HORN)), createPotion(Items.POTION, LONG_IMMOLATION_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.LONG_FIRE_RESISTANCE)), Ingredient.of(new ItemStack(FURItemRegistry.IMP_HORN)), createPotion(Items.LINGERING_POTION, LONG_IMMOLATION_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.LONG_FIRE_RESISTANCE)), Ingredient.of(new ItemStack(FURItemRegistry.IMP_HORN)), createPotion(Items.SPLASH_POTION, LONG_IMMOLATION_POTION)));
+        
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ENIGMOTH_LARVA)), createPotion(Items.POTION, VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ENIGMOTH_LARVA)), createPotion(Items.LINGERING_POTION, VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ENIGMOTH_LARVA)), createPotion(Items.SPLASH_POTION, VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_VOID_DUST_POTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_VOID_DUST_POTION)));
     }
 }

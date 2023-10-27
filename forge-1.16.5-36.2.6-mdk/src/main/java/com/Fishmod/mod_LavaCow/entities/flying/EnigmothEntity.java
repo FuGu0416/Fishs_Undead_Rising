@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.VespaCocoonEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.MothScalesEntity;
+import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
@@ -234,7 +235,15 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     		
     		this.remove();
     	}
-    }    
+    }   
+    
+    public boolean canBeAffected(EffectInstance p_70687_1_) {
+        if (p_70687_1_.getEffect() == Effects.POISON || p_70687_1_.getEffect() == FUREffectRegistry.VOID_DUST) {
+           return false;
+        }
+        
+        return super.canBeAffected(p_70687_1_);
+	}
     
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
