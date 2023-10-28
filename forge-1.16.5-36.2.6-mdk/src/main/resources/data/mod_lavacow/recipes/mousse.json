@@ -28,6 +28,15 @@
 			"item": "mod_lavacow:parasite_item_jungle"
     	},
     	{
+			"item": "mod_lavacow:parasite_item_cooked"			
+		},
+    	{
+			"item": "mod_lavacow:enigmoth_larva"			
+		},
+		{
+			"item": "mod_lavacow:enigmoth_larva_cooked"			
+		},
+    	{
 			"item": "minecraft:rotten_flesh"
     	}
     ]

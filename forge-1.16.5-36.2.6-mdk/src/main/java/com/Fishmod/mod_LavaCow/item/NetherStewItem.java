@@ -64,18 +64,20 @@ public class NetherStewItem extends FURItem {
      */
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+    	ItemStack itemstack = super.finishUsingItem(stack, worldIn, entityLiving);
+    	
     	if (this.equals(FURItemRegistry.GHOSTJELLY)) {
     		entityLiving.setDeltaMovement(0.0D, 2.0D, 0.0D);
     		entityLiving.addEffect(new EffectInstance(Effects.SLOW_FALLING, 6 * 20, 2));
     		entityLiving.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
     	}
     	
-        if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
+        if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative() && !itemstack.isEmpty()) {
         	if (!((PlayerEntity)entityLiving).inventory.add(new ItemStack(Items.BOWL))) {
         		((PlayerEntity)entityLiving).spawnAtLocation(new ItemStack(Items.BOWL));
             }
         }
         
-    	return super.finishUsingItem(stack, worldIn, entityLiving);
+    	return itemstack.isEmpty() ? new ItemStack(Items.BOWL) : itemstack;
     }
 }

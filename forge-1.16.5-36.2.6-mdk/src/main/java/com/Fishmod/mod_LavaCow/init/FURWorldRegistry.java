@@ -241,7 +241,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 3, 1), 1, 1));
 		}
 		
-		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.END)) {
+		if(FURConfig.pSpawnRate_GhostRay.get() > 0 && (biomeKey.equals(Biomes.END_HIGHLANDS) || biomeKey.equals(Biomes.END_MIDLANDS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOSTRAY, Math.max(FURConfig.pSpawnRate_GhostRay.get() / 10, 1), 1, 1));
 		}
 		

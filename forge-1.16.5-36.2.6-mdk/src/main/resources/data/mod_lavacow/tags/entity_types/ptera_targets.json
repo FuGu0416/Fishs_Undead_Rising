@@ -2,11 +2,7 @@
   "__comment": "all non-player targets of Ptera.",
   "replace": false,
   "values": [
-    "minecraft:cod",
-    "minecraft:salmon",
-    "minecraft:squid",
-    "minecraft:tropical_fish",
-    "mod_lavacow:piranha",
-    "mod_lavacow:swarmer"
+	"#mod_lavacow:fishes",
+    "minecraft:squid"
   ]
 }
