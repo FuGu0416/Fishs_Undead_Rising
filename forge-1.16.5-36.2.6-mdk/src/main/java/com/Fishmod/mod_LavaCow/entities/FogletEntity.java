@@ -307,7 +307,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 				this.setAttackTimer(35);
 				break;
 			case 10:
-				this.spellTicks = 100;
+				this.spellTicks = 60;
 				break;			
 			default:
 				this.spellTicks = 0;
@@ -449,7 +449,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     	@Override
         public void tick() {
         	if(FogletEntity.this.getDeltaMovement().y < 0.0D)
-        		FogletEntity.this.setDeltaMovement(0.0D, 0.05D, 0.0D);
+        		FogletEntity.this.setDeltaMovement(FogletEntity.this.getDeltaMovement().add(0.0D, 0.05D, 0.0D));
         	if(TreePos != null) {
             	FogletEntity.this.yBodyRot = (TreePos.getX() * 270.0F + (float) Math.toDegrees(Math.atan(TreePos.getZ() / (TreePos.getX() + 0.0000001D)))) % 360.0F;
         	}
@@ -467,6 +467,14 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          */
         @Override
         public boolean canUse() {
+            return FogletEntity.this.getSpellTicks() > 0;
+        }
+        
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        @Override
+        public boolean canContinueToUse() {
             return FogletEntity.this.getSpellTicks() > 0;
         }
 

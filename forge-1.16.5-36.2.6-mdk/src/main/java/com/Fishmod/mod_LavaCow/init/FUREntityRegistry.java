@@ -79,7 +79,7 @@ public class FUREntityRegistry {
 	public static final EntityType<LavaCowEntity> LAVACOW = registerEntity(EntityType.Builder.of(LavaCowEntity::new, EntityClassification.CREATURE).sized(0.9F, 1.4F).fireImmune(), "lavacow");
 	public static final EntityType<MycosisEntity> MYCOSIS = registerEntity(EntityType.Builder.of(MycosisEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mycosis");
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
-	public static final EntityType<FogletEntity> FOGLET = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.5F), "foglet");
+	public static final EntityType<FogletEntity> FOGLET = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.2F), "foglet");
 	public static final EntityType<FogletEntity> IMP = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.5F).fireImmune(), "imp");
 	public static final EntityType<FrigidEntity> FRIGID = registerEntity(EntityType.Builder.of(FrigidEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "frigid");
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
