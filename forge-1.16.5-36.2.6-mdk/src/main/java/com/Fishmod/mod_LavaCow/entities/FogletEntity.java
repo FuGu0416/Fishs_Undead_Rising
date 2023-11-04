@@ -391,6 +391,10 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     	
     	public AIClimbimgTree() {
         }
+    	
+    	private boolean canClimb() {
+    		return !FogletEntity.this.level.getBlockState(FogletEntity.this.blockPosition().above()).canOcclude() && FogletEntity.this.level.getBlockState(FogletEntity.this.blockPosition().above()).getMaterial() != Material.LEAVES;
+    	}
 
         /**
          * Returns whether the EntityAIBase should begin execution.
@@ -412,7 +416,15 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             		}
             	}
             
-            return !FogletEntity.this.isOnFire() && !FogletEntity.this.isAggressive() && !FogletEntity.this.level.canSeeSky(blockpos) && TreePos != null && FogletEntity.this.level.getBlockState(blockpos.above(2)).getMaterial() == Material.AIR;
+            return !FogletEntity.this.isOnFire() && !FogletEntity.this.isAggressive() && !FogletEntity.this.level.canSeeSky(blockpos) && TreePos != null && this.canClimb();
+        }
+    	
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        @Override
+        public boolean canContinueToUse() {
+            return this.canClimb();
         }
 
         /**
@@ -430,27 +442,21 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          */
     	@Override
         public void stop() {
-            int i = MathHelper.floor(FogletEntity.this.getX());
-            int j = MathHelper.floor(FogletEntity.this.getY());
-            int k = MathHelper.floor(FogletEntity.this.getZ());
-            BlockPos blockpos = new BlockPos(i, j, k);
-            
         	super.stop();
             FogletEntity.this.setIsClimbing(false);
-            FogletEntity.this.setDeltaMovement(0.0D, 1.0D, 0.0D);
-            if(FogletEntity.this.level.getBlockState(blockpos.above(2)).getMaterial().isSolid()) {
-            	FogletEntity.this.setIsHanging(true);
-            }
+            FogletEntity.this.setIsHanging(true);
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
     	@Override
-        public void tick() {
-        	if(FogletEntity.this.getDeltaMovement().y < 0.0D)
-        		FogletEntity.this.setDeltaMovement(FogletEntity.this.getDeltaMovement().add(0.0D, 0.05D, 0.0D));
-        	if(TreePos != null) {
+        public void tick() {		
+        	if (FogletEntity.this.getDeltaMovement().y < 0.0D) {
+        		FogletEntity.this.setPosRaw(FogletEntity.this.getX(), FogletEntity.this.getY() + 0.2D, FogletEntity.this.getZ());
+        	}
+        	
+        	if (TreePos != null) {
             	FogletEntity.this.yBodyRot = (TreePos.getX() * 270.0F + (float) Math.toDegrees(Math.atan(TreePos.getZ() / (TreePos.getX() + 0.0000001D)))) % 360.0F;
         	}
         }
