@@ -59,6 +59,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -80,6 +81,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
 	
 	@Override
     protected void registerGoals() {
+		this.goalSelector.addGoal(1, new AIClimbimgTree());
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new FogletEntity.AISelfImmolation());
@@ -251,8 +253,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
     	this.setHealth(this.getMaxHealth());
     	
     	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
- 		   	this.setSkin(1);
- 		   	this.goalSelector.addGoal(1, new AIClimbimgTree());
+ 		   	this.setSkin(1);		   	
     	} else if (this.getType().equals(FUREntityRegistry.IMP)) {
     		this.setSkin(2);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
@@ -322,6 +323,15 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
         	return this.getBbHeight() * 0.0F;
         else
         	return this.getBbHeight() * 0.8F;
+    }
+		
+	@Override
+    public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
+    	if (p_205022_2_.getBlockState(p_205022_1_).getMaterial() == Material.WOOD) {
+    		return 10.0F;
+    	} else {
+    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    	}
     }
     
     /**
@@ -401,6 +411,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
          */
     	@Override
         public boolean canUse() {
+    		
+    		if (FogletEntity.this.getSkin() != 1) {
+    			return false;
+    		}
+    		
             int i = MathHelper.floor(FogletEntity.this.getX());
             int j = MathHelper.floor(FogletEntity.this.getY());
             int k = MathHelper.floor(FogletEntity.this.getZ());
@@ -416,7 +431,11 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             		}
             	}
             
-            return !FogletEntity.this.isOnFire() && !FogletEntity.this.isAggressive() && !FogletEntity.this.level.canSeeSky(blockpos) && TreePos != null && this.canClimb();
+            return !FogletEntity.this.isOnFire() 
+            		&& !FogletEntity.this.isAggressive() 
+            		&& !FogletEntity.this.level.canSeeSky(blockpos) 
+            		&& TreePos != null 
+            		&& this.canClimb();
         }
     	
         /**
