@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.item.NetherStewItem;
+
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -152,9 +154,16 @@ public class FURTameableEntity extends TameableEntity {
         if (!this.level.isClientSide) {  
 	    	if (this.isFood(itemstack) && canTameCondition()) {
 	            if (!player.abilities.instabuild) {	               
-	               if(itemstack.getItem() instanceof BucketItem) {
+	               if (itemstack.getItem() instanceof BucketItem) {
 	            	   itemstack.shrink(1);
 	            	   player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+	               } else if (itemstack.getItem() instanceof NetherStewItem) {
+	            	   itemstack.shrink(1);
+	            	   if (itemstack.isEmpty()) {
+	            		   player.setItemInHand(hand, new ItemStack(Items.BOWL));
+	            	   } else if (!player.inventory.add(new ItemStack(Items.BOWL))) {
+	            		   player.spawnAtLocation(new ItemStack(Items.BOWL));
+	                   }
 	               } else {
 	            	   itemstack.shrink(1);
 	               }
