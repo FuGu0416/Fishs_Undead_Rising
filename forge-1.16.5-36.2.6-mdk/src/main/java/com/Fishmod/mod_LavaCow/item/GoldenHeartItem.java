@@ -49,8 +49,8 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
     public static void onTick(ItemStack stack, PlayerEntity PlayerIn) {
     	boolean flag = false;
 
-    	if (((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0) && FURConfig.GoldenHeart_GrantsRegeneration.get()) {
-	    	if (!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt()) {
+    	if (((stack.getMaxDamage() > 0 && stack.getDamageValue() != stack.getMaxDamage()) || stack.getMaxDamage() == 0)) {
+	    	if (!PlayerIn.hasEffect(Effects.REGENERATION) && PlayerIn.isHurt() && FURConfig.GoldenHeart_GrantsRegeneration.get()) {
 	    		PlayerIn.addEffect(new EffectInstance(Effects.REGENERATION, 8 * 20, 0));
 	    		flag = true;
 	    	} else if (PlayerIn.getHealth() == PlayerIn.getMaxHealth() && FURConfig.GoldenHeart_RepairsEquipment.get()) {
