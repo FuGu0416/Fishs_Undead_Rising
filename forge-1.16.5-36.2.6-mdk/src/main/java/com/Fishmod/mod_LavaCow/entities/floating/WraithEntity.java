@@ -41,7 +41,7 @@ public class WraithEntity extends FloatingMobEntity {
     protected void registerGoals() {
     	super.registerGoals();      
     	this.goalSelector.addGoal(0, new SwimGoal(this));
-    	//this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
+    	this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
 		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
     }
     
@@ -92,7 +92,9 @@ public class WraithEntity extends FloatingMobEntity {
             } else if (WraithEntity.this.isSpellcasting()) {
                 return false;
             } else {
-            	return WraithEntity.this.tickCount >= this.spellCooldown && WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 3.0F;
+            	return WraithEntity.this.tickCount >= this.spellCooldown 
+            			&& WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 3.0 
+            			&& WraithEntity.this.getHealth() < WraithEntity.this.getMaxHealth() * 0.3F;
             }
         }
 
@@ -147,7 +149,7 @@ public class WraithEntity extends FloatingMobEntity {
         }
 
         protected int getCastWarmupTime() {
-            return 20;
+            return 10;
         }
 
         protected int getCastingTime() {
@@ -180,7 +182,7 @@ public class WraithEntity extends FloatingMobEntity {
     }
     
     protected SoundEvent getSpellSound() {
-        return FURSoundRegistry.BANSHEE_ATTACK;
+        return FURSoundRegistry.WRAITH_ATTACK;
     }
     
     /**

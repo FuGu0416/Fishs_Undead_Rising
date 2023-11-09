@@ -202,7 +202,7 @@ public class FURItemRegistry {
 	public static final Item ENIGMOTH_LARVA_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:enigmoth_larva_cooked");
 	public static final Item HOLY_WATER = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:holy_water");
 	public static final Item BASIC_BOMB = new FURThrowableItem("mod_lavacow:basic_bomb");
-	public static final Item MUMMIFIED_COD = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CORRODED, 16*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:mummified_cod");
+	public static final Item MUMMIFIED_COD = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CORRODED, 16*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:mummified_cod");
 	public static final Item MUMMIFIED_COD_BUCKET = new FishBucketItem(() -> FUREntityRegistry.MUMMIFIEDCOD, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:mummified_cod_bucket");
 	public static final Item BONE_TROUT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:bone_trout");
 	public static final Item BONE_TROUT_BUCKET = new FishBucketItem(() -> FUREntityRegistry.BONETROUT, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:bone_trout_bucket");

@@ -45,6 +45,11 @@ public class FURItem extends Item {
 		this.Tooltip = TooltipIn;
 	}
 	
+    /**
+     * 0: no tooltips
+     * 1: tooltips w/ white text 
+     * 2: tooltips w/ yellow text 
+     */	
 	public FURItem(Properties p_i48487_1_, int TooltipIn) {
 		this(p_i48487_1_, 32, net.minecraft.item.UseAction.EAT, TooltipIn);
 	}

@@ -614,6 +614,13 @@
 		"sounds": ["mod_lavacow:entity/wraith/ambient0","mod_lavacow:entity/wraith/ambient1","mod_lavacow:entity/wraith/ambient2"]
 	},
 	
+	"wraith_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_attack",
+		"sounds": [{"name": "mod_lavacow:entity/wraith/attack","stream": true}]
+	},
+	
 	"wraith_death":
 	{
 		"category": "hostile",
