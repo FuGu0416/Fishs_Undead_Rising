@@ -1,7 +1,5 @@
 package com.Fishmod.mod_LavaCow.entities.floating;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -9,10 +7,8 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -26,11 +22,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class WraithEntity extends FloatingMobEntity {
 	public WraithEntity(EntityType<? extends WraithEntity> p_i48549_1_, World worldIn) {
@@ -93,8 +91,9 @@ public class WraithEntity extends FloatingMobEntity {
                 return false;
             } else {
             	return WraithEntity.this.tickCount >= this.spellCooldown 
-            			&& WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 3.0 
-            			&& WraithEntity.this.getHealth() < WraithEntity.this.getMaxHealth() * 0.3F;
+            			&& WraithEntity.this.getTarget() instanceof PlayerEntity
+            			&& WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 8.0 
+            			&& WraithEntity.this.getHealth() < WraithEntity.this.getMaxHealth() * 0.5F;
             }
         }
 
@@ -115,6 +114,12 @@ public class WraithEntity extends FloatingMobEntity {
             this.spellCooldown = WraithEntity.this.tickCount + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
 
+            for (MobEntity entitylivingbase : WraithEntity.this.level.getEntitiesOfClass(MobEntity.class, WraithEntity.this.getBoundingBox().inflate(8.0D))) {
+                if (!WraithEntity.this.equals(entitylivingbase) && entitylivingbase.getTarget() != null && entitylivingbase.getTarget().equals(WraithEntity.this.getTarget())) {
+                	WraithEntity.this.setTarget(entitylivingbase);
+                }             
+            }
+            
             if (soundevent != null) {
                 WraithEntity.this.playSound(soundevent, 1.0F, 1.0F);
             }
@@ -133,23 +138,33 @@ public class WraithEntity extends FloatingMobEntity {
         }
 
         protected void castSpell() {
-        	List<Entity> list = WraithEntity.this.level.getEntities(WraithEntity.this, WraithEntity.this.getBoundingBox().inflate(FURConfig.Banshee_Ability_Radius.get()));
-        	WraithEntity.this.level.broadcastEntityEvent(WraithEntity.this, (byte)11);
-        	
-        	for (Entity entity1 : list) {
-        		if (entity1 instanceof LivingEntity) {                 
-        			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {        				
-        				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(WraithEntity.this).setMagic(), (float) WraithEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
-        					float local_difficulty = WraithEntity.this.level.getCurrentDifficultyAt(WraithEntity.this.blockPosition()).getEffectiveDifficulty();
-        					((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2));       	
-        				}       							
-        			}
+        	if (WraithEntity.this.getTarget() != null) {
+        		float local_difficulty = WraithEntity.this.level.getCurrentDifficultyAt(WraithEntity.this.blockPosition()).getEffectiveDifficulty();
+        		
+        		if (WraithEntity.this.getTarget() instanceof PlayerEntity) {
+        			WraithEntity.this.getTarget().addEffect(new EffectInstance(Effects.WEAKNESS, 30 * 20 * (int)local_difficulty, 0));
+        			WraithEntity.this.getTarget().addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 30 * 20 * (int)local_difficulty, 4));    
+        		} else {
+        			WraithEntity.this.getTarget().addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 2 * 60 * 20, 2));
+        			WraithEntity.this.getTarget().addEffect(new EffectInstance(Effects.ABSORPTION, 2 * 60 * 20, 2));        			
         		}
-        	} 
+        		
+                if (WraithEntity.this.level instanceof ServerWorld) {
+	                for (int j = 0; j < 16; ++j) {
+	                	double d0 = WraithEntity.this.getTarget().getX() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbWidth() * 2.0F) - (double)WraithEntity.this.getTarget().getBbWidth();
+	                	double d1 = WraithEntity.this.getTarget().getY() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbHeight());
+	                	double d2 = WraithEntity.this.getTarget().getZ() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbWidth() * 2.0F) - (double)WraithEntity.this.getTarget().getBbWidth();
+	                	((ServerWorld) WraithEntity.this.level).sendParticles(ParticleTypes.SOUL, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+	                	
+	                }
+                }
+                
+                WraithEntity.this.hurt(DamageSource.mobAttack(WraithEntity.this).bypassInvul().bypassArmor(), WraithEntity.this.getMaxHealth());
+        	}
         }
 
         protected int getCastWarmupTime() {
-            return 10;
+            return 30;
         }
 
         protected int getCastingTime() {
