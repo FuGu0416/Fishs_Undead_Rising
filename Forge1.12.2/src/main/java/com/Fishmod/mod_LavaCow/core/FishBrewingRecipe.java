@@ -18,5 +18,4 @@ public class FishBrewingRecipe extends BrewingRecipe {
     public boolean isInput(@Nonnull ItemStack stack) {
         return super.isInput(stack) && ItemStack.areItemStackTagsEqual(input, stack);
     }
-
 }

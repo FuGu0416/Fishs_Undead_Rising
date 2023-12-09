@@ -3,10 +3,10 @@ package com.Fishmod.mod_LavaCow.entities.flying;
 import java.util.Random;
 
 import javax.annotation.Nullable;
-
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -48,17 +48,13 @@ public class EntityFlyingMob extends EntityFishTameable {
 		this.moveHelper = new EntityFlyingMob.FlyingMoveHelper(this);
 		this.setPathPriority(PathNodeType.DANGER_FIRE, 16.0F);
 		this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
-		this.setPathPriority(PathNodeType.WATER, -8.0F);
-		this.setPathPriority(PathNodeType.BLOCKED, -8.0F);
-		this.setPathPriority(PathNodeType.OPEN, 8.0F);
-		this.setPathPriority(PathNodeType.FENCE, -8.0F);
 	}
 
-	/*@Override
-    protected void defineSynchedData() {
-		super.defineSynchedData();
+	@Override
+    protected void entityInit() {
+		super.entityInit();
 		this.setNoGravity(true);
-	}*/
+	}
 	
 	@Override
 	protected void initEntityAI() {
@@ -67,6 +63,11 @@ public class EntityFlyingMob extends EntityFishTameable {
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
+	}
+	
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
 	}
 	
     @Override
@@ -104,8 +105,7 @@ public class EntityFlyingMob extends EntityFishTameable {
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void onLivingUpdate()
-    {
+    public void onLivingUpdate() {
 		super.onLivingUpdate();
 		
 		if (this.attackTimer > 0) {
@@ -127,7 +127,9 @@ public class EntityFlyingMob extends EntityFishTameable {
 	    			this.setNoGravity(true);
 	        		this.motionY += 0.25F;
 	    		}
-	    	} else {
+	    	} 
+	    	
+	    	else {
 	    		if (this.getLandTimer() > 0) {
 	    			this.setLandTimer(this.getLandTimer() - 1);
 	    			this.world.setEntityState(this, (byte)41);
@@ -138,23 +140,19 @@ public class EntityFlyingMob extends EntityFishTameable {
 	    		}
 	    	}
 	    		    	
-	        if (this.isSitting() && this.getAttackTarget() == null) {	        	
-	        	if (!this.onGround && SpawnUtil.getHeight(this).getY() > 0) {
-	        		this.motionY += -0.025F;
-	        	}
+	        if (this.isSitting() && this.getAttackTarget() == null && !this.onGround && SpawnUtil.getHeight(this).getY() > 0) {
+	        	this.motionY += -0.025F;
 	        }
 		}
     }
 	
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
+    public boolean attackEntityAsMob(Entity entityIn) {
         this.attackTimer = 20;
         this.world.setEntityState(this, (byte)4);
         
         return super.attackEntityAsMob(entityIn);
     }
     
-    @SideOnly(Side.CLIENT)
     public int getAttackTimer() {
     	return this.attackTimer;
     }
@@ -181,27 +179,32 @@ public class EntityFlyingMob extends EntityFishTameable {
 	@Override
 	@SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-    	if (id == 4)  {
-            this.attackTimer = 20;
-        } else if (id == 40)  {
+		switch(id) {
+		case 4:
+			this.attackTimer = 20;
+			break;
+		case 40:
     		if (this.getLandTimer() < 20) {
     			this.setLandTimer(this.getLandTimer() + 1);
     		}
-        } else if (id == 41)  {
+    		break;
+		case 41:
     		if (this.getLandTimer() > 0) {
     			this.setLandTimer(this.getLandTimer() - 1);
     		}
-        } else {
-            super.handleStatusUpdate(id);
-        }
+			break;
+		default:
+			super.handleStatusUpdate(id);
+			break;
+		}
     }
 	
-    public void fall(float distance, float damageMultiplier)
-    {
+	@Override
+    public void fall(float distance, float damageMultiplier) {
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos)
-    {
+	@Override
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
     }
     
 	@Override
@@ -226,16 +229,23 @@ public class EntityFlyingMob extends EntityFishTameable {
 
         return lowestPassenger;
     }
+	
+	@Override
+	protected void playStepSound(BlockPos pos, Block block) {
+	}
+	
+	protected double VehicleSpeedMod() {
+	    return 1.0D;
+	}
 
-    public void travel(float strafe, float vertical, float forward)
-    {
-		if (this.isInWeb) {
+    public void travel(float strafe, float vertical, float forward) {
+		/*if (this.isInWeb) {
 			this.getMoveHelper().setMoveTo(this.posX, this.posY - 1, this.posZ, 1.0D);
 		}
 		
     	if (this.onGround) {
 			this.getMoveHelper().setMoveTo(this.posX, this.posY + 1, this.posZ, 1.0D);
-		}
+		}*/
 
     	// If the lowest passenger is colliding with the ground, get them out!
         Entity lowestPassenger = this.getLowestPassenger();
@@ -247,6 +257,12 @@ public class EntityFlyingMob extends EntityFishTameable {
                 this.getMoveHelper().setMoveTo(this.posX, this.posY + lowestPassenger.height, this.posZ, 1.0D);
             }
         }
+        
+        if (!hasNoGravity() && !isBeingRidden() && !(getControllingPassenger() instanceof EntityPlayer)) {
+        	this.moveRelative(strafe, vertical, forward, 0.02F);
+    		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+    		this.motionY = -0.15D;
+          } 
     	
     	if (this.getAttackTarget() != null) {
     		this.moveRelative(strafe, vertical, forward, 0.02F);
@@ -260,53 +276,44 @@ public class EntityFlyingMob extends EntityFishTameable {
         {
             this.moveRelative(strafe, vertical, forward, 0.02F);
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-            this.motionX *= 0.800000011920929D;
-            this.motionY *= 0.800000011920929D;
-            this.motionZ *= 0.800000011920929D;
-        }
-        else if (this.isInLava())
-        {
+            this.motionX *= 0.8D;
+            this.motionY *= 0.8D;
+            this.motionZ *= 0.8D;
+        } else if (this.isInLava()) {
             this.moveRelative(strafe, vertical, forward, 0.02F);
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             this.motionX *= 0.5D;
             this.motionY *= 0.5D;
             this.motionZ *= 0.5D;
-        }
-        else
-        {
-            float f = 0.91F;
+        } else {
+        	BlockPos ground = new BlockPos(this.posX, this.posY - 1.0D, this.posZ);
+        	IBlockState underState = this.world.getBlockState(ground);
+        	float f = 0.91F;
 
-            if (this.onGround)
-            {
-                BlockPos underPos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ));
-                IBlockState underState = this.world.getBlockState(underPos);
-                f = underState.getBlock().getSlipperiness(underState, this.world, underPos, this) * 0.91F;
+            if (this.onGround) {
+                f = underState.getBlock().getSlipperiness(underState, this.world, ground, this) * 0.91F;
             }
 
             float f1 = 0.16277136F / (f * f * f);
-            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.1F * f1 : 0.02F);
             f = 0.91F;
 
-            if (this.onGround)
-            {
-                BlockPos underPos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ));
-                IBlockState underState = this.world.getBlockState(underPos);
-                f = underState.getBlock().getSlipperiness(underState, this.world, underPos, this) * 0.91F;
+            if (this.onGround) {
+            	f = underState.getBlock().getSlipperiness(underState, this.world, ground, this) * 0.91F;
             }
 
+            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.1F * f1 : 0.02F);
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             this.motionX *= (double)f;
             this.motionY *= (double)f;
             this.motionZ *= (double)f;
         }
-
+    	
         this.prevLimbSwingAmount = this.limbSwingAmount;
         double d1 = this.posX - this.prevPosX;
         double d0 = this.posZ - this.prevPosZ;
         float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
 
-        if (f2 > 1.0F)
-        {
+        if (f2 > 1.0F) {
             f2 = 1.0F;
         }
 
@@ -318,29 +325,25 @@ public class EntityFlyingMob extends EntityFishTameable {
      * Returns true if this entity should move as if it were on a ladder (either because it's actually on a ladder, or
      * for AI reasons)
      */
-    public boolean isOnLadder()
-    {
+    @Override
+    public boolean isOnLadder() {
         return this.isChild() ? super.isOnLadder() : false;
     }
     
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
- 	   //this.motionY += 0.5D;
- 	   this.motionY += 1.0D;
+ 	   this.motionY += 0.5D;
     	
  	   return super.onInitialSpawn(difficulty, entityLivingData);
  	}
     
     class EntityAIWander extends EntityAIBase {
-        private final EntityFlyingMob parentEntity;
-        
-        public EntityAIWander(EntityFlyingMob entityFlyingMob)
-        {
-            this.parentEntity = entityFlyingMob;
+        public EntityAIWander(EntityFlyingMob entityFlyingMob) {
             this.setMutexBits(1);
         }
 
         public boolean shouldExecute() {
-           return this.parentEntity.navigator.noPath() && this.parentEntity.rand.nextInt(10) == 0;
+           return EntityFlyingMob.this.navigator.noPath() && EntityFlyingMob.this.rand.nextInt(10) == 0;
         }
 
         public boolean shouldContinueExecuting() {
@@ -348,12 +351,10 @@ public class EntityFlyingMob extends EntityFishTameable {
         }
     }
         
-    static class AIRandomFly extends EntityAIBase
-    {
+    static class AIRandomFly extends EntityAIBase {
         private final EntityFlyingMob parentEntity;
 
-        public AIRandomFly(EntityFlyingMob entityFlyingMob)
-        {
+        public AIRandomFly(EntityFlyingMob entityFlyingMob) {
             this.parentEntity = entityFlyingMob;
             this.setMutexBits(1);
         }
@@ -361,27 +362,24 @@ public class EntityFlyingMob extends EntityFishTameable {
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean shouldExecute()
-        {
+        public boolean shouldExecute() {
             EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
             
             if (this.parentEntity.getNavigator() instanceof PathNavigateGround) {
             	return false;
             }
-
-            if (!entitymovehelper.isUpdating())
-            {
+            if (!entitymovehelper.isUpdating()) {
                 return true;
             }
             else if (this.parentEntity.getAttackTarget() != null) {
             	return false;
             }
-            else
-            {
+            else {
                 double d0 = entitymovehelper.getX() - this.parentEntity.posX;
                 double d1 = entitymovehelper.getY() - this.parentEntity.posY;
                 double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                
                 return d3 < 1.0D || d3 > 3600.0D;
             }
         }
@@ -389,8 +387,7 @@ public class EntityFlyingMob extends EntityFishTameable {
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean shouldContinueExecuting()
-        {
+        public boolean shouldContinueExecuting() {
             return false;
         }
 
@@ -413,41 +410,34 @@ public class EntityFlyingMob extends EntityFishTameable {
             		}
             	}
             
-                if (parentEntity.world.isAirBlock(blockpos))
                 this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
             }
         }
     }
     
-    static class FlyingMoveHelper extends EntityMoveHelper
-    {
+    static class FlyingMoveHelper extends EntityMoveHelper {
         private final EntityFlyingMob parentEntity;
         private int courseChangeCooldown;
-        IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
+        IAttributeInstance entityMoveSpeedAttribute = this.entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.FLYING_SPEED);
 		double entityMoveSpeed = entityMoveSpeedAttribute != null ? entityMoveSpeedAttribute.getAttributeValue() : 0.1D;
 		
-        public FlyingMoveHelper(EntityFlyingMob flyer)
-        {
+        public FlyingMoveHelper(EntityFlyingMob flyer) {
             super(flyer);
             this.parentEntity = flyer;
         }
 
-        public void onUpdateMoveHelper()
-        {
-            if (this.action == EntityMoveHelper.Action.MOVE_TO)
-            {
+        public void onUpdateMoveHelper() {
+            if (this.action == EntityMoveHelper.Action.MOVE_TO) {
                 double d0 = this.posX - this.parentEntity.posX;
                 double d1 = this.posY - this.parentEntity.posY;
                 double d2 = this.posZ - this.parentEntity.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                if (this.courseChangeCooldown-- <= 0)
-                {
+                if (this.courseChangeCooldown-- <= 0) {
                     this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
                     d3 = (double)MathHelper.sqrt(d3);
 
-                    if (this.isNotColliding(this.posX, this.posY, this.posZ, d3) && this.isNotPassengerColliding(this.posX, this.posY, this.posZ, d3))
-                    {
+                    if (this.isNotColliding(this.posX, this.posY, this.posZ, d3) && this.isNotPassengerColliding(this.posX, this.posY, this.posZ, d3)) {
                         this.parentEntity.motionX += d0 / d3 * entityMoveSpeed;
                         this.parentEntity.motionY += d1 / d3 * entityMoveSpeed;
                         this.parentEntity.motionZ += d2 / d3 * entityMoveSpeed;
@@ -455,11 +445,15 @@ public class EntityFlyingMob extends EntityFishTameable {
                         float yaw = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
     					this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, yaw, Movement2RotationAngle(entityMoveSpeed));
                     }
-                    else
-                    {
+                    else {
                         this.action = EntityMoveHelper.Action.WAIT;
                     }
                 }
+                
+                
+                if (this.parentEntity.isSitting() && this.parentEntity.getAttackTarget() == null) {
+                    this.action = EntityMoveHelper.Action.WAIT; 
+                } 
             }
         }
         
@@ -470,8 +464,7 @@ public class EntityFlyingMob extends EntityFishTameable {
         /**
          * Checks if the lowest passenger's entity bounding box is not colliding with terrain
          */
-        private boolean isNotPassengerColliding(double x, double y, double z, double distance)
-        {
+        private boolean isNotPassengerColliding(double x, double y, double z, double distance) {
             if (this.parentEntity.getPassengers().isEmpty()) {
                 return true;
             }
@@ -499,19 +492,16 @@ public class EntityFlyingMob extends EntityFishTameable {
         /**
          * Checks if entity bounding box is not colliding with terrain
          */
-        private boolean isNotColliding(double x, double y, double z, double distance)
-        {
+        private boolean isNotColliding(double x, double y, double z, double distance) {
             double d0 = (x - this.parentEntity.posX) / distance;
             double d1 = (y - this.parentEntity.posY) / distance;
             double d2 = (z - this.parentEntity.posZ) / distance;
             AxisAlignedBB axisalignedbb = this.parentEntity.getEntityBoundingBox();
 
-            for (int i = 1; (double)i < distance; ++i)
-            {
+            for (int i = 1; (double)i < distance; ++i) {
                 axisalignedbb = axisalignedbb.offset(d0, d1, d2);
 
-                if (!this.parentEntity.world.getCollisionBoxes(this.parentEntity, axisalignedbb).isEmpty())
-                {
+                if (!this.parentEntity.world.getCollisionBoxes(this.parentEntity, axisalignedbb).isEmpty()) {
                     return false;
                 }
             }
@@ -526,11 +516,8 @@ public class EntityFlyingMob extends EntityFishTameable {
 			super(creature, speedIn, useLongMemory);
 		}
 
-	    protected double getAttackReachSqr(EntityLivingBase attackTarget)
-	    {
+	    protected double getAttackReachSqr(EntityLivingBase attackTarget) {
 	        return (double)(this.attacker.width * this.attacker.width + attackTarget.width * attackTarget.width);
-	    }
-    	
+	    }	
     }
-
 }
