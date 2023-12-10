@@ -224,7 +224,7 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
     			forward = controller.moveForward;
 
     			if (this.canPassengerSteer()) {
-    				float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.6F;
+    				float f = (float)this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue() * 0.6F;
     				this.setAIMoveSpeed(f);
     				super.travel(strafe, vertical, forward);
     			} else {

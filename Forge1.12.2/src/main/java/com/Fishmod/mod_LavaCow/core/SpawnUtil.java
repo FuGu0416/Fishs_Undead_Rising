@@ -7,12 +7,14 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 
 public class SpawnUtil {
@@ -42,17 +44,20 @@ public class SpawnUtil {
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
     	World worldIn = entityIn.getEntityWorld();
-    	BlockPos pos = worldIn.getHeight(entityIn.getPosition());
-    	
-    	if (!worldIn.provider.hasSkyLight()) {
-    		do {
-    			pos = pos.down();
-    		} while (!worldIn.getBlockState(pos).getMaterial().equals(Material.AIR));
+    	BlockPos pos = entityIn.getPosition();
+    	Chunk chunk = worldIn.getChunkFromBlockCoords(pos);  	
+    	BlockPos blockpos, blockpos1;
 
-    		do {
-    			pos = pos.up();
-            } while (worldIn.getBlockState(pos).getMaterial().equals(Material.AIR) && pos.getY() > 0);
-    	}
+        for (blockpos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ()); blockpos.getY() >= 0; blockpos = blockpos1)
+        {
+            blockpos1 = blockpos.down();
+            IBlockState state = chunk.getBlockState(blockpos1);
+
+            if (state.getMaterial().blocksMovement() && !state.getBlock().isLeaves(state, worldIn, blockpos1) && !state.getBlock().isFoliage(worldIn, blockpos1))
+            {
+                break;
+            }
+        }
 
     	return pos;
     }
