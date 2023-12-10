@@ -313,6 +313,14 @@
 		"sounds": ["mod_lavacow:entity/scarecrow/ambient0","mod_lavacow:entity/scarecrow/ambient1","mod_lavacow:entity/scarecrow/ambient2"]
 	},
 	
+	"entity.scarecrow.ambient_old":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarecrow_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/scarecrow/ambient","stream": true}]
+	},
+	
+	
 	"entity.scarecrow.hurt":
 	{
 		"category": "entity",
@@ -325,6 +333,13 @@
 		"category": "entity",
 		"subtitle": "entity_scarecrow_death",
 		"sounds": ["mod_lavacow:entity/scarecrow/death0","mod_lavacow:entity/scarecrow/death1"]
+	},
+	
+	"entity.scarecrow.death_old":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarecrow_death",
+		"sounds": [{"name": "mod_lavacow:entity/scarecrow/death","stream": true}]
 	},
 	
 	"entity.scarecrow.scythe":
@@ -471,7 +486,7 @@
 	{
 		"category": "entity",
 		"subtitle": "entity_ghostray_hurt",
-		"sounds": ["mod_lavacow:entity/ghostray/hurt0","mod_lavacow:entity/ghostray/hurt1"]
+		"sounds": [{"name": "mod_lavacow:entity/ghostray/hurt","stream": true}]
 	},
 	
 	"entity.ghostray.death":
@@ -537,6 +552,13 @@
 		"sounds": [{"name": "mod_lavacow:entity/avaton/ambient","stream": true}]
 	},
 	
+	"entity.avaton.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_avaton_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/avaton/hurt","stream": true}]
+	},
+	
 	"entity.avaton.spell":
 	{
 		"category": "entity",
@@ -551,6 +573,13 @@
 		"sounds": [{"name": "mod_lavacow:entity/avaton/death","stream": true}]
 	},
 	
+	"entity.skeletonking.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_ambient",
+		"sounds": ["mod_lavacow:entity/skeletonking/ambient0","mod_lavacow:entity/skeletonking/ambient1","mod_lavacow:entity/skeletonking/ambient2"]
+	},
+	
 	"entity.skeletonking.attack":
 	{
 		"category": "entity",
@@ -558,11 +587,32 @@
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/attack","stream": true}]
 	},
 	
+	"entity.skeletonking.knockback":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_knockback",
+		"sounds": ["mod_lavacow:entity/skeletonking/knockback0","mod_lavacow:entity/skeletonking/knockback1"]
+	},
+	
 	"entity.skeletonking.death":
 	{
 		"category": "entity",
 		"subtitle": "entity_skeletonking_death",
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/death","stream": true}]
+	},
+	
+	"entity.skeletonking.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_hurt",
+		"sounds": ["mod_lavacow:entity/skeletonking/hurt0","mod_lavacow:entity/skeletonking/hurt1"]
+	},
+	
+	"entity.skeletonking.spell_skeleton_army":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_spell_skeleton_army",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_skeleton_army","stream": true}]
 	},
 
 	"entity.skeletonking.spell_summon":
@@ -586,6 +636,20 @@
 		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spell_toss","stream": true}]
 	},
 	
+	"entity.skeletonking.spawn":
+	{
+		"category": "entity",
+		"subtitle": "entity_skeletonking_spawn",
+		"sounds": [{"name": "mod_lavacow:entity/skeletonking/spawn","stream": true}]
+	},
+	
+	"entity.skeletonking.step":
+	{
+		"category": "entity",
+		"subtitle": "subtitles.block.generic.footsteps",
+		"sounds": ["mod_lavacow:entity/skeletonking/step1","mod_lavacow:entity/skeletonking/step2","mod_lavacow:entity/skeletonking/step3","mod_lavacow:entity/skeletonking/step4"]
+	},
+	
 	"entity.cactyrant.ambient":
 	{
 		"category": "entity",
@@ -605,6 +669,62 @@
 		"category": "entity",
 		"subtitle": "entity_cactyrant_grow",
 		"sounds": [{"name": "mod_lavacow:entity/cactyrant/grow","stream": true}]
+	},
+	
+	"entity.sea_hag.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_sea_hag_ambient",
+		"sounds": ["mod_lavacow:entity/seahag/ambient0", "mod_lavacow:entity/seahag/ambient1"]
+	},
+	
+	"entity.sea_hag.screech":
+	{
+		"category": "entity",
+		"subtitle": "entity_sea_hag_screech",
+		"sounds": ["mod_lavacow:entity/seahag/screech0", "mod_lavacow:entity/seahag/screech1"]
+	},
+	
+	"entity.wraith.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_wraith_ambient",
+		"sounds": ["mod_lavacow:entity/wraith/ambient", "mod_lavacow:entity/wraith/ambient0", "mod_lavacow:entity/wraith/ambient1"]
+	},
+	
+	"entity.wraith.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_wraith_attack",
+		"sounds": [{"name": "mod_lavacow:entity/wraith/attack","stream": true}]
+	},
+	
+	"entity.wraith.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_wraith_death",
+		"sounds": [{"name": "mod_lavacow:entity/wraith/death", "stream": true}]
+	},
+	
+	"entity.scarab.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarab_ambient",
+		"sounds": ["mod_lavacow:entity/scarab/ambient0", "mod_lavacow:entity/scarab/ambient1", "mod_lavacow:entity/scarab/ambient2"]
+	},
+	
+	"entity.scarab.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarab_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/scarab/hurt","stream": true}]
+	},
+	
+	"entity.scarab.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_scarab_death",
+		"sounds": [{"name": "mod_lavacow:entity/scarab/death","stream": true}]
 	},
 	
 	"entity.enigmoth.ambient":
@@ -634,11 +754,24 @@
 		"sounds": [{"name": "mod_lavacow:entity/enigmoth/flap","stream": true}]
 	},
 	
+	"random.death_coil_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_death_coil_shoot",
+		"sounds": ["mod_lavacow:random/death_coil_shoot0", "mod_lavacow:random/death_coil_shoot1"]
+	},
+	
 	"random.fruit_plant":
 	{
 		"category": "neutral",
 		"subtitle": "subtitles.block.generic.place",
 		"sounds": [{"name": "mod_lavacow:random/fruit_plant","stream": true}]
+	},
+	
+	"random.holy_grenade":
+	{
+		"category": "neutral",
+		"sounds": [{"name": "mod_lavacow:random/holy_grenade","stream": true}]
 	},
 	
 	"random.piranha_shoot":

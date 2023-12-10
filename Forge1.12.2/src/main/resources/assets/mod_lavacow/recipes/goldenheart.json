@@ -1,20 +1,24 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "###",
-        "#X#",
-        "###"
-    ],
-    "key": {
-        "#": {
-			"type": "forge:ore_dict",
-			"ore": "blockGold"
-        },
-        "X": {
-            "item": "mod_lavacow:undyingheart"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S#",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:nether_star"
     },
-    "result": {
-        "item": "mod_lavacow:goldenheart"
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "blockGold"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "heartUndying"
     }
+  },
+  "result": {
+    "item": "mod_lavacow:goldenheart"
+  }
 }
