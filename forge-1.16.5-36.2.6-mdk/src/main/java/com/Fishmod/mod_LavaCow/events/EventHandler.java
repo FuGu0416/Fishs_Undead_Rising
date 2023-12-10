@@ -381,7 +381,7 @@ public class EventHandler {
     }
     
     @SubscribeEvent
-    public static void onBlockDestroyed(BlockEvent.BreakEvent event) {   	
+    public static void onBlockDestroyed(BlockEvent.BreakEvent event) {   
     	if(event.getState().getMaterial() == Material.SAND 
     		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.HOT)
     		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.DRY)

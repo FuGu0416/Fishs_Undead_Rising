@@ -1,11 +1,14 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "###",
+        "#S#",
         "#X#",
         "###"
     ],
     "key": {
+		"S": {
+	      	"item": "minecraft:nether_star"
+	    },
         "#": {
 			"tag": "forge:storage_blocks/gold"
         },

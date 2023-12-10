@@ -128,6 +128,11 @@ public class ScarecrowEntity extends FURTameableEntity {
         return -1.0D;
     }
     
+    @Override
+    public double getPassengersRidingOffset() {
+    	return this.getSkin() != 0 ? 2.6D : 2.2D;
+    }
+    
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
@@ -197,7 +202,7 @@ public class ScarecrowEntity extends FURTameableEntity {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
 
-    	if (this.isTame() && item instanceof DyeItem) {          
+    	if (this.isTame() && this.isOwnedBy(player) && item instanceof DyeItem) {          
             DyeColor dyecolor = ((DyeItem)item).getDyeColor();
             
             if (dyecolor != this.getCollarColor()) {
