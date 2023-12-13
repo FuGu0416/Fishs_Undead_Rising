@@ -16,6 +16,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.RavenEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
@@ -96,6 +97,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
@@ -404,46 +406,35 @@ public class EventHandler {
     	LivingEntity Attacked = event.getEntityLiving();
     	Entity Attacker = source.getDirectEntity();
     	float effectlevel = 1.0F;
-	    int Armor_Famine_lvl = 0;
 	    int Armor_Chitin_lvl = 0;
 	    
 	    if (event.getSource().isFire() && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION)) {
 	    	event.setCanceled(true);
 	    	return;
 	    }
-	    
-	    if (Attacker != null) {
-			for(ItemStack S : Attacker.getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem) {
-					Armor_Famine_lvl++;
-				}
-			}
-	    }
-		
+	    		
 		for (ItemStack S : Attacked.getArmorSlots()) {
 			if (S.getItem() instanceof ChitinArmorItem) {
 				Armor_Chitin_lvl++;
 			}
-		}
-		
-		if (Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
-			event.setAmount(event.getAmount() + 2.0F);
-		}
+		}		
 
 		if ((Armor_Chitin_lvl >= 2) && source.equals(DamageSource.FALL)) {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
 		if (Attacker != null && Attacker instanceof LilSludgeEntity) {
-			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();			
-			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
+			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();					
 			if(Owner != null)
 				Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
 		} else if (Attacker != null && Attacker instanceof UnburiedEntity) {
-			LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();		
-			event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
+			LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();				
 			if(Owner != null)
 				Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
+		} else if (Attacker != null && Attacker instanceof ScarabEntity) {
+			LivingEntity Owner = ((ScarabEntity)Attacker).getOwner();				
+			if(Owner != null)
+				Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
 		}
     	
     	if (Attacker != null && Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
@@ -458,10 +449,6 @@ public class EventHandler {
     		}
     		
     		boolean have_Heart = false;
-    		/*if(Loader.isModLoaded("baubles")) {
-    			if(baubles.api.BaublesApi.isBaubleEquipped((PlayerEntity) Attacked, FURItemRegistry.MOOTENHEART) != -1)
-    				have_Heart = true;
-    		}*/
     		
     		for (int i = 0; i < 9 ; i++)
     			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART) || ((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
@@ -485,15 +472,7 @@ public class EventHandler {
     		} else {
     			event.setAmount(event.getAmount() * 0.15F);
     		}
-    	}
-    	
-    	if (Attacker != null && Attacker instanceof LivingEntity) {
-    		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
-    		if (heldItem.equals(FURItemRegistry.BONESWORD))
-    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
-    		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
-    			event.setAmount(event.getAmount() + 2.0F);
-    	}
+    	}   	
     	
     	if (Attacked.hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
@@ -927,4 +906,40 @@ public class EventHandler {
             event.getEntity().remove();
     	}
     }
+    
+    @SubscribeEvent
+    public void onEHurt(LivingHurtEvent event) {
+    	DamageSource source = event.getSource();
+    	LivingEntity Attacked = event.getEntityLiving();
+    	Entity Attacker = source.getDirectEntity();
+	    int Armor_Famine_lvl = 0;	    
+	    
+	    if (Attacker != null) {
+			for(ItemStack S : Attacker.getArmorSlots()) {
+				if(S.getItem() instanceof FamineArmorItem) {
+					Armor_Famine_lvl++;
+				}
+			}
+	    }		
+		
+		if (Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
+			event.setAmount(event.getAmount() + 2.0F);
+		}
+		
+		if (Attacker != null && Attacker instanceof LilSludgeEntity) {			
+			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
+		} else if (Attacker != null && Attacker instanceof UnburiedEntity) {	
+			event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
+		} else if (Attacker != null && Attacker instanceof ScarabEntity) {	
+			event.setAmount(event.getAmount() + ((ScarabEntity)Attacker).getBonusDamage(Attacked));		
+		}
+		
+    	if (Attacker != null && Attacker instanceof LivingEntity) {
+    		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
+    		if (heldItem.equals(FURItemRegistry.BONESWORD))
+    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
+    		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
+    			event.setAmount(event.getAmount() + 2.0F);
+    	}    	
+    } 
 }
