@@ -260,11 +260,17 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_IllagerNose;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege; 
 	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Bloodtooth;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cordyceps;
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Veilshroom;
 	
 	static {
-		BUILDER.push("Glowshroom");
+		BUILDER.push("Shroom");
 		pSpawnRate_Glowshroom = BUILDER.comment("Set the spawn rate of Glowshroom [0-100]").defineInRange("glowshroom spawn rate", 1, 0, 100);
 		pSpreadRate_Glowshroom = BUILDER.comment("Set the spread rate of Glowshroom [0-100]").defineInRange("glowshroom spread rate", 100, 0, 100);
+		pSpawnRate_Bloodtooth = BUILDER.comment("Set the spawn rate of Bloodtooth [0-100]").defineInRange("bloodtooth spawn rate", 8, 0, 100);
+		pSpawnRate_Cordyceps = BUILDER.comment("Set the spawn rate of Cordyceps [0-100]").defineInRange("cordyceps spawn rate", 4, 0, 100);
+		pSpawnRate_Veilshroom = BUILDER.comment("Set the spawn rate of Veil Shroom [0-100]").defineInRange("veilshroom spawn rate", 4, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Moogma");
