@@ -18,8 +18,6 @@ public class Modconfig {
 	
 	public static Configuration config = null;
 	
-	public static boolean pGlowshroomGen;
-	
 	public static int pSpawnRate_Lavacow;
 	public static double Lavacow_Health;
 	public static boolean Lavacow_Bucket;
@@ -225,6 +223,9 @@ public class Modconfig {
 	public static boolean Generate_Cemetery;
 	public static boolean Generate_Desert_Tomb; 
 	public static boolean Bowls_Stack;
+	public static int pSpawnRate_Bloodtooth;
+	public static int pSpawnRate_Cordyceps;
+	public static int pSpawnRate_Veilshroom;
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -241,9 +242,11 @@ public class Modconfig {
 	
 	private void syncConfigs() {
 		
-		pGlowshroomGen = config.get("Glowshroom", "glowshroom generation", true, "Generate Glowshroom in the overworld [false/true]").getBoolean(true);
-		pSpawnRate_Glowshroom = config.get("Glowshroom", "glowshroom spawn rate", 20, "Set the spawn rate of Glowshroom [0-100]", 0, 100).getInt(20);
-		pSpreadRate_Glowshroom = config.get("Glowshroom", "glowshroom spread rate", 100, "Set the spread rate of Glowshroom [0-100]", 0, 100).getInt(100);
+		pSpawnRate_Glowshroom = config.get("Shroom", "glowshroom spawn rate", 20, "Set the spawn rate of Glowshroom [0-100]", 0, 100).getInt(20);
+		pSpreadRate_Glowshroom = config.get("Shroom", "glowshroom spread rate", 100, "Set the spread rate of Glowshroom [0-100]", 0, 100).getInt(100);
+		pSpawnRate_Bloodtooth = config.get("Shroom", "bloodtooth spawn rate", 20, "Set the spawn rate of Bloodtooth [0-100]", 0, 100).getInt(20);
+		pSpawnRate_Cordyceps = config.get("Shroom", "cordyceps spawn rate", 20, "Set the spawn rate of Cordyceps [0-100]", 0, 100).getInt(20);
+		pSpawnRate_Veilshroom = config.get("Shroom", "veilshroom spawn rate", 20, "Set the spawn rate of Veil Shroom [0-100]", 0, 100).getInt(20);
 		
 		pSpawnRate_Lavacow = config.get("Moogma", "moogma spawn rate", 0, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(0);
 		Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);

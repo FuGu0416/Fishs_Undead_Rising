@@ -342,24 +342,24 @@ public class ModEventHandler {
     	Biome biome = world.getBiomeForCoordsBody(event.getChunkPos().getBlock(0, 0, 0));
     	Random rand = event.getRand();
     	
-    	if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) && world.provider.isSurfaceWorld() && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
+    	if (Modconfig.pSpawnRate_Glowshroom > 0 && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) && world.provider.isSurfaceWorld() && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
-    		gen.generate(Modblocks.GLOWSHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
+    		gen.generate(Modblocks.GLOWSHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)), Modconfig.pSpawnRate_Glowshroom);
     	}
     	
-    	if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
+    	if (Modconfig.pSpawnRate_Bloodtooth > 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
-    		gen.generate(Modblocks.BLOODTOOTH_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
+    		gen.generate(Modblocks.BLOODTOOTH_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)), Modconfig.pSpawnRate_Bloodtooth);
     	}
     	
-    	if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
+    	if (Modconfig.pSpawnRate_Cordyceps > 0 && (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
-    		gen.generate(Modblocks.CORDY_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
+    		gen.generate(Modblocks.CORDY_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)), Modconfig.pSpawnRate_Cordyceps);
     	}
     	
-    	if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST)) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
+    	if (Modconfig.pSpawnRate_Veilshroom > 0 && (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST)) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
     		WorldGenGlowShroom gen = new WorldGenGlowShroom();
-    		gen.generate(Modblocks.VEIL_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)));
+    		gen.generate(Modblocks.VEIL_SHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)), Modconfig.pSpawnRate_Veilshroom);
     	}
     }
     
