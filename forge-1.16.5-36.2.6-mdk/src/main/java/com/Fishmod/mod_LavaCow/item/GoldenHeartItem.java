@@ -1,19 +1,25 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import com.Fishmod.mod_LavaCow.capability.SimpleCapProvider;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.ModList;
+import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 
-//@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
+public class GoldenHeartItem extends FURItem {
 
 	public GoldenHeartItem(Properties PropertiesIn) {
 		super(PropertiesIn, 0, UseAction.NONE, 1);
@@ -37,7 +43,7 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
 
 	@Override
     public void inventoryTick(ItemStack stack, World WorldIn, Entity EntityIn, int itemSlot, boolean isSelected) {
-		if(EntityIn instanceof PlayerEntity && itemSlot < 9 && EntityIn.tickCount % 20 == 0)
+		if (EntityIn instanceof PlayerEntity && itemSlot < 9 && EntityIn.tickCount % 20 == 0)
 			onTick(stack, (PlayerEntity)EntityIn);
     }
 	
@@ -68,30 +74,19 @@ public class GoldenHeartItem extends FURItem /*implements baubles.api.IBauble*/{
     	}
 	}
     
-    /*@Override
-    @Optional.Method(modid = "baubles")
-    public boolean canEquip(ItemStack stack, EntityLivingBase PlayerIn) {
-      return true;
-    }
-    
     @Override
-    @Optional.Method(modid = "baubles")
-    public boolean canUnequip(ItemStack stack, EntityLivingBase PlayerIn) {
-      return true;
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT unused) {
+    	if (ModList.get().isLoaded("curios")) {
+	    	return new SimpleCapProvider<>(CuriosCapability.ITEM, new ICurio() {
+		        @Override
+		        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
+		        	if (livingEntity instanceof PlayerEntity && livingEntity.tickCount % 20 == 0) {
+		        		onTick(stack, (PlayerEntity)livingEntity);
+		        	}
+		        }
+	    	});
+    	}
+    	
+    	return super.initCapabilities(stack, unused);
     }
-    
-    @Override
-    @Optional.Method(modid = "baubles")
-    public baubles.api.BaubleType getBaubleType(ItemStack stack) {
-          return baubles.api.BaubleType.TRINKET;
-    }
-    
-    @Override
-    @Optional.Method(modid = "baubles")
-    public void onWornTick(ItemStack stack, EntityLivingBase plr) {
-    	if(stack.getItemDamage() > stack.getMaxDamage())stack.setItemDamage(stack.getMaxDamage());
-    	if (plr instanceof EntityPlayer && plr.ticksExisted % 20 == 0 && !stack.isEmpty() && stack.getCount() > 0) {
-	        GoldenHeartItem.onTick(stack, (EntityPlayer) plr);
-	    }
-    }*/
 }

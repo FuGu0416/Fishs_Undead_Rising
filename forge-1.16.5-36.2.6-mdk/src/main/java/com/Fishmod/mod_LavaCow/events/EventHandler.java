@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.events;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
@@ -25,6 +26,7 @@ import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
+import com.Fishmod.mod_LavaCow.integration.curios.CurioIntegration;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
@@ -106,6 +108,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber
@@ -453,9 +456,15 @@ public class EventHandler {
     		for (int i = 0; i < 9 ; i++)
     			if(((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART) || ((PlayerEntity)Attacked).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
 					have_Heart = true;
+
+    		if (ModList.get().isLoaded("curios") && !have_Heart) {
+    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
+    			have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
+    		}
     		
-    		if (have_Heart)
+    		if (have_Heart) {
     			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
+    		}
     	}
     	
     	if (source.isExplosion() && source.getEntity() instanceof WolfEntity) {
@@ -546,7 +555,8 @@ public class EventHandler {
     	
     	if(event.getEntity() != null && event.getEntity() instanceof IronGolemEntity) {
     		((IronGolemEntity)event.getEntity()).targetSelector.addGoal(5, new NearestAttackableTargetGoal<>((IronGolemEntity)event.getEntity(), PlayerEntity.class, 0, true, false, (p_210136_0_) -> {
-				return p_210136_0_.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE);
+				boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY); 
+    			return p_210136_0_.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE) || noseInCurios;
 			}));	
     	}
     }
@@ -575,12 +585,6 @@ public class EventHandler {
 		PlayerEntity player = event.getPlayer();
 		World world = event.getPlayer().level;
 		
-		/*if(Loader.isModLoaded("baubles")) {
-			int i = baubles.api.BaublesApi.isBaubleEquipped(player, FURItemRegistry.DREAMCATCHER);
-			if(i != -1)
-				have_DreamCatcher = baubles.api.BaublesApi.getBaublesHandler(player).getItem(i);
-		}*/
-		
 		if (!event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			for(int i = 0; i < 9 ; i++) {
 				if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER)) {
@@ -588,9 +592,13 @@ public class EventHandler {
 					break;
 				}
 			}
+			
+			if (ModList.get().isLoaded("curios") && have_DreamCatcher == null) {
+				have_DreamCatcher = CurioIntegration.findItem(FURItemRegistry.DREAMCATCHER, player);
+			}
 		}
 		
-		if (!world.isClientSide() && have_DreamCatcher != null && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
+		if (!world.isClientSide() && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
 
 			Entity LivingEntity = Result.type.create(world);
@@ -669,42 +677,6 @@ public class EventHandler {
     		event.getEntityLiving().curePotionEffects(new ItemStack(Items.MILK_BUCKET));
     	}
     }
-    
-    /*private void MendingBaubles(Item item, EntityXPOrb xpOrb, PlayerEntity player, PlayerPickupXpEvent event) {
-		int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
-		
-		if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getPlayerEntity()).getItem(Heart_Slot)) > 0) {
-			event.setCanceled(true);
-			ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(player).getItem(Heart_Slot);
-			
-            if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
-
-                player.xpCooldown = 2;
-                player.onItemPickup(xpOrb, 1);
-                int i = Math.min(xpOrb.xpValue * 2, itemStack.getItemDamage());
-                xpOrb.xpValue -= i / 2;
-
-                itemStack.setItemDamage(itemStack.getItemDamage() - i);
-
-                if (xpOrb.xpValue > 0) {
-                    player.addExperience(xpOrb.xpValue);
-                }
-
-                xpOrb.remove();
-            }
-		}
-    }
-    
-    @SubscribeEvent
-    public void onPlayerXPPickUp(PlayerPickupXpEvent event) {
-
-        if (!event.getPlayerEntity().level.isClientSide()) {
-    		if(Loader.isModLoaded("baubles")) {
-    			MendingBaubles(FURItemRegistry.GOLDENHEART, event.getOrb(), event.getPlayerEntity(), event);
-    			MendingBaubles(FURItemRegistry.DREAMCATCHER, event.getOrb(), event.getPlayerEntity(), event);
-            }
-        }
-    }*/
 
 	@SubscribeEvent
 	public void playerDeath(LivingDropsEvent event) {
@@ -824,9 +796,15 @@ public class EventHandler {
     	if(event.getEntityLiving() instanceof PlayerEntity) {    		
     		boolean have_Heart = false;
   		
-    		for(int i = 0; i < 9 ; i++)
-    			if(((PlayerEntity)event.getEntityLiving()).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART))
+    		for (int i = 0; i < 9 ; i++) {
+    			if (((PlayerEntity)event.getEntityLiving()).inventory.getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART)) {
 					have_Heart = true;
+    			}
+    		}
+    		
+    		if (ModList.get().isLoaded("curios") && !have_Heart) {
+    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, event.getEntityLiving()) != ItemStack.EMPTY);
+    		}
     		
     		if (have_Heart) {
     			effectlevel += 0.25F;
@@ -859,7 +837,13 @@ public class EventHandler {
     public void onESetTarget(LivingSetAttackTargetEvent event) {    	
     	// Neutral
         if (event.getTarget() != null && event.getEntityLiving().getLastHurtByMob() != event.getTarget()) {
-        	if (event.getEntityLiving().getMobType().equals(CreatureAttribute.ILLAGER) && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE)) {
+        	Boolean hasNose = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE);
+        	
+    		if (ModList.get().isLoaded("curios") && !hasNose) {
+    			hasNose = (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, event.getTarget()) != ItemStack.EMPTY);
+    		}
+    		
+        	if (event.getEntityLiving().getMobType().equals(CreatureAttribute.ILLAGER) && hasNose) {
         		((MobEntity) event.getEntityLiving()).setTarget(null);
         	}
         	
@@ -871,7 +855,13 @@ public class EventHandler {
         
         // Passive
         if (event.getTarget() != null) {
-        	if (event.getEntity() instanceof AbstractSkeletonEntity && event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN)) {
+        	Boolean hasCrown = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN);
+        	
+    		if (ModList.get().isLoaded("curios") && !hasCrown) {
+    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN, event.getTarget()) != ItemStack.EMPTY);
+    		}
+    		
+        	if (event.getEntity() instanceof AbstractSkeletonEntity && hasCrown) {
         		((MobEntity) event.getEntityLiving()).setTarget(null);
         	}
         }

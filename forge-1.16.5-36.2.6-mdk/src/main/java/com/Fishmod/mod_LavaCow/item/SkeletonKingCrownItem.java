@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.capability.SimpleCapProvider;
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelCrown;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIFollowEntity;
 import com.Fishmod.mod_LavaCow.entities.ai.SkeletonOwnerHurtByTargetGoal;
@@ -22,6 +23,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.GroundPathNavigator;
@@ -32,6 +34,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.ModList;
+import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 
 public class SkeletonKingCrownItem extends ArmorItem {
 	private List<Goal> remove = new ArrayList<Goal>();
@@ -113,5 +119,20 @@ public class SkeletonKingCrownItem extends ArmorItem {
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:skeletonking_crown").withStyle(TextFormatting.YELLOW));
 	}
-
+    
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT unused) {
+    	if (ModList.get().isLoaded("curios")) {
+	    	return new SimpleCapProvider<>(CuriosCapability.ITEM, new ICurio() {
+		        @Override
+		        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
+		        	if (livingEntity instanceof PlayerEntity) {
+		        		stack.onArmorTick(((PlayerEntity)livingEntity).level,(PlayerEntity)livingEntity);
+		        	}
+		        }
+	    	});
+    	}
+    	
+    	return super.initCapabilities(stack, unused);
+    }
 }
