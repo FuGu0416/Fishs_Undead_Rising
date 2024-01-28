@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -291,7 +292,7 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
 	        this.setRotateAngle(leg_l_1, 0.5707226787179512F, 0.0F, 0.0F);
 	        this.setRotateAngle(leg_l_2, -0.3761184404889726F, 0.0F, 0.0F);
 		}
-		
+			
         if(!entityIn.isSilent()) {
         	switch(entityIn.getSkin()) {
         		case 0:
@@ -316,14 +317,18 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
         			break;
         	}
 	    		    	        
-	        this.scepter_base.visible = true;	        
+    		if (entityIn.getMainHandItem().isEmpty()) {
+    			this.scepter_base.visible = true;
+    		} else {
+    			this.scepter_base.visible = false;
+    		}	        
 	    } else {
         	this.setRotateAngle(Head, 0.12F, 0.0F, -0.22759093446006054F);
         	this.setRotateAngle(Head2, 0.12F, 0.0F, -0.22759093446006054F);
         	this.setRotateAngle(Head3, 0.12F, 0.0F, -0.22759093446006054F);
         	        	
         	this.scepter_base.visible = false;    	
-        }
+        }      
     }
     
     @Override
@@ -419,4 +424,12 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
 	public ModelRenderer getHead() {
 		return this.Head;
 	}
+	
+    @Override
+    public void translateToHand(HandSide side, MatrixStack p_225599_2_) {
+    	this.Body_base.translateAndRotate(p_225599_2_);
+    	this.Body_upper.translateAndRotate(p_225599_2_);
+    	this.arm_l_0.translateAndRotate(p_225599_2_);
+    	this.arm_l_1.translateAndRotate(p_225599_2_);
+    }
 }

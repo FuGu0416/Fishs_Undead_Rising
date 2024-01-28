@@ -54,3 +54,9 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.your_modid]]
+    modId="curios"
+    mandatory=false
+    versionRange="[4.1.0.0, 4.1.0.0)"
+    ordering="NONE"
+    side="BOTH"

@@ -9,7 +9,12 @@ import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.CropsBlock;
+import net.minecraft.block.StemBlock;
+import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -31,16 +36,20 @@ import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -60,6 +69,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScarecrowEntity extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
+	private static final int RANGE = 5;
 	
 	private int attackTimer;
 	private int cleaveTimer;
@@ -164,9 +174,11 @@ public class ScarecrowEntity extends FURTameableEntity {
             double d1 = this.getY();
             double d2 = this.getZ();
         	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-        	
+
         	if (this.AttackStance == (byte)4) {
         		if (target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
+        			this.doEnchantDamageEffects(this, target);        			                   
+        			
         			if (this.getSkin() != 2)
         				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
         			else
@@ -179,11 +191,13 @@ public class ScarecrowEntity extends FURTameableEntity {
                 for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(2.0D))) {
                     if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
                     	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
-                    		if (target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
+                    		if (entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
+                    			this.doEnchantDamageEffects(this, entitylivingbase);
+                    			
 		            			if (this.getSkin() != 2)
-		            				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
+		            				entitylivingbase.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
 		            			else
-		            				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
+		            				entitylivingbase.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
 		                        if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
 		                        	entitylivingbase.setSecondsOnFire(2 * (int)f);
 		                        }	                        
@@ -192,6 +206,53 @@ public class ScarecrowEntity extends FURTameableEntity {
                     }
                 }
         	}
+        }
+        
+        // accelerate crop growing
+        if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
+        	int x = this.blockPosition().getX() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
+			int z = this.blockPosition().getZ() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;   
+			
+			for (int i = 4; i > -2; i--) {
+				int y = this.blockPosition().getY() + i;
+				BlockPos blockpos = new BlockPos(x, y, z);
+				BlockState blockstate = this.level.getBlockState(blockpos);
+				Block block = blockstate.getBlock();
+				IntegerProperty integerproperty = null;
+				boolean flag = false;
+				
+				if (this.level.isEmptyBlock(blockpos)) {
+					continue;
+				}
+	               
+				if (block.is(BlockTags.BEE_GROWABLES)) {
+					if (block instanceof CropsBlock) {
+						CropsBlock cropsblock = (CropsBlock)block;
+						if (!cropsblock.isMaxAge(blockstate)) {
+							flag = true;
+							integerproperty = cropsblock.getAgeProperty();
+						}
+					} else if (block instanceof StemBlock) {
+						int j = blockstate.getValue(StemBlock.AGE);
+						if (j < 7) {
+							flag = true;
+	                        integerproperty = StemBlock.AGE;
+						}
+					} else if (block == Blocks.SWEET_BERRY_BUSH) {
+						int k = blockstate.getValue(SweetBerryBushBlock.AGE);
+						if (k < 3) {
+	                        flag = true;
+	                        integerproperty = SweetBerryBushBlock.AGE;
+						}
+					}
+
+					if (flag) {
+						this.level.levelEvent(2005, blockpos, 0);
+						this.level.setBlockAndUpdate(blockpos, blockstate.setValue(integerproperty, Integer.valueOf(blockstate.getValue(integerproperty) + 1)));
+						break;
+					}
+				}
+			}
         }
     	
         super.tick();
@@ -202,35 +263,64 @@ public class ScarecrowEntity extends FURTameableEntity {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
 
-    	if (this.isTame() && this.isOwnedBy(player) && item instanceof DyeItem) {          
-            DyeColor dyecolor = ((DyeItem)item).getDyeColor();
-            
-            if (dyecolor != this.getCollarColor()) {
-            	this.setCollarColor(dyecolor);
+    	if (this.isTame() && this.isOwnedBy(player)) {
+	    	if (item instanceof DyeItem) {          
+	            DyeColor dyecolor = ((DyeItem)item).getDyeColor();
+	            
+	            if (dyecolor != this.getCollarColor()) {
+	            	this.setCollarColor(dyecolor);
+	            	if (!player.abilities.instabuild) {
+	            		itemstack.shrink(1);
+	            	}
+	
+	            	return ActionResultType.CONSUME;
+	            }
+	            
+	    	} else if (item instanceof SwordItem) {
+	    		if (!this.getMainHandItem().isEmpty()) {
+	    			this.spawnAtLocation(this.getMainHandItem());
+	    		}
+	    		
+	    		this.setItemSlot(EquipmentSlotType.MAINHAND, itemstack.copy());
+	    		
             	if (!player.abilities.instabuild) {
             		itemstack.shrink(1);
-            	}
-
-            	return ActionResultType.CONSUME;
-            }
-    	} else if (this.isTame() && this.isOwnedBy(player) && !this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
-    		for(Entity passenger : player.getPassengers()) {
-    			if (passenger instanceof RavenEntity) {
-    	    		passenger.removeVehicle();
-    	    		passenger.startRiding(this, true);
-    			}
-    		}
-  		
-    		return ActionResultType.SUCCESS;
-    	} else if (this.isTame() && this.isOwnedBy(player) && this.isVehicle() && this.hasPassenger(RavenEntity.class)) {
-    		for(Entity passenger : this.getPassengers()) {
-    			if (passenger instanceof RavenEntity) {
-    	    		passenger.removeVehicle();
-    			}
-    		}
-    		
-    		return ActionResultType.SUCCESS;
+            	}	    		
+	    		
+	    		return ActionResultType.SUCCESS;
+	    	
+	    	} else if (player.isCrouching() && !this.getMainHandItem().isEmpty()) {
+	    		this.spawnAtLocation(this.getMainHandItem());
+	    		this.setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+	    		
+	    		return ActionResultType.SUCCESS;
+	    		
+	    	} else if (!this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
+	    		for(Entity passenger : player.getPassengers()) {
+	    			if (passenger instanceof RavenEntity) {
+	    	    		passenger.removeVehicle();
+	    	    		passenger.startRiding(this, true);
+	    			}
+	    		}
+	  		
+	    		return ActionResultType.SUCCESS;
+	    		
+	    	} else if (this.isVehicle() && this.hasPassenger(RavenEntity.class)) {
+	    		for(Entity passenger : this.getPassengers()) {
+	    			if (passenger instanceof RavenEntity) {
+	    	    		passenger.removeVehicle();
+	    			}
+	    		}
+	    		
+	    		return ActionResultType.SUCCESS;
+	    	}
     	}
+    	
+        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
+        
+        if (actionResultType.consumesAction()) {
+        	return actionResultType;
+        }
 
     	return super.mobInteract(player, hand); 	
     }
@@ -445,6 +535,15 @@ public class ScarecrowEntity extends FURTameableEntity {
     public boolean shouldDropLoot() {
     	return !this.isOnFire() || this.lastHurtByPlayer != null;
     }
+    
+    @Override
+    protected void dropEquipment() {
+    	super.dropEquipment();
+        
+		if (!this.getMainHandItem().isEmpty()) {
+			this.spawnAtLocation(this.getMainHandItem());
+		}
+	}
 
     static class AttackGoal extends MeleeAttackGoal {
         public AttackGoal(ScarecrowEntity p_i46676_1_) {
