@@ -27,7 +27,7 @@
 	        	},
 	        	{
 	          		"type": "item",
-	          		"name": "minecraft:oak_wood",
+	          		"name": "minecraft:oak_log",
 	          		"weight": 1,
 	          		"functions": [
 			            {
