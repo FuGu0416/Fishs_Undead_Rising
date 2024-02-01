@@ -744,6 +744,8 @@
 	"advancements.mod_lavacow.entomophobia.description": "Slay all types of insects",	
 	"advancements.mod_lavacow.tame_flying_mount.title": "It's a Bird...It's a Plane...It's...",
 	"advancements.mod_lavacow.tame_flying_mount.description": "Tame all types of ridable insects",
-				
+	"advancements.mod_lavacow.tame_scarecrow.title": "Do You Want to Build a Scarecrow?",
+	"advancements.mod_lavacow.tame_scarecrow.description": "Build a Scarecrow",
+					
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

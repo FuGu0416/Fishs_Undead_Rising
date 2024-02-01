@@ -738,6 +738,8 @@
 	"advancements.mod_lavacow.entomophobia.description": "杀死所有种类的昆虫",
 	"advancements.mod_lavacow.tame_flying_mount.title": "是鸟？是飞机？还是...？",
 	"advancements.mod_lavacow.tame_flying_mount.description": "驯服所有可骑乘的昆虫",
-						
+	"advancements.mod_lavacow.tame_scarecrow.title": "你想要一起堆稻草人吗？",
+	"advancements.mod_lavacow.tame_scarecrow.description": "制造一只稻草人",
+							
 	"death.mod_lavacow.timeup": "%1$s的生命消逝于尘土之中"
 }
