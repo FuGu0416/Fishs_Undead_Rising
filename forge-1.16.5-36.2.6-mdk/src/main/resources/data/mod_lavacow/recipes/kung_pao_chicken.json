@@ -15,7 +15,7 @@
     	}	    	
     ],
     {
-		"item": "minecraft:chicken"
+		"tag": "forge:raw_chicken"
     },
     {
 		"item": "mod_lavacow:imp_horn"

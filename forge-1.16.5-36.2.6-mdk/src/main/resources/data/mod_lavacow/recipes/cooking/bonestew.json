@@ -2,15 +2,15 @@
   "type": "farmersdelight:cooking",
   "recipe_book_tab": "meals",
   "ingredients": [
-    {
-		"item": "mod_lavacow:ectoplasm"
+	{
+		"tag": "forge:bones"
     },
     {
-		"item": "mod_lavacow:glowshroom"
+		"item": "mod_lavacow:bloodtooth_shroom"
     }
   ],  
   "result": {
-    "item": "mod_lavacow:ghostjelly"
+    "item": "mod_lavacow:bonestew"
   },
   "container": {
     "item": "minecraft:bowl"

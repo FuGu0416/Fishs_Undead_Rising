@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "mod_lavacow:curseweave_cloth"
+    }
+  ],
+  "tool": {
+    "tag": "forge:shears"
+  },
+  "result": [
+    {
+      "item": "mod_lavacow:cursed_fabric",
+      "count": 3
+    }
+  ]
+}

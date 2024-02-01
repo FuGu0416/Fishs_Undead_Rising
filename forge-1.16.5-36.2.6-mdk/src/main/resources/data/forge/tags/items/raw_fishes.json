@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "mod_lavacow:piranha_item",
+    "mod_lavacow:swarmer_item",
+    "mod_lavacow:lamprey"
+  ]
+}

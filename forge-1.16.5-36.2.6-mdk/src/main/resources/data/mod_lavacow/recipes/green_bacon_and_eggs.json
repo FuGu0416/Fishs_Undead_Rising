@@ -4,16 +4,12 @@
 	{
       "item": "minecraft:bowl"
     },
-    [
-		{
-			"tag": "forge:eggs"
-	    }
-	],
-    [
-		{
-			"tag": "forge:eggs"
-	    }
-	],
+	{
+		"tag": "forge:eggs"
+    },
+	{
+		"tag": "forge:eggs"
+    },
     [
         {
 			"item": "mod_lavacow:moltenpan",

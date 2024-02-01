@@ -3,14 +3,14 @@
   "recipe_book_tab": "meals",
   "ingredients": [
     {
-		"item": "mod_lavacow:ectoplasm"
+		"tag": "forge:crops/nether_wart"
     },
     {
-		"item": "mod_lavacow:glowshroom"
+		"tag": "forge:crops/nether_wart"
     }
   ],  
   "result": {
-    "item": "mod_lavacow:ghostjelly"
+    "item": "mod_lavacow:netherstew"
   },
   "container": {
     "item": "minecraft:bowl"

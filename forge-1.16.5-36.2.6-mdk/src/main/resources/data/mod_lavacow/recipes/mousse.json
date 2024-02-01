@@ -1,23 +1,30 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    [
-		{
-			"tag": "forge:eggs"
-	    }
-	],
-    [
-		{
-            "item": "minecraft:sugar"
-	    }
-	],
+	{
+		"tag": "forge:eggs"
+    }
+	,
+	{
+        "item": "minecraft:sugar"
+    }
+	,
     [
 	    {
-			"tag": "forge:meats"
+			"tag": "forge:raw_pork"
 	    },
-	    {
-			"tag": "minecraft:fishes"
+		{
+			"tag": "forge:raw_fishes"
 	    },
+		{
+			"tag": "forge:raw_chicken"
+	    },
+		{
+			"tag": "forge:raw_beef"
+	    },
+		{
+			"tag": "forge:raw_mutton"
+	    },	    	    
         {
 			"item": "mod_lavacow:parasite_item_common"
     	},
@@ -28,17 +35,17 @@
 			"item": "mod_lavacow:parasite_item_jungle"
     	},
     	{
-			"item": "mod_lavacow:parasite_item_cooked"			
-		},
-    	{
 			"item": "mod_lavacow:enigmoth_larva"			
-		},
-		{
-			"item": "mod_lavacow:enigmoth_larva_cooked"			
 		},
     	{
 			"item": "minecraft:rotten_flesh"
-    	}
+    	},
+    	{
+			"item": "mod_lavacow:ptera_wing"
+		},
+		{
+			"item": "mod_lavacow:mimic_claw"
+		}
     ]
   ],
   

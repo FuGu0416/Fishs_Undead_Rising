@@ -2,15 +2,15 @@
   "type": "farmersdelight:cooking",
   "recipe_book_tab": "meals",
   "ingredients": [
-    {
-		"item": "mod_lavacow:ectoplasm"
+	{
+		"tag": "forge:raw_chicken"
     },
     {
-		"item": "mod_lavacow:glowshroom"
+		"item": "mod_lavacow:imp_horn"
     }
   ],  
   "result": {
-    "item": "mod_lavacow:ghostjelly"
+    "item": "mod_lavacow:kung_pao_chicken"
   },
   "container": {
     "item": "minecraft:bowl"
