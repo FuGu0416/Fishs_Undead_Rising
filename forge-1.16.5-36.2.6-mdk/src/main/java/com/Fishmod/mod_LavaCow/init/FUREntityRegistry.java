@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.entities.CactyrantEntity;
 import com.Fishmod.mod_LavaCow.entities.FogletEntity;
 import com.Fishmod.mod_LavaCow.entities.ForsakenEntity;
 import com.Fishmod.mod_LavaCow.entities.FrigidEntity;
+import com.Fishmod.mod_LavaCow.entities.GhoulEntity;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.LavaCowEntity;
 import com.Fishmod.mod_LavaCow.entities.MummyEntity;
@@ -123,6 +124,7 @@ public class FUREntityRegistry {
 	public static final EntityType<UndeadFishEntity> MUMMIFIEDCOD = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "mummified_cod");
 	public static final EntityType<UndeadFishEntity> BONETROUT = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "bone_trout");
 	public static final EntityType<LampreyEntity> LAMPREY = registerEntity(EntityType.Builder.of(LampreyEntity::new, EntityClassification.WATER_AMBIENT).sized(0.8F, 0.3F).clientTrackingRange(4), "lamprey");
+	public static final EntityType<GhoulEntity> GHOUL = registerEntity(EntityType.Builder.of(GhoulEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.2F), "ghoul");
 	
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
@@ -189,6 +191,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(MUMMIFIEDCOD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
         EntitySpawnPlacementRegistry.register(BONETROUT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
         EntitySpawnPlacementRegistry.register(LAMPREY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules);
+        EntitySpawnPlacementRegistry.register(GHOUL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, GhoulEntity::checkGhoulSpawnRules);
     }
     
     @SuppressWarnings("rawtypes")
@@ -259,5 +262,6 @@ public class FUREntityRegistry {
         event.put(MUMMIFIEDCOD, CodEntity.createAttributes().build());
         event.put(BONETROUT, CodEntity.createAttributes().build());
         event.put(LAMPREY, LampreyEntity.createAttributes().build());
+        event.put(GHOUL, GhoulEntity.createAttributes().build());
     }
 }

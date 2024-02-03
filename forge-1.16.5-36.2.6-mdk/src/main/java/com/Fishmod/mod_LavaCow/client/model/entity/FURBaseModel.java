@@ -12,11 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class FURBaseModel<T extends Entity> extends EntityModel<T> {
-	
+public class FURBaseModel<T extends Entity> extends EntityModel<T> {	
 	protected void Head_Looking(ModelRenderer Head, float initX, float initY, float netHeadYaw, float headPitch) {
-    	Head.xRot = initX + headPitch * ((float)Math.PI / 180F);
-        Head.yRot = initY + netHeadYaw * ((float)Math.PI / 180F);
+    	Head.xRot = initX + (float)Math.toRadians(headPitch);
+        Head.yRot = initY + (float)Math.toRadians(netHeadYaw);
 	}
 	
 	protected void SwingX_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {
@@ -51,6 +50,10 @@ public class FURBaseModel<T extends Entity> extends EntityModel<T> {
     
     protected void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
     	this.setRotateAngle(modelRenderer, x, y, z);
+    }
+    
+    protected float triangleWave(float p_78172_1_, float p_78172_2_) {
+        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
     }
     
     public void translateToHand(HandSide side, MatrixStack p_225599_2_) {

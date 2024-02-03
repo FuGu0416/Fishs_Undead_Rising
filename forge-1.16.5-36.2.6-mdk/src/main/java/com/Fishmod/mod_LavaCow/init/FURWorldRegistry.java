@@ -309,6 +309,11 @@ public class FURWorldRegistry {
 		if (FURConfig.pSpawnRate_MummifiedCod.get() > 0 && biomeKey.equals(Biomes.RIVER)) {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONETROUT, FURConfig.pSpawnRate_BoneTrout.get(), 3, 6));
 		}
+		
+		if (FURConfig.pSpawnRate_Ghoul.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.GHOUL, FURConfig.pSpawnRate_Ghoul.get(), 4, 8));
+		}
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {

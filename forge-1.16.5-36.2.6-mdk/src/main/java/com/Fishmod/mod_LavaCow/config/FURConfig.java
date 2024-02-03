@@ -218,6 +218,11 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Lamprey_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Lamprey_Attach;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Lamprey_Lifespan;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Ghoul;
+	public static final ForgeConfigSpec.ConfigValue<Double> Ghoul_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Ghoul_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Ghoul_targetHPThreshold;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
@@ -588,6 +593,13 @@ public final class FURConfig {
 		Lamprey_Attack = BUILDER.comment("Lamprey strength [1-1000]").defineInRange("lamprey attack", 1.0D, 1.0D, 1000.0D);
 		Lamprey_Attach = BUILDER.comment("Lamprey will attack their target by attaching on them [false/true]").define("lamprey attacks by attaching onto target", true);
 		Lamprey_Lifespan = BUILDER.comment("The amount of seconds before Lamprey naturally die").defineInRange("lamprey lifespan", 16, 0, 10000);
+		BUILDER.pop();
+
+		BUILDER.push("Ghoul");
+		pSpawnRate_Ghoul = BUILDER.comment("Set the spawn rate of Ghoul [0-100]").defineInRange("ghoul spawn rate", 20, 0, 100);
+		Ghoul_Health = BUILDER.comment("Maximum Ghoul health [1-1000]").defineInRange("ghoul health", 16.0D, 1.0D, 1000.0D);
+		Ghoul_Attack = BUILDER.comment("Ghoul strength [1-1000]").defineInRange("ghoul attack", 3.0D, 1.0D, 1000.0D);
+		Ghoul_targetHPThreshold = BUILDER.comment("Set the health threshold of becoming Ghoul's target [0-100]").defineInRange("ghoul target health threshold", 40, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");

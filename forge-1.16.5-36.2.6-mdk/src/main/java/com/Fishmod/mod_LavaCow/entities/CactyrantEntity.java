@@ -6,10 +6,12 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -24,7 +26,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -37,6 +38,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -52,6 +54,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	private static final DataParameter<Boolean> DATA_IS_CAMOUFLAGING = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> HUGGING_CD = EntityDataManager.defineId(CactyrantEntity.class, DataSerializers.INT);
+	public static final int ATTACK_TIMER = 15;
 	private int attackTimer;
 	protected int spellTicks;
 	private WaterAvoidingRandomWalkingGoal move;
@@ -71,7 +74,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
         
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new CactyrantEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false));  
+        this.goalSelector.addGoal(3, new AttackGoal(this));  
         this.goalSelector.addGoal(6, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
@@ -157,7 +160,6 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	@Override
     public void tick() {
         super.tick();
-    	LivingEntity target = this.getTarget();
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;
@@ -204,20 +206,6 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	        	}
 	        }
         }
-  	   	        
-        if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {       		        	       		            
-            if (!this.getTarget().isBlocking()) {
-                if (!this.isVehicle() && !this.getTarget().isShiftKeyDown() && this.getHuggingCooldown() == 0) {
-                    this.getTarget().startRiding(this, true);
-                    this.setHuggingCooldown(120);
-                } else if (!this.isVehicle()) {
-                	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-                } else {
-                	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.25F);
-                }
-            }
-        }
     }
 	
     @Override
@@ -239,13 +227,6 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
             double offZ = r * Math.cos(angle);
             passenger.setPos(this.getX() + offX, this.getY() + 0.8F, this.getZ() + offZ);
         }
-    }
-	
-	@Override
-    public boolean doHurtTarget(Entity entityIn) {
-        this.attackTimer = 15;
-        this.level.broadcastEntityEvent(this, (byte)4);
-        return true;
     }
 	
 	/**
@@ -502,4 +483,57 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
     protected boolean shouldDropLoot() {
        return !this.isOnFire() || this.lastHurtByPlayer != null;
     }
+    
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
+           super(p_i46676_1_, 1.25D, false);
+        }
+        
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 5;
+    	}
+    	
+    	protected byte atkTimerEvent() {	        
+    		return (byte)4;
+    	}
+    	
+    	protected void dmgEvent(LivingEntity target) {  		
+    		this.mob.swing(Hand.MAIN_HAND);
+    		float f = (float)this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    		float f1 = (float)this.mob.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+    		float f2 = this.mob.level.getCurrentDifficultyAt(this.mob.blockPosition()).getEffectiveDifficulty();
+    		boolean flag = false;
+    		
+    		if (!this.mob.getTarget().isBlocking()) {
+                if (!this.mob.isVehicle() && !this.mob.getTarget().isShiftKeyDown() && ((CactyrantEntity)this.mob).getHuggingCooldown() == 0) {
+                	this.mob.getTarget().startRiding(this.mob, true);
+                	((CactyrantEntity)this.mob).setHuggingCooldown(120);
+                } else if (!this.mob.isVehicle()) {
+                	flag = target.hurt(DamageSource.mobAttack(this.mob), f);
+                	this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+                } else {
+                	flag = target.hurt(DamageSource.mobAttack(this.mob), f * 0.25F);     
+                	f1 = 0.0F;
+                }
+                
+                if (flag) {
+        			if (f1 > 0.0F && target instanceof LivingEntity) {
+        				((LivingEntity)target).knockback(f1 * 0.5F, (double)MathHelper.sin(this.mob.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.mob.yRot * ((float)Math.PI / 180F))));
+        				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+        			}
+
+        			this.mob.doEnchantDamageEffects(this.mob, target);
+        			this.mob.setLastHurtMob(target);
+        			
+                    if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
+                    	target.setSecondsOnFire(2 * (int)f2);
+                    }
+        		}
+            }    		  		         
+    	}    	
+	} 
 }

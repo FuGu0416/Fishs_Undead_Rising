@@ -161,7 +161,7 @@ public class SkeletonKingModel<T extends SkeletonKingEntity> extends FURBaseMode
     @Override
     public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	SkeletonKingEntity entity = (SkeletonKingEntity) entityIn;
-    	float i = (float)(entity.getAttackTimer()) / 30.0F;
+    	float i = (float)(entity.getAttackTimer()) / (float)SkeletonKingEntity.ATTACK_TIMER;
     	float k = (float)(entity.getSpellTicks(0)) / 30.0F;
     	float l = (float)(entity.getSpellTicks(1)) / 15.0F;
     	float Anime_threshold[] = {1.0F, 0.5F, 0.2F};

@@ -5,6 +5,8 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -16,6 +18,7 @@ import net.minecraft.block.CropsBlock;
 import net.minecraft.block.StemBlock;
 import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
@@ -29,7 +32,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
@@ -56,7 +58,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -66,9 +67,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ScarecrowEntity extends FURTameableEntity {
+public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> DATA_COLLAR_COLOR = EntityDataManager.defineId(ScarecrowEntity.class, DataSerializers.INT);
+	public static final int ATTACK_TIMER = 15;
 	private static final int RANGE = 5;
 	
 	private int attackTimer;
@@ -165,48 +167,6 @@ public class ScarecrowEntity extends FURTameableEntity {
     			this.doWanderCommand(null);
     		}
     	}
-
-    	// Should always return LivingEntity (according to the documentation).
-    	LivingEntity target = this.getTarget();
-        if (target != null && this.distanceToSqr(target) < 9.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {
-        	float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-			double d0 = this.getX();
-            double d1 = this.getY();
-            double d2 = this.getZ();
-        	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-
-        	if (this.AttackStance == (byte)4) {
-        		if (target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
-        			this.doEnchantDamageEffects(this, target);        			                   
-        			
-        			if (this.getSkin() != 2)
-        				target.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
-        			else
-        				target.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
-                    if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                    	target.setSecondsOnFire(2 * (int)f);
-                    }        			
-        		}
-        	} else {                
-                for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(2.0D))) {
-                    if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
-                    	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
-                    		if (entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
-                    			this.doEnchantDamageEffects(this, entitylivingbase);
-                    			
-		            			if (this.getSkin() != 2)
-		            				entitylivingbase.addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
-		            			else
-		            				entitylivingbase.addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
-		                        if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-		                        	entitylivingbase.setSecondsOnFire(2 * (int)f);
-		                        }	                        
-                    		}
-                    	}
-                    }
-                }
-        	}
-        }
         
         // accelerate crop growing
         if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
@@ -323,25 +283,7 @@ public class ScarecrowEntity extends FURTameableEntity {
         }
 
     	return super.mobInteract(player, hand); 	
-    }
-    
-    @Override
-    public boolean doHurtTarget(Entity entityIn) {
-    	if (this.attackTimer == 0) {
-	        this.attackTimer = 15;
-	        if(this.cleaveTimer == 0) {
-	        	this.AttackStance = (byte)5;
-	        	this.cleaveTimer = 140;
-	        } else {
-	        	this.AttackStance = (byte)4;
-	        }
-	        this.level.broadcastEntityEvent(this, this.AttackStance);
-	        
-	        return true;
-    	}
-    	
-    	return false;
-    }
+    }   
     
     @Override
 	public void doSitCommand(PlayerEntity playerIn) {
@@ -358,6 +300,26 @@ public class ScarecrowEntity extends FURTameableEntity {
 		this.setSilent(false);
         super.doFollowCommand(playerIn);
     }
+    
+	@Override
+	public boolean doHurtTarget(Entity entity) {
+		boolean flag = super.doHurtTarget(entity);
+		
+		if (flag) {
+			float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+			
+            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.getRandom().nextFloat() < f * 0.3F) {
+            	entity.setSecondsOnFire(2 * (int)f);
+            }
+            
+			if (this.getSkin() != 2)
+				((LivingEntity)entity).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20 * (int)f, 1));
+			else
+				((LivingEntity)entity).addEffect(new EffectInstance(Effects.WITHER, 4 * 20 * (int)f, 1));
+		}
+		
+		return flag;
+	}
     
     /**
      * Called when the entity is attacked.
@@ -396,9 +358,15 @@ public class ScarecrowEntity extends FURTameableEntity {
         return livingdata;
     }
     
+    @Override
     public int getAttackTimer() {
        return this.attackTimer;
     }
+    
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
     
     public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
@@ -426,7 +394,7 @@ public class ScarecrowEntity extends FURTameableEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4 || id == 5) {
-            this.attackTimer = 15;
+            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
         } else {
             super.handleEntityEvent(id);
@@ -544,18 +512,53 @@ public class ScarecrowEntity extends FURTameableEntity {
 			this.spawnAtLocation(this.getMainHandItem());
 		}
 	}
-
-    static class AttackGoal extends MeleeAttackGoal {
-        public AttackGoal(ScarecrowEntity p_i46676_1_) {
+   
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
            super(p_i46676_1_, 1.0D, true);
         }
-
+        
         public boolean canUse() {
         	return !this.mob.isSilent() && super.canUse();
         }
         
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 5;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+	        if(((ScarecrowEntity)this.mob).cleaveTimer == 0) {
+	        	((ScarecrowEntity)this.mob).AttackStance = (byte)5;
+	        	((ScarecrowEntity)this.mob).cleaveTimer = 140;
+	        } else {
+	        	((ScarecrowEntity)this.mob).AttackStance = (byte)4;
+	        }
+	        
+    		return ((ScarecrowEntity)this.mob).AttackStance;
+    	}
+    	
+    	protected void dmgEvent(LivingEntity target) {  		
+    		this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+    		
+    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4) {
+    			super.dmgEvent(target);
+    		} else {               
+    			for (LivingEntity entitylivingbase : this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {
+                    if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
+                    	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this.mob))) {
+                    		super.dmgEvent(entitylivingbase);
+                    	}
+                    }
+                }
+    		}   		  		         
+    	}
+    	
         protected double getAttackReachSqr(LivingEntity p_179512_1_) {
             return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + p_179512_1_.getBbWidth());
         }
-	}    
+	} 
 }

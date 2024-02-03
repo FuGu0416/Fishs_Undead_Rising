@@ -8,13 +8,13 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -30,7 +30,6 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.ItemEntity;
@@ -45,6 +44,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -59,6 +59,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WendigoEntity extends MonsterEntity implements IAggressive {
 	private static final DataParameter<Boolean> POUNCING = EntityDataManager.defineId(WendigoEntity.class, DataSerializers.BOOLEAN);
+	public static final int ATTACK_TIMER = 20;
 	
 	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
@@ -82,7 +83,7 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
     	this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(2, new AIWendigoLeapAtTarget(this, 0.7F));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false)); 
+        this.goalSelector.addGoal(3, new AttackGoal(this)); 
         this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -133,7 +134,6 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D);
     	super.tick();
         this.noPhysics = false;
-    	LivingEntity target = this.getTarget();
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;
@@ -150,37 +150,6 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(40);
         } 
-    		   	
-        if (target != null && this.distanceToSqr(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canSee(target)) {   
-        	boolean flag = false;
-        	
-            if (this.AttackStance == (byte)4) {
-            	flag = target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
-            	if(target instanceof PlayerEntity)
-            		((PlayerEntity) target).disableShield(true);
-            } else
-            	flag = target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-            
-            if (flag) {
-	            float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-	            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-	            	target.setSecondsOnFire(2 * (int)f);
-	            }
-	            
-	            if (target instanceof LivingEntity) {
-	                ((LivingEntity)target).addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f, 4));
-	            }
-            }
-        }
-    }
-
-	@Override
-    public boolean doHurtTarget(Entity entityIn) {
-        this.attackTimer = 20;
-        this.AttackStance = (byte)(4 + this.random.nextInt(3));
-        this.level.broadcastEntityEvent(this, this.AttackStance);
-
-        return true;
     }
     
     /**
@@ -241,7 +210,7 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4 || id == 5 || id == 6) {
-    		this.attackTimer = 20;
+    		this.attackTimer = ATTACK_TIMER;
     		this.AttackStance = id;
     	} else {
             super.handleEntityEvent(id);
@@ -366,4 +335,56 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
     protected boolean shouldDropLoot() {
        return !this.isOnFire() || this.lastHurtByPlayer != null;
     }
+    
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
+           super(p_i46676_1_, 1.25D, false);
+        }
+
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 10;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+            ((WendigoEntity)this.mob).AttackStance = (byte)(4 + this.mob.getRandom().nextInt(3));
+    		return ((WendigoEntity)this.mob).AttackStance;
+    	}
+    	
+    	protected void dmgEvent(LivingEntity target) {
+    		this.mob.swing(Hand.MAIN_HAND);
+    		float f = (float)this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    		float f1 = (float)this.mob.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+    		float f2 = this.mob.level.getCurrentDifficultyAt(this.mob.blockPosition()).getEffectiveDifficulty();
+    		
+    		if (((WendigoEntity)this.mob).AttackStance == (byte)4) {
+    			f *= 1.5F;
+    			if (target instanceof PlayerEntity) {
+    				((PlayerEntity) target).disableShield(true);
+    			}
+    		}
+        	
+    		boolean flag = target.hurt(DamageSource.mobAttack(this.mob), f);
+    		if (flag) {
+    			if (f1 > 0.0F && target instanceof LivingEntity) {
+    				((LivingEntity)target).knockback(f1 * 0.5F, (double)MathHelper.sin(this.mob.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.mob.yRot * ((float)Math.PI / 180F))));
+    				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+    			}
+
+    			this.mob.doEnchantDamageEffects(this.mob, target);
+    			this.mob.setLastHurtMob(target);
+    			
+                if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
+                	target.setSecondsOnFire(2 * (int)f2);
+                }
+                
+                if (target instanceof LivingEntity) {
+                    ((LivingEntity)target).addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f2, 4));
+                }
+    		}   		         
+    	}
+	}
 }

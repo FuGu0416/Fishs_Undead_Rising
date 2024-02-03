@@ -7,12 +7,14 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
@@ -28,7 +30,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -44,7 +45,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -59,6 +59,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class SludgeLordEntity extends MonsterEntity implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(SludgeLordEntity.class, DataSerializers.INT);
+	public static final int ATTACK_TIMER = 30;
 	private int attackTimer;
 	private int RattackTimer;
 	protected int spellTicks;
@@ -77,7 +78,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AICastingApell());    	
-    	this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));    	
+    	this.goalSelector.addGoal(3, new AttackGoal(this));    	
     	if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -126,9 +127,6 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         
         if (this.attackTimer > 0) {
             --this.attackTimer;
-            if(this.attackTimer > 20 && this.getTarget() != null)
-            	this.getLookControl().setLookAt(this.getTarget(), 10.0F, 10.0F);
-            this.setDeltaMovement(Vector3d.ZERO);
         }
         
         if (this.RattackTimer > 0) {
@@ -143,35 +141,22 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(40);
         } 
-    	
-        if (this.getAttackTimer() == 18 && this.deathTime <= 0) {       
-        	float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-			double d0 = this.getX() + 2.5D * this.getLookAngle().normalize().x;
-            double d1 = this.getY();
-            double d2 = this.getZ() + 2.5D * this.getLookAngle().normalize().z;
-            BlockState state = this.level.getBlockState(new BlockPos(d0, d1, d2).below());
-                	
-	        if (state.getMaterial().isSolid()) {
-	        	this.playSound(state.getSoundType(this.level, new BlockPos(d0, d1, d2).below(), this).getBreakSound(), 1, 0.5F);
-	        	
-	            if (this.level.isClientSide()) {
-	            	for(int i = 0; i < 64; i++)
-	            		this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(new BlockPos(d0, d1, d2).below()), d0 + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d1 + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), d2 + (double) (this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(), this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
-	            }
-	        }
-	        
-            for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(1.5D))) {
-                if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
-                	if(!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this))) {
-                		entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                        if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                        	entitylivingbase.setSecondsOnFire(2 * (int)f);
-                        }
-                	}
-                }             
-            }
-        }
     }
+	
+	@Override
+	public boolean doHurtTarget(Entity entity) {
+		boolean flag = super.doHurtTarget(entity);
+		
+		if (flag) {
+			float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+			
+            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.getRandom().nextFloat() < f * 0.3F) {
+            	entity.setSecondsOnFire(2 * (int)f);
+            }
+		}
+		
+		return flag;
+	}
     
     /**
      * Called when the entity is attacked.
@@ -181,16 +166,6 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     	if(source.isFire())
     		return super.hurt(source, 2.0F * amount);
     	return super.hurt(source, amount);
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity entityIn) {
-    	if (this.attackTimer == 0) {
-	        this.attackTimer = 30;
-	        this.level.broadcastEntityEvent(this, (byte)4);
-	        return true;
-    	}
-        return false;
     }
     
     /**
@@ -259,7 +234,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     public void handleEntityEvent(byte id) {
 		switch(id) {
 			case 4:
-				this.attackTimer = 30;
+				this.attackTimer = ATTACK_TIMER;
 				break;
 			case 5:
 				this.RattackTimer = 40;
@@ -484,4 +459,52 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     protected boolean shouldDropLoot() {
        return !this.isOnFire() || this.lastHurtByPlayer != null;
     }
+    
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
+           super(p_i46676_1_, 1.0D, false);
+        }
+        
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 18;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+    		return (byte)4;
+    	}
+    	
+    	protected void dmgEvent(LivingEntity target) {  		   		   	   		
+			double d0 = this.mob.getX() + 2.5D * this.mob.getLookAngle().normalize().x;
+            double d1 = this.mob.getY();
+            double d2 = this.mob.getZ() + 2.5D * this.mob.getLookAngle().normalize().z;
+            BlockState state = this.mob.level.getBlockState(new BlockPos(d0, d1, d2).below());
+         
+	        if (state.getMaterial().isSolid()) {
+	        	this.mob.playSound(state.getSoundType(this.mob.level, new BlockPos(d0, d1, d2).below(), this.mob).getBreakSound(), 1, 0.5F);
+	        	
+                if (this.mob.level instanceof ServerWorld) {
+                	for (int i = 0; i < 64; i++) {                	
+	                	((ServerWorld) this.mob.level).sendParticles(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(new BlockPos(d0, d1, d2).below()), 
+	            				d0 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				d1 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				d2 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				15, this.mob.getRandom().nextGaussian() * 0.02D, this.mob.getRandom().nextGaussian() * 0.02D, this.mob.getRandom().nextGaussian() * 0.02D, (double)0.15F);
+	                	
+	                }
+                }
+	        }
+	        
+			for (LivingEntity entitylivingbase : this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(1.5D))) {
+                if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
+                	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this.mob))) {
+                		super.dmgEvent(entitylivingbase);
+                	}
+                }
+            }
+    	}
+	}
 }

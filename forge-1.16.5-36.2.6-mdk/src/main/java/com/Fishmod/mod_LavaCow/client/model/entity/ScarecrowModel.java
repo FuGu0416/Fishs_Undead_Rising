@@ -333,7 +333,7 @@ public class ScarecrowModel<T extends ScarecrowEntity> extends FURBaseModel<T> i
     
     @Override
     public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	float i = (float)entityIn.getAttackTimer() / 15.0F;  
+    	float i = (float)entityIn.getAttackTimer() / (float)ScarecrowEntity.ATTACK_TIMER;  
     	float Anime_threshold[] = {1.0F, 0.7F, 0.25F};
     	float Anime_ctrl;
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);

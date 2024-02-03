@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SandBurstEntity;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -28,10 +29,10 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -43,11 +44,9 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -57,6 +56,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -64,6 +64,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	private final ServerBossInfo bossEvent = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS)).setDarkenScreen(false);
 	private static final DataParameter<BlockPos> SPAWN_ORIGIN = EntityDataManager.defineId(SkeletonKingEntity.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Integer> DATA_ID_INV = EntityDataManager.defineId(SkeletonKingEntity.class, DataSerializers.INT);
+	public static final int ATTACK_TIMER = 30;
 	private int attackTimer;
 	protected int spellTicks[] = {0, 0};
 	
@@ -79,7 +80,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         this.goalSelector.addGoal(2, new SkeletonKingEntity.AITeleportSpell());
         this.goalSelector.addGoal(3, new SkeletonKingEntity.AITossSpell());
         this.goalSelector.addGoal(4, new SkeletonKingEntity.AISummoningSpell());
-        this.goalSelector.addGoal(5, new SkeletonKingEntity.AISkeletonKingAttackMelee(this, 1.0D, false));
+        this.goalSelector.addGoal(5, new AttackGoal(this));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -176,28 +177,6 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	            }
 	        }    
         }
-       
-        if (this.getAttackTimer() == 18 && this.deathTime <= 0) {
-			double d0 = this.getX() + 2.5D * this.getLookAngle().normalize().x;
-            double d1 = this.getY();
-            double d2 = this.getZ() + 2.5D * this.getLookAngle().normalize().z;
-            BlockState state = this.level.getBlockState(new BlockPos(d0, d1, d2).below());
-    		       	
-            if (state.getMaterial().isSolid()) {
-	        	this.playSound(state.getBlock().getSoundType(state, this.level, new BlockPos(d0, d1, d2), this).getBreakSound(), 1, 0.5F);
-	        	
-	            if (this.level.isClientSide()) {
-	            	for(int i = 0; i < 64; i++)
-	            		this.level.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(new BlockPos(d0, d1, d2).below()), d0 + (this.random.nextDouble() * 4.0D - 2.0D), d1, d2 + (this.random.nextDouble() * 4.0D - 2.0D), this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
-	            }
-	        }
-	        
-            for (LivingEntity entitylivingbase : this.level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).inflate(1.0D))) {
-            	if (!this.equals(entitylivingbase) && !this.isAlliedTo(entitylivingbase)) {
-                	entitylivingbase.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                }
-            }
-        }   
 	}
 	
 	@Override
@@ -205,16 +184,6 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 		//Doesn't take fall damage
 		return 256;
 	}
-
-    @Override
-	public boolean doHurtTarget(Entity entityIn) {
-    	if (this.attackTimer == 0) {
-	    	this.attackTimer = 30;	  
-	        this.level.broadcastEntityEvent(this, (byte)4);
-    	}
-
-		return false;
-    }
 	
 	@Override
 	protected void customServerAiStep() {
@@ -280,7 +249,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = 30;
+            this.attackTimer = ATTACK_TIMER;
         } else if (id == 10) {  		
         	this.spellTicks[0] = 30;
         } else if (id == 11) {		
@@ -564,50 +533,6 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         }
     }
     
-    static class AISkeletonKingAttackMelee extends MeleeAttackGoal {
-    	private int ticksUntilNextAttack;
-    	
-		public AISkeletonKingAttackMelee(CreatureEntity creature, double speedIn, boolean useLongMemory) {
-			super(creature, speedIn, useLongMemory);
-		}
-
-		public void start() {
-			super.start();
-			this.ticksUntilNextAttack = 0;
-		}
-		
-		public void tick() {
-			super.tick();
-			this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
-		}
-		
-	    protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
-	        double d0 = this.getAttackReachSqr(p_190102_1_);
-
-	        if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0) {
-	            this.ticksUntilNextAttack = 60;
-	            this.mob.swing(Hand.MAIN_HAND);
-	            this.mob.doHurtTarget(p_190102_1_);
-	        }
-	    }
-
-	    protected void resetAttackCooldown() {
-	    	this.ticksUntilNextAttack = 60;
-	    }
-
-	    protected boolean isTimeToAttack() {
-	    	return this.ticksUntilNextAttack <= 0;
-	    }
-
-	    protected int getTicksUntilNextAttack() {
-	    	return this.ticksUntilNextAttack;
-	    }
-	    
-	    protected double getAttackReachSqr(LivingEntity attackTarget) {
-	        return (double)(this.mob.getBbWidth() * 3.0F * this.mob.getBbWidth() * 3.0F + attackTarget.getBbWidth());
-	    }	
-    }
-    
     class DoNothingGoal extends Goal {
         public DoNothingGoal() {
            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
@@ -719,4 +644,56 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 	        }
 		}
     }
+	
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
+           super(p_i46676_1_, 1.0D, false, 60);
+        }
+        
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 18;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+    		return (byte)4;
+    	}
+    	
+    	protected void dmgEvent(LivingEntity target) {  		   		   	   		
+			double d0 = this.mob.getX() + 2.5D * this.mob.getLookAngle().normalize().x;
+            double d1 = this.mob.getY();
+            double d2 = this.mob.getZ() + 2.5D * this.mob.getLookAngle().normalize().z;
+            BlockState state = this.mob.level.getBlockState(new BlockPos(d0, d1, d2).below());
+         
+	        if (state.getMaterial().isSolid()) {
+	        	this.mob.playSound(state.getSoundType(this.mob.level, new BlockPos(d0, d1, d2).below(), this.mob).getBreakSound(), 1, 0.5F);
+	        	
+                if (this.mob.level instanceof ServerWorld) {
+                	for (int i = 0; i < 8; i++) {                	
+	                	((ServerWorld) this.mob.level).sendParticles(new BlockParticleData(ParticleTypes.BLOCK, state).setPos(new BlockPos(d0, d1, d2).below()), 
+	            				d0 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				d1 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				d2 + (double) (this.mob.getRandom().nextFloat() * this.mob.getBbWidth() * 2.0F) - (double) this.mob.getBbWidth(), 
+	            				15, this.mob.getRandom().nextGaussian() * 0.02D, this.mob.getRandom().nextGaussian() * 0.02D, this.mob.getRandom().nextGaussian() * 0.02D, (double)0.15F);
+	                	
+	                }
+                }
+	        }
+	        
+			for (LivingEntity entitylivingbase : this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(1.0D))) {
+                if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
+                	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this.mob))) {
+                		super.dmgEvent(entitylivingbase);
+                	}
+                }
+            }
+    	}
+    	
+	    protected double getAttackReachSqr(LivingEntity attackTarget) {
+	        return (double)(this.mob.getBbWidth() * 3.0F * this.mob.getBbWidth() * 3.0F + attackTarget.getBbWidth());
+	    }	
+	}
 }

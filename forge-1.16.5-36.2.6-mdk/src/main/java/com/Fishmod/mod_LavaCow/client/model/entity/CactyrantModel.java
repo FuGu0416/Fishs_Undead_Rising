@@ -206,7 +206,7 @@ public class CactyrantModel<T extends CactyrantEntity> extends FURBaseModel<T> i
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { 
     	float spl = (float)entityIn.getSpellTicks() / 20.0F;
-    	float i = (float)entityIn.getAttackTimer() / 15.0F;  
+    	float i = (float)entityIn.getAttackTimer() / (float)CactyrantEntity.ATTACK_TIMER;  
     	float Anime_threshold[] = {1.0F, 0.7F, 0.25F};
     	float Anime_ctrl;
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);

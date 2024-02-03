@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.GhoulEntity;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
@@ -101,6 +102,7 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -932,4 +934,14 @@ public class EventHandler {
     			event.setAmount(event.getAmount() + 2.0F);
     	}    	
     } 
+    
+    @SubscribeEvent
+    public void onELootingLevelEvent(LootingLevelEvent event) {
+        DamageSource Attacker = event.getDamageSource();
+        if (Attacker != null) {
+            if (Attacker.getEntity() instanceof GhoulEntity) {
+                event.setLootingLevel(event.getLootingLevel() + 3);
+            }
+        }
+    }
 }

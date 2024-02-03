@@ -229,20 +229,16 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
 	        	this.setRotationAngle(arm_r, -0.0174F, 0.0985F, -0.2754F + MathHelper.sin(ageInTicks * 0.3F) * 0.03F);
 	        	this.setRotationAngle(arm_l, -0.0174F, -0.0985F, 0.2754F + MathHelper.sin(ageInTicks * 0.3F) * 0.03F);
 	        } else {
-	            this.arm_r.xRot = (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
+	            this.arm_r.xRot = (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
 	            this.arm_r.yRot = 0.1F;
 	            this.arm_r.zRot = -0.1F;
-	            this.arm_l.xRot = (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;	        	
+	            this.arm_l.xRot = (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;	        	
 	        	this.arm_l.yRot = -0.1F;		        	
 	        	this.arm_l.zRot = 0.1F;
 	        }
         }                
     }
     
-    private float triangleWave(float p_78172_1_, float p_78172_2_) {
-        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
-    }
-
 	@Override
 	public net.minecraft.client.renderer.model.ModelRenderer getHead() {
 		return this.head;

@@ -361,7 +361,7 @@ public class SludgeLordModel<T extends SludgeLordEntity> extends FURBaseModel<T>
     
     @Override
     public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	float i = (float)entityIn.getAttackTimer() / 30.0F;  
+    	float i = (float)entityIn.getAttackTimer() / (float)SludgeLordEntity.ATTACK_TIMER;  
     	float Anime_threshold[] = {1.0F, 0.5F, 0.2F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);

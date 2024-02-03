@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
@@ -14,11 +15,11 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
@@ -29,12 +30,12 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.MoveThroughVillageGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -54,7 +55,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class UndertakerEntity extends MonsterEntity implements IAggressive {
-	
+	public static final int ATTACK_TIMER = 15;
 	private int attackTimer;
 	protected int spellTicks;
 	
@@ -67,7 +68,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new UndertakerEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false));  
+        this.goalSelector.addGoal(3, new AttackGoal(this));  
         if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -81,6 +82,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, CowEntity.class, true));
     }
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -128,8 +130,6 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
 	@Override
     public void tick() {
         super.tick();
-        // Should always return LivingEntity (according to the documentation).
-    	LivingEntity target = this.getTarget();
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;
@@ -141,22 +141,23 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                
 		if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
 			this.setSecondsOnFire(40);
-		} 
-  	   	        
-        if (target != null && this.distanceToSqr(target) < 4.0D && this.getAttackTimer() == 5 && this.deathTime <= 0 && this.canSee(target)) {
-        	float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-        	this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);	        	
-        	target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));	            
-            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-            	target.setSecondsOnFire(2 * (int)f);
-            }
-        }
+		}   	   	        
     }
 	
     public boolean doHurtTarget(Entity entityIn) {
-        this.attackTimer = 15;
-        this.level.broadcastEntityEvent(this, (byte)4);
-        return true;
+    	boolean flag = super.doHurtTarget(entityIn);
+    			
+    	if (flag) {
+    		float f = this.level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+    		
+    		this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+    		
+            if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
+            	entityIn.setSecondsOnFire(2 * (int)f);
+            }
+    	}
+
+        return flag;
     }
 	
     /**
@@ -223,7 +224,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = 15;
+            this.attackTimer = ATTACK_TIMER;
         } else if (id == 10) {   		
         	this.spellTicks = 30;
         } else {
@@ -436,4 +437,22 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     protected boolean shouldDropLoot() {
        return !this.isOnFire() || this.lastHurtByPlayer != null;
     }
+    
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(CreatureEntity p_i46676_1_) {
+           super(p_i46676_1_, 1.25D, false);
+        }
+
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return 5;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+    		return (byte) 4;
+    	}
+	}
 }
