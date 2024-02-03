@@ -174,10 +174,10 @@ public class FogletModel<T extends FogletEntity> extends FURBaseModel<T> impleme
     	} else {
         	this.leg_r.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         	this.leg_r.yRot = 0.0F;	
-        	this.leg_r.zRot = MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
+        	this.leg_r.zRot = -MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
 	        this.leg_l.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount; 
 	        this.leg_l.yRot = 0.0F;	
-            this.leg_l.zRot = MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
+            this.leg_l.zRot = -MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
     	}
     	
     	if (entityIn.getIsClimbing()) {           

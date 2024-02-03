@@ -85,7 +85,7 @@ public class GhoulEntity extends MonsterEntity implements IAggressive {
     
     public static AttributeModifierMap.MutableAttribute createAttributes() {    	
         return MobEntity.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.25D)
+        		.add(Attributes.MOVEMENT_SPEED, 0.266D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, FURConfig.Ghoul_Health.get())
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Ghoul_Attack.get())

@@ -115,10 +115,10 @@ public class GhoulModel<T extends GhoulEntity> extends FURBaseModel<T> implement
     	} else {
         	this.leg_r.xRot = -0.2391F + MathHelper.cos(limbSwing * 0.6662F) * 0.2F * limbSwingAmount;
         	this.leg_r.yRot = 0.0F;	
-        	this.leg_r.zRot = MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
+        	this.leg_r.zRot = -MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
 	        this.leg_l.xRot = -0.2391F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.2F * limbSwingAmount; 
 	        this.leg_l.yRot = 0.0F;	
-            this.leg_l.zRot = MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
+            this.leg_l.zRot = -MathHelper.cos(limbSwing * f) * 0.1F * limbSwingAmount;
     	}
 		
 		if (entityIn.getAttackTimer() > 0) {
