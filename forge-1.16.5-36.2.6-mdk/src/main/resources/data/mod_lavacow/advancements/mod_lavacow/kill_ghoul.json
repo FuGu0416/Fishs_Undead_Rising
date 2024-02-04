@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "item": "mod_lavacow:faminearmor_helmet"
+			"item": "mod_lavacow:scythe_claw"
         },
         "title": {
-            "translate": "advancements.mod_lavacow.kill_wendigo.title"
+            "translate": "advancements.mod_lavacow.kill_ghoul.title"
         },
         "description": {
-            "translate": "advancements.mod_lavacow.kill_wendigo.description"
+            "translate": "advancements.mod_lavacow.kill_ghoul.description"
         }
     },
     "parent": "mod_lavacow:mod_lavacow/root",
@@ -16,7 +16,7 @@
             "trigger": "minecraft:player_killed_entity",
 		    "conditions": {
 				"entity": {
-					"type": "mod_lavacow:wendigo"
+					"type": "mod_lavacow:ghoul"
 		        }
 		      }
         }

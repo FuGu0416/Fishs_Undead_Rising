@@ -31,7 +31,7 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
     
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType p_239207_2_, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        if(itemStackIn.getItem() == FURItemRegistry.BEAST_CLAW){
+        if (itemStackIn.getItem() == FURItemRegistry.BEAST_CLAW) {
             matrixStackIn.pushPose();
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(BEAST_CLAW_TEXTURE), false, itemStackIn.hasFoil());
@@ -39,7 +39,7 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
             matrixStackIn.popPose();
         }
         
-        if(itemStackIn.getItem() == FURItemRegistry.SKELETONKING_MACE){
+        if (itemStackIn.getItem() == FURItemRegistry.SKELETONKING_MACE) {
             matrixStackIn.pushPose();
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(SKELETONKING_MACE_TEXTURE), false, itemStackIn.hasFoil());
@@ -47,7 +47,7 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
             matrixStackIn.popPose();
         }
         
-        if(itemStackIn.getItem() == FURItemRegistry.VESPA_SHIELD){
+        if (itemStackIn.getItem() == FURItemRegistry.VESPA_SHIELD) {
             matrixStackIn.pushPose();
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(VESPA_SHIELD_TEXTURE), false, itemStackIn.hasFoil());
@@ -55,19 +55,19 @@ public class FURItemstackRenderer extends ItemStackTileEntityRenderer {
             matrixStackIn.popPose();
         }
         
-        if(itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_COMMON.asItem()) {
+        if (itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_COMMON.asItem()) {
         	new ScarecrowHeadTileEntityRenderer<>(0, TileEntityRendererDispatcher.instance).render(null, combinedOverlayIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         
-        if(itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_STRAW.asItem()) {
+        if (itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_STRAW.asItem()) {
         	new ScarecrowHeadTileEntityRenderer<>(1, TileEntityRendererDispatcher.instance).render(null, combinedOverlayIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         
-        if(itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_PLAGUE.asItem()) {
+        if (itemStackIn.getItem() == FURBlockRegistry.SCARECROWHEAD_PLAGUE.asItem()) {
         	new ScarecrowHeadTileEntityRenderer<>(2, TileEntityRendererDispatcher.instance).render(null, combinedOverlayIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         }
         
-        if(itemStackIn.getItem() == FURItemRegistry.ILLAGER_NOSE){
+        if (itemStackIn.getItem() == FURItemRegistry.ILLAGER_NOSE){
             matrixStackIn.pushPose();
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(ILLAGER_NOSE_TEXTURE), false, itemStackIn.hasFoil());

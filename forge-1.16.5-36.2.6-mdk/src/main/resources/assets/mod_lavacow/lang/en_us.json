@@ -86,7 +86,7 @@
 	"item.mod_lavacow.skeletonking_crown": "The Crown of Rule",
 	"item.mod_lavacow.emblem_of_king": "Emblem of King",
 	"item.mod_lavacow.beast_claw": "Beast Claw",
-	"item.mod_lavacow.hatred_shard": "Memory of a Thousand Armies",
+	"item.mod_lavacow.hatred_shard": "Shard of Reminiscence",
 	"item.mod_lavacow.curseweave_cloth": "Curseweave Cloth",
 	"item.mod_lavacow.skeletonking_mace": "\"Death\"",
 	"item.mod_lavacow.piranha_bucket": "Bucket of Piranha",
@@ -717,7 +717,7 @@
 	"advancements.mod_lavacow.kill_forsaken.title": "I Remember...",
 	"advancements.mod_lavacow.kill_forsaken.description": "Kill a Forsaken",
 	"advancements.mod_lavacow.get_hatred_shard.title": "In the Depths of Memory",
-	"advancements.mod_lavacow.get_hatred_shard.description": "Get a Memory of a Thousand Armies",
+	"advancements.mod_lavacow.get_hatred_shard.description": "Obtain a Shard of Reminiscence",
 	"advancements.mod_lavacow.kill_imp.title": "Evil Monkey",
 	"advancements.mod_lavacow.kill_imp.description": "Kill a Imp",
 	"advancements.mod_lavacow.kill_cactyrant.title": "Cactsus",
@@ -746,6 +746,8 @@
 	"advancements.mod_lavacow.tame_flying_mount.description": "Tame all types of ridable insects",
 	"advancements.mod_lavacow.tame_scarecrow.title": "Do You Want to Build a Scarecrow?",
 	"advancements.mod_lavacow.tame_scarecrow.description": "Build a Scarecrow",
-					
+	"advancements.mod_lavacow.kill_ghoul.title": "Me Eat Dead People",
+	"advancements.mod_lavacow.kill_ghoul.description": "Kill a Ghoul",
+						
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

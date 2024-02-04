@@ -18,6 +18,8 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.message.MessageMountSpecial;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
@@ -55,6 +57,8 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -79,6 +83,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	private static final DataParameter<Integer> ATTACK_TIMER = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.INT);
 	private static final DataParameter<Boolean> SADDLED = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.INT);
+	private static final int RANGE = 2;
 	
 	private EntityFishAIAttackRange<WarSmallFireballEntity> range_atk;
 	private AvoidEntityGoal<PlayerEntity> avoid_entity;
@@ -343,7 +348,43 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	    			this.setGrowingStage(3);	    		
 	    		}
 	    	}
+	    	
+	    	if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {			
+				for (int i = RANGE; i > -RANGE; i--)
+					for (int j = RANGE; j > -RANGE; j--)
+						for (int k = RANGE; k > -RANGE; k--) {
+							int x = this.blockPosition().getX() + i;
+							int y = this.blockPosition().getY() + j;
+							int z = this.blockPosition().getZ() + k;
+							BlockPos blockpos = new BlockPos(x, y, z);
+							BlockState blockstate = this.level.getBlockState(blockpos);
+							Block block = blockstate.getBlock();
+							
+							if (this.level.isEmptyBlock(blockpos)) {
+								continue;
+							}
+				               
+							if (block instanceof AbstractFurnaceBlock) {
+								AbstractFurnaceTileEntity furnaceTileEntity = (AbstractFurnaceTileEntity) this.level.getBlockEntity(blockpos);
+						        						        
+						        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
+						        	CompoundNBT compoundnbt = new CompoundNBT();
+						        	furnaceTileEntity.save(compoundnbt);
+								      
+									if (compoundnbt.contains("BurnTime") && compoundnbt.getInt("BurnTime") <= 100) {
+										compoundnbt.putInt("BurnTime", 200);										
+										furnaceTileEntity.load(blockstate, compoundnbt);
+										this.level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
+									}	
+						        } else {
+						        	continue;
+						        }
+							}
+						}
+	        }
     	}	
+    	
+    	
     }
     
     @Override
