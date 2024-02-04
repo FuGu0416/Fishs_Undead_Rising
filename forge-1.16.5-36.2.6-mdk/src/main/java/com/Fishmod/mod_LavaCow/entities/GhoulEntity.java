@@ -249,17 +249,17 @@ public class GhoulEntity extends MonsterEntity implements IAggressive {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.FOGLET_AMBIENT;
+        return FURSoundRegistry.GHOUL_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return FURSoundRegistry.FOGLET_HURT;
+        return FURSoundRegistry.GHOUL_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.FOGLET_DEATH;
+        return FURSoundRegistry.GHOUL_DEATH;
     }
 
 	@Override

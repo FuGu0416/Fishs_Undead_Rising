@@ -145,10 +145,10 @@ public class GhoulModel<T extends GhoulEntity> extends FURBaseModel<T> implement
 	        	this.setRotationAngle(arm_r, -0.9019F, -0.1059F, -0.262F + MathHelper.sin(ageInTicks * 0.3F) * 0.03F);
 	        	this.setRotationAngle(arm_l, -0.9019F, 0.1059F, 0.262F + MathHelper.sin(ageInTicks * 0.3F) * 0.03F);
 	        } else {
-	            this.arm_r.xRot = (-0.2474F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
+	            this.arm_r.xRot = -0.2391F + (-0.2474F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
 	            this.arm_r.yRot = -0.1059F;
 	            this.arm_r.zRot = -0.262F;
-	            this.arm_l.xRot = (-0.2474F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;	        	
+	            this.arm_l.xRot = -0.2391F + (-0.2474F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;	        	
 	        	this.arm_l.yRot = 0.1059F;		        	
 	        	this.arm_l.zRot = 0.262F;
 	        }

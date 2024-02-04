@@ -745,5 +745,26 @@
 		"category": "hostile",
 		"subtitle": "entity_lamprey_death",
 		"sounds": [{"name": "mod_lavacow:entity/lamprey/death","stream": true}]
+	},
+	
+	"ghoul_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_ambient",
+		"sounds": ["mod_lavacow:entity/ghoul/ambient"]
+	},
+	
+	"ghoul_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_hurt",
+		"sounds": ["mod_lavacow:entity/ghoul/hurt0", "mod_lavacow:entity/ghoul/hurt1", "mod_lavacow:entity/ghoul/hurt2"]
+	},
+	
+	"ghoul_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_death",
+		"sounds": [{"name": "mod_lavacow:entity/ghoul/death","stream": true}]
 	}
 }

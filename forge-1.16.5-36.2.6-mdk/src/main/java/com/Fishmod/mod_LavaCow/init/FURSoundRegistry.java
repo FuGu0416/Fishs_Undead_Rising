@@ -149,6 +149,10 @@ public class FURSoundRegistry {
 	public static final SoundEvent LAMPREY_AMBIENT = addSoundEvent("lamprey_ambient");
 	public static final SoundEvent LAMPREY_HURT = addSoundEvent("lamprey_hurt");
 	public static final SoundEvent LAMPREY_DEATH = addSoundEvent("lamprey_death");
+
+	public static final SoundEvent GHOUL_AMBIENT = addSoundEvent("ghoul_ambient");
+	public static final SoundEvent GHOUL_HURT = addSoundEvent("ghoul_hurt");
+	public static final SoundEvent GHOUL_DEATH = addSoundEvent("ghoul_death");
 	
     private static SoundEvent addSoundEvent(final String source) {
         final ResourceLocation sound_ID = new ResourceLocation(mod_LavaCow.MODID, source);
