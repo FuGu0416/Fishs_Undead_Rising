@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
+import java.util.EnumSet;
 import java.util.Random;
 import java.util.UUID;
 
@@ -88,6 +89,8 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	private EntityFishAIAttackRange<WarSmallFireballEntity> range_atk;
 	private AvoidEntityGoal<PlayerEntity> avoid_entity;
 	private int barrage_CD;
+	@Nullable
+	private BlockPos savedFurnacePos = null;
 	
 	public SalamanderEntity(EntityType<? extends SalamanderEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
@@ -119,6 +122,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	this.goalSelector.addGoal(0, new SwimGoal(this));
     	this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
     	this.goalSelector.addGoal(4, this.range_atk);
+    	this.goalSelector.addGoal(5, new LookatFurnaceGoal(this));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         if(FURConfig.Salamander_Defender.get()) {
@@ -349,40 +353,58 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	    		}
 	    	}
 	    	
-	    	if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {			
-				for (int i = RANGE; i > -RANGE; i--)
-					for (int j = RANGE; j > -RANGE; j--)
-						for (int k = RANGE; k > -RANGE; k--) {
-							int x = this.blockPosition().getX() + i;
-							int y = this.blockPosition().getY() + j;
-							int z = this.blockPosition().getZ() + k;
-							BlockPos blockpos = new BlockPos(x, y, z);
-							BlockState blockstate = this.level.getBlockState(blockpos);
-							Block block = blockstate.getBlock();
-							
-							if (this.level.isEmptyBlock(blockpos)) {
-								continue;
-							}
-				               
-							if (block instanceof AbstractFurnaceBlock) {
-								AbstractFurnaceTileEntity furnaceTileEntity = (AbstractFurnaceTileEntity) this.level.getBlockEntity(blockpos);
-						        						        
-						        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
-						        	CompoundNBT compoundnbt = new CompoundNBT();
-						        	furnaceTileEntity.save(compoundnbt);
-								      
-									if (compoundnbt.contains("BurnTime") && compoundnbt.getInt("BurnTime") <= 100) {
-										compoundnbt.putInt("BurnTime", 200);										
-										furnaceTileEntity.load(blockstate, compoundnbt);
-										this.level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
-									}	
-						        } else {
-						        	continue;
-						        }
+	    	// savedFurnacePos no longer valid
+    		if (this.savedFurnacePos != null && (this.blockPosition().distSqr(this.savedFurnacePos) < RANGE || !(this.level.getBlockState(this.savedFurnacePos).getBlock()  instanceof AbstractFurnaceBlock))) {
+    			this.savedFurnacePos = null;
+    		}
+	    	
+    		if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {    
+    			if (this.savedFurnacePos != null) {
+    				System.out.println("A!!" + this.savedFurnacePos);
+    			}
+	    		// update savedFurnacePos
+	    		if (this.savedFurnacePos == null) {
+					for (int i = RANGE; i > -RANGE; i--) {
+						for (int j = RANGE; j > -RANGE; j--) {
+							for (int k = RANGE; k > -RANGE; k--) {
+								int x = this.blockPosition().getX() + i;
+								int y = this.blockPosition().getY() + j;
+								int z = this.blockPosition().getZ() + k;
+								BlockPos blockpos = new BlockPos(x, y, z);
+								BlockState blockstate = this.level.getBlockState(blockpos);
+								Block block = blockstate.getBlock();
+								
+								if (this.level.isEmptyBlock(blockpos)) {
+									continue;
+								}
+					               
+								if (block instanceof AbstractFurnaceBlock) {
+									this.savedFurnacePos = blockpos;
+									break;
+								}
 							}
 						}
-	        }
-    	}	
+					}
+	    		}
+	    		
+	    		// boost furnace
+	    		if (this.savedFurnacePos != null) {
+		    		AbstractFurnaceTileEntity furnaceTileEntity = (AbstractFurnaceTileEntity) this.level.getBlockEntity(this.savedFurnacePos);
+		    		BlockState blockstate = this.level.getBlockState(this.savedFurnacePos);
+		    		
+			        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
+			        	CompoundNBT compoundnbt = new CompoundNBT();
+			        	furnaceTileEntity.save(compoundnbt);
+					      
+						if (compoundnbt.contains("BurnTime") && compoundnbt.getInt("BurnTime") <= 100) {
+							compoundnbt.putInt("BurnTime", 200);										
+							furnaceTileEntity.load(blockstate, compoundnbt);
+							this.level.setBlock(this.savedFurnacePos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
+						}	
+			        }
+	    		}
+	    	}	
+    	}
     	
     	
     }
@@ -758,4 +780,21 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
         compound.putInt("GrowingStage", this.getGrowingStage());
         compound.putInt("Variant", getSkin());
     }
+	
+	public class LookatFurnaceGoal extends Goal {
+		private final SalamanderEntity mob;
+
+		public LookatFurnaceGoal(SalamanderEntity p_i1647_1_) {
+			this.mob = p_i1647_1_;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		}
+
+		public boolean canUse() {
+			return this.mob.isAlive() && this.mob.isTame() && this.mob.isInSittingPose() && this.mob.savedFurnacePos != null && !this.mob.isAggressive();
+		}
+
+		public void tick() {
+			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);
+		}
+	}	
 }
