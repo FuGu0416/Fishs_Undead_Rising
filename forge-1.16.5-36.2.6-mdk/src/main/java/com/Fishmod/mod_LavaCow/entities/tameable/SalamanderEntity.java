@@ -823,13 +823,26 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		}
 		
 		public void tick() {
-			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);
- 
-            if (this.mob.level instanceof ServerWorld && this.mob.tickCount % 20 == 0) {           	
+			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);	
+			
+            if (this.mob.level instanceof ServerWorld && this.mob.tickCount % 20 == 0) {  
+            	double d0 = this.mob.getLookControl().getWantedX() - (double)(this.mob.blockPosition().getX());
+            	double d1 = this.mob.getLookControl().getWantedY() - (double)(this.mob.blockPosition().getY());
+            	double d2 = this.mob.getLookControl().getWantedZ() - (double)(this.mob.blockPosition().getZ());
+            	Vector3d v0 = new Vector3d(d0, d1, d2);
+            	
+            	System.out.println("A+ " + this.mob.blockPosition());
+    			System.out.println("B+ " + this.mob.savedFurnacePos);
+    			System.out.println("C+ " + this.mob.getLookControl().getWantedX());
+    			System.out.println("D+ " + this.mob.getLookControl().getWantedY());
+    			System.out.println("E+ " + this.mob.getLookControl().getWantedZ());
+    			System.out.println("X " + ((double)(this.mob.blockPosition().getX()) + 0.5D + (double)(this.mob.getLookAngle().x * (this.mob.getGrowingStage() + 1.0D) * 0.5D)));
+    			System.out.println("Z " + ((double)(this.mob.blockPosition().getZ()) + 0.5D + (double)(this.mob.getLookAngle().z * (this.mob.getGrowingStage() + 1.0D) * 0.5D)));
+    			
             	((ServerWorld) this.mob.level).sendParticles((this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME, 
-            			this.mob.blockPosition().getX() + 0.5D + this.mob.getLookAngle().x * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
-            			this.mob.blockPosition().getY() + (double)(this.mob.getBbHeight() * 0.2F), 
-            			this.mob.blockPosition().getZ() + 0.5D + this.mob.getLookAngle().z * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
+            			(double)(this.mob.blockPosition().getX()) + 0.5D + v0.normalize().x * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
+            			(double)(this.mob.blockPosition().getY()) + (double)(this.mob.getBbHeight() * 0.2F), 
+            			(double)(this.mob.blockPosition().getZ()) + 0.5D + v0.normalize().z * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
             			15, 0.2D, 0.2D, 0.2D, 0.0D);
                 	
             }
