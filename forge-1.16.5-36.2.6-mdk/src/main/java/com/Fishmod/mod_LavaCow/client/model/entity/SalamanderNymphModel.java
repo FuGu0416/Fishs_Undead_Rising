@@ -164,11 +164,18 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
     	if(entityIn.isInSittingPose()) {
     		this.Body_Base.y = 23.4F;
     		this.Body_Base.xRot = -0.07103490055616922F;
-    		
-			this.Head.xRot = -0.6646214111173737F + headPitch * 0.017453292F;
-            this.Head.yRot = netHeadYaw * 0.017453292F;
-            this.Jaw.xRot = 0.08F - 0.08F * MathHelper.sin(0.03F * ageInTicks);
 
+    		if (entityIn.isBoostingFurnace()) {
+    			this.Head.xRot = -0.46914448828868976F + (0.08F * MathHelper.sin(0.3F * ageInTicks));	 
+    			this.Head.yRot = 0.0F;
+	    		this.Head.zRot = 0.0F;
+	    		this.Jaw.xRot = 0.7F + (-0.04F * MathHelper.sin(0.3F * ageInTicks));	    			
+    		} else {
+    			this.Head.xRot = -0.6646214111173737F + headPitch * 0.017453292F;
+                this.Head.yRot = netHeadYaw * 0.017453292F;
+                this.Jaw.xRot = 0.08F - 0.08F * MathHelper.sin(0.03F * ageInTicks);
+    		}
+    		
             this.Head_Gill_l0.yRot = -0.8651597102135892F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.0F);
             this.Head_Gill_l1.yRot = -0.8196066167365371F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.2F);
             this.Head_Gill_l2.yRot = -0.5918411493512771F + 0.135F * MathHelper.sin(0.18F * ageInTicks + (float)Math.PI * 0.4F);

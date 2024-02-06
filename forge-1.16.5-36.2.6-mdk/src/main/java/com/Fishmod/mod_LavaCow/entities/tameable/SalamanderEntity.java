@@ -82,15 +82,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SalamanderEntity extends FURTameableEntity implements IAggressive, IEquipable {
 	private static final DataParameter<Integer> SKIN_TYPE =  EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.INT);
 	private static final DataParameter<Integer> ATTACK_TIMER = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.INT);
-	private static final DataParameter<Boolean> SADDLED = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROWING_STAGE = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.INT);
+	// 0: isSaddled, 1: isBoostingFurnace
+	protected static final DataParameter<Byte> DATA_FLAGS = EntityDataManager.defineId(SalamanderEntity.class, DataSerializers.BYTE);
+	
 	private static final int RANGE = 2;
 	
 	private EntityFishAIAttackRange<WarSmallFireballEntity> range_atk;
 	private AvoidEntityGoal<PlayerEntity> avoid_entity;
 	private int barrage_CD;
 	@Nullable
-	private BlockPos savedFurnacePos = null;
+	public BlockPos savedFurnacePos = null;
 	
 	public SalamanderEntity(EntityType<? extends SalamanderEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
@@ -105,10 +107,10 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
-		this.entityData.define(SADDLED, Boolean.valueOf(false));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));		
 		this.entityData.define(ATTACK_TIMER, Integer.valueOf(0));
 		this.entityData.define(GROWING_STAGE, Integer.valueOf(-1));
+		this.entityData.define(DATA_FLAGS, (byte)0);
 	}
 	
     @Override
@@ -354,19 +356,19 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	    	}
 	    	
 	    	// savedFurnacePos no longer valid
-    		if (this.savedFurnacePos != null && (this.blockPosition().distSqr(this.savedFurnacePos) < RANGE || !(this.level.getBlockState(this.savedFurnacePos).getBlock()  instanceof AbstractFurnaceBlock))) {
+    		if (this.savedFurnacePos != null && (this.blockPosition().distSqr(this.savedFurnacePos) > (this.searchRange() * this.searchRange())
+    				|| !(this.level.getBlockState(this.savedFurnacePos).getBlock()  instanceof AbstractFurnaceBlock)
+    				|| !this.isInSittingPose())) {
     			this.savedFurnacePos = null;
+    			this.setBoostingFurnace(false);
     		}
 	    	
-    		if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {    
-    			if (this.savedFurnacePos != null) {
-    				System.out.println("A!!" + this.savedFurnacePos);
-    			}
+    		if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {      			
 	    		// update savedFurnacePos
 	    		if (this.savedFurnacePos == null) {
-					for (int i = RANGE; i > -RANGE; i--) {
-						for (int j = RANGE; j > -RANGE; j--) {
-							for (int k = RANGE; k > -RANGE; k--) {
+					for (int i = this.searchRange(); i > -this.searchRange(); i--) {
+						for (int j = this.searchRange(); j > -this.searchRange(); j--) {
+							for (int k = this.searchRange(); k > -this.searchRange(); k--) {
 								int x = this.blockPosition().getX() + i;
 								int y = this.blockPosition().getY() + j;
 								int z = this.blockPosition().getZ() + k;
@@ -391,6 +393,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	    		if (this.savedFurnacePos != null) {
 		    		AbstractFurnaceTileEntity furnaceTileEntity = (AbstractFurnaceTileEntity) this.level.getBlockEntity(this.savedFurnacePos);
 		    		BlockState blockstate = this.level.getBlockState(this.savedFurnacePos);
+		    		this.setBoostingFurnace(true);
 		    		
 			        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
 			        	CompoundNBT compoundnbt = new CompoundNBT();
@@ -461,13 +464,10 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
         super.onSyncedDataUpdated(p_184206_1_);
 	}
     
-    /**
-     * Set or remove the saddle of the pig.
-     */
-    public void setSaddled(boolean saddled) {
-    	this.getEntityData().set(SADDLED, Boolean.valueOf(saddled));
-    }
-    
+    public boolean isTame() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+     }
+   
     /**
      * Growing Stage: Nymph -> Child-> Adult
      */
@@ -568,8 +568,33 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
      */
     @Override
     public boolean isSaddled() {
-    	return this.getEntityData().get(SADDLED).booleanValue();
+    	return (this.entityData.get(DATA_FLAGS) & 1) != 0;
     }
+    
+    /**
+     * Set or remove the saddle of the pig.
+     */
+    public void setSaddled(boolean saddled) {
+    	byte b0 = this.entityData.get(DATA_FLAGS);
+        if (saddled) {
+        	this.entityData.set(DATA_FLAGS, (byte)(b0 | 1));
+        } else {
+        	this.entityData.set(DATA_FLAGS, (byte)(b0 & -2));
+        }
+    }
+    
+	public boolean isBoostingFurnace() {
+        return (this.entityData.get(DATA_FLAGS) & 2) != 0;
+	}
+
+	public void setBoostingFurnace(boolean p_233686_1_) {
+		byte b0 = this.entityData.get(DATA_FLAGS);
+        if (p_233686_1_) {
+           this.entityData.set(DATA_FLAGS, (byte)(b0 | 2));
+        } else {
+           this.entityData.set(DATA_FLAGS, (byte)(b0 & -3));
+        }
+	}
     
     @Override
     public void travel(Vector3d p_213352_1_) {
@@ -743,6 +768,10 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	return scale;
     }
     
+    private int searchRange() {
+    	return RANGE + this.getGrowingStage();
+    }
+    
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -792,9 +821,18 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 		public boolean canUse() {
 			return this.mob.isAlive() && this.mob.isTame() && this.mob.isInSittingPose() && this.mob.savedFurnacePos != null && !this.mob.isAggressive();
 		}
-
+		
 		public void tick() {
 			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);
+ 
+            if (this.mob.level instanceof ServerWorld && this.mob.tickCount % 20 == 0) {           	
+            	((ServerWorld) this.mob.level).sendParticles((this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME, 
+            			this.mob.blockPosition().getX() + 0.5D + this.mob.getLookAngle().x * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
+            			this.mob.blockPosition().getY() + (double)(this.mob.getBbHeight() * 0.2F), 
+            			this.mob.blockPosition().getZ() + 0.5D + this.mob.getLookAngle().z * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
+            			15, 0.2D, 0.2D, 0.2D, 0.0D);
+                	
+            }
 		}
 	}	
 }
