@@ -35,11 +35,11 @@ public class FamineArmorItem extends ArmorItem {
 		} else {
 			this.armorTexture = "mod_lavacow:textures/armors/famine/armor_famine.png";
 		}
-	}
+	}		
 		
 	@Override
 	public boolean isValidRepairItem(ItemStack armour, ItemStack material) {
-		return material.getItem() == FURItemRegistry.FOUL_BRISTLE;
+		return material.getItem() == FURItemRegistry.FOUL_HIDE;
 	}
 
 	@SuppressWarnings("unchecked")

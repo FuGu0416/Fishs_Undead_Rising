@@ -106,6 +106,7 @@ import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -126,23 +127,9 @@ public class EventHandler {
     	Entity entity = event.getEntityLiving();
     	Entity killer = event.getSource().getDirectEntity();
 	    World world = event.getEntityLiving().level;
-	    int Armor_Famine_lvl = 0;
 		ITag<EntityType<?>> tag_parasite = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
 		ITag<EntityType<?>> tag_lamprey = EntityTypeTags.getAllTags().getTag(FURTagRegistry.LAMPREY_TARGETS);
 		
-	    if(killer != null) {
-			for(ItemStack S : killer.getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem) {
-					Armor_Famine_lvl++;
-				}
-			}
-	    }
-		
-		if(killer != null && Armor_Famine_lvl >= 4 && killer instanceof PlayerEntity) {
-			((PlayerEntity)killer).heal(1.0F);
-			((PlayerEntity)killer).getFoodData().eat(4, 0.0F);
-		}
-
     	/**
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
@@ -321,6 +308,8 @@ public class EventHandler {
      */
     @SubscribeEvent
     public void playerTick(final TickEvent.PlayerTickEvent event) {
+    	int Armor_Famine_lvl = 0;
+    	
     	if (event.phase == TickEvent.Phase.START) {
             return;
         }
@@ -385,6 +374,16 @@ public class EventHandler {
 		            }
 		    	}
 			}
+			  	    
+		for (ItemStack S : player.getArmorSlots()) {
+			if(S.getItem() instanceof FamineArmorItem) {
+				Armor_Famine_lvl++;
+			}
+		}
+		
+		if (Armor_Famine_lvl >= 4) {
+			player.addEffect(new EffectInstance(Effects.HUNGER, 7 * 20, 9));
+		}
     }
     
     @SubscribeEvent
@@ -637,16 +636,9 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
-	    int Armor_Famine_lvl = 0;
 	    int Armor_Swine_lvl = 0;
-	    
-		for (ItemStack S : event.getEntityLiving().getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
-				Armor_Famine_lvl++;
-			}
-		}
 		
-    	if ((event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) || (Armor_Famine_lvl >= 4)) && event.getItem().isEdible()) {
+    	if (event.getEntityLiving().hasEffect(FUREffectRegistry.SOILED) && event.getItem().isEdible()) {
     		event.setCanceled(true);
     	}
     	
@@ -914,7 +906,7 @@ public class EventHandler {
 			}
 	    }		
 		
-		if (Attacker != null && Armor_Famine_lvl >= 2 && Attacker instanceof LivingEntity && ((LivingEntity) Attacker).hasEffect(Effects.HUNGER)) {
+		if (Attacker != null && Armor_Famine_lvl >= 4 && Attacker instanceof LivingEntity) {
 			event.setAmount(event.getAmount() + 2.0F);
 		}
 		
@@ -943,5 +935,22 @@ public class EventHandler {
                 event.setLootingLevel(event.getLootingLevel() + 3);
             }
         }
+    }
+    
+    @SubscribeEvent
+    public void onPpickupXpEvent(PlayerXpEvent.PickupXp event) {
+    	int Armor_Famine_lvl = 0;	    
+	    
+	    if (event.getPlayer() != null) {
+			for(ItemStack S : event.getPlayer().getArmorSlots()) {
+				if(S.getItem() instanceof FamineArmorItem) {
+					Armor_Famine_lvl++;
+				}
+			}
+	    }		
+		
+		if (event.getPlayer() != null && Armor_Famine_lvl >= 2) {
+			event.getPlayer().heal(1.0F);
+		}
     }
 }

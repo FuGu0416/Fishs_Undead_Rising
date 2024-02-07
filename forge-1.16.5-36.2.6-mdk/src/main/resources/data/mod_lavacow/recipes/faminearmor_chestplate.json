@@ -1,13 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "# #",
+        "J J",
         "#X#",
         "#D#"
     ],
     "key": {
+		"J": {
+            "item": "mod_lavacow:scythe_claw"
+        },
         "#": {
-            "item": "mod_lavacow:foul_bristle"
+            "item": "mod_lavacow:foul_hide"
         },
         "X": {
             "item": "mod_lavacow:acidicheart"

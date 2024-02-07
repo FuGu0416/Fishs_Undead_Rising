@@ -2,7 +2,7 @@
     "pools":[
         {
             "name":"mod_lavacow:wendigo",
-            "rolls":2,
+            "rolls":1,
             "entries":[
                 {
                     "type":"item",
@@ -12,15 +12,15 @@
                         {
                             "function":"minecraft:set_count",
                             "count":{
-                                "min":0,
-                                "max":2
+                                "min":1,
+                                "max":4
                             }
                         },
                         {
                             "function":"minecraft:looting_enchant",
                             "count":{
                                 "min":0,
-                                "max":1
+                                "max":2
                             }
                         }
                     ]
@@ -29,18 +29,18 @@
         },
         {
             "name":"mod_lavacow:wendigo",
-            "rolls":2,
+            "rolls":1,
             "entries":[
                 {
                     "type":"item",
-                    "name":"mod_lavacow:foul_bristle",
+                    "name":"mod_lavacow:foul_hide",
                     "weight":1,
                     "functions":[
                         {
                             "function":"minecraft:set_count",
                             "count":{
                                 "min":0,
-                                "max":2
+                                "max":1
                             }
                         },
                         {

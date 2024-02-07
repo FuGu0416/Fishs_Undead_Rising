@@ -210,6 +210,7 @@ public class FURItemRegistry {
 	public static final Item LAMPREY_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.8F).build())).setRegistryName("mod_lavacow:lamprey_cooked");
 	public static final Item LAMPREY_KABAYAKI = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).build())).setRegistryName("mod_lavacow:lamprey_kabayaki");
 	public static final Item LAMPREY_BUCKET = new FishBucketItem(() -> FUREntityRegistry.LAMPREY, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:lamprey_bucket");
+	public static final Item FOUL_HIDE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:foul_hide");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

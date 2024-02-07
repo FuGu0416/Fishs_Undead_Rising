@@ -138,7 +138,8 @@
 	"item.mod_lavacow.lamprey_cooked": "烤七鰓鰻",
 	"item.mod_lavacow.lamprey_kabayaki": "蒲燒七鰓鰻",
 	"item.mod_lavacow.lamprey_bucket": "七鰓鰻桶",
-					
+	"item.mod_lavacow.foul_hide": "惡臭皮革",
+	
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -185,6 +186,7 @@
 	"item.mod_lavacow.spawn_egg_mummified_cod": "木乃伊魚生怪蛋",
 	"item.mod_lavacow.spawn_egg_bone_trout": "骷髏鱒生怪蛋",
 	"item.mod_lavacow.spawn_egg_lamprey": "七鰓鰻生怪蛋",
+	"item.mod_lavacow.spawn_egg_ghoul": "食屍鬼生怪蛋",
 		
 	"item.mod_lavacow.banner_pattern_skeletonking": "旗幟圖案",
 	"item.mod_lavacow.banner_pattern_skeletonking.desc": "骷髏王圖紋",
@@ -298,6 +300,7 @@
 	"entity.mod_lavacow.mummified_cod": "木乃伊魚",
 	"entity.mod_lavacow.bone_trout": "骷髏鱒",
 	"entity.mod_lavacow.lamprey": "七鰓鰻",
+	"entity.mod_lavacow.ghoul": "食屍鬼",
 	
 	"entity.mod_lavacow.warsmallfireball": "火球",
 	"entity.mod_lavacow.piranhalauncher": "群獵者",
@@ -448,7 +451,11 @@
 	"entity_lamprey_ambient": "七鰓鰻窸窣聲",
 	"entity_lamprey_death": "七鰓鰻死亡",
 	"entity_lamprey_hurt": "七鰓鰻受傷",
-					
+
+	"entity_ghoul_ambient": "食屍鬼哀嚎聲",
+	"entity_ghoul_death": "食屍鬼死亡",
+	"entity_ghoul_hurt": "食屍鬼受傷",
+						
 	"tootip.mod_lavacow:bonesword": "對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)",
 	"tootip.mod_lavacow:netherstew": "食用後獲得隨機效果(0:40)",
 	"tootip.mod_lavacow:goldenheart": "在裝備時賦予再生並修補(+1/秒)裝備物品",
@@ -458,7 +465,7 @@
 	"tootip.mod_lavacow:fissionpotion": "將動物分裂為兩個獨立個體",
 	"tootip.mod_lavacow:green_bacon_and_eggs": "食用後獲得挖掘加速(1:00)",
 	"tootip.mod_lavacow:reapers_scythe": "必定為橫掃攻擊",
-	"tootip.mod_lavacow:famine": "在手持時賦予飢餓，對非不死族的單位造成傷害時能回復1飽食度",    
+	"tootip.mod_lavacow:famine": "對單位造成傷害時能回復1飽食度，飢餓狀態時則回復2飽食度",    
 	"tootip.mod_lavacow:frozenthigh": "可以食用，攻擊能同時賦予目標緩慢III(0:04)",
 	"tootip.mod_lavacow:sludge_wand": "右鍵點擊以召喚聽命於玩家的小樹軟泥",
 	"tootip.mod_lavacow:war": "掀起你與你那剛建好木屋的朋友之間的一場戰爭 (需要火焰彈作為彈藥)",
@@ -481,8 +488,8 @@
 	"tootip.mod_lavacow:dreamcatcher": "捕捉彌留於夢境之中的夢魘",
 	"tootip.mod_lavacow:undertaker_shovel": "右鍵點擊以召喚聽命於玩家的活屍軍團",
 	"tootip.mod_lavacow:raven_whistle": "右鍵點擊綁定渡鴉，並右鍵點擊命令渡鴉前往該地",
-	"tootip.mod_lavacow:faminearmor": "套裝(2)：自身處於飢餓狀態時，造成傷害+2",
-	"tootip.mod_lavacow:faminearmor.l2": "套裝(4)：不再能進食，但殺死單位時能+4飽食度+1生命",
+	"tootip.mod_lavacow:faminearmor": "套裝(2)：每顆經驗球同時能回復 1 點生命值",
+	"tootip.mod_lavacow:faminearmor.l2": "套裝(4)：賦予常駐的飢餓X，造成傷害+2",
 	"tootip.mod_lavacow:ghostjelly": "使你竄向高空，或是將你的渡鴉轉化為鬼靈渡鴉",
 	"tootip.mod_lavacow:ghostbomb": "投向目標地點，造成範圍傷害並賦予漂浮(0:01)",
 	"tootip.mod_lavacow:sonicbomb": "投向目標地點，造成範圍傷害並賦予虛弱III(0:04)",
@@ -751,6 +758,8 @@
 	"advancements.mod_lavacow.tame_flying_mount.description": "馴服所有可騎乘的昆蟲",
 	"advancements.mod_lavacow.tame_scarecrow.title": "你想要一起堆稻草人嗎？",
 	"advancements.mod_lavacow.tame_scarecrow.description": "製造一隻稻草人",
-			
+	"advancements.mod_lavacow.kill_ghoul.title": "吾噬亡者",
+	"advancements.mod_lavacow.kill_ghoul.description": "殺死一隻食屍鬼",
+				
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }

@@ -102,11 +102,7 @@ public class FURWeaponItem extends SwordItem {
 				stack.getOrCreateTagElement("onCraftEnchantments");
 			}
 		}
-		
-		if (entityIn instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && isSelected) {
-			((LivingEntity) entityIn).addEffect(new EffectInstance(Effects.HUNGER, 7*20, 4));
-		}
-		
+				
 		if (entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && worldIn.random.nextInt(50) < 2)
 			stack.setDamageValue(java.lang.Math.max(stack.getDamageValue() - 1, 0));
 	}
@@ -191,8 +187,8 @@ public class FURWeaponItem extends SwordItem {
 
             attacker.level.playSound((PlayerEntity)null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 1.0F, 1.0F);
             ((PlayerEntity) attacker).sweepAttack();
-		} else if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE && target.getMobType() != CreatureAttribute.UNDEAD) {
-			((PlayerEntity)attacker).getFoodData().eat(1, 0.0F);
+		} else if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE) {
+			((PlayerEntity)attacker).getFoodData().eat(attacker.hasEffect(Effects.HUNGER) ? 2 : 1, 0.0F);
 		} else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
 		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
