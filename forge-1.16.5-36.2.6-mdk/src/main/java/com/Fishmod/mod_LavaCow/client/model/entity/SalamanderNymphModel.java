@@ -169,7 +169,13 @@ public class SalamanderNymphModel<T extends SalamanderEntity> extends FURBaseMod
     			this.Head.xRot = -0.46914448828868976F + (0.08F * MathHelper.sin(0.3F * ageInTicks));	 
     			this.Head.yRot = 0.0F;
 	    		this.Head.zRot = 0.0F;
-	    		this.Jaw.xRot = 0.7F + (-0.04F * MathHelper.sin(0.3F * ageInTicks));	    			
+	    		
+    			if (this.Jaw.xRot < 0.66F) {
+    				this.Jaw.xRot += 0.01F;
+    			} else {
+    				this.Jaw.xRot = 0.7F + (-0.04F * MathHelper.sin(0.3F * ageInTicks));
+    			}	   
+    			
     		} else {
     			this.Head.xRot = -0.6646214111173737F + headPitch * 0.017453292F;
                 this.Head.yRot = netHeadYaw * 0.017453292F;

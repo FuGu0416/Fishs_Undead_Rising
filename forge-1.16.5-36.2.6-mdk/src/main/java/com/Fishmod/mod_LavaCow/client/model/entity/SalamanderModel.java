@@ -224,11 +224,17 @@ public class SalamanderModel<T extends SalamanderEntity> extends FURBaseModel<T>
         	}
 	    	
 	    	if(entityIn.isInSittingPose() && !entityIn.isVehicle()) {
-	    		if (entityIn.isBoostingFurnace()) {
+	    		if (entityIn.isBoostingFurnace()) {	    			
 	    			this.Head.xRot = -0.46914448828868976F + (0.08F * MathHelper.sin(0.3F * ageInTicks));
 	    			this.Head.yRot = 0.0F;
 		    		this.Head.zRot = 0.0F;
-		    		this.Jaw_lower.xRot = 0.7F + (-0.04F * MathHelper.sin(0.3F * ageInTicks));	    			
+		    		
+	    			if (this.Jaw_lower.xRot < 0.66F) {
+	    				this.Jaw_lower.xRot += 0.01F;
+	    			} else {
+	    				this.Jaw_lower.xRot = 0.7F + (-0.04F * MathHelper.sin(0.3F * ageInTicks));
+	    			}
+	    			
 	    		} else {
 			        this.Head_Looking(this.Head, -0.35185837453889574F, 0.0F, netHeadYaw, headPitch);
 		    		this.Head.zRot = 0.0F;
