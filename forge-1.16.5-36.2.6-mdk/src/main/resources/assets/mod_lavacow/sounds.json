@@ -611,7 +611,7 @@
 	{
 		"category": "hostile",
 		"subtitle": "entity_wraith_ambient",
-		"sounds": ["mod_lavacow:entity/wraith/ambient0","mod_lavacow:entity/wraith/ambient1","mod_lavacow:entity/wraith/ambient2"]
+		"sounds": ["mod_lavacow:entity/wraith/ambient","mod_lavacow:entity/wraith/ambient0","mod_lavacow:entity/wraith/ambient1"]
 	},
 	
 	"wraith_attack":
