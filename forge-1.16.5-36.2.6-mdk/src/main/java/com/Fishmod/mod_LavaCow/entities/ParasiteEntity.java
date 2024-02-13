@@ -177,7 +177,7 @@ public class ParasiteEntity extends SpiderEntity {
         		this.remove();
         	} else
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
-        } else if (!this.isSummoned() && this.getSkin() == 0 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Beelzebub.get() || this.isTame())) {
+        } else if (!this.isSummoned() && this.getSkin() == 3 && this.isTame()) {
         	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         	List<PlayerEntity> list = this.level.getEntitiesOfClass(PlayerEntity.class, this.getBoundingBox().inflate(d0));
 

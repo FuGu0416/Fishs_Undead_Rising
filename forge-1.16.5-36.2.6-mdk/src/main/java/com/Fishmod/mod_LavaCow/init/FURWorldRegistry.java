@@ -298,6 +298,11 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}
 		
+		if (FURConfig.pSpawnRate_Ghoul.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+				!(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM))) {
+			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BEELZEBUB, FURConfig.pSpawnRate_Beelzebub.get(), 1, 2));
+		}
+		
 		if (FURConfig.pSpawnRate_Enigmoth.get() > 0 && (biomeKey.equals(Biomes.WARPED_FOREST) || biomeKey.equals(Biomes.END_HIGHLANDS) || biomeKey.equals(Biomes.END_MIDLANDS))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.ENIGMOTH, FURConfig.pSpawnRate_Enigmoth.get(), 1, 2));
 		}

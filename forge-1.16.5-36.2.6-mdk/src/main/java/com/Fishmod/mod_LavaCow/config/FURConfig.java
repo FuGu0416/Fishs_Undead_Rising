@@ -196,7 +196,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Scarab_Lifespan;
 
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Beelzebub;
-	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Beelzebub;
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Num;
@@ -564,8 +563,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Beelzebub");
-		pSpawnRate_Beelzebub = BUILDER.comment("Set the spawn rate of Beelzebub [0-100]").defineInRange("beelzebub spawn rate", 6, 0, 100);
-		pEvolveRate_Beelzebub = BUILDER.comment("Set the chance of Beelzebub transformed from a Parasite [0-100]").defineInRange("beelzebub evolve rate", 5, 0, 100);
+		pSpawnRate_Beelzebub = BUILDER.comment("Set the spawn rate of Beelzebub [0-100]").defineInRange("beelzebub spawn rate", 2, 0, 100);
 		Beelzebub_Health = BUILDER.comment("Maximum Beelzebub health [1-1000]").defineInRange("beelzebub health", 40.0D, 1.0D, 1000.0D);
 		Beelzebub_Attack = BUILDER.comment("Beelzebub strength [1-1000]").defineInRange("beelzebub attack", 5.0D, 1.0D, 1000.0D);
 		Beelzebub_Ability_Num = BUILDER.comment("Set the number of Parasite summoned per cast [0-100]").defineInRange("beelzebub summon number", 3, 0, 100);

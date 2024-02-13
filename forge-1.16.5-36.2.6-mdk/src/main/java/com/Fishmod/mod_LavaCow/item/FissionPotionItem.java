@@ -115,7 +115,7 @@ public class FissionPotionItem extends FURItem {
 	    			VespaCocoonEntity pupa = null;
 	    			
 	    			switch(((ParasiteEntity)target).getSkin()) {
-	    				case 0:
+	    				case 3:
 	    					pupa = FUREntityRegistry.BEELZEBUBPUPA.create(playerIn.level);
 	    					break;
 	    				case 2:

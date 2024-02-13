@@ -27,7 +27,7 @@
         		},
         		{
           			"type": "item",
-          			"name": "mod_lavacow:parasite_item_common",
+          			"name": "mod_lavacow:parasite_item_maggot",
           			"weight": 1,
           			"functions": [
 						{

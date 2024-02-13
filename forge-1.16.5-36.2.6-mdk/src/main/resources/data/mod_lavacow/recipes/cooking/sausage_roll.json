@@ -15,7 +15,10 @@
 	    	},
 	    	{
 				"item": "mod_lavacow:parasite_item_jungle"
-	    	}
+	    	},
+			{
+				"item": "mod_lavacow:parasite_item_maggot"
+			}
     	],
         "X": {
 			"item": "mod_lavacow:intestine"
