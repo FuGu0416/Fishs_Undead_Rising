@@ -40,8 +40,12 @@ public class EntitySonicBomb extends EntityThrowable {
         if (!this.world.isRemote)
         {
         	EntityWolf Dummy = new EntityWolf(this.world);
-        	Dummy.setOwnerId(thrower.getUniqueID());
-        	Dummy.setTamed(true);
+        	
+        	if (this.getThrower() != null) {
+	        	Dummy.setOwnerId(thrower.getUniqueID());
+	        	Dummy.setTamed(true);
+        	}
+        	
         	Dummy.setCustomNameTag("Sonic Bomb");
         	this.world.createExplosion(thrower, this.posX, this.posY, this.posZ, 4.0F, false);
         	Dummy.setDead();

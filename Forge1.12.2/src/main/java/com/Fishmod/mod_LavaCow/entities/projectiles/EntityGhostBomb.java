@@ -37,11 +37,14 @@ public class EntityGhostBomb extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-        if (!this.world.isRemote)
-        {
+        if (!this.world.isRemote) {
         	EntityWolf Dummy = new EntityWolf(this.world);
-        	Dummy.setOwnerId(thrower.getUniqueID());
-        	Dummy.setTamed(true);
+        	
+        	if (this.getThrower() != null) {
+	        	Dummy.setOwnerId(thrower.getUniqueID());
+	        	Dummy.setTamed(true);
+        	}
+        	
         	Dummy.setCustomNameTag("Ghost Bomb");
         	this.world.createExplosion(Dummy, this.posX, this.posY, this.posZ, 4.0F, false);
         	Dummy.setDead();
