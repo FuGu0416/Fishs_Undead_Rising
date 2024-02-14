@@ -3,11 +3,9 @@ package com.Fishmod.mod_LavaCow.compat.tinkers;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -32,9 +30,6 @@ public class TraitFamine extends AbstractTrait {
     
     @Override
     public void onUpdate(ItemStack tool, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if(entity instanceof EntityPlayer && isSelected) {
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 4));
-		}
     }
 
     @Override
@@ -46,12 +41,12 @@ public class TraitFamine extends AbstractTrait {
 
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
-        if (player instanceof EntityPlayer && target.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
+        if (player instanceof EntityPlayer) {
         	RefillHunger(player);
         }
     }
     
     private void RefillHunger(EntityLivingBase player) {
-			((EntityPlayer)player).getFoodStats().addStats(1, 0.0F);
+    	((EntityPlayer)player).getFoodStats().addStats(player.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
     }
 }

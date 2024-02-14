@@ -95,6 +95,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -121,25 +122,10 @@ public class ModEventHandler {
      * Example: Spawn swarm of parasites when a zombie dies (10% chance)
      */
     @SubscribeEvent
-    public void onEDeath(LivingDeathEvent event)
-    {
+    public void onEDeath(LivingDeathEvent event) {
     	Entity entity = event.getEntity();
-	    boolean Armor_Famine_lvl = false;
 	    World world = event.getEntity().getEntityWorld();
 	    
-	    if(event.getSource().getTrueSource() != null)
-			for(ItemStack S : event.getSource().getTrueSource().getArmorInventoryList()) {
-				if(S.getItem() instanceof ItemFamineArmor && ((ItemFamineArmor)S.getItem()).getSetBonus() >= 4) {
-					Armor_Famine_lvl = true;
-					break;
-				}
-			}
-		
-		if(Armor_Famine_lvl && event.getSource().getTrueSource() instanceof EntityPlayer) {
-			((EntityPlayer)event.getSource().getTrueSource()).heal(1.0F);
-			((EntityPlayer)event.getSource().getTrueSource()).getFoodStats().addStats(4, 0.0F);
-		}
-
     	/**
          * Give a chance to spawn horde of Parasites when a zombie dies.
          **/
@@ -372,6 +358,7 @@ public class ModEventHandler {
     	if (event.phase == TickEvent.Phase.START) {
             return;
         }
+    	
         final EntityPlayer player = event.player;
         if (player.world.isRemote) {
             return;
@@ -382,6 +369,7 @@ public class ModEventHandler {
         }     
         
 		ItemStack Heart = null;
+		int Armor_Famine_lvl = 0;
 		
 		for(int i = 0; i < 9 ; i++)
 			if(player.inventory.getStackInSlot(i).getItem().equals(FishItems.GOLDENHEART)) {
@@ -430,6 +418,16 @@ public class ModEventHandler {
 		            }
 		    	}
 			}
+		
+		for (ItemStack S : player.getEquipmentAndArmor()) {
+			if(S.getItem() instanceof ItemFamineArmor) {
+				Armor_Famine_lvl++;
+			}
+		}
+
+		if (Armor_Famine_lvl >= 4) {
+			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 9));
+		}
     }
     
     @SubscribeEvent
@@ -471,103 +469,76 @@ public class ModEventHandler {
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
     	float effectlevel = 1.0F;
-	    boolean Armor_Famine_lvl = false;
-	    boolean Armor_Chitin_lvl = false;
+	    boolean Armor_Chitin_lvl = false;	  
 	    
-	    if(event.getSource().getTrueSource() != null) {
-			for(ItemStack S : event.getSource().getTrueSource().getArmorInventoryList()) {
-				if(S.getItem() instanceof ItemFamineArmor && ((ItemFamineArmor)S.getItem()).getSetBonus() >= 2) {
-					Armor_Famine_lvl = true;
-					break;
-				}
-			}
-		}
-	    
-		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
-			if(S.getItem() instanceof ItemChitinArmor && ((ItemChitinArmor)S.getItem()).getSetBonus() >= 2) {
+		for (ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
+			if (S.getItem() instanceof ItemChitinArmor && ((ItemChitinArmor)S.getItem()).getSetBonus() >= 2) {
 				Armor_Chitin_lvl = true;
 				break;
 			}
 		}
 		
-		if(Armor_Famine_lvl && event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase) event.getSource().getTrueSource()).isPotionActive(MobEffects.HUNGER)) {
-			event.setAmount(event.getAmount() + 2.0F);
-		}
-		
-		if(Armor_Chitin_lvl && event.getSource().equals(DamageSource.FALL)) {
+		if (Armor_Chitin_lvl && event.getSource().equals(DamageSource.FALL)) {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
-		if(event.getSource().getTrueSource() instanceof EntityLilSludge) {
+		if (event.getSource().getTrueSource() instanceof EntityLilSludge) {
 			EntityLivingBase Owner = ((EntityLilSludge)event.getSource().getTrueSource()).getOwner();
-			
-			event.setAmount(event.getAmount() + ((EntityLilSludge)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
-			
-			if(Owner != null)
+						
+			if (Owner != null) {
 				Owner.heal(event.getAmount() * ((EntityLilSludge)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
+			}
 		}
 		
-		if(event.getSource().getTrueSource() instanceof EntityUnburied) {
+		if (event.getSource().getTrueSource() instanceof EntityUnburied) {
 			EntityLivingBase Owner = ((EntityUnburied)event.getSource().getTrueSource()).getOwner();
 			
-			event.setAmount(event.getAmount() + ((EntityUnburied)event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
-			
-			if(Owner != null)
+			if (Owner != null) {
 				Owner.heal(event.getAmount() * ((EntityUnburied)event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
+			}
 		}
     	
-    	if(event.getEntityLiving().isBurning() && event.getSource().getTrueSource() instanceof EntityPlayer) {   		
-    		for(ItemStack S : event.getSource().getTrueSource().getEquipmentAndArmor()) {
-    			if(S.getItem() instanceof ItemFelArmor)effectlevel += ((ItemFelArmor)S.getItem()).effectlevel;
+    	if (event.getEntityLiving().isBurning() && event.getSource().getTrueSource() instanceof EntityPlayer) {   		
+    		for (ItemStack S : event.getSource().getTrueSource().getEquipmentAndArmor()) {
+    			if (S.getItem() instanceof ItemFelArmor)effectlevel += ((ItemFelArmor)S.getItem()).effectlevel;
     		}
     	}
     	
-    	if(event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().isImmuneToFire() && (event.getSource().isFireDamage())) {    		
-    		for(ItemStack S : event.getEntityLiving().getEquipmentAndArmor()) {
-    			if(S.getItem() instanceof ItemFelArmor)effectlevel -= ((ItemFelArmor)S.getItem()).fireprooflevel;
+    	if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().isImmuneToFire() && (event.getSource().isFireDamage())) {    		
+    		for (ItemStack S : event.getEntityLiving().getEquipmentAndArmor()) {
+    			if (S.getItem() instanceof ItemFelArmor)effectlevel -= ((ItemFelArmor)S.getItem()).fireprooflevel;
     		}
     		
     		boolean have_Heart = false;
-    		if(Loader.isModLoaded("baubles")) {
-    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1)
+    		if (Loader.isModLoaded("baubles")) {
+    			if (baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1)
     				have_Heart = true;
     		}
     		
-    		for(int i = 0; i < 9 ; i++)
-    			if(((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART))
+    		for (int i = 0; i < 9 ; i++)
+    			if (((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART))
 					have_Heart = true;
     		
-    		if(have_Heart)
+    		if (have_Heart)
     			effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
     	}
     	
-    	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityWolf){
-    		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
+    	if (event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityWolf) {
+    		if (event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
     			event.setAmount(event.getAmount() * 0.45F);
     			event.getEntity().setFire(8);
-    		}
-    		else if(event.getSource().getTrueSource().getName().equals("Ghost Bomb")) {
+    		} else if (event.getSource().getTrueSource().getName().equals("Ghost Bomb")) {
     			event.getEntity().motionX = 0;
     			event.getEntity().motionZ = 0;
     			if(event.getEntityLiving().isNonBoss())
     				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		}
-    		else if(event.getSource().getTrueSource().getName().equals("Sonic Bomb")) {
+    		} else if (event.getSource().getTrueSource().getName().equals("Sonic Bomb")) {
     			if(event.getEntityLiving().isNonBoss())
     				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
-    		}
-    		else
+    		} else
     			event.setAmount(event.getAmount() * 0.15F);
-    	}
-    	
-    	if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
-    		Item heldItem = ((EntityLivingBase)event.getSource().getTrueSource()).getHeldItemMainhand().getItem();
-    		if(heldItem.equals(FishItems.BONESWORD))
-    			event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
-    		else if(heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
-    			event.setAmount(event.getAmount() + 2.0F);
     	}
     	
     	if(event.getSource().getTrueSource() != null 
@@ -575,25 +546,25 @@ public class ModEventHandler {
     			&& event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD)) {
     		
     		boolean have_Necklace = false;
-    		if(Loader.isModLoaded("baubles")) {
+    		if (Loader.isModLoaded("baubles")) {
     			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getSource().getTrueSource(), FishItems.HALO_NECKLACE) != -1)
     				have_Necklace = true;
     		}
     		
-    		for(int i = 0; i < 9 ; i++)
+    		for (int i = 0; i < 9 ; i++)
     			if(((EntityPlayer)event.getSource().getTrueSource()).inventory.getStackInSlot(i).getItem().equals(FishItems.HALO_NECKLACE))
 					have_Necklace = true;
     		
-    		if(have_Necklace)
+    		if (have_Necklace)
     			event.setAmount(event.getAmount() * ((float)(100 + Modconfig.HaloNecklace_Damage))/100.0F);
     					
     	}
     	
-    	if(event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
+    	if (event.getEntityLiving().isPotionActive(ModMobEffects.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + (event.getEntityLiving().isNonBoss() ? 0.1F : 0.05F) * (1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.CORRODED).getAmplifier())));
     	
-    	if(event.getSource().getTrueSource() != null && event.getEntityLiving().isPotionActive(ModMobEffects.THORNED)) {
-    		if(event.getSource() == DamageSource.CACTUS || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).getIsThornsDamage())) {
+    	if (event.getSource().getTrueSource() != null && event.getEntityLiving().isPotionActive(ModMobEffects.THORNED)) {
+    		if (event.getSource() == DamageSource.CACTUS || (event.getSource() instanceof EntityDamageSource && ((EntityDamageSource) event.getSource()).getIsThornsDamage())) {
     			event.setCanceled(true);
     		} else if (!event.getSource().isMagicDamage() && !event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityLivingBase) {
     			event.getSource().getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(event.getEntityLiving()), 1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.THORNED).getAmplifier());
@@ -602,6 +573,40 @@ public class ModEventHandler {
     		
     	event.setAmount(event.getAmount() * effectlevel);
     }
+    
+    @SubscribeEvent
+    public void onEHurt(LivingHurtEvent event) {
+    	DamageSource source = event.getSource();
+    	EntityLivingBase Attacked = event.getEntityLiving();
+    	Entity Attacker = source.getTrueSource();
+	    int Armor_Famine_lvl = 0;	    
+
+	    if (Attacker != null) {
+			for(ItemStack S : Attacker.getArmorInventoryList()) {
+				if(S.getItem() instanceof ItemFamineArmor) {
+					Armor_Famine_lvl++;
+				}
+			}
+	    }		
+
+		if (Attacker != null && Armor_Famine_lvl >= 4 && Attacker instanceof EntityLivingBase) {
+			event.setAmount(event.getAmount() + 2.0F);
+		}
+
+		if (Attacker != null && Attacker instanceof EntityLilSludge) {			
+			event.setAmount(event.getAmount() + ((EntityLilSludge)Attacker).getBonusDamage(Attacked));			
+		} else if (Attacker != null && Attacker instanceof EntityUnburied) {	
+			event.setAmount(event.getAmount() + ((EntityUnburied)Attacker).getBonusDamage(Attacked));		
+		} 
+    	
+    	if (Attacker != null && Attacker instanceof EntityLivingBase) {
+    		Item heldItem = ((EntityLivingBase)Attacker).getHeldItemMainhand().getItem();
+    		if (heldItem.equals(FishItems.BONESWORD))
+    			event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
+    		else if (heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
+    			event.setAmount(event.getAmount() + 2.0F);
+    	}
+    }     
     
     @SubscribeEvent
     public void onEFall(LivingFallEvent event) {
@@ -711,7 +716,7 @@ public class ModEventHandler {
 			if(player.inventory.getStackInSlot(i).getItem().equals(FishItems.DREAMCATCHER))
 				have_DreamCatcher = player.inventory.getStackInSlot(i);
 		
-		if(!world.isRemote && have_DreamCatcher != null) {
+		if (!world.isRemote && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && world.getDifficulty() != EnumDifficulty.PEACEFUL) {
 			Biome.SpawnListEntry Result = ((Biome.SpawnListEntry)WeightedRandom.getRandomItem(world.rand, LootTableHandler.DREAMCATCHER_LIST));
 
 			Entity entityliving = EntityRegistry.getEntry(Result.entityClass).newInstance(world);
@@ -727,7 +732,8 @@ public class ModEventHandler {
 					double i2 = player.posZ + (world.rand.nextDouble() * 32.0D) - 16.0D;
 					
 					entityliving.setLocationAndAngles(k1, l1, i2, 0.0F, 0.0F);
-
+					((EntityLiving) entityliving).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+					
 					if(((EntityLiving)entityliving).isNotColliding()) {
 						world.spawnEntity(entityliving);
 						has_spawn = true;
@@ -771,20 +777,8 @@ public class ModEventHandler {
     }
     
     @SubscribeEvent
-    public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
-	    boolean Armor_Famine_lvl = false;
-		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
-			if(S.getItem() instanceof ItemFamineArmor && ((ItemFamineArmor)S.getItem()).getSetBonus() >= 4) {
-				Armor_Famine_lvl = true;
-				break;
-			}
-		}
-		
-    	if((event.getEntityLiving().isPotionActive(ModMobEffects.SOILED) || Armor_Famine_lvl) && event.getItem().getItem() instanceof ItemFood) {
-    		event.setCanceled(true);
-    	}
-    	
-    	if(event.getEntityLiving().isPotionActive(ModMobEffects.SOILED)  && event.getItem().getItem() instanceof ItemPotion) {
+    public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {		
+    	if ((event.getEntityLiving().isPotionActive(ModMobEffects.SOILED)) && (event.getItem().getItem() instanceof ItemFood || event.getItem().getItem() instanceof ItemPotion)) {
     		event.setCanceled(true);
     	}
     }
@@ -822,7 +816,9 @@ public class ModEventHandler {
     private void MendingBaubles(Item item, EntityXPOrb xpOrb, EntityPlayer player, PlayerPickupXpEvent event) {
 		int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
 		
-		if(Heart_Slot != -1 && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0) {
+		if (Heart_Slot != -1 
+				&& EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot)) > 0 
+				&& baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot).isItemDamaged()) {
 			event.setCanceled(true);
 			ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(player).getStackInSlot(Heart_Slot);
 			
@@ -846,13 +842,26 @@ public class ModEventHandler {
     
     @SubscribeEvent
     public void onPlayerXPPickUp(PlayerPickupXpEvent event) {
-
+    	int Armor_Famine_lvl = 0;
+    	
         if (!event.getEntityPlayer().world.isRemote) {
     		if(Loader.isModLoaded("baubles")) {
     			MendingBaubles(FishItems.GOLDENHEART, event.getOrb(), event.getEntityPlayer(), event);
     			MendingBaubles(FishItems.DREAMCATCHER, event.getOrb(), event.getEntityPlayer(), event);
             }
         }
+        
+	    if (event.getEntityPlayer() != null) {
+			for(ItemStack S : event.getEntityPlayer().getArmorInventoryList()) {
+				if(S.getItem() instanceof ItemFamineArmor) {
+					Armor_Famine_lvl++;
+				}
+			}
+	    }		
+
+		if (event.getEntityPlayer() != null && Armor_Famine_lvl >= 2) {
+			event.getEntityPlayer().heal(1.0F);
+		}
     }
     
     @SubscribeEvent

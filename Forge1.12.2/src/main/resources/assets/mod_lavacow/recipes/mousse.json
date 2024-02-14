@@ -32,23 +32,16 @@
 	      "item": "minecraft:rabbit"
 	    },
 	    {
+	      "item": "minecraft:porkchop"
+	    },
+	    {
+	      "item": "minecraft:beef"
+	    },
+	    {
+	      "item": "minecraft:mutton"
+	    },
+	    {
 	      "item": "minecraft:rotten_flesh"
-	    },
-	    {
-			"type": "forge:ore_dict",
-			"ore": "listAllchickenraw"
-	    },
-	    {
-			"type": "forge:ore_dict",
-			"ore": "listAllturkeyraw"
-	    },
-	    {
-			"type": "forge:ore_dict",
-			"ore": "listAllrabbitraw"
-	    },
-	    {
-			"type": "forge:ore_dict",
-			"ore": "listAllduckraw"
 	    },
 	    {
 	      "item": "mod_lavacow:parasite_item",
@@ -57,6 +50,15 @@
 	    {
 			"type": "forge:ore_dict",
 			"ore": "listAllfishraw"
+	    },
+	    {
+			"type": "forge:ore_dict",
+			"ore": "listAllmeatraw"
+			
+	    },
+	    {
+			"type": "forge:ore_dict",
+			"ore": "foodCrabraw"
 	    }
     ]
   ],

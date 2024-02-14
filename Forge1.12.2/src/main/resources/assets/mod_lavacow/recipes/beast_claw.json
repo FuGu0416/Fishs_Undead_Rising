@@ -9,7 +9,7 @@
             "item": "mod_lavacow:scythe_claw"
         },
         "Y": {
-            "item": "mod_lavacow:foul_bristle"
+            "item": "mod_lavacow:foul_hide"
         },
         "D": {
             "type": "forge:ore_dict",

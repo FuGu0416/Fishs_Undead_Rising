@@ -10,11 +10,10 @@
             "item": "mod_lavacow:sharptooth"
         },
         "#": {
-            "item": "mod_lavacow:foul_bristle"
+            "item": "mod_lavacow:foul_hide"
         },
 		"D": {
-            "item": "minecraft:skull",
-        	"data": 0
+            "item": "minecraft:skeleton_skull"
         }
     },
     "result": {

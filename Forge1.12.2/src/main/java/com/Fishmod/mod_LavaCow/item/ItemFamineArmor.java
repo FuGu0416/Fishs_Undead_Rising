@@ -54,7 +54,7 @@ public class ItemFamineArmor extends ItemArmor {
 	
 	@Override
 	public boolean getIsRepairable(ItemStack armour, ItemStack material) {
-		return material.getItem() == FishItems.FOUL_BRISTLE;
+		return material.getItem() == FishItems.FOUL_HIDE;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -173,14 +173,11 @@ public class ItemFishCustomWeapon extends ItemSword{
     {
 		float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		
-		if(attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE)
-		{
+		if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE) {
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
-            for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
-            {
-                if (entitylivingbase != attacker && entitylivingbase != target && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 16.0D)
-                {
+            for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
+                if (entitylivingbase != attacker && entitylivingbase != target && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 16.0D) {
                     entitylivingbase.knockBack(attacker, 0.4F, (double)MathHelper.sin(attacker.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(attacker.rotationYaw * 0.017453292F)));
                     entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), f3);
                 }
@@ -188,16 +185,11 @@ public class ItemFishCustomWeapon extends ItemSword{
 
             attacker.world.playSound((EntityPlayer)null, attacker.posX, attacker.posY, attacker.posZ, FishItems.ENTITY_SCARECROW_SCYTHE, attacker.getSoundCategory(), 1.0F, 1.0F / (attacker.world.rand.nextFloat() * 0.4F + 0.8F));
             ((EntityPlayer) attacker).spawnSweepParticles();
-		}
-		else if(attacker instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && target.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
-			((EntityPlayer)attacker).getFoodStats().addStats(1, 0.0F);
-		}
-		else if(stack.getItem() == FishItems.MOLTENPAN)
-		{
+		} else if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE) {
+			((EntityPlayer)attacker).getFoodStats().addStats(attacker.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
+		} else if(stack.getItem() == FishItems.MOLTENPAN) {
 			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
-		}
-		else if(stack.getItem() == FishItems.SKELETONKING_MACE)
-		{
+		} else if(stack.getItem() == FishItems.SKELETONKING_MACE) {
         	target.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 4));
 		}
 		

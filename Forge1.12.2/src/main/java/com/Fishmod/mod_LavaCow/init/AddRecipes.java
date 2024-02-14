@@ -122,7 +122,10 @@ public class AddRecipes {
 	    	OreDictionary.registerOre("listAllfishraw", FishItems.ZOMBIEPIRANHA_ITEM);
 	    	OreDictionary.registerOre("foodCrabraw", FishItems.MIMIC_CLAW);
 	    	OreDictionary.registerOre("foodCrabcooked", FishItems.MIMIC_CLAW_COOKED);
-	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PTERA_WING);
+	    	OreDictionary.registerOre("listAllmeatraw", new ItemStack(FishItems.PTERA_WING, 1, 0));
+	    	OreDictionary.registerOre("listAllmeatraw", new ItemStack(FishItems.PTERA_WING, 1, 1));
+	    	OreDictionary.registerOre("listAllmeatraw", new ItemStack(FishItems.PTERA_WING, 1, 2));
+	    	OreDictionary.registerOre("listAllmeatraw", new ItemStack(FishItems.PTERA_WING, 1, 3));
 	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.PTERA_WING_COOKED);
 	    	OreDictionary.registerOre("listAllmeatcooked", FishItems.MOLTENBEEF);
 	    	OreDictionary.registerOre("listAllmeatraw", FishItems.PLAGUED_PORKCHOP);
