@@ -74,7 +74,25 @@
           			]
             	}
         	]	
-    	}
+    	},
+        {
+            "conditions":[
+                {
+                    "condition":"random_chance_with_looting",
+                    "chance":0.3,
+                    "looting_multiplier":0.1
+                }
+            ],
+            "name":"mod_lavacow:parasite_ovum",
+            "rolls":1,
+            "entries":[
+                {
+                    "type":"item",
+                    "name":"mod_lavacow:parasite_ovum",
+                    "weight":1
+                }
+            ]
+        }
   	]
 }
 

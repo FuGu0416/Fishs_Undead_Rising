@@ -135,6 +135,16 @@ public class ParasiteEntity extends SpiderEntity {
 	public boolean canBeLeashed(PlayerEntity p_184652_1_) {
     	return !this.isLeashed() && this.isTame();
 	}
+    
+    @Override
+    public boolean canBeAffected(EffectInstance p_70687_1_) {
+        if (p_70687_1_.getEffect() == FUREffectRegistry.INFESTED) {
+           net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent event = new net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent(this, p_70687_1_);
+           net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+           return event.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW;
+        }
+        return super.canBeAffected(p_70687_1_);
+	}
 	
     @Nullable
     @Override

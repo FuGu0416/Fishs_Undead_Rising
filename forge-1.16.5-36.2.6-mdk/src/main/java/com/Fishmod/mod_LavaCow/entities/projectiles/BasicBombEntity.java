@@ -87,7 +87,7 @@ public class BasicBombEntity extends ProjectileItemEntity {
         if (!this.level.isClientSide()) {
         	WolfEntity Dummy = EntityType.WOLF.create(this.level);
         	
-        	if(this.getOwner() != null) {
+        	if (this.getOwner() != null) {
 	        	Dummy.setTame(true);
 	        	Dummy.setOwnerUUID(this.getOwner().getUUID());
         	}
