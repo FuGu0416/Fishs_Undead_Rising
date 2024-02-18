@@ -303,6 +303,7 @@ public class FURItemRegistry {
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BONETROUT, 0xDFDDCB, 0xBBB8A0, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_bone_trout"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.LAMPREY, 0x70ACAE, 0xDCF2F3, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_lamprey"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghoul"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.LIVING_ARMOR, 0x3B443D, 0x9AA092, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_living_armor"));
     	
     	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_skeletonking"));
     	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:banner_pattern_wendigo"));

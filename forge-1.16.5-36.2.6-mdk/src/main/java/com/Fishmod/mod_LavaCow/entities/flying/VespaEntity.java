@@ -113,6 +113,16 @@ public class VespaEntity extends RidableFlyingMobEntity {
     }
     
     @Override
+    public boolean canBeAffected(EffectInstance p_70687_1_) {
+        if (p_70687_1_.getEffect() == FUREffectRegistry.INFESTED || p_70687_1_.getEffect() == Effects.POISON) {
+           net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent event = new net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent(this, p_70687_1_);
+           net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+           return event.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW;
+        }
+        return super.canBeAffected(p_70687_1_);
+	}
+    
+    @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
     	return p_213348_2_.height * 0.45F;
     }

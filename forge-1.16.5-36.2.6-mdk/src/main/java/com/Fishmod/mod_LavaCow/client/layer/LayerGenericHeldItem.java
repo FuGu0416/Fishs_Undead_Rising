@@ -57,7 +57,7 @@ public class LayerGenericHeldItem<T extends LivingEntity, M extends EntityModel<
            p_229135_5_.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
            p_229135_5_.mulPose(Vector3f.YP.rotationDegrees(180.0F));
            boolean flag = p_229135_4_ == HandSide.LEFT;
-           p_229135_5_.translate(this.translateX, this.translateY, this.translateZ);
+           p_229135_5_.translate(flag ? -this.translateX : this.translateX, this.translateY, this.translateZ);
            Minecraft.getInstance().getItemInHandRenderer().renderItem(p_229135_1_, p_229135_2_, p_229135_3_, flag, p_229135_5_, p_229135_6_, p_229135_7_);
            p_229135_5_.popPose();
         }

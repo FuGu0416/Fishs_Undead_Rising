@@ -222,6 +222,10 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Ghoul_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Ghoul_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ghoul_targetHPThreshold;
+
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Living_Armor;
+	public static final ForgeConfigSpec.ConfigValue<Double> Living_Armor_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Living_Armor_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
@@ -598,6 +602,12 @@ public final class FURConfig {
 		Ghoul_Health = BUILDER.comment("Maximum Ghoul health [1-1000]").defineInRange("ghoul health", 16.0D, 1.0D, 1000.0D);
 		Ghoul_Attack = BUILDER.comment("Ghoul strength [1-1000]").defineInRange("ghoul attack", 3.0D, 1.0D, 1000.0D);
 		Ghoul_targetHPThreshold = BUILDER.comment("Set the health threshold of becoming Ghoul's target [0-100]").defineInRange("ghoul target health threshold", 40, 0, 100);
+		BUILDER.pop();
+		
+		BUILDER.push("Living Armor");
+		pSpawnRate_Living_Armor = BUILDER.comment("Set the spawn rate of Living Armor [0-10000]").defineInRange("living armor spawn rate", 5, 0, 10000);
+		Living_Armor_Health = BUILDER.comment("Maximum Living Armor health [1-1000]").defineInRange("living armor health", 40.0D, 1.0D, 1000.0D);
+		Living_Armor_Attack = BUILDER.comment("Living Armor strength [1-1000]").defineInRange("living armor attack", 8.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Item");
