@@ -1,10 +1,11 @@
-package com.Fishmod.mod_LavaCow.entities.tameable;
+package com.Fishmod.mod_LavaCow.entities.tameable.unburied;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 
@@ -58,16 +59,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	private int attackTimer;
 	protected int spellTicks;
-	private boolean BirthAnimation;
+	protected boolean BirthAnimation;
 	private int limitedLifeTicks;
 	private int fire_aspect;
 	private int sharpness;
 	private int knockback;
-	private int bane_of_arthropods;
-	private int smite;
+	protected int bane_of_arthropods;
+	protected int smite;
 	private int lifesteal;
 	private int poisonous;
-	private int corrosive;
+	protected int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
 	
@@ -78,10 +79,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     }
 	
     protected void registerGoals() {
-    	//this.goalSelector.addGoal(1, new EntityFishAIBreakDoor(this));
-    	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));
+    	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.5D, true));
     	this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-    	this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+    	this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.applyEntityAI();
@@ -266,22 +266,22 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	        this.level.broadcastEntityEvent(this, (byte)4);
 
             if(entityIn instanceof LivingEntity) {
-	            if(this.fire_aspect > 0)
+	            if (this.fire_aspect > 0)
 	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
 	            
-	            if(this.knockback > 0)
+	            if (this.knockback > 0)
 	            	((LivingEntity)entityIn).knockback((float)this.knockback * 0.5F, (this.getX() - entityIn.getX())/this.distanceTo(entityIn), (this.getZ() - entityIn.getZ())/this.distanceTo(entityIn));
 	            
-	            if(this.bane_of_arthropods > 0 && (((LivingEntity) entityIn).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
+	            if (this.bane_of_arthropods > 0 && (((LivingEntity) entityIn).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
 	                int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
 	                ((LivingEntity)entityIn).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
 	            }
 	            
-	            if(this.poisonous > 0)
+	            if (this.poisonous > 0)
 	    			((LivingEntity)entityIn).addEffect(new EffectInstance(Effects.POISON, 8*20, this.poisonous - 1));
 	            
-	            if(this.corrosive > 0)
-	            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, this.corrosive - 1));
+	            if (this.corrosive > 0)
+	            	((LivingEntity)entityIn).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4 * 20, this.corrosive - 1));
             }
             
             return true;

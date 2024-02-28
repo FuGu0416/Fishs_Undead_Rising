@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
-import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -147,19 +147,19 @@ public class FURWeaponItem extends SwordItem {
 	public ActionResultType useOn(ItemUseContext p_195939_1_) {
 		if (!p_195939_1_.getLevel().isClientSide()) {
 			Biome biome = p_195939_1_.getLevel().getBiome(p_195939_1_.getClickedPos());
-			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.MONSTER)) {
+			for (Spawners E: biome.getMobSettings().getMobs(EntityClassification.MONSTER)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.CREATURE)) {
+			for (Spawners E: biome.getMobSettings().getMobs(EntityClassification.CREATURE)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.AMBIENT)) {
+			for (Spawners E: biome.getMobSettings().getMobs(EntityClassification.AMBIENT)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_AMBIENT)) {
+			for (Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_AMBIENT)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
-			for(Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_CREATURE)) {
+			for (Spawners E: biome.getMobSettings().getMobs(EntityClassification.WATER_CREATURE)) {
 				System.out.println(biome.getRegistryName() + ": " + E.type.getRegistryName() + " " + E.weight);
 			}
 		}
@@ -261,11 +261,11 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
         }
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTENHAMMER) {
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTENHAMMER) {
 			double radius = 4.0D;
 
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
-			for(Entity entity1 : list) {
+			for (Entity entity1 : list) {
 				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
 					entity1.setSecondsOnFire(2 * fire_aspect);
 					entity1.hurt(DamageSource.mobAttack(playerIn) , 8.0F + (float)sharpness
@@ -297,7 +297,7 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SOULFIREHAMMER) {
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SOULFIREHAMMER) {
 			double radius = 4.0D;
 
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
@@ -333,7 +333,7 @@ public class FURWeaponItem extends SwordItem {
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if(playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.BEAST_CLAW && playerIn.isOnGround()) {
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.BEAST_CLAW && playerIn.isOnGround()) {
         	Vector3d lookVec = playerIn.getLookAngle();
         	
         	if(playerIn.getOffhandItem().getItem() == FURItemRegistry.BEAST_CLAW && playerIn.getMainHandItem().getItem() == FURItemRegistry.BEAST_CLAW) {
@@ -406,6 +406,34 @@ public class FURWeaponItem extends SwordItem {
             
 			return ActionResult.pass(playerIn.getItemInHand(handIn));
         }
+        
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.ANKH_SCEPTER && worldIn instanceof ServerWorld) {
+            for (int i = 0; i < 4; ++i) {
+                BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
+                CompoundNBT CompoundNBT = new CompoundNBT();
+                UnburiedEntity entity = (UnburiedEntity)FUREntityRegistry.MUMMY.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
+            	CompoundNBT.putInt("fire_aspect", fire_aspect);
+            	CompoundNBT.putInt("sharpness", sharpness);
+            	CompoundNBT.putInt("knockback", knockback);
+            	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
+            	CompoundNBT.putInt("smite", smite);
+            	CompoundNBT.putInt("unbreaking", unbreaking);
+            	CompoundNBT.putInt("lifesteal", lifesteal);
+            	CompoundNBT.putInt("poisonous", poisonous);
+            	CompoundNBT.putInt("corrosive", corrosive);
+            	entity.readAdditionalSaveData(CompoundNBT);
+            	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
+            	entity.tame(playerIn);
+                entity.setLimitedLife(FURConfig.Mummy_Lifespan.get() * 20);
+            }
+            
+            playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    		});
+            playerIn.getCooldowns().addCooldown(this, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
+			
+        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+		}
 
     	return super.use(worldIn, playerIn, handIn);
     }

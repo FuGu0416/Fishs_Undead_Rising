@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:smithing",
+	"base": {
+		"item": "mod_lavacow:undertaker_shovel"
+	},
+	"addition": {
+		"item": "mod_lavacow:ushabti"
+	},
+	"result": {
+		"item": "mod_lavacow:ankh_scepter"
+	}
+}

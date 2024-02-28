@@ -2,7 +2,7 @@ package com.Fishmod.mod_LavaCow.client.layer;
 
 import com.Fishmod.mod_LavaCow.block.FURShroomBlock;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
-import com.Fishmod.mod_LavaCow.entities.MycosisEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.MycosisEntity;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 

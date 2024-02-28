@@ -3,7 +3,7 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
-import com.Fishmod.mod_LavaCow.entities.MummyEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.MummyEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.renderer.entity.EntityRendererManager;

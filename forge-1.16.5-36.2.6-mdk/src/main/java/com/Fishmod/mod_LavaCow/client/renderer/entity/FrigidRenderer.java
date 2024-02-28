@@ -4,7 +4,7 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
-import com.Fishmod.mod_LavaCow.entities.FrigidEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.FrigidEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

@@ -5,7 +5,7 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerMycosis;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.UnburiedModel;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.MycosisEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.MycosisEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 

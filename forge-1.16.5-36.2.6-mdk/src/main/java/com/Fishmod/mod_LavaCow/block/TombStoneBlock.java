@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 
 import net.minecraft.block.AbstractBlock;

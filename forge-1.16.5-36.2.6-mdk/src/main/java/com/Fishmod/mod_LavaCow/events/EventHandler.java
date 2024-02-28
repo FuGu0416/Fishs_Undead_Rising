@@ -19,7 +19,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.RavenEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
-import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;

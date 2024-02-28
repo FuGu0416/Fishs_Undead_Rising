@@ -145,6 +145,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> SkeletonKing_Loot_Option;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Mummy;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Mummy_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Attack;
 
@@ -271,6 +272,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Bloodtooth;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cordyceps;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Veilshroom;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Ankh_Scepter_Cooldown;
 	
 	static {
 		BUILDER.push("Shroom");
@@ -495,6 +497,7 @@ public final class FURConfig {
 		
 		BUILDER.push("Mummy");
 		pSpawnRate_Mummy = BUILDER.comment("Set the spawn rate of Mummy [0-10000]").defineInRange("mummy spawn rate", 40, 0, 10000);
+		Mummy_Lifespan = BUILDER.comment("Mummy lifespan [1-10000]").defineInRange("mummy lifespan", 20, 0, 10000);
 		Mummy_Health = BUILDER.comment("Maximum Mummy health [1-1000]").defineInRange("mummy health", 24.0D, 1.0D, 1000.0D);
 		Mummy_Attack = BUILDER.comment("Mummy strength [1-1000]").defineInRange("mummy attack", 4.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -657,6 +660,7 @@ public final class FURConfig {
 		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
 		General_IllagerNose = BUILDER.comment("Set the drop rate of Illager Nose [0-100]").defineInRange("illager nose drop rate", 2, 0, 100);
 		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
+		Ankh_Scepter_Cooldown = BUILDER.comment("Ability cooldown of Ankh Scepter [1-10000]").defineInRange("ankh scepter cooldown", 60, 0, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("Structure");

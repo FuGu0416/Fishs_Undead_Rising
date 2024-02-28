@@ -2,13 +2,14 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.EnumSet;
 import java.util.Random;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
-import com.Fishmod.mod_LavaCow.entities.tameable.UnburiedEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
@@ -324,57 +325,29 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i) {
                 BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
-                if(UndertakerEntity.this.getRandom().nextFloat() < 0.15F) {
-                	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.DRY)) {
-                		
-                    	MummyEntity entityvex = FUREntityRegistry.MUMMY.create(UndertakerEntity.this.level);
-                        entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                        
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
-                        
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
-                        
-                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.COLD)) {
-                    	
-                    	FrigidEntity entityvex = FUREntityRegistry.FRIGID.create(UndertakerEntity.this.level);
-                        entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                        
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
-                        
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
-                        
-                    } else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition()))).contains(Type.WET)) {
-                    	
-                    	MycosisEntity entityvex = FUREntityRegistry.MYCOSIS.create(UndertakerEntity.this.level);
-                        entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                        entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                        
-                        if(!UndertakerEntity.this.level.isClientSide())
-                        	UndertakerEntity.this.level.addFreshEntity(entityvex);
-                        
-                        if(UndertakerEntity.this.getTarget() != null)
-                        	entityvex.setTarget(UndertakerEntity.this.getTarget());
-                        
-                    }                  
+                UnburiedEntity entityvex;
+                Set<Type> Biome = BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition())));
+                
+                if (Biome.contains(Type.DRY) && Biome.contains(Type.SANDY) && Biome.contains(Type.HOT)) {
+                	entityvex = FUREntityRegistry.MUMMY.create(UndertakerEntity.this.level);
+                } else if (Biome.contains(Type.COLD)) {
+                	entityvex = FUREntityRegistry.FRIGID.create(UndertakerEntity.this.level);
+                } else if (Biome.contains(Type.WET)) {
+                	entityvex = FUREntityRegistry.MYCOSIS.create(UndertakerEntity.this.level);
                 } else {
-                	
-                	UnburiedEntity entityvex = FUREntityRegistry.UNBURIED.create(UndertakerEntity.this.level);
-                    entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                    entityvex.setOwnerUUID(UndertakerEntity.this.getUUID());
-                    entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                    
-                    if(!UndertakerEntity.this.level.isClientSide())
-                    	UndertakerEntity.this.level.addFreshEntity(entityvex);
-                    
-                    if(UndertakerEntity.this.getTarget() != null)
-                    	entityvex.setTarget(UndertakerEntity.this.getTarget());                   
-                }                             
+                	entityvex = FUREntityRegistry.UNBURIED.create(UndertakerEntity.this.level);
+                }
+
+                entityvex.moveTo(blockpos, 0.0F, 0.0F);
+                entityvex.setOwnerUUID(UndertakerEntity.this.getUUID());
+                entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
+                
+                if(!UndertakerEntity.this.level.isClientSide())
+                	UndertakerEntity.this.level.addFreshEntity(entityvex);
+                
+                if(UndertakerEntity.this.getTarget() != null)
+                	entityvex.setTarget(UndertakerEntity.this.getTarget());                   
+                           
             }
         }
 
