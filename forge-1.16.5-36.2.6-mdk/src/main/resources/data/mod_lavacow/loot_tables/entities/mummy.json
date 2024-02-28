@@ -66,6 +66,11 @@
                     "type":"item",
                     "name":"minecraft:gold_ingot",
                     "weight":1
+                },
+                {
+                    "type":"item",
+                    "name":"mod_lavacow:ushabti",
+                    "weight":1
                 }
             ]
         },

@@ -197,6 +197,11 @@
                 },
                 {
                     "type": "item",
+                    "name": "mod_lavacow:ushabti",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
                     "name": "mod_lavacow:tooth_dagger",
                     "weight": 5
                 },

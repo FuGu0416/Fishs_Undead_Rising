@@ -107,8 +107,10 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
         		.add(Attributes.ATTACK_DAMAGE, FURConfig.Scarab_Attack.get());
     }
     
-    public void setLimitedLife(int limitedLifeTicksIn) {
-        this.limitedLifeTicks = limitedLifeTicksIn;
+    public void setLimitedLife(int limitedLifeTicksIn) {    	
+    	if (limitedLifeTicksIn != 0) {
+    		this.limitedLifeTicks = limitedLifeTicksIn;
+    	}
     }
     
     public float getBonusDamage(LivingEntity LivingEntityIn) {
@@ -139,17 +141,8 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void aiStep() {
-    	if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
-            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
-                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
-            }
-        	this.level.broadcastEntityEvent(this, (byte)11);
-            this.playSound(this.getDeathSound(), this.getSoundVolume() * 0.2F, this.getVoicePitch());
-            this.remove();
-        }
-    	
-        if(this.isSmoking) {
+    public void aiStep() {  	
+        if (this.isSmoking) {
 	    	for (int j = 0; j < 8; ++j) {
 	            float f = this.random.nextFloat() * ((float)Math.PI * 2F);
 	            float f1 = this.getBbHeight() * 0.4F + this.random.nextFloat() * 0.5F;
@@ -176,6 +169,15 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
 		
     	if (this.attackTimer > 0)
     		this.attackTimer--;
+    	
+    	if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
+            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
+                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
+            }
+        	this.level.broadcastEntityEvent(this, (byte)11);
+            this.playSound(this.getDeathSound(), this.getSoundVolume() * 0.2F, this.getVoicePitch());
+            this.remove();
+        }
 	}
 
 	@Override

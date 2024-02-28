@@ -113,7 +113,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     }
     
     public void setLimitedLife(int limitedLifeTicksIn) {
-        this.limitedLifeTicks = limitedLifeTicksIn;
+    	if (limitedLifeTicksIn != 0) {
+    		this.limitedLifeTicks = limitedLifeTicksIn;
+    	}
     }
     
     public float getBonusDamage(LivingEntity LivingEntityIn) {
@@ -205,7 +207,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
             --this.spellTicks;
         }
         
-        if(this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
+        if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
             if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);
             }        

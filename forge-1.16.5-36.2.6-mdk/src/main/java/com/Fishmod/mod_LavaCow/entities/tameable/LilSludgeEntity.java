@@ -106,7 +106,9 @@ public class LilSludgeEntity extends FURTameableEntity {
     }
     
     public void setLimitedLife(int limitedLifeTicksIn) {
-        this.limitedLifeTicks = limitedLifeTicksIn;
+    	if (limitedLifeTicksIn != 0) {
+    		this.limitedLifeTicks = limitedLifeTicksIn;
+    	}
     }
     
     public float getBonusDamage(LivingEntity LivingEntityIn) {
