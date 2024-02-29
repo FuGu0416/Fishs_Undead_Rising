@@ -107,9 +107,7 @@ public class FrigidEntity extends UnburiedEntity {
      * Called when the entity is attacked.
      */
     public boolean hurt(DamageSource source, float amount) {
-    	if(source.isFire())
-    		return super.hurt(source, 2.0F * amount);
-    	return super.hurt(source, amount);
+    	return super.hurt(source, source.isFire() ? (2.0F * amount) : amount);
     }
     
     /**
