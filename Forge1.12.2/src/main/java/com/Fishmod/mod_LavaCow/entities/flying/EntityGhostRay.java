@@ -71,6 +71,14 @@ public class EntityGhostRay extends EntityFlyingMob {
         this.setSize(1.6F * EntityGhostRay.SIZE[this.getSize()], 0.25F * EntityGhostRay.SIZE[this.getSize()]);
     }
     
+	/**
+	 * Will return how many at most can spawn in a chunk at once.
+	*/
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
+	}
+    
     public float getEyeHeight() {
     	return this.height * 0.7F;
     }

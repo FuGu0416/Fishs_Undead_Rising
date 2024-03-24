@@ -629,14 +629,14 @@ public class ModEventHandler {
     
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-    	if(Modconfig.Wendigo_AnimalAttack && event.getEntity() != null && event.getEntity() instanceof EntityAgeable && !(event.getEntity() instanceof EntityTameable)) {
+    	if (Modconfig.Wendigo_AnimalAttack && event.getEntity() != null && event.getEntity() instanceof EntityAgeable && !(event.getEntity() instanceof EntityTameable)) {
     		((EntityAgeable)event.getEntity()).tasks.addTask(1, new EntityAIAvoidEntity<>(((EntityAgeable)event.getEntity()), EntityWendigo.class, 8.0F, 0.8D, 0.8D));
     	}
     	
-    	if(event.getEntity() != null && event.getEntity() instanceof EntityVillager)
+    	if (Modconfig.Should_Villager_Fear && event.getEntity() != null && event.getEntity() instanceof EntityVillager)
     		((EntityVillager)event.getEntity()).tasks.addTask(1, new EntityAIAvoidEntity<>(((EntityVillager)event.getEntity()), EntityUnburied.class, 8.0F, 0.8D, 0.8D));
     	
-    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && !(event.getEntity() instanceof IEntityOwnable)) {
+    	if (event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && !(event.getEntity() instanceof IEntityOwnable)) {
     		EntityAIBase remove = null;
     		
     	    for(EntityAITaskEntry task : ((AbstractSkeleton)event.getEntity()).targetTasks.taskEntries) {

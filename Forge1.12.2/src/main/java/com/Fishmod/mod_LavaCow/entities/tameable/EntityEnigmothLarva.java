@@ -86,14 +86,22 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 	   	return super.onInitialSpawn(difficulty, livingdata);
     }
 	
-	   public boolean getCanSpawnHere() {
-		   	// Middle end island check
-		   	if (this.world.provider.getDimension() == 1) {
-		           return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-		   	}
+	public boolean getCanSpawnHere() {
+		// Middle end island check
+		if (this.world.provider.getDimension() == 1) {
+			return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
+		}
 		   	
-		       return super.getCanSpawnHere();
-		   }
+		return super.getCanSpawnHere();
+	}
+	   
+	/**
+	 * Will return how many at most can spawn in a chunk at once.
+	*/
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
+	}
 	
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;

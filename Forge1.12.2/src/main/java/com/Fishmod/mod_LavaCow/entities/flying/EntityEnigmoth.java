@@ -81,6 +81,14 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
     
+    /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnedInChunk() {
+       return 1;
+    }
+    
     @Override
     public void setTamed(boolean tamed) {
     	super.setTamed(tamed);

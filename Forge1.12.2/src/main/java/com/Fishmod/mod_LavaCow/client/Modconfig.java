@@ -139,6 +139,7 @@ public class Modconfig {
 	public static double Unburied_Health;
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
+	public static boolean Should_Villager_Fear;
 	
 	public static int pSpawnRate_Forsaken;
 	public static double Forsaken_Health;
@@ -225,7 +226,7 @@ public class Modconfig {
 	public static boolean Bowls_Stack;
 	public static int pSpawnRate_Bloodtooth;
 	public static int pSpawnRate_Cordyceps;
-	public static int pSpawnRate_Veilshroom;
+	public static int pSpawnRate_Veilshroom;	
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Avaton", "Banshee", "Foglet", "Forsaken", "Frigid", "Ghost Ray", "Ithaqua", "Lil'Sludge", "Mimicrab", "Moogma", 
 			"Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Salamander", "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", 
@@ -352,7 +353,7 @@ public class Modconfig {
 		pSpawnRate_Pingu = config.get("Penghoul", "penghoul spawn rate", 20, "Set the spawn rate of Penghoul [0-100]", 0, 100).getInt(20);
 		Pingu_Health = config.get("Penghoul", "penghoul health", 10.0D, "Maximum Penghoul health [1-1000]", 1, 1000).getDouble(10.0D);
 		Pingu_Attack = config.get("Penghoul", "penghoul attack", 3.0D, "Penghoul strength [1-1000]", 1, 1000).getDouble(3.0D);
-		Pingu_Extra_Ice = config.get("Penghoul", "penghoul extra ice", false, "Should Penghoul drop extra shattered ice while their ice armor is breaking [false/true]").getBoolean(false);
+		Pingu_Extra_Ice = config.get("Penghoul", "penghoul extra ice", false, "Should Penghoul drop extra shattered ice while their ice armor is broken [false/true]").getBoolean(false);
 		
 		pSpawnRate_Undertaker = config.get("Undertaker", "undertaker spawn rate", 8, "Set the spawn rate of Undertaker [0-100]", 0, 100).getInt(8);
 		Undertaker_Health = config.get("Undertaker", "undertaker health", 40.0D, "Maximum Undertaker health [1-1000]", 1, 1000).getDouble(40.0D);
@@ -364,7 +365,8 @@ public class Modconfig {
 		Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 20, "Unburied lifespan [1-10000]", 1, 10000).getInt(20);
 		Unburied_Health = config.get("Unburied", "unburied health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
 		Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
-		
+		Should_Villager_Fear = config.get("Unburied", "unburied scare villagers", true, "Should Unburied scare villagers [false/true]").getBoolean(true);
+				
 		pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
 		pSpawnRate_GhostRay_End = config.get("Ghost Ray", "ghost ray end dimension spawn rate", 4, "Set the spawn rate of Ghost Ray in the End dimension [0-100]", 0, 100).getInt(4);
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Ghost Ray health [1-1000]", 1, 1000).getDouble(20.0D);
