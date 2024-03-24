@@ -65,6 +65,14 @@ public class GhostRayEntity extends FlyingMobEntity {
     	this.getEntityData().define(SIZE_VARIANT, Integer.valueOf(this.getRandom().nextInt(GhostRayEntity.SIZE.length)));
     }	
     
+    /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnClusterSize() {
+       return 1;
+    }
+    
 	@Override
     public void tick() {
     	this.noPhysics = true;

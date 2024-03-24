@@ -112,6 +112,14 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	   	
     }
     
+    /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnClusterSize() {
+       return 1;
+    }
+    
     @Override
     public void setTame(boolean tamed) {
     	super.setTame(tamed);
