@@ -164,7 +164,7 @@ public class CactoidEntity extends FURTameableEntity {
     @Override
     public void tick() {   	
     	if (!this.level.isClientSide && !this.isTame()) {
-    		if (this.isSunBurnTick()) {
+    		if (this.isSunBurnTick() && !this.isAggressive() && this.getLastHurtByMob() == null) {
     			this.doSitCommand(null);
     		} else if (this.state != FURTameableEntity.State.WANDERING) {
     			this.doFollowCommand(null);

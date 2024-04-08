@@ -596,6 +596,7 @@ public class CactoidModel<T extends CactoidEntity> extends FURBaseModel<T> imple
 		  	
 		if (entity.isSilent()) {  
 			this.body_base.y = 25.0F;
+			this.body_base.zRot = 0.0F;
 			this.root_r.visible = false;
 			this.root_l.visible = false;
 		} else {
