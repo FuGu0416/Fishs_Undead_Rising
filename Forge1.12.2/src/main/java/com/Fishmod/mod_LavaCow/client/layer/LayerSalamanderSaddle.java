@@ -25,10 +25,10 @@ public class LayerSalamanderSaddle implements LayerRenderer<EntitySalamander> {
 	@Override
 	public void doRenderLayer(EntitySalamander entitylivingbaseIn, float limbSwing, float limbSwingAmount,
 			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (entitylivingbaseIn.canBeSteered())
-        {
+        if (entitylivingbaseIn.canBeSteered()) {
             this.salamanderRenderer.bindTexture(TEXTURE);
             this.salamanderModel.setModelAttributes(this.salamanderRenderer.getMainModel());
+            this.salamanderModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entitylivingbaseIn);
             this.salamanderModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }		
 	}
