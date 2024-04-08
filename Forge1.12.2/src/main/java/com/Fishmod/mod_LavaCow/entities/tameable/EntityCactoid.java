@@ -176,8 +176,8 @@ public class EntityCactoid extends EntityFishTameable {
      */
     @Override
     public void onUpdate() {   	
-    	if (!this.world.isRemote && !this.isTamed() && this.getAttackTarget() == null) {
-    		if (this.isInDaylight()) {
+    	if (!this.world.isRemote && !this.isTamed()) {
+    		if (this.isInDaylight() && this.getAttackTarget() == null && this.recentlyHit == 0) {
     			this.doSitCommand(null);
     		} else if (this.state != EntityFishTameable.State.WANDERING) {
     			this.doFollowCommand(null);
