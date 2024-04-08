@@ -122,7 +122,7 @@ public class ItemSkeletonKingCrown extends ItemArmor {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot armorSlot, String type) {
-		return "mod_lavacow:textures/mobs/skeletonking.png";
+		return "mod_lavacow:textures/armors/kings_crown/kings_crown.png";
 	}
 	
 	@Override
