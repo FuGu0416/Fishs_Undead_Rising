@@ -487,10 +487,10 @@ public class EventHandler {
     	if (Attacked.hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
     	
-    	if (Attacker != null && Attacked.hasEffect(FUREffectRegistry.THORNED)) {
+    	if (Attacked.hasEffect(FUREffectRegistry.THORNED)) {
     		if (source == DamageSource.CACTUS || source == DamageSource.SWEET_BERRY_BUSH || (source instanceof EntityDamageSource && ((EntityDamageSource) source).isThorns())) {
     			event.setCanceled(true);
-    		} else if (!source.isMagic() && !source.isExplosion() && Attacker instanceof LivingEntity) {
+    		} else if (Attacker != null && !source.isMagic() && !source.isExplosion() && Attacker instanceof LivingEntity) {
     			Attacker.hurt(DamageSource.thorns(Attacked), 1.0F + Attacked.getEffect(FUREffectRegistry.THORNED).getAmplifier());
             }
     	}
