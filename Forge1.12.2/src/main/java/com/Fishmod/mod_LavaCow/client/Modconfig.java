@@ -48,6 +48,7 @@ public class Modconfig {
 	public static int pSpawnRate_Salamander;
 	public static double Salamander_Health;
 	public static double Salamander_Attack;
+	public static boolean Salamander_Defender;
 	
 	public static int pSpawnRate_Wendigo;
 	public static double Wendigo_Health;
@@ -294,6 +295,7 @@ public class Modconfig {
 		pSpawnRate_Salamander = config.get("Salamander", "salamander spawn rate", 30, "Set the spawn rate of Salamander [0-10000]", 0, 10000).getInt(30);
 		Salamander_Health = config.get("Salamander", "salamander health", 60.0D, "Maximum Salamander health [1-1000]", 1, 1000).getDouble(60.0D);
 		Salamander_Attack = config.get("Salamander", "salamander attack", 4.0D, "Salamander strength [1-1000]", 1, 1000).getDouble(4.0D);
+		Salamander_Defender = config.get("Salamander", "salamander defender", false, "Should tamed Salamander defend its owner [false/true]").getBoolean(false);
 		
 		pSpawnRate_Wendigo = config.get("Ithaqua", "ithaqua spawn rate", 15, "Set the spawn rate of Ithaqua [0-10000]", 0, 10000).getInt(15);
 		Wendigo_AnimalAttack = config.get("Ithaqua", "ithaqua attacks animals", true, "Should Ithaqua attack innocent animals [false/true]").getBoolean(true);

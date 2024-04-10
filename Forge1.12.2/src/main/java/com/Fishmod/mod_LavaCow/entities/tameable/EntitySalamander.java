@@ -18,6 +18,9 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -29,12 +32,15 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +48,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -101,12 +108,16 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
+        if(Modconfig.Salamander_Defender) {
+        	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+            this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+        }
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)
             {
-                return true;
+            	return !(p_apply_1_.isRiding() && p_apply_1_.getRidingEntity() instanceof EntitySalamander);
             }
         }));
     }
@@ -282,43 +293,33 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     		}*/
         }
     	
-    	if(this.isServerWorld()) {
-	    	if(this.growingAge < -16000) {
-	    		if(this.getGrowingStage() != 0)
+    	if (this.isServerWorld()) {
+    		if (this.isTamed() && this.rand.nextInt(this.isInLava() ? 45 : 900) == 0 && this.deathTime == 0) {
+                this.heal(1.0F);
+            }
+    		
+    		if (this.isBeingRidden() && this.getControllingPassenger() instanceof EntityLivingBase && this.ticksExisted % 40 == 0) {
+    			if (!((EntityLivingBase) this.getControllingPassenger()).isPotionActive(MobEffects.FIRE_RESISTANCE)) {
+    				((EntityLivingBase) this.getControllingPassenger()).addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 3 * 20, 0));
+    			}
+    		}    
+
+	    	if (this.growingAge < -16000) {
+	    		if (this.getGrowingStage() != 0)
 	    			this.setGrowingStage(0);
-	    	}
-	    	else if(this.growingAge < -8000) {
-	    		if(this.getGrowingStage() != 1) {
+	    	} else if (this.growingAge < -8000) {
+	    		if (this.getGrowingStage() != 1) {
 		    		this.setGrowingStage(1);
-		    		
-		    		this.experienceValue = 10;
-		    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
-		    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
-		    		
-		    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	    		}
-	    	}
-	    	else if(this.growingAge < 0) {
-	    		if(this.getGrowingStage() != 2) {
-		    		this.setGrowingStage(2);
-		    		
-		    		this.experienceValue = 15;
-		    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
-		    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
-		    		
-		    		this.heal(this.getHealth() * 0.5F);
+	    	} else if (this.growingAge < 0) {
+	    		if (this.getGrowingStage() != 2) {
+		    		this.setGrowingStage(2);		    	
 	    		}
-	    	}
-	    	else {	    		
-	    		if(this.getGrowingStage() != 3) {
-	    			this.setGrowingStage(3);
-	    			
-	    			this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
-	    			this.heal(this.getHealth() * 2.0F / 3.0F);
+	    	} else {	    		
+	    		if (this.getGrowingStage() != 3) {
+	    			this.setGrowingStage(3);	    		
 	    		}
-	    	}
+	    	}	    	
     	}	
     }
     
@@ -330,6 +331,36 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
             this.ClientControl();
         }
 
+    }
+    
+    public void fall(float distance, float damageMultiplier) {
+        if (distance > 1.0F)
+        {
+            this.playSound(SoundEvents.ENTITY_HORSE_LAND, 0.4F, 1.0F);
+        }
+
+        int i = MathHelper.ceil((distance * 0.5F - 3.0F) * damageMultiplier);
+
+        if (i > 0)
+        {
+            this.attackEntityFrom(DamageSource.FALL, (float)i);
+
+            if (this.isBeingRidden())
+            {
+                for (Entity entity : this.getRecursivePassengers())
+                {
+                    entity.attackEntityFrom(DamageSource.FALL, (float)i);
+                }
+            }
+
+            IBlockState iblockstate = this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.2D - (double)this.prevRotationYaw, this.posZ));
+
+            if (iblockstate.getMaterial() != Material.AIR && !this.isSilent())
+            {
+                SoundType soundtype = iblockstate.getBlock().getSoundType(iblockstate, world, new BlockPos(this.posX, this.posY - 0.2D - (double)this.prevRotationYaw, this.posZ), this);
+                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+            }
+        }
     }
     
     @SideOnly(Side.CLIENT)
@@ -383,6 +414,15 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
         super.updateAITasks();
     }
     
+    @Override
+    public void notifyDataManagerChange(DataParameter<?> key) {
+    	if (GROWING_STAGE.equals(key)) {
+    		this.setScaleForAge(this.isChild());
+    	}
+
+    	super.notifyDataManagerChange(key);
+    }
+    
     /**
      * Set or remove the saddle of the pig.
      */
@@ -404,7 +444,67 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     }
     
     public void setGrowingStage(int i) {
-        dataManager.set(GROWING_STAGE, i);
+    	dataManager.set(GROWING_STAGE, i);
+        this.setScaleForAge(this.isChild());
+    
+        switch(i) {
+	        case 0:
+		    	this.experienceValue = 5;
+		    	this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
+		    	this.tasks.addTask(3, this.avoid_entity);
+		    	this.tasks.removeTask(this.range_atk);
+		    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
+		    	this.tasks.addTask(4, this.range_atk);
+		    	
+		    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.25D);
+		        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.5D);
+		        
+		        if (this.getHealth() > this.getMaxHealth())
+		        	this.setHealth(this.getMaxHealth());
+		        
+		        if(this.canBeSteered()) {
+		        	this.setSaddled(false);
+		        	
+		            if (!this.world.isRemote)
+		            {
+		            	this.dropItem(Items.SADDLE, 1);
+		            }
+		        }
+		        
+	        	break;
+	        case 1:   		
+	    		this.experienceValue = 10;
+	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
+	    		
+	    		this.heal(this.getHealth() * (0.15F / 0.25F));
+	        	break;
+	        case 2:
+	    		this.experienceValue = 15;
+	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
+	    		
+	    		this.heal(this.getHealth() * 0.5F);
+        		break;
+        	default:
+    			this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
+    			this.heal(this.getHealth() * 2.0F / 3.0F);
+    			
+    	    	this.experienceValue = 20;
+    	    	
+    	    	this.tasks.removeTask(this.avoid_entity);
+    	    	this.tasks.removeTask(this.range_atk);
+    	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 8, 5, 2.5D, 1.0D, 2.5D);
+    	    	this.tasks.addTask(4, this.range_atk);
+    	    	
+    	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
+    	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+    	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);		
+        		break;
+        }        
 	}
     
     public boolean isNymph() {
@@ -433,61 +533,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
  		}
     }
     
-    /**
-     * This is called when Entity's growing age timer reaches 0 (negative values are considered as a child, positive as
-     * an adult)
-     */
-    @Override
-    protected void onGrowingAdult()
-    {
-    	this.setChild(false);
-    	super.onGrowingAdult();
-    }
-    
-    /**
-     * Set whether this entity is a child.
-     */
-    private void setChild(boolean isChildIn) {
-    	
-    	if(isChildIn) {
-	    	this.experienceValue = 5;
-	    	
-	    	this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
-	    	this.tasks.addTask(3, this.avoid_entity);
-	    	this.tasks.removeTask(this.range_atk);
-	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
-	    	this.tasks.addTask(4, this.range_atk);
-	    	
-	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.25D);
-	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.5D);
-	        
-	        if (this.getHealth() > this.getMaxHealth())
-	        	this.setHealth(this.getMaxHealth());
-	        
-	        if(this.canBeSteered()) {
-	        	this.setSaddled(false);
-	        	
-	            if (!this.world.isRemote)
-	            {
-	            	this.dropItem(Items.SADDLE, 1);
-	            }
-	        }
-    	}
-    	else {
-	    	this.experienceValue = 20;
-	    	
-	    	this.tasks.removeTask(this.avoid_entity);
-	    	this.tasks.removeTask(this.range_atk);
-	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 8, 5, 2.5D, 1.0D, 2.5D);
-	    	this.tasks.addTask(4, this.range_atk);
-	    	
-	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
-	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);	   
-    	}
-    }
-    
     public void setTamed(boolean tamed) {
     	if(tamed) {
     		this.tasks.removeTask(this.avoid_entity);
@@ -503,7 +548,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 		if (uuid != null) {
 			entity.setOwnerId(uuid);
 			entity.setTamed(true);
-			entity.setChild(true);
 		}
 		
 		entity.setHealth(entity.getMaxHealth());
@@ -609,7 +653,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
        
        if (this.world.rand.nextDouble() <= chance_to_spawn_as_child) {
           this.setGrowingAge(-24000);
-          this.setChild(true);
        } else {
     	   this.setGrowingStage(3);
        }
