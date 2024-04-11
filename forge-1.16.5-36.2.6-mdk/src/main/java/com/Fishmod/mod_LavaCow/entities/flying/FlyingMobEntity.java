@@ -37,6 +37,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -78,6 +79,10 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     
     public static boolean checkFlyerSpawnRulesNoSky(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
     	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    }
+    
+    public static boolean checkFlyerSpawnRulesNoRestriction(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+    	return p_223316_1_.getDifficulty() != Difficulty.PEACEFUL && p_223316_3_.getY() > 30 && FURTameableEntity.isDarkEnoughToSpawn((IServerWorld) p_223316_1_, p_223316_3_, p_223316_4_);
     }
     
     @Override
@@ -409,7 +414,9 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
                     if (groundHeight > 0) {
         	            if (this.parentEntity.isInWaterRainOrBubble()) {
         	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);
-        	            } else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
+        	            } else if (this.parentEntity.level.dimension() == World.END) {
+        	            	// no height restriction in End
+                    	} else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
         	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + FURConfig.FlyingHeight_limit.get()), vector3d.z);
         	            }
                     }            		

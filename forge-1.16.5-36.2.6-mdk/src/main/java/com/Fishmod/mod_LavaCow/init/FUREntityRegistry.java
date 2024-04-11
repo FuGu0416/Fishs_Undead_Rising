@@ -172,7 +172,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(BONEWORM, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BoneWormEntity::checkBoneWormSpawnRules);
         EntitySpawnPlacementRegistry.register(PINGU, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
         EntitySpawnPlacementRegistry.register(UNDERTAKER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndertakerEntity::checkUndertakerSpawnRules);
-        EntitySpawnPlacementRegistry.register(GHOSTRAY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
+        EntitySpawnPlacementRegistry.register(GHOSTRAY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRulesNoRestriction);
         EntitySpawnPlacementRegistry.register(BANSHEE, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(WETA, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules);
         EntitySpawnPlacementRegistry.register(AVATON, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
@@ -189,7 +189,7 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(WRAITH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTSWARMER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GhostSwarmerEntity::checkWispSpawnRules);
         EntitySpawnPlacementRegistry.register(BEELZEBUB, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(ENIGMOTH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRulesNoSky);
+        EntitySpawnPlacementRegistry.register(ENIGMOTH, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRulesNoRestriction);
         EntitySpawnPlacementRegistry.register(MUMMIFIEDCOD, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
         EntitySpawnPlacementRegistry.register(BONETROUT, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
         EntitySpawnPlacementRegistry.register(LAMPREY, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules);

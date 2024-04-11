@@ -338,19 +338,19 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     			}
     		}
 
-	    	if(this.getAge() < -16000) {
-	    		if(this.getGrowingStage() != 0)
+	    	if (this.getAge() < -16000) {
+	    		if (this.getGrowingStage() != 0)
 	    			this.setGrowingStage(0);
-	    	} else if(this.getAge() < -8000) {
-	    		if(this.getGrowingStage() != 1) {
+	    	} else if (this.getAge() < -8000) {
+	    		if (this.getGrowingStage() != 1) {
 		    		this.setGrowingStage(1);
 	    		}
-	    	} else if(this.getAge() < 0) {
-	    		if(this.getGrowingStage() != 2) {
+	    	} else if (this.getAge() < 0) {
+	    		if (this.getGrowingStage() != 2) {
 		    		this.setGrowingStage(2);		    	
 	    		}
 	    	} else {	    		
-	    		if(this.getGrowingStage() != 3) {
+	    		if (this.getGrowingStage() != 3) {
 	    			this.setGrowingStage(3);	    		
 	    		}
 	    	}
