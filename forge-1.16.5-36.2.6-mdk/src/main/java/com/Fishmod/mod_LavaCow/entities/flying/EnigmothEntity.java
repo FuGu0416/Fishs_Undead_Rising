@@ -12,7 +12,6 @@ import com.Fishmod.mod_LavaCow.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.MothScalesEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
-import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.init.FURTagRegistry;
 
@@ -132,6 +131,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         	this.setHealth(this.getHealth() * 0.5F);
         }
 	}
+
+    @Override
+    public void setBaby(boolean p_82227_1_) {
+        super.setBaby(p_82227_1_);
+        
+    	if (this.isWandering()) {
+    		this.goalSelector.removeGoal(this.wander);
+    		this.wander = this.wanderGoal();
+    		this.goalSelector.addGoal(7, this.wander);
+    	}
+	}
     
     @Override
     protected Goal wanderGoal() {
@@ -216,12 +226,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     
     @Override
     protected int TameRate(ItemStack stack) {
-    	if(stack.getItem().equals(FURItemRegistry.IMP_HORN))
-    		return 3;
-    	else if(stack.getItem().equals(FURItemRegistry.KUNG_PAO_CHICKEN))
-    		return 1;
-    	else
-    		return super.TameRate(stack);
+		return super.TameRate(stack);
     }
     
     @Override
@@ -325,7 +330,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.END_HIGHLANDS) && p_213386_3_ != SpawnReason.SPAWN_EGG) {
     		this.setBaby(this.level.getRandom().nextFloat() <= 0.8F);
     	}
-    	
+    	this.setBaby(true);
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
       

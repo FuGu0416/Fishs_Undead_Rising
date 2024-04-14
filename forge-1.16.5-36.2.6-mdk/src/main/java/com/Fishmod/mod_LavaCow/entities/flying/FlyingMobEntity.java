@@ -409,17 +409,17 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
             	Vector3d vector3d = this.findPos();
             	
             	if (vector3d != null) {
-            		int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-            		
-                    if (groundHeight > 0) {
-        	            if (this.parentEntity.isInWaterRainOrBubble()) {
-        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);
-        	            } else if (this.parentEntity.level.dimension() == World.END) {
-        	            	// no height restriction in End
-                    	} else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
-        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + FURConfig.FlyingHeight_limit.get()), vector3d.z);
-        	            }
-                    }            		
+            		if (this.parentEntity.level.dimension() != World.END) {
+                 		int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
+	            		
+	                    if (groundHeight > 0) {
+	        	            if (this.parentEntity.isInWaterRainOrBubble()) {
+	        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);       	            
+	                    	} else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
+	        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + FURConfig.FlyingHeight_limit.get()), vector3d.z);
+	        	            }
+	                    }       
+                 	}
                     
             		this.parentEntity.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 1.0D);
             		if (this.parentEntity.getTarget() == null) {

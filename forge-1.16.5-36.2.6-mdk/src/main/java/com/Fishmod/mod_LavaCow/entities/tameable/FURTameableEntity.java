@@ -148,6 +148,10 @@ public class FURTameableEntity extends TameableEntity {
     	return 3;
     }
     
+    public boolean isWandering() {
+    	return this.state.equals(FURTameableEntity.State.WANDERING);
+    }
+    
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
