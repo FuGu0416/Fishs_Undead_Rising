@@ -33,6 +33,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.command.CommandDimensions;
 
 public class EntityFlyingMob extends EntityFishTameable {
 
@@ -395,23 +396,24 @@ public class EntityFlyingMob extends EntityFishTameable {
          * Execute a one shot task or start executing a continuous task
          */
         public void startExecuting() {
-            for(int i = 0; i < 3; ++i) {
-            	int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-                BlockPos blockpos = new BlockPos(parentEntity).add(parentEntity.rand.nextInt(15) - 7, parentEntity.rand.nextInt(11) - 5, parentEntity.rand.nextInt(15) - 7);
-            	Random random = this.parentEntity.getRNG();
-
-            	double y = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            
-            	if (groundHeight > 0) {
-                    if (this.parentEntity.isWet()) {
-                    	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
-                    } else if(heightLimit != 0) {
-                    	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + heightLimit, y);
-            		}
-            	}
-            
-                this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
-            }
+        	Random random = this.parentEntity.getRNG();
+            BlockPos blockpos = new BlockPos(parentEntity).add(random.nextInt(15) - 7, 0, random.nextInt(15) - 7);        	
+        	double y = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+        
+        	// Stop calculating height in end dimension
+        	if (this.parentEntity.world.provider.getDimension() != 1) {       	
+	        	int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
+	        	
+	        	if (groundHeight > 0) {
+	                if (this.parentEntity.isWet()) {
+	                	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
+	                } else if (heightLimit != 0) {
+	                	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + heightLimit, y);
+	        		}
+	        	}
+        	}
+        
+            this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, y + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
         }
     }
     
