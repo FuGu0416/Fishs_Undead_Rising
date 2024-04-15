@@ -33,6 +33,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.LightType;
@@ -96,6 +97,9 @@ public class FURTameableEntity extends TameableEntity {
 	public boolean requiresCustomPersistence() {
 		return (this.isTame() && this.getOwner() instanceof PlayerEntity) || super.requiresCustomPersistence();
 	}
+	
+	public void setLimitedLife(int limitedLifeTicksIn) {    	
+    }
     
     protected boolean isCommandable() {
     	return true;
@@ -298,6 +302,16 @@ public class FURTameableEntity extends TameableEntity {
 			return false;
 		}
 	}
+	
+	public void setDefaultEquipment(DifficultyInstance p_180481_1_) {		
+	}
+	
+    public int getSkin() {
+    	return 0;
+    }
+
+    public void setSkin(int skinType) {
+    }
 	
     /**
      * Writes the extra NBT data specific to this type of entity. Should <em>not</em> be called from outside this class;

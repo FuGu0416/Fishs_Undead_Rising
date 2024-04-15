@@ -6,9 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
-import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
-import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -26,6 +24,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -210,44 +209,50 @@ public class FURWeaponItem extends SwordItem {
 		}
 	}
 	
+	public static <T extends FURTameableEntity> void SummonMinion(PlayerEntity playerIn, int[] enchantmentIn, World worldIn, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
+        CompoundNBT CompoundNBT = new CompoundNBT();
+        FURTameableEntity entity = (FURTameableEntity)entityIn.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
+    	CompoundNBT.putInt("fire_aspect", enchantmentIn[0]);
+    	CompoundNBT.putInt("sharpness", enchantmentIn[1]);
+    	CompoundNBT.putInt("knockback", enchantmentIn[2]);
+    	CompoundNBT.putInt("bane_of_arthropods", enchantmentIn[3]);
+    	CompoundNBT.putInt("smite", enchantmentIn[4]);
+    	CompoundNBT.putInt("unbreaking", enchantmentIn[8]);
+    	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
+    	CompoundNBT.putInt("poisonous", enchantmentIn[6]);
+    	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
+    	entity.readAdditionalSaveData(CompoundNBT);
+    	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
+    	entity.tame(playerIn);
+        entity.setLimitedLife(limitLife);
+        entity.setSkin(skin);
+	}
+	
     /**
      * Called when the equipped item is right clicked.
      */
 	@Override
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		int fire_aspect = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, playerIn.getItemInHand(handIn));
-		int sharpness = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getItemInHand(handIn));
-		int knockback = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, playerIn.getItemInHand(handIn));
-		int bane_of_arthropods = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getItemInHand(handIn));
-		int smite = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SMITE, playerIn.getItemInHand(handIn));
-		int lifesteal = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.LIFESTEAL, playerIn.getItemInHand(handIn));
-		int poisonous = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, playerIn.getItemInHand(handIn));
-		int corrosive = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE, playerIn.getItemInHand(handIn));
-		int unbreaking = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getItemInHand(handIn));
+		int[] enchantment_list = new int[9];		
+		enchantment_list[0] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, playerIn.getItemInHand(handIn));
+		enchantment_list[1] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getItemInHand(handIn));
+		enchantment_list[2] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, playerIn.getItemInHand(handIn));
+		enchantment_list[3] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getItemInHand(handIn));
+		enchantment_list[4] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SMITE, playerIn.getItemInHand(handIn));
+		enchantment_list[5] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.LIFESTEAL, playerIn.getItemInHand(handIn));
+		enchantment_list[6] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, playerIn.getItemInHand(handIn));
+		enchantment_list[7] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE, playerIn.getItemInHand(handIn));
+		enchantment_list[8] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getItemInHand(handIn));
 		
-    	if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SLUDGE_WAND && worldIn instanceof ServerWorld) {       	
-        	LilSludgeEntity entity = (LilSludgeEntity)FUREntityRegistry.LILSLUDGE.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, new BlockPos(playerIn.getX() + playerIn.getLookAngle().x, playerIn.getY() + 0.2F, playerIn.getZ() + playerIn.getLookAngle().z), SpawnReason.MOB_SUMMONED, true, false);        	
-        	CompoundNBT CompoundNBT = new CompoundNBT();    	
-        	CompoundNBT.putInt("fire_aspect", fire_aspect);
-        	CompoundNBT.putInt("sharpness", sharpness);
-        	CompoundNBT.putInt("knockback", knockback);
-        	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
-        	CompoundNBT.putInt("smite", smite);
-        	CompoundNBT.putInt("unbreaking", unbreaking);
-        	CompoundNBT.putInt("lifesteal", lifesteal);
-        	CompoundNBT.putInt("poisonous", poisonous);
-        	CompoundNBT.putInt("corrosive", corrosive);
-        	entity.readAdditionalSaveData(CompoundNBT);
-        	entity.tame(playerIn);
-        	entity.setLimitedLife(FURConfig.LilSludge_Lifespan.get() * 20);
-        	entity.setSkin((fire_aspect > 0) ? 1 : 0);        	
-
+    	if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SLUDGE_WAND && worldIn instanceof ServerWorld) { 
+    		BlockPos blockpos = new BlockPos(playerIn.getX() + playerIn.getLookAngle().x, playerIn.getY() + 0.2F, playerIn.getZ() + playerIn.getLookAngle().z);
+    		FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.LILSLUDGE, FURConfig.LilSludge_Lifespan.get() * 20, (enchantment_list[0] > 0) ? 1 : 0);
+      	
             for (int j = 0; j < 4; ++j) {
-            	double d0 = entity.getX() + (double)(entity.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-            	double d1 = entity.getY() + (double)(entity.getRandom().nextFloat() * entity.getBbHeight());
-            	double d2 = entity.getZ() + (double)(entity.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-            	((ServerWorld) worldIn).sendParticles(fire_aspect > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-            	
+            	double d0 = blockpos.getX() + (playerIn.getRandom().nextDouble() * 2.0D) - 1.0D;
+            	double d1 = blockpos.getY() + (playerIn.getRandom().nextDouble() * 2.0D);
+            	double d2 = blockpos.getZ() + (playerIn.getRandom().nextDouble() * 2.0D) - 1.0D;
+            	((ServerWorld) worldIn).sendParticles(enchantment_list[0] > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);            	
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
@@ -264,24 +269,24 @@ public class FURWeaponItem extends SwordItem {
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
 			for (Entity entity1 : list) {
 				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
-					entity1.setSecondsOnFire(2 * fire_aspect);
-					entity1.hurt(DamageSource.mobAttack(playerIn) , 8.0F + (float)sharpness
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
+					entity1.setSecondsOnFire(2 * enchantment_list[0]);
+					entity1.hurt(DamageSource.mobAttack(playerIn) , 8.0F + (float)enchantment_list[1]
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)enchantment_list[3] : 0)
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)enchantment_list[4] : 0));
 					
-					if (knockback > 0)
-						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
+					if (enchantment_list[2] > 0)
+						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)enchantment_list[2] * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
 					
-		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
-		                int i = 20 + worldIn.random.nextInt(10 * bane_of_arthropods);
+		            if (enchantment_list[3] > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
+		                int i = 20 + worldIn.random.nextInt(10 * enchantment_list[3]);
 		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
 		            }
 		            
-		            if (poisonous > 0)
-		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, poisonous - 1));
+		            if (enchantment_list[6] > 0)
+		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, enchantment_list[6] - 1));
 		            
-		            if (corrosive > 0)
-		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, corrosive - 1));
+		            if (enchantment_list[7] > 0)
+		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, enchantment_list[7] - 1));
 				}
 			}
 			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.FLAME);
@@ -300,24 +305,24 @@ public class FURWeaponItem extends SwordItem {
 			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
 			for(Entity entity1 : list) {
 				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TameableEntity)) || (entity1 instanceof TameableEntity && !((TameableEntity)entity1).isOwnedBy(playerIn)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
-					entity1.setSecondsOnFire(2 * fire_aspect);
-					entity1.hurt(DamageSource.mobAttack(playerIn) , 10.0F + (float)sharpness
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite : 0));
+					entity1.setSecondsOnFire(2 * enchantment_list[0]);
+					entity1.hurt(DamageSource.mobAttack(playerIn) , 10.0F + (float)enchantment_list[1]
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)enchantment_list[3] : 0)
+							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)enchantment_list[4] : 0));
 					
-					if (knockback > 0)
-						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
+					if (enchantment_list[2] > 0)
+						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)enchantment_list[2] * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
 					
-		            if (bane_of_arthropods > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
-		                int i = 20 + worldIn.random.nextInt(10 * bane_of_arthropods);
+		            if (enchantment_list[3] > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
+		                int i = 20 + worldIn.random.nextInt(10 * enchantment_list[3]);
 		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
 		            }
 		            
-		            if (poisonous > 0)
-		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, poisonous - 1));
+		            if (enchantment_list[6] > 0)
+		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, enchantment_list[6] - 1));
 		            
-		            if (corrosive > 0)
-		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, corrosive - 1));
+		            if (enchantment_list[7] > 0)
+		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, enchantment_list[7] - 1));
 				}
 			}
 			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.SOUL_FIRE_FLAME);
@@ -350,21 +355,7 @@ public class FURWeaponItem extends SwordItem {
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                CompoundNBT CompoundNBT = new CompoundNBT();
-                UnburiedEntity entity = (UnburiedEntity)FUREntityRegistry.UNBURIED.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
-            	CompoundNBT.putInt("fire_aspect", fire_aspect);
-            	CompoundNBT.putInt("sharpness", sharpness);
-            	CompoundNBT.putInt("knockback", knockback);
-            	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
-            	CompoundNBT.putInt("smite", smite);
-            	CompoundNBT.putInt("unbreaking", unbreaking);
-            	CompoundNBT.putInt("lifesteal", lifesteal);
-            	CompoundNBT.putInt("poisonous", poisonous);
-            	CompoundNBT.putInt("corrosive", corrosive);
-            	entity.readAdditionalSaveData(CompoundNBT);
-            	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
-            	entity.tame(playerIn);
-                entity.setLimitedLife(FURConfig.Unburied_Lifespan.get() * 20);
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.UNBURIED, FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
@@ -380,20 +371,7 @@ public class FURWeaponItem extends SwordItem {
         	
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(lookVec.x * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D), 0, lookVec.z * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D));
-                CompoundNBT CompoundNBT = new CompoundNBT();
-                ScarabEntity entity = (ScarabEntity)FUREntityRegistry.SCARAB.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
-            	CompoundNBT.putInt("fire_aspect", fire_aspect);
-            	CompoundNBT.putInt("sharpness", sharpness);
-            	CompoundNBT.putInt("knockback", knockback);
-            	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
-            	CompoundNBT.putInt("smite", smite);
-            	CompoundNBT.putInt("unbreaking", unbreaking);
-            	CompoundNBT.putInt("lifesteal", lifesteal);
-            	CompoundNBT.putInt("poisonous", poisonous);
-            	CompoundNBT.putInt("corrosive", corrosive);
-            	entity.readAdditionalSaveData(CompoundNBT);
-            	entity.tame(playerIn);
-                entity.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.SCARAB, FURConfig.Scarab_Lifespan.get() * 20, 0);
             }
 			
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
@@ -407,21 +385,7 @@ public class FURWeaponItem extends SwordItem {
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.ANKH_SCEPTER && worldIn instanceof ServerWorld) {
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                CompoundNBT CompoundNBT = new CompoundNBT();
-                UnburiedEntity entity = (UnburiedEntity)FUREntityRegistry.MUMMY.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
-            	CompoundNBT.putInt("fire_aspect", fire_aspect);
-            	CompoundNBT.putInt("sharpness", sharpness);
-            	CompoundNBT.putInt("knockback", knockback);
-            	CompoundNBT.putInt("bane_of_arthropods", bane_of_arthropods);
-            	CompoundNBT.putInt("smite", smite);
-            	CompoundNBT.putInt("unbreaking", unbreaking);
-            	CompoundNBT.putInt("lifesteal", lifesteal);
-            	CompoundNBT.putInt("poisonous", poisonous);
-            	CompoundNBT.putInt("corrosive", corrosive);
-            	entity.readAdditionalSaveData(CompoundNBT);
-            	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
-            	entity.tame(playerIn);
-                entity.setLimitedLife(FURConfig.Mummy_Lifespan.get() * 20);
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.MUMMY, FURConfig.Mummy_Lifespan.get() * 20, 0);
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
@@ -431,6 +395,34 @@ public class FURWeaponItem extends SwordItem {
 			
         	return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
+        
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FUNGAL_STAFF && worldIn instanceof ServerWorld) {
+            for (int i = 0; i < 4; ++i) {
+                BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.MYCOSIS, FURConfig.ZombieMushroom_Lifespan.get() * 20, 0);
+            }
+            
+            playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    		});
+            playerIn.getCooldowns().addCooldown(this, FURConfig.Fungal_Staff_Cooldown.get() * 20);
+			
+        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+		}
+        
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FROZEN_GRIP && worldIn instanceof ServerWorld) {
+            for (int i = 0; i < 4; ++i) {
+                BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.FRIGID, FURConfig.ZombieFrozen_Lifespan.get() * 20, 0);
+            }
+            
+            playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    		});
+            playerIn.getCooldowns().addCooldown(this, FURConfig.Frozen_Grip_Cooldown.get() * 20);
+			
+        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+		}        
 
     	return super.use(worldIn, playerIn, handIn);
     }

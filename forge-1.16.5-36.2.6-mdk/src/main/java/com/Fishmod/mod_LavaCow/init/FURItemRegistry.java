@@ -214,7 +214,9 @@ public class FURItemRegistry {
 	public static final Item FOUL_HIDE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:foul_hide");
 	public static final Item PARASITE_OVUM = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 12 * 20, 0), 0.8F).build())).setRegistryName("mod_lavacow:parasite_ovum");
 	public static final Item USHABTI = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ushabti");
-	public static final Item ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
+	public static final Item ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
+	public static final Item FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
+	public static final Item FROZEN_GRIP = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

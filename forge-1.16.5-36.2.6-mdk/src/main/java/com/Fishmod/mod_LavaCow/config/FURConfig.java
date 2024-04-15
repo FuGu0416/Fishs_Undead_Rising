@@ -30,10 +30,12 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_ZombieMushroom;
+	public static final ForgeConfigSpec.ConfigValue<Integer> ZombieMushroom_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Double> ZombieMushroom_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> ZombieMushroom_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_ZombieFrozen;
+	public static final ForgeConfigSpec.ConfigValue<Integer> ZombieFrozen_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Double> ZombieFrozen_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> ZombieFrozen_Attack;
 	
@@ -273,6 +275,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Cordyceps;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Veilshroom;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ankh_Scepter_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Fungal_Staff_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Frozen_Grip_Cooldown;
 	
 	static {
 		BUILDER.push("Shroom");
@@ -311,12 +315,14 @@ public final class FURConfig {
 		
 		BUILDER.push("Mycosis");
 		pSpawnRate_ZombieMushroom = BUILDER.comment("Set the spawn rate of Mycosis [0-10000]").defineInRange("mycosis spawn rate", 40, 0, 10000);
+		ZombieMushroom_Lifespan = BUILDER.comment("Mycosis lifespan [1-10000]").defineInRange("mycosis lifespan", 20, 0, 10000);
 		ZombieMushroom_Health = BUILDER.comment("Maximum Mycosis health [1-1000]").defineInRange("mycosis health", 20.0D, 1.0D, 1000.0D);
 		ZombieMushroom_Attack = BUILDER.comment("Mycosis strength [1-1000]").defineInRange("mycosis attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Frigid");
 		pSpawnRate_ZombieFrozen = BUILDER.comment("Set the spawn rate of Frigid [0-10000]").defineInRange("frigid spawn rate", 20, 0, 10000);
+		ZombieFrozen_Lifespan = BUILDER.comment("Frigid lifespan [1-10000]").defineInRange("frigid lifespan", 20, 0, 10000);
 		ZombieFrozen_Health = BUILDER.comment("Maximum Frigid health [1-1000]").defineInRange("frigid health", 30.0D, 1.0D, 1000.0D);
 		ZombieFrozen_Attack = BUILDER.comment("Frigid strength [1-1000]").defineInRange("frigid attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -661,6 +667,8 @@ public final class FURConfig {
 		General_IllagerNose = BUILDER.comment("Set the drop rate of Illager Nose [0-100]").defineInRange("illager nose drop rate", 2, 0, 100);
 		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
 		Ankh_Scepter_Cooldown = BUILDER.comment("Ability cooldown of Ankh Scepter [1-10000]").defineInRange("ankh scepter cooldown", 60, 0, 10000);
+		Fungal_Staff_Cooldown = BUILDER.comment("Ability cooldown of Fungal Staff [1-10000]").defineInRange("fungal staff cooldown", 60, 0, 10000);
+		Frozen_Grip_Cooldown = BUILDER.comment("Ability cooldown of Frozen Grip [1-10000]").defineInRange("frozen grip cooldown", 60, 0, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("Structure");
