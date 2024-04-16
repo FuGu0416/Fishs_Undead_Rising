@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:smithing",
+	"base": {
+		"item": "mod_lavacow:undertaker_shovel"
+	},
+	"addition": {
+		"item": "mod_lavacow:poisonspore"
+	},
+	"result": {
+		"item": "mod_lavacow:fungal_staff"
+	}
+}

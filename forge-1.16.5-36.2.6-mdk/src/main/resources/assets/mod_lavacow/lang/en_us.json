@@ -141,6 +141,10 @@
 	"item.mod_lavacow.lamprey_bucket": "Bucket of Lamprey",
 	"item.mod_lavacow.foul_hide": "Foul Hide",
 	"item.mod_lavacow.parasite_ovum": "Parasite Ovum",
+	"item.mod_lavacow.ushabti": "Ushabti",
+	"item.mod_lavacow.ankh_sceptre": "Ankh Sceptre",
+	"item.mod_lavacow.fungal_staff": "Fungal Staff",
+	"item.mod_lavacow.frozen_grip": "Frozen Grip",
 	
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
@@ -533,6 +537,9 @@
 	"tootip.mod_lavacow:diseased_bread": "Transform villager into zombie villager, or just eat it.",
 	"tootip.mod_lavacow:pheromone_gland": "Gives Charming Pheromone(1:00) and NauseaII(0:10) when eaten.",
 	"tootip.mod_lavacow:charming_catalyst": "Gives Charming Pheromone(0:30) when consuming, or uses to trigger some larvae's growth.",
+	"tootip.mod_lavacow:ankh_sceptre": "Right click to summon an army of Mummy.",
+	"tootip.mod_lavacow:fungal_staff": "Right click to summon an army of Mycosis.",
+	"tootip.mod_lavacow:frozen_grip": "Right click to summon an army of Frigid.",
 				
 	"command.mod_lavacow.sitting": "%s is waiting",
 	"command.mod_lavacow.following": "%s is following",

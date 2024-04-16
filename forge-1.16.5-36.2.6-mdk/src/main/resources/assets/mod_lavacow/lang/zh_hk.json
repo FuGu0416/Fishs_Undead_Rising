@@ -141,7 +141,11 @@
 	"item.mod_lavacow.lamprey_bucket": "七鰓鰻桶",
 	"item.mod_lavacow.foul_hide": "惡臭皮革",
 	"item.mod_lavacow.parasite_ovum": "屍蛆卵塊",
-	
+	"item.mod_lavacow.ushabti": "巫沙布提俑",
+	"item.mod_lavacow.ankh_sceptre": "安卡權杖",
+	"item.mod_lavacow.fungal_staff": "猛毒菇杖",
+	"item.mod_lavacow.frozen_grip": "寒霜之攫",
+		
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -534,6 +538,9 @@
 	"tootip.mod_lavacow:diseased_bread": "將村民轉化為殭屍村民，或是直接食用",
 	"tootip.mod_lavacow:pheromone_gland": "食用後獲得迷情費洛蒙(1:00)與噁心II(0:10)",
 	"tootip.mod_lavacow:charming_catalyst": "食用後獲得迷情費洛蒙(0:30)，或用於刺激某些幼蟲的成長",
+	"tootip.mod_lavacow:ankh_sceptre": "右鍵點擊以召喚聽命於玩家的木乃伊軍團",
+	"tootip.mod_lavacow:fungal_staff": "右鍵點擊以召喚聽命於玩家的菌屍軍團",
+	"tootip.mod_lavacow:frozen_grip": "右鍵點擊以召喚聽命於玩家的凍屍軍團",
 			
 	"command.mod_lavacow.sitting": "%s現在於原地待命",
 	"command.mod_lavacow.following": "%s正在跟隨",
