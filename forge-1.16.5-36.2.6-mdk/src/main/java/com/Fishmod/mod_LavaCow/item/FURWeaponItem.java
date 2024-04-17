@@ -226,6 +226,9 @@ public class FURWeaponItem extends SwordItem {
     	entity.tame(playerIn);
         entity.setLimitedLife(limitLife);
         entity.setSkin(skin);
+        
+        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
+        entity.setHealth(entity.getMaxHealth());
 	}
 	
     /**
@@ -233,7 +236,7 @@ public class FURWeaponItem extends SwordItem {
      */
 	@Override
 	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		int[] enchantment_list = new int[9];		
+		int[] enchantment_list = new int[10];		
 		enchantment_list[0] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, playerIn.getItemInHand(handIn));
 		enchantment_list[1] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getItemInHand(handIn));
 		enchantment_list[2] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, playerIn.getItemInHand(handIn));
@@ -243,11 +246,14 @@ public class FURWeaponItem extends SwordItem {
 		enchantment_list[6] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, playerIn.getItemInHand(handIn));
 		enchantment_list[7] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE, playerIn.getItemInHand(handIn));
 		enchantment_list[8] = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getItemInHand(handIn));
+		enchantment_list[9] = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.DOMINION, playerIn.getItemInHand(handIn));
 		
     	if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SLUDGE_WAND && worldIn instanceof ServerWorld) { 
     		BlockPos blockpos = new BlockPos(playerIn.getX() + playerIn.getLookAngle().x, playerIn.getY() + 0.2F, playerIn.getZ() + playerIn.getLookAngle().z);
-    		FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.LILSLUDGE, FURConfig.LilSludge_Lifespan.get() * 20, (enchantment_list[0] > 0) ? 1 : 0);
-      	
+    		for (int i = 0; i < 1 + enchantment_list[9]; i++) {
+    			FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.LILSLUDGE, FURConfig.LilSludge_Lifespan.get() * 20, (enchantment_list[0] > 0) ? 1 : 0);
+    		}
+    		
             for (int j = 0; j < 4; ++j) {
             	double d0 = blockpos.getX() + (playerIn.getRandom().nextDouble() * 2.0D) - 1.0D;
             	double d1 = blockpos.getY() + (playerIn.getRandom().nextDouble() * 2.0D);
@@ -358,7 +364,7 @@ public class FURWeaponItem extends SwordItem {
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.UNBURIED, FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
@@ -379,7 +385,7 @@ public class FURWeaponItem extends SwordItem {
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SCARAB_SCEPTER && worldIn instanceof ServerWorld) {       
         	Vector3d lookVec = playerIn.getLookAngle();
         	
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(lookVec.x * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D), 0, lookVec.z * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D));
                 FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.SCARAB, FURConfig.Scarab_Lifespan.get() * 20, 0);
             }
@@ -398,7 +404,7 @@ public class FURWeaponItem extends SwordItem {
         }
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.ANKH_SCEPTER && worldIn instanceof ServerWorld) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.MUMMY, FURConfig.Mummy_Lifespan.get() * 20, 0);
             }
@@ -417,7 +423,7 @@ public class FURWeaponItem extends SwordItem {
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FUNGAL_STAFF && worldIn instanceof ServerWorld) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.MYCOSIS, FURConfig.ZombieMushroom_Lifespan.get() * 20, 0);
             }
@@ -436,7 +442,7 @@ public class FURWeaponItem extends SwordItem {
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FROZEN_GRIP && worldIn instanceof ServerWorld) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
                 FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.FRIGID, FURConfig.ZombieFrozen_Lifespan.get() * 20, 0);
             }

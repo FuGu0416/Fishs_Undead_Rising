@@ -552,13 +552,20 @@
 
 	"enchantment.mod_lavacow.poisonous": "劇毒",
 	"enchantment.mod_lavacow.poisonous.desc": "攻擊時能使目標中毒",
+	"enchantment.mod_lavacow.poisonous.description": "攻擊時能使目標中毒",
 	"enchantment.mod_lavacow.lifesteal": "生命竊取",
 	"enchantment.mod_lavacow.lifesteal.desc": "對目標造成傷害時，能回復玩家的生命值",
+	"enchantment.mod_lavacow.lifesteal.description": "對目標造成傷害時，能回復玩家的生命值",
 	"enchantment.mod_lavacow.corrosive": "酸蝕性",
 	"enchantment.mod_lavacow.corrosive.desc": "攻擊時能侵蝕目標，提高它接下來所受到的傷害",
+	"enchantment.mod_lavacow.corrosive.description": "攻擊時能侵蝕目標，提高它接下來所受到的傷害",
 	"enchantment.mod_lavacow.criticalboost": "弱點爆擊",
 	"enchantment.mod_lavacow.criticalboost.desc": "提高跳躍攻擊時爆擊所能造成的傷害",
-	
+	"enchantment.mod_lavacow.criticalboost.description": "提高跳躍攻擊時爆擊所能造成的傷害",
+	"enchantment.mod_lavacow.dominion": "統御",
+	"enchantment.mod_lavacow.dominion.desc": "增加召喚物的數量，但減少它們的最大生命值",
+	"enchantment.mod_lavacow.dominion.description": "增加召喚物的數量，但減少它們的最大生命值",
+		
 	"effect.mod_lavacow.corroded": "腐蝕",
 	"effect.mod_lavacow.strong_corroded": "腐蝕 II",
 	"effect.mod_lavacow.long_corroded": "腐蝕",

@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.enchantment.EnchantmentCorrosive;
 import com.Fishmod.mod_LavaCow.enchantment.EnchantmentCriticalBoost;
+import com.Fishmod.mod_LavaCow.enchantment.EnchantmentDominion;
 import com.Fishmod.mod_LavaCow.enchantment.EnchantmentLifesteal;
 import com.Fishmod.mod_LavaCow.enchantment.EnchantmentPoisonous;
 
@@ -20,6 +21,7 @@ public class FUREnchantmentRegistry {
 	public static final Enchantment LIFESTEAL = new EnchantmentLifesteal("mod_lavacow:lifesteal", EnchantmentType.WEAPON);
 	public static final Enchantment CORROSIVE = new EnchantmentCorrosive("mod_lavacow:corrosive", EnchantmentType.WEAPON);
 	public static final Enchantment CRITICALBOOST = new EnchantmentCriticalBoost("mod_lavacow:criticalboost", EnchantmentType.WEAPON);
+	public static final Enchantment DOMINION = new EnchantmentDominion("mod_lavacow:dominion", EnchantmentType.WEAPON);
 	
     @SubscribeEvent
     public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
