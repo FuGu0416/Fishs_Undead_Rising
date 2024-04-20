@@ -744,6 +744,7 @@ public class EventHandler {
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_THORN, 1, 4, 12, 1));
 	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ANCIENT_AMBER, 4, 1, 12, 1));
+	        genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.GHOUL_CLAW, 1, 4, 12, 1));
 	        if(FURConfig.pSpawnRate_Cactoid.get() > 0)
 	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.CACTUS_FRUIT, 8, 1, 12, 1));
 	        if(FURConfig.pSpawnRate_Piranha.get() > 0)
