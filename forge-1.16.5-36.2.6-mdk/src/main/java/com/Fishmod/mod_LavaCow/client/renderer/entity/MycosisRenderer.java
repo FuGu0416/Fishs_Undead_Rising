@@ -47,9 +47,11 @@ public class MycosisRenderer extends MobRenderer<MycosisEntity, UnburiedModel<My
        
     @Override
     protected void scale(MycosisEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-    	if(entity.isBaby()) {
+    	if (entity.isBaby()) {
     		matrixStackIn.scale(0.6F, 0.6F, 0.6F);
     	}
+    	
+    	matrixStackIn.translate(0.0D, (double)entity.getSpellTicks() / 20.0D, 0.0D);
     }
       
     class EyeLayer extends LayerRenderer<MycosisEntity, UnburiedModel<MycosisEntity>> {

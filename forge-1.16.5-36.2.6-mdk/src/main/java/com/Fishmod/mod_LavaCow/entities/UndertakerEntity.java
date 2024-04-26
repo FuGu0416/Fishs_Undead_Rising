@@ -55,7 +55,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class UndertakerEntity extends MonsterEntity implements IAggressive {
-	public static final int ATTACK_TIMER = 15;
+	public static final int ATTACK_TIMER = 30;
 	private int attackTimer;
 	protected int spellTicks;
 	
@@ -345,6 +345,8 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
                 if(!UndertakerEntity.this.level.isClientSide())
                 	UndertakerEntity.this.level.addFreshEntity(entityvex);
                 
+                UndertakerEntity.this.level.broadcastEntityEvent(UndertakerEntity.this, (byte)32);
+                
                 if(UndertakerEntity.this.getTarget() != null)
                 	entityvex.setTarget(UndertakerEntity.this.getTarget());                   
                            
@@ -411,7 +413,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     
     static class AttackGoal extends FURMeleeAttackGoal {
         public AttackGoal(CreatureEntity p_i46676_1_) {
-           super(p_i46676_1_, 1.25D, false);
+           super(p_i46676_1_, 1.25D, false, 32);
         }
 
     	protected int atkTimerMax() {
@@ -419,7 +421,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
     	}
     	
     	protected int atkTimerHit() {
-    		return 5;
+    		return 6;
     	}
     	
     	protected byte atkTimerEvent() {

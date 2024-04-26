@@ -34,7 +34,6 @@ public class FrigidEntity extends UnburiedEntity {
 
     public FrigidEntity(EntityType<? extends FrigidEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.BirthAnimation = false;
     }
     
     @Override

@@ -59,7 +59,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	private int attackTimer;
 	protected int spellTicks;
-	protected boolean BirthAnimation;
 	private int limitedLifeTicks;
 	private int fire_aspect;
 	private int sharpness;
@@ -74,7 +73,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	
 	public UnburiedEntity(EntityType<? extends UnburiedEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        BirthAnimation = true;
         this.limitedLifeTicks = -1;
     }
 	
@@ -192,19 +190,19 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick() {           	
-        if(this.BirthAnimation) {
-	    	this.spellTicks = 20;
-	    	this.level.broadcastEntityEvent(this, (byte)32);
-	        this.BirthAnimation = false;
-        }
-    	
+    public void tick() {           	   	
     	if (this.attackTimer > 0) {
             --this.attackTimer;
         }
         
         if (this.spellTicks > 0) {
             --this.spellTicks;
+        }
+        
+        if (this.level.isClientSide) {
+        	System.out.println("OAOC " + this.spellTicks);
+        } else {
+        	System.out.println("OAOS " + this.spellTicks);
         }
         
         if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
@@ -302,7 +300,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+        
         this.populateDefaultEquipmentSlots(difficulty);        
         return livingdata;
     }    

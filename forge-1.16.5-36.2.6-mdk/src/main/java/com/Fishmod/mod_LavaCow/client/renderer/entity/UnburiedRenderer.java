@@ -35,9 +35,10 @@ public class UnburiedRenderer extends MobRenderer<UnburiedEntity, UnburiedModel<
     
     @Override
 	protected void scale(UnburiedEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-    	if(entity.isBaby()) {
+    	if (entity.isBaby()) {
     		matrixStackIn.scale(0.6F, 0.6F, 0.6F);
     	}
-    	matrixStackIn.translate(0.0D, (double)entity.getSpellTicks()/20.0D, 0.0D);
+    	
+    	matrixStackIn.translate(0.0D, (double)entity.getSpellTicks() / 20.0D, 0.0D);
 	}
 }

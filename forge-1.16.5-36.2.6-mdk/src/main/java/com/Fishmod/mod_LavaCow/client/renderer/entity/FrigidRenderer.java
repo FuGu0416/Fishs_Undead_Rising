@@ -34,8 +34,10 @@ public class FrigidRenderer extends MobRenderer<FrigidEntity, UnburiedModel<Frig
     
     @Override
     protected void scale(FrigidEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-    	if(entity.isBaby()) {
+    	if (entity.isBaby()) {
     		matrixStackIn.scale(0.6F, 0.6F, 0.6F);
     	}
+    	
+    	matrixStackIn.translate(0.0D, (double)entity.getSpellTicks() / 20.0D, 0.0D);
     }
 }

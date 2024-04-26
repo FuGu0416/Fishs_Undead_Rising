@@ -42,7 +42,6 @@ public class MycosisEntity extends UnburiedEntity {
 		
     public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.BirthAnimation = false;
     }
     
     @Override

@@ -32,7 +32,6 @@ public class MummyEntity extends UnburiedEntity {
 
     public MummyEntity(EntityType<? extends MummyEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.BirthAnimation = false;
     }
     
     @Override

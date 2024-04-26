@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
+import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -211,7 +212,7 @@ public class FURWeaponItem extends SwordItem {
 	
 	public static <T extends FURTameableEntity> void SummonMinion(PlayerEntity playerIn, int[] enchantmentIn, World worldIn, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
         CompoundNBT CompoundNBT = new CompoundNBT();
-        FURTameableEntity entity = (FURTameableEntity)entityIn.spawn((ServerWorld) worldIn, null, (PlayerEntity)null, blockpos, SpawnReason.MOB_SUMMONED, true, false);        	              
+        FURTameableEntity entity = (FURTameableEntity)entityIn.create(worldIn);        	              
     	CompoundNBT.putInt("fire_aspect", enchantmentIn[0]);
     	CompoundNBT.putInt("sharpness", enchantmentIn[1]);
     	CompoundNBT.putInt("knockback", enchantmentIn[2]);
@@ -221,14 +222,25 @@ public class FURWeaponItem extends SwordItem {
     	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
     	CompoundNBT.putInt("poisonous", enchantmentIn[6]);
     	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
-    	entity.readAdditionalSaveData(CompoundNBT);
-    	entity.setDefaultEquipment(worldIn.getCurrentDifficultyAt(blockpos));
+    	entity.readAdditionalSaveData(CompoundNBT);  	
     	entity.tame(playerIn);
         entity.setLimitedLife(limitLife);
         entity.setSkin(skin);
         
+        entity.finalizeSpawn(entity.getServer().overworld(), worldIn.getCurrentDifficultyAt(blockpos), SpawnReason.MOB_SUMMONED, null, (CompoundNBT)null);
+        
         entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
         entity.setHealth(entity.getMaxHealth());
+        
+        entity.moveTo(blockpos, 0.0F, 0.0F);
+        
+        if (!worldIn.isClientSide()) {
+        	worldIn.addFreshEntity(entity);
+        }
+        
+        if (entity instanceof UnburiedEntity) {
+        	entity.level.broadcastEntityEvent(entity, (byte)32);
+        }
 	}
 	
     /**
