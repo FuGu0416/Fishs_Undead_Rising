@@ -33,7 +33,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.server.command.CommandDimensions;
 
 public class EntityFlyingMob extends EntityFishTameable {
 

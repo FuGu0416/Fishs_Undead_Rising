@@ -58,7 +58,6 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
 	private boolean isAggressive = false;
 	private int attackTimer;
 	protected int spellTicks;
-	private boolean BirthAnimation;
 	private int limitedLifeTicks;
 	private int fire_aspect;
 	private int sharpness;
@@ -73,7 +72,6 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
 	public EntityUnburied(World worldIn)
     {
         super(worldIn);
-        BirthAnimation = true;
         this.setSize(1.0F, 1.95F);
         this.limitedLifeTicks = -1;
     }
@@ -181,13 +179,7 @@ public class EntityUnburied extends EntityFishTameable implements IAggressive{
      */
     @Override
     public void onLivingUpdate()
-    {           	
-        if(this.BirthAnimation) {
-	    	this.spellTicks = 20;
-	        this.world.setEntityState(this, (byte)32);
-	        this.BirthAnimation = false;
-        }
-    	
+    {           	   	
     	if (this.attackTimer > 0) {
             --this.attackTimer;
         }

@@ -194,8 +194,12 @@ public class ModelUndertaker extends FishModelBase {
      */
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
-    	float i = (float)((EntityUndertaker)entity).getAttackTimer();
+    	float i = (float)((EntityUndertaker)entity).getAttackTimer() / 15.0F;
     	float j = (float)((EntityUndertaker)entity).getSpellTicks() / 30.0F;
+    	float Anime_threshold[] = {1.0F, 0.6F, 0.2F};
+    	float m = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
+    	float n = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);
+    	float o = 1.0F / Anime_threshold[2];
     	
     	this.Head_Looking(this.Neck, 1.7756979809790308F, 0.0F, netHeadYaw, headPitch);
     	this.SwingX_Sin(this.Jaw, 0.40980330836826856F, ageInTicks, -0.07F, 0.03F, false, 0.0F); 	
@@ -219,29 +223,42 @@ public class ModelUndertaker extends FishModelBase {
         	this.SwingX_Sin(this.Leg_l_Seg2, -0.18203784098300857F, limbSwing, limbSwingAmount * 0.2F, 0.3F, false, 0.5F * (float)Math.PI);    		
     	}
 
-    	if(j > 0.0F) {
-    		this.Body_chest.rotateAngleX = GradientAnimation(0.4553564018453205F, -0.136659280431156F, j);
-    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-0.5918411493512771F, -1.730144887501979F, j);
-    	} else if(i > 8.0F) {
-    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-1.8668041679331349F, -2.321986036853256F, (i - 9.0F)/6.0F);
-    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-1.8668041679331349F, -2.321986036853256F, (i - 9.0F)/6.0F);
+    	if (j > 0.0F) {
+    		this.setRotateAngle(Arm_l_Seg0, -0.12269665007704787F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg0, GradientAnimation(-0.5918411493512771F, -1.730144887501979F, j), 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_l_Seg1, 0.0F, 0.18203784098300857F, -0.10000736613927509F);
+    		this.setRotateAngle(Arm_r_Seg1, 0.0F, -0.18203784630933073F, 0.10000736647217022F);
+    		this.setRotateAngle(Arm_l_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
     		
-    		this.Body_chest.rotateAngleX = GradientAnimation(0.4553564018453205F, -0.6373942428283291F, (i - 9.0F)/6.0F);
-    	} else if(i > 0.0F) {
-    		this.Arm_l_Seg0.rotateAngleX = GradientAnimation(-2.321986036853256F, -0.8651597102135892F, i/9.0F);
-    		this.Arm_l_Seg0.rotateAngleY = GradientAnimation(0.0F, 0.5918411493512771F, i/9.0F);
-    		this.Arm_l_Seg0.rotateAngleZ = GradientAnimation(-0.6373942428283291F, -0.31869712141416456F, i/9.0F);
-    		this.Arm_r_Seg0.rotateAngleX = GradientAnimation(-2.321986036853256F, -0.8651597102135892F, i/9.0F);
-    		this.Arm_r_Seg0.rotateAngleY = GradientAnimation(0.0F, -0.5918411493512771F, i/9.0F);
-    		this.Arm_r_Seg0.rotateAngleZ = GradientAnimation(0.6373942428283291F, 0.31869712141416456F, i/9.0F);
+    		this.Body_chest.rotationPointX = GradientAnimation(0.4553564018453205F, -0.136659280431156F, j);
+    	} else if (i > Anime_threshold[1]) {
+    		this.setRotateAngle(Arm_l_Seg0, GradientAnimation(-1.8668041679331349F, -2.321986036853256F, m * (i - Anime_threshold[1])), 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg0, GradientAnimation(-1.8668041679331349F, -2.321986036853256F, m * (i - Anime_threshold[1])), 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_l_Seg1, 0.0F, 0.18203784098300857F, -0.10000736613927509F);
+    		this.setRotateAngle(Arm_r_Seg1, 0.0F, -0.18203784630933073F, 0.10000736647217022F);
+    		this.setRotateAngle(Arm_l_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
+
+    		this.Body_chest.rotationPointX = GradientAnimation(0.4553564018453205F, -0.6373942428283291F, m * (i - Anime_threshold[1]));
+    	} else if (i > Anime_threshold[2]) {
+    		this.setRotateAngle(Arm_l_Seg0, GradientAnimation(-2.321986036853256F, -0.8651597102135892F, n * (i - Anime_threshold[2])), GradientAnimation(0.0F, 0.5918411493512771F, n * (i - Anime_threshold[2])), GradientAnimation(-0.6373942428283291F, -0.31869712141416456F, n * (i - Anime_threshold[2])));
+    		this.setRotateAngle(Arm_r_Seg0, GradientAnimation(-2.321986036853256F, -0.8651597102135892F, n * (i - Anime_threshold[2])), GradientAnimation(0.0F, -0.5918411493512771F, n * (i - Anime_threshold[2])), GradientAnimation(0.6373942428283291F, 0.31869712141416456F, n * (i - Anime_threshold[2])));
+    		this.setRotateAngle(Arm_l_Seg1, GradientAnimation(0.0F, -0.27314402793711257F, n * (i - Anime_threshold[2])), 0.18203784098300857F, -0.10000736613927509F);
+    		this.setRotateAngle(Arm_r_Seg1, GradientAnimation(0.0F, -0.27314402793711257F, n * (i - Anime_threshold[2])), -0.18203784630933073F, 0.10000736647217022F);
+    		this.setRotateAngle(Arm_l_Seg2, GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, n * (i - Anime_threshold[2])), 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg2, GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, n * (i - Anime_threshold[2])), 0.0F, 0.0F);
     		
-    		this.Arm_l_Seg1.rotateAngleX = GradientAnimation(0.0F, -0.27314402793711257F, i/9.0F);
-    		this.Arm_r_Seg1.rotateAngleX = GradientAnimation(0.0F, -0.27314402793711257F, i/9.0F);
+    		this.Body_chest.rotationPointX = GradientAnimation(-0.6373942428283291F, 0.5918411493512771F, n * (i - Anime_threshold[2]));
+    	} else if (i > 0.0F) {
+    		this.setRotateAngle(Arm_l_Seg0, GradientAnimation(-0.8651597102135892F, -0.12269665007704787F, o * i), GradientAnimation(0.5918411493512771F, 0.0F, o * i), GradientAnimation(-0.31869712141416456F, 0.0F, o * i));
+    		this.setRotateAngle(Arm_r_Seg0, GradientAnimation(-0.8651597102135892F, -0.12269665007704787F, o * i), GradientAnimation(-0.5918411493512771F, 0.0F, o * i), GradientAnimation(0.31869712141416456F, 0.0F, o * i));
+    		this.setRotateAngle(Arm_l_Seg1, GradientAnimation(-0.27314402793711257F, 0.0F, o * i), 0.18203784098300857F, -0.10000736613927509F);
+    		this.setRotateAngle(Arm_r_Seg1, GradientAnimation(-0.27314402793711257F, 0.0F, o * i), -0.18203784630933073F, 0.10000736647217022F);
+    		this.setRotateAngle(Arm_l_Seg2, GradientAnimation(-0.27314402793711257F, -0.5260422258984465F, o * i), 0.0F, 0.0F);
+    		this.setRotateAngle(Arm_r_Seg2, GradientAnimation(-0.27314402793711257F, -0.5260422258984465F, o * i), 0.0F, 0.0F);
     		
-    		this.Arm_l_Seg2.rotateAngleX = GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, i/9.0F);
-    		this.Arm_r_Seg2.rotateAngleX = GradientAnimation(-0.9560913642424937F, -0.27314402793711257F, i/9.0F);
-    		
-    		this.Body_chest.rotateAngleX = GradientAnimation(-0.6373942428283291F, 0.5918411493512771F, i/9.0F);
+    		this.Body_chest.rotationPointX = GradientAnimation(0.5918411493512771F, 0.4553564018453205F, o * i);    		
     	} else {
     		this.setRotateAngle(Arm_l_Seg0, -0.12269665007704787F, 0.0F, 0.0F);
     		this.setRotateAngle(Arm_r_Seg0, -0.12269665007704787F, 0.0F, 0.0F);
@@ -250,7 +267,7 @@ public class ModelUndertaker extends FishModelBase {
     		this.setRotateAngle(Arm_l_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
     		this.setRotateAngle(Arm_r_Seg2, -0.5260422258984465F, 0.0F, 0.0F);
     		
-    		this.Body_chest.rotateAngleX = 0.4553564018453205F;
+    		this.Body_chest.rotationPointX = 0.4553564018453205F;
     	}
     }
 }

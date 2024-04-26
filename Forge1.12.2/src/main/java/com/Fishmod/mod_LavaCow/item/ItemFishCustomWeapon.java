@@ -342,6 +342,8 @@ public class ItemFishCustomWeapon extends ItemSword{
                 if(!worldIn.isRemote) {
     	            worldIn.spawnEntity(entity);
             	}
+                
+                worldIn.setEntityState(entity, (byte)32);
             }
             playerIn.getHeldItem(handIn).damageItem(63, playerIn);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.Undertaker_Shovel_Cooldown * 20);
