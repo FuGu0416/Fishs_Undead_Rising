@@ -39,7 +39,7 @@ public class ModelUnburiedArmor extends ModelBiped {
         this.Neck1.setRotationPoint(0.0F, -4.0F, 0.3F);
         this.Neck1.addBox(0.0F, 0.0F, 0.0F, 0, 0, 0, 0.0F);
         this.setRotateAngle(Neck1, -1.2747884856566583F, -0.22759093446006054F, -0.18203784098300857F);
-        this.Head = new ModelRenderer(this, 0, 0);
+        this.Head = new ModelRenderer(this, 32, 0);
         this.Head.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Head.addBox(-4.0F, -3.0F, -8.0F, 8, 6, 8, 0.0F);
         
