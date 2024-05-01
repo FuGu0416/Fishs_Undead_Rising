@@ -29,7 +29,6 @@ public class ModelRaven extends ModelBase {
     public ModelRenderer beak1;
     public ModelRenderer beak2;
     public ModelRenderer feather;
-    private ModelRaven.State state = ModelRaven.State.STANDING;
 
     public ModelRaven() {
         this.textureWidth = 32;
@@ -112,18 +111,11 @@ public class ModelRaven extends ModelBase {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        float f = 0.0F;
-        this.head.rotateAngleX = headPitch * 0.017453292F;
-        this.head.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.head.rotateAngleZ = 0.0F;
-        this.head.rotationPointX = 0.0F;
-        this.body.rotationPointX = 0.0F;
-        this.tail.rotationPointX = 0.0F;
-        this.wingRight.rotationPointX = -1.5F;
-        this.wingLeft.rotationPointX = 1.5F;
+        this.setupAnim(getState((EntityRaven)entityIn), entityIn.ticksExisted, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-        if (((EntityLivingBase) entityIn).getHeldItemMainhand().isEmpty()) {      	
+    	if (((EntityLivingBase) entityIn).getHeldItemMainhand().isEmpty()) {        	
             if (((EntityRaven) entityIn).callTimer > 0) {
             	this.beak1.rotateAngleX = -0.18F;
             	this.beak1.rotationPointY = -0.7F;
@@ -134,8 +126,8 @@ public class ModelRaven extends ModelBase {
             	this.beak1.rotationPointY = -0.5F;
             	this.beak2.rotateAngleX = 0.0F;
             	this.beak2.rotationPointY = 0.5F;
-            }                    	
-        } else if (((EntityLivingBase) entityIn).getHeldItemMainhand().getItem() instanceof ItemBlock) {	        	
+            }                  	
+    	} else if (((EntityLivingBase) entityIn).getHeldItemMainhand().getItem() instanceof ItemBlock) {	        	
         	this.beak1.rotateAngleX = -0.2037433592119174F;
         	this.beak1.rotationPointY = -0.7F;
         	this.beak2.rotateAngleX = 0.08552113334772216F;
@@ -146,104 +138,128 @@ public class ModelRaven extends ModelBase {
         	this.beak2.rotateAngleX = 0.0F;
         	this.beak2.rotationPointY = 0.5F;	        	
         }
-        
-        if (this.state != ModelRaven.State.FLYING) {            
-            if (this.state == ModelRaven.State.SITTING) {
-                return;
-            }
-
-            if (this.state == ModelRaven.State.PARTY) {
-                float f1 = MathHelper.cos(ageInTicks);
-                float f2 = MathHelper.sin(ageInTicks);
-                this.head.rotationPointX = f1;
-                this.head.rotationPointY = 15.69F + f2;
-                this.head.rotateAngleX = 0.0F;
-                this.head.rotateAngleY = 0.0F;
-                this.head.rotateAngleZ = MathHelper.sin((float)entityIn.ticksExisted) * 0.4F;
-                this.body.rotationPointX = f1;
-                this.body.rotationPointY = 16.5F + f2;
-                this.wingLeft.rotationPointX = 1.5F + f1;
-                this.wingLeft.rotationPointY = 16.94F + f2;
-                this.wingRight.rotationPointX = -1.5F + f1;
-                this.wingRight.rotationPointY = 16.94F + f2;
-                this.tail.rotationPointX = f1;
-                this.tail.rotationPointY = 21.07F + f2;
-                return;
-            }
-                      
-            this.wingLeft.rotateAngleZ = -0.0873F;
-            this.wingRight.rotateAngleZ = 0.0873F;
-            this.legLeft.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.legRight.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        } else {
-	        this.head.rotationPointY = 15.69F + f;	        
-	        this.tail.rotateAngleX = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
-	        this.tail.rotationPointY = 21.07F + f;
-	        this.body.rotationPointY = 16.5F + f;
-	        this.wingLeft.rotateAngleZ = -0.0873F - ageInTicks;
-	        this.wingLeft.rotationPointY = 16.94F + f;
-	        this.wingRight.rotateAngleZ = 0.0873F + ageInTicks;
-	        this.wingRight.rotationPointY = 16.94F + f;
-	        this.legLeft.rotationPointY = 22.0F + f;
-	        this.legRight.rotationPointY = 22.0F + f;
-        }
     }
 
     /**
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
-    {
+    @Override
+    public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    	this.prepare(getState((EntityRaven)entityIn));
+    }
+    
+    private void setupAnim(ModelRaven.State p_217162_1_, int p_217162_2_, float p_217162_3_, float p_217162_4_, float p_217162_5_, float p_217162_6_, float p_217162_7_) {
+        this.head.rotateAngleX = p_217162_7_ * ((float)Math.PI / 180F);
+        this.head.rotateAngleY = p_217162_6_ * ((float)Math.PI / 180F);
+        this.head.rotateAngleZ = 0.0F;
+        this.head.rotationPointX = 0.0F;
+        this.body.rotationPointX = 0.0F;
+        this.tail.rotationPointX = 0.0F;
+        this.wingRight.rotationPointX = -1.5F;
+        this.wingLeft.rotationPointX = 1.5F;
+        switch(p_217162_1_) {
+        case SITTING:
+        	break;
+        case PARTY:
+        	float f = MathHelper.cos((float)p_217162_2_);
+           	float f1 = MathHelper.sin((float)p_217162_2_);
+           	this.head.rotationPointX = f;
+           	this.head.rotationPointY = 15.69F + f1;
+           	this.head.rotateAngleX = 0.0F;
+           	this.head.rotateAngleY = 0.0F;
+           	this.head.rotateAngleZ = MathHelper.sin((float)p_217162_2_) * 0.4F;
+           	this.body.rotationPointX = f;
+           	this.body.rotationPointY = 16.5F + f1;
+           	this.wingLeft.rotateAngleZ = -0.0873F - p_217162_5_;
+           	this.wingLeft.rotationPointX = 1.5F + f;
+           	this.wingLeft.rotationPointY = 16.94F + f1;
+           	this.wingRight.rotateAngleZ = 0.0873F + p_217162_5_;
+           	this.wingRight.rotationPointX = -1.5F + f;
+           	this.wingRight.rotationPointY = 16.94F + f1;
+           	this.tail.rotationPointX = f;
+           	this.tail.rotationPointY = 21.07F + f1;
+           	break;
+        case STANDING:
+        	this.legLeft.rotateAngleX += MathHelper.cos(p_217162_3_ * 0.6662F) * 1.4F * p_217162_4_;
+           	this.legRight.rotateAngleX += MathHelper.cos(p_217162_3_ * 0.6662F + (float)Math.PI) * 1.4F * p_217162_4_;
+           	this.head.rotationPointY = 15.69F;
+           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
+           	this.tail.rotationPointY = 21.07F;
+           	this.body.rotationPointY = 16.5F;
+           	this.wingLeft.rotateAngleZ = -0.0873F;
+           	this.wingLeft.rotationPointY = 16.94F;
+           	this.wingRight.rotateAngleZ = 0.0873F;
+           	this.wingRight.rotationPointY = 16.94F;
+           	this.legLeft.rotationPointY = 22.0F;
+           	this.legRight.rotationPointY = 22.0F;
+           	break;
+        case FLYING:
+        default:
+           	this.head.rotationPointY = 15.69F;
+           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
+           	this.tail.rotationPointY = 21.07F;
+           	this.body.rotationPointY = 16.5F;
+           	this.wingLeft.rotateAngleZ = -0.0873F - p_217162_5_;
+           	this.wingLeft.rotationPointY = 16.94F;
+           	this.wingRight.rotateAngleZ = 0.0873F + p_217162_5_;
+           	this.wingRight.rotationPointY = 16.94F;
+           	this.legLeft.rotationPointY = 22.0F;
+           	this.legRight.rotationPointY = 22.0F;
+        }
+	}
+    
+	private void prepare(ModelRaven.State p_217160_1_) {
         this.feather.rotateAngleX = -0.2214F;
         this.body.rotateAngleX = 0.4937F;
-        this.wingLeft.rotateAngleX = -((float)Math.PI * 2F / 9F);
+        this.wingLeft.rotateAngleX = -0.6981F;
         this.wingLeft.rotateAngleY = -(float)Math.PI;
-        this.wingRight.rotateAngleX = -((float)Math.PI * 2F / 9F);
+        this.wingRight.rotateAngleX = -0.6981F;
         this.wingRight.rotateAngleY = -(float)Math.PI;
         this.legLeft.rotateAngleX = -0.0299F;
         this.legRight.rotateAngleX = -0.0299F;
         this.legLeft.rotationPointY = 22.0F;
         this.legRight.rotationPointY = 22.0F;
-
-        if (entitylivingbaseIn instanceof EntityRaven) {
-            EntityRaven entityparrot = (EntityRaven)entitylivingbaseIn;
-
-            if (entityparrot.isPartying()) {
-                this.wingRight.rotateAngleZ = 0.0873F;
-            	this.legLeft.rotateAngleZ = -0.34906584F;
-                this.legRight.rotateAngleZ = 0.34906584F;
-                this.state = ModelRaven.State.PARTY;
-                return;
-            }
-
-            if (entityparrot.isFlying()) {
-                this.legLeft.rotateAngleX += ((float)Math.PI * 2F / 9F);
-                this.legRight.rotateAngleX += ((float)Math.PI * 2F / 9F);
-                this.state = ModelRaven.State.FLYING;
-            } else if (entityparrot.isSitting()) {
-                //float f = 1.9F;
-                this.head.rotationPointY = 17.59F;
-                this.tail.rotateAngleX = 1.5388988F;
-                this.tail.rotationPointY = 22.97F;
-                this.body.rotationPointY = 18.4F;
-                this.wingLeft.rotateAngleZ = -0.0873F;
-                this.wingLeft.rotationPointY = 18.84F;
-                this.wingRight.rotateAngleZ = 0.0873F;
-                this.wingRight.rotationPointY = 18.84F;
-                ++this.legLeft.rotationPointY;
-                ++this.legRight.rotationPointY;
-                ++this.legLeft.rotateAngleX;
-                ++this.legRight.rotateAngleX;
-                this.state = ModelRaven.State.SITTING;
-            } else {
-                this.state = ModelRaven.State.STANDING;
-            }
-
-            this.legLeft.rotateAngleZ = 0.0F;
-            this.legRight.rotateAngleZ = 0.0F;
+        this.legLeft.rotateAngleZ = 0.0F;
+        this.legRight.rotateAngleZ = 0.0F;
+        
+        switch(p_217160_1_) {
+        case SITTING:
+            this.head.rotationPointY = 17.59F;
+            this.tail.rotateAngleX = 1.5388988F;
+            this.tail.rotationPointY = 22.97F;
+            this.body.rotationPointY = 18.4F;
+            this.wingLeft.rotateAngleZ = -0.0873F;
+            this.wingLeft.rotationPointY = 18.84F;
+            this.wingRight.rotateAngleZ = 0.0873F;
+            this.wingRight.rotationPointY = 18.84F;
+            ++this.legLeft.rotationPointY;
+            ++this.legRight.rotationPointY;
+            ++this.legLeft.rotateAngleX;
+            ++this.legRight.rotateAngleX;
+           	break;
+        case PARTY:
+        	this.legLeft.rotateAngleZ = -0.34906584F;
+           	this.legRight.rotateAngleZ = 0.34906584F;
+        case STANDING:
+        default:
+        	break;
+    	case FLYING:
+        	this.legLeft.rotateAngleX += 0.6981317F;
+        	this.legRight.rotateAngleX += 0.6981317F;
         }
-    }
+
+	}
+    
+	private static ModelRaven.State getState(EntityRaven p_217158_0_) {
+		if (p_217158_0_.isPartying()) {
+			return ModelRaven.State.PARTY;
+    	} else if (p_217158_0_.isSitting()) {
+    		return ModelRaven.State.SITTING;
+        } else {
+        	return p_217158_0_.isFlying() ? ModelRaven.State.FLYING : ModelRaven.State.STANDING;
+        }
+	}
 
     @SideOnly(Side.CLIENT)
     static enum State
