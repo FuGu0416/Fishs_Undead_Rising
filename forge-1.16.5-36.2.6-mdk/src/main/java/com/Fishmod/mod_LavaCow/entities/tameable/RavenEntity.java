@@ -16,8 +16,10 @@ import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import com.google.common.collect.Sets;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -35,6 +37,7 @@ import net.minecraft.entity.ai.goal.FollowMobGoal;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
@@ -73,6 +76,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -90,6 +94,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     private BlockPos jukebox;
     private int ridingCooldown;
     public int callTimer;
+    private int moreCropTicks;
     
     private float TargetLocationX = -1.0F;
     private float TargetLocationY = -1.0F;
@@ -113,6 +118,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(5, new RavenEntity.RaidFarmGoal(this));
         this.goalSelector.addGoal(8, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
         this.applyEntityAI();
     }
@@ -177,9 +183,25 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     	this.TargetLocationZ = Z;
     }
     
+    private boolean wantsMoreFood() {
+        return this.moreCropTicks == 0;
+	}
+    
     @Override
     public void rideTick() {
     	super.rideTick();
+    }
+    
+    @Override
+    public void customServerAiStep() {
+    	super.customServerAiStep();
+    	
+        if (this.moreCropTicks > 0) {
+           this.moreCropTicks -= this.random.nextInt(3);
+           if (this.moreCropTicks < 0) {
+              this.moreCropTicks = 0;
+           }
+        }
     }
 
     /**
@@ -603,6 +625,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
+        this.moreCropTicks = compound.getInt("MoreCarrotTicks");
     }
 
     /**
@@ -612,6 +635,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public void addAdditionalSaveData(CompoundNBT compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
+        compound.putInt("MoreCropTicks", this.moreCropTicks);
     }
     
     public class AIMovetoTargetLocation extends Goal {
@@ -712,4 +736,79 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 
 		super.die(cause);
 	}
+    
+    static class RaidFarmGoal extends MoveToBlockGoal {
+        private final RavenEntity entity;
+        private boolean wantsToRaid;
+        private boolean canRaid;
+
+        public RaidFarmGoal(RavenEntity p_i45860_1_) {
+           super(p_i45860_1_, (double)0.7F, 16);
+           this.entity = p_i45860_1_;
+        }
+
+        public boolean canUse() {
+           if (this.nextStartTick <= 0) {
+              if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level, this.entity)) {
+                 return false;
+              }
+
+              this.canRaid = false;
+              this.wantsToRaid = this.entity.wantsMoreFood();
+              this.wantsToRaid = true;
+           }
+           
+           if (this.entity.isTame()) {
+        	   return false;
+           }
+
+           return super.canUse();
+        }
+
+        public boolean canContinueToUse() {
+           return this.canRaid && super.canContinueToUse();
+        }
+
+        public void tick() {
+           super.tick();
+           this.entity.getLookControl().setLookAt((double)this.blockPos.getX() + 0.5D, (double)(this.blockPos.getY() + 1), (double)this.blockPos.getZ() + 0.5D, 10.0F, (float)this.entity.getMaxHeadXRot());
+           if (this.isReachedTarget()) {
+              World world = this.entity.level;
+              BlockPos blockpos = this.blockPos.above();
+              BlockState blockstate = world.getBlockState(blockpos);
+              Block block = blockstate.getBlock();
+              if (this.canRaid && block.equals(Blocks.WHEAT)) {
+                 Integer integer = blockstate.getValue(CropsBlock.AGE);
+                 if (integer == 0) {
+                    world.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 2);
+                    world.destroyBlock(blockpos, true, this.entity);
+                 } else {
+                    world.setBlock(blockpos, blockstate.setValue(CropsBlock.AGE, Integer.valueOf(integer - 1)), 2);
+                    world.levelEvent(2001, blockpos, Block.getId(blockstate));
+                 }
+
+                 this.entity.moreCropTicks = 40;
+              }
+
+              this.canRaid = false;
+              this.nextStartTick = 10;
+           }
+
+        }
+
+        protected boolean isValidTarget(IWorldReader p_179488_1_, BlockPos p_179488_2_) {
+           Block block = p_179488_1_.getBlockState(p_179488_2_).getBlock();
+           if (block == Blocks.FARMLAND && this.wantsToRaid && !this.canRaid) {
+              p_179488_2_ = p_179488_2_.above();
+              BlockState blockstate = p_179488_1_.getBlockState(p_179488_2_);
+              block = blockstate.getBlock();
+              if (block.equals(Blocks.WHEAT) && ((CropsBlock)block).isMaxAge(blockstate)) {
+                 this.canRaid = true;
+                 return true;
+              }
+           }
+
+           return false;
+        }
+     }
 }

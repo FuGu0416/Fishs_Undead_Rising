@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockNamedItem;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -108,7 +109,7 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
             	this.beak2.xRot = 0.0F;
             	this.beak2.y = 0.5F;
             }                    	
-    	} else if (entityIn.getMainHandItem().getItem() instanceof BlockItem) {	        	
+    	} else if (entityIn.getMainHandItem().getItem() instanceof BlockItem && !(entityIn.getMainHandItem().getItem() instanceof BlockNamedItem)) {	        	
         	this.beak1.xRot = -0.2037433592119174F;
         	this.beak1.y = -0.7F;
         	this.beak2.xRot = 0.08552113334772216F;

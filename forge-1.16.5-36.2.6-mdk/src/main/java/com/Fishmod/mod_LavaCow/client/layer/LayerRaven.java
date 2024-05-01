@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -48,7 +49,7 @@ public class LayerRaven<T extends RavenEntity, M extends RavenModel<T>> extends 
         matrixStackIn.scale(0.5F, 0.5F, 0.5F);
         matrixStackIn.translate(0.0F, -0.1F, -0.5F);
         
-        if (itemstack.getItem().equals(Items.BONE)) {
+        if (itemstack.getItem().equals(Items.BONE)) {       	
         	matrixStackIn.translate(-0.25F, 0.5F, 1.0F);    
         	matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
         }
@@ -59,10 +60,14 @@ public class LayerRaven<T extends RavenEntity, M extends RavenModel<T>> extends 
         	matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
         }
         
-        if (itemstack.getItem() instanceof BlockItem) {
+        if (itemstack.getItem() instanceof BlockItem && !(itemstack.getItem() instanceof BlockNamedItem)) {
         	matrixStackIn.translate(0.0F, 0.75F, 0.5F);    
         	matrixStackIn.scale(0.5F, 0.5F, 0.5F);
         	matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+        }
+        
+        if (itemstack.getItem().equals(Items.WHEAT_SEEDS)) {
+        	
         }
         
         Minecraft.getInstance().getItemInHandRenderer().renderItem(entityIn, itemstack, ItemCameraTransforms.TransformType.HEAD, true, matrixStackIn, bufferIn, p_225628_3_);

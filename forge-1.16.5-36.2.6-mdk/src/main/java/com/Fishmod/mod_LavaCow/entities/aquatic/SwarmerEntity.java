@@ -101,7 +101,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     
     @Override
     protected boolean shouldDespawnInPeaceful() {
-        return true;
+        return !this.getIsAmmo();
 	}
     
     @Override
@@ -196,7 +196,7 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
     	         return false;
     	      } else {
     	         double d0 = this.leaper.distanceToSqr(this.leapTarget);
-    	         if (!(d0 < 4.0D) && !(d0 > 24.0D) && this.leaper.isInWaterOrBubble() && this.leapTarget.getY() >= this.leaper.getY()) {
+    	         if (!(d0 < 4.0D) && !(d0 > 24.0D) && this.leapTarget.getY() >= this.leaper.getY()) {
     	               return true;
     	         } else {
     	            return false;
