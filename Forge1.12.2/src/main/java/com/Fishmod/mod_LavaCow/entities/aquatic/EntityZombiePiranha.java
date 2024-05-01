@@ -145,7 +145,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
     	         return false;
     	      } else {
     	         double d0 = this.leaper.getDistanceSq(this.leapTarget);
-    	         if (!(d0 < 4.0D) && !(d0 > 24.0D) && this.leaper.isInWater()) {
+    	         if (!(d0 < 4.0D) && !(d0 > 24.0D)) {
     	               return true;
     	         } else {
     	            return false;
