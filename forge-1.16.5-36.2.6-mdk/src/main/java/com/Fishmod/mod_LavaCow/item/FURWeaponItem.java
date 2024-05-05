@@ -89,17 +89,7 @@ public class FURWeaponItem extends SwordItem {
     }
 	
 	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted() && (!stack.hasTag() || (stack.hasTag() && !stack.getTag().contains("onCraftEnchantments")))) {
-			if (stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
-				stack.enchant(Enchantments.FIRE_ASPECT, 2);
-				stack.getOrCreateTagElement("onCraftEnchantments");
-			} else if (FURConfig.Enchantment_Enable.get() && stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
-				stack.enchant(FUREnchantmentRegistry.POISONOUS, 2);
-				stack.getOrCreateTagElement("onCraftEnchantments");
-			}
-		}
-				
+	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {				
 		if (entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && worldIn.random.nextInt(50) < 2)
 			stack.setDamageValue(java.lang.Math.max(stack.getDamageValue() - 1, 0));
 	}
@@ -190,12 +180,15 @@ public class FURWeaponItem extends SwordItem {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
 		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
+		} else if (stack.getItem() == FURItemRegistry.MOLTENHAMMER || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
+			int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);			
+			target.setSecondsOnFire((i + 2) * 4);
+		} else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
+			int i = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, stack);			
+			target.addEffect(new EffectInstance(Effects.POISON, 8 * 20, i + 1));
 		}
-		
-		stack.hurtAndBreak(1, attacker, (p_220045_0_) -> {
-			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-		});
-        return true;
+				
+        return super.hurtEnemy(stack, target, attacker);
     }
 	
 	public static void LavaBurst(World worldIn, double x, double y, double z, double radius, BasicParticleType particleIn) {		

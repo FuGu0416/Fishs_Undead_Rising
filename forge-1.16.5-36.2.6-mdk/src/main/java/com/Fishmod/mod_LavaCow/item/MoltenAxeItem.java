@@ -10,8 +10,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -41,14 +41,6 @@ public class MoltenAxeItem extends AxeItem {
 		this.particles = particlesIn;
 		this.setRegistryName(registryName);
 	}
-
-	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!stack.isEnchanted() && !stack.getTag().contains("onCraftEnchantments")) {
-			stack.enchant(Enchantments.FIRE_ASPECT, 2);
-			stack.getOrCreateTagElement("onCraftEnchantments");
-		}
-	}
 		
 	/**
 	    * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
@@ -67,6 +59,18 @@ public class MoltenAxeItem extends AxeItem {
 		}
 				
 		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+	}
+	
+    /**
+     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+     * the damage on the stack.
+     */
+	@Override
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);			
+		target.setSecondsOnFire((i + 2) * 4);
+		
+		return super.hurtEnemy(stack, target, attacker);
 	}
 	
 	@Override

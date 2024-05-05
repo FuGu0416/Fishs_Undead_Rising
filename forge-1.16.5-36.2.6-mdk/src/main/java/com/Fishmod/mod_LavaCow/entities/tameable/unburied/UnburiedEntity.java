@@ -199,12 +199,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
             --this.spellTicks;
         }
         
-        if (this.level.isClientSide) {
-        	System.out.println("OAOC " + this.spellTicks);
-        } else {
-        	System.out.println("OAOS " + this.spellTicks);
-        }
-        
         if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
             if (FURConfig.Show_Expire_Death_Messege.get() && !this.level.isClientSide() && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof PlayerEntity) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this), uuid);

@@ -117,7 +117,7 @@ public class FURItemRegistry {
 	public static final Item POISONSTINGER = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:poisonstinger");
 	public static final Item VESPA_CARAPACE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:vespa_carapace");
 	public static final Item TOOTH_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:tooth_dagger", ItemTier.STONE, 1, -2.0F, FURItemRegistry.SHARPTOOTH).setNoDescription();
-	public static final Item VESPA_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:vespa_dagger", ItemTier.IRON, 2, -2.4F, FURItemRegistry.POISONSTINGER).setNoDescription();
+	public static final Item VESPA_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:vespa_dagger", ItemTier.IRON, 2, -2.4F, FURItemRegistry.POISONSTINGER);
 	public static final Item SAUSAGE_ROLL = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:sausage_roll");
 	public static final Item SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:swinearmor_helmet");
 	public static final Item SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties()).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:swinearmor_chestplate");

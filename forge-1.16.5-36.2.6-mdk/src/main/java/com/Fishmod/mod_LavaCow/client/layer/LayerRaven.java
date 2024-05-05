@@ -66,10 +66,6 @@ public class LayerRaven<T extends RavenEntity, M extends RavenModel<T>> extends 
         	matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
         }
         
-        if (itemstack.getItem().equals(Items.WHEAT_SEEDS)) {
-        	
-        }
-        
         Minecraft.getInstance().getItemInHandRenderer().renderItem(entityIn, itemstack, ItemCameraTransforms.TransformType.HEAD, true, matrixStackIn, bufferIn, p_225628_3_);
         matrixStackIn.popPose();
     }
