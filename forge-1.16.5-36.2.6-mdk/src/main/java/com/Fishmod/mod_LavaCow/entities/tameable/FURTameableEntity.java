@@ -89,7 +89,7 @@ public class FURTameableEntity extends TameableEntity {
 	
 	@Override
     protected boolean shouldDespawnInPeaceful() {
-	    return !this.isTame();
+	    return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
     }   
 	
 	@Override

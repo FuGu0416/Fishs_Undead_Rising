@@ -405,7 +405,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
          * Execute a one shot task or start executing a continuous task
          */
         public void start() {           
-            for(int i = 0; i < 3; ++i) {
+            for (int i = 0; i < 3; ++i) {
             	Vector3d vector3d = this.findPos();
             	
             	if (vector3d != null) {

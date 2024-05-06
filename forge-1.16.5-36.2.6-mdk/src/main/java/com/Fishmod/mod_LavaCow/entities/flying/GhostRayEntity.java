@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
@@ -29,8 +31,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
@@ -64,6 +68,13 @@ public class GhostRayEntity extends FlyingMobEntity {
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
     	this.getEntityData().define(SIZE_VARIANT, Integer.valueOf(this.getRandom().nextInt(GhostRayEntity.SIZE.length)));
     }	
+    
+    public static boolean checkGhostRaySpawnRules(EntityType<? extends GhostRayEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
+    	BlockPos ground = p_223316_1_.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, p_223316_3_);
+    	boolean flag = (p_223316_1_ == World.END) ? (ground.getY() == 0) : p_223316_4_.nextInt(10) == 0;
+    	
+    	return flag && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    }
     
     /**
      * Will return how many at most can spawn in a chunk at once.
