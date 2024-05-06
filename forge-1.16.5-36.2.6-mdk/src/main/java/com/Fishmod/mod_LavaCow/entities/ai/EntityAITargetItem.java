@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.ai;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -10,9 +11,11 @@ import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class EntityAITargetItem<T extends ItemEntity> extends TargetGoal {
@@ -39,16 +42,18 @@ public class EntityAITargetItem<T extends ItemEntity> extends TargetGoal {
         this.targetEntitySelector = new Predicate<ItemEntity>() {
             @Override
         	public boolean apply(@Nullable ItemEntity item) {
-            	return item instanceof ItemEntity && !item.getItem().isEmpty();
+            	ItemStack stack = item.getItem();
+            	return item instanceof ItemEntity && !stack.isEmpty() && creature.canTakeItem(stack);
             }
         };
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean canUse() {
-        if ((this.mob instanceof TameableEntity && ((TameableEntity) this.mob).isInSittingPose()) || (!this.mob.getMainHandItem().isEmpty() && this.targetChance > 0 && this.mob.getRandom().nextInt(this.targetChance) != 0)) {
+        if ((this.mob.isPassenger() || (mob.isVehicle() && mob.getControllingPassenger() != null)) && (this.mob instanceof TameableEntity && ((TameableEntity) this.mob).isInSittingPose()) || (!this.mob.getMainHandItem().isEmpty() && this.targetChance > 0 && this.mob.getRandom().nextInt(this.targetChance) != 0)) {
             return false;
         } else {
         	List<ItemEntity> list = this.mob.level.getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(this.getFollowDistance()), this.targetEntitySelector);
@@ -79,13 +84,21 @@ public class EntityAITargetItem<T extends ItemEntity> extends TargetGoal {
 	public void tick() {
 		super.tick();
 		
-		if(!this.mob.getMainHandItem().isEmpty())
-			this.stop();
+		if (this.targetEntity == null || (this.targetEntity != null && !this.targetEntity.isAlive()) || !this.mob.getMainHandItem().isEmpty()) {
+            this.stop();
+            this.mob.getNavigation().stop();
+        } else {
+        	this.mob.getNavigation().moveTo(this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1);
+        }
+		
+        if (targetEntity != null && this.mob.canSee(targetEntity) && this.mob.isOnGround()) {
+            this.mob.getMoveControl().setWantedPosition(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), 1);
+        }       
 	}
 
 	@Override
 	public boolean canContinueToUse() {
-		return !this.mob.getNavigation().isDone();
+		return this.targetEntity != null && this.targetEntity.isAlive() && !this.mob.getNavigation().isDone();
 	}    
     
     public static class Sorter implements Comparator<Entity> {
@@ -99,11 +112,7 @@ public class EntityAITargetItem<T extends ItemEntity> extends TargetGoal {
     		double d0 = this.entity.distanceToSqr(p_compare_1_);
     		double d1 = this.entity.distanceToSqr(p_compare_2_);
 
-    		if (d0 < d1) {
-    			return -1;
-    		} else {
-    			return d0 > d1 ? 1 : 0;
-    		}
+    		return Double.compare(d0, d1);
     	}
 	}
 }
