@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
@@ -17,9 +18,10 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class SapJetEntity extends AbstractFireballEntity {	
@@ -55,7 +57,7 @@ public class SapJetEntity extends AbstractFireballEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult result) {
     	super.onHitEntity(result);
-    	if (!this.level.isClientSide() && this.getOwner() != null && result.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity && result.getEntity() != this.getOwner()) {   		
+    	if (this.level instanceof ServerWorld && this.getOwner() != null && result.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity && result.getEntity() != this.getOwner()) {   		
     		this.setDamage( (float) ((LivingEntity) this.getOwner()).getAttributeValue(Attributes.ATTACK_DAMAGE));
     		
     		if (result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()).setProjectile(), this.getDamage())) {
@@ -63,22 +65,19 @@ public class SapJetEntity extends AbstractFireballEntity {
         		((LivingEntity)result.getEntity()).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 4 * 20 * (int)local_difficulty, 4));         		
 	            this.doEnchantDamageEffects((LivingEntity)this.getOwner(), result.getEntity());
     		}        	
-    		
-			Vector3d pos = result.getLocation();
 			
-            ScarabEntity entity = FUREntityRegistry.SCARAB.create(this.level);
-            entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-            entity.setHealth(entity.getMaxHealth());
-            entity.moveTo(pos.x, pos.y, pos.z, 0.0F, 0.0F);                             
-            entity.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
+            ScarabEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARAB, ((ServerWorld) this.level), new BlockPos(result.getLocation()));
             
-            this.level.addFreshEntity(entity);
- 
-        	entity.setOwnerUUID(this.getOwner().getUUID());
-        	
-        	if (this.getOwner() instanceof MobEntity && ((MobEntity) this.getOwner()).getTarget() != null) {
-        		entity.setTarget(((MobEntity) this.getOwner()).getTarget());
-        	} 
+            if (entity != null) {
+	            entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
+	            entity.setHealth(entity.getMaxHealth());                            
+	            entity.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);           
+	        	entity.setOwnerUUID(this.getOwner().getUUID());
+	        	
+	        	if (this.getOwner() instanceof MobEntity && ((MobEntity) this.getOwner()).getTarget() != null) {
+	        		entity.setTarget(((MobEntity) this.getOwner()).getTarget());
+	        	} 
+            }
 
     		this.remove();
     	}

@@ -229,7 +229,7 @@ public class FURTameableEntity extends TameableEntity {
         	this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor(), this.getMaxHealth());
         	this.addTag("FUR_noLoot");
         }
-    }   
+    }      
     
     public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
         if (this.isInvulnerableTo(p_70097_1_)) {

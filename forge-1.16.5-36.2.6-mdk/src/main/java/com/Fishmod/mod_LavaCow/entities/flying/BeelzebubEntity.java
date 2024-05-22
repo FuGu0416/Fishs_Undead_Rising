@@ -346,28 +346,26 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         compound.putInt("PheromoneTick", this.pheromoneTick);
     }
 	
-    public void castSpell() {
-        for (int i = 0; i < FURConfig.Beelzebub_Ability_Num.get(); ++i) {
-            BlockPos blockpos = this.blockPosition().offset(-2 + this.getRandom().nextInt(5), 1, -2 + this.getRandom().nextInt(5));
-            ParasiteEntity entity = FUREntityRegistry.PARASITE.create(this.level);
-            entity.moveTo(blockpos, 0.0F, 0.0F);
-            entity.setSkin(3);
-            entity.setSummoned(true);
-            
-            if(!this.level.isClientSide())
-            	this.level.addFreshEntity(entity);
-            
-            entity.setTarget(this.getTarget()); 
-            
-            if (this.level instanceof ServerWorld) {
-                for (int j = 0; j < 4; ++j) {
-                	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
-                	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-                	((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-                	
-                }
-            }
+    public void castSpell(int quantity) {
+        for (int i = 0; i < quantity; ++i) {
+        	if (this.level instanceof ServerWorld) {
+	            BlockPos blockpos = this.blockPosition().offset(-2 + this.getRandom().nextInt(5), 1, -2 + this.getRandom().nextInt(5));
+	            ParasiteEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE, ((ServerWorld) this.level), blockpos);
+	
+	            if (entity != null) {
+		            entity.setSkin(3);
+		            entity.setSummoned(true);                    
+		            entity.setTarget(this.getTarget()); 
+	            
+	                for (int j = 0; j < 4; ++j) {
+	                	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+	                	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
+	                	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+	                	((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+	                	
+	                }
+	            }
+	        }
         }
     }
 	
@@ -417,7 +415,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
-            	BeelzebubEntity.this.castSpell();
+            	BeelzebubEntity.this.castSpell(FURConfig.Beelzebub_Ability_Num.get());
                 BeelzebubEntity.this.playSound(BeelzebubEntity.this.getSpellSound(), 0.175F, 1.0F);
             }
         }
@@ -446,25 +444,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     public void die(DamageSource cause) {
        super.die(cause);
        if (!this.isTame()) {
-	       for (int i = 0; i < 1 + this.getRandom().nextInt(1); ++i) {
-	           BlockPos blockpos = this.blockPosition().offset(-2 + this.getRandom().nextInt(5), 1, -2 + this.getRandom().nextInt(5));
-	           ParasiteEntity entity = FUREntityRegistry.PARASITE.create(this.level);
-	           entity.moveTo(blockpos, 0.0F, 0.0F);
-	           entity.setSkin(3);
-	           
-	           if(!this.level.isClientSide())
-	        	   this.level.addFreshEntity(entity);
-	                     
-	           if (this.level instanceof ServerWorld) {
-	               for (int j = 0; j < 4; ++j) {
-	               	double d0 = entity.getX() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-	               	double d1 = entity.getY() + (double)(this.getRandom().nextFloat() * entity.getBbHeight());
-	               	double d2 = entity.getZ() + (double)(this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-	               	((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-	               	
-	               }
-	           }
-	       }
+    	   this.castSpell(1 + this.getRandom().nextInt(1));
        }
     }
 	

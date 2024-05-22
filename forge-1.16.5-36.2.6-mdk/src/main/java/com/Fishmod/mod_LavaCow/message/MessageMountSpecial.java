@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.EnigmothEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
@@ -78,7 +79,7 @@ public class MessageMountSpecial {
 				entity.level.broadcastEntityEvent(entity, (byte)4);					
 			} else if (entity instanceof BeelzebubEntity) {
 				((BeelzebubEntity) entity).abilityCooldown = ((BeelzebubEntity) entity).abilityCooldown();
-				((BeelzebubEntity) entity).castSpell();
+				((BeelzebubEntity) entity).castSpell(FURConfig.Beelzebub_Ability_Num.get());
 				entity.playSound(((BeelzebubEntity) entity).getSpellSound(), 0.175F, 1.0F);
 				entity.level.broadcastEntityEvent(entity, (byte)10);					
 			} else if (entity instanceof EnigmothEntity) {

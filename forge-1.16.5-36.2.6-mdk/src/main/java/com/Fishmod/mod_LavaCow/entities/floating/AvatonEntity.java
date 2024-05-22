@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.entities.floating;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.WetaEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURParticleRegistry;
@@ -158,24 +159,23 @@ public class AvatonEntity extends FloatingMobEntity {
 
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Avaton_Ability_Num.get(); ++i) {
-                BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(5), 1, -2 + AvatonEntity.this.getRandom().nextInt(5));
-                WetaEntity entityvex = FUREntityRegistry.WETA.create(AvatonEntity.this.level);
-                entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                entityvex.setOwnerUUID(AvatonEntity.this.getUUID());                             
-
-                if(!AvatonEntity.this.level.isClientSide())
-                	AvatonEntity.this.level.addFreshEntity(entityvex);
-                
-                if(AvatonEntity.this.getTarget() != null)
-                	entityvex.setTarget(AvatonEntity.this.getTarget());  
-                
-                if (AvatonEntity.this.level instanceof ServerWorld) {
-	                for (int j = 0; j < 4; ++j) {
-	                	double d0 = entityvex.getX() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
-	                	double d1 = entityvex.getY() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbHeight());
-	                	double d2 = entityvex.getZ() + (double)(AvatonEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
-	                	((ServerWorld) AvatonEntity.this.level).sendParticles(FURParticleRegistry.LOCUST_SWARM, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-	                	
+            	if (AvatonEntity.this.level instanceof ServerWorld) {
+	                BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(5), 1, -2 + AvatonEntity.this.getRandom().nextInt(5));
+	                WetaEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.WETA, ((ServerWorld) AvatonEntity.this.level), blockpos);
+	                
+	                if (entity != null) {
+		                entity.setOwnerUUID(AvatonEntity.this.getUUID());                             
+		                
+		                if(AvatonEntity.this.getTarget() != null)
+		                	entity.setTarget(AvatonEntity.this.getTarget());  
+	                
+		                for (int j = 0; j < 4; ++j) {
+		                	double d0 = entity.getX() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	double d1 = entity.getY() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbHeight());
+		                	double d2 = entity.getZ() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	((ServerWorld) AvatonEntity.this.level).sendParticles(FURParticleRegistry.LOCUST_SWARM, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+		                	
+		                }
 	                }
                 }
             }

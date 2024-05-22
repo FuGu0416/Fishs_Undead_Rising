@@ -194,25 +194,21 @@ public class SeaHagEntity extends FloatingMobEntity {
        
         protected void castSpell() {
             for (int i = 0; i < FURConfig.SeaHag_Ability_Num.get(); ++i) {
-                BlockPos blockpos = SeaHagEntity.this.blockPosition().offset(-2 + SeaHagEntity.this.getRandom().nextInt(3), 1, -2 + SeaHagEntity.this.getRandom().nextInt(3));
-                PufferfishEntity entityvex = EntityType.PUFFERFISH.create(SeaHagEntity.this.level);               
-                entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                entityvex.setAirSupply(80);
-                entityvex.addTag("FUR_noLoot");
-                
-                if(!SeaHagEntity.this.level.isClientSide())
-                	SeaHagEntity.this.level.addFreshEntity(entityvex);
-                
-                if(SeaHagEntity.this.getTarget() != null)
-                	entityvex.setTarget(SeaHagEntity.this.getTarget());     
-                
-                if (SeaHagEntity.this.level instanceof ServerWorld) {
-	                for (int j = 0; j < 4; ++j) {
-	                	double d0 = entityvex.getX() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
-	                	double d1 = entityvex.getY() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbHeight());
-	                	double d2 = entityvex.getZ() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entityvex.getBbWidth() * 2.0F) - (double)entityvex.getBbWidth();
-	                	((ServerWorld) SeaHagEntity.this.level).sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-	                	
+            	if (SeaHagEntity.this.level instanceof ServerWorld) {
+	                BlockPos blockpos = SeaHagEntity.this.blockPosition().offset(-2 + SeaHagEntity.this.getRandom().nextInt(3), 1, -2 + SeaHagEntity.this.getRandom().nextInt(3));
+	                PufferfishEntity entity = SpawnUtil.trySpawnEntity(EntityType.PUFFERFISH, ((ServerWorld) SeaHagEntity.this.level), blockpos);
+	          
+	                if (entity != null) {
+	                	entity.setAirSupply(80);
+	                	entity.addTag("FUR_noLoot");	
+	
+		                for (int j = 0; j < 4; ++j) {
+		                	double d0 = entity.getX() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	double d1 = entity.getY() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbHeight());
+		                	double d2 = entity.getZ() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	((ServerWorld) SeaHagEntity.this.level).sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+		                	
+		                }
 	                }
                 }
             }

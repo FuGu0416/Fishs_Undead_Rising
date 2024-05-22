@@ -3,17 +3,25 @@ package com.Fishmod.mod_LavaCow.core;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -125,5 +133,45 @@ public class SpawnUtil {
     
 	public static RegistryKey<Biome> getRegistryKey(Biome BiomeIn) {
 		return RegistryKey.create(Registry.BIOME_REGISTRY, BiomeIn.getRegistryName());
+	}
+	
+    @Nullable
+    public static <T extends CreatureEntity> T trySpawnEntity(EntityType<T> entityIn, ServerWorld worldIn, BlockPos blockpos) {
+    	for(int i = 0; i < 10; ++i) {
+    		double d0 = (i == 0) ? 0.0D : (double)(worldIn.random.nextInt(4) - 2);
+    		double d1 = (i == 0) ? 0.0D : (double)(worldIn.random.nextInt(4) - 2);
+    		BlockPos blockpos1 = findSpawnPositionInColumn(worldIn, blockpos, d0, d1);
+    		if (blockpos1 != null) {
+    			T summonedEntity = entityIn.create(worldIn, (CompoundNBT)null, (ITextComponent)null, (PlayerEntity)null, blockpos1, SpawnReason.MOB_SUMMONED, false, false);
+    			if (summonedEntity != null) {
+    				if (summonedEntity.checkSpawnRules(worldIn, SpawnReason.MOB_SUMMONED) && summonedEntity.checkSpawnObstruction(worldIn)) {
+    					worldIn.addFreshEntityWithPassengers(summonedEntity);
+    					return summonedEntity;
+    				}
+
+    				summonedEntity.remove();
+    			}
+    		}
+    	}
+    	
+    	return null;
+	}
+
+	@Nullable
+	private static BlockPos findSpawnPositionInColumn(ServerWorld worldIn, BlockPos p_241433_1_, double p_241433_2_, double p_241433_4_) {
+		BlockPos blockpos = p_241433_1_.offset(p_241433_2_, 6.0D, p_241433_4_);
+		BlockState blockstate = worldIn.getBlockState(blockpos);
+
+		for (int j = 6; j >= -6; --j) {
+			BlockPos blockpos1 = blockpos;
+			BlockState blockstate1 = blockstate;
+			blockpos = blockpos.below();
+			blockstate = worldIn.getBlockState(blockpos);
+			if ((blockstate1.getMaterial().equals(Material.AIR) || blockstate1.getMaterial().isLiquid()) && blockstate.getMaterial().isSolidBlocking()) {
+				return blockpos1.offset(0.0D, 1.0D, 0.0D);
+			}
+		}
+
+		return null;
 	}
 }

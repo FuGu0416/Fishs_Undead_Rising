@@ -35,6 +35,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
@@ -124,17 +125,17 @@ public class GhostRayEntity extends FlyingMobEntity {
     	
     	if (this.getSkin() != 2) {
 	    	if (this.random.nextFloat() < 0.01F * (float)FURConfig.pSpawnRate_GhostSwarmer.get()) {
-		    	for(int i = 0; i < 2 + this.random.nextInt(2); ++i) {
-		    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
-		    		GhostSwarmerEntity entity = FUREntityRegistry.GHOSTSWARMER.create(this.level);
-			        entity.moveTo(blockpos, this.yRot, 0.0F);
-			        entity.finalizeSpawn(worldIn, difficulty, SpawnReason.REINFORCEMENT, (ILivingEntityData)null, (CompoundNBT)null);
-			        entity.setOwnerUUID(this.getUUID());
-			        entity.doSitCommand(null);
-			        entity.doFollowCommand(null);
-			    	
-		            if(!this.level.isClientSide())
-		            	this.level.addFreshEntity(entity);
+		    	for (int i = 0; i < 2 + this.random.nextInt(2); ++i) {
+		    		if (this.level instanceof ServerWorld) {
+			    		BlockPos blockpos = this.blockPosition().offset(-6 + this.getRandom().nextInt(12), 0, -6 + this.getRandom().nextInt(12));
+			    		GhostSwarmerEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.GHOSTSWARMER, ((ServerWorld) this.level), blockpos);
+			    		
+			    		if (entity != null) {
+					        entity.setOwnerUUID(this.getUUID());
+					        entity.doSitCommand(null);
+					        entity.doFollowCommand(null);
+			    		}
+		    		}
 		    	}
 	    	}
     	}
