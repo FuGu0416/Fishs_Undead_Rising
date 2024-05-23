@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ForsakenEntity;
 import com.Fishmod.mod_LavaCow.entities.SkeletonKingEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -13,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.BlockParticleData;
@@ -125,23 +125,18 @@ public class SandBurstEntity extends Entity
            }
 
            if (--this.lifeTicks < 0) {
-        	   if(this.random.nextFloat() < 0.3F) {
-        		   ForsakenEntity entityvex = FUREntityRegistry.FORSAKEN.create(this.level);
-        		   entityvex.moveTo(this.blockPosition(), 0.0F, 0.0F);
-        		   entityvex.finalizeSpawn(entityvex.getServer().overworld(), this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                     
-                   if (!this.level.isClientSide())
-                	   this.level.addFreshEntity(entityvex); 
+        	   if (this.random.nextFloat() < 0.3F && this.level instanceof ServerWorld) {
+        		   ForsakenEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FORSAKEN, ((ServerWorld) this.level), this.blockPosition());
+                  
+        		   if (entity != null) {
+	                   if (this.getOwner() != null && ((MobEntity) this.getOwner()).getTarget() != null) {
+	                	   entity.setTarget(((MobEntity) this.getOwner()).getTarget());
+	                   }
                    
-                   if (this.getOwner() != null && ((MobEntity) this.getOwner()).getTarget() != null) {
-                	   entityvex.setTarget(((MobEntity) this.getOwner()).getTarget());
-                   }
-                   
-                   if (this.level instanceof ServerWorld) {
                 	   for (int j = 0; j < 4; ++j) {
                 		   ((ServerWorld) this.level).sendParticles(ParticleTypes.LARGE_SMOKE, this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), this.getY() + this.random.nextDouble() * (double)this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.getBbWidth(), 15, 0.0D, this.random.nextDouble() * 0.5D, 0.0D, 0.0D);
                 	   }
-                   }
+        		   }
         	   }
         	   
         	   this.remove();

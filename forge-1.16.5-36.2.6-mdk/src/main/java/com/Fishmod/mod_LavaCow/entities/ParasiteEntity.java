@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
@@ -61,6 +62,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ParasiteEntity extends SpiderEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(ParasiteEntity.class, DataSerializers.INT);
@@ -169,19 +171,19 @@ public class ParasiteEntity extends SpiderEntity {
         	if(!list.isEmpty() || this.isTame()) {
             	this.lifespawn = 5 * 20;
         		
-        		if (!this.level.isClientSide) {		
+        		if (this.level instanceof ServerWorld) {
         			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
         			
-		    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
-		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-		    		pupa.setSkin(0);
+		    		VespaCocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.VESPACOCOON, ((ServerWorld) this.level), this.blockPosition());
 		    		
-		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
-		    			pupa.tame((PlayerEntity) this.getOwner());
-		    			pupa.setCustomName(this.getCustomName());
+		    		if (pupa != null) {
+			    		pupa.setSkin(0);
+			    		
+			    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+			    			pupa.tame((PlayerEntity) this.getOwner());
+			    			pupa.setCustomName(this.getCustomName());
+			    		}
 		    		}
-		    		
-		    		this.level.addFreshEntity(pupa);
         		}   
         		
         		this.remove();
@@ -194,18 +196,15 @@ public class ParasiteEntity extends SpiderEntity {
         	if(!list.isEmpty() || this.isTame()) {
             	this.lifespawn = 5 * 20;
         		
-        		if (!this.level.isClientSide) {		
+            	if (this.level instanceof ServerWorld) {		
         			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
         			
-		    		VespaCocoonEntity pupa = FUREntityRegistry.BEELZEBUBPUPA.create(this.level);
-		    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-		    		
-		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    		VespaCocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUBPUPA, ((ServerWorld) this.level), this.blockPosition());
+
+		    		if (pupa != null && this.isTame() && this.getOwner() instanceof PlayerEntity) {
 		    			pupa.tame((PlayerEntity) this.getOwner());
 		    			pupa.setCustomName(this.getCustomName());
 		    		}
-		    		
-		    		this.level.addFreshEntity(pupa);
         		}   
         		
         		this.remove();

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.floating.GraveRobberGhostEntity;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
@@ -315,15 +316,14 @@ public class GraveRobberEntity extends AbstractIllagerEntity {
     public void die(DamageSource cause) {
        super.die(cause);
        
-		if (!this.level.isDay() && this.getRandom().nextInt(100) < FURConfig.pSpawnRate_GraveRobberGhost.get() && !this.level.isClientSide()) {
-        	GraveRobberGhostEntity entity = FUREntityRegistry.GRAVEROBBERGHOST.create(this.level);
-        	entity.setPos(this.getX(), this.getY() + 2.0D, this.getZ());
-        	this.level.addFreshEntity(entity);
+       if (!this.level.isDay() && this.getRandom().nextInt(100) < FURConfig.pSpawnRate_GraveRobberGhost.get() && this.level instanceof ServerWorld) {
+    	   GraveRobberGhostEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.GRAVEROBBERGHOST, ((ServerWorld) this.level), this.blockPosition());
         			
-        	if(cause.getEntity() != null && cause.getEntity() instanceof LivingEntity)
-        		if (!(cause.getEntity() instanceof PlayerEntity && ((PlayerEntity)cause.getEntity()).isCreative())) {
-        			entity.setTarget((LivingEntity) cause.getEntity());
-        		}
-		}
-    }
+    	   if (entity != null && cause.getEntity() != null && cause.getEntity() instanceof LivingEntity) {
+    		   if (!(cause.getEntity() instanceof PlayerEntity && ((PlayerEntity)cause.getEntity()).isCreative())) {
+    			   entity.setTarget((LivingEntity) cause.getEntity());
+    		   }
+    	   }
+       }
+	}
 }

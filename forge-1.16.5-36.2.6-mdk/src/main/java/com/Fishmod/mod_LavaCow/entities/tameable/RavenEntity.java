@@ -429,7 +429,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
      */
     public static boolean checkRavenSpawnRules(EntityType<RavenEntity> p_223317_0_, IWorld p_223317_1_, SpawnReason p_223317_2_, BlockPos p_223317_3_, Random p_223317_4_) {
         BlockState blockstate = p_223317_1_.getBlockState(p_223317_3_.below());
-        return /*SpawnUtil.isAllowedDimension(this.dimension) &&*/ (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && p_223317_1_.getRawBrightness(p_223317_3_, 0) > 8;
+        return (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && p_223317_1_.getRawBrightness(p_223317_3_, 0) > 8;
 	}
 
     /**
@@ -437,7 +437,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
      */
     public static boolean checkSeagullSpawnRules(EntityType<RavenEntity> p_223317_0_, IWorld p_223317_1_, SpawnReason p_223317_2_, BlockPos p_223317_3_, Random p_223317_4_) {
         BlockState blockstate = p_223317_1_.getBlockState(p_223317_3_.below());
-        return /*SpawnUtil.isAllowedDimension(this.dimension) &&*/ (blockstate.is(BlockTags.SAND) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.AIR)) && p_223317_1_.getRawBrightness(p_223317_3_, 0) > 8;
+        return (blockstate.is(BlockTags.SAND) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.AIR)) && p_223317_1_.getRawBrightness(p_223317_3_, 0) > 8;
 	}
     
     @Override
@@ -710,27 +710,28 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	*/
     @Override
 	public void die(DamageSource cause) {
-		if (!this.isTame() && !this.level.isDay() && this.getRandom().nextInt(100) < FURConfig.pScarecrow_PlagueDoctor.get() && !this.level.isClientSide()) {
-        	ScarecrowEntity entityscarecrow = FUREntityRegistry.SCARECROW.create(this.level);
-        	entityscarecrow.setPos(this.getX(), this.getY() + 2.0D, this.getZ());
-        	entityscarecrow.setSkin(2);
-        	this.level.addFreshEntity(entityscarecrow);
-        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
-        	
-        	for(int i = 0; i < 8; i++) {
-	            double d3 = this.getX() + this.getRandom().nextDouble();
-	            double d4 = this.getY() + this.getRandom().nextDouble();
-	            double d5 = this.getZ() + this.getRandom().nextDouble();
-	            this.level.addParticle(ParticleTypes.SMOKE, d3, d4, d5, 0.0D, 0.0D, 0.0D);
-        	}
-        	
-        	entityscarecrow.addEffect(new EffectInstance(Effects.HEALTH_BOOST, 8 * 20, 2));
-        	entityscarecrow.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 1));
-		
-        	if(cause.getEntity() != null && cause.getEntity() instanceof LivingEntity) {
-        		if (!(cause.getEntity() instanceof PlayerEntity && ((PlayerEntity)cause.getEntity()).isCreative())) {
-        			entityscarecrow.setTarget((LivingEntity) cause.getEntity());
-        		}
+		if (!this.isTame() && !this.level.isDay() && this.getRandom().nextInt(100) < FURConfig.pScarecrow_PlagueDoctor.get() && this.level instanceof ServerWorld) {
+        	ScarecrowEntity entityscarecrow = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARECROW, ((ServerWorld) this.level), this.blockPosition());
+
+        	if (entityscarecrow != null) {
+	        	entityscarecrow.setSkin(2);
+	        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+	        	
+	        	for (int i = 0; i < 8; i++) {
+		            double d3 = this.getX() + this.getRandom().nextDouble();
+		            double d4 = this.getY() + this.getRandom().nextDouble();
+		            double d5 = this.getZ() + this.getRandom().nextDouble();
+		            this.level.addParticle(ParticleTypes.SMOKE, d3, d4, d5, 0.0D, 0.0D, 0.0D);
+	        	}
+	        	
+	        	entityscarecrow.addEffect(new EffectInstance(Effects.HEALTH_BOOST, 8 * 20, 2));
+	        	entityscarecrow.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 1));
+			
+	        	if (cause.getEntity() != null && cause.getEntity() instanceof LivingEntity) {
+	        		if (!(cause.getEntity() instanceof PlayerEntity && ((PlayerEntity)cause.getEntity()).isCreative())) {
+	        			entityscarecrow.setTarget((LivingEntity) cause.getEntity());
+	        		}
+	        	}
         	}
 		}
 
