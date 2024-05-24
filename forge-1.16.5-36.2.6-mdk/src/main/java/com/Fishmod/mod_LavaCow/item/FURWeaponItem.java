@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.FURTameableEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
@@ -27,7 +28,6 @@ import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.TameableEntity;
@@ -204,36 +204,34 @@ public class FURWeaponItem extends SwordItem {
 	}
 	
 	public static <T extends FURTameableEntity> void SummonMinion(PlayerEntity playerIn, int[] enchantmentIn, World worldIn, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
-        CompoundNBT CompoundNBT = new CompoundNBT();
-        FURTameableEntity entity = (FURTameableEntity)entityIn.create(worldIn);        	              
-    	CompoundNBT.putInt("fire_aspect", enchantmentIn[0]);
-    	CompoundNBT.putInt("sharpness", enchantmentIn[1]);
-    	CompoundNBT.putInt("knockback", enchantmentIn[2]);
-    	CompoundNBT.putInt("bane_of_arthropods", enchantmentIn[3]);
-    	CompoundNBT.putInt("smite", enchantmentIn[4]);
-    	CompoundNBT.putInt("unbreaking", enchantmentIn[8]);
-    	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
-    	CompoundNBT.putInt("poisonous", enchantmentIn[6]);
-    	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
-    	entity.readAdditionalSaveData(CompoundNBT);  	
-    	entity.tame(playerIn);
-        entity.setLimitedLife(limitLife);
-        entity.setSkin(skin);
-        
-        entity.finalizeSpawn(entity.getServer().overworld(), worldIn.getCurrentDifficultyAt(blockpos), SpawnReason.MOB_SUMMONED, null, (CompoundNBT)null);
-        
-        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
-        entity.setHealth(entity.getMaxHealth());
-        
-        entity.moveTo(blockpos, 0.0F, 0.0F);
-        
-        if (!worldIn.isClientSide()) {
-        	worldIn.addFreshEntity(entity);
-        }
-        
-        if (entity instanceof UnburiedEntity) {
-        	entity.level.broadcastEntityEvent(entity, (byte)32);
-        }
+		if (worldIn instanceof ServerWorld) {
+			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerWorld) worldIn), blockpos);  
+			
+			if (entity != null) {
+		        CompoundNBT CompoundNBT = new CompoundNBT();
+		             	              
+		    	CompoundNBT.putInt("fire_aspect", enchantmentIn[0]);
+		    	CompoundNBT.putInt("sharpness", enchantmentIn[1]);
+		    	CompoundNBT.putInt("knockback", enchantmentIn[2]);
+		    	CompoundNBT.putInt("bane_of_arthropods", enchantmentIn[3]);
+		    	CompoundNBT.putInt("smite", enchantmentIn[4]);
+		    	CompoundNBT.putInt("unbreaking", enchantmentIn[8]);
+		    	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
+		    	CompoundNBT.putInt("poisonous", enchantmentIn[6]);
+		    	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
+		    	
+		    	entity.readAdditionalSaveData(CompoundNBT);  	
+		    	entity.tame(playerIn);
+		        entity.setLimitedLife(limitLife);
+		        entity.setSkin(skin);		       		        
+		        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
+		        entity.setHealth(entity.getMaxHealth());
+		        		        
+		        if (entity instanceof UnburiedEntity) {
+		        	entity.level.broadcastEntityEvent(entity, (byte)32);
+		        }
+			}
+		}
 	}
 	
     /**

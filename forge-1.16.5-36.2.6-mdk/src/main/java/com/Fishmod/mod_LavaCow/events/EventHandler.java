@@ -10,9 +10,6 @@ import com.Fishmod.mod_LavaCow.entities.GhoulEntity;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
-import com.Fishmod.mod_LavaCow.entities.aquatic.LampreyEntity;
-import com.Fishmod.mod_LavaCow.entities.aquatic.PiranhaEntity;
-import com.Fishmod.mod_LavaCow.entities.aquatic.SwarmerEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
@@ -133,7 +130,7 @@ public class EventHandler {
     	/**
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
-    	if (!world.isClientSide() && tag_parasite != null && !entity.isInWaterOrBubble() &&
+    	if (world instanceof ServerWorld && tag_parasite != null && !entity.isInWaterOrBubble() &&
     			(((entity instanceof LivingEntity && entity.getType().is(tag_parasite)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
     			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE) != null)
     			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
@@ -149,33 +146,31 @@ public class EventHandler {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-        		ParasiteEntity ParasiteEntity = FUREntityRegistry.PARASITE.create(world);
-        		ParasiteEntity.finalizeSpawn(ParasiteEntity.getServer().overworld(), world.getCurrentDifficultyAt(ParasiteEntity.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-        		
-        		if (passenger != null) { 
-        			ParasiteEntity.setSkin(passenger.getSkin());
-        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.DRY)) {
-        			ParasiteEntity.setSkin(1);
-        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE)) {
-        			ParasiteEntity.setSkin(2);
-        		} else if (killer != null && killer instanceof VespaEntity) {
-        			ParasiteEntity.setSkin(2);
-        			if(((VespaEntity)killer).isTame()) {
-        				ParasiteEntity.setSummoned(true);
-        			}
-        		} else {
-        			ParasiteEntity.setSkin(0);
+        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE, ((ServerWorld) world), new BlockPos(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5));
+
+        		if (ParasiteEntity != null) {
+	        		if (passenger != null) { 
+	        			ParasiteEntity.setSkin(passenger.getSkin());
+	        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.DRY)) {
+	        			ParasiteEntity.setSkin(1);
+	        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level.getBiome(entity.blockPosition()))).contains(Type.JUNGLE)) {
+	        			ParasiteEntity.setSkin(2);
+	        		} else if (killer != null && killer instanceof VespaEntity) {
+	        			ParasiteEntity.setSkin(2);
+	        			if (((VespaEntity)killer).isTame()) {
+	        				ParasiteEntity.setSummoned(true);
+	        			}
+	        		} else {
+	        			ParasiteEntity.setSkin(0);
+	        		}
         		}
-        		       		
-                ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
-                world.addFreshEntity(ParasiteEntity);
     		}
     	}			
 
     	/**
          * Give a chance to spawn horde of Lampreys when a listed target dies.
          **/
-    	if (!world.isClientSide() && tag_lamprey != null && entity.isInWaterOrBubble() &&
+    	if (world instanceof ServerWorld && tag_lamprey != null && entity.isInWaterOrBubble() &&
     			(((entity instanceof LivingEntity && entity.getType().is(tag_lamprey)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get()))
     			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.LAMPREY) != null)
     			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
@@ -190,10 +185,7 @@ public class EventHandler {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-        		LampreyEntity ParasiteEntity = FUREntityRegistry.LAMPREY.create(world);       		       		
-        		ParasiteEntity.finalizeSpawn(ParasiteEntity.getServer().overworld(), world.getCurrentDifficultyAt(ParasiteEntity.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-        		ParasiteEntity.moveTo(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5, entity.yRot, entity.xRot);
-                world.addFreshEntity(ParasiteEntity);
+        		SpawnUtil.trySpawnEntity(FUREntityRegistry.LAMPREY, ((ServerWorld) world), new BlockPos(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5));
     		}
     	}	
     	
@@ -336,44 +328,35 @@ public class EventHandler {
 			((ServerWorld) player.level).sendParticles(ParticleTypes.FLAME, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
     	}
     	
-		if(player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F)
+		if (player.level instanceof ServerWorld && player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F) {
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
-		    	if(((ItemEntity) ItemEntity).getItem().getItem().isEdible() && ((ItemEntity) ItemEntity).getItem().getItem().getFoodProperties().isMeat()) {	
+		    	if (((ItemEntity) ItemEntity).getItem().getItem().isEdible() && ((ItemEntity) ItemEntity).getItem().getItem().getFoodProperties().isMeat()) {	
 					BlockPos pos = ItemEntity.blockPosition();
 	
-		            if(ItemEntity.isInWater() && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(player.level.getBiome(pos))).contains(Type.WET)) {     		            			         	            	
-						for(int i = 0; i < 2 + player.level.random.nextInt(3); i++) {	    				
+		            if (ItemEntity.isInWater() && BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(player.level.getBiome(pos))).contains(Type.WET)) {     		            			         	            	
+						for (int i = 0; i < 2 + player.level.random.nextInt(3); i++) {	    				
 		    				double posX = pos.getX() + ((player.level.random.nextDouble() * 5.0D) - 2.5D);
 		    				double posY = pos.getY();
 		    				double posZ = pos.getZ() + ((player.level.random.nextDouble() * 5.0D) - 2.5D);
+		    				BlockPos blockpos= new BlockPos(posX, posY, posZ);
 		    				
-		    				if(player.level.getBlockState(new BlockPos(posX, posY, posZ)).getMaterial() == Material.WATER) {
-		    					if(SpawnUtil.isDay(player.level)) {
-		    						PiranhaEntity fish = FUREntityRegistry.PIRANHA.create(player.level);
-		    						
-		    						fish.moveTo(posX, posY, posZ, player.level.random.nextFloat() * 360.0f, 0.0f);
-				    				player.level.addFreshEntity(fish);
-				    				
-				    				if(ItemEntity != null) {
-				    					ItemEntity.playSound(SoundEvents.GENERIC_EAT, 1, 1);
-				    					ItemEntity.remove();
-				    				}	
+		    				if (player.level.getBlockState(blockpos).getMaterial() == Material.WATER) {
+		    					if (SpawnUtil.isDay(player.level)) {
+		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.PIRANHA, ((ServerWorld) player.level), blockpos);
 		    					} else {
-		    						SwarmerEntity fish = FUREntityRegistry.SWARMER.create(player.level);
-			    					
-		    						fish.moveTo(posX, posY, posZ, player.level.random.nextFloat() * 360.0f, 0.0f);
-				    				player.level.addFreshEntity(fish);
-				    				
-				    				if(ItemEntity != null) {
-				    					ItemEntity.playSound(SoundEvents.GENERIC_EAT, 1, 1);
-				    					ItemEntity.remove();
-				    				}		    						
+		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER, ((ServerWorld) player.level), blockpos);	    						
 		    					}
+		    					
+			    				if(ItemEntity != null) {
+			    					ItemEntity.playSound(SoundEvents.GENERIC_EAT, 1, 1);
+			    					ItemEntity.remove();
+			    				}	
 		    				}
 		    			}
 		            }
 		    	}
 			}
+		}
 			  	    
 		for (ItemStack S : player.getArmorSlots()) {
 			if(S.getItem() instanceof FamineArmorItem) {
@@ -388,7 +371,7 @@ public class EventHandler {
     
     @SubscribeEvent
     public static void onBlockDestroyed(BlockEvent.BreakEvent event) {   
-    	if(event.getState().getMaterial() == Material.SAND 
+    	if (event.getWorld() instanceof ServerWorld && event.getState().getMaterial() == Material.SAND 
     		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.HOT)
     		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.DRY)
     		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.SANDY)
@@ -396,11 +379,12 @@ public class EventHandler {
     		&& new Random().nextInt(100) < FURConfig.Parasite_SandSpawn.get()
     		&& FURConfig.pSpawnRate_Parasite.get() > 0
     		) {          	 
-    		ParasiteEntity ParasiteEntity = FUREntityRegistry.PARASITE.create((World) event.getWorld());
-    		ParasiteEntity.setSkin(1);
-            ParasiteEntity.moveTo(event.getPos().getX(), event.getPos().getY()+1.0D, event.getPos().getZ(), 0.0F, 0.0F);
-            ParasiteEntity.setDeltaMovement(ParasiteEntity.getDeltaMovement().add(0.0D, 0.4D, 0.0D));
-            event.getWorld().addFreshEntity(ParasiteEntity);
+    		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE, ((ServerWorld) event.getWorld()), event.getPos().above());
+    		
+    		if (ParasiteEntity != null) {
+	    		ParasiteEntity.setSkin(1);
+	            ParasiteEntity.setDeltaMovement(ParasiteEntity.getDeltaMovement().add(0.0D, 0.4D, 0.0D));
+    		}
     	}
     }
     
@@ -580,7 +564,8 @@ public class EventHandler {
     	}
     }
         
-    @SubscribeEvent
+    @SuppressWarnings("unchecked")
+	@SubscribeEvent
     public void onEWakeup(PlayerWakeUpEvent event) {
 		ItemStack have_DreamCatcher = null;
 		PlayerEntity player = event.getPlayer();
@@ -599,35 +584,39 @@ public class EventHandler {
 			}
 		}
 		
-		if (!world.isClientSide() && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
+		if (have_DreamCatcher != null)
+			System.out.println(have_DreamCatcher);
+		else
+			System.out.println("???");	
+		
+		if (world instanceof ServerWorld && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
-
+			System.out.println(Result);
 			Entity LivingEntity = Result.type.create(world);
 			int min  = Result.minCount;
 			int max  = Result.maxCount;
 			boolean has_spawn = false;
 			
-			if (LivingEntity instanceof MobEntity) {
+			if (LivingEntity instanceof CreatureEntity) {
 				for(int i = 0; i < new Random().nextInt(MathHelper.abs(max-min) + 1) + min; i++) {
-					Entity LivingEntity_to_spawn = Result.type.create(world);
 					double k1 = player.getX() + (world.random.nextDouble() * 32.0D) - 16.0D;
 					double l1 = player.getY() + (world.random.nextDouble() * 4.0D) - 2.0D;
 					double i2 = player.getZ() + (world.random.nextDouble() * 32.0D) - 16.0D;
 					BlockPos pos = SpawnUtil.getHeight(world, new BlockPos(k1, l1, i2));
 					
-					LivingEntity_to_spawn.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-					((MobEntity) LivingEntity_to_spawn).finalizeSpawn(LivingEntity_to_spawn.getServer().overworld(), world.getCurrentDifficultyAt(pos), SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, (CompoundNBT)null);
-					world.addFreshEntity(LivingEntity_to_spawn);
+					SpawnUtil.trySpawnEntity((EntityType<CreatureEntity>) Result.type, ((ServerWorld) world), pos);
+					
 					has_spawn = true;
 				}
 				
 				if (has_spawn && FURConfig.DreamCatcher_dur.get() > 0) {
 					world.playSound((PlayerEntity)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
 					
-					if (!player.isCreative())
+					if (!player.isCreative()) {
 						have_DreamCatcher.hurtAndBreak(FURConfig.DreamCatcher_dur.get(), event.getEntityLiving(), (p_220045_0_) -> {
-			    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+			    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);			    			
 			    		});
+					}
 				}
 			}            	
 		}
@@ -721,6 +710,7 @@ public class EventHandler {
 	            List<ITrade> list = event.getTrades().get(2);
 	            list.add(new ItemsForEmeraldsAndItemsTrade(FURItemRegistry.PIRANHA, 6, FURItemRegistry.PIRANHA_COOKED, 6, 16, 1));
 	            list.add(new ItemsForEmeraldsAndItemsTrade(FURItemRegistry.SWARMER, 6, FURItemRegistry.SWARMER_COOKED, 6, 16, 1));
+	            list.add(new ItemsForEmeraldsAndItemsTrade(FURItemRegistry.LAMPREY, 6, FURItemRegistry.LAMPREY_COOKED, 6, 16, 1));
 	            event.getTrades().put(2, list);
 	        }
 	        
@@ -758,6 +748,8 @@ public class EventHandler {
 	        rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PHEROMONE_GLAND, 18, 1, 4, 20));
 	        if(FURConfig.pSpawnRate_Wisp.get() > 0)
 	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.WISP_IN_A_BOTTLE, 3, 1, 12, 1));
+	        if(FURConfig.pSpawnRate_Lamprey.get() > 0)
+	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.LAMPREY_BUCKET, 5, 1, 12, 1));
     	}
     }
     

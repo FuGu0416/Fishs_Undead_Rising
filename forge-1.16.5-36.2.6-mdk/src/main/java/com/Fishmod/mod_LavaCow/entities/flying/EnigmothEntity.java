@@ -251,16 +251,16 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         	this.setHealth(this.getHealth() * 0.2F);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * 0.25F);
     	} else {
-    		if (!this.level.isClientSide) {		
+    		if (this.level instanceof ServerWorld) {		
     			this.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
     	        CompoundNBT compoundnbt = new CompoundNBT();
     	        this.addAdditionalSaveData(compoundnbt);
     	         	        
-	    		VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(this.level);
-	    		pupa.serializeNBT().put("EnigmothData", compoundnbt);
-	    		pupa.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-	    		pupa.setSkin(1);
-	    		this.level.addFreshEntity(pupa);
+	    		VespaCocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.VESPACOCOON, ((ServerWorld) this.level), this.blockPosition());
+	    		
+	    		if(pupa != null) {
+	    			pupa.serializeNBT().put("EnigmothData", compoundnbt);
+	    		}
     		}   
     		
     		this.remove();

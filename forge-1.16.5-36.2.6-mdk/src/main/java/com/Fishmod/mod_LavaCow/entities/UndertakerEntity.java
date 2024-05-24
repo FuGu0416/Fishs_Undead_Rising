@@ -49,6 +49,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
@@ -324,32 +325,31 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
 
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i) {
-                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
-                UnburiedEntity entityvex;
-                Set<Type> Biome = BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition())));
-                
-                if (Biome.contains(Type.DRY) && Biome.contains(Type.SANDY) && Biome.contains(Type.HOT)) {
-                	entityvex = FUREntityRegistry.MUMMY.create(UndertakerEntity.this.level);
-                } else if (Biome.contains(Type.COLD)) {
-                	entityvex = FUREntityRegistry.FRIGID.create(UndertakerEntity.this.level);
-                } else if (Biome.contains(Type.WET)) {
-                	entityvex = FUREntityRegistry.MYCOSIS.create(UndertakerEntity.this.level);
-                } else {
-                	entityvex = FUREntityRegistry.UNBURIED.create(UndertakerEntity.this.level);
-                }
-
-                entityvex.moveTo(blockpos, 0.0F, 0.0F);
-                entityvex.setOwnerUUID(UndertakerEntity.this.getUUID());
-                entityvex.finalizeSpawn(entityvex.getServer().overworld(), UndertakerEntity.this.level.getCurrentDifficultyAt(entityvex.blockPosition()), SpawnReason.REINFORCEMENT, null, (CompoundNBT)null);
-                
-                if(!UndertakerEntity.this.level.isClientSide())
-                	UndertakerEntity.this.level.addFreshEntity(entityvex);
-                
-                UndertakerEntity.this.level.broadcastEntityEvent(UndertakerEntity.this, (byte)32);
-                
-                if(UndertakerEntity.this.getTarget() != null)
-                	entityvex.setTarget(UndertakerEntity.this.getTarget());                   
-                           
+            	if (UndertakerEntity.this.level instanceof ServerWorld) {
+	                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
+	                UnburiedEntity entity;
+	                Set<Type> Biome = BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition())));
+	                
+	                if (Biome.contains(Type.DRY) && Biome.contains(Type.SANDY) && Biome.contains(Type.HOT)) {
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY, ((ServerWorld) UndertakerEntity.this.level), blockpos);
+	                } else if (Biome.contains(Type.COLD)) {
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FRIGID, ((ServerWorld) UndertakerEntity.this.level), blockpos);
+	                } else if (Biome.contains(Type.WET)) {
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MYCOSIS, ((ServerWorld) UndertakerEntity.this.level), blockpos);
+	                } else {
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.UNBURIED, ((ServerWorld) UndertakerEntity.this.level), blockpos);
+	                }
+	
+	                if (entity != null) {
+		                entity.setOwnerUUID(UndertakerEntity.this.getUUID());
+		                	                
+		                UndertakerEntity.this.level.broadcastEntityEvent(UndertakerEntity.this, (byte)32);
+		                
+		                if(UndertakerEntity.this.getTarget() != null) {
+		                	entity.setTarget(UndertakerEntity.this.getTarget());
+		                }
+	                }
+            	}                          
             }
         }
 

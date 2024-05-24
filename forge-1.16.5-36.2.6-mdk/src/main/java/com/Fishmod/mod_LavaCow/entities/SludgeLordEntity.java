@@ -359,29 +359,27 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
 
         protected void castSpell() {
             for (int i = 0; i < FURConfig.SludgeLord_Ability_Num.get(); ++i) {
-                BlockPos blockpos = SludgeLordEntity.this.blockPosition().offset(-2 + SludgeLordEntity.this.getRandom().nextInt(5), 1, -2 + SludgeLordEntity.this.getRandom().nextInt(5));
-                LilSludgeEntity entity = FUREntityRegistry.LILSLUDGE.create(SludgeLordEntity.this.level);
-                entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-                entity.setHealth(entity.getMaxHealth());
-                entity.moveTo(blockpos, 0.0F, 0.0F);
-                entity.setOwnerUUID(SludgeLordEntity.this.getUUID());
-                entity.setTame(true);
-                entity.setLimitedLife(20 * (30 + SludgeLordEntity.this.getRandom().nextInt(90)));
-                
-                if(!SludgeLordEntity.this.level.isClientSide())
-                	SludgeLordEntity.this.level.addFreshEntity(entity);
-                
-                entity.setTarget(SludgeLordEntity.this.getTarget());
-                
-                if (SludgeLordEntity.this.level instanceof ServerWorld) {
-	                for (int j = 0; j < 4; ++j) {
-	                	double d0 = entity.getX() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-	                	double d1 = entity.getY() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbHeight());
-	                	double d2 = entity.getZ() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-	                	((ServerWorld) SludgeLordEntity.this.level).sendParticles(ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-	                	
+            	if (SludgeLordEntity.this.level instanceof ServerWorld) {
+	                BlockPos blockpos = SludgeLordEntity.this.blockPosition().offset(-2 + SludgeLordEntity.this.getRandom().nextInt(5), 1, -2 + SludgeLordEntity.this.getRandom().nextInt(5));
+	                LilSludgeEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.LILSLUDGE, ((ServerWorld) SludgeLordEntity.this.level), blockpos);
+	                
+	                if (entity != null) {
+		                entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
+		                entity.setHealth(entity.getMaxHealth());
+		                entity.setOwnerUUID(SludgeLordEntity.this.getUUID());
+		                entity.setTame(true);
+		                entity.setLimitedLife(20 * (30 + SludgeLordEntity.this.getRandom().nextInt(90)));		               	                
+		                entity.setTarget(SludgeLordEntity.this.getTarget());
+
+		                for (int j = 0; j < 4; ++j) {
+		                	double d0 = entity.getX() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	double d1 = entity.getY() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbHeight());
+		                	double d2 = entity.getZ() + (double)(SludgeLordEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
+		                	((ServerWorld) SludgeLordEntity.this.level).sendParticles(ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+		                	
+		                }
 	                }
-                }
+            	}
             }
         }
 

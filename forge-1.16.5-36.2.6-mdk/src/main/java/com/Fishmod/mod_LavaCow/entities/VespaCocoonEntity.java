@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.flying.BeelzebubEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.EnigmothEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
@@ -23,6 +24,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class VespaCocoonEntity extends FURTameableEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(VespaCocoonEntity.class, DataSerializers.INT);
@@ -65,35 +67,34 @@ public class VespaCocoonEntity extends FURTameableEntity {
         if (this.tickCount >= Lifespan) {
         	this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F);
         	
-    		if (!this.level.isClientSide) {		
+    		if (this.level instanceof ServerWorld) {		
     			if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 0) {
-		    		VespaEntity adult = FUREntityRegistry.VESPA.create(this.level);
-		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-		    		this.level.addFreshEntity(adult);
-		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
-		    			adult.tame((PlayerEntity) this.getOwner());
-		    			adult.setCustomName(this.getCustomName());
-		    		}
-    			} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA)) {
-		    		BeelzebubEntity adult = FUREntityRegistry.BEELZEBUB.create(this.level);
-		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-		    		this.level.addFreshEntity(adult);
-		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
-		    			adult.tame((PlayerEntity) this.getOwner());
-		    			adult.setCustomName(this.getCustomName());
-		    		}    				
-    			} else if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 1) {
-    				EnigmothEntity adult = FUREntityRegistry.ENIGMOTH.create(this.level);
-		    		adult.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-		    		this.level.addFreshEntity(adult);
-		    		if (this.isTame() && this.getOwner() instanceof PlayerEntity) {
-		    			adult.tame((PlayerEntity) this.getOwner());
-		    			adult.setCustomName(this.getCustomName());
-		    		}   
+		    		VespaEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.VESPA, ((ServerWorld) this.level), this.blockPosition());
 		    		
-		    		if (this.serializeNBT().contains("EnigmothData")) {
-		    			adult.addAdditionalSaveData(this.serializeNBT().getCompound("EnigmothData"));
+		    		if (adult != null && this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
 		    		}
+		    		
+    			} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA)) {
+		    		BeelzebubEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUB, ((ServerWorld) this.level), this.blockPosition());
+		    		
+		    		if (adult != null && this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
+		    		}    		
+		    		
+    			} else if (this.getType().equals(FUREntityRegistry.VESPACOCOON) && this.getSkin() == 1) {
+    				EnigmothEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.ENIGMOTH, ((ServerWorld) this.level), this.blockPosition());
+    				
+    				if (adult != null && this.isTame() && this.getOwner() instanceof PlayerEntity) {
+		    			adult.tame((PlayerEntity) this.getOwner());
+		    			adult.setCustomName(this.getCustomName());
+  		    		
+			    		if (this.serializeNBT().contains("EnigmothData")) {
+			    			adult.addAdditionalSaveData(this.serializeNBT().getCompound("EnigmothData"));
+			    		}
+    				}
     			}
     		}
         	
