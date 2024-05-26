@@ -22,7 +22,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -126,6 +128,15 @@ public class FURWeaponItem extends SwordItem {
 		
 		return super.isEnchantable(stack);
 	}
+	
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+    	if (stack.getItem() == FURItemRegistry.SPECTRAL_DAGGER && enchantment.category.equals(EnchantmentType.BREAKABLE)) {
+    		return false;
+    	}
+    	
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
 	
 	/**
 	* Called when this item is used when targetting a Block
