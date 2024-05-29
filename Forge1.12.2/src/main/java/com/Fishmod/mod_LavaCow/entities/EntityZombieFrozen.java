@@ -4,52 +4,37 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIBreakDoor;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityZombieFrozen extends EntityZombie implements IAggressive{
-	
-	private boolean isAggressive = false;
-	private int attackTimer;
-	
-    public EntityZombieFrozen(World worldIn)
-    {
+public class EntityZombieFrozen extends EntitySummonedZombie implements IAggressive {	
+    public EntityZombieFrozen(World worldIn) {
         super(worldIn);
-        this.setSize(1.0F, 1.95F);
-        this.setBreakDoorsAItask(false);
-    }
-    
-    protected void initEntityAI()
-    {
-        super.initEntityAI();
-        this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
     }
     
     @Override
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
     
     @Override
@@ -57,34 +42,12 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
     	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
-    /**
-     * Called to update the entity's position/logic.
-     */
-	@Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-         }
-    }
-	
-	@Override
-    protected boolean shouldBurnInDay()
-    {
-        return !Modconfig.SunScreen_Mode;
-    }
-    
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        if (super.attackEntityAsMob(par1Entity))
-        {
+    public boolean attackEntityAsMob(Entity par1Entity) {
+        if (super.attackEntityAsMob(par1Entity)) {
         	this.attackTimer = 5;
 	        this.world.setEntityState(this, (byte)4);
         	
-        	if (par1Entity instanceof EntityLivingBase)
-            {
+        	if (par1Entity instanceof EntityLivingBase) {
             	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 
             	((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 4));
@@ -92,8 +55,7 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
 
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -102,97 +64,45 @@ public class EntityZombieFrozen extends EntityZombie implements IAggressive{
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
     @Override
-    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
-    {
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
 
-        if (this.rand.nextFloat() < (this.world.getDifficulty() == EnumDifficulty.HARD ? 0.05F : 0.01F))
-        {
-            this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.FROZENTHIGH));
-        }   
+        if (this.rand.nextFloat() < (this.world.getDifficulty() == EnumDifficulty.HARD ? 0.05F : 0.01F)) {
+            int i = this.rand.nextInt(3);
+
+            if (i == 0) {
+                this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+            }
+            else if (i == 1) {
+                this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
+            }
+            else {
+                this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.FROZENTHIGH));
+            }
+        }
     }
     
     /**
-     * Called when the entity is attacked.
+     * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-    	if(source.isFireDamage())
-    		return super.attackEntityFrom(source, 2.0F * amount);
-    	return super.attackEntityFrom(source, amount);
-    }
-    
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
+    	this.setHealth(this.getMaxHealth());
+    	
+        this.setEquipmentBasedOnDifficulty(difficulty);
         
-        if(this.getAttackTarget() != null)
-        	{       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	}
-        else 
-        	{
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+        return super.onInitialSpawn(difficulty, livingdata);
     }
-    
-    @Override
-    public boolean isAggressive()
-    {
-    	return isAggressive;
-    }
-    
-    @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
     
     /**
-     * Handler for {@link World#setEntityState}
+     * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-    	if (id == 4) 
-    	{
-            this.attackTimer = 5;
-        }
-    	else if (id == 11)
-        {
-        	this.isAggressive = true;
-        }
-        else if (id == 34)
-        {
-            this.isAggressive = false;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
-    }
-    
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-        return FishItems.ENTITY_ZOMBIEFROZEN_AMBIENT;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-        return FishItems.ENTITY_ZOMBIEFROZEN_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound()
-    {
-        return FishItems.ENTITY_ZOMBIEFROZEN_DEATH;
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health + ((float)this.unbreaking * 2.0F));
     }
     
     @Override

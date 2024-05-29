@@ -61,11 +61,11 @@ public class ModelBanshee extends FishModelBase {
         this.Body_lower_l.mirror = true;
         this.Body_lower_l.setRotationPoint(4.0F, -2.0F, 0.0F);
         this.Body_lower_l.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_l, 0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_l, 0.0F, 1.5707963267948966F, 0.0F);
         this.Body_lower_r = new ModelRenderer(this, 34, 48);
         this.Body_lower_r.setRotationPoint(-4.0F, -2.0F, 0.0F);
         this.Body_lower_r.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_r, -0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_r, -0.0F, 1.5707963267948966F, 0.0F);
         this.Hair_back = new ModelRenderer(this, 31, 37);
         this.Hair_back.mirror = true;
         this.Hair_back.setRotationPoint(0.0F, -3.0F, 0.0F);
@@ -236,5 +236,4 @@ public class ModelBanshee extends FishModelBase {
     			this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
     	}
     }
-
 }

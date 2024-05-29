@@ -49,11 +49,12 @@ public class EntityVespa extends EntityRideableFlyingMob {
 	
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Vespa_Attack);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Vespa_Health);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.1D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Vespa_Health);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Vespa_Attack);
+		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.1D);
 	}
 	
     protected void entityInit() {
@@ -95,8 +96,7 @@ public class EntityVespa extends EntityRideableFlyingMob {
     }
     
     @Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
     	super.onUpdate();
     	
     	if(!this.onGround && this.ticksExisted % 20 == 0) {
@@ -110,8 +110,7 @@ public class EntityVespa extends EntityRideableFlyingMob {
 	        if(this.canBeSteered()) {
 	        	this.setSaddled(false);
 	        	
-	            if (!this.world.isRemote)
-	            {
+	            if (!this.world.isRemote) {
 	            	this.dropItem(Items.SADDLE, 1);
 	            }
 	        }
@@ -133,28 +132,30 @@ public class EntityVespa extends EntityRideableFlyingMob {
     	}
     }
    
-   public boolean attackEntityAsMob(Entity par1Entity)
-   {
-       if (super.attackEntityAsMob(par1Entity))
-       {
-           if (par1Entity instanceof EntityLivingBase)
-           {
+   public boolean attackEntityAsMob(Entity par1Entity) {
+       if (super.attackEntityAsMob(par1Entity)) {
+           if (par1Entity instanceof EntityLivingBase) {
            		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 
            		((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20 * (int)local_difficulty, 0));
-           		if(rand.nextInt(5) == 0)
+           		
+           		if(rand.nextInt(5) == 0 && Modconfig.Vespa_Spread_Parasites) {
            			((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 6 * 20 * (int)local_difficulty, 0));
+           		}
            }
 
            return true;
        }
-       else
-       {
+       else {
            return false;
        }
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+	   if (this.world.rand.nextDouble() <= Modconfig.Vespa_Hornet_Variant) {
+		   this.setSkin(1);
+	   }
+	   
 	   return super.onInitialSpawn(difficulty, entityLivingData);
 	}
    
@@ -207,8 +208,7 @@ public class EntityVespa extends EntityRideableFlyingMob {
      * Get this Entity's EnumCreatureAttribute
      */
     @Override
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
+    public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.ARTHROPOD;
     }
 

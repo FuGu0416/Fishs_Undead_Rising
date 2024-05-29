@@ -15,23 +15,31 @@ public class RenderWeta extends RenderLiving<EntityWeta>{
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png")
 	};
 	
+	private static final ResourceLocation[] TEXTURES_CHILD = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/weta/wetalesser.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png")
+	};
+	
 	static{
 		for(ResourceLocation texture: TEXTURES)
 			System.out.println(texture.getResourcePath());
     }
 
     public RenderWeta(RenderManager rendermanagerIn) {
-        super(rendermanagerIn, new ModelWeta(), 0.0F);
+        super(rendermanagerIn, new ModelWeta(), 0.5F);
     }
     
     @Override
 	protected float getDeathMaxRotation(EntityWeta entity) {
-		return 180F;
+		return 180.0F;
 	}
     
     @Override
     protected ResourceLocation getEntityTexture(EntityWeta entity) {
-    	return TEXTURES[entity.isChild()? 1 : 0];
+        if(!entity.isChild())
+        	return TEXTURES[entity.getSkin()];
+        else
+        	return TEXTURES_CHILD[entity.getSkin()];
     }
     
     @Override

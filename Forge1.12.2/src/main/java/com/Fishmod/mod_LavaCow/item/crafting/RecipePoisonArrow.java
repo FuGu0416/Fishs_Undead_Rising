@@ -14,15 +14,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe{
+public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-        if (inv.getWidth() == 3 && inv.getHeight() == 3)
-        {
+        if (inv.getWidth() == 3 && inv.getHeight() == 3) {
         	int pivot = -1;
-        	for (int i = 0; i < inv.getWidth(); ++i)
-            {
+        	for (int i = 0; i < inv.getWidth(); ++i) {
         		ItemStack itemstack = inv.getStackInRowAndColumn(i, 0);
         		
         		if(itemstack.getItem().equals(FishItems.POISONSTINGER) && pivot == -1)
@@ -30,7 +28,8 @@ public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> impleme
         		else if(!itemstack.isEmpty() && pivot != -1)
         			return false;
             }
-        	if(pivot == -1)return false;
+        	
+        	if(pivot == -1) return false;
         	
         	for (int i = 0; i < inv.getWidth(); ++i)
         		for (int j = 1; j < inv.getHeight(); ++j) {
@@ -42,8 +41,7 @@ public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> impleme
 
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
 	}
@@ -53,8 +51,7 @@ public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> impleme
 		
 		List<ItemStack> ores = OreDictionary.getOres(name);
     	for(ItemStack ore: ores)
-    		if(OreDictionary.itemMatches(ore, itemstack, false))
-    		{ 
+    		if(OreDictionary.itemMatches(ore, itemstack, false)) { 
     			flag = true;
     		}
     	
@@ -67,17 +64,18 @@ public class RecipePoisonArrow extends IForgeRegistryEntry.Impl<IRecipe> impleme
         PotionUtils.addPotionToItemStack(itemstack1, PotionTypes.STRONG_POISON);
         return itemstack1;
 	}
-
+	
 	@Override
 	public boolean canFit(int width, int height) {
         return width > 2 && height > 2;
 	}
 
+    public boolean isDynamic() {
+        return true;
+    }
+
 	@Override
 	public ItemStack getRecipeOutput() {
-        ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW, 4);
-        PotionUtils.addPotionToItemStack(itemstack1, PotionTypes.STRONG_POISON);
-        return itemstack1;
+		return ItemStack.EMPTY;
 	}
-
 }

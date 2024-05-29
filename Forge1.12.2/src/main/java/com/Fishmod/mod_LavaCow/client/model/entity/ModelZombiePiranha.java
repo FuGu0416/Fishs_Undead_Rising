@@ -99,8 +99,10 @@ public class ModelZombiePiranha extends ModelBase {
        if (!entityIn.isInWater()) {
           f = 1.5F;
        }
-
+       
        this.Body2.rotateAngleY = -f * 0.15F * MathHelper.sin(0.6F * ageInTicks);
+       this.Fin_pectoral_r.rotateAngleY = 0.7285F - f * 0.25F * MathHelper.sin(0.6F * ageInTicks);
+       this.Fin_pectoral_l.rotateAngleY = -0.7285F - f * 0.25F * MathHelper.sin(0.6F * ageInTicks + 0.3F * (float)Math.PI);
        this.Fin_caudal.rotateAngleY = this.Body2.rotateAngleY * 1.2F;
        this.Jaw.rotateAngleX = -0.36425021489121656F + (-f * 0.45F * MathHelper.sin(0.6F * ageInTicks));
     }

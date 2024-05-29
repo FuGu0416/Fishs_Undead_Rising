@@ -29,6 +29,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -42,6 +45,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityEnigmothLarva extends EntityFishTameable {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityEnigmothLarva.class, DataSerializers.VARINT);
 	protected int spellTicks;
 	
 	public EntityEnigmothLarva(World worldIn)
@@ -72,6 +76,13 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+    }
+	
+	@Override
+    protected void entityInit() {
+		super.entityInit();
+		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
     }
 	
 	@Override
@@ -86,22 +97,30 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 	   	return super.onInitialSpawn(difficulty, livingdata);
     }
 	
-	public boolean getCanSpawnHere() {
-		// Middle end island check
-		if (this.world.provider.getDimension() == 1) {
-			return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-		}
+	   public boolean getCanSpawnHere() {
+		   	// Middle end island check
+		   	if (this.world.provider.getDimension() == 1) {
+		           return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
+		   	}
 		   	
-		return super.getCanSpawnHere();
-	}
+		       return super.getCanSpawnHere();
+		   }
 	   
-	/**
-	 * Will return how many at most can spawn in a chunk at once.
-	*/
-	@Override
-	public int getMaxSpawnedInChunk() {
-		return 1;
-	}
+	   public int getSkin() {
+	        return this.dataManager.get(SKIN_TYPE).intValue();
+	    }
+
+	    public void setSkin(int skinType) {
+	        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+	    }
+	   
+	   /**
+		 * Will return how many at most can spawn in a chunk at once.
+		*/
+		@Override
+		public int getMaxSpawnedInChunk() {
+			return 1;
+		}
 	
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;

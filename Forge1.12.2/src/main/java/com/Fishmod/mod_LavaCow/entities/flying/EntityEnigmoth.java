@@ -62,18 +62,18 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		//this.tasks.addTask(3, new EntityAITempt(this, 1.25D, false, Sets.newHashSet(Items.CHORUS_FRUIT, Items.CHORUS_FRUIT_POPPED)));
 		this.tasks.addTask(4, new EntityEnigmoth.AIUseSpell());  	
 		
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
 	}
 	
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Attack);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Health);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.067D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
 	}
 	
     protected void entityInit() {
@@ -87,6 +87,16 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     @Override
     public int getMaxSpawnedInChunk() {
        return 1;
+    }
+    
+    @Override
+    public boolean getCanSpawnHere() {
+       	// Middle end island check
+       	if (this.world.provider.getDimension() == 1) {
+               return !Modconfig.Enigmoth_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : super.getCanSpawnHere();
+       	}
+       	
+        return super.getCanSpawnHere();
     }
     
     @Override
@@ -213,7 +223,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     {
     	super.onUpdate();
     	
-    	if(!this.onGround && !this.isSpellcasting() && this.ticksExisted % 10 == 0) {
+    	if(!this.onGround && !this.isSpellcasting() && this.ticksExisted % 12 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     }
@@ -226,15 +236,6 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
        this.setHealth(this.getMaxHealth());
    	
    		return super.onInitialSpawn(difficulty, livingdata);
-   }
-   
-   public boolean getCanSpawnHere() {
-   	// Middle end island check
-   	if (this.world.provider.getDimension() == 1) {
-           return !Modconfig.Enigmoth_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-   	}
-   	
-       return super.getCanSpawnHere();
    }
    
    public int getSkin() {
@@ -252,8 +253,8 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
    /**
     * Handler for {@link World#setEntityState}
     */
-	@Override
-	@SideOnly(Side.CLIENT)
+   @Override
+   @SideOnly(Side.CLIENT)
    public void handleStatusUpdate(byte id) {
 		switch(id) {
 		case 10:
@@ -284,7 +285,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	
 	@Override
     public int getTalkInterval() {
-        return 1000;
+        return 150;
     }
 	
 	public SoundCategory getSoundCategory() {
@@ -304,7 +305,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	}
 	
     public SoundEvent getSpellSound() {
-        return SoundEvents.ENTITY_ILLAGER_CAST_SPELL;
+        return FishItems.ENTITY_ENIGMOTH_SCALES;
     }
 	
 	protected SoundEvent getFlyingSound() {
@@ -383,7 +384,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
-            	EntityEnigmoth.this.playSound(EntityEnigmoth.this.getSpellSound(), 0.175F, 1.0F);
+            	EntityEnigmoth.this.playSound(EntityEnigmoth.this.getSpellSound(), 0.475F, 1.0F);
             	this.castSpell();
             }
         }

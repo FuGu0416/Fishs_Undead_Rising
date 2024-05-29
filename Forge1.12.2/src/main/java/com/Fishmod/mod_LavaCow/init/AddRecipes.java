@@ -60,6 +60,7 @@ public class AddRecipes {
 	    public static void addBrewing() {
 	    	/* Brew into special potions */
 	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION), new ItemStack(FishItems.HYPHAE), new ItemStack(FishItems.FISSIONPOTION)));
+	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HOLY_SLUDGE), new ItemStack(FishItems.HOLY_WATER)));
 	        BrewingRecipeRegistry.addRecipe(new ItemStack(FishItems.FISSIONPOTION), new ItemStack(FishItems.MOOTENHEART), new ItemStack(FishItems.POTION_OF_MOOTEN_LAVA));
 	        
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.PTERA_WING), PotionTypes.SWIFTNESS);
@@ -70,6 +71,7 @@ public class AddRecipes {
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.FOUL_BRISTLE), ModPotions.FOULODOR);
 			PotionHelper.addMix(ModPotions.FOULODOR, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_FOULODOR);
+			PotionHelper.addMix(ModPotions.FOULODOR, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_FOULODOR);
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.POISONSPORE), PotionTypes.LONG_POISON);
 			
@@ -133,6 +135,8 @@ public class AddRecipes {
 	    	OreDictionary.registerOre("paper", FishItems.CURSEWEAVE_CLOTH);
 			OreDictionary.registerOre("ectoplasm", FishItems.ECTOPLASM);
 			OreDictionary.registerOre("heartUndying", FishItems.UNDYINGHEART);
+			OreDictionary.registerOre("heartUndying", FishItems.ACIDICHEART);
+			OreDictionary.registerOre("gemAmber", FishItems.ANCIENT_AMBER);
 	    }
 	    
 	    public static BannerPattern addBannerPattern(String name, ItemStack ItemStackIn) {
@@ -140,5 +144,4 @@ public class AddRecipes {
 	        Object[] names = {name, "mod_lavacow." + name, ItemStackIn};
 	        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), classes, names);
 	    }
-
 }

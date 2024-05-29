@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSkeletonKingMace extends TileEntityItemStackRenderer {
     private final ModelSkeletonKingMace MODEL_SKELETONKING_MACE = new ModelSkeletonKingMace();
-    private final ResourceLocation SKELETONKING_MACE_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
+    private final ResourceLocation SKELETONKING_MACE_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking/skeletonking.png");
 
     @Override
     public void renderByItem(ItemStack stack) {

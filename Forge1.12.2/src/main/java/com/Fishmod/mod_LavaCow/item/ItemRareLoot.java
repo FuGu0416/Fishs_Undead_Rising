@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemRareLoot extends ItemFishCustom{
+public class ItemRareLoot extends ItemFishCustom {
 	
 	private EnumRarity Rarity;
 	
@@ -51,14 +51,6 @@ public class ItemRareLoot extends ItemFishCustom{
      */
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack)
-    {
-        return false;
-    }
-    
-    /**
-     * Checks isDamagable and if it cannot be stacked
-     */
-    public boolean isEnchantable(ItemStack stack)
     {
         return false;
     }

@@ -583,7 +583,7 @@ public class ModelCactoid extends FishModelBase {
 				}
 				break;
 		}
-		
+		  	
 		if (entity.isSilent()) {  
 			this.body_base.rotationPointY = 25.0F;
 			this.body_base.rotateAngleZ = 0.0F;
@@ -597,7 +597,7 @@ public class ModelCactoid extends FishModelBase {
 	        this.root_r.rotationPointZ = MathHelper.cos(limbSwing) * 2.5F * limbSwingAmount;
 	        this.root_r.rotateAngleZ = -MathHelper.cos(limbSwing) * 0.2F * limbSwingAmount;
 	        this.root_l.rotationPointZ = MathHelper.cos(limbSwing + (float)Math.PI) * 2.5F * limbSwingAmount;	
-	        this.root_l.rotateAngleZ = -MathHelper.cos(limbSwing) * 0.2F * limbSwingAmount;
+	        this.root_l.rotateAngleZ = -MathHelper.cos(limbSwing) * 0.2F * limbSwingAmount;		
 		}
 	}
     

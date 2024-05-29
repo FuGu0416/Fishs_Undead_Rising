@@ -24,8 +24,8 @@ public class RenderZombieFrozen extends RenderLiving<EntityZombieFrozen> {
     public RenderZombieFrozen(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
-        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
+        this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         this.addLayer(layerbipedarmor);
     }
     
@@ -39,5 +39,7 @@ public class RenderZombieFrozen extends RenderLiving<EntityZombieFrozen> {
     	if(entity.isChild()) {
     		GlStateManager.scale(0.6F, 0.6F, 0.6F);
     	}
+    	
+    	GlStateManager.translate(0.0D, (double)entity.getRisingTicks() / 20.0D, 0.0D);
 	}
 }

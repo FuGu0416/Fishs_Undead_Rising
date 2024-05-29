@@ -1,7 +1,8 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerForsakenArmor;
-
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.entity.monster.AbstractSkeleton;
@@ -26,4 +27,13 @@ public class RenderForsaken extends RenderSkeleton {
     {
         return TEXTURES;
     }
+    
+    @Override
+	protected void preRenderCallback(AbstractSkeleton entity, float partialTickTime) {
+    	if(entity.isChild()) {
+    		GlStateManager.scale(0.6F, 0.6F, 0.6F);
+    	}
+    	
+    	GlStateManager.translate(0.0D, (double)((EntityForsaken)entity).getRisingTicks() / 20.0D, 0.0D);
+	}
 }

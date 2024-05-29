@@ -1,25 +1,37 @@
 package com.Fishmod.mod_LavaCow.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
+import baubles.api.IBauble;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble{
+public class ItemGoldenHeart extends ItemRareLoot implements IBauble {
 
-	public ItemGoldenHeart(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
-		super(registryName, tab, rarity, hasTooltip);
+	public ItemGoldenHeart(String registryName, CreativeTabs tab, EnumRarity rarity) {
+		super(registryName, tab, rarity, false);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(Modconfig.GoldenHeart_dur);
 	}
@@ -29,10 +41,31 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 	
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-	{
+	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == Items.GOLD_INGOT;
 	}
+    
+    /**
+     * Allow or forbid the specific book/item combination as an anvil enchant
+     *
+     * @param stack The item
+     * @param book The book
+     * @return if the enchantment is allowed
+     */
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return Modconfig.GoldenHeart_BookEnchantability;
+    }
+	
+    /**
+     * allows items to add custom lines of information to the mouseover description
+     */
+    @SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+        super.addInformation(stack, worldIn, list, flag);
+        
+        if (Modconfig.GoldenHeart_GrantsRegeneration) list.add(TextFormatting.YELLOW + I18n.format("tootip." + mod_LavaCow.MODID + ".goldenheart.regeneration", Modconfig.GoldenHeart_Regeneration_Amount));
+        if (Modconfig.GoldenHeart_RepairsEquipment) list.add(TextFormatting.YELLOW + I18n.format("tootip." + mod_LavaCow.MODID + ".goldenheart.repair", Modconfig.GoldenHeart_Repair_Amount));
+    }
 	
 	private static boolean isBlackListed(ItemStack ItemStackIn) {
 		boolean flag = ItemStackIn.getItem().equals(FishItems.GOLDENHEART);
@@ -51,26 +84,25 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
      * @param arg1
      */
     //@Optional.Method(modid = "baubles")
-    public static void onTick(ItemStack arg0, EntityPlayer arg1) {
+    public static void onTick(ItemStack stack, EntityPlayer player) {
     	boolean flag = false;
     	
-    	if(Modconfig.GoldenHeart_GrantsRegeneration && ((arg0.getItemDamage() < arg0.getMaxDamage() - 1) || arg0.getMaxDamage() == 0)) {
-	    	if(arg1.getActivePotionEffect(MobEffects.REGENERATION) == null && arg1.getHealth() < arg1.getMaxHealth()) {
-	    		arg1.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 8*20, 0));
+    	if (Modconfig.GoldenHeart_GrantsRegeneration && ((stack.getMaxDamage() > 0 && stack.getItemDamage() != stack.getMaxDamage()) || stack.getMaxDamage() == 0)) {
+	    	if (player.getActivePotionEffect(MobEffects.REGENERATION) == null && player.getHealth() < player.getMaxHealth()) {
+	    		player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, Modconfig.GoldenHeart_Regeneration_Amount * 20, 0));
 	    		flag = true;
-	    	}
-	    	else if(Modconfig.GoldenHeart_RepairsEquipment && arg1.getHealth() == arg1.getMaxHealth())
-	    		for(ItemStack item : arg1.getEquipmentAndArmor())
-		        {
-		        	if(!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0 && item.getItem().isRepairable() && !item.getHasSubtypes()) {
-		        		item.setItemDamage(java.lang.Math.max(item.getItemDamage()-1, 0));
+	    	} else if (Modconfig.GoldenHeart_RepairsEquipment && player.getHealth() == player.getMaxHealth()) {
+	    		for(ItemStack item : player.getEquipmentAndArmor()) {
+		        	if (!isBlackListed(item) && item.getMaxDamage() != 0 && item.getItem().isDamageable() && (item.isItemEnchantable() || item.isItemEnchanted()) && item.getItemDamage() > 0 && item.getItem().isRepairable() && !item.getHasSubtypes()) {
+		        		item.setItemDamage(Math.max(item.getItemDamage() - Modconfig.GoldenHeart_Repair_Amount, 0));
 		        		flag = true;
 		        	}
-		        }   		  		
+		        }
+	    	}
     	}
     	
-    	if(flag && !arg1.isCreative() && arg0.getMaxDamage() != 0)
-			arg0.damageItem(1, arg1);
+    	if (flag && !player.isCreative() && stack.getMaxDamage() != 0 && player.world.rand.nextInt(100) < Modconfig.GoldenHeart_dur_drop)
+    		stack.damageItem(1, player);
 	}
     
     @Override
@@ -99,4 +131,16 @@ public class ItemGoldenHeart extends ItemRareLoot implements baubles.api.IBauble
 	        ItemGoldenHeart.onTick(stack, (EntityPlayer) plr);
 	    }
     }
+    
+    @Override
+	@Optional.Method(modid = "baubles")
+	public void onEquipped(ItemStack stack, EntityLivingBase player) {
+		player.playSound(SoundEvents.ENTITY_ENDEREYE_DEATH, 0.75F, 2.0F);
+	}
+
+	@Override
+	@Optional.Method(modid = "baubles")
+	public void onUnequipped(ItemStack stack, EntityLivingBase player) {
+		player.playSound(SoundEvents.ENTITY_ENDEREYE_DEATH, 0.75F, 2.0F);
+	}
 }

@@ -1,22 +1,6 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-		"/ /",
-        "/#/",
-        "#D#"
-    ],
-    "key": {
-		"/": {
-            "item": "mod_lavacow:sharptooth"
-        },
-        "#": {
-            "item": "mod_lavacow:foul_hide"
-        },
-		"D": {
-            "item": "minecraft:skeleton_skull"
-        }
-    },
-    "result": {
-        "item": "mod_lavacow:faminearmor_helmet"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "mod_lavacow:items/armor_famine_helmet"
     }
 }

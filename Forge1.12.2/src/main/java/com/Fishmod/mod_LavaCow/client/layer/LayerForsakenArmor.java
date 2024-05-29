@@ -13,7 +13,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LayerForsakenArmor implements LayerRenderer<EntityForsaken>
 {
-    private static final ResourceLocation ARMOR_TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/forsaken/forsaken_overlay.png");
+    private static final ResourceLocation[] ARMOR_TEXTURES = {
+    		new ResourceLocation("mod_lavacow:textures/mobs/forsaken/forsaken_overlay2.png"),
+    		new ResourceLocation("mod_lavacow:textures/mobs/forsaken/forsaken_overlay2.png"),
+    		new ResourceLocation("mod_lavacow:textures/mobs/forsaken/forsaken_overlay.png"),
+    		new ResourceLocation("mod_lavacow:textures/mobs/forsaken/forsaken_overlay3.png")
+    };
     private final RenderLivingBase<?> renderer;
     private final ModelSkeleton layerModel = new ModelSkeleton(0.25F, true);
 
@@ -22,13 +27,13 @@ public class LayerForsakenArmor implements LayerRenderer<EntityForsaken>
         this.renderer = p_i47183_1_;
     }
 
-    public void doRenderLayer(EntityForsaken entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(EntityForsaken entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         this.layerModel.setModelAttributes(this.renderer.getMainModel());
-        this.layerModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
+        this.layerModel.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.renderer.bindTexture(ARMOR_TEXTURES);
-        this.layerModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        this.renderer.bindTexture(ARMOR_TEXTURES[entity.getSkin()]);
+        this.layerModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 
     public boolean shouldCombineTextures()

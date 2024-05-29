@@ -1,8 +1,10 @@
 package com.Fishmod.mod_LavaCow.client.renders;
 
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAmberLord;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBomb;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactoid;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactusThorn;
@@ -15,7 +17,11 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderForsaken;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostBomb;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostRay;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostSwarmer;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGraveRobber;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderHolyGrenade;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderImp;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderKingsWrath;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLavaCow;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLilSludge;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
@@ -28,8 +34,12 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPtera;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSandBurst;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSapJet;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarab;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarecrow;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSeaHag;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSkeletonKing;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderIsnachi;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeLord;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSonicBomb;
@@ -40,12 +50,14 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespa;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaCocoon;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWendigo;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWeta;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWraith;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieFrozen;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombiePiranha;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderBeastClaw;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderSkeletonKingMace;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
+import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
@@ -56,9 +68,12 @@ import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
+import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
+import com.Fishmod.mod_LavaCow.entities.EntityGraveRobber;
+import com.Fishmod.mod_LavaCow.entities.EntityImp;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -66,19 +81,25 @@ import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityGhostSwarmer;
+import com.Fishmod.mod_LavaCow.entities.floating.EntitySeaHag;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityWraith;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityKingsWrath;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySapJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
@@ -88,6 +109,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
@@ -107,13 +129,17 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieMushroom.class, RenderFactoryEntityZombieMushroom.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityParasite.class, RenderFactoryEntityParasite.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityFoglet.class, RenderFactoryEntityFoglet.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityIsnachi.class, RenderFactoryEntityIsnachi.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityImp.class, RenderFactoryEntityImp.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieFrozen.class, RenderFactoryEntityZombieFrozen.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityUndeadSwine.class, RenderFactoryEntityUndeadSwine.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySalamander.class, RenderFactoryEntitySalamander.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityWendigo.class, RenderFactoryEntityWendigo.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityMimic.class, RenderFactoryEntityMimic.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySludgeLord.class, RenderFactoryEntitySludgeLord.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityAmberLord.class, RenderFactoryEntityAmberLord.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntitySludgeJet.class, RenderFactoryEntitySludgeJet.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySapJet.class, RenderFactoryEntitySapJet.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityLilSludge.class, RenderFactoryEntityLilSludge.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityWarSmallFireball.class, RenderFactoryEntityWarSmallFireball.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityRaven.class, RenderFactoryEntityRaven.INSTANCE);
@@ -145,9 +171,16 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityCactoid.class, RenderFactoryEntityCactoid.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityCactyrant.class, RenderFactoryEntityCactyrant.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityCactusThorn.class, RenderFactoryEntityCactusThorn.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySeaHag.class, RenderFactoryEntitySeaHag.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGraveRobber.class, RenderFactoryEntityGraveRobber.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityWraith.class, RenderFactoryEntityWraith.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostSwarmer.class, RenderFactoryEntityGhostSwarmer.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityScarab.class, RenderFactoryEntityScarab.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityEnigmoth.class, RenderFactoryEntityEnigmoth.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityEnigmothLarva.class, RenderFactoryEntityEnigmothLarva.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityMothScales.class, RenderFactoryEntityMothScales.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBomb.class, RenderFactoryEntityBasicBomb.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityKingsWrath.class, RenderFactoryEntityKingsWrath.INSTANCE);
         
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
         FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
@@ -207,6 +240,34 @@ public class RenderFactories {
         public Render<EntityFoglet> createRenderFor(RenderManager manager)
         {
         	return new RenderFoglet(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityIsnachi implements IRenderFactory<EntityIsnachi>
+    {
+        public final static RenderFactoryEntityIsnachi INSTANCE = new RenderFactoryEntityIsnachi();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityIsnachi> createRenderFor(RenderManager manager)
+        {
+        	return new RenderIsnachi(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityImp implements IRenderFactory<EntityImp>
+    {
+        public final static RenderFactoryEntityImp INSTANCE = new RenderFactoryEntityImp();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityImp> createRenderFor(RenderManager manager)
+        {
+        	return new RenderImp(manager);
         }
     }
     
@@ -294,6 +355,20 @@ public class RenderFactories {
         }
     }
     
+    public static class RenderFactoryEntityAmberLord implements IRenderFactory<EntityAmberLord>
+    {
+        public final static RenderFactoryEntityAmberLord INSTANCE = new RenderFactoryEntityAmberLord();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityAmberLord> createRenderFor(RenderManager manager)
+        {
+        	return new RenderAmberLord(manager);
+        }
+    }
+    
     public static class RenderFactoryEntitySludgeJet implements IRenderFactory<EntityFireball>
     {
         public final static RenderFactoryEntitySludgeJet INSTANCE = new RenderFactoryEntitySludgeJet();
@@ -305,6 +380,20 @@ public class RenderFactories {
         public Render<EntityFireball> createRenderFor(RenderManager manager)
         {
         	return new RenderSludgeJet(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntitySapJet implements IRenderFactory<EntityFireball>
+    {
+        public final static RenderFactoryEntitySapJet INSTANCE = new RenderFactoryEntitySapJet();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityFireball> createRenderFor(RenderManager manager)
+        {
+        	return new RenderSapJet(manager);
         }
     }
     
@@ -742,6 +831,76 @@ public class RenderFactories {
         }
     }
     
+    public static class RenderFactoryEntitySeaHag implements IRenderFactory<EntitySeaHag>
+    {
+        public final static RenderFactoryEntitySeaHag INSTANCE = new RenderFactoryEntitySeaHag();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntitySeaHag> createRenderFor(RenderManager manager)
+        {
+        	return new RenderSeaHag(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityGraveRobber implements IRenderFactory<EntityGraveRobber>
+    {
+        public final static RenderFactoryEntityGraveRobber INSTANCE = new RenderFactoryEntityGraveRobber();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityGraveRobber> createRenderFor(RenderManager manager)
+        {
+        	return new RenderGraveRobber(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityWraith implements IRenderFactory<EntityWraith>
+    {
+        public final static RenderFactoryEntityWraith INSTANCE = new RenderFactoryEntityWraith();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityWraith> createRenderFor(RenderManager manager)
+        {
+        	return new RenderWraith(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityGhostSwarmer implements IRenderFactory<EntityGhostSwarmer>
+    {
+        public final static RenderFactoryEntityGhostSwarmer INSTANCE = new RenderFactoryEntityGhostSwarmer();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityGhostSwarmer> createRenderFor(RenderManager manager)
+        {
+        	return new RenderGhostSwarmer(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityScarab implements IRenderFactory<EntityScarab>
+    {
+        public final static RenderFactoryEntityScarab INSTANCE = new RenderFactoryEntityScarab();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityScarab> createRenderFor(RenderManager manager)
+        {
+        	return new RenderScarab(manager);
+        }
+    }
+    
     public static class RenderFactoryEntityEnigmoth implements IRenderFactory<EntityEnigmoth>
     {
         public final static RenderFactoryEntityEnigmoth INSTANCE = new RenderFactoryEntityEnigmoth();
@@ -781,6 +940,34 @@ public class RenderFactories {
         public RenderMothScales createRenderFor(RenderManager manager)
         {
         	return new RenderMothScales(manager);
+        }
+    }
+    
+    public static class RenderFactoryEntityBasicBomb implements IRenderFactory<EntityBomb>
+    {
+        public final static RenderFactoryEntityBasicBomb INSTANCE = new RenderFactoryEntityBasicBomb();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityBomb> createRenderFor(RenderManager manager)
+        {
+        	return new RenderBomb(manager, FishItems.BASICBOMB);
+        }
+    }
+    
+    public static class RenderFactoryEntityKingsWrath implements IRenderFactory<EntityKingsWrath>
+    {
+        public final static RenderFactoryEntityKingsWrath INSTANCE = new RenderFactoryEntityKingsWrath();
+    
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderKingsWrath createRenderFor(RenderManager manager)
+        {
+        	return new RenderKingsWrath(manager, FishItems.EMBLEM_OF_KING);
         }
     }
 }

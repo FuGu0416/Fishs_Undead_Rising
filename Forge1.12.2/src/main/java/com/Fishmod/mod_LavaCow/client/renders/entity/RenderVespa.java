@@ -11,6 +11,7 @@ public class RenderVespa extends RenderLiving<EntityVespa>{
 	
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa1.png")
 	};
 	
 	static{

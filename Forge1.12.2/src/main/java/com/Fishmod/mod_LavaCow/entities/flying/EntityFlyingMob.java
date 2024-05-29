@@ -398,11 +398,12 @@ public class EntityFlyingMob extends EntityFishTameable {
         	Random random = this.parentEntity.getRNG();
             BlockPos blockpos = new BlockPos(parentEntity).add(random.nextInt(15) - 7, 0, random.nextInt(15) - 7);        	
         	double y = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        
+
         	// Stop calculating height in end dimension
+        	// TODO: A way to calculate other modded dimensions with floating islands?
         	if (this.parentEntity.world.provider.getDimension() != 1) {       	
 	        	int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-	        	
+
 	        	if (groundHeight > 0) {
 	                if (this.parentEntity.isWet()) {
 	                	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
@@ -411,7 +412,7 @@ public class EntityFlyingMob extends EntityFishTameable {
 	        		}
 	        	}
         	}
-        
+
             this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, y + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
         }
     }

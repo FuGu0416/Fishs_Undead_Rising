@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.init.ModPotions;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemScarecrowHead;
 import com.Fishmod.mod_LavaCow.item.crafting.RecipePoisonArrow;
+import com.Fishmod.mod_LavaCow.item.crafting.RecipeSinisterWhetstone;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -25,8 +26,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber
 public class RegistryHandler {
-	
-	public static final IRecipe POISON_ARROW = new RecipePoisonArrow().setRegistryName(mod_LavaCow.MODID, "poisonarrow");	  
+	public static final IRecipe POISON_ARROW = new RecipePoisonArrow().setRegistryName(mod_LavaCow.MODID, "poison_arrow");
+	public static final IRecipe SINISTER_WHETSTONE = new RecipeSinisterWhetstone().setRegistryName(mod_LavaCow.MODID, "sinister_whetstone");
 	  
     /**
      * Register this mod's {@link Item}s and {@link ItemBlock}s.
@@ -106,6 +107,7 @@ public class RegistryHandler {
 	@SubscribeEvent
 	public static void registerRecipes(final RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(POISON_ARROW);
+		event.getRegistry().register(SINISTER_WHETSTONE);
 	}
 	
     @SubscribeEvent

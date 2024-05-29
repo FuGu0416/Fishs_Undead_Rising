@@ -11,8 +11,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderPiranhaLauncher extends Render<EntityPiranhaLauncher>{
 	
 	private final ModelZombiePiranha skeletonHeadModel = new ModelZombiePiranha();
-	//private final ModelSkeletonHead skeletonHeadModel = new ModelSkeletonHead();
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/zombiepiranha.png");
+	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/swarmer/swarmer.png");
 	static{
         System.out.println(TEXTURES.getResourcePath());
     }

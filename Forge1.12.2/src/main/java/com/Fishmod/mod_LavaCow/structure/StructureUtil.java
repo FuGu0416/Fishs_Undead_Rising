@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.block.BlockChest;
@@ -37,7 +37,7 @@ public class StructureUtil {
 	private static final IBlockState RED_SAND = Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND);
 	
     private static ResourceLocation[] Desert_Tomb_SpawnEntityID = { 
-    		EntityList.getKey(EntityUnburied.class), 
+    		EntityList.getKey(EntityScarab.class), 
     		EntityList.getKey(EntityAvaton.class), 
     		EntityList.getKey(EntitySpider.class), 
     		EntityList.getKey(EntityCaveSpider.class), 

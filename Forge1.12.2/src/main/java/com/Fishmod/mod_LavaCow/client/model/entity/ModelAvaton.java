@@ -1,12 +1,12 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
-import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
-import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityFloatingMob;
+import com.Fishmod.mod_LavaCow.entities.floating.EntitySeaHag;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityWraith;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -65,12 +65,12 @@ public class ModelAvaton extends FishModelBase {
         this.Body_lower_r = new ModelRenderer(this, 34, 48);
         this.Body_lower_r.setRotationPoint(-4.0F, -2.0F, 0.0F);
         this.Body_lower_r.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_r, -0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_r, -0.0F, 1.5707963267948966F, 0.0F);
         this.Body_lower_l = new ModelRenderer(this, 34, 48);
         this.Body_lower_l.mirror = true;
         this.Body_lower_l.setRotationPoint(4.0F, -2.0F, 0.0F);
         this.Body_lower_l.addBox(-3.0F, 0.0F, 0.0F, 6, 16, 0, 0.0F);
-        this.setRotateAngle(Body_lower_l, 0.22759093446006054F, 1.5707963267948966F, 0.0F);
+        this.setRotateAngle(Body_lower_l, 0.0F, 1.5707963267948966F, 0.0F);
         this.Body_base = new ModelRenderer(this, 19, 15);
         this.Body_base.setRotationPoint(0.0F, 10.0F, 0.0F);
         this.Body_base.addBox(-4.0F, -4.0F, -3.0F, 8, 14, 6, 0.0F);
@@ -147,35 +147,49 @@ public class ModelAvaton extends FishModelBase {
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-    	this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
-    	SwingX_Sin(this.Hair_front, -2.0032889154390916F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+    	EntityFloatingMob Entity = ((EntityFloatingMob)entity);
+    	float j = Entity.getSpellTicks() / 30.0F;
+    	
     	SwingX_Sin(this.Hair_r, -1.4114477660878142F, ageInTicks, 0.09F, 0.067F, false, 0.25F * (float)Math.PI);
     	SwingX_Sin(this.Hair_l, -1.4114477660878142F, ageInTicks, 0.11F, 0.06F, true, 0.0F);
-    	
+ 
     	if(limbSwingAmount < 0.08F && this.Body_base.rotateAngleX > 0.0F) {
     		this.Body_base.rotateAngleX -= 0.005F;
     		this.Head.rotateAngleX += 0.005F;
-    	}
-    	else if(limbSwingAmount >= 0.08F && this.Body_base.rotateAngleX < 0.35F) {
+    	} else if(limbSwingAmount >= 0.08F && this.Body_base.rotateAngleX < 0.35F) {
     		this.Body_base.rotateAngleX += 0.005F;
     		this.Head.rotateAngleX -= 0.005F;
     	}
+    	
+    	if (entity instanceof EntityWraith || entity instanceof EntitySeaHag) {   		
+    		this.Body_waist.rotateAngleX = 0.1613F;
+    		this.Body_waist.rotateAngleZ = 0.0F;
+    		this.Body_chest.rotateAngleX = 0.1955F;
+    		this.Neck0.rotateAngleX = 0.2143F;
+    		this.Head.setRotationPoint(0.0F, -4.0F, 2.0F);
+    		this.Head_Looking(this.Head, 0.5672F, 0.0F, netHeadYaw, headPitch);
+    		SwingX_Sin(this.Hair_front, -2.8323F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
+    	} else {		
+    		this.Body_waist.rotateAngleX = 0.7285004297824331F; 	
+    		this.Body_waist.rotateAngleZ = -0.045553093477052F;
+    		this.Body_chest.rotateAngleX = 0.5009094953223726F;
+    		this.Neck0.rotateAngleX = -0.091106186954104F;
+    		this.Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+    		this.Head_Looking(this.Head, 0.0F, 0.0F, netHeadYaw, headPitch);
+    		SwingX_Sin(this.Hair_front, -2.0032889154390916F, ageInTicks, 0.12F, 0.07F, false, 0.0F);
+    	}
     		
-    	SwingX_Sin(this.Body_lower_front, -0.31869712141416456F, ageInTicks, 0.2F, 0.08F, true, 0.0F);
-    	SwingZ_Sin(this.Body_lower_r, 0.0F, ageInTicks, 0.16F, 0.07F, false, 0.25F * (float)Math.PI);
-    	SwingZ_Sin(this.Body_lower_l, 0.0F, ageInTicks, 0.18F, 0.09F, true, 0.45F * (float)Math.PI);
-    	SwingX_Sin(this.Body_lower_back, 0.27314402793711257F, ageInTicks, 0.25F, 0.06F, false, 0.70F * (float)Math.PI);
+    	SwingX_Sin(this.Body_lower_front, -0.5369F, ageInTicks, 0.3F, 0.08F, true, 0.0F);
+    	SwingZ_Sin(this.Body_lower_r, 0.4894F, ageInTicks, 0.24F, 0.07F, false, 0.25F * (float)Math.PI);
+    	SwingZ_Sin(this.Body_lower_l, -0.4894F, ageInTicks, 0.27F, 0.09F, true, 0.45F * (float)Math.PI);
+    	SwingX_Sin(this.Body_lower_back, 0.5786F, ageInTicks, 0.38F, 0.06F, false, 0.70F * (float)Math.PI);
     	
     	SwingY_Sin(this.Arm_r_Seg2, 0.0F, ageInTicks, 0.22F, 0.08F, false, 0.0F);
     	SwingY_Sin(this.Arm_l_Seg2, 0.0F, ageInTicks, 0.18F, 0.06F, true, 0.0F);
-    }
-    
-    @Override
-	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	boolean aggressive = ((IAggressive) entityIn).isAggressive();
-    	float j = (float)((EntityAvaton) entityIn).getSpellTicks() / 30.0F;
-    	if(((EntityAvaton) entityIn).isSpellcasting()) {
+ 	
+    	if(Entity.isSpellcasting()) {
     		Arm_r_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_l_Seg0.rotateAngleX = GradientAnimation(1.1046188995661776F, -0.6155776351678833F, j);
     		Arm_r_Seg0.rotateAngleY = 2.111673824703684F;
@@ -184,22 +198,20 @@ public class ModelAvaton extends FishModelBase {
     		Arm_l_Seg0.rotateAngleZ = -1.5627678282146893F;
     		if(this.Body_base.rotationPointY > 5.0F)
     			this.Body_base.rotationPointY -= 0.17F;
-    	}
-    	else if(aggressive) {
+    	} else if(Entity.isAggressive()) {
     		this.setRotateAngle(Arm_r_Seg0, -1.9577358219620393F, 0.0F, 0.091106186954104F);
     		this.setRotateAngle(Arm_l_Seg0, -1.8212510744560826F, 0.0F, 0.045553093477052F);
     		if(this.Body_base.rotationPointY < 10.0F)
     			this.Body_base.rotationPointY += 0.17F;
     		else
-    			this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
-    	}
-    	else {
+    			this.Body_base.rotationPointY = 11.0F + MathHelper.sin(0.08F * ageInTicks);
+    	} else {
     		this.setRotateAngle(Arm_r_Seg0, -0.7740535232594852F, 0.0F, 0.5462880558742251F);
     		this.setRotateAngle(Arm_l_Seg0, -0.7740535232594852F, 0.0F, -0.5462880558742251F);
     		if(this.Body_base.rotationPointY < 10.0F)
     			this.Body_base.rotationPointY += 0.17F;
     		else
-    			this.Body_base.rotationPointY = 10.0F + MathHelper.sin(0.08F * ageInTicks);
+    			this.Body_base.rotationPointY = 11.0F + MathHelper.sin(0.08F * ageInTicks);
     	}
     }
 }

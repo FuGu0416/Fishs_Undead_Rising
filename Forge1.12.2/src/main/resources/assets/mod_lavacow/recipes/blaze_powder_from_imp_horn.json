@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "mod_lavacow:imp_horn"
+        }
+    ],
+    "result": {
+        "item": "minecraft:blaze_powder",
+        "count": 2
+    }
+}

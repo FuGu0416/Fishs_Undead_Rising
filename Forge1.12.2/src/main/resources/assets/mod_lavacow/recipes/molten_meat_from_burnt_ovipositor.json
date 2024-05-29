@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mod_lavacow:burntovipositor"
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:moltenbeef"
+  }
+}

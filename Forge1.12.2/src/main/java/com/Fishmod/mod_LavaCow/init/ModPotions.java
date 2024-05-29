@@ -10,6 +10,7 @@ public class ModPotions {
 	public static final PotionType STRONG_CORROSIVE = new PotionType(mod_LavaCow.MODID + ":corrosive", new PotionEffect(ModMobEffects.CORRODED, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
 	public static final PotionType LONG_CORROSIVE = new PotionType(mod_LavaCow.MODID + ":corrosive", new PotionEffect(ModMobEffects.CORRODED, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
 	public static final PotionType FOULODOR = new PotionType(mod_LavaCow.MODID + ":foulodor", new PotionEffect(ModMobEffects.SOILED, 600)).setRegistryName(mod_LavaCow.MODID + ":foulodor");
+	public static final PotionType STRONG_FOULODOR = new PotionType(mod_LavaCow.MODID + ":foulodor", new PotionEffect(ModMobEffects.SOILED, 600, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_foulodor");
 	public static final PotionType LONG_FOULODOR = new PotionType(mod_LavaCow.MODID + ":foulodor", new PotionEffect(ModMobEffects.SOILED, 1200)).setRegistryName(mod_LavaCow.MODID + ":long_foulodor");
 	public static final PotionType INFESTATION = new PotionType(mod_LavaCow.MODID + ":infestation", new PotionEffect(ModMobEffects.INFESTED, 1800)).setRegistryName(mod_LavaCow.MODID + ":infestation");
 	public static final PotionType STRONG_INFESTATION = new PotionType(mod_LavaCow.MODID + ":infestation", new PotionEffect(ModMobEffects.INFESTED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_infestation");

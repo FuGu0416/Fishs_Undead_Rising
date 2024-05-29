@@ -9,12 +9,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderEnigmothLarva extends RenderLiving<EntityEnigmothLarva> {
-	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva.png");
 	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva_glow.png");
-	
-	static {
-		System.out.println(TEXTURES.getResourcePath());
-    }
+	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_larva1.png")
+	};
 
     public RenderEnigmothLarva(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelEnigmothLarva(), 0.3F);
@@ -23,12 +22,12 @@ public class RenderEnigmothLarva extends RenderLiving<EntityEnigmothLarva> {
     
     @Override
 	protected float getDeathMaxRotation(EntityEnigmothLarva entity) {
-		return 180F;
+		return 180.0F;
 	}
     
     @Override
     protected ResourceLocation getEntityTexture(EntityEnigmothLarva entity) {
-    	return TEXTURES;
+    	return TEXTURES[entity.getSkin()];
     }
     
     @Override

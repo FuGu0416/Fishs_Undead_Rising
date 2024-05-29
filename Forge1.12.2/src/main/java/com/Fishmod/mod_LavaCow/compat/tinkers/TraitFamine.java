@@ -47,6 +47,6 @@ public class TraitFamine extends AbstractTrait {
     }
     
     private void RefillHunger(EntityLivingBase player) {
-    	((EntityPlayer)player).getFoodStats().addStats(player.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
+			((EntityPlayer)player).getFoodStats().addStats(player.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
     }
 }

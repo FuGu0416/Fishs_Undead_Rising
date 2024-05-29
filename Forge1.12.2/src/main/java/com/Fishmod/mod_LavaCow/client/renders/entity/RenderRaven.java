@@ -37,9 +37,22 @@ public class RenderRaven extends RenderLiving<EntityRaven>{
     
     @Override
 	protected void preRenderCallback(EntityRaven entity, float partialTickTime) {
+    	/*if(!entity.hasCustomName() && entity.getSkin() == 2)
+    		entity.setCustomNameTag(I18n.format("entity.mod_lavacow.raven.seagull"));*/
+    	
+    	if (entity.getRidingEntity() != null) {
+    		//if(!entity.getRidingEntity().onGround && entity.getRidingEntity().motionY < 0.0D)
+    			//GlStateManager.translate(0.0F, -0.2F, 0.0F);
+    		//else
+    			//GlStateManager.translate(0.4F, 0.12F, 0.0F);
+			//GlStateManager.rotate(180F, 0F, 1F, 0F);
+		}
+    	
     	if (entity.getSkin() == 1) {
     		GlStateManager.scale(1.2F, 1.2F, 1.2F);
     	}
+    	
+    	//Minecraft.getMinecraft().getItemRenderer().renderItemSide(entity, entity.getHeldItemMainhand(), ItemCameraTransforms.TransformType.HEAD, true);
 	}
     
     /**

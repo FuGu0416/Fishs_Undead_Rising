@@ -2,9 +2,12 @@ package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
+import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 
 import net.minecraft.block.Block;
@@ -39,15 +42,17 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLilSludge extends EntityFishTameable{
+public class EntityLilSludge extends EntityFishTameable {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityLilSludge.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	private int limitedLifeTicks;
@@ -106,7 +111,9 @@ public class EntityLilSludge extends EntityFishTameable{
     
     public void setLimitedLife(int limitedLifeTicksIn)
     {
-        this.limitedLifeTicks = limitedLifeTicksIn;
+    	if (limitedLifeTicksIn != 0) {
+    		this.limitedLifeTicks = limitedLifeTicksIn;
+    	}
     }
     
     public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
@@ -148,22 +155,23 @@ public class EntityLilSludge extends EntityFishTameable{
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onLivingUpdate()
-    {
-    	if(this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks) {    		
-            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP)
-            {
+    public void onLivingUpdate() {
+    	if(this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {    		
+            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
                 this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
             }
-            this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
+            
+    		if(this.world instanceof World) {
+    			for (int j = 0; j < 24; ++j) {
+    				double d0 = this.posX + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
+    				double d1 = this.posY + (double)(this.world.rand.nextFloat() * this.height);
+    				double d2 = this.posZ + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
+    				mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+    			}
+    		}
+    		
             this.setDead();
         }
-        
-    	if (!Modconfig.SunScreen_Mode && !(this.getOwner() instanceof EntityPlayer) && this.world.isDaytime() && !this.world.isRemote)
-    	{
-    		float f = this.getBrightness();
-    		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
-    	}
     	
     	super.onLivingUpdate();
     }
@@ -297,26 +305,22 @@ public class EntityLilSludge extends EntityFishTameable{
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_LILSLUDGE_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FishItems.ENTITY_SLUDGELORD_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_LILSLUDGE_DEATH;
     }
 
-    protected SoundEvent getStepSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_STEP;
+    protected SoundEvent getStepSound() {
+        return SoundEvents.ENTITY_CHICKEN_STEP;
     }
 
     protected void playStepSound(BlockPos pos, Block blockIn)
@@ -380,23 +384,24 @@ public class EntityLilSludge extends EntityFishTameable{
        return false;
     }
     
-	@Override
-	protected void dropFewItems(boolean recentlyHit, int looting) {
-		if (!(this.getOwner() instanceof EntityPlayer) && recentlyHit) {
-			int chance = rand.nextInt(2) + rand.nextInt(1 + looting);
-			for (int amount = 0; amount < chance; ++amount)
-				entityDropItem(new ItemStack(FishItems.SILKY_SLUDGE), 0.0F);
-		}
-	}
-    
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return null;
+        return LootTableHandler.LIL_SLUDGE;
+    }
+    
+    @Override
+    protected boolean canDropLoot() {
+       return !this.isTamed();
     }
 
 	@Override
 	public EntityAgeable createChild(EntityAgeable ageable) {
 		return null;
 	}
+	
+	@Override
+    public boolean isPreventingPlayerRest(EntityPlayer playerIn) {
+        return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
+    }
 }

@@ -12,7 +12,7 @@
     },
     "parent": "mod_lavacow:mod_lavacow/kill_forsaken",
     "criteria": {
-        "get_fissionpotion": {
+        "get_hatred_shard": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [

@@ -1,0 +1,53 @@
+{
+    "display": {
+        "icon": {
+            "item": "mod_lavacow:moltenhammer"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.get_molten_tool.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.get_molten_tool.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/get_molten_alloy",
+    "criteria": {
+        "moltenhammer": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "mod_lavacow:moltenhammer"
+                    }
+                ]
+            }
+        },
+		"moltenaxe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "mod_lavacow:moltenaxe"
+                    }
+                ]
+            }
+        },
+		"moltenpan": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "mod_lavacow:moltenpan"
+                    }
+                ]
+            }
+        }
+    },
+	"requirements": [
+        [
+            "moltenhammer",
+            "moltenaxe",
+            "moltenpan"
+        ]
+    ]
+}

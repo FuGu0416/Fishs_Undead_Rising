@@ -263,6 +263,28 @@
               "treasure": true
             }
           ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "mod_lavacow:scarab_wand",
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "treasure": true
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "mod_lavacow:forsaken_staff",
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "treasure": true
+            }
+          ]
         }
       ]
     }

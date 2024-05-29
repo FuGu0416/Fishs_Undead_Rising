@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "type": "forge:ore_dict",
+    		"ore": "gunpowder"
+        },
+        "X": {
+            "item": "mod_lavacow:chitin"
+        },
+        "D": {
+            "type": "forge:ore_dict",
+    		"ore": "string"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:basicbomb",
+        "count": 4
+    }
+}

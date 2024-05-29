@@ -46,7 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityParasite extends EntitySpider{
+public class EntityParasite extends EntitySpider {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityParasite.class, DataSerializers.VARINT);
 	
 	public int lifespawn;
@@ -55,7 +55,7 @@ public class EntityParasite extends EntitySpider{
 	public EntityParasite(World worldIn)
     {
         super(worldIn);
-        this.setSize(0.8F, 0.3F);
+        this.setSize(0.4F, 0.3F);
         this.long_live = false;
         this.lifespawn = Modconfig.Parasite_Lifespan * 20; // Can live for only a short time, poor little one :(
         this.experienceValue = 1;
@@ -139,7 +139,7 @@ public class EntityParasite extends EntitySpider{
         {
         	if(!long_live)this.lifespawn--;
         }
-        else if (this.getSkin() == 2 && this.rand.nextInt(100) < Modconfig.pSpawnRate_Vespa) {
+        else if (this.getSkin() == 2 && this.rand.nextInt(100) < Modconfig.pEvolveRate_Vespa) {
         	double d0 = this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         	List<EntityPlayer> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(d0, d0, d0));
 

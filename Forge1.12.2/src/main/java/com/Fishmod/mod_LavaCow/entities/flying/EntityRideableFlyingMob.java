@@ -294,5 +294,4 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
             }
         }
     }
-
 }

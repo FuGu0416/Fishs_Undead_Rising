@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.proxy;
 
 import com.Fishmod.mod_LavaCow.client.particle.ParticalLocustSwarm;
+import com.Fishmod.mod_LavaCow.client.particle.ParticleWitherFlame;
 import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
@@ -60,6 +61,10 @@ public class ClientProxy implements IProxy {
 		
         if (particleName.equals("locust_swarm")) {
             Minecraft.getMinecraft().effectRenderer.addEffect(new ParticalLocustSwarm(world, x, y, z, vecX, vecY, vecZ));
+        }
+        
+        if (particleName.equals("wither_flame")) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleWitherFlame(world, x, y, z, vecX, vecY, vecZ));
         }
         
 		if (particleName.equals("ectoplasm")) {

@@ -1,7 +1,7 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " D ",
+        " X ",
         "X#X",
         " X "
     ],
@@ -10,11 +10,7 @@
             "item": "mod_lavacow:banshee_vocal_cord"
         },
         "X": {
-            "item": "mod_lavacow:chitin"
-        },
-        "D": {
-            "type": "forge:ore_dict",
-    		"ore": "string"
+            "item": "mod_lavacow:basicbomb"
         }
     },
     "result": {

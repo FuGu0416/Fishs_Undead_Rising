@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+	    {
+	      	"item": "minecraft:bowl"
+	    },
+	    {
+	    	"item": "mod_lavacow:moltenpan",
+	    	"data": 32767
+	    },
+	    {
+			"item": "minecraft:chicken"
+	    },
+	    {
+			"item": "mod_lavacow:imp_horn"
+	    }
+    ],
+
+    "result": {
+        "item": "mod_lavacow:kung_pao_chicken"
+    }
+}

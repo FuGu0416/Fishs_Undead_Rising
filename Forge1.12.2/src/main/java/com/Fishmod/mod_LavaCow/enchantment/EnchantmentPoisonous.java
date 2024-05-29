@@ -12,12 +12,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
 public class EnchantmentPoisonous extends Enchantment {
-
 	public EnchantmentPoisonous(String unlocalizedName, String registryName, EnumEnchantmentType type) {
-		super(Rarity.VERY_RARE, type, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND});
+		super(Rarity.RARE, type, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
 		this.setName(mod_LavaCow.MODID + "." + unlocalizedName);
 		this.setRegistryName(registryName);
 	}
+	
+    /**
+     * Returns the minimal value of enchantability needed on the enchantment level passed.
+     */
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 10 + 20 * (enchantmentLevel - 1);
+    }
+
+    /**
+     * Returns the maximum value of enchantability nedded on the enchantment level passed.
+     */
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
+    }
 	
 	@Override
 	public int getMaxLevel() {
@@ -27,8 +40,7 @@ public class EnchantmentPoisonous extends Enchantment {
     /**
      * Determines if this enchantment can be applied to a specific ItemStack.
      */
-    public boolean canApply(ItemStack stack)
-    {
+    public boolean canApply(ItemStack stack) {
         return Modconfig.Enchantment_Enable ? super.canApply(stack) : false;
     }
 	
@@ -38,8 +50,7 @@ public class EnchantmentPoisonous extends Enchantment {
      * @param stack
      * @return
      */
-    public boolean canApplyAtEnchantingTable(ItemStack stack)
-    {
+    public boolean canApplyAtEnchantingTable(ItemStack stack) {
         return Modconfig.Enchantment_Enable ? super.canApplyAtEnchantingTable(stack) : false;
     }
 	
@@ -48,14 +59,13 @@ public class EnchantmentPoisonous extends Enchantment {
      * @return false to disable the vanilla feature
      */
 	@Override
-    public boolean isAllowedOnBooks()
-    {
+    public boolean isAllowedOnBooks() {
         return Modconfig.Enchantment_Enable;
     }
 	
 	@Override
 	public void onEntityDamaged(EntityLivingBase user, Entity target, int level) {
 		if(target instanceof EntityLivingBase)
-			((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, level - 1));
+			((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, 8 * 20, level - 1));
 	}
 }

@@ -10,7 +10,8 @@
             "item": "mod_lavacow:moltenbeef"
         },
         "X": {
-            "item": "mod_lavacow:undyingheart"
+            "type": "forge:ore_dict",
+            "ore": "heartUndying"
         },
         "Y": {
             "item": "minecraft:lava_bucket"

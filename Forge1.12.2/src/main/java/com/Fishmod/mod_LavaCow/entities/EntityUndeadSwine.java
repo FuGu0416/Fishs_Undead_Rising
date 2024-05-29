@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Lists;
@@ -294,17 +293,6 @@ public class EntityUndeadSwine extends EntityMob{
         	return this.attackStep > 20;
         }
          
-    }
-    
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    public void onDeath(DamageSource cause) {
-       super.onDeath(cause);
-
-       int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
-       if(this.canDropLoot())
-    	   LootTableHandler.dropRareLoot(this, FishItems.UNDYINGHEART, Modconfig.UndeadSwine_DropHeart, ModEnchantments.LIFESTEAL, 3, i);
     }
     
     /**

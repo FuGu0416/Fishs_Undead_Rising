@@ -45,12 +45,22 @@ public class EntityGhostRay extends EntityFlyingMob {
 	
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.GhostRay_Health);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.03D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.03D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.03D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5.0D);
 	}
+	
+	@Override
+    public boolean getCanSpawnHere() {
+    	// Middle end island check
+    	if (this.world.provider.getDimension() == 1) {
+            return !Modconfig.GhostRay_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : super.getCanSpawnHere();
+    	}
+    	
+        return super.getCanSpawnHere();
+    }
 	
     @SideOnly(Side.CLIENT)
     public int getBrightnessForRender() {
@@ -71,7 +81,7 @@ public class EntityGhostRay extends EntityFlyingMob {
         this.setSize(1.6F * EntityGhostRay.SIZE[this.getSize()], 0.25F * EntityGhostRay.SIZE[this.getSize()]);
     }
     
-	/**
+    /**
 	 * Will return how many at most can spawn in a chunk at once.
 	*/
 	@Override
@@ -87,7 +97,7 @@ public class EntityGhostRay extends EntityFlyingMob {
     * Called when the entity is attacked.
     */
    public boolean attackEntityFrom(DamageSource source, float amount) {
-       if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase)
+       if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase && Modconfig.GhostRay_Ghostly_Touch && !source.isCreativePlayer())
     	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 2));
        
 	   return super.attackEntityFrom(source, amount);
@@ -95,13 +105,11 @@ public class EntityGhostRay extends EntityFlyingMob {
    
    @Override
    public void onLivingUpdate() {
-   	if (this.world.isRemote) {
-				for(int i = 0; i < 2; ++i) {
-					this.world.spawnParticle(EnumParticleTypes.TOWN_AURA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
-			}
-		}
-   	
-   	super.onLivingUpdate();
+       if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote) {
+           this.world.spawnParticle(EnumParticleTypes.TOWN_AURA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
+       }
+       
+       super.onLivingUpdate();
    }
    
    @Override
@@ -123,7 +131,6 @@ public class EntityGhostRay extends EntityFlyingMob {
    		// Nether (Soul Sand Valley) Variant
        if (this.world.provider.doesWaterVaporize()) {
     	   this.setSkin(1);
-    	   setFireImmunity();
        }
        
        // End Variant
@@ -132,10 +139,6 @@ public class EntityGhostRay extends EntityFlyingMob {
        }
        
    	return super.onInitialSpawn(difficulty, livingdata);
-   }
-   
-   public boolean setFireImmunity() {
-   	return this.isImmuneToFire = true;
    }
    
    public int getSkin()
@@ -181,7 +184,7 @@ public class EntityGhostRay extends EntityFlyingMob {
 	}
 
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return FishItems.ENTITY_BANSHEE_HURT;
+		return FishItems.ENTITY_GHOSTRAY_HURT;
 	}
 
 	protected SoundEvent getDeathSound() {
@@ -193,16 +196,14 @@ public class EntityGhostRay extends EntityFlyingMob {
 		return LootTableHandler.GHOSTRAY;
 	}
 	
-    public boolean getCanSpawnHere() {
-    	// Middle end island check
-    	if (this.world.provider.getDimension() == 1) {
-            return !Modconfig.GhostRay_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-    	}
-    	
-        return super.getCanSpawnHere();
-    }
-	
     public int getTalkInterval() {
         return 1000;
     }
+    
+	/**
+	* Returns the volume for the sounds this mob makes.
+	*/
+	protected float getSoundVolume() {
+		return 2.0F;
+	}
 }
