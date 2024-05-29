@@ -8,6 +8,8 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -47,7 +49,12 @@ public class WorldGenCemeterySmall extends WorldGenerator {
     }
 	
 	private void Gen_Cemetery(World worldIn, Random rand, BlockPos position, int facing) {
+		IBlockState blockstate = worldIn.getBlockState(worldIn.getHeight(position).up());
 
+		if (blockstate.getMaterial() != Material.GROUND && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
+			return;
+		}
+		
 		worldIn.setBlockState(position.up(), Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), 2);
 		
 		switch(facing) {

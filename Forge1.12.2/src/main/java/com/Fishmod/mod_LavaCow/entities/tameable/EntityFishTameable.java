@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.item.ItemNetherStew;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -174,7 +175,14 @@ public class EntityFishTameable extends EntityTameable {
 	            	if(itemstack.getItem() instanceof ItemBucket) {
 	            		itemstack.shrink(1);
 	            		player.setHeldItem(hand, new ItemStack(Items.BUCKET));
-	            	} else {
+	            	} else if (itemstack.getItem() instanceof ItemNetherStew) {
+		            	   itemstack.shrink(1);
+		            	   if (itemstack.isEmpty()) {
+		            		   player.setHeldItem(hand, new ItemStack(Items.BOWL));
+		            	   } else if (!player.inventory.add(1, new ItemStack(Items.BOWL)) && !player.world.isRemote) {
+		            		   player.entityDropItem(new ItemStack(Items.BOWL), 0.0F);
+		                   }
+		               } else {
 	            		itemstack.shrink(1);
 	            	}
 	            }
@@ -255,6 +263,11 @@ public class EntityFishTameable extends EntityTameable {
 
             if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
+            }
+            
+            // When summoned, don't damage summoner or other minions 
+            if (entity != null && entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isOnSameTeam(this)) {
+                return false;
             }
 
             return super.attackEntityFrom(source, amount);

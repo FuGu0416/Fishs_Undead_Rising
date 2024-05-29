@@ -754,6 +754,12 @@
 		"sounds": [{"name": "mod_lavacow:entity/enigmoth/flap","stream": true}]
 	},
 	
+	"entity.enigmoth.scales":
+	{
+		"category": "entity",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/scales","stream": true}]
+	},
+	
 	"random.death_coil_shoot":
 	{
 		"category": "neutral",
@@ -786,5 +792,11 @@
 		"category": "neutral",
 		"subtitle": "random_thorn_shoot",
 		"sounds": [{"name": "mod_lavacow:random/thorn_shoot","stream": true}]
+	},
+	"random.spin":
+	{
+		"category": "neutral",
+		"subtitle": "random_spin",
+		"sounds": [{"name": "mod_lavacow:random/spin","stream": true}]
 	}
 }

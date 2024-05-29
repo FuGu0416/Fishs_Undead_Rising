@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -21,15 +22,17 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemCrown extends ItemFishCustom{    
+public class ItemCrown extends ItemFishCustom { 
 	public ItemCrown(String registryName, CreativeTabs tab, boolean hasTooltip) {
 		super(registryName, null, tab, hasTooltip);		
 		this.setHasSubtypes(true);
@@ -47,14 +50,13 @@ public class ItemCrown extends ItemFishCustom{
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(player.getHeldItem(hand).getMetadata() == 1 && Modconfig.pSpawnRate_SkeletonKing
         		&& worldIn.getBlockState(pos).getBlock().equals(Blocks.SKULL)
+        		&& !(worldIn.getDifficulty() == EnumDifficulty.PEACEFUL)
         		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.HOT)
         		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.DRY)
-        		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.SANDY)
-        		) 
+        		&& BiomeDictionary.hasType(worldIn.getBiome(pos), Type.SANDY))
         {
         	TileEntity tileentity = worldIn.getTileEntity(pos);
         	
@@ -70,12 +72,14 @@ public class ItemCrown extends ItemFishCustom{
         			
     				if(!worldIn.isRemote) {
     		        	EntitySkeletonKing entityskeletonking = new EntitySkeletonKing(worldIn);
-    		        	
     		        	entityskeletonking.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
     		        	worldIn.spawnEntity(entityskeletonking);
+    		        	entityskeletonking.setInvulTime(150);
+    		        	entityskeletonking.setHealth(entityskeletonking.getMaxHealth() * 0.10F);
     	        	}
     				
-        			return EnumActionResult.PASS;
+    				worldIn.playSound(player, pos, FishItems.ENTITY_SKELETONKING_SPAWN, SoundCategory.HOSTILE, 1.0F, 1.0F);
+        			return EnumActionResult.SUCCESS;
         		}
         	}
         }
