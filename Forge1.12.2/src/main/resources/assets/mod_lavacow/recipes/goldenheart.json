@@ -14,8 +14,7 @@
       "ore": "blockGold"
     },
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "heartUndying"
+      "item": "mod_lavacow:soulforged_heart"
     }
   },
   "result": {

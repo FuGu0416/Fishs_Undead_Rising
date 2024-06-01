@@ -546,17 +546,19 @@ public class ModEventHandler {
     		}
     		
     		boolean have_Heart = false;
-    		if(Loader.isModLoaded("baubles")) {
-    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1)
+			if(Loader.isModLoaded("baubles")) {
+    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.MOOTENHEART) != -1) {
     				have_Heart = true;
+    			}
+    		}
+			
+    		for(int i = 0; i < 9 ; i++) {
+    			if(((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART)) {
+					have_Heart = true;
+    			}
     		}
     		
-    		for(int i = 0; i < 9 ; i++)
-    			if(((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.MOOTENHEART))
-					have_Heart = true;
-    		
-    		if(have_Heart)
-    			effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
+    		if(have_Heart) effectlevel -= (float)Modconfig.MootenHeart_Damage / 100.0F;
     	}
     	
     	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityWolf){
@@ -1004,6 +1006,23 @@ public class ModEventHandler {
     @SubscribeEvent
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
+    	
+    	if (event.getEntityLiving() instanceof EntityPlayer) {
+    		boolean have_Heart = false;
+    		
+			if(Loader.isModLoaded("baubles")) {
+    			if(baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getEntityLiving(), FishItems.SOULFORGED_HEART) != -1)
+    				have_Heart = true;
+    		}
+    		
+    		for (int i = 0; i < 9; i++) {
+    			if (((EntityPlayer)event.getEntityLiving()).inventory.getStackInSlot(i).getItem().equals(FishItems.SOULFORGED_HEART)) {
+    				have_Heart = true;
+    			}
+    		}
+    		
+    		if (have_Heart) effectlevel += (float)Modconfig.MootenHeart_Damage / 100.0F;
+    	}
     	
     	if (event.getEntityLiving().isPotionActive(ModMobEffects.SOILED)) {
     		effectlevel -= 0.25F * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.SOILED).getAmplifier());

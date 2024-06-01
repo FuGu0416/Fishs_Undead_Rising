@@ -170,6 +170,7 @@ public class FishItems {
 	public static final Item KUNG_PAO_CHICKEN = new ItemNetherStew("kung_pao_chicken", 8, 0.8F).setPotionEffect(new PotionEffect(ModMobEffects.IMMOLATION, 60 * 20, 1), 1.0F);
 	public static final Item ECTOPLASM_MASS = new ItemFishCustom("ectoplasm_mass", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item ECTOPLASM_INGOT = new ItemFishCustom("ectoplasm_ingot", null,  mod_LavaCow.TAB_ITEMS, false);
+	public static final Item SOULFORGED_HEART = new ItemBaubleTrinket("soulforged_heart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
 	public static final Item GHOST_SWARMER_ITEM = new ItemFishCustomFood("ghost_swarmer_item", 2, 0.1F, true, 64, false).setPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 0), 0.3F);
 	public static final Item FORSAKEN_STAFF = new ItemPiranhaLauncher("forsaken_staff", EntityDeathCoil.class, FishItems.HATRED_SHARD, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(333);
 	public static final Item SINISTER_WHETSTONE = new ItemSinisterWhetstone("sinister_whetstone");
