@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "mod_lavacow:ectoplasm_ingot"
+      "item": "mod_lavacow:vespa_carapace"
     }
   },
   "result": {
-    "item": "mod_lavacow:ectoplasm_block"
+    "item": "mod_lavacow:vespa_carapace_block"
   }
 }

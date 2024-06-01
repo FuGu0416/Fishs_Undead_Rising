@@ -492,7 +492,7 @@ public class Modconfig {
 		SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
 		SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 80, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);
 		SkeletonKing_Ability_Summon_Cooldown = config.get("Skeleton King", "skeleton king summon cooldown", 16, "Set the cooldown of summoning Unburied [0-100]", 0, 100).getInt(16);
-		SkeletonKing_Ability_Summon_Num = config.get("Skeleton King", "skeleton king summon number", 6, "Set the number of Forsaken summoned per cast [0-100]", 0, 100).getInt(4);
+		SkeletonKing_Ability_Summon_Num = config.get("Skeleton King", "skeleton king summon number", 6, "Set the number of Forsaken summoned per cast [0-100]", 0, 100).getInt(6);
 		SkeletonKing_Ability_Summon_Max = config.get("Skeleton King", "skeleton king summon max", 24, "Set the max number of Forsaken summoned [0-100]", 0, 100).getInt(24);
 		SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 120, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(120);
 		SkeletonKing_Loot_Option = config.get("Skeleton King", "skeleton king loot in chest", true, "Should Skeleton King drop its loot inside a chest [false/true]").getBoolean(true);

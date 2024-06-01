@@ -64,7 +64,10 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.CACTOID_SPROUT), Modblocks.CACTOID_SPROUT.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.ECTOPLASM_BLOCK), Modblocks.ECTOPLASM_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
+                BlockBasic.setItemName(new ItemBlock(Modblocks.ECTOPLASM_BLOCK), Modblocks.ECTOPLASM_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.MOLTEN_ALLOY_BLOCK), Modblocks.MOLTEN_ALLOY_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.SCYTHE_CLAW_BLOCK), Modblocks.SCYTHE_CLAW_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.VESPA_CARAPACE_BLOCK), Modblocks.VESPA_CARAPACE_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
         );
     }
     

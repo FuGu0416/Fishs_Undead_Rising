@@ -3,12 +3,12 @@
   "ingredients": [
     [
       {
-        "item": "mod_lavacow:ectoplasm_block"
+        "item": "mod_lavacow:molten_alloy_block"
       }
     ]
   ],
   "result": {
-    "item": "mod_lavacow:ectoplasm_ingot",
+    "item": "mod_lavacow:molten_alloy",
     "count": 9
   }
 }

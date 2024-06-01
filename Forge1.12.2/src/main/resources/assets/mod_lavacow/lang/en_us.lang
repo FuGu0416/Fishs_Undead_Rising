@@ -179,6 +179,9 @@ tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
 tile.mod_lavacow.cactoid_sprout.name=Cactoid Sprout
 tile.mod_lavacow.ectoplasm_block.name=Block of Ectoplasm
+tile.mod_lavacow.molten_alloy_block.name=Block of Molten Alloy
+tile.mod_lavacow.scythe_claw_block.name=Scythe Claw Block
+tile.mod_lavacow.vespa_carapace_block.name=Vespa Carapace Block
 
 ############
 # Entities #
@@ -632,10 +635,10 @@ advancements.mod_lavacow.kill_ghost_swarmer.description=Kill a Ghost Swarmer
 advancements.mod_lavacow.get_molten_alloy.title=Pure Protein
 advancements.mod_lavacow.get_molten_alloy.description=Obtain a bar of Molten Alloy
 advancements.mod_lavacow.get_molten_armor.title=Fire it Up!
-advancements.mod_lavacow.get_molten_armor.description=Upgrade your diamond armor with molten armor!
+advancements.mod_lavacow.get_molten_armor.description=Upgrade your diamonds and get yourself some molten armor!
 advancements.mod_lavacow.get_molten_tool.title=Molten Warrior
 advancements.mod_lavacow.get_molten_tool.description=Obtain a molten tool!
-advancements.mod_lavacow.tame_scarecrow.title=Do You Want to Build a Scarecrow?
+advancements.mod_lavacow.tame_scarecrow.title=You Want to Build a Scarecrow?
 advancements.mod_lavacow.tame_scarecrow.description=Build a Scarecrow
 
 #################
