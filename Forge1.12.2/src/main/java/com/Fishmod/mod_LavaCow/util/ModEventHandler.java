@@ -30,6 +30,7 @@ import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.item.ItemChitinArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
+import com.Fishmod.mod_LavaCow.item.ItemGhostlyArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
@@ -611,6 +612,26 @@ public class ModEventHandler {
     			event.getSource().getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(event.getEntityLiving()), 1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.THORNED).getAmplifier());
             }
     	}
+    	
+    	int Armor_Ghostly_lvl = 0;
+        for (ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
+          if (S.getItem() instanceof ItemGhostlyArmor)
+            Armor_Ghostly_lvl++;
+        }
+        if (Armor_Ghostly_lvl >= 2)
+        	event.getEntityLiving().heal(event.getAmount() * 0.2F);
+        
+        if (event.getSource().getTrueSource() != null && event.getEntityLiving() != null && event.getSource().getTrueSource() instanceof EntityLivingBase && ((EntityLivingBase)event.getSource().getTrueSource()).getHealth() < event.getEntityLiving().getHealth()) {
+          Armor_Ghostly_lvl = 0;
+          
+          for (ItemStack S : event.getSource().getTrueSource().getArmorInventoryList()) {
+            if (S.getItem() instanceof ItemGhostlyArmor)
+              Armor_Ghostly_lvl++; 
+          }
+          
+          if (Armor_Ghostly_lvl >= 4)
+            event.setAmount(event.getAmount() * 1.2F);
+        } 
     		
     	event.setAmount(event.getAmount() * effectlevel);
     }
