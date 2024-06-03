@@ -32,6 +32,7 @@ import com.Fishmod.mod_LavaCow.item.ItemPteraWing;
 import com.Fishmod.mod_LavaCow.item.ItemRavenWhistle;
 import com.Fishmod.mod_LavaCow.item.ItemSinisterWhetstone;
 import com.Fishmod.mod_LavaCow.item.ItemSkeletonKingCrown;
+import com.Fishmod.mod_LavaCow.item.ItemSoulforgedAxe;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
@@ -64,6 +65,7 @@ public class FishItems {
     
     public static ToolMaterial TOOL_MOLTEN = EnumHelper.addToolMaterial("tool_molten", 4, 1872, 8.5F, 3.0F, 14);
     public static ToolMaterial TOOL_SCEPTER = EnumHelper.addToolMaterial("tool_scepter", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SOULFORGED = EnumHelper.addToolMaterial("tool_soulforged", 5, 2031, 9.0F, 3.0F, 15);
     
 	public static final Item NETHERSTEW = new ItemNetherStew("netherstew", 6, 0.6F).setRandPotionEffect(ItemNetherStew.Effect_nethersoup);
 	public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true);
@@ -173,6 +175,9 @@ public class FishItems {
 	public static final Item ECTOPLASM_MASS = new ItemFishCustom("ectoplasm_mass", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item ECTOPLASM_INGOT = new ItemFishCustom("ectoplasm_ingot", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item SOULFORGED_HEART = new ItemBaubleTrinket("soulforged_heart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
+	public static final Item SOULFORGED_HAMMER = new ItemFishCustomWeapon("soulforged_hammer", TOOL_SOULFORGED, 5.5F, -2.4F, FishItems.ECTOPLASM_INGOT, EnumRarity.EPIC);
+	public static final Item SOULFORGED_AXE = new ItemSoulforgedAxe("soulforged_axe");
+	public static final Item SOULFORGED_PAN = new ItemFishCustomWeapon("soulforged_pan", TOOL_SOULFORGED, 3.5F, -2.6F, FishItems.ECTOPLASM_INGOT, EnumRarity.EPIC);
 	public static final Item GHOSTLY_HELMET = new ItemGhostlyArmor("ghostlyarmor_helmet", 2, EntityEquipmentSlot.HEAD);
 	public static final Item GHOSTLY_CHESTPLATE = new ItemGhostlyArmor("ghostlyarmor_chestplate", 2, EntityEquipmentSlot.CHEST);
 	public static final Item GHOSTLY_LEGGINGS = new ItemGhostlyArmor("ghostlyarmor_leggings", 2, EntityEquipmentSlot.LEGS);

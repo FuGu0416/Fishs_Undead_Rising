@@ -274,6 +274,26 @@ public class ModEventHandler {
 			event.getOutput().addEnchantment(Enchantments.SMITE, ench_lvl);
     		event.setMaterialCost(1);
     	}
+    	
+    	// Upgradeable Items
+    	else if (tool.getItem() == FishItems.MOLTENHAMMER && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGED_HAMMER).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.MOLTENAXE && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGED_AXE).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.MOLTENPAN && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGED_PAN).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
     }
     
     /**
@@ -447,7 +467,7 @@ public class ModEventHandler {
     @SubscribeEvent
     public static void onBlockDestroyed(HarvestDropsEvent event) {
     	if (event.getHarvester() != null && event.getState().getBlock().canHarvestBlock(event.getWorld(), event.getPos(), event.getHarvester())) {
-    		if (event.getHarvester().getHeldItemMainhand().getItem() == FishItems.MOLTENAXE) {
+    		if (event.getHarvester().getHeldItemMainhand().getItem() == FishItems.MOLTENAXE || event.getHarvester().getHeldItemMainhand().getItem() == FishItems.SOULFORGED_AXE) {
 			List<ItemStack> to_be_removed = new ArrayList<ItemStack>();
 			List<ItemStack> to_be_added = new ArrayList<ItemStack>();
 

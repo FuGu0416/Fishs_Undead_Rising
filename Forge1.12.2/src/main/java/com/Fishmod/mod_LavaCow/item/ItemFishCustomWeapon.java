@@ -199,12 +199,28 @@ public class ItemFishCustomWeapon extends ItemSword {
 			// Stacks with Fire Aspect
 			target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
 		}
+		else if(stack.getItem() == FishItems.SOULFORGED_HAMMER)
+		{
+			target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
+			
+			// Stacks with Fire Aspect
+			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
+		}
 		else if(stack.getItem() == FishItems.MOLTENPAN)
 		{
 			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
 			
 			// Stacks with Fire Aspect
 			target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+		}
+		else if(stack.getItem() == FishItems.SOULFORGED_PAN)
+		{
+			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
+			
+			// Stacks with Fire Aspect
+			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
 		}
 		else if(stack.getItem() == FishItems.SKELETONKING_MACE)
 		{
@@ -227,6 +243,20 @@ public class ItemFishCustomWeapon extends ItemSword {
             double d2 = z + radius * MathHelper.cos((float) (i / NumberofParticles * 360.0f));
             
             worldIn.spawnParticle(particleIn, d0, d1, d2, 0.0D, 0.0D, 0.0D); 
+		}
+	}
+	
+	public static void WitherBurst(World worldIn, double x, double y, double z, double radius, String particleIn)
+	{		
+		double NumberofParticles = radius * 8.0D;
+		
+		for(double i = 0.0D; i < NumberofParticles; i++)
+		{
+			double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
+            double d1 = (double)(y + 1);
+            double d2 = z + radius * MathHelper.cos((float) (i / NumberofParticles * 360.0f));
+            
+            mod_LavaCow.PROXY.spawnCustomParticle(particleIn, worldIn, d0, d1, d2, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F); 
 		}
 	}
 	
@@ -369,6 +399,47 @@ public class ItemFishCustomWeapon extends ItemSword {
 			LavaBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, EnumParticleTypes.FLAME);
 			playerIn.getHeldItem(handIn).damageItem(8, playerIn);
 			playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
+			playerIn.getCooldownTracker().setCooldown(this, 80);
+			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+			
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+		}
+        
+        if(playerIn.getHeldItem(handIn).getItem() == FishItems.SOULFORGED_HAMMER)
+		{
+			double radius = 5.0D;
+
+			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(radius, radius, radius));
+			for(Entity entity1 : list)
+			{
+				if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable)entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP))
+				{
+					entity1.setFire(5 + 5 * fire_aspect);
+					((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 0));
+					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 8.0F + (float)sharpness
+							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
+							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite : 0));
+					
+					((EntityLivingBase)entity1).knockBack(playerIn, (float)knockback * 0.5F, (playerIn.posX - entity1.posX)/playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ)/playerIn.getDistance(entity1));
+					
+		            if (bane_of_arthropods > 0 && (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD)))
+		            {
+		                int i = 20 + worldIn.rand.nextInt(10 * bane_of_arthropods);
+		                ((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+		            }
+		            
+		            if(poisonous > 0)
+		    			((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, poisonous - 1));
+		            
+		            if(corrosive > 0)
+		            	((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4*20, corrosive - 1));
+				}
+			}
+			
+			WitherBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, "wither_flame");
+			playerIn.getHeldItem(handIn).damageItem(6, playerIn);
+			playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
+			playerIn.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.5F, 0.75F);
 			playerIn.getCooldownTracker().setCooldown(this, 80);
 			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
 			

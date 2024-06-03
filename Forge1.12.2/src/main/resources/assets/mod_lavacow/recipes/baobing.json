@@ -1,22 +1,27 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-	    {
-	      	"item": "minecraft:bowl"
-	    },
-	    {
-	    	"item": "mod_lavacow:moltenpan",
-	    	"data": 32767
-	    },
-	    {
-			"item": "mod_lavacow:shattered_ice"
-	    },
-	    {
-			"item": "mod_lavacow:cactus_fruit"
-	    }
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    [
+      {
+        "item": "mod_lavacow:moltenpan",
+        "data": 32767
+      },
+      {
+        "item": "mod_lavacow:soulforged_pan",
+        "data": 32767
+      }
     ],
-
-    "result": {
-        "item": "mod_lavacow:baobing"
+    {
+      "item": "mod_lavacow:shattered_ice"
+    },
+    {
+      "item": "mod_lavacow:cactus_fruit"
     }
+  ],
+  "result": {
+    "item": "mod_lavacow:baobing"
+  }
 }
