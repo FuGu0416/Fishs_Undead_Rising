@@ -276,19 +276,19 @@ public class ModEventHandler {
     	}
     	
     	// Upgradeable Items
-    	else if (tool.getItem() == FishItems.MOLTENHAMMER && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    	else if (tool.getItem() == FishItems.MOLTENHAMMER && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
     		event.setCost(4);
 			event.setOutput(new ItemStack(FishItems.SOULFORGED_HAMMER).copy());
 			event.getOutput().setTagCompound(outputStack.getTagCompound());
     		event.setMaterialCost(1);
     	}
-    	else if (tool.getItem() == FishItems.MOLTENAXE && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    	else if (tool.getItem() == FishItems.MOLTENAXE && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
     		event.setCost(4);
 			event.setOutput(new ItemStack(FishItems.SOULFORGED_AXE).copy());
 			event.getOutput().setTagCompound(outputStack.getTagCompound());
     		event.setMaterialCost(1);
     	}
-    	else if (tool.getItem() == FishItems.MOLTENPAN && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    	else if (tool.getItem() == FishItems.MOLTENPAN && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
     		event.setCost(4);
 			event.setOutput(new ItemStack(FishItems.SOULFORGED_PAN).copy());
 			event.getOutput().setTagCompound(outputStack.getTagCompound());

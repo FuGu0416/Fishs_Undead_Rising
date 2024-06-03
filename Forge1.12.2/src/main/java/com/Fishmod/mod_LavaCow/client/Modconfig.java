@@ -281,6 +281,7 @@ public class Modconfig {
 	public static boolean Potion_Enable;
 	public static boolean Enchantment_Enable;
 	public static boolean Enchantment_Anvil_Enable;
+	public static boolean Soulforged_Anvil_Recipes;
 	public static int MootenHeart_Damage;
 	public static int SoulforgedHeart_Healing;
 	public static int[] Spawn_Cemetery_AllowList = new int[0];
@@ -716,6 +717,7 @@ public class Modconfig {
 		Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Should new brewing recipes be added (existing properties will be preserved). [false/true]").getBoolean(true);
 		Enchantment_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable enchantment", true, "Should new enchantments be added (existing properties will be preserved). [false/true]").getBoolean(true);
 		Enchantment_Anvil_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable anvil enchantment", true, "Should certain items apply enchantments on the anvil (e.g. Poisonous Spore applies the Poisonous II enchant on swords). [false/true]").getBoolean(true);
+		Soulforged_Anvil_Recipes = config.get(Configuration.CATEGORY_GENERAL, "enable soulforged anvil recipes", true, "Should soulforged armor/tools be created when combining a soulforged heart with any molten armor piece/tool on the anvil (e.g. Molten Warhammer + Soulforged Heart = Soulforged Warhammer). [false/true]").getBoolean(true);
 		
 		SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
 		ScarabWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "scarab scepter cooldown", 60, "Ability cooldown of Scarab Scepter [1-10000]", 1, 10000).getInt(60);

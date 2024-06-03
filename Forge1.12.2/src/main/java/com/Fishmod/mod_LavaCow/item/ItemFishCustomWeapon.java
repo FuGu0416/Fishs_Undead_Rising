@@ -416,7 +416,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 				{
 					entity1.setFire(5 + 5 * fire_aspect);
 					((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 0));
-					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 8.0F + (float)sharpness
+					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 10.0F + (float)sharpness
 							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
 							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite : 0));
 					
