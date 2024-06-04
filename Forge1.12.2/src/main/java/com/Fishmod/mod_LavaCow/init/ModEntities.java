@@ -551,7 +551,7 @@ public class ModEntities {
         tweakEntitySpawn(EntityFoglet.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.Type.WET);
         tweakEntitySpawn(EntityFoglet.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.Type.RIVER);
         tweakEntitySpawn(EntityIsnachi.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Isnachi, 8, 16, BiomeDictionary.Type.JUNGLE);
-        tweakEntitySpawn(EntityImp.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Isnachi, 8, 16, BiomeDictionary.Type.NETHER);
+        tweakEntitySpawn(EntityImp.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Imp, 8, 16, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityZombieFrozen.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieFrozen, 8, 16, BiomeDictionary.Type.COLD);
         tweakEntitySpawn(EntityUndeadSwine.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_UndeadSwine, 4, 8, BiomeDictionary.Type.FOREST);
         tweakEntitySpawn(EntitySalamander.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Salamander, 4, 8, BiomeDictionary.Type.NETHER);
@@ -562,6 +562,7 @@ public class ModEntities {
 				tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);						
 			}
 		}
+		tweakEntitySpawn(EntityUnburied.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Unburied, 8, 16, BiomeDictionary.Type.SPOOKY);
 		tweakEntitySpawn(EntitySludgeLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SludgeLord, 1, 1, BiomeDictionary.Type.SWAMP);
 		tweakEntitySpawn(EntityAmberLord.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_AmberLord, 1, 1, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityRaven.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Raven, 4, 8, BiomeDictionary.Type.SPOOKY);
@@ -584,11 +585,12 @@ public class ModEntities {
 		tweakEntitySpawn(EntityBanshee.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Banshee, 1, 2, Type.MOUNTAIN);	
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityAvaton.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Avaton, 1, 2, BiomeDictionary.Type.SAVANNA);
-		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 4, 8, BiomeDictionary.Type.SANDY);
+		tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 8, 16, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityForsaken.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Forsaken, 4, 8, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityCactyrant.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactyrant, 1, 2, BiomeDictionary.Type.SANDY);
 		tweakEntitySpawn(EntityCactoid.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactoid, 4, 8, BiomeDictionary.Type.SANDY);
-		tweakEntitySpawn(EntitySeaHag.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Wraith, 1, 2, BiomeDictionary.Type.BEACH);
+		tweakEntitySpawn(EntitySeaHag.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Sea_Hag, 1, 2, BiomeDictionary.Type.BEACH);
+		tweakEntitySpawn(EntityGraveRobber.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Grave_Robber, 1, 1, BiomeDictionary.Type.SPOOKY);
 		tweakEntitySpawn(EntityWraith.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Wraith, 1, 2, BiomeDictionary.Type.FOREST);
 		tweakEntitySpawn(EntityEnigmoth.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth, 1, 2, BiomeDictionary.Type.END);
 		tweakEntitySpawn(EntityEnigmothLarva.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth_Larva, 1, 2, BiomeDictionary.Type.END);
@@ -625,6 +627,7 @@ public class ModEntities {
         EntitySpawnPlacementRegistry.setPlacementType(EntityCactyrant.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntityCactoid.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntitySeaHag.class, SpawnPlacementType.IN_AIR);
+        EntitySpawnPlacementRegistry.setPlacementType(EntityGraveRobber.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntityWraith.class, SpawnPlacementType.IN_AIR);
         EntitySpawnPlacementRegistry.setPlacementType(EntityGhostSwarmer.class, SpawnPlacementType.IN_AIR);
         EntitySpawnPlacementRegistry.setPlacementType(EntityAmberLord.class, SpawnPlacementType.ON_GROUND);

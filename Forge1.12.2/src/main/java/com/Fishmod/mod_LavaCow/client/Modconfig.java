@@ -156,6 +156,7 @@ public class Modconfig {
 	public static double LilSludge_Attack;
 	public static int LilSludge_Lifespan;
 	
+	public static int pSpawnRate_Unburied;
 	public static double Unburied_Health;
 	public static double Unburied_Attack;
 	public static int Unburied_Lifespan;
@@ -240,7 +241,7 @@ public class Modconfig {
 	public static boolean Parasite_Plague;
 	public static boolean Wendigo_AnimalAttack;
 	public static boolean Fission_ModEntity;
-	public static String[] Fission_Whitelist = new String[0];
+	public static String[] Fission_Allowlist = new String[0];
 	public static boolean Parasite_Attach;
 	public static int ZombieMushroom_DropSpore;
 	public static int General_Intestine;
@@ -294,6 +295,7 @@ public class Modconfig {
 	public static int pSpawnRate_Bloodtooth;
 	public static int pSpawnRate_Cordyceps;
 	public static int pSpawnRate_Veilshroom;
+	public static boolean MonsterSpawner_Mobs;
 	
 	public final String[] usedCategories = { Configuration.CATEGORY_GENERAL, "Amber Lord", "Amber Scarab", "Avaton", "Banshee", "Cactoid", "Cactyrant", "Enigmoth", "Enigmoth Caterpillar", "Foglet", "Slothoman",
 			"Imp", "Forsaken", "Frigid", "Ghost Ray", "Ghost Swarmer", "Ithaqua", "Lil' Sludge", "Mimicrab", "Moogma", "Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Warmander",
@@ -454,6 +456,7 @@ public class Modconfig {
 		Undertaker_Ability_Max = config.get("Undertaker", "undertaker summon max", 4, "Set the max number of Unburied summoned [0-100]", 0, 100).getInt(4);
 		Undertaker_Ability_Cooldown = config.get("Undertaker", "undertaker summon cooldown", 15, "Set the cooldown of summoning Unburied [0-100]", 0, 100).getInt(15);
 		
+		pSpawnRate_Unburied = config.get("Unburied", "unburied spawn rate", 20, "Set the spawn rate of Unburied [0-10000]", 0, 10000).getInt(20);
 		Unburied_Health = config.get("Unburied", "unburied health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
 		Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
 		Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 60, "Summoned Unburied (and variants) lifespan [1-10000]", 1, 10000).getInt(60);
@@ -499,16 +502,16 @@ public class Modconfig {
 		SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 120, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(120);
 		SkeletonKing_Loot_Option = config.get("Skeleton King", "skeleton king loot in chest", true, "Should Skeleton King drop its loot inside a chest [false/true]").getBoolean(true);
 		
-		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 100, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(100);
+		pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 20, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(20);
 		Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
 		Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
-		pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 8, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(8);
+		pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 10, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(10);
 		Cactyrant_Health = config.get("Cactyrant", "cactyrant health", 60.0D, "Maximum Cactyrant health [1-1000]", 1, 1000).getDouble(60.0D);
 		Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
 		Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant summon cooldown", 3, "Set the cooldown of thorn barrage [0-100]", 0, 100).getInt(3);
 		
-		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 10, "Set the spawn rate of Cactoid  [0-10000]", 0, 10000).getInt(10);
+		pSpawnRate_Cactoid = config.get("Cactoid", "cactoid spawn rate", 15, "Set the spawn rate of Cactoid  [0-10000]", 0, 10000).getInt(15);
 		Cactoid_Health = config.get("Cactoid", "cactoid health", 20.0D, "Maximum Cactoid health [1-1000]", 1, 1000).getDouble(20.0D);
 		Cactoid_Attack = config.get("Cactoid", "cactoid attack", 4.0D, "Cactoid strength [1-1000]", 1, 1000).getDouble(4.0D);
 		
@@ -519,7 +522,7 @@ public class Modconfig {
 		Sea_Hag_Ability_Max = config.get("Sea Hag", "sea hag summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
 		Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "avaton summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
 		
-		pSpawnRate_Grave_Robber = config.get("Grave Robber", "grave robber spawn rate", 15, "Set the spawn rate of Grave Robber [0-100]", 0, 100).getInt(20);
+		pSpawnRate_Grave_Robber = config.get("Grave Robber", "grave robber spawn rate", 15, "Set the spawn rate of Grave Robber [0-100]", 0, 100).getInt(15);
 		Grave_Robber_Health = config.get("Grave Robber", "grave robber health", 34.0D, "Maximum Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
 		Grave_Robber_Attack = config.get("Grave Robber", "grave robber attack", 6.0D, "Grave Robber strength [1-1000]", 1, 1000).getDouble(6.0D);
 		
@@ -557,8 +560,8 @@ public class Modconfig {
 		Enigmoth_Larva_Pickup = config.get("Enigmoth Caterpillar", "enigmoth caterpillar pickup", false, "You can pick up Enigmoth Caterpillars by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(false);
 		
 		MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
-		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "Global Potion of Fission", false, "Allows the Potion of Fission to be used on any mob regardless of the whitelist [false/true]").getBoolean(false);
-		Fission_Whitelist = config.getStringList("Potion of Fission Whitelist", Configuration.CATEGORY_GENERAL,
+		Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "Global Potion of Fission", false, "Allows the Potion of Fission to be used on any mob regardless of the list [false/true]").getBoolean(false);
+		Fission_Allowlist = config.getStringList("Potion of Fission List", Configuration.CATEGORY_GENERAL,
 				new String[] {
 						"minecraft:chicken",
 						"minecraft:cow",
@@ -746,6 +749,8 @@ public class Modconfig {
 		Bowls_Stack = config.get(Configuration.CATEGORY_GENERAL, "bowls stack", true, "All bowl food items from the mod will stack up to 64. [false/true]").getBoolean(true);
 		
 		Should_Villager_Fear = config.get(Configuration.CATEGORY_GENERAL, "zombies scare villagers", true, "Should zombies (Unburied and variants) scare villagers [false/true]").getBoolean(true);
+		
+		MonsterSpawner_Mobs = config.get(Configuration.CATEGORY_GENERAL, "monster spawner mobs", true, "Should certain mobs (Unburied and Foglet) spawn in monster spawners [false/true]").getBoolean(true);
 		
 		if (config.hasChanged())
 			config.save();

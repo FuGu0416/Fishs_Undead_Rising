@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityBomb extends EntityThrowable implements IEntityAdditionalSpawnData {
 	String getDefaultItem = "Basic Bomb";
 	SoundEvent usedSound = SoundEvents.ENTITY_GENERIC_EXPLODE;
-	float radius = 2.0F;
+	float radius = 4.0F;
 	
     public EntityBomb(World worldIn) {
         super(worldIn);

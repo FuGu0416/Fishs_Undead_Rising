@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -15,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -50,13 +48,6 @@ public class EntityMummy extends EntitySummonedZombie implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mummy_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
     }
-    
-    @Override
-	public boolean getCanSpawnHere() {
-    	return SpawnUtil.isAllowedDimension(this.dimension) 
-    			&& SpawnUtil.isNearBlock(this.world, Blocks.STAINED_HARDENED_CLAY, new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ), 8) != null
-    			&& super.getCanSpawnHere();
-	}
     
     /**
      * Called to update the entity's position/logic.

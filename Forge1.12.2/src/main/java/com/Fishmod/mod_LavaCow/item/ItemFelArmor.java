@@ -66,7 +66,6 @@ public class ItemFelArmor extends ItemArmor {
 
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
-		//return super.getArmorModel(entityLiving, itemStack, armorSlot, _default);
 		if (this.armorModel == null) {
 			if (armorSlot == EntityEquipmentSlot.LEGS) {
 				this.armorModel = new ModelFelArmor(0.45F);

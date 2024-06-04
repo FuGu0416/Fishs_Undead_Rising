@@ -77,6 +77,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
         this.daytimeBurning = true;
     }
 	
+	@Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
@@ -104,6 +105,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
 	   }));
     }
     
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
@@ -112,6 +114,11 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Unburied_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
+    
+    @Override
+	public boolean getCanSpawnHere() {
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+	}
     
     public void setLimitedLife(int limitedLifeTicksIn) {
     	if (limitedLifeTicksIn != 0) {
@@ -242,10 +249,12 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
+    @Override
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         if (super.attackEntityAsMob(entityIn)) {
         	this.attackTimer = 5;
@@ -283,6 +292,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Unburied_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Unburied_Attack);
@@ -325,6 +335,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
+    @Override
     public void handleStatusUpdate(byte id) {
 		switch(id) {
 		case 32:
@@ -345,6 +356,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
 		}
     }
 
+    @Override
     public float getEyeHeight() {
         float f = 1.74F;
 
@@ -402,6 +414,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setLimitedLife(compound.getInteger("LifeTicks"));
@@ -420,6 +433,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -438,6 +452,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     /**
      * Get this Entity's EnumCreatureAttribute
      */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }

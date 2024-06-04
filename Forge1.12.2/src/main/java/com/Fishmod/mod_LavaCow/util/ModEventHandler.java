@@ -32,6 +32,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGhostlyArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
+import com.Fishmod.mod_LavaCow.item.ItemSoulforgedArmor;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
 import com.Fishmod.mod_LavaCow.item.ItemWetaHoe;
@@ -210,7 +211,7 @@ public class ModEventHandler {
      * Example: Make glow shroom and parasite a good lure
      */
     @SubscribeEvent
-    public void onAnvilUpdate(AnvilUpdateEvent event) {       
+    public void onAnvilUpdate(AnvilUpdateEvent event) {
     	ItemStack tool = event.getLeft();
     	ItemStack ench = event.getRight();
     	ItemStack outputStack = tool.copy();
@@ -291,6 +292,30 @@ public class ModEventHandler {
     	else if (tool.getItem() == FishItems.MOLTENPAN && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
     		event.setCost(4);
 			event.setOutput(new ItemStack(FishItems.SOULFORGED_PAN).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.FELARMOR_HELMET && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_HELMET).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.FELARMOR_CHESTPLATE && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_CHESTPLATE).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.FELARMOR_LEGGINGS && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_LEGGINGS).copy());
+			event.getOutput().setTagCompound(outputStack.getTagCompound());
+    		event.setMaterialCost(1);
+    	}
+    	else if (tool.getItem() == FishItems.FELARMOR_BOOTS && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
+    		event.setCost(4);
+			event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_BOOTS).copy());
 			event.getOutput().setTagCompound(outputStack.getTagCompound());
     		event.setMaterialCost(1);
     	}
@@ -401,6 +426,17 @@ public class ModEventHandler {
         if ((player.world.getTotalWorldTime() & 0x1FL) > 0L) {
             return;
         }
+        
+        int Armor_Soulforged_lvl = 0;
+		for (ItemStack S : player.getEquipmentAndArmor()) {
+			if(S.getItem() instanceof ItemSoulforgedArmor) {
+				Armor_Soulforged_lvl++;
+			}
+		}
+
+		if (Armor_Soulforged_lvl >= 4) {
+			player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 4 * 20, 0, false, false));
+		}
         
 		ItemStack Heart = null;
 		int Armor_Famine_lvl = 0;
@@ -558,12 +594,14 @@ public class ModEventHandler {
     	if(event.getEntityLiving().isBurning() && event.getSource().getTrueSource() instanceof EntityPlayer) {   		
     		for(ItemStack S : event.getSource().getTrueSource().getEquipmentAndArmor()) {
     			if(S.getItem() instanceof ItemFelArmor)effectlevel += ((ItemFelArmor)S.getItem()).effectlevel;
+    			if(S.getItem() instanceof ItemSoulforgedArmor)effectlevel += ((ItemSoulforgedArmor)S.getItem()).effectlevel;
     		}
     	}
     	
     	if(event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().isImmuneToFire() && (event.getSource().isFireDamage())) {    		
     		for(ItemStack S : event.getEntityLiving().getEquipmentAndArmor()) {
     			if(S.getItem() instanceof ItemFelArmor)effectlevel -= ((ItemFelArmor)S.getItem()).fireprooflevel;
+    			if(S.getItem() instanceof ItemSoulforgedArmor)effectlevel -= ((ItemSoulforgedArmor)S.getItem()).fireprooflevel;
     		}
     		
     		boolean have_Heart = false;
@@ -583,19 +621,19 @@ public class ModEventHandler {
     	}
     	
     	if(event.getSource().isExplosion() && event.getSource().getTrueSource() instanceof EntityWolf){
-    		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
-    			event.setAmount(event.getAmount() * 0.5F);
+    		if(event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) && event.getEntityLiving().isNonBoss() && event.getSource().getTrueSource().getName().equals("Holy Grenade")) {
+    			event.setAmount(event.getAmount() * 0.6F);
     			event.getEntity().setFire(8);
     		}
     		else if(event.getSource().getTrueSource().getName().equals("Ghost Grenade")) {
     			event.getEntity().motionX = 0;
     			event.getEntity().motionZ = 0;
-    			event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 20, 0));
-    			event.setAmount(event.getAmount() * 0.25F);
+    			event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 4 * 20, 0));
+    			event.setAmount(event.getAmount() * 0.3F);
     		}
     		else if(event.getSource().getTrueSource().getName().equals("Sonic Grenade")) {
     			if(event.getEntityLiving().isNonBoss() && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
-    				event.getEntityLiving().addPotionEffect(new PotionEffect(ModMobEffects.FEAR, 4 * 20, 2, false, true));
+    				event.getEntityLiving().addPotionEffect(new PotionEffect(ModMobEffects.FEAR, 8 * 20, 2, false, true));
     			event.setAmount(event.getAmount() * 0.35F);
     		}
     		else {
@@ -632,6 +670,20 @@ public class ModEventHandler {
     			event.getSource().getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(event.getEntityLiving()), 1.0F + event.getEntityLiving().getActivePotionEffect(ModMobEffects.THORNED).getAmplifier());
             }
     	}
+		
+	    int Armor_Soulforged_lvl = 0;
+		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {			
+			if(S.getItem() instanceof ItemSoulforgedArmor) {
+				Armor_Soulforged_lvl++;
+			}
+		}   
+		
+		if(Armor_Soulforged_lvl >= 4) {
+			if (event.getSource() == DamageSource.WITHER) {
+				event.setAmount(0.0F);
+				event.setCanceled(true);
+			}
+		}
     	
     	int Armor_Ghostly_lvl = 0;
         for (ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
@@ -782,6 +834,21 @@ public class ModEventHandler {
 				}
 			}
     	}
+    	
+    	// Prevents screen shaking and damage sound
+	    int Armor_Soulforged_lvl = 0;
+		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {			
+			if(S.getItem() instanceof ItemSoulforgedArmor) {
+				Armor_Soulforged_lvl++;
+			}
+		}   
+		
+		if(Armor_Soulforged_lvl >= 4) {
+			if (event.getSource() == DamageSource.WITHER) {
+				event.setCanceled(true);
+			}
+		}
+    	
     }
         
     @SubscribeEvent
