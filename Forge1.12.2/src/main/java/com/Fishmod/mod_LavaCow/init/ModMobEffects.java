@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.mobeffect.MobEffectImmolation;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectInfested;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectSoiled;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectThorned;
+import com.Fishmod.mod_LavaCow.mobeffect.MobEffectVoidDust;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
@@ -22,4 +23,5 @@ public class ModMobEffects {
 	public static final Potion FEAR = new MobEffectFear().registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", -0.2D, AttributeModifierOperation.MULTIPLY).registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", -0.2D, AttributeModifierOperation.MULTIPLY);
 	public static final Potion THORNED = new MobEffectThorned();
 	public static final Potion IMMOLATION = new MobEffectImmolation();
+	public static final Potion VOID_DUST = new MobEffectVoidDust();
 }

@@ -78,7 +78,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	
     protected void entityInit() {
     	super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
     }
     
     /**
@@ -91,10 +91,16 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     
     @Override
     public boolean getCanSpawnHere() {
-       	// Middle end island check
-       	if (this.world.provider.getDimension() == 1) {
-               return !Modconfig.Enigmoth_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : super.getCanSpawnHere();
-       	}
+    	// Middle end island check
+    	if (this.world.provider.getDimension() == 1) {
+    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+    		if (!Modconfig.Enigmoth_Middle_End_Island) {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+    		}
+    		else {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D);
+    		}
+    	}
        	
         return super.getCanSpawnHere();
     }
@@ -333,10 +339,10 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		return LootTableHandler.ENIGMOTH;
 	}
 	
-	// Immune to Corroded and Poison
+	// Immune to Corroded, Poison, and Void Dust
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
 	}
 	
     public class AIUseSpell extends EntityAIBase {
@@ -390,7 +396,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         }
 
         protected void castSpell() {
-        	for(int i = 0 ; i < 8 ; i++) {
+        	for(int i = 0 ; i < 12; i++) {
        	 		Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		Double d1 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		EntityMothScales ammo = new EntityMothScales(world, EntityEnigmoth.this, d0, - 2.4D, d1);
@@ -420,11 +426,11 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         }
 
         protected int getCastWarmupTime() {
-            return 10;
+            return 5;
         }
 
         protected int getCastingTime() {
-            return 15;
+            return 10;
         }
 
         protected int getCastingInterval() {

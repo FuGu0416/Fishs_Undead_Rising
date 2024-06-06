@@ -204,7 +204,7 @@ public class LootTableHandler {
 			}
 		}
 		
-		for(String S : Modconfig.Fission_Whitelist) {
+		for(String S : Modconfig.Fission_Allowlist) {
 			FISSION_WHITELIST.add(new ResourceLocation(S));
 		}
 		

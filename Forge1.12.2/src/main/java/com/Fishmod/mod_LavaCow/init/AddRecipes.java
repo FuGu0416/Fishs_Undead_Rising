@@ -58,11 +58,12 @@ public class AddRecipes {
 	    }
 	    
 	    public static void addBrewing() {
-	    	/* Brew into special potions */
+	    	// Special Potion Recipes
 	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION), new ItemStack(FishItems.HYPHAE), new ItemStack(FishItems.FISSIONPOTION)));
 	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HOLY_SLUDGE), new ItemStack(FishItems.HOLY_WATER)));
 	        BrewingRecipeRegistry.addRecipe(new ItemStack(FishItems.FISSIONPOTION), new ItemStack(FishItems.MOOTENHEART), new ItemStack(FishItems.POTION_OF_MOOTEN_LAVA));
 	        
+	        // Normal Potion Recipes
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.PTERA_WING), PotionTypes.SWIFTNESS);
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ACIDICHEART), ModPotions.CORROSIVE);
@@ -87,6 +88,10 @@ public class AddRecipes {
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.CACTUS_FRUIT), ModPotions.THORN);
 			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_THORN);
 			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_THORN);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ENIGMOTH_LARVA_ITEM), ModPotions.VOID_DUST);
+			PotionHelper.addMix(ModPotions.VOID_DUST, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_VOID_DUST);
+			PotionHelper.addMix(ModPotions.VOID_DUST, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_VOID_DUST);
 	    }
 	    
 	    public static void addTrading() {

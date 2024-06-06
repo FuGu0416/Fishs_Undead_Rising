@@ -196,7 +196,7 @@ public class FishItems {
 	public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE).setMaxDamage(500);
 	public static final Item DISEASED_WHEAT = new ItemFishCustom("diseased_wheat", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item DISEASED_BREAD = new ItemFishCustomFood("diseased_bread", 7, 0.6F, false, 32, true).setRandPotionEffect(ItemFishCustomFood.Effect_diseasedbread).setAlwaysEdible();
-	public static final Item ENIGMOTH_LARVA_ITEM = new ItemFishCustomFood("enigmoth_larva_item", 2, 0.3F, false, 32, false);
+	public static final Item ENIGMOTH_LARVA_ITEM = new ItemFishCustomFood("enigmoth_larva_item", 2, 0.3F, false, 32, false).setPotionEffect(new PotionEffect(ModMobEffects.VOID_DUST, 20 * 20, 3), 0.3F);
 	public static final Item ENIGMOTH_LARVA_ITEM_COOKED = new ItemFishCustomFood("enigmoth_larva_item_cooked", 6, 0.6F, false, 32, false);
 	public static final Item HOLY_WATER = new ItemFishCustom("holy_water", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item BASICBOMB = new ItemHolyGrenade("basicbomb");

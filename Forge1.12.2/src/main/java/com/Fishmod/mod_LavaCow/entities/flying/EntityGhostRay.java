@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -35,6 +36,7 @@ public class EntityGhostRay extends EntityFlyingMob {
 	public EntityGhostRay(World worldIn) {
 		super(worldIn, Modconfig.GhostRay_FlyingHeight_limit);
 		//this.setSize(3.2F, 0.5F);
+		this.isImmuneToFire = true;
 	}
 	
 	@Override
@@ -56,7 +58,13 @@ public class EntityGhostRay extends EntityFlyingMob {
     public boolean getCanSpawnHere() {
     	// Middle end island check
     	if (this.world.provider.getDimension() == 1) {
-            return !Modconfig.GhostRay_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : super.getCanSpawnHere();
+    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+    		if (!Modconfig.GhostRay_Middle_End_Island) {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+    		}
+    		else {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D);
+    		}
     	}
     	
         return super.getCanSpawnHere();
@@ -97,8 +105,14 @@ public class EntityGhostRay extends EntityFlyingMob {
     * Called when the entity is attacked.
     */
    public boolean attackEntityFrom(DamageSource source, float amount) {
-       if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase && Modconfig.GhostRay_Ghostly_Touch && !source.isCreativePlayer())
-    	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 2));
+       if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase && Modconfig.GhostRay_Ghostly_Touch && !source.isCreativePlayer()) {
+    	   if (this.getSkin() == 2) {
+        	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(ModMobEffects.VOID_DUST, 6 * 20, 9));
+        	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 4));
+    	   } else {
+        	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 2));
+    	   }
+       }
        
 	   return super.attackEntityFrom(source, amount);
    }
@@ -110,16 +124,6 @@ public class EntityGhostRay extends EntityFlyingMob {
        }
        
        super.onLivingUpdate();
-   }
-   
-   @Override
-   public void onEntityUpdate() {
-   	// Proper check to make sure that they're always immune to fire
-   	if (this.getSkin() == 1) {
-   		this.isImmuneToFire = true;
-   	}
-   	
-   	super.onEntityUpdate();
    }
    
    @Nullable
@@ -140,6 +144,12 @@ public class EntityGhostRay extends EntityFlyingMob {
        
    	return super.onInitialSpawn(difficulty, livingdata);
    }
+   
+	// Immune to Void Dust
+   @Override
+	public boolean isPotionApplicable(PotionEffect effect) {
+		return effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
+	}
    
    public int getSkin()
    {

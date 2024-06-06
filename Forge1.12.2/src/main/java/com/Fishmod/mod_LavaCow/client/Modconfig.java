@@ -466,7 +466,7 @@ public class Modconfig {
 		GhostRay_Health = config.get("Ghost Ray", "ghost ray health", 20.0D, "Maximum Ghost Ray health [1-1000]", 1, 1000).getDouble(20.0D);
 		GhostRay_FlyingHeight_limit = config.get("Ghost Ray", "ghost ray height limit", 48, "Set the height limit to X blocks above the ground for Ghost Rays, 0 = Infinite [0-100]", 0, 100).getInt(48);
 		GhostRay_Middle_End_Island = config.get("Ghost Ray", "ghost ray middle end island spawn", false, "Should Ghost Rays spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
-		GhostRay_Ghostly_Touch = config.get("Ghost Ray", "ghost ray ghostly touch", true, "Should Ghost Rays inflict weakness on hit [false/true]").getBoolean(true);
+		GhostRay_Ghostly_Touch = config.get("Ghost Ray", "ghost ray ghostly touch", true, "Should Ghost Rays inflict an effect (weakness/void dust) on hit [false/true]").getBoolean(true);
 
 		pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
 		Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);

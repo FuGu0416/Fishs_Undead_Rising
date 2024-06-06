@@ -541,9 +541,11 @@ mob_effect.mod_lavacow:thorned=Thorned
 description.mob_effect.mod_lavacow:thorned=Grants immunity to cactus and thorns enchantment damage. Attackers will end up getting thorned. 
 mob_effect.mod_lavacow:thorned.4.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
 mob_effect.mod_lavacow:immolation=Immolation
-// TODO!!!
-description.mob_effect.mod_lavacow:immolation=Grants immunity to cactus and thorns enchantment damage. Attackers will end up getting thorned. 
-mob_effect.mod_lavacow:immolation.4.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
+description.mob_effect.mod_lavacow:immolation=TODO
+mob_effect.mod_lavacow:immolation.4.desc=TODO
+mob_effect.mod_lavacow:void_dust=Void Dust
+description.mob_effect.mod_lavacow:void_dust=Teleports the affected user to a nearby random location periodically.
+mob_effect.mod_lavacow:void_dust.4.desc=Teleports you to a nearby random location periodically.
 
 ##############
 # Potions #
@@ -569,6 +571,14 @@ potion.effect.mod_lavacow:thorned=Potion of Thorn
 splash_potion.effect.mod_lavacow:thorned=Splash Potion of Thorn
 lingering_potion.effect.mod_lavacow:thorned=Lingering Potion of Thorn
 tipped_arrow.effect.mod_lavacow:thorned=Arrow of Thorn
+potion.effect.mod_lavacow:immolation=Potion of Immolation
+splash_potion.effect.mod_lavacow:immolation=Splash Potion of Immolation
+lingering_potion.effect.mod_lavacow:immolation=Lingering Potion of Immolation
+tipped_arrow.effect.mod_lavacow:immolation=Arrow of Immolation
+potion.effect.mod_lavacow:void_dust=Potion of Void Rift
+splash_potion.effect.mod_lavacow:void_dust=Splash Potion of Void Rift
+lingering_potion.effect.mod_lavacow:void_dust=Lingering Potion of Void Rift
+tipped_arrow.effect.mod_lavacow:void_dust=Arrow of Void Rift
 
 ################
 # Advancements #

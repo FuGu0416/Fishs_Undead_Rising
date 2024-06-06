@@ -97,13 +97,20 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 	   	return super.onInitialSpawn(difficulty, livingdata);
     }
 	
+	@Override
 	   public boolean getCanSpawnHere() {
-		   	// Middle end island check
-		   	if (this.world.provider.getDimension() == 1) {
-		           return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-		   	}
+	    	// Middle end island check
+	    	if (this.world.provider.getDimension() == 1) {
+	    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+	    		if (!Modconfig.Enigmoth_Larva_Middle_End_Island) {
+	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+	    		}
+	    		else {
+	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
+	    		}
+	    	}
 		   	
-		       return super.getCanSpawnHere();
+		       return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
 		   }
 	   
 	   public int getSkin() {
@@ -310,10 +317,10 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 		return entity;
 	}
     
-	// Immune to Corroded and Poison
+	// Immune to Corroded, Poison, and Void Dust
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
 	}
     
     public class AICastingSpell extends EntityAIBase {
