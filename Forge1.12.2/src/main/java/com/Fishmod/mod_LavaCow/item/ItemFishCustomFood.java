@@ -95,6 +95,11 @@ public class ItemFishCustomFood extends ItemFood {
             player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 30 * 20, 0));
 		}
 		
+		if(stack.getItem().equals(FishItems.PHEROMONE_GLAND)) {
+            player.addPotionEffect(new PotionEffect(ModMobEffects.CHARMING_PHEROMONE, 30 * 20, 0));
+            player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 10 * 20, 1));
+		}
+		
 		switch(PotionType)
         {
         	case 0: 

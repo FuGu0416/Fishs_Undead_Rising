@@ -88,6 +88,8 @@ import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -102,6 +104,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -562,6 +565,11 @@ public class ModEventHandler {
     	float effectlevel = 1.0F;
 	    boolean Armor_Chitin_lvl = false;
 	    
+	    if(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(ModMobEffects.IMMOLATION)) {
+	    	event.setCanceled(true);
+	    	return;
+	    }
+	    
 		for(ItemStack S : event.getEntityLiving().getArmorInventoryList()) {
 			if(S.getItem() instanceof ItemChitinArmor && ((ItemChitinArmor)S.getItem()).getSetBonus() >= 2) {
 				Armor_Chitin_lvl = true;
@@ -819,6 +827,41 @@ public class ModEventHandler {
     }
     
     @SubscribeEvent
+    public void onESetTarget(LivingSetAttackTargetEvent event) {    	
+    	// Neutral
+        if (event.getTarget() != null && event.getEntityLiving().getLastAttackedEntity() != event.getTarget()) {
+        	/*Boolean hasNose = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE);
+        	
+    		if (ModList.get().isLoaded("curios") && !hasNose) {
+    			hasNose = (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, event.getTarget()) != ItemStack.EMPTY);
+    		}
+    		
+        	if (event.getEntityLiving().getMobType().equals(CreatureAttribute.ILLAGER) && hasNose) {
+        		((EntityMob) event.getEntityLiving()).setTarget(null);
+        	}*/
+        	
+        	// Charming Pheromone doesn't work on strong arthropods or bosses
+        	if (event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) && event.getTarget().isPotionActive(ModMobEffects.CHARMING_PHEROMONE) && event.getEntityLiving().getMaxHealth() <= 40 && event.getEntityLiving().isNonBoss()) {
+        		((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
+        		((EntityLiving) event.getEntityLiving()).getNavigator().tryMoveToXYZ(event.getTarget().posX, event.getTarget().posY, event.getTarget().posZ, ((EntityLiving) event.getEntityLiving()).getMoveHelper().getSpeed());
+        	}
+        }
+        
+        // Passive
+        /*if (event.getTarget() != null) {
+        	Boolean hasCrown = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN);
+        	
+    		if (ModList.get().isLoaded("curios") && !hasCrown) {
+    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN, event.getTarget()) != ItemStack.EMPTY);
+    		}
+    		
+        	if (event.getEntity() instanceof AbstractSkeletonEntity && hasCrown) {
+        		((MobEntity) event.getEntityLiving()).setTarget(null);
+        	}
+        }*/
+    } 
+    
+    @SubscribeEvent
     public void onEAttack(LivingAttackEvent event) {
     	EntityLivingBase attacked = event.getEntityLiving();
     	
@@ -848,7 +891,19 @@ public class ModEventHandler {
 				event.setCanceled(true);
 			}
 		}
-    	
+		
+	    if(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(ModMobEffects.IMMOLATION)) {
+	    	event.setCanceled(true);
+	    	return;
+	    }
+    }
+    
+    @SubscribeEvent
+    public static void onEBlockOverlay (RenderBlockOverlayEvent event) {
+    	// Fire overlay won't display while Immolation is active
+        if (event.getOverlayType() == OverlayType.FIRE && event.getPlayer().isPotionActive(ModMobEffects.IMMOLATION)) {
+        	event.setCanceled(true);
+        }
     }
         
     @SubscribeEvent
@@ -1134,7 +1189,11 @@ public class ModEventHandler {
     	
     	if (event.getEntityLiving().isPotionActive(ModMobEffects.SOILED)) {
     		effectlevel -= 0.25F * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.SOILED).getAmplifier());
-    	}  
+    	}
+    	
+    	if (event.getEntityLiving().isPotionActive(ModMobEffects.FLOURISHED)) {
+    		effectlevel += 0.25F * (1 + event.getEntityLiving().getActivePotionEffect(ModMobEffects.FLOURISHED).getAmplifier());
+    	}
     	
     	event.setAmount(event.getAmount() * effectlevel);
     }

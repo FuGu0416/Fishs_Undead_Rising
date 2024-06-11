@@ -171,7 +171,7 @@ public class FishItems {
 	public static final Item CHITIN_LEGGINGS = new ItemChitinArmor("chitinarmor_leggings", 2, EntityEquipmentSlot.LEGS);
 	public static final Item CHITIN_BOOTS = new ItemChitinArmor("chitinarmor_boots", 2, EntityEquipmentSlot.FEET);
 	public static final Item CACTUS_THORN = new ItemFishCustom("cactus_thorn", null, mod_LavaCow.TAB_ITEMS, false);
-	public static final Item CACTUS_FRUIT = new ItemCactusFruit("cactus_fruit", 4, 0.2F, true, 32, true).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 30 * 20, 0), 1.0F);
+	public static final Item CACTUS_FRUIT = new ItemCactusFruit("cactus_fruit", 4, 0.2F, false, 32, true).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 30 * 20, 0), 1.0F);
 	public static final Item THORN_SHOOTER = new ItemPiranhaLauncher("thorn_shooter", CACTUS_THORN, EntityCactusThorn.class, new ItemStack(Blocks.CACTUS).getItem(), EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(768);
 	public static final Item BAOBING = new ItemNetherStew("baobing", 6, 0.6F).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 60 * 20, 1), 1.0F);
 	public static final Item KUNG_PAO_CHICKEN = new ItemNetherStew("kung_pao_chicken", 8, 0.8F).setPotionEffect(new PotionEffect(ModMobEffects.IMMOLATION, 60 * 20, 1), 1.0F);
@@ -189,13 +189,15 @@ public class FishItems {
 	public static final Item SOULFORGEDARMOR_CHESTPLATE = new ItemSoulforgedArmor("soulforgedarmor_chestplate", 2, EntityEquipmentSlot.CHEST, 0.5F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item SOULFORGEDARMOR_LEGGINGS = new ItemSoulforgedArmor("soulforgedarmor_leggings", 2, EntityEquipmentSlot.LEGS, 0.2F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item SOULFORGEDARMOR_BOOTS = new ItemSoulforgedArmor("soulforgedarmor_boots", 2, EntityEquipmentSlot.FEET, 0.1F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
-	public static final Item GHOST_SWARMER_ITEM = new ItemFishCustomFood("ghost_swarmer_item", 2, 0.1F, true, 64, false).setPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 0), 0.3F);
+	public static final Item GHOST_SWARMER_ITEM = new ItemFishCustomFood("ghost_swarmer_item", 2, 0.1F, false, 64, false).setPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 0), 0.3F);
 	public static final Item FORSAKEN_STAFF = new ItemPiranhaLauncher("forsaken_staff", EntityDeathCoil.class, FishItems.HATRED_SHARD, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(333);
 	public static final Item SINISTER_WHETSTONE = new ItemSinisterWhetstone("sinister_whetstone");
 	public static final Item ANCIENT_AMBER = new ItemFishCustom("ancient_amber", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE).setMaxDamage(500);
 	public static final Item DISEASED_WHEAT = new ItemFishCustom("diseased_wheat", null,  mod_LavaCow.TAB_ITEMS, false);
 	public static final Item DISEASED_BREAD = new ItemFishCustomFood("diseased_bread", 7, 0.6F, false, 32, true).setRandPotionEffect(ItemFishCustomFood.Effect_diseasedbread).setAlwaysEdible();
+	public static final Item PHEROMONE_GLAND = new ItemFishCustomFood("pheromone_gland", 1, 0.1F, false, 32, true);
+	public static final Item CHARMING_CATALYST = new ItemFissionPotion("charming_catalyst", SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, EnumParticleTypes.HEART, EnumRarity.RARE, true);
 	public static final Item ENIGMOTH_LARVA_ITEM = new ItemFishCustomFood("enigmoth_larva_item", 2, 0.3F, false, 32, false).setPotionEffect(new PotionEffect(ModMobEffects.VOID_DUST, 20 * 20, 3), 0.3F);
 	public static final Item ENIGMOTH_LARVA_ITEM_COOKED = new ItemFishCustomFood("enigmoth_larva_item_cooked", 6, 0.6F, false, 32, false);
 	public static final Item HOLY_WATER = new ItemFishCustom("holy_water", null,  mod_LavaCow.TAB_ITEMS, false);

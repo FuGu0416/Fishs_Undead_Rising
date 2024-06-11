@@ -59,6 +59,7 @@ public class AddRecipes {
 	    
 	    public static void addBrewing() {
 	    	// Special Potion Recipes
+	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.PHEROMONE_GLAND), new ItemStack(FishItems.CHARMING_CATALYST)));
 	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION), new ItemStack(FishItems.HYPHAE), new ItemStack(FishItems.FISSIONPOTION)));
 	        BrewingRecipeRegistry.addRecipe(new FishBrewingRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.AWKWARD), new ItemStack(FishItems.HOLY_SLUDGE), new ItemStack(FishItems.HOLY_WATER)));
 	        BrewingRecipeRegistry.addRecipe(new ItemStack(FishItems.FISSIONPOTION), new ItemStack(FishItems.MOOTENHEART), new ItemStack(FishItems.POTION_OF_MOOTEN_LAVA));
@@ -88,6 +89,14 @@ public class AddRecipes {
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.CACTUS_FRUIT), ModPotions.THORN);
 			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_THORN);
 			PotionHelper.addMix(ModPotions.THORN, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_THORN);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.IMP_HORN), ModPotions.IMMOLATION);
+			PotionHelper.addMix(ModPotions.IMMOLATION, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_IMMOLATION);
+			PotionHelper.addMix(ModPotions.IMMOLATION, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_IMMOLATION);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ANCIENT_AMBER), ModPotions.FLOURISHED);
+			PotionHelper.addMix(ModPotions.FLOURISHED, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_FLOURISHED);
+			PotionHelper.addMix(ModPotions.FLOURISHED, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_FLOURISHED);
 			
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ENIGMOTH_LARVA_ITEM), ModPotions.VOID_DUST);
 			PotionHelper.addMix(ModPotions.VOID_DUST, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_VOID_DUST);

@@ -1,7 +1,9 @@
 package com.Fishmod.mod_LavaCow.init;
 
+import com.Fishmod.mod_LavaCow.mobeffect.MobEffectCharmingPheromone;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectCorroded;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFear;
+import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFlourished;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFragile;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFragileKing;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectImmolation;
@@ -23,5 +25,7 @@ public class ModMobEffects {
 	public static final Potion FEAR = new MobEffectFear().registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", -0.2D, AttributeModifierOperation.MULTIPLY).registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", -0.2D, AttributeModifierOperation.MULTIPLY);
 	public static final Potion THORNED = new MobEffectThorned();
 	public static final Potion IMMOLATION = new MobEffectImmolation();
+	public static final Potion CHARMING_PHEROMONE = new MobEffectCharmingPheromone();
+	public static final Potion FLOURISHED = new MobEffectFlourished();
 	public static final Potion VOID_DUST = new MobEffectVoidDust();
 }

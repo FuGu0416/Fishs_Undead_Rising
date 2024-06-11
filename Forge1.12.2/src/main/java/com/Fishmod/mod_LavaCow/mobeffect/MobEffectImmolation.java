@@ -9,7 +9,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 public class MobEffectImmolation extends MobEffectMod {
 
 	public MobEffectImmolation() {
-		super("immolation", true, 234, 140, 21);
+		super("immolation", false, 234, 140, 21);
 	}
 	
 	@Override

@@ -419,7 +419,7 @@ public class Modconfig {
 		
 		pSpawnRate_Vespa = config.get("Vespa", "vespa spawn rate", 20, "Set the spawn rate of Vespa [0-100]", 0, 100).getInt(20);
 		pEvolveRate_Vespa = config.get("Vespa", "vespa evolve rate", 20, "Set the chance of Vespa transformed from a Parasite [0-100]", 0, 100).getInt(20);
-		Vespa_Health = config.get("Vespa", "vespa health", 20.0D, "Maximum Vespa health [1-1000]", 1, 1000).getDouble(20.0D);
+		Vespa_Health = config.get("Vespa", "vespa health", 50.0D, "Maximum Vespa health [1-1000]", 1, 1000).getDouble(50.0D);
 		Vespa_Attack = config.get("Vespa", "vespa attack", 5.0D, "Vespa strength [1-1000]", 1, 1000).getDouble(5.0D);
 		Vespa_FlyingHeight_limit = config.get("Vespa", "vespa height limit", 16, "Set the height limit to X blocks above the ground for Vespas, 0 = Infinite [0-100]", 0, 100).getInt(16);
 		Vespa_Spread_Parasites = config.get("Vespa", "vespa spread parasites", true, "Should Vespas spread parasites by sometimes inflicting Infested when hitting a target [false/true]").getBoolean(true);

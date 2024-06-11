@@ -53,6 +53,7 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.experienceValue = 3;
+        this.isImmuneToFire = true;
     }
 	
 	@Override
