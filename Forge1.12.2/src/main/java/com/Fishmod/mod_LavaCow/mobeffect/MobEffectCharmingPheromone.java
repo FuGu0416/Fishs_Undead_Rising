@@ -3,7 +3,7 @@ package com.Fishmod.mod_LavaCow.mobeffect;
 public class MobEffectCharmingPheromone extends MobEffectMod {
 
 	public MobEffectCharmingPheromone() {
-		super("charming_pheromone", false, 100, 88, 93);
+		super("charming_pheromone", false, 255, 225, 238);
 	}
 	
     @Override
