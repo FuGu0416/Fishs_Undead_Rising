@@ -91,6 +91,11 @@ public class EntityVespaCocoon  extends EntityFishTameable {
         	this.setDead();
         }
      }
+	
+	@Override
+    protected boolean isCommandable() {
+    	return true;
+    }
     
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons

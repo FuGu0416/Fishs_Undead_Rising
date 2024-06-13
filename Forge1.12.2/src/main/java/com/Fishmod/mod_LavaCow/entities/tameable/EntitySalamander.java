@@ -42,6 +42,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -162,7 +163,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     	boolean flag = this.isBreedingItem(itemstack);
 
         if (!flag && this.isOwner(player) && this.isTamed() && this.canBeSteered() && !this.isChild() && !this.isBeingRidden()) {
-        	if (itemstack.getItem().equals(Items.SHEARS)) {
+        	if (itemstack.getItem() instanceof ItemShears) {
     			this.setSaddled(false); 
     			if (!this.world.isRemote) {
     				this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);

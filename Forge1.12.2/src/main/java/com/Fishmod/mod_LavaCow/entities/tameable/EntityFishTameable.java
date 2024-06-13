@@ -224,7 +224,10 @@ public class EntityFishTameable extends EntityTameable {
     
     @Override
     public void setTamedBy(EntityPlayer player) {
-    	this.doFollowCommand(player);
+    	if (this.isCommandable()) {
+    		this.doFollowCommand(player);
+    	}
+    	
     	super.setTamedBy(player);
     }
     

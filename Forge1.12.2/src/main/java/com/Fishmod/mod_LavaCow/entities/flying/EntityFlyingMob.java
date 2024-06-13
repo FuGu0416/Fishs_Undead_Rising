@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,7 +60,6 @@ public class EntityFlyingMob extends EntityFishTameable {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 	}
 	
@@ -301,7 +299,7 @@ public class EntityFlyingMob extends EntityFishTameable {
             	f = underState.getBlock().getSlipperiness(underState, this.world, ground, this) * 0.91F;
             }
 
-            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.1F * f1 : 0.02F);
+            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.05F * f1 : 0.1F);
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             this.motionX *= (double)f;
             this.motionY *= (double)f;

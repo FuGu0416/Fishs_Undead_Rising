@@ -8,12 +8,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerEnigmothSaddle implements LayerRenderer<EntityEnigmoth> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_saddle.png");
-    private final RenderEnigmoth pigRenderer;
-    private final ModelEnigmoth pigModel = new ModelEnigmoth();
+    private final RenderEnigmoth enigmothRenderer;
+    private final ModelEnigmoth enigmothModel = new ModelEnigmoth();
 
-    public LayerEnigmothSaddle(RenderEnigmoth pigRendererIn)
+    public LayerEnigmothSaddle(RenderEnigmoth enigmothRendererIn)
     {
-        this.pigRenderer = pigRendererIn;
+        this.enigmothRenderer = enigmothRendererIn;
     }
 
     public boolean shouldCombineTextures()
@@ -24,11 +24,12 @@ public class LayerEnigmothSaddle implements LayerRenderer<EntityEnigmoth> {
 	@Override
 	public void doRenderLayer(EntityEnigmoth entitylivingbaseIn, float limbSwing, float limbSwingAmount,
 			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (entitylivingbaseIn.getSaddled())
+        if (entitylivingbaseIn.canBeSteered())
         {
-            this.pigRenderer.bindTexture(TEXTURE);
-            this.pigModel.setModelAttributes(this.pigRenderer.getMainModel());
-            this.pigModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.enigmothRenderer.bindTexture(TEXTURE);
+            this.enigmothModel.setModelAttributes(this.enigmothRenderer.getMainModel());
+            this.enigmothModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entitylivingbaseIn);
+            this.enigmothModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }		
 	}
 }

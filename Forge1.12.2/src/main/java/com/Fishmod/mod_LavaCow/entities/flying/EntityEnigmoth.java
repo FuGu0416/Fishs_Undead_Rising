@@ -1,14 +1,23 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
 import java.util.Random;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAITempt;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -16,8 +25,10 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFollowOwnerFlying;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIMate;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -27,6 +38,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -49,7 +61,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		super(worldIn, Modconfig.Enigmoth_FlyingHeight_limit);
 		this.setSize(1.6F, 1.0F);
 		this.isImmuneToFire = true;
-        this.experienceValue = 20;
+        this.experienceValue = 30;
 	}
 	
 	@Override
@@ -59,11 +71,17 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         this.follow = this.followGoal();
 		
 		this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-		//this.tasks.addTask(3, new EntityAITempt(this, 1.25D, false, Sets.newHashSet(Items.CHORUS_FRUIT, Items.CHORUS_FRUIT_POPPED)));
+		this.tasks.addTask(3, new EntityFishAITempt(this, 1.25D, false, Sets.newHashSet(Items.CHORUS_FRUIT, Items.CHORUS_FRUIT_POPPED, new ItemStack(Blocks.END_ROD).getItem())));
 		this.tasks.addTask(4, new EntityEnigmoth.AIUseSpell());  	
 		
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityEnigmoth.class}));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, new Predicate<Entity>()
+        {
+            public boolean apply(@Nullable Entity p_apply_1_)
+            {
+            	return !(p_apply_1_.isRiding() && p_apply_1_.getRidingEntity() instanceof EntityEnigmoth);
+            }
+        }).setUnseenMemoryTicks(160));
 	}
 	
 	protected void applyEntityAttributes() {
@@ -120,7 +138,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     
     @Override
     protected EntityAIBase wanderGoal() {
-        return new EntityFlyingMob.AIRandomFly(this);
+        return (this.getNavigator() instanceof PathNavigateGround) ? new EntityAIWanderAvoidWater(this, 1.0D) : new EntityFlyingMob.AIRandomFly(this);
     }
 
     @Override
@@ -133,7 +151,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         Item item = stack.getItem();
         
     	if (this.isTamed() && this.isOwner(player) && !this.isChild()) {
-			if (item.equals(Items.NETHER_WART)) { 	
+			if (item.equals(Items.NETHER_WART) && this.getSkin() != 2) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(2);
@@ -141,17 +159,17 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
 				}
 				
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ENTITY_ILLAGER_CAST_SPELL, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
-			} else if (item.equals(Items.BLAZE_POWDER)) { 	
+			} else if (item.equals(Items.BLAZE_POWDER) && this.getSkin() != 1) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(1);
@@ -159,17 +177,17 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
                 }
 
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
-			} else if (item.equals(Items.ENDER_PEARL)) { 	
+			} else if (item.equals(Items.ENDER_PEARL) && this.getSkin() != 0) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(0);
@@ -177,13 +195,13 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
 				}
 
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ENTITY_ENDEREYE_DEATH, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
@@ -255,6 +273,20 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
    public int getSkinFixedTick() {
        return this.skinFixedTick;
     }
+   
+   @Override
+	protected double VehicleSpeedMod() {
+	    return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
+	}
+   
+   @Override
+   public float getBlockPathWeight(BlockPos pos) {
+	   if (this.world.getBlockState(pos).getBlock().equals(Blocks.END_ROD)) {
+		   return 20.0F;
+	   } else {
+		   return super.getBlockPathWeight(pos);
+	   }
+   }
    
    /**
     * Handler for {@link World#setEntityState}
@@ -442,4 +474,16 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
             return SoundEvents.ENTITY_BAT_TAKEOFF;
         }
     }
+    
+	public EntityEnigmothLarva createChild(EntityAgeable ageable) {
+		EntityEnigmothLarva entity = new EntityEnigmothLarva(this.world);
+		UUID uuid = this.getOwnerId();
+		if (uuid != null) {
+			entity.setOwnerId(uuid);
+			entity.setTamed(true);
+			entity.setHealth(entity.getMaxHealth());
+		}
+
+		return entity;
+	}
 }

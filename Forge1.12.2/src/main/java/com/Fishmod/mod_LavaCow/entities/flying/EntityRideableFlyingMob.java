@@ -9,14 +9,15 @@ import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -37,8 +38,13 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
 		super(worldIn, heightLimit);
 		this.abilityCooldown = 0;
 	}
-
 	
+    protected void entityInit() {
+    	super.entityInit();
+        this.getDataManager().register(SADDLED, Boolean.valueOf(false));
+        this.getDataManager().register(CONTROL_STATE, Byte.valueOf((byte) 0));
+    }
+    
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
@@ -46,12 +52,6 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
 	}
-	
-    protected void entityInit() {
-    	super.entityInit();
-        this.getDataManager().register(SADDLED, Boolean.valueOf(false));
-        this.getDataManager().register(CONTROL_STATE, Byte.valueOf((byte) 0));
-    }
 	
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;
@@ -65,19 +65,29 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
     	ItemStack itemstack = player.getHeldItem(hand);
     	boolean flag = this.isBreedingItem(itemstack);
-
-        if (!flag && this.isOwner(player) && this.getSaddled() && !this.isBeingRidden()) {
+        
+        if (!flag && this.isOwner(player) && this.isTamed() && this.canBeSteered() && !this.isChild() && !this.isBeingRidden()) {
         	if (itemstack.getItem() instanceof ItemShears) {
     			this.setSaddled(false); 
     			if (!this.world.isRemote) {
+    				this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
     				this.dropItem(Items.SADDLE, 1);
     			}
     			return true;
     		} else if (!player.isSneaking() && !player.isRiding()) {
         	   player.startRiding(this);        	   
         	   return true;
-    		}    	
+    		}
         }
+        
+        if (!flag && this.isOwner(player) && this.isTamed() && !this.canBeSteered() && !this.isChild() && itemstack.getItem().equals(Items.SADDLE)) {
+    		this.setSaddled(true);
+            itemstack.shrink(1);
+            if(!this.world.isRemote) {
+            	this.playSound(SoundEvents.ENTITY_HORSE_SADDLE, 0.5F, 1.0F);
+            }
+            return true;
+		}
         
         boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
         
@@ -91,6 +101,11 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
     public double getMountedYOffset()
     {
         return (double)this.height * 0.9D;
+    }
+    
+    @Override
+    public boolean isMovementBlocked() {
+    	return this.isSitting();
     }
     
     @Override
@@ -178,16 +193,12 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
     	
     	if (this.isRidingPlayer(game.player)) {
         	this.setControlState(0, game.gameSettings.keyBindJump.isKeyDown());
-        	this.setControlState(1, Modkeys.MOUNT_SPECIAL.isKeyDown());
+        	this.setControlState(1, Modkeys.MOUNT_DOWN.isKeyDown());
     	}
     }
     
     public void setSaddled(boolean saddled) {
-        this.dataManager.set(SADDLED, this.getSaddled());
-    }
-    
-    public boolean getSaddled() {
-        return ((Boolean)this.dataManager.get(SADDLED)).booleanValue();
+        this.dataManager.set(SADDLED, Boolean.valueOf(saddled));
     }
     
     private boolean isUp() {
@@ -207,10 +218,18 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
         }
     }
     
+    /**
+     * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
+     * by a player and the player is holding a carrot-on-a-stick
+     */
+    public boolean canBeSteered() {
+    	return Boolean.valueOf(this.dataManager.get(SADDLED).booleanValue());
+    }
+    
     @Override
     public void travel(float strafe, float vertical, float forward) {
     	if (this.isEntityAlive()) {
-    		if (this.isBeingRidden() && this.getSaddled() && this.canBeSteered()) {
+    		if (this.isBeingRidden() && this.canBeControlledByRider() && this.canBeSteered()) {
     			EntityLivingBase controller = (EntityLivingBase)this.getControllingPassenger();
     			this.rotationYaw = controller.rotationYaw;
     			this.prevRotationYaw = this.rotationYaw;
@@ -224,8 +243,6 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
     			forward = controller.moveForward;
 
     			if (this.canPassengerSteer()) {
-    				float f = (float)this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue() * 0.6F;
-    				this.setAIMoveSpeed(f);
     				super.travel(strafe, vertical, forward);
     			} else {
                 this.motionX = 0.0D;
@@ -255,10 +272,32 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
         super.onDeath(cause);
 
         if (!this.world.isRemote) {
-            if (this.getSaddled()) {
+            if (this.canBeSteered()) {
                 this.dropItem(Items.SADDLE, 1);
             }
         }
+    }
+    
+    /**
+     * Writes the extra NBT data specific to this type of entity. Should <em>not</em> be called from outside this class;
+     * use {@link #writeUnlessPassenger} or {@link #writeWithoutTypeId} instead.
+     */
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+       super.writeEntityToNBT(compound);
+       compound.setBoolean("Saddled", this.canBeSteered());
+       compound.setInteger("SpellTicks", this.spellTicks);
+       
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+       super.readEntityFromNBT(compound);
+       this.setSaddled(compound.getBoolean("Saddled"));
+       this.spellTicks = compound.getInteger("SpellTicks");
     }
     
     public class AICastingSpell extends EntityAIBase {
