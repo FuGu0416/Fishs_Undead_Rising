@@ -505,7 +505,7 @@ command.mod_lavacow.whistle= is now the whistle target.
 command.mod_lavacow.whistle_err= is too far away.
 itemGroup.mod_lavacow_items=Fish's Undead Rising
 key.mod_lavacow.special=Mount Special Ability (Fish's Undead Rising)
-key.mod_lavacow.down=Flying Mount Dive (Fish's Undead Rising)
+key.mod_lavacow.down=Flying Mount Descent (Fish's Undead Rising)
 
 ################
 # Enchantments #

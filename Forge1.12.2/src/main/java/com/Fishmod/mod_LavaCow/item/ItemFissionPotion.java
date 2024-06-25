@@ -195,7 +195,6 @@ public class ItemFissionPotion extends ItemFishCustom {
                 playerIn.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
             }
 
-            // TODO: Particles don't like to show up for some reason with this check added
             if (playerIn.world instanceof WorldServer && flag) {
                 playerIn.world.playSound(null, playerIn.getPosition(), this.using_sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
 

@@ -154,6 +154,10 @@ public class EntityFlyingMob extends EntityFishTameable {
     public int getAttackTimer() {
     	return this.attackTimer;
     }
+    
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
 	
 	public int getHoverTimer() {
 		return this.hoverTimer;

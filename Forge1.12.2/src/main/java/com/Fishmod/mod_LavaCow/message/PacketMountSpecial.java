@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.message;
 import java.util.Random;
 
 import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
+import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -54,6 +55,10 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 			entity.world.spawnEntity(entityammo);			
    	 	}
    	 	entity.world.playSound(null, message.posX, message.posY, message.posZ, FishItems.ENTITY_SALAMANDER_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+		} else if (entity instanceof EntityVespa) {
+			((EntityVespa) entity).setAttackTimer(20);
+			((EntityVespa) entity).abilityCooldown = ((EntityVespa) entity).abilityCooldown();
+	   	 	entity.world.setEntityState(entity, (byte)4);
 		} else if (entity instanceof EntityEnigmoth) {
 	   	 	for (int i = 0 ; i < 5 ; i++) {
 	   	 		

@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
+import com.Fishmod.mod_LavaCow.client.layer.LayerVespaSaddle;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelVespa;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 
@@ -21,6 +22,7 @@ public class RenderVespa extends RenderLiving<EntityVespa>{
 
     public RenderVespa(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelVespa(), 0.5F);
+        this.addLayer(new LayerVespaSaddle(this));
     }
     
     @Override

@@ -94,7 +94,7 @@ public class EntityVespaCocoon  extends EntityFishTameable {
 	
 	@Override
     protected boolean isCommandable() {
-    	return true;
+    	return false;
     }
     
     /**
@@ -166,11 +166,6 @@ public class EntityVespaCocoon  extends EntityFishTameable {
     @Override
     public float getEyeHeight() {
         return 0.8F;
-    }
-    
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return null;
     }
 
     @Override
