@@ -249,6 +249,11 @@ public class EntityZombiePiranha extends EntityAquaMob {
         return SoundEvents.ENTITY_GUARDIAN_FLOP;
      }
      
+     @Override
+     public int getTalkInterval() {
+     	return 150;
+     }
+     
      /**
       * Get this Entity's EnumCreatureAttribute
       */

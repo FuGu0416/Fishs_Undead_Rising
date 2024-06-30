@@ -518,7 +518,7 @@ public class Modconfig {
 		pSpawnRate_Sea_Hag = config.get("Sea Hag", "sea hag spawn rate", 20, "Set the spawn rate of Sea Hag [0-100]", 0, 100).getInt(20);
 		Sea_Hag_Health = config.get("Sea Hag", "sea hag health", 30.0D, "Maximum Sea Hag health [1-1000]", 1, 1000).getDouble(30.0D);
 		Sea_Hag_Attack = config.get("Sea Hag", "sea hag attack", 5.0D, "Sea Hag strength [1-1000]", 1, 1000).getDouble(5.0D);
-		Sea_Hag_Ability_Num = config.get("Sea Hag", "sea hag summon number", 2, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(2);
+		Sea_Hag_Ability_Num = config.get("Sea Hag", "sea hag summon number", 4, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(4);
 		Sea_Hag_Ability_Max = config.get("Sea Hag", "sea hag summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
 		Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "avaton summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
 		

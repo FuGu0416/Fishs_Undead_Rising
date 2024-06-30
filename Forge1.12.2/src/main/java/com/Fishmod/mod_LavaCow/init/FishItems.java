@@ -189,7 +189,7 @@ public class FishItems {
 	public static final Item SOULFORGEDARMOR_CHESTPLATE = new ItemSoulforgedArmor("soulforgedarmor_chestplate", 2, EntityEquipmentSlot.CHEST, 0.5F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item SOULFORGEDARMOR_LEGGINGS = new ItemSoulforgedArmor("soulforgedarmor_leggings", 2, EntityEquipmentSlot.LEGS, 0.2F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
 	public static final Item SOULFORGEDARMOR_BOOTS = new ItemSoulforgedArmor("soulforgedarmor_boots", 2, EntityEquipmentSlot.FEET, 0.1F).setCreativeTab(mod_LavaCow.TAB_ITEMS);
-	public static final Item GHOST_SWARMER_ITEM = new ItemFishCustomFood("ghost_swarmer_item", 2, 0.1F, false, 64, false).setPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 0), 0.3F);
+	public static final Item GHOST_SWARMER_ITEM = new ItemFishCustomFood("ghost_swarmer_item", 2, 0.1F, false, 32, false).setPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 0), 0.3F);
 	public static final Item FORSAKEN_STAFF = new ItemPiranhaLauncher("forsaken_staff", EntityDeathCoil.class, FishItems.HATRED_SHARD, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(333);
 	public static final Item SINISTER_WHETSTONE = new ItemSinisterWhetstone("sinister_whetstone");
 	public static final Item ANCIENT_AMBER = new ItemFishCustom("ancient_amber", null,  mod_LavaCow.TAB_ITEMS, false);
@@ -228,6 +228,10 @@ public class FishItems {
 	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranha.hurt")).setRegistryName("entity_zombiepiranha_hurt");
 	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranha.death")).setRegistryName("entity_zombiepiranha_death");
 	
+	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_GHOST_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranhaghost.ambient")).setRegistryName("entity_zombiepiranhaghost_ambient");
+	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_GHOST_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranhaghost.attack")).setRegistryName("entity_zombiepiranhaghost_attack");
+	public static final SoundEvent ENTITY_ZOMBIEPIRANHA_GHOST_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.zombiepiranhaghost.death")).setRegistryName("entity_zombiepiranhaghost_death");
+	
 	public static final SoundEvent ENTITY_WENDIGO_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.wendigo.ambient")).setRegistryName("entity_wendigo_ambient");
 	public static final SoundEvent ENTITY_WENDIGO_ATTACK = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.wendigo.attack")).setRegistryName("entity_wendigo_attack");
 	public static final SoundEvent ENTITY_WENDIGO_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.wendigo.hurt")).setRegistryName("entity_wendigo_hurt");
@@ -250,6 +254,10 @@ public class FishItems {
 	public static final SoundEvent ENTITY_RAVEN_CALL = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.raven.call")).setRegistryName("entity_raven_call");
 	public static final SoundEvent ENTITY_RAVEN_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.raven.hurt")).setRegistryName("entity_raven_hurt");
 	public static final SoundEvent ENTITY_RAVEN_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.raven.death")).setRegistryName("entity_raven_death");
+	
+	public static final SoundEvent ENTITY_RAVEN_GHOST_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ravenghost.ambient")).setRegistryName("entity_ravenghost_ambient");
+	public static final SoundEvent ENTITY_RAVEN_GHOST_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ravenghost.hurt")).setRegistryName("entity_ravenghost_hurt");
+	public static final SoundEvent ENTITY_RAVEN_GHOST_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ravenghost.death")).setRegistryName("entity_ravenghost_death");
 	
 	public static final SoundEvent ENTITY_PTERA_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ptera.ambient")).setRegistryName("entity_ptera_ambient");
 	public static final SoundEvent ENTITY_PTERA_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ptera.hurt")).setRegistryName("entity_ptera_hurt");

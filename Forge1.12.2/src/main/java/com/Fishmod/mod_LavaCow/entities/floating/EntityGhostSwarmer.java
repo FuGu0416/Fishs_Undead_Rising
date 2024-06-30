@@ -130,7 +130,7 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     
     @Override
 	public boolean attackEntityAsMob(Entity entity) {
-    	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_ATTACK, 1.0F, 1.0F);
+    	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_ATTACK, 1.0F, 1.0F);
     	return super.attackEntityAsMob(entity);
 	}
     
@@ -156,7 +156,7 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     }
     
     protected SoundEvent getAmbientSound() {
-        return FishItems.ENTITY_ZOMBIEPIRANHA_AMBIENT;
+        return FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -164,7 +164,12 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     }
 
     protected SoundEvent getDeathSound() {
-        return FishItems.ENTITY_ZOMBIEPIRANHA_DEATH;
+        return FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_DEATH;
+    }
+    
+    @Override
+    public int getTalkInterval() {
+    	return 150;
     }
     
     public int getSkin() {
