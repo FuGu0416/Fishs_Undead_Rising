@@ -34,7 +34,7 @@ public class EntitySludgeJet extends EntityFireball {
 	   @Override
 	    public void onUpdate() {
 	       super.onUpdate();
-	       if(!this.collided)this.accelerationY -= 0.006f;
+	       if(!this.collidedVertically && !this.collidedHorizontally) this.accelerationY -= 0.006D;
 
 	       if(this.getEntityWorld().isRemote)
 	    	   for(int i = 0 ; i < 22 + this.rand.nextInt(12) ; i++) {
@@ -46,7 +46,7 @@ public class EntitySludgeJet extends EntityFireball {
 	    * Return the motion factor for this projectile. The factor is multiplied by the original motion.
 	    */
 	   protected float getMotionFactor() {
-	      return 0.9F;
+	      return 0.95F;
 	   }
 
 	   /**
@@ -60,6 +60,7 @@ public class EntitySludgeJet extends EntityFireball {
 	    		  float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
 		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4 * 20 * (int)local_difficulty, 3));
 		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4 * 20 * (int)local_difficulty, 1));
+		    	  this.applyEnchantments((EntityLivingBase)this.shootingEntity, result.entityHit);
 	    	  }
 	    	  
 	    	  this.setDead();

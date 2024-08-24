@@ -8,25 +8,28 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderSludgeLord extends RenderLiving<EntitySludgeLord>{
-	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord_glow.png");
-	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord.png");
-	static{
-        System.out.println(TEXTURES.getResourcePath());
+public class RenderSludgeLord extends RenderLiving<EntitySludgeLord> {
+	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+			new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord.png")
+	};
+	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow.png");
+	
+	static {
+		for(ResourceLocation texture: TEXTURES)
+			System.out.println(texture.getResourcePath());
     }
 
     public RenderSludgeLord(RenderManager rendermanagerIn) {
-    	super(rendermanagerIn, new ModelSludgeLord(), 0.5F);
-    	this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
+    	super(rendermanagerIn, new ModelSludgeLord(), 1.0F);
+    	this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYES));
     }
     
     @Override
     protected ResourceLocation getEntityTexture(EntitySludgeLord entity) {
-        return TEXTURES;
+        return TEXTURES[entity.getSkin()];
     }
     
     @Override
 	protected void preRenderCallback(EntitySludgeLord entity, float partialTickTime) {
-    	//if(!entity.isChild())GlStateManager.scale(1.8F, 1.8F, 1.8F);
 	}
 }

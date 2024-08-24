@@ -52,9 +52,8 @@ public class BlockCactoidSprout extends Block {
                 cactoid.playSound(FishItems.ENTITY_CACTYRANT_GROW, 1.0F, 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F));
                 
             	// Nether (Basalt Deltas) Variant
-                if(world.provider.doesWaterVaporize() || sand instanceof BlockSoulSand) {
+                if(world.provider.isNether() || sand instanceof BlockSoulSand) {
                 	cactoid.setSkin(3);
-                	cactoid.setFireImmunity();
                  }
                 world.spawnEntity(cactoid);
 			}

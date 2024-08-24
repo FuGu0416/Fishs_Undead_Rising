@@ -22,17 +22,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
-public class ItemDreamCatcher extends ItemRareLoot implements baubles.api.IBauble{
+public class ItemDreamCatcher extends ItemRareLoot implements baubles.api.IBauble {
 
 	public ItemDreamCatcher(String registryName, CreativeTabs tab, EnumRarity rarity, boolean hasTooltip) {
 		super(registryName, tab, rarity, hasTooltip);
 		this.setMaxStackSize(1);
-		this.setMaxDamage(Modconfig.DreamCatcher_dur);
+		this.setMaxDamage(Modconfig.Dreamcatcher_dur);
 	}
 	
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(stack.getItemDamage() > stack.getMaxDamage())stack.setItemDamage(stack.getMaxDamage());
+		if(stack.getItemDamage() > stack.getMaxDamage())
+			stack.setItemDamage(stack.getMaxDamage());
 	}
 	
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
@@ -45,6 +46,17 @@ public class ItemDreamCatcher extends ItemRareLoot implements baubles.api.IBaubl
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
 			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.HaloNecklace_Damage));
 	}
+    
+    /**
+     * Allow or forbid the specific book/item combination as an anvil enchant
+     *
+     * @param stack The item
+     * @param book The book
+     * @return if the enchantment is allowed
+     */
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return Modconfig.Dreamcatcher_BookEnchantability;
+    }
 	
     /**
      * Add Baubles support
@@ -66,7 +78,7 @@ public class ItemDreamCatcher extends ItemRareLoot implements baubles.api.IBaubl
     @Override
     @Optional.Method(modid = "baubles")
     public baubles.api.BaubleType getBaubleType(ItemStack arg0) {
-          return baubles.api.BaubleType.TRINKET;
+          return baubles.api.BaubleType.CHARM;
     }
     
     @Override

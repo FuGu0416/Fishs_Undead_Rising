@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
@@ -66,6 +67,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         this.watch = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
         this.look = new EntityAILookIdle(this);
         
+        this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingSpell());
         this.tasks.addTask(2, new EntityCactyrant.AIUseSpell());
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));
@@ -76,7 +78,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     }
 
     protected void applyEntityAI() {
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true) {
             public boolean shouldExecute() {
             	super.shouldExecute();
@@ -92,6 +94,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Cactyrant_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Cactyrant_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
     }
     
 	@Override
@@ -233,7 +236,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
                     this.setHuggingCooldown(120);
                 } else if (!this.isBeingRidden()) {
                 	target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+                	this.playSound(FishItems.RANDOM_SPIN, 1.0F, 1.2F);
                 } else {
                 	target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.25F);
                 }
@@ -284,6 +287,8 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
 	*/
     @Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
+    	Entity entity1 = source.getTrueSource();
+    	
     	if (source == DamageSource.CACTUS) return false;
     	
         if (!source.isMagicDamage() && source.getImmediateSource() instanceof EntityLivingBase) {
@@ -299,6 +304,10 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     	if(source.isFireDamage()) {
     		return super.attackEntityFrom(source, 2.0F * amount);
     	}
+    	
+        if (entity1 != null && entity1 instanceof EntityLivingBase && ((EntityLivingBase)entity1).isOnSameTeam(this)) {
+            return false;
+        }
 
     	return super.attackEntityFrom(source, amount);
     }
@@ -344,14 +353,9 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     	// Nether Variant
         if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(2);
-     	   setFireImmunity();
         }
         
     	return super.onInitialSpawn(difficulty, livingdata);
-    }
-    
-    public boolean setFireImmunity() {
-    	return this.isImmuneToFire = true;
     }
 
     public int getAttackTimer() {
@@ -412,7 +416,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
         else if (super.isOnSameTeam(entity)) {
             return true;
         }
-        else if (entity instanceof EntityCactyrant)
+        else if (entity instanceof EntityCactyrant || entity instanceof EntityCactoid)
         {
             return this.getTeam() == null && entity.getTeam() == null;
         }
@@ -492,7 +496,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
             SoundEvent soundevent = this.getSpellPrepareSound();
             EntityCactyrant.this.world.setEntityState(EntityCactyrant.this, (byte)10);
             if (soundevent != null) {
-            	EntityCactyrant.this.playSound(soundevent, 1.0F, 1.0F);
+            	EntityCactyrant.this.playSound(soundevent, 1.0F, 1.2F);
             }
         }
 
@@ -537,7 +541,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
 
         @Nullable
         protected SoundEvent getSpellPrepareSound() {
-            return SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP;
+            return FishItems.RANDOM_SPIN;
         }
     }
     

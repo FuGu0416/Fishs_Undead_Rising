@@ -413,6 +413,8 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     {
         if(this.getSkin() == 2)
         	return FishItems.ENTITY_SEAGULL_AMBIENT;
+        else if(this.getSkin() == 3)
+        	return FishItems.ENTITY_RAVEN_GHOST_AMBIENT;
         else
         	return FishItems.ENTITY_RAVEN_AMBIENT;
     }
@@ -421,6 +423,8 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     {
         if(this.getSkin() == 2)
         	return FishItems.ENTITY_SEAGULL_HURT;
+        else if(this.getSkin() == 3)
+        	return FishItems.ENTITY_RAVEN_GHOST_HURT;
         else
         	return FishItems.ENTITY_RAVEN_HURT;
     }
@@ -429,6 +433,8 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
     {
         if(this.getSkin() == 2)
         	return FishItems.ENTITY_SEAGULL_DEATH;
+        else if(this.getSkin() == 3)
+        	return FishItems.ENTITY_RAVEN_GHOST_DEATH;
         else
         	return FishItems.ENTITY_RAVEN_DEATH;
     }

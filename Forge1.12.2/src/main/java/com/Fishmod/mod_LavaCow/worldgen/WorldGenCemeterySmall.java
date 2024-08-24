@@ -50,7 +50,7 @@ public class WorldGenCemeterySmall extends WorldGenerator {
 	
 	private void Gen_Cemetery(World worldIn, Random rand, BlockPos position, int facing) {
 		IBlockState blockstate = worldIn.getBlockState(worldIn.getHeight(position).up());
-		
+
 		if (blockstate.getMaterial() != Material.GROUND && blockstate.getMaterial() != Material.GRASS && blockstate.getMaterial() != Material.SAND) {			
 			return;
 		}

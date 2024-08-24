@@ -52,11 +52,15 @@ public class RenderParasite extends RenderLiving<EntityParasite>{
 				GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
 				
 			}
-			//GlStateManager.rotatef(180F, 0F, 1F, 0F);	
-		}    	
-    	/*else if (entity.isEvolving) {
-    		float f = 0.012F * (float)MathHelper.abs(100 - entity.lifespawn);
-    		GlStateManager.scale(1.0F + f, 1.0F + f, 1.0F + f);
-    	}*/
+		}
+    	
+        if (entity.isOnLadder()) {
+            rotateAnimal(entity);
+        }
 	}
+    
+    protected void rotateAnimal(EntityParasite entity) {
+        GlStateManager.rotate(90.0F, -1.0F, 0.0F, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
+    }
 }

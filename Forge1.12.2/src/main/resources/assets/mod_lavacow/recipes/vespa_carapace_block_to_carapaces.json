@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "mod_lavacow:vespa_carapace_block"
+      }
+    ]
+  ],
+  "result": {
+    "item": "mod_lavacow:vespa_carapace",
+    "count": 9
+  }
+}

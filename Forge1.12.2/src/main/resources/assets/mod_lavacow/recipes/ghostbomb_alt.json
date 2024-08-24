@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " X ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:ectoplasm_ingot"
+        },
+        "X": {
+            "item": "mod_lavacow:basicbomb"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:ghostbomb",
+        "count": 4
+    }
+}

@@ -19,8 +19,8 @@ public class RenderEnigmoth extends RenderLiving<EntityEnigmoth> {
 
     public RenderEnigmoth(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelEnigmoth(), 0.5F);
-        this.addLayer(new LayerEnigmothSaddle(this));
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYES));
+        this.addLayer(new LayerEnigmothSaddle(this));
     }
     
     @Override

@@ -1,0 +1,7 @@
+
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "mod_lavacow:blocks/vespa_carapace_block"
+    }
+}

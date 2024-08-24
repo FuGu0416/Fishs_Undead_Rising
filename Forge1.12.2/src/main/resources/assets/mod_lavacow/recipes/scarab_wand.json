@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "D#D",
+    "#*#",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "mod_lavacow:ancient_amber"
+    },
+    "*": {
+      "item": "mod_lavacow:sludge_wand",
+      "data": 32767
+    },
+    "X": {
+      "item": "mod_lavacow:mossy_stick"
+    },
+    "D": {
+      "item": "minecraft:deadbush"
+    }
+  },
+  "result": {
+    "item": "mod_lavacow:scarab_wand"
+  }
+}

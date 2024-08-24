@@ -2,20 +2,25 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      	"item": "minecraft:bowl"
+      "item": "minecraft:bowl"
+    },
+    [
+      {
+        "item": "mod_lavacow:moltenpan",
+        "data": 32767
+      },
+      {
+        "item": "mod_lavacow:soulforged_pan",
+        "data": 32767
+      }
+    ],
+    {
+      "item": "mod_lavacow:ectoplasm"
     },
     {
-    	"item": "mod_lavacow:moltenpan",
-    	"data": 32767
-    },
-    {
-		"item": "mod_lavacow:ectoplasm"
-    },
-    {
-		"item": "mod_lavacow:glowshroom"
+      "item": "mod_lavacow:glowshroom"
     }
   ],
-  
   "result": {
     "item": "mod_lavacow:ghostjelly"
   }

@@ -1,6 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities.ai;
 
-import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
+import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 public class EntityFishAIAttackRange extends EntityAIBase {
     private final EntityCreature shooter;
     // remember, all shot must extend from EntityFireBall
-    private final Class <? extends Entity > shot;
+    private final Class <? extends EntityFireball > shot;
     private SoundEvent sound;
     private int attackStep;
     private int attackTime;
@@ -31,7 +31,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
     // attack range
     private double range;
 
-    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, int timesIn, int attackCDIn) {
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends EntityFireball > shotIn, int timesIn, int attackCDIn) {
        this.shooter = shooterIn;
        this.shot = shotIn;
        this.sound = SoundEvents.ENTITY_BLAZE_SHOOT;
@@ -45,7 +45,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
        this.setMutexBits(3);
     }
     
-    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn) {
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends EntityFireball > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
         this.sound = soundIn;
@@ -59,7 +59,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
         this.setMutexBits(3);
      }
     
-    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn, double XIn, double YIn, double ZIn) {
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends EntityFireball > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn, double XIn, double YIn, double ZIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
         this.sound = soundIn;
@@ -73,7 +73,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
         this.setMutexBits(3);
      }
     
-    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends EntityFireball > shotIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
         this.sound = SoundEvents.ENTITY_BLAZE_SHOOT;
@@ -87,7 +87,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
         this.setMutexBits(3);
      }
     
-    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends Entity > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
+    public EntityFishAIAttackRange(EntityCreature shooterIn, Class <? extends EntityFireball > shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
         this.sound = soundIn;
@@ -106,10 +106,8 @@ public class EntityFishAIAttackRange extends EntityAIBase {
      */
     public boolean shouldExecute() {
        EntityLivingBase entitylivingbase = this.shooter.getAttackTarget();
-       if(this.shooter instanceof EntityBoneWorm)
-    	   return ((EntityBoneWorm)this.shooter).LocationFix == 0.0D && entitylivingbase != null && entitylivingbase.isEntityAlive();
-       else
-    	   return entitylivingbase != null && entitylivingbase.isEntityAlive();
+       
+       return entitylivingbase != null && entitylivingbase.isEntityAlive();
     }
 
     /**
@@ -123,6 +121,9 @@ public class EntityFishAIAttackRange extends EntityAIBase {
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void resetTask() {
+    	if (this.shooter instanceof EntityForsaken) {
+   		 ((EntityForsaken) this.shooter).setSwingingArms(false);
+    	}
     }
 
     /**
@@ -131,6 +132,10 @@ public class EntityFishAIAttackRange extends EntityAIBase {
     public void updateTask() {
        --this.attackTime;
        EntityLivingBase entitylivingbase = this.shooter.getAttackTarget();
+       
+       if (this.shooter instanceof EntityForsaken) {
+    	   ((EntityForsaken) this.shooter).setSwingingArms(true);
+       }
 
        if (entitylivingbase != null) {
            double d0 = this.shooter.getDistanceSq(entitylivingbase);
@@ -150,7 +155,7 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                  if (this.attackStep == 1) {
                     this.attackTime = 30;
                     if(this.shooter instanceof IAggressive && !this.shooter.isChild() && ((IAggressive) this.shooter).getAttackTimer() == 0.0F) {
-                 	   ((IAggressive) this.shooter).setAttackTimer(80);
+                    	this.shooter.world.setEntityState(this.shooter, (byte)5);
                     }
                  } else if (this.attackStep <= (this.shot_times + 1)) {
                     this.attackTime = 6;
@@ -177,10 +182,9 @@ public class EntityFishAIAttackRange extends EntityAIBase {
                  }
               }
 
-              this.shooter.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
+              this.shooter.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
            } else {
-              this.shooter.getNavigator().clearPath();
-              this.shooter.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, this.shooter.getMoveHelper().getSpeed());
+              this.shooter.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
            }
        }
 

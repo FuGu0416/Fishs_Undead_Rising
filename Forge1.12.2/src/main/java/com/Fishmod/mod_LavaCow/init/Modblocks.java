@@ -1,7 +1,9 @@
 package com.Fishmod.mod_LavaCow.init;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -26,6 +28,8 @@ import com.Fishmod.mod_LavaCow.blocks.BlockCactoidSprout;
 import com.Fishmod.mod_LavaCow.blocks.BlockEctoplasm;
 import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroom;
 import com.Fishmod.mod_LavaCow.blocks.BlockGlowShroomHuge;
+import com.Fishmod.mod_LavaCow.blocks.BlockMaterial;
+import com.Fishmod.mod_LavaCow.blocks.BlockMoltenAlloy;
 import com.Fishmod.mod_LavaCow.blocks.BlockPileofSludge;
 import com.Fishmod.mod_LavaCow.blocks.BlockScarecrowHead;
 import com.Fishmod.mod_LavaCow.blocks.BlockTombStone;
@@ -51,6 +55,9 @@ public class Modblocks {
 	public static final BlockTombStone TOMBSTONE = new BlockTombStone();
 	public static final BlockCactoidSprout CACTOID_SPROUT = new BlockCactoidSprout();
 	public static final BlockEctoplasm ECTOPLASM_BLOCK = new BlockEctoplasm();
+	public static final BlockMoltenAlloy MOLTEN_ALLOY_BLOCK = new BlockMoltenAlloy();
+	public static final BlockMaterial SCYTHE_CLAW_BLOCK = new BlockMaterial(Material.ROCK, MapColor.GRAY, SoundType.STONE);
+	public static final BlockMaterial VESPA_CARAPACE_BLOCK = new BlockMaterial(Material.ROCK, MapColor.LIME, SoundType.STONE);
 	
 	@ObjectHolder("glowshroom")
     public static final ItemBlock item_block_glowshroom = null;
@@ -78,6 +85,12 @@ public class Modblocks {
 	public static final ItemBlock item_block_cactoid_sprout = null;
 	@ObjectHolder("ectoplasm_block")
 	public static final ItemBlock item_block_ectoplasm = null;
+	@ObjectHolder("molten_alloy_block")
+	public static final ItemBlock item_block_molten_alloy = null;
+	@ObjectHolder("vespa_carapace_block")
+	public static final ItemBlock item_block_vespa_carapace = null;
+	@ObjectHolder("scythe_claw_block")
+	public static final ItemBlock item_block_scythe_claw = null;
 	
 	@EventBusSubscriber(modid = mod_LavaCow.MODID)
     public static class RegistrationHandler

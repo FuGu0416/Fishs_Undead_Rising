@@ -39,6 +39,7 @@ public class RenderUnburied extends RenderLiving<EntityUnburied> {
     	if(entity.isChild()) {
     		GlStateManager.scale(0.6F, 0.6F, 0.6F);
     	}
-    	GlStateManager.translate(0.0D, (double)entity.getSpellTicks()/20.0D, 0.0D);
+    	
+    	GlStateManager.translate(0.0D, (double)entity.getRisingTicks() / 20.0D, 0.0D);
 	}
 }

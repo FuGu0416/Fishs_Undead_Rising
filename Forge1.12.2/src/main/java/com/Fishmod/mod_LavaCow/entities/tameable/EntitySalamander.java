@@ -42,6 +42,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -98,9 +99,9 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     {   	
     	super.initEntityAI();
     	if(this.isNymph())
-    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
+    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 2, 1.0D, 0.1D, 1.0D);
     	else
-    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 6, 5, 2.5D, 1.0D, 2.5D);
+    		this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 7, 2, 2.5D, 1.0D, 2.5D);
     	
     	this.tasks.addTask(0, new EntityAISwimming(this));
     	this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -128,7 +129,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
@@ -162,7 +163,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     	boolean flag = this.isBreedingItem(itemstack);
 
         if (!flag && this.isOwner(player) && this.isTamed() && this.canBeSteered() && !this.isChild() && !this.isBeingRidden()) {
-        	if (itemstack.getItem().equals(Items.SHEARS)) {
+        	if (itemstack.getItem() instanceof ItemShears) {
     			this.setSaddled(false); 
     			if (!this.world.isRemote) {
     				this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
@@ -230,7 +231,22 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
      * the animal type)
      */
     public boolean isBreedingItem(ItemStack stack) {
-    	return stack.getItem().equals(FishItems.CANEBEEF);
+    	if (!this.isTamed() || (this.isTamed() && this.getOwner() instanceof EntityPlayer)) {
+    		return stack.getItem().equals(FishItems.CANEBEEF) || stack.getItem().equals(FishItems.IMP_HORN) || stack.getItem().equals(FishItems.KUNG_PAO_CHICKEN);
+    	}
+    	
+		return false;
+    }
+    
+    @Override
+    protected int TameRate(ItemStack stack) {
+    	if (stack.getItem().equals(FishItems.CANEBEEF) || stack.getItem().equals(FishItems.IMP_HORN)) {
+    		return 3;
+    	} else if (stack.getItem().equals(FishItems.KUNG_PAO_CHICKEN)) {
+    		return 1;
+    	} else {
+    		return super.TameRate(stack);
+    	}
     }
     
     /**
@@ -238,7 +254,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
      */
     public double getMountedYOffset()
     {
-        return (double)this.height * 1.75D;
+        return (double)this.height * 1.35D;
     }
     
     public void updatePassenger(Entity passenger) {
@@ -278,20 +294,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     	if(this.getAttackTimer() > 0)
     		this.setAttackTimer(this.getAttackTimer() - 1);
         if(this.barrage_CD > 0)this.barrage_CD--;
-        
-    	if (!this.world.isRemote)
-        {
-            if (this.isTamed() && this.rand.nextInt(this.isInLava() ? 45 : 900) == 0 && this.deathTime == 0)
-            {
-                this.heal(1.0F);
-            }
-            
-    		/*if (this.isBeingRidden() && this.getControllingPassenger() instanceof EntityLivingBase && this.ticksExisted % 40 == 0) {
-    			if (!((EntityLivingBase) this.getControllingPassenger()).isPotionActive(MobEffects.FIRE_RESISTANCE)) {
-    				((EntityLivingBase) this.getControllingPassenger()).addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 3 * 20, 0));
-    			}
-    		}*/
-        }
     	
     	if (this.isServerWorld()) {
     		if (this.isTamed() && this.rand.nextInt(this.isInLava() ? 45 : 900) == 0 && this.deathTime == 0) {
@@ -453,12 +455,13 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 		    	this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
 		    	this.tasks.addTask(3, this.avoid_entity);
 		    	this.tasks.removeTask(this.range_atk);
-		    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 5, 1.0D, 0.1D, 1.0D);
+		    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 2, 1.0D, 0.1D, 1.0D);
 		    	this.tasks.addTask(4, this.range_atk);
 		    	
 		    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.25D);
 		        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 		        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.5D);
+		        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
 		        
 		        if (this.getHealth() > this.getMaxHealth())
 		        	this.setHealth(this.getMaxHealth());
@@ -478,6 +481,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.40D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
 	    		
 	    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	        	break;
@@ -486,6 +490,7 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 	    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health * 0.60D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
+	    		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
 	    		
 	    		this.heal(this.getHealth() * 0.5F);
         		break;
@@ -497,12 +502,13 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     	    	
     	    	this.tasks.removeTask(this.avoid_entity);
     	    	this.tasks.removeTask(this.range_atk);
-    	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 8, 5, 2.5D, 1.0D, 2.5D);
+    	    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, FishItems.ENTITY_SALAMANDER_SHOOT, 7, 2, 2.5D, 1.0D, 2.5D);
     	    	this.tasks.addTask(4, this.range_atk);
     	    	
     	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
     	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-    	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);		
+    	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);
+    	        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
         		break;
         }        
 	}
@@ -658,6 +664,20 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
        }
        
        return entityLivingData;
+    }
+    
+    /**
+     * Called when the entity is attacked.
+     */
+	@Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+    	Entity entity = source.getTrueSource();
+
+        if (entity != null && entity instanceof EntitySalamander) {
+            return false;
+        }
+    		
+    	return super.attackEntityFrom(source, amount);
     }
     
     public float getEyeHeight()

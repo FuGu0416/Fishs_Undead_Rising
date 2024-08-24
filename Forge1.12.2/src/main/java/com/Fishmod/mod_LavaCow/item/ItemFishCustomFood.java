@@ -5,14 +5,18 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.google.common.collect.Lists;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -25,6 +29,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFishCustomFood extends ItemFood {
+	public static List<Triple<Potion, Integer, Integer>> Effect_diseasedbread = Lists.newArrayList(
+	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.POISON, 8 * 20, 1),
+	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.MINING_FATIGUE, 30 * 20, 1),
+	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.SLOWNESS, 16 * 20, 1),
+	    	new ImmutableTriple<Potion, Integer, Integer>(ModMobEffects.INFESTED, 16 * 20, 2)
+		);
 	
 	/** Number of ticks to run while 'EnumAction'ing until result. */
 	/** Which means a player needs 32 ticks to finish eating an item*/
@@ -77,8 +87,18 @@ public class ItemFishCustomFood extends ItemFood {
     {
 		super.onFoodEaten(stack, worldIn, player);
 		
-		if(stack.getItem().equals(FishItems.SHATTERED_ICE) && player.isBurning())
+		if(stack.getItem().equals(FishItems.SHATTERED_ICE) || stack.getItem().equals(FishItems.BAOBING) && player.isBurning())
 			player.extinguish();
+		
+		if(stack.getItem().equals(FishItems.DISEASED_BREAD)) {
+            player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 8 * 20, 0));
+            player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 30 * 20, 0));
+		}
+		
+		if(stack.getItem().equals(FishItems.PHEROMONE_GLAND)) {
+            player.addPotionEffect(new PotionEffect(ModMobEffects.CHARMING_PHEROMONE, 30 * 20, 0));
+            player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 10 * 20, 1));
+		}
 		
 		switch(PotionType)
         {

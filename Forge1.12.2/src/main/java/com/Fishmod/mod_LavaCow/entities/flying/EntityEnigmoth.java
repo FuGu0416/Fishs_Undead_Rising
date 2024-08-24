@@ -1,14 +1,23 @@
 package com.Fishmod.mod_LavaCow.entities.flying;
 
 import java.util.Random;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAITempt;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -16,8 +25,10 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFollowOwnerFlying;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIMate;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -27,6 +38,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -49,7 +61,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		super(worldIn, Modconfig.Enigmoth_FlyingHeight_limit);
 		this.setSize(1.6F, 1.0F);
 		this.isImmuneToFire = true;
-        this.experienceValue = 20;
+        this.experienceValue = 30;
 	}
 	
 	@Override
@@ -59,26 +71,32 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         this.follow = this.followGoal();
 		
 		this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-		//this.tasks.addTask(3, new EntityAITempt(this, 1.25D, false, Sets.newHashSet(Items.CHORUS_FRUIT, Items.CHORUS_FRUIT_POPPED)));
+		this.tasks.addTask(3, new EntityFishAITempt(this, 1.25D, false, Sets.newHashSet(Items.CHORUS_FRUIT, Items.CHORUS_FRUIT_POPPED, new ItemStack(Blocks.END_ROD).getItem())));
 		this.tasks.addTask(4, new EntityEnigmoth.AIUseSpell());  	
 		
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityEnigmoth.class}));
+        this.targetTasks.addTask(2, new EntityAITargetNonTamed<>(this, EntityPlayer.class, false, new Predicate<Entity>()
+        {
+            public boolean apply(@Nullable Entity p_apply_1_)
+            {
+            	return !(p_apply_1_.isRiding() && p_apply_1_.getRidingEntity() instanceof EntityEnigmoth);
+            }
+        }).setUnseenMemoryTicks(160));
 	}
 	
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Attack);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Health);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.067D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
 	}
 	
     protected void entityInit() {
     	super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
     }
     
     /**
@@ -87,6 +105,22 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     @Override
     public int getMaxSpawnedInChunk() {
        return 1;
+    }
+    
+    @Override
+    public boolean getCanSpawnHere() {
+    	// Middle end island check
+    	if (this.world.provider.getDimension() == 1) {
+    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+    		if (!Modconfig.Enigmoth_Middle_End_Island) {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+    		}
+    		else {
+    			return super.getCanSpawnHere() && (this.posY > 50.0D);
+    		}
+    	}
+       	
+        return super.getCanSpawnHere();
     }
     
     @Override
@@ -104,7 +138,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     
     @Override
     protected EntityAIBase wanderGoal() {
-        return new EntityFlyingMob.AIRandomFly(this);
+        return (this.getNavigator() instanceof PathNavigateGround) ? new EntityAIWanderAvoidWater(this, 1.0D) : new EntityFlyingMob.AIRandomFly(this);
     }
 
     @Override
@@ -117,7 +151,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         Item item = stack.getItem();
         
     	if (this.isTamed() && this.isOwner(player) && !this.isChild()) {
-			if (item.equals(Items.NETHER_WART)) { 	
+			if (item.equals(Items.NETHER_WART) && this.getSkin() != 2) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(2);
@@ -125,17 +159,17 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
 				}
 				
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ENTITY_ILLAGER_CAST_SPELL, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
-			} else if (item.equals(Items.BLAZE_POWDER)) { 	
+			} else if (item.equals(Items.BLAZE_POWDER) && this.getSkin() != 1) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(1);
@@ -143,17 +177,17 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
                 }
 
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
-			} else if (item.equals(Items.ENDER_PEARL)) { 	
+			} else if (item.equals(Items.ENDER_PEARL) && this.getSkin() != 0) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.world.setEntityState(this, (byte)39);
 				this.setSkin(0);
@@ -161,13 +195,13 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 					stack.shrink(1);
 				}
 
-	        	this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 1.0F);
+	        	this.playSound(SoundEvents.ENTITY_ENDEREYE_DEATH, 1.0F, 1.0F);
 
 	        	for (int i = 0; i < 16; ++i) {
 	                double d0 = new Random().nextGaussian() * 0.02D;
 	                double d1 = new Random().nextGaussian() * 0.02D;
 	                double d2 = new Random().nextGaussian() * 0.02D;
-	                this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (double)(new Random().nextFloat() * this.width) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.width), this.posZ + (double)(new Random().nextFloat() * this.width) - (double)this.width, d0, d1, d2);
+	                this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }	
 	        	
 				return true;
@@ -213,7 +247,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
     {
     	super.onUpdate();
     	
-    	if(!this.onGround && !this.isSpellcasting() && this.ticksExisted % 10 == 0) {
+    	if(!this.onGround && !this.isSpellcasting() && this.ticksExisted % 12 == 0) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     }
@@ -228,15 +262,6 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
    		return super.onInitialSpawn(difficulty, livingdata);
    }
    
-   public boolean getCanSpawnHere() {
-   	// Middle end island check
-   	if (this.world.provider.getDimension() == 1) {
-           return !Modconfig.Enigmoth_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-   	}
-   	
-       return super.getCanSpawnHere();
-   }
-   
    public int getSkin() {
        return this.dataManager.get(SKIN_TYPE).intValue();
    }
@@ -249,11 +274,25 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
        return this.skinFixedTick;
     }
    
+   @Override
+	protected double VehicleSpeedMod() {
+	    return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
+	}
+   
+   @Override
+   public float getBlockPathWeight(BlockPos pos) {
+	   if (this.world.getBlockState(pos).getBlock().equals(Blocks.END_ROD)) {
+		   return 20.0F;
+	   } else {
+		   return super.getBlockPathWeight(pos);
+	   }
+   }
+   
    /**
     * Handler for {@link World#setEntityState}
     */
-	@Override
-	@SideOnly(Side.CLIENT)
+   @Override
+   @SideOnly(Side.CLIENT)
    public void handleStatusUpdate(byte id) {
 		switch(id) {
 		case 10:
@@ -284,7 +323,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	
 	@Override
     public int getTalkInterval() {
-        return 1000;
+        return 150;
     }
 	
 	public SoundCategory getSoundCategory() {
@@ -304,7 +343,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 	}
 	
     public SoundEvent getSpellSound() {
-        return SoundEvents.ENTITY_ILLAGER_CAST_SPELL;
+        return FishItems.ENTITY_ENIGMOTH_SCALES;
     }
 	
 	protected SoundEvent getFlyingSound() {
@@ -332,10 +371,10 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		return LootTableHandler.ENIGMOTH;
 	}
 	
-	// Immune to Corroded and Poison
+	// Immune to Corroded, Poison, and Void Dust
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
 	}
 	
     public class AIUseSpell extends EntityAIBase {
@@ -383,13 +422,13 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
-            	EntityEnigmoth.this.playSound(EntityEnigmoth.this.getSpellSound(), 0.175F, 1.0F);
+            	EntityEnigmoth.this.playSound(EntityEnigmoth.this.getSpellSound(), 0.475F, 1.0F);
             	this.castSpell();
             }
         }
 
         protected void castSpell() {
-        	for(int i = 0 ; i < 8 ; i++) {
+        	for(int i = 0 ; i < 12; i++) {
        	 		Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		Double d1 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		EntityMothScales ammo = new EntityMothScales(world, EntityEnigmoth.this, d0, - 2.4D, d1);
@@ -419,11 +458,11 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         }
 
         protected int getCastWarmupTime() {
-            return 10;
+            return 5;
         }
 
         protected int getCastingTime() {
-            return 15;
+            return 10;
         }
 
         protected int getCastingInterval() {
@@ -435,4 +474,16 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
             return SoundEvents.ENTITY_BAT_TAKEOFF;
         }
     }
+    
+	public EntityEnigmothLarva createChild(EntityAgeable ageable) {
+		EntityEnigmothLarva entity = new EntityEnigmothLarva(this.world);
+		UUID uuid = this.getOwnerId();
+		if (uuid != null) {
+			entity.setOwnerId(uuid);
+			entity.setTamed(true);
+			entity.setHealth(entity.getMaxHealth());
+		}
+
+		return entity;
+	}
 }

@@ -7,9 +7,7 @@ public class MobEffectSoiled extends MobEffectMod {
 	}
 	
     @Override
-    public boolean isReady(int duration, int amplifier)
-    {
+    public boolean isReady(int duration, int amplifier) {
         return true;
     }
-
 }

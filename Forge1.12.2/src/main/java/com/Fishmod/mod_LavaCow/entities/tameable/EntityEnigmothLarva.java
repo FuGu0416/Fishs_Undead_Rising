@@ -29,6 +29,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -42,6 +45,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityEnigmothLarva extends EntityFishTameable {
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityEnigmothLarva.class, DataSerializers.VARINT);
 	protected int spellTicks;
 	
 	public EntityEnigmothLarva(World worldIn)
@@ -49,6 +53,7 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.experienceValue = 3;
+        this.isImmuneToFire = true;
     }
 	
 	@Override
@@ -72,6 +77,13 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+    }
+	
+	@Override
+    protected void entityInit() {
+		super.entityInit();
+		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
     }
 	
 	@Override
@@ -86,22 +98,37 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 	   	return super.onInitialSpawn(difficulty, livingdata);
     }
 	
-	public boolean getCanSpawnHere() {
-		// Middle end island check
-		if (this.world.provider.getDimension() == 1) {
-			return !Modconfig.Enigmoth_Larva_Middle_End_Island ? this.posX > 500 || this.posX < -500 || this.posZ > 500 || this.posZ < -500 : true;
-		}
-		   	
-		return super.getCanSpawnHere();
-	}
-	   
-	/**
-	 * Will return how many at most can spawn in a chunk at once.
-	*/
 	@Override
-	public int getMaxSpawnedInChunk() {
-		return 1;
-	}
+	   public boolean getCanSpawnHere() {
+	    	// Middle end island check
+	    	if (this.world.provider.getDimension() == 1) {
+	    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+	    		if (!Modconfig.Enigmoth_Larva_Middle_End_Island) {
+	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+	    		}
+	    		else {
+	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
+	    		}
+	    	}
+		   	
+		       return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+		   }
+	   
+	   public int getSkin() {
+	        return this.dataManager.get(SKIN_TYPE).intValue();
+	    }
+
+	    public void setSkin(int skinType) {
+	        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+	    }
+	   
+	   /**
+		 * Will return how many at most can spawn in a chunk at once.
+		*/
+		@Override
+		public int getMaxSpawnedInChunk() {
+			return 1;
+		}
 	
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;
@@ -291,10 +318,10 @@ public class EntityEnigmothLarva extends EntityFishTameable {
 		return entity;
 	}
     
-	// Immune to Corroded and Poison
+	// Immune to Corroded, Poison, and Void Dust
     @Override
 	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
 	}
     
     public class AICastingSpell extends EntityAIBase {

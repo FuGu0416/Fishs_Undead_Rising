@@ -34,13 +34,34 @@
         {
           "type": "item",
           "name": "minecraft:wheat",
+          "weight": 19,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "mod_lavacow:diseased_wheat",
           "weight": 1,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "min": 0,
-                "max": 2
+                "max": 3
               }
             },
             {

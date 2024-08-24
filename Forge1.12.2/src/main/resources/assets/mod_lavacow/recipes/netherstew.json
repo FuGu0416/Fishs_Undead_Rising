@@ -4,20 +4,25 @@
     {
       "item": "minecraft:bowl"
     },
+    [
+      {
+        "item": "mod_lavacow:moltenpan",
+        "data": 32767
+      },
+      {
+        "item": "mod_lavacow:soulforged_pan",
+        "data": 32767
+      }
+    ],
     {
-    	"item": "mod_lavacow:moltenpan",
-    	"data": 32767
+      "type": "forge:ore_dict",
+      "ore": "cropNetherWart"
     },
     {
-		"type": "forge:ore_dict",
-		"ore": "cropNetherWart"
-    },
-    {
-		"type": "forge:ore_dict",
-		"ore": "cropNetherWart"
+      "type": "forge:ore_dict",
+      "ore": "cropNetherWart"
     }
   ],
-  
   "result": {
     "item": "mod_lavacow:netherstew"
   }

@@ -28,7 +28,7 @@ public class RenderSalamander extends RenderLiving<EntitySalamander>{
     }
 
     public RenderSalamander(RenderManager rendermanagerIn) {
-        super(rendermanagerIn, new ModelSalamander(), 0.5F);
+        super(rendermanagerIn, new ModelSalamander(), 1.0F);
         this.addLayer(new LayerSalamanderSaddle(this));
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "mod_lavacow:vespa_carapace"
+    }
+  },
+  "result": {
+    "item": "mod_lavacow:vespa_carapace_block"
+  }
+}

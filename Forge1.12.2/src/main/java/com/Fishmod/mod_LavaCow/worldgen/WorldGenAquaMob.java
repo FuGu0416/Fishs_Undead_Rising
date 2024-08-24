@@ -18,6 +18,7 @@ public class WorldGenAquaMob extends WorldGenerator{
     {
     }
 
+    // TODO: Replace this with a better spawning method for aquatic mobs in the future
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
 		Biome biome = worldIn.getBiome(position);
@@ -28,6 +29,7 @@ public class WorldGenAquaMob extends WorldGenerator{
     				for(int i = 0; i < 2 + rand.nextInt(3); i++) {
 	    				EntityZombiePiranha fish = new EntityZombiePiranha(worldIn);
 	    				fish.setPosition(position.down().getX(), position.down().getY(), position.down().getZ());
+	    				if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP)) fish.setSkin(2);
 	    				worldIn.spawnEntity(fish);
 	    			}
     			}

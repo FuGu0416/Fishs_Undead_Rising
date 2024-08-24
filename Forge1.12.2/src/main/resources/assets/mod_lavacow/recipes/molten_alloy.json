@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+	    {
+	      	"item": "mod_lavacow:moltenbeef"
+	    },
+	    {
+	    	"item": "mod_lavacow:moltenbeef"
+	    },
+	    {
+			"item": "minecraft:fire_charge"
+	    },
+	    {
+			"type": "forge:ore_dict",
+    		"ore": "gemDiamond"
+	    }
+    ],
+
+    "result": {
+        "item": "mod_lavacow:molten_alloy"
+    }
+}

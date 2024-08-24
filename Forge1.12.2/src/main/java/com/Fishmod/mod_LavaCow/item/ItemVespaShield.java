@@ -69,6 +69,26 @@ public class ItemVespaShield extends ItemShield {
 		}
 	}
 	
+	/**
+	 * Called when an attack was successfully blocked
+	 * @param stack
+	 * @param attacked
+	 * @param source
+	 */
+	/*public void onAttackBlocked(ItemStack stackIn, EntityLivingBase attackedIn, float damageIn, DamageSource sourceIn) {
+		int poisonous = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, ((EntityLivingBase)sourceIn.getTrueSource()).getHeldItem(((EntityLivingBase)sourceIn.getTrueSource()).getActiveHand()));
+		int i = 1 + MathHelper.floor(damageIn);
+		int calc = 6 * poisonous;
+		
+		if(!attackedIn.world.isRemote) {			
+			if(sourceIn.getTrueSource() instanceof EntityLivingBase) {
+				sourceIn.getTrueSource().attackEntityFrom(DamageSource.causeThornsDamage(attackedIn) , 2.0F);
+				((EntityLivingBase)sourceIn.getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.POISON, calc + 6 * 20, 0));
+				stackIn.damageItem(i, attackedIn);
+			}
+		}
+	}
+	
     /**
      * Determines whether the entity can block the damage source based on the damage source's location, whether the
      * damage source is blockable, and whether the entity is blocking.

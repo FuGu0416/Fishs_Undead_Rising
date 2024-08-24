@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###"
+    ],
+    "key": {
+        "#": {
+			"item": "mod_lavacow:diseased_wheat"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:diseased_bread"
+    }
+}

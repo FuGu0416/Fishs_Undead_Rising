@@ -39,6 +39,18 @@ public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBaub
 	{
 		return false;
 	}
+    
+    /**
+     * Allow or forbid the specific book/item combination as an anvil enchant
+     *
+     * @param stack The item
+     * @param book The book
+     * @return if the enchantment is allowed
+     */
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book)
+    {
+    	return false;
+    }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -47,6 +59,10 @@ public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBaub
 			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.HaloNecklace_Damage));
 		else if(stack.getItem().equals(FishItems.MOOTENHEART))
 			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.MootenHeart_Damage));
+		else if(stack.getItem().equals(FishItems.SOULFORGED_HEART)) {
+			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.MootenHeart_Damage));
+			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip + ".l2", Modconfig.SoulforgedHeart_Healing));
+		}
 	}
 	
     /**
@@ -56,20 +72,20 @@ public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBaub
      */  
     @Override
     @Optional.Method(modid = "baubles")
-    public boolean canEquip(ItemStack arg0, EntityLivingBase arg1) {
+    public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
       return true;
     }
     
     @Override
     @Optional.Method(modid = "baubles")
-    public boolean canUnequip(ItemStack arg0, EntityLivingBase arg1) {
+    public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
       return true;
     }
     
     @Override
     @Optional.Method(modid = "baubles")
-    public baubles.api.BaubleType getBaubleType(ItemStack arg0) {
-    	if(arg0.getItem().equals(FishItems.HALO_NECKLACE))
+    public baubles.api.BaubleType getBaubleType(ItemStack stack) {
+    	if(stack.getItem().equals(FishItems.HALO_NECKLACE))
     		return baubles.api.BaubleType.AMULET;
     	else
     		return baubles.api.BaubleType.TRINKET;
@@ -83,13 +99,23 @@ public class ItemBaubleTrinket extends ItemRareLoot implements baubles.api.IBaub
     
 	@Override
 	@Optional.Method(modid = "baubles")
-	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-		player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, .75F, 1.9f);
+	public void onEquipped(ItemStack stack, EntityLivingBase player) {
+		if(stack.getItem().equals(FishItems.MOOTENHEART))
+			player.playSound(SoundEvents.BLOCK_LAVA_POP, 0.75F, 2.0F);
+		else if(stack.getItem().equals(FishItems.SOULFORGED_HEART))
+			player.playSound(FishItems.ENTITY_AVATON_HURT, 0.75F, 1.25F);
+		else
+			player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.75F, 2.0F);
 	}
 
 	@Override
 	@Optional.Method(modid = "baubles")
-	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-		player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, .75F, 2f);
+	public void onUnequipped(ItemStack stack, EntityLivingBase player) {
+		if(stack.getItem().equals(FishItems.MOOTENHEART))
+			player.playSound(SoundEvents.BLOCK_LAVA_POP, 0.75F, 2.0F);
+		else if(stack.getItem().equals(FishItems.SOULFORGED_HEART))
+			player.playSound(FishItems.ENTITY_AVATON_HURT, 0.75F, 1.25F);
+		else
+			player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.75F, 2.0F);
 	}
 }

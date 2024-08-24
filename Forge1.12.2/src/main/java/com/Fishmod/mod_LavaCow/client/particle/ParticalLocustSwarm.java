@@ -22,18 +22,16 @@ public class ParticalLocustSwarm extends Particle {
 
     public ParticalLocustSwarm(World world, double posX, double posY, double posZ, double motionX, double motionY, double motionZ) {
         super(world, posX, posY, posZ, motionX, motionY, motionZ);
-        this.particleAlpha = 1F;
-        this.particleMaxAge = (int) (5.0D / (Math.random() * 0.8D + 0.2D));
         this.motionX *= 0.10000000149011612D;
         this.motionY *= 0.10000000149011612D;
         this.motionZ *= 0.10000000149011612D;
+        this.particleScale *= 0.2 + this.rand.nextFloat() * 0.55F;
+        this.particleMaxAge = (int) (5.0D / (Math.random() * 0.8D + 0.2D));
+        this.canCollide = false;
+        this.particleAngle = (float)Math.random() * 1.2566371F;
     }
 
     public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-    	if (particleAge > particleMaxAge) {
-            this.setExpired();
-        }
-        particleScale = 0.1F * (this.particleMaxAge);
         float f3 = (float) (this.posX - interpPosX);
         float f4 = (float) (this.posY - interpPosY);
         float f5 = (float) (this.posZ - interpPosZ);
@@ -77,9 +75,17 @@ public class ParticalLocustSwarm extends Particle {
     }
 
     public void onUpdate() {
-        super.onUpdate();
-        this.motionY *= 1.015D;
-        this.motionX *= 0.9599999785423279D;
-        this.motionZ *= 0.9599999785423279D;
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
+		if (this.particleAge++ >= this.particleMaxAge) {
+			this.setExpired();
+		} else {
+			this.move(this.motionX, this.motionY, this.motionZ);
+			
+			this.motionY *= 1.015D;
+        	this.motionX *= 0.9599999785423279D;
+        	this.motionZ *= 0.9599999785423279D;
+		}
     }
 }

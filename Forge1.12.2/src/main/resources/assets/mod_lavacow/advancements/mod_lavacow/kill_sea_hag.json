@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:prismarine_crystals"
+        },
+        "title": {
+            "translate": "advancements.mod_lavacow.kill_sea_hag.title"
+        },
+        "description": {
+            "translate": "advancements.mod_lavacow.kill_sea_hag.description"
+        }
+    },
+    "parent": "mod_lavacow:mod_lavacow/kill_wraith",
+    "criteria": {
+        "kill_sea_hag": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "mod_lavacow:sea_hag"
+		        }
+		      }
+        }
+    }
+}

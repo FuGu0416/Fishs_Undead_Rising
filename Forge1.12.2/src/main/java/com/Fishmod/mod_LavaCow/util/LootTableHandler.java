@@ -32,6 +32,8 @@ public class LootTableHandler {
 	public static ResourceLocation PARASITE1 = null;
 	public static ResourceLocation PARASITE2 = null;
 	public static ResourceLocation FOGLET = null;
+	public static ResourceLocation ISNACHI = null;
+	public static ResourceLocation IMP = null;
 	public static ResourceLocation ZOMBIEFROZEN = null;
 	public static ResourceLocation UNDEADSWINE = null;
 	public static ResourceLocation SALAMANDER = null;
@@ -45,6 +47,8 @@ public class LootTableHandler {
 	public static ResourceLocation SEAGULL = null;
 	public static ResourceLocation PTERA = null;
 	public static ResourceLocation PTERA1 = null;
+	public static ResourceLocation PTERA2 = null;
+	public static ResourceLocation PTERA3 = null;
 	public static ResourceLocation VESPA = null;
 	public static ResourceLocation SCARECROW = null;
 	public static ResourceLocation SCARECROW1 = null;
@@ -66,6 +70,12 @@ public class LootTableHandler {
 	public static ResourceLocation CACTOID = null;
 	public static ResourceLocation CACTYRANT = null;
 	public static ResourceLocation CACTYRANT_NETHER = null;
+	public static ResourceLocation SEA_HAG = null;
+	public static ResourceLocation GRAVE_ROBBER = null;
+	public static ResourceLocation WRAITH = null;
+	public static ResourceLocation GHOST_SWARMER = null;
+	public static ResourceLocation AMBER_SCARAB = null;
+	public static ResourceLocation AMBER_LORD = null;
 	public static ResourceLocation ENIGMOTH = null;
 	public static ResourceLocation ENIGMOTH_LARVA = null;
 	public static ResourceLocation UNBURIED = null;
@@ -77,7 +87,9 @@ public class LootTableHandler {
 	public static Map<ItemStack, Float> LOOT_SEAGULL = new HashMap<ItemStack, Float>();
 	public static Map<ItemStack, Float> LOOT_SPECTRAL_RAVEN = new HashMap<ItemStack, Float>();
 	public static List<Biome.SpawnListEntry> DREAMCATCHER_LIST = Lists.<Biome.SpawnListEntry>newArrayList();
+	public static List<ResourceLocation> FISSION_WHITELIST = Lists.<ResourceLocation>newArrayList();
 	public static List<ResourceLocation> PARASITE_HOSTLIST = Lists.<ResourceLocation>newArrayList();
+	public static List<Biome.SpawnListEntry> PTERA_PASSENGERLIST = Lists.<Biome.SpawnListEntry>newArrayList();
 
 	public static Map<ItemStack, Float> parseLootTable(String[] lootTableConfiguration) {
 		Map<ItemStack, Float> lootTable = new HashMap<ItemStack, Float>();
@@ -107,14 +119,15 @@ public class LootTableHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void addLootTable()
-	{
+	public static void addLootTable() {
 		LAVACOW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/moogma"));
 		ZOMBIEMUSHROOM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/mycosis"));
 		PARASITE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite"));
 		PARASITE1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite_desert"));
 		PARASITE2 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite_jungle"));
 		FOGLET = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/foglet"));
+		ISNACHI = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/isnachi"));
+		IMP = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/imp"));
 		ZOMBIEFROZEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/frigid"));
 		UNDEADSWINE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/undead_swine"));
 		SALAMANDER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/salamander"));
@@ -124,10 +137,13 @@ public class LootTableHandler {
 		WENDIGO = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/wendigo"));
 		MIMIC = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/mimic"));
 		SLUDGELORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/sludge_lord"));
+		LIL_SLUDGE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/lil_sludge"));
 		RAVEN = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/raven"));
 		SEAGULL = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/seagull"));
 		PTERA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ptera_jungle"));
 		PTERA1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ptera_desert"));
+		PTERA2 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ptera_savanna"));
+		PTERA3 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ptera_swamp"));
 		VESPA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/vespa"));
 		SCARECROW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/scarecrow"));
 		SCARECROW1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/scarecrow_straw"));
@@ -147,11 +163,16 @@ public class LootTableHandler {
 		CACTOID = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactoid"));
 		CACTYRANT = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactyrant"));
 		CACTYRANT_NETHER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/cactyrant_nether"));
+		SEA_HAG = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/sea_hag"));
+		GRAVE_ROBBER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/grave_robber"));
+		WRAITH = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/wraith"));
+		GHOST_SWARMER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ghost_swarmer"));
+		AMBER_LORD = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/amber_lord"));
+		AMBER_SCARAB = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/amber_scarab"));
 		ENIGMOTH = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth"));
 		ENIGMOTH_LARVA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth_larva"));
 		UNBURIED = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/unburied"));
 		UNDERTAKER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/undertaker"));
-		LIL_SLUDGE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/lil_sludge"));
 		
 		CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest"));
 		DESERT_TOMB_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest"));
@@ -174,7 +195,7 @@ public class LootTableHandler {
 		LootTableHandler.LOOT_SEAGULL = LootTableHandler.parseLootTable(Modconfig.Seagull_Loot);
 		LootTableHandler.LOOT_SPECTRAL_RAVEN = LootTableHandler.parseLootTable(Modconfig.Spectral_Raven_Loot);
 
-		for(String S : Modconfig.DreamCatcher_spawn) {
+		for(String S : Modconfig.Dreamcatcher_spawn) {
 			String[] S_splt = S.split(",");
 			Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(S_splt[0]));
 			
@@ -183,14 +204,26 @@ public class LootTableHandler {
 			}
 		}
 		
+		for(String S : Modconfig.Fission_Allowlist) {
+			FISSION_WHITELIST.add(new ResourceLocation(S));
+		}
+		
 		for(String S : Modconfig.Parasite_Hostlist) {
 			PARASITE_HOSTLIST.add(new ResourceLocation(S));
+		}
+		
+		for(String S : Modconfig.Ptera_Ability_Spawn) {
+			String[] S_splt = S.split(",");
+			Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(S_splt[0]));
+			
+			if(entityClass != null && S_splt.length == 2 && Integer.parseInt(S_splt[1]) > 0) {
+				PTERA_PASSENGERLIST.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, Integer.parseInt(S_splt[1]), 1, 1));
+			}
 		}
 	}
 	
 	public static void dropRareLoot(Entity entityIn, Item itemIn, int chance,@Nullable Enchantment enchantmentIn, int enchantlevel, int looting) {
-		if (!entityIn.world.isRemote && new Random().nextInt(100) < chance + (2 * looting))
-    	{			
+		if (!entityIn.world.isRemote && new Random().nextInt(100) < chance + (2 * looting)) {			
 			ItemStack item = new ItemStack(itemIn, 1);
 			if(Modconfig.Enchantment_Enable && enchantmentIn != null)
 				ItemEnchantedBook.addEnchantment(item, new EnchantmentData(enchantmentIn, enchantlevel));
@@ -199,8 +232,7 @@ public class LootTableHandler {
 	}
 	
 	public static void dropRareLoot(Entity entityIn, ItemStack itemstackIn, int chance, int looting) {
-		if (!entityIn.world.isRemote && new Random().nextInt(100) < chance + (2 * looting))
-    	{			
+		if (!entityIn.world.isRemote && new Random().nextInt(100) < chance + (2 * looting)) {			
 			entityIn.entityDropItem(itemstackIn, 0.0F);
     	}
 	}

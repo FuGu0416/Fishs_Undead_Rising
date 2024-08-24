@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "mod_lavacow:scythe_claw_block"
+      }
+    ]
+  ],
+  "result": {
+    "item": "mod_lavacow:scythe_claw",
+    "count": 9
+  }
+}

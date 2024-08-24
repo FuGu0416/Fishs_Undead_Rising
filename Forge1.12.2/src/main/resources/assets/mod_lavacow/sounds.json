@@ -132,6 +132,27 @@
 		"sounds": ["mod_lavacow:entity/zombiepiranha/death0","mod_lavacow:entity/zombiepiranha/death1","mod_lavacow:entity/zombiepiranha/death2"]
 	},
 	
+	"entity.zombiepiranhaghost.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_zombiepiranha_ambient",
+		"sounds": ["mod_lavacow:entity/zombiepiranhaghost/ambient0","mod_lavacow:entity/zombiepiranhaghost/ambient1","mod_lavacow:entity/zombiepiranhaghost/ambient2","mod_lavacow:entity/zombiepiranhaghost/ambient3"]
+	},
+	
+	"entity.zombiepiranhaghost.attack":
+	{
+		"category": "entity",
+		"subtitle": "entity_zombiepiranha_attack",
+		"sounds": [{"name": "mod_lavacow:entity/zombiepiranhaghost/attack","stream": true}]
+	},
+	
+	"entity.zombiepiranhaghost.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_zombiepiranha_death",
+		"sounds": ["mod_lavacow:entity/zombiepiranhaghost/death0","mod_lavacow:entity/zombiepiranhaghost/death1","mod_lavacow:entity/zombiepiranhaghost/death2"]
+	},
+	
 	"entity.wendigo.ambient":
 	{
 		"category": "entity",
@@ -277,6 +298,27 @@
 		"category": "entity",
 		"subtitle": "entity_raven_death",
 		"sounds": [{"name": "mod_lavacow:entity/raven/death","stream": true}]
+	},
+	
+	"entity.ravenghost.ambient":
+	{
+		"category": "entity",
+		"subtitle": "entity_raven_ambient",
+		"sounds": [{"name": "mod_lavacow:entity/ravenghost/ambient","stream": true}]
+	},
+	
+	"entity.ravenghost.hurt":
+	{
+		"category": "entity",
+		"subtitle": "entity_raven_hurt",
+		"sounds": [{"name": "mod_lavacow:entity/ravenghost/hurt","stream": true}]
+	},
+	
+	"entity.ravenghost.death":
+	{
+		"category": "entity",
+		"subtitle": "entity_raven_death",
+		"sounds": [{"name": "mod_lavacow:entity/ravenghost/death","stream": true}]
 	},
 	
 	"entity.vespa.ambient":
@@ -754,6 +796,12 @@
 		"sounds": [{"name": "mod_lavacow:entity/enigmoth/flap","stream": true}]
 	},
 	
+	"entity.enigmoth.scales":
+	{
+		"category": "entity",
+		"sounds": [{"name": "mod_lavacow:entity/enigmoth/scales","stream": true}]
+	},
+	
 	"random.death_coil_shoot":
 	{
 		"category": "neutral",
@@ -786,5 +834,11 @@
 		"category": "neutral",
 		"subtitle": "random_thorn_shoot",
 		"sounds": [{"name": "mod_lavacow:random/thorn_shoot","stream": true}]
+	},
+	"random.spin":
+	{
+		"category": "neutral",
+		"subtitle": "random_spin",
+		"sounds": [{"name": "mod_lavacow:random/spin","stream": true}]
 	}
 }

@@ -4,9 +4,11 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -17,13 +19,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -34,6 +33,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketSetPassengers;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateClimber;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -46,7 +47,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityParasite extends EntitySpider{
+public class EntityParasite extends EntityFishTameable {
+    private static final DataParameter<Boolean> CLIMBING = EntityDataManager.createKey(EntityParasite.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityParasite.class, DataSerializers.VARINT);
 	
 	public int lifespawn;
@@ -55,7 +57,7 @@ public class EntityParasite extends EntitySpider{
 	public EntityParasite(World worldIn)
     {
         super(worldIn);
-        this.setSize(0.8F, 0.3F);
+        this.setSize(0.4F, 0.3F);
         this.long_live = false;
         this.lifespawn = Modconfig.Parasite_Lifespan * 20; // Can live for only a short time, poor little one :(
         this.experienceValue = 1;
@@ -82,17 +84,17 @@ public class EntityParasite extends EntitySpider{
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(4, new EntityParasite.AIParasiteAttack(this));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.applyEntityAI();
     }
 	
     protected void applyEntityAI()
     {
-    	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+    	this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
+	  	      return !p_210136_0_.isPassenger(this) && !(this.getOwner() instanceof EntityPlayer);
+	   }));
     	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, (p_210136_0_) -> {
-	  	      return p_210136_0_ instanceof EntityLivingBase && ((EntityLivingBase)p_210136_0_).attackable() 
+	  	      return p_210136_0_ instanceof EntityLivingBase && ((EntityLivingBase)p_210136_0_).attackable() && !(this.getOwner() instanceof EntityPlayer) 
 	  	    		  && ((Modconfig.Parasite_Plague && !(p_210136_0_ instanceof EntityParasite || p_210136_0_ instanceof EntityCreeper)) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(p_210136_0_)));
 	  	   }));
     }
@@ -109,6 +111,7 @@ public class EntityParasite extends EntitySpider{
 	
     protected void entityInit() {
         super.entityInit();
+        this.getDataManager().register(CLIMBING, Boolean.FALSE);
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(3)));
      }
 	
@@ -120,6 +123,15 @@ public class EntityParasite extends EntitySpider{
     }
 	
     /**
+     * Returns new PathNavigateGround instance
+     */
+	@Override
+    protected PathNavigate createNavigator(World worldIn)
+    {
+        return new PathNavigateClimber(this, worldIn);
+    }
+	
+    /**
      * Called to update the entity's position/logic.
      */
 	@Override
@@ -128,9 +140,46 @@ public class EntityParasite extends EntitySpider{
 		if(this.getRidingEntity() != null) {
 			this.setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, getRidingEntity().rotationYaw, getRidingEntity().rotationPitch);
 		}
+		
+        if (!this.world.isRemote) {
+            this.setBesideClimbableBlock(this.collidedHorizontally);
+        }
 			
+        this.renderYawOffset = this.rotationYaw;
 		super.onUpdate();
 	}
+
+    /**
+     * Set the render yaw offset
+     */
+	@Override
+    public void setRenderYawOffset(float offset)
+    {
+        this.rotationYaw = offset;
+        super.setRenderYawOffset(offset);
+    }
+	
+    @Override
+    public boolean isOnLadder() {
+        return this.isBesideClimbableBlock();
+    }
+
+    public boolean isBesideClimbableBlock() {
+        return this.dataManager.get(CLIMBING);
+    }
+
+    public void setBesideClimbableBlock(boolean climbing) {
+        this.dataManager.set(CLIMBING, climbing);
+    }
+    
+    @Override
+    protected SoundEvent getFallSound(int heightIn) {
+        return null;
+    }
+
+    @Override
+    public void fall(float distance, float damageMultiplier) {
+    }
 	
 	@Override
 	public void onLivingUpdate()
@@ -139,11 +188,11 @@ public class EntityParasite extends EntitySpider{
         {
         	if(!long_live)this.lifespawn--;
         }
-        else if (this.getSkin() == 2 && this.rand.nextInt(100) < Modconfig.pSpawnRate_Vespa) {
+        else if (this.getSkin() == 2 && this.rand.nextInt(100) < Modconfig.pEvolveRate_Vespa || this.isTamed()) {
         	double d0 = this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         	List<EntityPlayer> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(d0, d0, d0));
 
-        	if(!list.isEmpty()) {
+        	if(!list.isEmpty() || this.isTamed()) {
             	this.lifespawn = 5 * 20;
         		
         		if (!this.world.isRemote) {
@@ -153,10 +202,10 @@ public class EntityParasite extends EntitySpider{
 		    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.prevRotationPitch);
 		    		pupa.setSkin(0);
 		    		
-		    		/*if (this.isTamed() && this.getOwner() instanceof PlayerEntity) {
-		    			pupa.tame((PlayerEntity) this.getOwner());
-		    			pupa.setCustomName(this.getCustomName());
-		    		}*/
+		    		if (this.isTamed() && this.getOwner() instanceof EntityPlayer) {
+		    			pupa.setTamedBy((EntityPlayer) this.getOwner());
+		    			pupa.setCustomNameTag(this.getCustomNameTag());
+		    		}
 		    		
 		    		this.world.spawnEntity(pupa);
         		}
@@ -198,7 +247,7 @@ public class EntityParasite extends EntitySpider{
     {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (hand == EnumHand.MAIN_HAND && itemstack.isEmpty() && player.isSneaking() && Modconfig.Parasite_Pickup)
+        if (hand == EnumHand.MAIN_HAND && !this.isTamed() && itemstack.isEmpty() && player.isSneaking() && Modconfig.Parasite_Pickup)
         {
         	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         	

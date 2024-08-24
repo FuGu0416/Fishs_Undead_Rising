@@ -37,13 +37,6 @@ public class RenderZombieMushroom extends RenderLiving<EntityZombieMushroom> {
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
         this.addLayer(new LayerGenericHeldItem<>(this, 0.0F, 0.15F, -0.6F, 1.0F));
         LayerUnburiedArmor layerbipedarmor = new LayerUnburiedArmor(this);
-        /*{
-            protected void initArmor()
-            {
-                this.modelLeggings = new ModelUnburiedArmor(0.5F);
-                this.modelArmor = new ModelUnburiedArmor(1.0F);
-            }
-        };*/
         this.addLayer(layerbipedarmor);
     }
     
@@ -57,5 +50,7 @@ public class RenderZombieMushroom extends RenderLiving<EntityZombieMushroom> {
     	if(entity.isChild()) {
     		GlStateManager.scale(0.6F, 0.6F, 0.6F);
     	}
+    	
+    	GlStateManager.translate(0.0D, (double)entity.getRisingTicks() / 20.0D, 0.0D);
 	}
 }

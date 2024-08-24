@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "mod_lavacow:molten_alloy_block"
+      }
+    ]
+  ],
+  "result": {
+    "item": "mod_lavacow:molten_alloy",
+    "count": 9
+  }
+}

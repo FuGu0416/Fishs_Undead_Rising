@@ -91,6 +91,7 @@ public class EntityCactoid extends EntityFishTameable {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Cactoid_Health);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Cactoid_Attack);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
     
     @Override
@@ -176,8 +177,8 @@ public class EntityCactoid extends EntityFishTameable {
      */
     @Override
     public void onUpdate() {   	
-    	if (!this.world.isRemote && !this.isTamed()) {
-    		if (this.isInDaylight() && this.getAttackTarget() == null && this.recentlyHit == 0) {
+    	if (!this.world.isRemote && !this.isTamed() && this.getAttackTarget() == null && this.recentlyHit == 0) {
+    		if (this.isInDaylight()) {
     			this.doSitCommand(null);
     		} else if (this.state != EntityFishTameable.State.WANDERING) {
     			this.doFollowCommand(null);
@@ -294,15 +295,10 @@ public class EntityCactoid extends EntityFishTameable {
     	// Nether (Basalt Deltas) Variant
         if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(3);
-     	   setFireImmunity();
         }
         
     	return super.onInitialSpawn(difficulty, livingdata);
     }	
-    
-    public boolean setFireImmunity() {
-    	return this.isImmuneToFire = true;
-    }
     
 	@Override
     public float getEyeHeight() {
@@ -347,6 +343,26 @@ public class EntityCactoid extends EntityFishTameable {
 			super.handleStatusUpdate(id);
 			break;
 		}
+    }
+	
+	@Override
+	public boolean isOnSameTeam(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        else if (entity == this) {
+            return true;
+        }
+        else if (super.isOnSameTeam(entity)) {
+            return true;
+        }
+        else if (entity instanceof EntityCactyrant || entity instanceof EntityCactoid)
+        {
+            return this.getTeam() == null && entity.getTeam() == null;
+        }
+        else {
+            return false;
+        }
     }
     
     @Override

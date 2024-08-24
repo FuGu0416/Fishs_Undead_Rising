@@ -129,6 +129,7 @@ public class ModelPingu extends FishModelBase {
     	if (((EntityPingu)entity).isAggressive() || ((EntityPingu)entity).isInWater()) {
     		this.Head_Looking(this.head, -1.5707963267948966F, 0.0F, netHeadYaw, headPitch);
     		this.head.rotationPointZ = -1.0F;
+    		this.head.rotateAngleZ = 0.0F;
     		this.body.rotateAngleZ = 0.0F;
     		this.wing_l.rotationPointY = -5.5F;
     		wing_l.rotateAngleX = 1.5707963267948966F;
@@ -141,6 +142,7 @@ public class ModelPingu extends FishModelBase {
     	} else {
     		this.Head_Looking(this.head, 0.0F, 0.0F, netHeadYaw, headPitch);
     		this.head.rotationPointZ = 2.5F;
+    		this.head.rotateAngleZ = -MathHelper.cos(limbSwing * 0.8F) * 0.7F * limbSwingAmount;
     		this.body.rotateAngleZ = MathHelper.cos(limbSwing * 0.8F) * 0.7F * limbSwingAmount;
     		
     		this.wing_l.rotationPointY = -7.0F;

@@ -70,12 +70,12 @@ public class EntityPiranha extends EntityZombiePiranha{
     
     @Override
     protected SoundEvent getDeathSound() {
-    	 return SoundEvents.ENTITY_GUARDIAN_DEATH;
+    	 return SoundEvents.ENTITY_GUARDIAN_HURT_LAND;
      }
 
     @Override
      protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-    	 return SoundEvents.ENTITY_ELDER_GUARDIAN_HURT;
+    	 return SoundEvents.ENTITY_GUARDIAN_FLOP;
      }
     
      @Override

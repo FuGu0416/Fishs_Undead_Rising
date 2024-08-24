@@ -13,6 +13,7 @@ import com.Fishmod.mod_LavaCow.tileentity.TileEntityMimic;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -61,7 +62,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class EntityMimic extends EntityFishTameable implements IAggressive{
+public class EntityMimic extends EntityFishTameable implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMimic.class, DataSerializers.VARINT);
     private static final DataParameter<String> CHEST_TEXTURE = EntityDataManager.<String>createKey(EntityMimic.class, DataSerializers.STRING);
     public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
@@ -72,6 +73,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     private int AttackTimer, AggressiveTimer = 40;
     public float rotationAngle = 0.0F;
     public int IdleTimer, SitTimer;
+    public boolean canDropItems;
 
 	public NonNullList<ItemStack> inventory;
     private EntityAITargetItem<EntityItem> AITargetItem;
@@ -80,7 +82,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
-        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);       
+        this.inventory = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY); 
+        this.canDropItems = true;
         this.setCanPickUpLoot(true);
         this.setTamed(false);
     }
@@ -130,6 +133,10 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
         	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack);
         }
         
+    }
+    
+    public boolean canDropItems() {
+        return canDropItems;
     }
 
     protected boolean canDespawn()
@@ -255,9 +262,13 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 			}
 			
 			this.posX = MathHelper.floor(posX) + 0.5;
+			this.posY = MathHelper.floor(posY);
 			this.posZ = MathHelper.floor(posZ) + 0.55;
 			this.rotationYaw = prevRotationYaw = this.rotationAngle;
 			this.renderYawOffset = prevRenderYawOffset = 0F;		
+			
+			if (getEntityWorld().getBlockState(getPosition().down()) instanceof BlockAir)
+				posY -= 1;
 
 			this.setSilent(true);
 			this.setAIMoveSpeed(0.0F);
@@ -321,6 +332,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
     public void travel(float strafe, float vertical, float forward) {
 		if((!isAggressive && !this.isTamed()) || (this.SitTimer > 0 && this.SitTimer < 20)) {
             this.motionX = 0.0D;
+            this.motionY = 0.0D;
             this.motionZ = 0.0D;
 		}
 		else
@@ -475,6 +487,16 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
 
         return super.processInteract(player, hand);
 	}
+    
+    @Override
+    public void onEntityUpdate() {
+    	// Proper check to make sure that they're always immune to fire
+    	if (this.getSkin() == 6) {
+    		this.isImmuneToFire = true;
+    	}
+    	
+    	super.onEntityUpdate();
+    }
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
  	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.NETHER)) {
@@ -699,7 +721,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive{
      */
     @Override
     protected boolean canDropLoot() {
-       return !this.isTamed();
+       return !this.isTamed() && this.canDropItems;
     }
 	
 	public EntityMimic createChild(EntityAgeable ageable) {

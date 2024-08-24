@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": {"model": "mod_lavacow:vespa_carapace_block"},
+        "inventory": {"model": "mod_lavacow:vespa_carapace_block"}
+    }
+}

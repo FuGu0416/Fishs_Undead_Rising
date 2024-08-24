@@ -125,16 +125,18 @@ public class EntityScarecrow  extends EntityFishTameable {
     	if (this.cleaveTimer > 0) {
     		--this.cleaveTimer;
     	}
-
-    	if (!this.world.isRemote && !this.isTamed()) {
+    	
+    	if (!this.world.isRemote && !this.isTamed() && this.getRevengeTarget() == null) {
 			float f = this.getBrightness();
-    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(this.getPosition())) {
+    		if (this.world.isDaytime() && f > 0.5F && this.world.canSeeSky(this.getPosition()) && this.getAttackTarget() == null) {
     			if(this.state != EntityFishTameable.State.SITTING)
     				this.doSitCommand(null);
+    				this.setSilent(true);
     		}
     		else if (this.state != EntityFishTameable.State.WANDERING) {
     			this.doFollowCommand(null);
     			this.doWanderCommand(null);
+    			this.setSilent(false);
     		}
     	}
     	
@@ -154,6 +156,7 @@ public class EntityScarecrow  extends EntityFishTameable {
         	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
         	
         	if(this.AttackStance == (byte)4) {
+        		if (target instanceof EntityPlayer) ((EntityPlayer)target).disableShield(true);
         		if (target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue())) {
 	    			if(this.getSkin() != 2)
 	    				target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
@@ -167,6 +170,7 @@ public class EntityScarecrow  extends EntityFishTameable {
         	} else {
                 for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
                     if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
+                    	if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer)entitylivingbase).disableShield(true);
                     	if (entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue())) {
 	                        entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 	                        
@@ -230,7 +234,7 @@ public class EntityScarecrow  extends EntityFishTameable {
     public boolean attackEntityAsMob(Entity entityIn) {
     	if (this.attackTimer == 0) {
 	        this.attackTimer = 15;
-	        if(this.cleaveTimer == 0) {
+	        if (this.cleaveTimer == 0) {
 	        	this.AttackStance = (byte)5;
 	        	this.cleaveTimer = 140;
 	        } else {
@@ -249,7 +253,7 @@ public class EntityScarecrow  extends EntityFishTameable {
     	this.tasks.removeTask(this.move);
         this.tasks.removeTask(this.watch);
         this.tasks.removeTask(this.look);
-        this.setSilent(true);
+        if (this.isTamed()) this.setSilent(true); // Needed for untamed scarecrows to wake up when threatened during daytime
     	super.doSitCommand(playerIn);
     }
     
@@ -258,7 +262,7 @@ public class EntityScarecrow  extends EntityFishTameable {
     	this.tasks.addTask(5, this.move);
         this.tasks.addTask(8, this.watch);
         this.tasks.addTask(8, this.look);
-		this.setSilent(false);
+        if (this.isTamed()) this.setSilent(false); // Needed for untamed scarecrows to wake up when threatened during daytime
         super.doFollowCommand(playerIn);
     }
     
@@ -269,6 +273,13 @@ public class EntityScarecrow  extends EntityFishTameable {
     	if(source.isFireDamage()) {
     		return super.attackEntityFrom(source, 2.0F * amount);
     	}
+    	
+    	// Untamed scarecrows wake up when threatened during daytime
+    	if (!(this.isTamed()) && this.state != EntityFishTameable.State.WANDERING) {
+			this.doFollowCommand(null);
+			this.doWanderCommand(null);
+			this.setSilent(false);
+		}
     	
     	return super.attackEntityFrom(source, amount);
     }
@@ -433,17 +444,17 @@ public class EntityScarecrow  extends EntityFishTameable {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FishItems.ENTITY_SCARECROW_AMBIENT;
+        return Modconfig.Scarecrow_Old_Sounds ? FishItems.ENTITY_SCARECROW_AMBIENT_OLD : FishItems.ENTITY_SCARECROW_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.BLOCK_CLOTH_BREAK;
+        return Modconfig.Scarecrow_Old_Sounds ? FishItems.ENTITY_SCARECROW_HURT : SoundEvents.BLOCK_CLOTH_BREAK;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FishItems.ENTITY_SCARECROW_DEATH;
+        return Modconfig.Scarecrow_Old_Sounds ? FishItems.ENTITY_SCARECROW_DEATH_OLD : FishItems.ENTITY_SCARECROW_DEATH;
     }
 
     protected SoundEvent getStepSound() {

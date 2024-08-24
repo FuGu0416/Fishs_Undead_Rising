@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-		"type": "forge:ore_dict",
-		"ore": "sugarcane"
+      "type": "forge:ore_dict",
+      "ore": "sugarcane"
     },
     {
       "item": "minecraft:rotten_flesh"
@@ -11,12 +11,17 @@
     {
       "item": "minecraft:rotten_flesh"
     },
-    {
-    	"item": "mod_lavacow:moltenpan",
-    	"data": 32767
-    }
+    [
+      {
+        "item": "mod_lavacow:moltenpan",
+        "data": 32767
+      },
+      {
+        "item": "mod_lavacow:soulforged_pan",
+        "data": 32767
+      }
+    ]
   ],
-  
   "result": {
     "item": "mod_lavacow:canerottenmeat",
     "count": 2

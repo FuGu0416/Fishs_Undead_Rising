@@ -19,6 +19,8 @@ import com.Fishmod.mod_LavaCow.util.RegistryHandler;
 import com.Fishmod.mod_LavaCow.worldgen.StructureGenerator;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -38,7 +40,7 @@ public class mod_LavaCow {
  
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
-    public static final String VERSION = "1.4.2";
+    public static final String VERSION = "1.5.0";
     public static final String MC_VERSION = "[1.12.2]";
     
     public static final String CLIENT = "com.Fishmod.mod_LavaCow.proxy.ClientProxy";
@@ -83,6 +85,12 @@ public class mod_LavaCow {
         GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
         AddRecipes.addRecipies();
         LootTableHandler.addLootTable();
+        
+        // Implements mobs to the monster spawner list
+        if (Modconfig.MonsterSpawner_Mobs) {
+        	DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "unburied"), 50);
+        	DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "foglet"), 50);
+        }
         
         PROXY.init(event);
     }

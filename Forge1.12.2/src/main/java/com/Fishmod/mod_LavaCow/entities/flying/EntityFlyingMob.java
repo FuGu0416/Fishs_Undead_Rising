@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,7 +60,6 @@ public class EntityFlyingMob extends EntityFishTameable {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 	}
 	
@@ -156,6 +154,10 @@ public class EntityFlyingMob extends EntityFishTameable {
     public int getAttackTimer() {
     	return this.attackTimer;
     }
+    
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
+	}
 	
 	public int getHoverTimer() {
 		return this.hoverTimer;
@@ -301,7 +303,7 @@ public class EntityFlyingMob extends EntityFishTameable {
             	f = underState.getBlock().getSlipperiness(underState, this.world, ground, this) * 0.91F;
             }
 
-            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.1F * f1 : 0.02F);
+            this.moveRelative(strafe, vertical, forward, this.onGround ? 0.05F * f1 : 0.1F);
             this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             this.motionX *= (double)f;
             this.motionY *= (double)f;
@@ -398,11 +400,12 @@ public class EntityFlyingMob extends EntityFishTameable {
         	Random random = this.parentEntity.getRNG();
             BlockPos blockpos = new BlockPos(parentEntity).add(random.nextInt(15) - 7, 0, random.nextInt(15) - 7);        	
         	double y = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        
+
         	// Stop calculating height in end dimension
+        	// TODO: A way to calculate other modded dimensions with floating islands?
         	if (this.parentEntity.world.provider.getDimension() != 1) {       	
 	        	int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-	        	
+
 	        	if (groundHeight > 0) {
 	                if (this.parentEntity.isWet()) {
 	                	y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
@@ -411,7 +414,7 @@ public class EntityFlyingMob extends EntityFishTameable {
 	        		}
 	        	}
         	}
-        
+
             this.parentEntity.moveHelper.setMoveTo((double)blockpos.getX() + 0.5D, y + 0.5D, (double)blockpos.getZ() + 0.5D, 1.0D);
         }
     }

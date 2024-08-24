@@ -2,12 +2,14 @@ package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.ModEnchantments;
+import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +22,6 @@ import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
@@ -34,6 +35,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -44,10 +46,10 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityUndertaker extends EntityMob implements IAggressive {
-	
+public class EntityUndertaker extends EntityMob implements IAggressive {	
 	private int attackTimer;
 	protected int spellTicks;
+	private boolean isAggressive = false;
 	
 	public EntityUndertaker(World worldIn) {
 		super(worldIn);
@@ -55,37 +57,33 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
 		this.experienceValue = 12;
 	}
 	
-    protected void initEntityAI()
-    {
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingApell());
         this.tasks.addTask(2, new EntityUndertaker.AIUseSpell());
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));  
+        this.tasks.addTask(3, new EntityUndertaker.AIUndertakerAttack(this, 1.25D, false));
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(4, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
-    	this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
-    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, true));
+    protected void applyEntityAI() {
+    	this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, true));
+    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+    	this.targetTasks.addTask(3, new EntityUndertaker.AIUndertakerTarget<>(this, EntityPlayer.class, false));
+        this.targetTasks.addTask(3, new EntityUndertaker.AIUndertakerTarget<>(this, EntityVillager.class, true));
+        this.targetTasks.addTask(3, new EntityUndertaker.AIUndertakerTarget<>(this, EntityIronGolem.class, true));
     }
     
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Undertaker_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.21D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Undertaker_Attack);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
@@ -102,28 +100,27 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
        return 1;
     }
     
-    public boolean isSpellcasting()
-    {
+    public boolean isSpellcasting() {
     	return this.spellTicks > 0;
     }
     
-    public int getSpellTicks()
-    {
+    public int getSpellTicks() {
         return this.spellTicks;
     }
     
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
+    @Override
+    public double getMountedYOffset() {
+        return -0.75D;
     }
     
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
+    public void onUpdate() {
+        super.onUpdate();
+        // Should always return EntityLivingBase (according to the documentation).
+    	EntityLivingBase target = this.getAttackTarget();
         		
         if (this.attackTimer > 0) {
             --this.attackTimer;
@@ -132,30 +129,19 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
-        
-  	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
-  	   	{
-  	   		float f = this.getBrightness();
-  	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(40);
-  	   	}   
-  	   	        
-        // Should always return EntityLivingBase (according to the documentation).
-    	EntityLivingBase target = this.getAttackTarget();
 
         if (target != null && this.getDistanceSq(target) < 4.0D && this.getAttackTimer() == 3 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
         	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
-        	this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);	        	
+        	this.playSound(FishItems.ENTITY_SKELETONKING_ATTACK, 1.0F, 1.25F);	        	
         	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
         		            
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
+            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
             	target.setFire(2 * (int)f);
             }
         }
     }
 	
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
+    public boolean attackEntityAsMob(Entity entityIn) {
         this.attackTimer = 15;
         this.world.setEntityState(this, (byte)4);
         return true;
@@ -164,15 +150,14 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
-    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
-    {
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 	   this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.UNDERTAKER_SHOVEL));
        this.getHeldItemMainhand().attemptDamageItem(this.rand.nextInt(this.getHeldItemMainhand().getMaxDamage()), this.rand, null);
     }
     
     public float getEyeHeight()
     {
-        return 1.5F;
+        return this.height * 0.75F;
     }
     
     /**
@@ -198,17 +183,32 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
-    {
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Undertaker_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Undertaker_Attack);
+    	this.setHealth(this.getMaxHealth());
+    	
         this.setEquipmentBasedOnDifficulty(difficulty);
         this.setEnchantmentBasedOnDifficulty(difficulty);
         
         return livingdata;
     }
     
+    protected void updateAITasks() {
+        super.updateAITasks();
+        
+        if(this.getAttackTarget() != null) {       		
+        		isAggressive = true;
+        		this.world.setEntityState(this, (byte)11);
+        	} else {
+        		isAggressive = false;
+        		this.world.setEntityState(this, (byte)34);
+        	}
+    }
+    
 	@Override
 	public boolean isAggressive() {
-		return false;
+		return isAggressive;
 	}
     
     public int getAttackTimer() {
@@ -223,43 +223,44 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
     /**
      * Handler for {@link World#setEntityState}
      */
+	@Override
     @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-    	if (id == 4) 
-    	{
-            this.attackTimer = 15;
-        }
-    	else if (id == 10) {
-    		
-        	this.spellTicks = 30;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
+    public void handleStatusUpdate(byte id) {
+		switch(id) {
+		case 4:
+			this.attackTimer = 15;
+			break;
+		case 10:
+			this.spellTicks = 30;
+			break;
+		case 11:
+			this.isAggressive = true;
+			break;
+		case 34:
+			this.isAggressive = false;
+			break;
+		default:
+			super.handleStatusUpdate(id);
+			break;
+		}
     }
     
-    public class AICastingApell extends EntityAIBase
-    {
-        public AICastingApell()
-        {
+    public class AICastingApell extends EntityAIBase {
+        public AICastingApell() {
             this.setMutexBits(3);
         }
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean shouldExecute()
-        {
+        public boolean shouldExecute() {
             return EntityUndertaker.this.getSpellTicks() > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void startExecuting()
-        {
+        public void startExecuting() {
             super.startExecuting();
             EntityUndertaker.this.navigator.clearPath();
         }
@@ -267,41 +268,35 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
         /**
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
-        public void resetTask()
-        {
+        public void resetTask() {
             super.resetTask();
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void updateTask()
-        {
-            if (EntityUndertaker.this.getAttackTarget() != null)
-            {
+        public void updateTask() {
+            if (EntityUndertaker.this.getAttackTarget() != null) {
                 EntityUndertaker.this.getLookHelper().setLookPositionWithEntity(EntityUndertaker.this.getAttackTarget(), (float)EntityUndertaker.this.getHorizontalFaceSpeed(), (float)EntityUndertaker.this.getVerticalFaceSpeed());
             }
         }
     }
     
-    public class AIUseSpell extends EntityAIBase
-    {
+    public class AIUseSpell extends EntityAIBase {
         protected int spellWarmup;
         protected int spellCooldown;
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
-        public boolean shouldExecute()
-        {
+        public boolean shouldExecute() {
             if (!EntityUndertaker.this.getHeldItemMainhand().getItem().equals(FishItems.UNDERTAKER_SHOVEL))
             	return false;
             else if (EntityUndertaker.this.getAttackTarget() == null)
                 return false;
             else if (EntityUndertaker.this.isSpellcasting() || !EntityUndertaker.this.canEntityBeSeen(EntityUndertaker.this.getAttackTarget()))
                 return false;
-            else
-            {
+            else {
                 int i = EntityUndertaker.this.world.getEntitiesWithinAABB(EntityUnburied.class, EntityUndertaker.this.getEntityBoundingBox().grow(16.0D)).size();
             	return EntityUndertaker.this.ticksExisted >= this.spellCooldown && i < Modconfig.Undertaker_Ability_Max;
             }
@@ -310,23 +305,20 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean shouldContinueExecuting()
-        {
+        public boolean shouldContinueExecuting() {
             return EntityUndertaker.this.getAttackTarget() != null && this.spellWarmup > 0;
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
-        public void startExecuting()
-        {
+        public void startExecuting() {
             this.spellWarmup = this.getCastWarmupTime();
             EntityUndertaker.this.spellTicks = this.getCastingTime();
             this.spellCooldown = EntityUndertaker.this.ticksExisted + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
             EntityUndertaker.this.world.setEntityState(EntityUndertaker.this, (byte)10);
-            if (soundevent != null)
-            {
+            if (soundevent != null) {
                 EntityUndertaker.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
@@ -334,165 +326,214 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
         /**
          * Keep ticking a continuous task that has already been started
          */
-        public void updateTask()
-        {
+        public void updateTask() {
             --this.spellWarmup;
 
-            if (this.spellWarmup == 0)
-            {
+            if (this.spellWarmup == 0) {
                 this.castSpell();
                 EntityUndertaker.this.playSound(EntityUndertaker.this.getSpellSound(), 1.0F, 1.0F);
             }
         }
 
-        protected void castSpell()
-        {
-            for (int i = 0; i < Modconfig.Undertaker_Ability_Num; ++i)
-            {
+        protected void castSpell() {
+            for (int i = 0; i < Modconfig.Undertaker_Ability_Num; ++i) {
                 BlockPos blockpos = (new BlockPos(EntityUndertaker.this)).add(-6 + EntityUndertaker.this.rand.nextInt(12), 0, -6 + EntityUndertaker.this.rand.nextInt(12));
                 if(EntityUndertaker.this.rand.nextFloat() < 0.15F) {
                 	if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.DRY)) {
-                		
-                    	EntityMummy entityvex = new EntityMummy(EntityUndertaker.this.world);
-                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    	EntityMummy entity = new EntityMummy(EntityUndertaker.this.world);
+                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                    	entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
+                    	entity.setCanPickUpLoot(false);
+                    	entity.setTamed(true);
+                    	entity.setOwnerId(EntityUndertaker.this.getUniqueID());
                         
                         if(!EntityUndertaker.this.world.isRemote)
-                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        	EntityUndertaker.this.world.spawnEntity(entity);
+                        
+                        EntityUndertaker.this.world.setEntityState(entity, (byte)32);
                         
                         if(EntityUndertaker.this.getAttackingEntity() != null)
-                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        	entity.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
                         
+                        if(EntityUndertaker.this.world instanceof World) {
+                        	for (int j = 0; j < 24; ++j) {
+                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
+                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                        	}
+                        }     
                     } else if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.COLD)) {
-                    	
-                    	EntityZombieFrozen entityvex = new EntityZombieFrozen(EntityUndertaker.this.world);
-                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    	EntityZombieFrozen entity = new EntityZombieFrozen(EntityUndertaker.this.world);
+                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                    	entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
+                    	entity.setCanPickUpLoot(false);
+                    	entity.setTamed(true);
+                    	entity.setOwnerId(EntityUndertaker.this.getUniqueID());
                         
                         if(!EntityUndertaker.this.world.isRemote)
-                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        	EntityUndertaker.this.world.spawnEntity(entity);
+                        
+                        EntityUndertaker.this.world.setEntityState(entity, (byte)32);
                         
                         if(EntityUndertaker.this.getAttackingEntity() != null)
-                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        	entity.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
                         
+                        if(EntityUndertaker.this.world instanceof World) {
+                        	for (int j = 0; j < 24; ++j) {
+                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
+                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                        	}
+                        }    
                     } else if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.WET)) {
-                    	
-                    	EntityZombieMushroom entityvex = new EntityZombieMushroom(EntityUndertaker.this.world);
-                        entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    	EntityZombieMushroom entity = new EntityZombieMushroom(EntityUndertaker.this.world);
+                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
+                    	entity.setCanPickUpLoot(false);
+                    	entity.setTamed(true);
+                    	entity.setOwnerId(EntityUndertaker.this.getUniqueID());
                         
                         if(!EntityUndertaker.this.world.isRemote)
-                        	EntityUndertaker.this.world.spawnEntity(entityvex);
+                        	EntityUndertaker.this.world.spawnEntity(entity);
+                        
+                        EntityUndertaker.this.world.setEntityState(entity, (byte)32);
                         
                         if(EntityUndertaker.this.getAttackingEntity() != null)
-                        	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                        	entity.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
                         
-                    }                  
+                        if(EntityUndertaker.this.world instanceof World) {
+                        	for (int j = 0; j < 24; ++j) {
+                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
+                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                        	}
+                        }
+                    }
                 } else {
-                	
-                	EntityUnburied entityvex = new EntityUnburied(EntityUndertaker.this.world);
-                    entityvex.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                    entityvex.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
-                    entityvex.setOwnerId(EntityUndertaker.this.getUniqueID());
+                	EntityUnburied entity = new EntityUnburied(EntityUndertaker.this.world);
+                	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                	entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
+                	entity.setCanPickUpLoot(false);
+                	entity.setTamed(true);
+                	entity.setOwnerId(EntityUndertaker.this.getUniqueID());
                     
                     if(!EntityUndertaker.this.world.isRemote)
-                    	EntityUndertaker.this.world.spawnEntity(entityvex);
+                    	EntityUndertaker.this.world.spawnEntity(entity);
                     
-                    EntityUndertaker.this.world.setEntityState(EntityUndertaker.this, (byte)32);
+                    EntityUndertaker.this.world.setEntityState(entity, (byte)32);
                     
                     if(EntityUndertaker.this.getAttackingEntity() != null)
-                    	entityvex.setAttackTarget(EntityUndertaker.this.getAttackingEntity());                   
-                }                             
+                    	entity.setAttackTarget(EntityUndertaker.this.getAttackingEntity());
+                    
+                    if(EntityUndertaker.this.world instanceof World) {
+                    	for (int j = 0; j < 24; ++j) {
+                    		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
+                    		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
+                    		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                    	}
+                    }
+                }                           
             }
         }
 
-        protected int getCastWarmupTime()
-        {
+        protected int getCastWarmupTime() {
             return 30;
         }
 
-        protected int getCastingTime()
-        {
+        protected int getCastingTime() {
             return 30;
         }
 
-        protected int getCastingInterval()
-        {
+        protected int getCastingInterval() {
             return Modconfig.Undertaker_Ability_Cooldown * 20;
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
-            return SoundEvents.EVOCATION_ILLAGER_PREPARE_SUMMON;
+        protected SoundEvent getSpellPrepareSound() {
+            return FishItems.ENTITY_SKELETONKING_SPELL_SKELETON_ARMY;
+        }
+    }
+    
+    static class AIUndertakerAttack extends EntityAIAttackMelee {
+        public AIUndertakerAttack(EntityUndertaker entity, double speedIn, boolean useLongMemory) {
+            super(entity, speedIn, useLongMemory);
+        }
+
+        @Override
+        public boolean shouldContinueExecuting() {
+            float f = this.attacker.getBrightness();
+
+            if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
+                this.attacker.setAttackTarget(null);
+                return false;
+            } else {
+                return super.shouldContinueExecuting();
+            }
+        }
+
+        @Override
+        protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+            return 4.0F + attackTarget.width;
+        }
+    }
+
+    static class AIUndertakerTarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
+        public AIUndertakerTarget(EntityUndertaker entity, Class<T> classTarget, boolean checkSight) {
+            super(entity, classTarget, checkSight);
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            float f = this.taskOwner.getBrightness();
+            return f < 0.5F && super.shouldExecute();
         }
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_UNDERTAKER_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FishItems.ENTITY_UNDERTAKER_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_UNDERTAKER_DEATH;
     }
     
-    protected SoundEvent getSpellSound()
-    {
-        return SoundEvents.EVOCATION_ILLAGER_CAST_SPELL;
+    protected SoundEvent getSpellSound() {
+        return FishItems.ENTITY_SKELETONKING_SPELL_SUMMON;
     }
 
-    protected SoundEvent getStepSound()
-    {
+    protected SoundEvent getStepSound() {
         return SoundEvents.ENTITY_ZOMBIE_STEP;
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    protected void playStepSound(BlockPos pos, Block blockIn) {
+        this.playSound(this.getStepSound(), 0.15F, 0.7F);
     }
 
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
+    public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
-    }
-    
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    public void onDeath(DamageSource cause) {
-       super.onDeath(cause);
-       
-       int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
-       if(this.canDropLoot()) {
-    	   LootTableHandler.dropRareLoot(this, FishItems.UNDYINGHEART, Modconfig.UndeadSwine_DropHeart, ModEnchantments.LIFESTEAL, 3, i);
-    	   //LootTableHandler.dropRareLoot(this, this.getHeldItemMainhand(), 4, i);
-       }
     }
     
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableHandler.UNDERTAKER;
-    }
-    
-    /**
-     * Entity won't drop items or experience points if this returns false
-     */
-    @Override
-    protected boolean canDropLoot() {
-       return !this.isBurning() || this.recentlyHit != 0;
     }
 }

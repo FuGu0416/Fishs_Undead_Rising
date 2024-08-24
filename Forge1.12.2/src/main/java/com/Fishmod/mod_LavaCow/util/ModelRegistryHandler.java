@@ -41,7 +41,7 @@ public class ModelRegistryHandler {
     		for(Integer i = 0; i < 3 ; i++)
     			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
     	} else if(item.equals(FishItems.PTERA_WING)) {
-    		for(Integer i = 0; i < 2 ; i++)
+    		for(Integer i = 0; i < 4 ; i++)
     			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
     	} else if(item.equals(FishItems.KINGS_CROWN)) {
     		for(Integer i = 0; i < 2 ; i++)

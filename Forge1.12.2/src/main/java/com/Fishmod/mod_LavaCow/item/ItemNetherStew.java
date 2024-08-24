@@ -39,8 +39,8 @@ public class ItemNetherStew extends ItemFishCustomFood
 	    	new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 20*20, 0)
 		);
 
-	public ItemNetherStew(String registryName) {
-    	super(registryName, 6, 0.6F, false, 32, true);
+	public ItemNetherStew(String registryName, int amount, float saturation) {
+    	super(registryName, amount, saturation, false, 32, true);
         this.setAlwaysEdible();
         this.setMaxStackSize(Modconfig.Bowls_Stack ? 64 : 1);
     }

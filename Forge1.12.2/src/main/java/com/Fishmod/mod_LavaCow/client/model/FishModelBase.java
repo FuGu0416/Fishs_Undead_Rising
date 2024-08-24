@@ -6,10 +6,9 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
 
 public class FishModelBase extends ModelBase {
-	
 	protected void Head_Looking(ModelRenderer Head, float initX, float initY, float netHeadYaw, float headPitch) {
-    	Head.rotateAngleX = initX + headPitch * 0.017453292F;
-        Head.rotateAngleY = initY + netHeadYaw * 0.017453292F;
+    	Head.rotateAngleX = initX + (float)Math.toRadians(headPitch);
+        Head.rotateAngleY = initY + (float)Math.toRadians(netHeadYaw);
 	}
 	
 	protected void SwingX_Sin(ModelRenderer Point, float Init, float Ticks, float Amplitude, float Frequency, boolean Flip, float delay) {
@@ -42,12 +41,19 @@ public class FishModelBase extends ModelBase {
         modelRenderer.rotateAngleZ = z;
     }
     
+    protected void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    	this.setRotateAngle(modelRenderer, x, y, z);
+    }
+    
+    protected float triangleWave(float p_78172_1_, float p_78172_2_) {
+        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
+    }
+    
     public void postRenderArm(float scale, EnumHandSide side) {
-    	
+    	this.getArmForSide(side).renderWithRotation(scale);
     }
 
     protected ModelRenderer getArmForSide(EnumHandSide side) {
         return null;
     }
-
 }

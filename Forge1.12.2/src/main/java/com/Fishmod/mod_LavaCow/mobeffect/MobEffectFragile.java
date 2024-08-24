@@ -16,11 +16,12 @@ public class MobEffectFragile extends MobEffectMod {
     }
     
     @Override
-    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier)
-    {
-        if (entityLivingBaseIn.isNonBoss() && (entityLivingBaseIn.getHealth() / entityLivingBaseIn.getMaxHealth()) < (0.05f * (amplifier + 1)))
-        {
-        	entityLivingBaseIn.attackEntityFrom(DamageSource.WITHER.setDamageIsAbsolute(), 1005.0F);
+    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
+        if (entityLivingBaseIn.isNonBoss() && (entityLivingBaseIn.getHealth() / entityLivingBaseIn.getMaxHealth()) < (0.05f * (amplifier + 1))) {
+        	entityLivingBaseIn.attackEntityFrom(DamageSource.WITHER.setDamageIsAbsolute().setDamageBypassesArmor(), entityLivingBaseIn.getMaxHealth());
+        	
+        	// Safety measure in case the above doesn't function correctly
+        	entityLivingBaseIn.setHealth(0.0F);
         }
     }
 

@@ -6,7 +6,6 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
 
@@ -16,6 +15,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -23,7 +23,6 @@ import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
@@ -34,68 +33,66 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityWendigo extends EntityMob implements IAggressive{
-	
+public class EntityWendigo extends EntityMob implements IAggressive {
+	private static final DataParameter<Boolean> POUNCING = EntityDataManager.<Boolean>createKey(EntityWendigo.class, DataSerializers.BOOLEAN);
 	private boolean isAggressive = false;
 	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
 	private int jumpTimer;
-	/** 40: Attack with both hands 41: right hand 42: left hand */
+	/** 4: Attack with both hands 5: right hand 6: left hand */
 	public byte AttackStance;
 	
-	public EntityWendigo(World worldIn)
-    {
+	public EntityWendigo(World worldIn) {
         super(worldIn);
         this.setSize(1.6F, 2.6F);
         this.experienceValue = 20;
     }
 	
-    protected void initEntityAI()
-    {
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         if(!Modconfig.SunScreen_Mode)this.tasks.addTask(1, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));  
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
+    protected void applyEntityAI() {
     	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     	this.targetTasks.addTask(2, new EntityAIPickupMeat<>(this, EntityItem.class, true));
-    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
-    	if(Modconfig.Wendigo_AnimalAttack)this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, false, true, new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
+    	this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    	if(Modconfig.Wendigo_AnimalAttack)this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, true, false, new Predicate<Entity>() {
+            public boolean apply(@Nullable Entity p_apply_1_) {
                 return !(p_apply_1_ instanceof EntityTameable);
             }
         }));
     }
     
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Wendigo_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
     
@@ -104,6 +101,11 @@ public class EntityWendigo extends EntityMob implements IAggressive{
     	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
     
+    protected void entityInit() {
+    	super.entityInit();
+        this.getDataManager().register(POUNCING, Boolean.valueOf(false));
+    }
+    
     /**
      * Will return how many at most can spawn in a chunk at once.
      */
@@ -111,14 +113,19 @@ public class EntityWendigo extends EntityMob implements IAggressive{
     public int getMaxSpawnedInChunk() {
        return 1;
     }
+    
+    @Override
+    public double getMountedYOffset() {
+        return -0.85D;
+    }
 	
     /**
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
+    public void onUpdate() {
+        super.onUpdate();
+        EntityLivingBase target = this.getAttackTarget();
         
         if (this.attackTimer > 0) {
             --this.attackTimer;
@@ -128,19 +135,22 @@ public class EntityWendigo extends EntityMob implements IAggressive{
             --this.jumpTimer;
          }
         
-  	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote)
-  	   	{
+        if (this.isPouncing() && this.onGround) {
+        	this.setPouncing(false);
+        }
+        
+  	   	if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote) {
   	   		float f = this.getBrightness();
-  	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(40);
+  	   		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
   	   	}   
   	   	
-        if (this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0) {
+        if (target != null && this.getDistanceSq(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
         	boolean flag = false;
         	
-            if(this.AttackStance == (byte)40) {
+            if(this.AttackStance == (byte)4) {
             	flag = this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.5F);
-            	if(this.getAttackTarget() instanceof EntityPlayer)
-            		((EntityPlayer) this.getAttackTarget()).disableShield(true);
+            	if(target instanceof EntityPlayer)
+            		((EntityPlayer) target).disableShield(true);
             } else
             	flag = this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
             
@@ -150,28 +160,16 @@ public class EntityWendigo extends EntityMob implements IAggressive{
 	            	this.getAttackTarget().setFire(2 * (int)f);
 	            }
 	            
-	            if (this.getAttackTarget() instanceof EntityLivingBase) {
-	                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-	
-	                ((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int)local_difficulty, 4));
+	            if (target instanceof EntityLivingBase) {
+	                ((EntityLivingBase)this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int)f, 4));
 	            }
             }
         }
     }
-	
-    /**
-     * Called to update the entity's position/logic.
-     */
-	@Override
-    public void onUpdate()
-    {
-        super.onUpdate();
-    }
 
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
+    public boolean attackEntityAsMob(Entity entityIn) {
         this.attackTimer = 20;
-        this.AttackStance = (byte)(40 + this.rand.nextInt(3));
+        this.AttackStance = (byte)(4 + this.rand.nextInt(3));
         this.world.setEntityState(this, this.AttackStance);
 
         return true;
@@ -202,9 +200,21 @@ public class EntityWendigo extends EntityMob implements IAggressive{
     }
     
     @SideOnly(Side.CLIENT)
-    public boolean isAggressive()
-    {
+    public boolean isAggressive() {
     	return isAggressive;
+    }
+    
+    /**
+     * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
+     */
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Wendigo_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
+    	this.setHealth(this.getMaxHealth());
+        
+        return super.onInitialSpawn(difficulty, livingdata);
     }
     
     public int getAttackTimer() {
@@ -226,33 +236,36 @@ public class EntityWendigo extends EntityMob implements IAggressive{
        return this.AttackStance;
     }
     
+    public void setPouncing(boolean pouncing) {
+        this.dataManager.set(POUNCING, Boolean.valueOf(pouncing));
+    }
+    
+    public boolean isPouncing() {
+        return this.dataManager.get(POUNCING).booleanValue();
+    }
+    
     /**
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-    	if (id == 40 || id == 41 || id == 42)
-    	{
+    public void handleStatusUpdate(byte id) {
+		switch(id) {
+		case 4:
+		case 5:
+		case 6:
     		this.attackTimer = 20;
     		this.AttackStance = id;
-    	}
-    	if (id == 4) 
-    	{
-            this.attackTimer = 20;
-        }
-    	if (id == 11)
-        {
+			break;
+		case 11:
             this.isAggressive = true;
-        }
-        else if (id == 34)
-        {
+			break;
+		case 34:
             this.isAggressive = false;
-        }
-        else
-        {
-            super.handleStatusUpdate(id);
-        }
+            break;
+		default:
+			super.handleStatusUpdate(id);
+			break;
+		}
     }
     
     static class AIWendigoLeapAtTarget extends EntityAIBase {
@@ -260,12 +273,9 @@ public class EntityWendigo extends EntityMob implements IAggressive{
  	   private final EntityLiving leaper;
  	   /** The entity that the leaper is leaping towards. */
  	   private EntityLivingBase leapTarget;
- 	   /** The entity's motionY after leaping. */
- 	   private final float leapMotionY;
 
  	   public AIWendigoLeapAtTarget(EntityLiving leapingEntity, float leapMotionYIn) {
  	      this.leaper = leapingEntity;
- 	      this.leapMotionY = leapMotionYIn;
  	      this.setMutexBits(5);
  	   }
  	   
@@ -274,16 +284,12 @@ public class EntityWendigo extends EntityMob implements IAggressive{
  	    */
  	   public boolean shouldExecute() {
  	      this.leapTarget = this.leaper.getAttackTarget();
- 	      if (this.leapTarget == null || ((EntityWendigo)this.leaper).jumpTimer > 0/* || this.leapTarget.posY > this.leaper.posY*/) {
+ 	      if (this.leapTarget == null || ((EntityWendigo)this.leaper).jumpTimer > 0) {
  	         return false;
  	      } else {
- 	         double d0 = this.leaper.getDistance(this.leapTarget);
- 	         if (!(d0 < 26.0D) && !(d0 > 36.0D)) {
- 	            if (!this.leaper.onGround) {
- 	               return false;
- 	            } else {
- 	            	return true;
- 	            }
+ 	         float f = this.leaper.getDistance(this.leapTarget);
+ 	         if (!(f < 12.0D) && !(f > 20.0D)) {
+ 	        	 return this.leaper.onGround;
  	         } else {
  	            return false;
  	         }
@@ -294,31 +300,38 @@ public class EntityWendigo extends EntityMob implements IAggressive{
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
  	   public boolean shouldContinueExecuting() {
- 		  return !this.leaper.onGround;
+ 		  return this.leaper.onGround && ((EntityWendigo)this.leaper).jumpTimer >= 235;
  	   }
  	   
  	    /**
  	     * Keep ticking a continuous task that has already been started
  	     */
  	    public void updateTask() {
+           Vec3d vec3d1 = new Vec3d(this.leapTarget.posX - this.leaper.posX, 0.0D, this.leapTarget.posZ - this.leaper.posZ);
+  		   float d0 = this.leaper.getDistance(this.leapTarget);	
+
+  		   if (((EntityWendigo)this.leaper).jumpTimer == 235) {
+  	 		   if (vec3d1.lengthSquared() > 1.0E-7D) {
+  	 			vec3d1 = vec3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
+  	 		   }
+  	 		   
+  	 		   this.leaper.motionX += vec3d1.x;
+  	 		   this.leaper.motionY += vec3d1.y + 0.3F + 0.1F * MathHelper.clamp(this.leapTarget.getEyeHeight() - this.leaper.posY, 0, 2);
+  	 		   this.leaper.motionZ += vec3d1.z;
+  	 		   ((EntityWendigo)this.leaper).setPouncing(true);
+  		   }
  	    }
 
  	   /**
  	    * Execute a one shot task or start executing a continuous task
  	    */
  	   public void startExecuting() {
- 	      double d0 = this.leapTarget.posX - this.leaper.posX;
- 	      double d1 = this.leapTarget.posZ - this.leaper.posZ;
- 	      float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
- 	     this.leaper.faceEntity(this.leapTarget, 100.0F, 100.0F); 
+ 		  Vec3d vec3d = new Vec3d(this.leapTarget.getPosition().subtract(this.leaper.getPosition()));
+         this.leaper.getNavigator().clearPath();
+ 	     this.leaper.setRotationYawHead(-((float) Math.atan2(vec3d.x, vec3d.z)) * (180F / (float) Math.PI));
+ 	     this.leaper.rotationYaw = this.leaper.getRotationYawHead(); // ???
  	     this.leaper.playSound(FishItems.ENTITY_WENDIGO_ATTACK, 4.0F, 1.0F);
  	    ((EntityWendigo)this.leaper).jumpTimer = 240;
- 	      if ((double)f >= 1.0E-4D) {
- 	         this.leaper.motionX += d0 / (double)f * 0.5D * (double)8.4F + this.leaper.motionX * (double)8.4F;
- 	         this.leaper.motionZ += d1 / (double)f * 0.5D * (double)8.4F + this.leaper.motionZ * (double)8.4F;
- 	      }
-
- 	      this.leaper.motionY = (double)this.leapMotionY;
  	   }  	
  	   
        /**
@@ -334,10 +347,9 @@ public class EntityWendigo extends EntityMob implements IAggressive{
     }
     
 	@Override
-	public void playLivingSound() {
-		if(this.rand.nextDouble() < 0.25D)
-			super.playLivingSound();
-	}
+    public int getTalkInterval() {
+        return 200;
+    }
     
     @Override
     protected SoundEvent getAmbientSound()
@@ -373,17 +385,6 @@ public class EntityWendigo extends EntityMob implements IAggressive{
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
-    }
-    
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    public void onDeath(DamageSource cause) {
-       super.onDeath(cause);
-       
-       int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
-       if(this.canDropLoot())
-    	   LootTableHandler.dropRareLoot(this, FishItems.UNDYINGHEART, Modconfig.UndeadSwine_DropHeart, ModEnchantments.LIFESTEAL, 3, i);
     }
     
     @Override

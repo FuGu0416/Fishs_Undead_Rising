@@ -2,16 +2,12 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "###",
-        " X ",
+        "#Y#",
         " Y "
     ],
     "key": {
         "#": {
-            "item": "mod_lavacow:moltenbeef"
-        },
-        "X": {
-    		"type": "forge:ore_dict",
-    		"ore": "gunpowder"
+            "item": "mod_lavacow:molten_alloy"
         },
         "Y": {
             "item": "minecraft:blaze_rod"

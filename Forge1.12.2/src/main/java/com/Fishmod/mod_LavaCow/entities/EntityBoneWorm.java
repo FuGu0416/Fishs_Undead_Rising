@@ -7,7 +7,6 @@ import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
 import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.block.Block;
@@ -318,14 +317,9 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
    		// Nether (Soul Sand Valley) Variant
         if (this.world.provider.doesWaterVaporize()) {
      	   this.setSkin(1);
-     	   setFireImmunity();
         }
 
         return super.onInitialSpawn(difficulty, livingdata);
-    }
-    
-    public boolean setFireImmunity() {
-    	return this.isImmuneToFire = true;
     }
  	
  	@Override
@@ -346,18 +340,11 @@ public class EntityBoneWorm  extends EntityMob  implements IRangedAttackMob {
     public void onDeath(DamageSource cause) {
        super.onDeath(cause);
        
-       int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
-       if(this.canDropLoot())
-    	   LootTableHandler.dropRareLoot(this, FishItems.ACIDICHEART, Modconfig.BoneWorm_DropHeart, ModEnchantments.CORROSIVE, 3, i);
-       
        if(!world.isRemote) {			
-			
-	        if (cause.getTrueSource() instanceof EntityCreeper)
-	        {
+	        if (cause.getTrueSource() instanceof EntityCreeper) {
 	            EntityCreeper entitycreeper = (EntityCreeper)cause.getTrueSource();
 
-	            if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop())
-	            {
+	            if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
 	                entitycreeper.incrementDroppedSkulls();
 	                this.entityDropItem(new ItemStack(Items.SKULL, 1, 0), 0.0F);
 	            }

@@ -1,8 +1,10 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -54,6 +56,32 @@ public class EntityEnchantableFireBall extends EntityFireball {
 	    * Called when this EntityFireball hits a block or entity.
 	    */
 	   protected void onImpact(RayTraceResult result) {
+	    	Entity shooter = this.shootingEntity;
+	    	Entity target = result.entityHit;
+	    	
+	        if (!this.world.isRemote) {
+	        	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
+		    		if (target.attackEntityFrom(DamageSource.causeIndirectDamage(this, (EntityLivingBase)shooter).setProjectile(), this.getDamage())) {
+		    			if (this.isBurning()) {
+		    				target.setFire(5 + flame);
+		    			}
+		    	
+		    			if (this.knockbackStrength > 0) {
+	                		float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+	                		if (f1 > 0.0F) {
+	                			target.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6D / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6D / (double)f1);
+	                		}
+	            		}
+	            
+	            		if (shooter instanceof EntityLivingBase) {
+	            			this.applyEnchantments((EntityLivingBase) shooter, target);
+	            		}
+	            	}
+		    	}
+	        }
+	        	
+		   if (result.entityHit != null && result.entityHit == this.shootingEntity) return;
 		   this.setDead();
 	   }
 
@@ -72,17 +100,12 @@ public class EntityEnchantableFireBall extends EntityFireball {
 		   return this.damage;
 	   }
 	   
-	   /**
-	    * Sets the amount of knockback the arrow applies when it hits a mob.
-	    */
 	   public void setKnockbackStrength(int knockbackStrengthIn) {
 	      this.knockbackStrength = knockbackStrengthIn;
 	   }
 	   
-	    public void setFlame(boolean flameIn)
-	    {
-	        
-	    	this.flame = flameIn? 5 : 0;
+	    public void setFlame(boolean flameIn) {
+	    	this.flame = flameIn ? 5 : 0;
 	    }
 
 	   /**

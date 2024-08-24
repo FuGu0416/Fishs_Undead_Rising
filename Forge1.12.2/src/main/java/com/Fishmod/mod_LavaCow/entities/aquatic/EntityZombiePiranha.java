@@ -39,11 +39,14 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityZombiePiranha extends EntityAquaMob {
 	protected static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.createKey(EntityZombiePiranha.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityZombiePiranha.class, DataSerializers.VARINT);
 	private boolean isAggressive = false;
 	public EntityZombiePiranha(World worldIn) {
         super(worldIn);   
@@ -55,6 +58,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(DATA_FLAGS_ID, (byte)0);
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
 	}
     
     protected void initEntityAI() {
@@ -207,7 +211,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
     }
     
     @SideOnly(Side.CLIENT)
-    public boolean isLeaping()
+    public boolean isAggressive()
     {
     	return this.isAggressive;
     }
@@ -226,6 +230,10 @@ public class EntityZombiePiranha extends EntityAquaMob {
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
+        if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SWAMP) && !this.getIsAmmo()) {
+     	   this.setSkin(2);
+        }
+        
     	return super.onInitialSpawn(difficulty, livingdata);
     }
     
@@ -238,7 +246,12 @@ public class EntityZombiePiranha extends EntityAquaMob {
      }
 
      protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_GUARDIAN_HURT;
+        return SoundEvents.ENTITY_GUARDIAN_FLOP;
+     }
+     
+     @Override
+     public int getTalkInterval() {
+     	return 150;
      }
      
      /**
@@ -279,6 +292,14 @@ public class EntityZombiePiranha extends EntityAquaMob {
         }
     }
     
+    public int getSkin() {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
@@ -287,6 +308,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
         super.writeEntityToNBT(compound);
         compound.setBoolean("is_Ammo", this.getIsAmmo());
         compound.setBoolean("is_Infinite", this.getIsInfinite());
+        compound.setInteger("Variant", getSkin());
     }
 
     /**
@@ -297,6 +319,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
         super.readEntityFromNBT(compound);
 		this.setIsAmmo(compound.getBoolean("is_Ammo"));
 		this.setIsInfinite(compound.getBoolean("is_Infinite"));
+    	this.setSkin(compound.getInteger("Variant"));
     }
     
     @Override
@@ -314,6 +337,7 @@ public class EntityZombiePiranha extends EntityAquaMob {
 			this.experienceValue = 0;
 		}
 		
-    	return !this.getIsInfinite();
+		// Prevents infinite item farming
+    	return !this.getIsAmmo();
     }
 }
