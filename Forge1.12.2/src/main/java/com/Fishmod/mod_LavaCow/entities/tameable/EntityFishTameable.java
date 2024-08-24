@@ -101,12 +101,12 @@ public class EntityFishTameable extends EntityTameable {
     			&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
     			&& iblockstate.canEntitySpawn(this);
     }
-    
+       
     /**
      * Determines if an entity can be despawned, used on idle far away entities
      */
     protected boolean canDespawn() {
-        return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
+        return !(this.isTamed() && this.getOwner() instanceof EntityPlayer);
     }
     
     protected boolean isCommandable() {
@@ -164,6 +164,10 @@ public class EntityFishTameable extends EntityTameable {
     
     protected int TameRate(ItemStack stack) {
     	return 3;
+    }
+    
+    public boolean isWandering() {
+    	return this.state.equals(EntityFishTameable.State.WANDERING);
     }
     
     public boolean processInteract(EntityPlayer player, EnumHand hand) {       
@@ -346,21 +350,16 @@ public class EntityFishTameable extends EntityTameable {
        super.readEntityFromNBT(compound);
        switch(compound.getByte("state")) {
 	       case (byte)0:
-	    	   this.state = EntityFishTameable.State.WANDERING;
-	       		this.navigator.clearPath();
+	    	   	this.state = EntityFishTameable.State.WANDERING;
+	       		this.doWanderCommand(null);
 	  			break;
 	       case (byte)1:
 	    	   this.state = EntityFishTameable.State.SITTING;
-	    	   this.tasks.removeTask(this.wander);
-               this.isJumping = false;
-               this.navigator.clearPath();
+	       		this.doSitCommand(null);
 	  			break;
 	       case (byte)2:
 	    	   this.state = EntityFishTameable.State.FOLLOWING;
-	       	   this.follow = new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F);
-	       	   this.navigator.clearPath();
-	    	   this.tasks.removeTask(this.wander);
-	    	   this.tasks.addTask(6, this.follow);
+	       		this.doFollowCommand(null);
 	   			break;
 	   		default:
 	   			break;
