@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D",
+        " Y",
+        " Y"
+    ],
+    "key": {
+        "#": {
+            "item": "mod_lavacow:weta_jaw"
+        },
+        "D": {
+            "item": "mod_lavacow:chitin"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:weta_hoe"
+    }
+}

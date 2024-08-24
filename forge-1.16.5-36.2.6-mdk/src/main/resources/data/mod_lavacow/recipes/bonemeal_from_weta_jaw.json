@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "mod_lavacow:weta_jaw"
+        }
+    ],
+    "result": {
+        "item": "minecraft:bone_meal"
+    }
+}

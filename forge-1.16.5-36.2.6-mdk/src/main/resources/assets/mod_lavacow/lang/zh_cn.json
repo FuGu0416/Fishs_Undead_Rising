@@ -145,7 +145,9 @@
 	"item.mod_lavacow.ankh_sceptre": "安卡权杖",
 	"item.mod_lavacow.fungal_staff": "猛毒菇杖",
 	"item.mod_lavacow.frozen_grip": "寒霜之攫",
-			
+	"item.mod_lavacow.weta_jaw": "沙螽颚",
+	"item.mod_lavacow.weta_hoe": "沙螽锄",	
+				
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛刷怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌尸刷怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "尸蛆刷怪蛋",
@@ -543,6 +545,7 @@
 	"tootip.mod_lavacow:fungal_staff": "右键点击以召唤听命于玩家的菌尸军团",
 	"tootip.mod_lavacow:frozen_grip": "右键点击以召唤听命于玩家的冻尸军团",
 	"tootip.mod_lavacow:vespa_dagger": "攻击同时赋予目标中毒II(0:08)，剧毒附魔可增加中毒等级",
+	"tootip.mod_lavacow.weta_hoe": "右键点击能同时能收成 3x3 范围内的农作物，并重新种植",
 			
 	"command.mod_lavacow.sitting": "%s现在于原地待命",
 	"command.mod_lavacow.following": "%s正在跟随",

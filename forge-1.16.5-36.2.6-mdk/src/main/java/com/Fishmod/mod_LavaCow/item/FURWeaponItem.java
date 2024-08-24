@@ -139,7 +139,7 @@ public class FURWeaponItem extends SwordItem {
     }
 	
 	/**
-	* Called when this item is used when targetting a Block
+	* Called when this item is used when targeting a Block
 	*/
 	@Override
 	public ActionResultType useOn(ItemUseContext p_195939_1_) {
