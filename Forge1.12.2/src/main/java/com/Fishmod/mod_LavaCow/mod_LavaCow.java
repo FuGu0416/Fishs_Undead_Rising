@@ -101,9 +101,9 @@ public class mod_LavaCow {
     	
     	TinkersCompatBridge.loadTinkersPostInitCompat();
     	
-    	if(Loader.isModLoaded("jeresources")) {
+    	if (Loader.isModLoaded("jeresources")) {
     		ModIntegrationRegistry.registerModIntegration(new FURJERIntegration());
-    	}  
+    	} 
     }
     
 }
