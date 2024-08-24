@@ -7,6 +7,7 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
@@ -52,7 +53,16 @@ public class EnchantmentLifesteal extends Enchantment {
 	
 	@Override
 	public void doPostAttack(LivingEntity user, Entity target, int level) {
-		user.heal((float)user.getAttributeValue(Attributes.ATTACK_DAMAGE) * (float)level * 0.05F);
+		float dmg;
+        ModifiableAttributeInstance user_atk = user.getAttribute(Attributes.ATTACK_DAMAGE);
+        
+        if (user_atk != null) {
+        	dmg = (float)user.getAttributeValue(Attributes.ATTACK_DAMAGE) * (float)level * 0.05F;
+        } else {
+        	dmg = (float)level * 0.5F;
+        }
+        
+		user.heal(dmg);
 	}
 
 }
