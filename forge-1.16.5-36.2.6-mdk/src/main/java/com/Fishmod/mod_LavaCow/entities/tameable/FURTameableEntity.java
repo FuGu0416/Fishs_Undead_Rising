@@ -336,23 +336,15 @@ public class FURTameableEntity extends TameableEntity {
        switch(compound.getByte("state")) {
 	       case (byte)0:
 	    	   	this.state = FURTameableEntity.State.WANDERING;
-	       		this.getNavigation().stop();
-	       		this.setInSittingPose(false);
+	       		this.doWanderCommand(null);
 	  			break;
 	       case (byte)1:
 	    	   	this.state = FURTameableEntity.State.SITTING;
-	    	   	this.goalSelector.removeGoal(this.wander);
-	    	   	this.jumping = false;
-	    	   	this.getNavigation().stop();
-	    	   	this.setInSittingPose(true);
+	       		this.doSitCommand(null);
 	    	   	break;
 	       case (byte)2:
 	    	   	this.state = FURTameableEntity.State.FOLLOWING;
-	       	   	this.follow = this.followGoal();
-	       	   	this.getNavigation().stop();
-	       	   	this.goalSelector.removeGoal(this.wander);
-	       	   	this.goalSelector.addGoal(6, this.follow);
-	       	   	this.setInSittingPose(false);
+	       		this.doFollowCommand(null);
 	       	   	break;
 	   		default:
 	   			break;

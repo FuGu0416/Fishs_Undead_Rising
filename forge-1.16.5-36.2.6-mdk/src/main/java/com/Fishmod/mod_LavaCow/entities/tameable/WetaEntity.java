@@ -71,7 +71,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 	
 	@Override
     protected void registerGoals() {
-		this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, false);
+		this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTame());
 		
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new SwimGoal(this));
@@ -140,15 +140,16 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     
     @Override
 	public void doWanderCommand(PlayerEntity playerIn) {
-    	this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, true);
+    	this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTame());
     	this.goalSelector.addGoal(5, this.DestroyCrops);
     	super.doWanderCommand(playerIn);
     }
         
     @Override
     protected void reassessTameGoals() {
-    	if(this.isTame())
+    	if (this.isTame() && !this.isWandering() && this.DestroyCrops != null && this.getOwner() instanceof PlayerEntity) {
     		this.goalSelector.removeGoal(this.DestroyCrops);
+    	}
     }
     
     @Override
