@@ -8,6 +8,7 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
@@ -65,7 +66,16 @@ public class EnchantmentLifesteal extends Enchantment {
 	
 	@Override
 	public void onEntityDamaged(EntityLivingBase user, Entity target, int level) {
-		user.heal((float)user.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (float)level * 0.05F);
+		float dmg;
+		IAttributeInstance user_atk = user.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        
+        if (user_atk != null) {
+        	dmg = (float)user.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (float)level * 0.05F;
+        } else {
+        	dmg = (float)level * 0.5F;
+        }
+        
+		user.heal(dmg);		
 	}
 
 }
