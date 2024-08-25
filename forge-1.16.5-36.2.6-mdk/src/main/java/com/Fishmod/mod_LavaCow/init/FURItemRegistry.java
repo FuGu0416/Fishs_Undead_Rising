@@ -266,7 +266,7 @@ public class FURItemRegistry {
             throw new RuntimeException(e);
         }
         
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.LAVACOW, 0x1F1214, 0xF8C327, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_lavacow"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_lavacow"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MYCOSIS, 0xBCE0AC, 0x83631D, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mycosis"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_parasite"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.FOGLET, 0xCBD3B9, 0x41352F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_foglet"));

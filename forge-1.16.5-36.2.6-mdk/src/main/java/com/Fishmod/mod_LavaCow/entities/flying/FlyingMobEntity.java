@@ -87,9 +87,10 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     
     @Override
     public void doSitCommand(PlayerEntity playerIn) {
-    	if (SpawnUtil.getHeight(this).getY() > 0 || this.isBaby()) {   		
+    	/*if (SpawnUtil.getHeight(this).getY() > 0 || this.isBaby()) {   		
     		this.setNoGravity(false);
-    	}
+    	}*/
+    	
     	super.doSitCommand(playerIn);
     }
     

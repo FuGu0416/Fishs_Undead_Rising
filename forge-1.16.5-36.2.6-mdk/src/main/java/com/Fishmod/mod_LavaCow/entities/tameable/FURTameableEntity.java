@@ -110,21 +110,23 @@ public class FURTameableEntity extends TameableEntity {
     
     public void doSitCommand(PlayerEntity playerIn) {    	
     	this.goalSelector.removeGoal(this.wander);
+    	this.goalSelector.removeGoal(this.follow);
         this.jumping = false;
         this.getNavigation().stop();
 		this.state = FURTameableEntity.State.SITTING;		
 		this.setInSittingPose(true);
-		if(playerIn != null)
+		if (playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.sitting", this.getName()), true);
     }
     
     public void doFollowCommand(PlayerEntity playerIn) {
+    	this.goalSelector.removeGoal(this.wander);
 		this.follow = this.followGoal();
 		this.goalSelector.addGoal(6, this.follow);
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.FOLLOWING;
 		this.setInSittingPose(false);
-		if(playerIn != null)
+		if (playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.following", this.getName()), true);
     }
     
@@ -135,7 +137,7 @@ public class FURTameableEntity extends TameableEntity {
 		this.getNavigation().stop();
 		this.state = FURTameableEntity.State.WANDERING;
 		this.setInSittingPose(false);
-		if(playerIn != null)
+		if (playerIn != null)
 			playerIn.displayClientMessage(new TranslationTextComponent("command.mod_lavacow.wandering", this.getName()), true);
     }
     
@@ -335,15 +337,12 @@ public class FURTameableEntity extends TameableEntity {
        super.readAdditionalSaveData(compound);
        switch(compound.getByte("state")) {
 	       case (byte)0:
-	    	   	this.state = FURTameableEntity.State.WANDERING;
 	       		this.doWanderCommand(null);
 	  			break;
 	       case (byte)1:
-	    	   	this.state = FURTameableEntity.State.SITTING;
 	       		this.doSitCommand(null);
 	    	   	break;
 	       case (byte)2:
-	    	   	this.state = FURTameableEntity.State.FOLLOWING;
 	       		this.doFollowCommand(null);
 	       	   	break;
 	   		default:
