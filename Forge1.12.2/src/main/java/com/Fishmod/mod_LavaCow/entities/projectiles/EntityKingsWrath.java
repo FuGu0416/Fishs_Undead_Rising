@@ -54,7 +54,7 @@ public class EntityKingsWrath extends EntityThrowable {
     	Entity shooter = this.thrower;
     	Entity target = result.entityHit;
     	
-        if (!this.world.isRemote) {
+    	if (!this.world.isRemote && result != null && result.typeOfHit == RayTraceResult.Type.ENTITY) {
         	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
 	    		if (target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, (EntityLivingBase)shooter).setProjectile(), this.getDamage())) {
 	    			float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();

@@ -25,10 +25,10 @@ public class LayerVespaSaddle implements LayerRenderer<EntityVespa> {
 	@Override
 	public void doRenderLayer(EntityVespa entitylivingbaseIn, float limbSwing, float limbSwingAmount,
 			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (entitylivingbaseIn.canBeSteered())
-        {
+        if (entitylivingbaseIn.canBeSteered()) {
             this.vespaRenderer.bindTexture(TEXTURE);
             this.vespaModel.setModelAttributes(this.vespaRenderer.getMainModel());
+            this.vespaModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks);
             this.vespaModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entitylivingbaseIn);
             this.vespaModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }		

@@ -74,7 +74,7 @@ public class EntityBomb extends EntityThrowable implements IEntityAdditionalSpaw
 
 	@Override
 	protected void onImpact(RayTraceResult result) {	
-        if (!this.world.isRemote) {
+        if (!this.world.isRemote && result != null && result.typeOfHit != RayTraceResult.Type.MISS) {
         	EntityWolf Dummy = new EntityWolf(this.world);
         	
         	if (this.getThrower() != null) {

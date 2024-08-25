@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -50,18 +51,21 @@ public class EntityAcidJet extends EntityThrowable {
 	/**
 	* Called when this EntityFireball hits a block or entity.
 	*/
-    protected void onImpact(RayTraceResult result) {
-	    if (!this.world.isRemote && result.entityHit != null && this.getThrower() != null && result.entityHit instanceof EntityLivingBase && result.entityHit != this.getThrower()) {	    	
-	    	this.setDamage( (float) this.getThrower().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	    	
-	    	if (result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage())) {
-	    		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-		    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
-		    	((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 3));
-	    	}
-	    	
-	    	this.setDead();
-	    }
+    protected void onImpact(RayTraceResult result) {	    
+        if (!this.world.isRemote && result != null && result.typeOfHit == RayTraceResult.Type.ENTITY) {
+    		Entity target = result.entityHit;	      
+    	    if (target != null && this.getThrower() != null && target instanceof EntityLivingBase && target != this.getThrower()) {	    	
+    	    	this.setDamage( (float) this.getThrower().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+    	    	
+    	    	if (target.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.getThrower()).setProjectile(), this.getDamage())) {
+    	    		float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+    		    	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+    		    	((EntityLivingBase)target).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 3));
+    	    	}
+    	    	
+    	    	this.setDead();
+    	    }	        			
+        }
     }
 
     /**

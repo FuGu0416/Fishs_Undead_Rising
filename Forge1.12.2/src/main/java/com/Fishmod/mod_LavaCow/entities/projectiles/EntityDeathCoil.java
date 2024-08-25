@@ -64,27 +64,26 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
 	   
     @Override
     public void onUpdate() {
-       super.onUpdate();
+    	super.onUpdate();
        
-       if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-           mod_LavaCow.PROXY.spawnCustomParticle("wither_flame", world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F);
-       }
+    	if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
+    		mod_LavaCow.PROXY.spawnCustomParticle("wither_flame", world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F);
+    	}
        
-       if(this.ticksExisted >= 10 * 20) {
-    	   this.setDead();
-       }
+    	if (this.ticksExisted >= 10 * 20) {
+    		this.setDead();
+    	}
     }
     
     protected float getMotionFactor() {
-	      return 1.0F;
+    	return 1.0F;
     }
     
     /**
      * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
      */
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy)
-    {
-        float f = MathHelper.sqrt(x * x + y * y + z * z);
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+    	float f = MathHelper.sqrt(x * x + y * y + z * z);
         x = x / (double)f;
         y = y / (double)f;
         z = z / (double)f;
@@ -104,8 +103,7 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
         this.prevRotationPitch = this.rotationPitch;
     }
     
-    public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy)
-    {
+    public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
         float f = -MathHelper.sin(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
         float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * 0.017453292F);
         float f2 = MathHelper.cos(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
@@ -127,7 +125,7 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
     	Entity shooter = this.shootingEntity;
     	Entity target = result.entityHit;
     	
-        if (!this.world.isRemote) {
+    	if (!this.world.isRemote && result != null && result.typeOfHit == RayTraceResult.Type.ENTITY) {
         	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
 	    		if(!(shooter instanceof EntityPlayer)) {
 		    		this.setDamage((float)((EntityLivingBase)shooter).getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
@@ -158,13 +156,13 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
             		if (shooter instanceof EntityLivingBase) {
             			this.applyEnchantments((EntityLivingBase) shooter, target);
             		}
+            		
+            	    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
+            		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
             	}
 	    	}
 	    }
-        
-        if (result.entityHit != null && result.entityHit == shooter) return;
-	    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
-		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
+
 	    this.setDead();
     }
 

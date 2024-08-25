@@ -54,8 +54,7 @@ public class EntityZombieFrozen extends EntitySummonedZombie implements IAggress
             }
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

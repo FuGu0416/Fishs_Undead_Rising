@@ -29,9 +29,4 @@ public class RenderVespa extends RenderLiving<EntityVespa>{
     protected ResourceLocation getEntityTexture(EntityVespa entity) {
     	return TEXTURES[entity.getSkin()];
     }
-    
-    @Override
-	protected void preRenderCallback(EntityVespa entity, float partialTickTime) {
-    	
-	}
 }

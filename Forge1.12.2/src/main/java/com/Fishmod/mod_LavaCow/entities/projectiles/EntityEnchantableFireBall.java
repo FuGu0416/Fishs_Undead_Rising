@@ -57,32 +57,33 @@ public class EntityEnchantableFireBall extends EntityFireball {
 	    */
 	   protected void onImpact(RayTraceResult result) {
 	    	Entity shooter = this.shootingEntity;
-	    	Entity target = result.entityHit;
-	    	
+	    		    	
 	        if (!this.world.isRemote) {
-	        	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
-		    		if (target.attackEntityFrom(DamageSource.causeIndirectDamage(this, (EntityLivingBase)shooter).setProjectile(), this.getDamage())) {
-		    			if (this.isBurning()) {
-		    				target.setFire(5 + flame);
-		    			}
-		    	
-		    			if (this.knockbackStrength > 0) {
-	                		float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+	        	if (result != null && result.typeOfHit == RayTraceResult.Type.ENTITY) {
+	        		Entity target = result.entityHit;	        		
+	        		if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
+			    		if (target.attackEntityFrom(DamageSource.causeIndirectDamage(this, (EntityLivingBase)shooter).setProjectile(), this.getDamage())) {
+			    			if (this.isBurning()) {
+			    				target.setFire(5 + flame);
+			    			}
+			    	
+			    			if (this.knockbackStrength > 0) {
+		                		float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
-	                		if (f1 > 0.0F) {
-	                			target.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6D / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6D / (double)f1);
-	                		}
-	            		}
-	            
-	            		if (shooter instanceof EntityLivingBase) {
-	            			this.applyEnchantments((EntityLivingBase) shooter, target);
-	            		}
-	            	}
-		    	}
-	        }
-	        	
-		   if (result.entityHit != null && result.entityHit == this.shootingEntity) return;
-		   this.setDead();
+		                		if (f1 > 0.0F) {
+		                			target.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6D / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6D / (double)f1);
+		                		}
+		            		}
+		            
+		            		if (shooter instanceof EntityLivingBase) {
+		            			this.applyEnchantments((EntityLivingBase) shooter, target);
+		            		}
+		            	}
+			    	}	        			
+	        	}
+	        }	
+
+	        this.setDead();
 	   }
 
 	   /**

@@ -28,6 +28,7 @@ public class LayerEnigmothSaddle implements LayerRenderer<EntityEnigmoth> {
         {
             this.enigmothRenderer.bindTexture(TEXTURE);
             this.enigmothModel.setModelAttributes(this.enigmothRenderer.getMainModel());
+            this.enigmothModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks);
             this.enigmothModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entitylivingbaseIn);
             this.enigmothModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }		

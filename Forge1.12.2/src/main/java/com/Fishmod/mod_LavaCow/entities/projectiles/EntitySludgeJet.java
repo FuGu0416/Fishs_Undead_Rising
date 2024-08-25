@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -53,19 +54,21 @@ public class EntitySludgeJet extends EntityFireball {
 	    * Called when this EntityFireball hits a block or entity.
 	    */
 	   protected void onImpact(RayTraceResult result) {
-	      if (!this.world.isRemote && result.entityHit != null && this.shootingEntity != null && result.entityHit instanceof EntityLivingBase) {
-	    	  this.setDamage( (float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-	    	  
-	    	  if (result.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage())) {  
-	    		  float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4 * 20 * (int)local_difficulty, 3));
-		    	  ((EntityLivingBase)result.entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4 * 20 * (int)local_difficulty, 1));
-		    	  this.applyEnchantments((EntityLivingBase)this.shootingEntity, result.entityHit);
-	    	  }
-	    	  
-	    	  this.setDead();
-	      }
-
+		   if (!this.world.isRemote && result != null && result.typeOfHit == RayTraceResult.Type.ENTITY) {
+			   Entity target = result.entityHit;	      
+			   if (target != null && this.shootingEntity != null && target instanceof EntityLivingBase) {
+				   this.setDamage( (float) this.shootingEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+		    	  
+				   if (target.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.shootingEntity).setProjectile(), this.getDamage())) {  
+					   float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+					   ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 4 * 20 * (int)local_difficulty, 3));
+					   ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 4 * 20 * (int)local_difficulty, 1));
+					   this.applyEnchantments((EntityLivingBase)this.shootingEntity, target);
+				   }
+		    	  
+				   this.setDead();
+			   }
+		   }
 	   }
 
 	   /**

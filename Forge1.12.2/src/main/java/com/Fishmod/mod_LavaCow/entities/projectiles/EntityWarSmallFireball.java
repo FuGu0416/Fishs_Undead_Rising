@@ -69,26 +69,27 @@ public class EntityWarSmallFireball extends EntityEnchantableFireBall implements
 	     */
 	    protected void onImpact(RayTraceResult result) {
 	    	Entity shooter = this.shootingEntity;
-	    	Entity target = result.entityHit;
-	    	
-	        if (!this.world.isRemote) {
-	        	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
-                    if (!(shooter instanceof EntityPlayer)) this.setDamage((float) ((EntityLivingBase)shooter).getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                	boolean flag = target.attackEntityFrom(DamageSource.causeFireballDamage(this, shooter), this.getDamage());
-	            	
-                    if (this.knockbackStrength > 0) {
-	                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-	                    if (f1 > 0.0F) {
-	                    	target.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
-	                    }
-	                 }
-                    
-                    if (flag) {
-                        this.applyEnchantments((EntityLivingBase) shooter, target);
-                        target.setFire(5 + flame);
-                    }
-	            }
-	            else {
+
+	        if (!this.world.isRemote && result != null && result.typeOfHit != RayTraceResult.Type.MISS) {
+        		Entity target = result.entityHit;	        		
+        		if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+    	        	if (target != null && shooter != null && target instanceof EntityLivingBase && target != shooter && !target.isOnSameTeam(shooter)) {
+                        if (!(shooter instanceof EntityPlayer)) this.setDamage((float) ((EntityLivingBase)shooter).getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                    	boolean flag = target.attackEntityFrom(DamageSource.causeFireballDamage(this, shooter), this.getDamage());
+    	            	
+                        if (this.knockbackStrength > 0) {
+    	                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+    	                    if (f1 > 0.0F) {
+    	                    	target.addVelocity(this.motionX * (double)this.knockbackStrength * (double)0.6F / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * (double)0.6F / (double)f1);
+    	                    }
+    	                 }
+                        
+                        if (flag) {
+                            this.applyEnchantments((EntityLivingBase) shooter, target);
+                            target.setFire(5 + flame);
+                        }
+    	            }	        			
+        		} else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
 	                boolean flag1 = true;
 
 	                if (shooter != null && shooter instanceof EntityLiving) {
@@ -101,11 +102,10 @@ public class EntityWarSmallFireball extends EntityEnchantableFireBall implements
 	                    if (this.world.isAirBlock(blockpos)) {
 	                        this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
 	                    }
-	                }
-	            }
+	                }	        			
+        		}
 	        }
-	        
-	        if (target != null && target == shooter) return;
+	        	        
 	        this.setDead();
 	    }
 	}

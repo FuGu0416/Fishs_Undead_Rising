@@ -73,24 +73,28 @@ public class EntityMothScales extends EntityFireball {
         Entity entity = result.entityHit;
         EntityLivingBase owner = this.shootingEntity;
 
-        if (!this.world.isRemote) {
+        if (!this.world.isRemote && result != null && result.typeOfHit != RayTraceResult.Type.MISS) {
         	if (entity != this.shootingEntity && owner != null) {
         		switch (this.getScaleType()) {
                 	default:
                 	case 1:
-                		if (entity != null && entity != owner && !entity.isOnSameTeam(owner)) {
-                			// Currently causes issues with velocity
-                			/*\if (!entity.isImmuneToFire() && entity.attackEntityFrom(DamageSource.causeFireballDamage(this, owner), 5.0F)) {
-                            	this.applyEnchantments(owner, entity);
-                            	entity.setFire(5);
-                            	break;
-                        	}*/
-                			break;
-                		} else {
+                		if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+	                		if (entity != null && entity != owner && !entity.isOnSameTeam(owner)) {
+	                			// Currently causes issues with velocity
+	                			/*\if (!entity.isImmuneToFire() && entity.attackEntityFrom(DamageSource.causeFireballDamage(this, owner), 5.0F)) {
+	                            	this.applyEnchantments(owner, entity);
+	                            	entity.setFire(5);
+	                            	break;
+	                        	}*/
+	                			break;
+	                		}
+                		} else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
                 			boolean flag = true;
+                			
                 			if (this.shootingEntity instanceof EntityLiving) {
                 				flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
                 			}
+                			
                 			if (flag) {
                 				BlockPos blockpos = result.getBlockPos().offset(result.sideHit);
                 				if (this.world.isAirBlock(blockpos)) {
@@ -102,7 +106,7 @@ public class EntityMothScales extends EntityFireball {
                 		break;
                 	case 0:
                 	case 2:
-                		if (result.typeOfHit != RayTraceResult.Type.MISS && entity == null) {
+                		if (result.typeOfHit != RayTraceResult.Type.BLOCK) {
                 			List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
                 			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 

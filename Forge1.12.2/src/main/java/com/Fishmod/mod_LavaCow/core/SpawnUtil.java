@@ -47,13 +47,17 @@ public class SpawnUtil {
     	Chunk chunk = worldIn.getChunkFromBlockCoords(pos);  	
     	BlockPos blockpos, blockpos1;
 
-        for (blockpos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ()); blockpos.getY() >= 0; blockpos = blockpos1)
-        {
+    	if (chunk == null) {
+    		blockpos = new BlockPos(pos.getX(), pos.getY() + 16, pos.getZ());
+    	} else {
+    		blockpos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ());
+    	}
+    	
+        for (; blockpos.getY() >= 0; blockpos = blockpos1) {
             blockpos1 = blockpos.down();
             IBlockState state = chunk.getBlockState(blockpos1);
 
-            if (state.getMaterial().blocksMovement() && !state.getBlock().isLeaves(state, worldIn, blockpos1) && !state.getBlock().isFoliage(worldIn, blockpos1))
-            {
+            if (state.getMaterial().blocksMovement() && !state.getBlock().isLeaves(state, worldIn, blockpos1) && !state.getBlock().isFoliage(worldIn, blockpos1)) {
                 break;
             }
         }

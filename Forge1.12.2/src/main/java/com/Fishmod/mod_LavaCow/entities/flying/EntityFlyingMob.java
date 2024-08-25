@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,8 +60,8 @@ public class EntityFlyingMob extends EntityFishTameable {
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIFlyingAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(5, new EntityFlyingMob.AIRandomFly(this));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
 	}
 	
 	protected void applyEntityAttributes() {
