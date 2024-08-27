@@ -224,7 +224,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
                     if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer)entitylivingbase).disableShield(true);
                     
                     if (this.isAngered()) {
-                    	entitylivingbase.knockBack(entitylivingbase, 2.0F * 0.5F, (double)MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F))));
+                    	entitylivingbase.knockBack(entitylivingbase, 3.0F * 0.5F, (double)MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F))));
                     	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 0.0D, 0.0D, 0.0D);
                     	this.playSound(FishItems.ENTITY_SKELETONKING_KNOCKBACK, 2.0F, 1.0F);
                     	
