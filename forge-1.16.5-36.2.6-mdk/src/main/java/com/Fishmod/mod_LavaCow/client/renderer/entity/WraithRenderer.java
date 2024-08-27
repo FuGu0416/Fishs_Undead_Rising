@@ -37,6 +37,7 @@ public class WraithRenderer extends MobRenderer<WraithEntity, AvatonModel<Wraith
     	return RenderType.entityTranslucent(this.getTextureLocation(p_230496_1_));
     }
     
+    @Override
     protected int getBlockLightLevel(WraithEntity p_225624_1_, BlockPos p_225624_2_) {
         return 8;
     }

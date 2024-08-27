@@ -12,6 +12,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec SPEC;
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> Lavacow_Health;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Lavacow_Texture;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Foglet;
 	public static final ForgeConfigSpec.ConfigValue<Double> Foglet_Health;
@@ -289,6 +290,7 @@ public final class FURConfig {
 		
 		BUILDER.push("Moogma");
 		Lavacow_Health = BUILDER.comment("Maximum Moogma health [1-1000]").defineInRange("moogma health", 10.0D, 1.0D, 1000.0D);
+		Lavacow_Texture = BUILDER.comment("Loading Moogma with classic texture [false/true]").define("moogma classic texture", false);
 		BUILDER.pop();
 		
 		BUILDER.push("Foglet");
