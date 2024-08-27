@@ -20,6 +20,7 @@ public class Modconfig {
 	
 	public static double Lavacow_Health;
 	public static boolean Lavacow_Bucket;
+	public static boolean Lavacow_Texture;
 	
 	public static int pSpawnRate_Foglet;
 	public static double Foglet_Health;
@@ -320,6 +321,7 @@ public class Modconfig {
 		
 		Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
 		Lavacow_Bucket = config.get("Moogma", "moogma lava source", true, "Should lava buckets be obtainable from Moogma [false/true]").getBoolean(true);
+		Lavacow_Texture = config.get("Moogma", "moogma classic texture", true, "Loading Moogma with classic texture [false/true]").getBoolean(true);
 		
 		pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
 		Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);

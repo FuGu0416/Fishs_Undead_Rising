@@ -33,20 +33,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLavaCow extends EntityCow
-{
+public class EntityLavaCow extends EntityCow {
 	private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Items.BLAZE_POWDER);
 	
-	public EntityLavaCow(World worldIn)
-    {
+	public EntityLavaCow(World worldIn) {
         super(worldIn);
         this.setSize(0.9F, 1.4F);
         isImmuneToFire = true;
     }
 	
 	@Override
-	protected void initEntityAI()
-    {
+	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 2.0D));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
@@ -57,24 +54,23 @@ public class EntityLavaCow extends EntityCow
         this.tasks.addTask(7, new EntityAILookIdle(this)); 
     }
 	
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Lavacow_Health);
     }
 	
+    @Override
 	@SideOnly(Side.CLIENT)
-    public int getBrightnessForRender()
-    {
-        return 15728880;
+    public int getBrightnessForRender() {
+        return Modconfig.Lavacow_Texture ? 15728880 : super.getBrightnessForRender();
     }
 	
     /**
      * Gets how bright this entity is.
      */
-	public float getBrightness(float par1)
-    {
-        return 1.0F;
+	@Override
+	public float getBrightness() {
+        return Modconfig.Lavacow_Texture ? 1.0F : super.getBrightness();
     }
 	
     @Override
@@ -82,8 +78,7 @@ public class EntityLavaCow extends EntityCow
 		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
 	}
 	
-    private boolean isWalkingonLand()
-    {
+    private boolean isWalkingonLand() {
     	return Math.abs(this.limbSwingAmount) > 0.01F && !this.inWater && this.onGround;
     }
 	
@@ -91,14 +86,11 @@ public class EntityLavaCow extends EntityCow
      * Called to update the entity's position/logic.
      */
 	@Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
         super.onUpdate();
 
-        if (this.isWalkingonLand())
-        {       	
-        	for (int j = 0; j < 2; ++j)
-            {
+        if (this.isWalkingonLand()) {       	
+        	for (int j = 0; j < 2; ++j) {
                 float f = this.rand.nextFloat() * ((float)Math.PI * 2F);
                 float f1 = this.rand.nextFloat() * 0.5F;
                 float f2 = MathHelper.sin(f) * f1;
@@ -113,12 +105,10 @@ public class EntityLavaCow extends EntityCow
     }
 	
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (itemstack.getItem() == Items.BUCKET && !player.capabilities.isCreativeMode && !this.isChild() && Modconfig.Lavacow_Bucket)
-        {
+        if (itemstack.getItem() == Items.BUCKET && !player.capabilities.isCreativeMode && !this.isChild() && Modconfig.Lavacow_Bucket) {
             player.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
             itemstack.shrink(1);
             itemstack.getMaxStackSize();
@@ -133,16 +123,13 @@ public class EntityLavaCow extends EntityCow
             }
 
             return true;
-        }
-        else
-        {
+        } else {
             return super.processInteract(player, hand);
         }
     }
 		
 	@Override
-    public EntityLavaCow createChild(EntityAgeable ageable)
-    {
+    public EntityLavaCow createChild(EntityAgeable ageable) {
         return new EntityLavaCow(this.world);
     }
 	
@@ -157,8 +144,7 @@ public class EntityLavaCow extends EntityCow
      * the animal type)
      */
 	@Override
-    public boolean isBreedingItem(ItemStack stack)
-    {
+    public boolean isBreedingItem(ItemStack stack) {
         return TEMPTATION_ITEMS.contains(stack.getItem());
     }
 }
