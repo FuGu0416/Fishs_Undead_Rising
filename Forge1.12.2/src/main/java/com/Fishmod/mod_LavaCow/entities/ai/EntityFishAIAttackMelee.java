@@ -113,6 +113,7 @@ public class EntityFishAIAttackMelee extends EntityAIBase {
     public void startExecuting() {
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
+        this.attackTick = 0;
     }
 
     /**
