@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackMelee;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
@@ -19,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -51,6 +51,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySludgeLord extends EntityMob implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntitySludgeLord.class, DataSerializers.VARINT);
+	public static final int ATTACK_TIMER = 30;
 	private int attackTimer;
 	private int RattackTimer;
 	private boolean isAggressive = false;
@@ -66,7 +67,7 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingApell());
         this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, FishItems.ENTITY_SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
-    	this.tasks.addTask(3, new EntitySludgeLord.AISludgeLordAttack(this, 1.0D, false));
+    	this.tasks.addTask(3, new EntitySludgeLord.AISludgeLordAttack(this));
     	this.tasks.addTask(4, new EntitySludgeLord.AIUseSpell());
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -123,8 +124,6 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
   	   	
         if (this.attackTimer > 0) {
             --this.attackTimer;
-            if(this.attackTimer > 20 && this.getAttackTarget() != null)
-            	this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 10.0F, 10.0F);
             
             this.motionX = 0.0D;
             this.motionY = 0.0D;
@@ -142,37 +141,6 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
         }
-    	
-        if (this.getAttackTimer() == 18 && this.deathTime <= 0) {       
-        	float f = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
-        	double d0 = this.posX + 2.5D * this.getLookVec().normalize().x;
-            double d1 = this.posY;
-            double d2 = this.posZ + 2.5D * this.getLookVec().normalize().z;
-            IBlockState state = this.world.getBlockState(new BlockPos(d0, d1, d2).down());
-    		int blockId = Block.getStateId(state);
-                	
-	        if (state.getMaterial().isSolid()) {
-	        	this.playSound(state.getBlock().getSoundType(state, this.world, new BlockPos(d0, d1, d2).down(), this).getBreakSound(), 1, 0.5F);
-	        	
-	            if (this.world.isRemote) {
-	            	for(int i = 0; i < 64; i++) {
-            			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d1 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
-	            	}
-	            }
-	        }
-	        
-            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.5D))) {
-                if (!this.equals(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
-                	if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer)entitylivingbase).disableShield(true);
-                	if(!(entitylivingbase instanceof EntityTameable && ((EntityTameable) entitylivingbase).isOwner(this))) {
-                		entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                        if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
-                        	entitylivingbase.setFire(2 * (int)f);
-                        }
-                	}
-                }        
-            }
-        }
     }
     
     /**
@@ -186,14 +154,18 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     	return super.attackEntityFrom(source, amount);
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-    	if (this.attackTimer == 0) {
-	        this.attackTimer = 30;
-	        this.world.setEntityState(this, (byte)4);
-	        return true;
-    	}
+    public boolean attackEntityAsMob(Entity entity) {
+    	boolean flag = super.attackEntityAsMob(entity);
 
-        return false;
+		if (flag) {
+        	float f = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
+            
+            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.getRNG().nextFloat() < f * 0.3F) {
+            	entity.setFire(2 * (int)f);
+            }
+		}
+
+		return flag;
     }
     
     /**
@@ -264,7 +236,7 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     public void handleStatusUpdate(byte id) {
 		switch(id) {
 		case 4:
-			this.attackTimer = 30;
+			this.attackTimer = ATTACK_TIMER;
 			break;
 		case 5:
 			this.RattackTimer = 40;
@@ -447,15 +419,30 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         }
     }
     
-    static class AISludgeLordAttack extends EntityAIAttackMelee {
-        public AISludgeLordAttack(EntitySludgeLord entity, double speedIn, boolean useLongMemory) {
-            super(entity, speedIn, useLongMemory);
+    static class AISludgeLordAttack extends EntityFishAIAttackMelee {
+    	float f = this.attacker.getBrightness();
+    	
+        public AISludgeLordAttack(EntitySludgeLord entity) {
+            super(entity, 1.0D, false);
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            float f = this.attacker.getBrightness();
+     	protected int atkTimerMax() {
+     		return ATTACK_TIMER;
+     	}
 
+     	@Override
+     	protected int atkTimerHit() {
+     		return 18;
+     	}
+
+     	@Override
+     	protected byte atkTimerEvent() {
+     		return (byte)4;
+     	}
+     	
+     	@Override
+        public boolean shouldContinueExecuting() {
             if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
                 this.attacker.setAttackTarget(null);
                 return false;
@@ -463,11 +450,40 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
                 return super.shouldContinueExecuting();
             }
         }
-
+     	
         @Override
         protected double getAttackReachSqr(EntityLivingBase attackTarget) {
             return 4.0F + attackTarget.width;
         }
+        
+        @Override
+    	protected void dmgEvent(EntityLivingBase target) {  		   		   	   		
+        	double d0 = this.attacker.posX + 2.5D * this.attacker.getLookVec().normalize().x;
+            double d1 = this.attacker.posY;
+            double d2 = this.attacker.posZ + 2.5D * this.attacker.getLookVec().normalize().z;
+            IBlockState state = this.attacker.world.getBlockState(new BlockPos(d0, d1, d2).down());
+    		int blockId = Block.getStateId(state);
+
+	        if (state.getMaterial().isSolid()) {
+	        	this.attacker.playSound(state.getBlock().getSoundType(state, this.attacker.world, new BlockPos(d0, d1, d2).down(), this.attacker).getBreakSound(), 1, 0.5F);
+	        	
+	            if (this.attacker.world.isRemote) {
+	            	for(int i = 0; i < 64; i++) {
+            			this.attacker.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, d1 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, d2 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, this.attacker.getRNG().nextGaussian() * 0.02D, this.attacker.getRNG().nextGaussian() * 0.02D, this.attacker.getRNG().nextGaussian() * 0.02D, blockId);
+	            	}
+	            }
+	        }
+
+            for (EntityLivingBase entitylivingbase : this.attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.5D))) {
+                if (!this.attacker.equals(entitylivingbase) && !this.attacker.isOnSameTeam(entitylivingbase)) {
+                	if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer)entitylivingbase).disableShield(true);
+                	if(!(entitylivingbase instanceof EntityTameable && ((EntityTameable) entitylivingbase).isOwner(this.attacker))) {
+                		entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this.attacker), (float) this.attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                		super.dmgEvent(entitylivingbase);
+                	}
+                }        
+            }
+    	}
     }
 
     static class AISludgeLordTarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
