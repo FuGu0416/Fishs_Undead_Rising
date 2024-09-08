@@ -148,12 +148,6 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         	return ActionResultType.sidedSuccess(this.level.isClientSide);
         }
     	
-    	if (!this.level.isClientSide) {	
-    		System.out.println("OAO1 " + this.pheromoneTick);
-    	} else {
-    		System.out.println("OAO2 " + this.pheromoneTick);
-    	}
-    	
     	return super.mobInteract(player, hand);
     }
     
