@@ -112,7 +112,7 @@ public class ParasiteEntity extends SpiderEntity {
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(3)));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(4)));
 		this.entityData.define(ATTACHED_BLK, Direction.DOWN);
 		this.entityData.define(DATA_FLAGS_ID, (byte)0);
 		this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());

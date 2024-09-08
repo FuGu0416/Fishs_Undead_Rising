@@ -148,6 +148,12 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
         	return ActionResultType.sidedSuccess(this.level.isClientSide);
         }
     	
+    	if (!this.level.isClientSide) {	
+    		System.out.println("OAO1 " + this.pheromoneTick);
+    	} else {
+    		System.out.println("OAO2 " + this.pheromoneTick);
+    	}
+    	
     	return super.mobInteract(player, hand);
     }
     
@@ -182,16 +188,20 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
     		this.pheromoneTick++;
     	}
     	
-    	if (this.pheromoneTick >= this.canHarvestLimit() && !this.canHarvest()) {
-    		this.setcanHarvest(true);
-    		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+    	if (this.pheromoneTick >= this.canHarvestLimit()) {
+    		this.level.broadcastEntityEvent(this, (byte)11);
     		
-            for (int j = 0; j < 24; ++j) {
-            	double d0 = this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
-            	double d1 = this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight());
-            	double d2 = this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
-            	this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            }          
+    		if (!this.canHarvest()) {
+	    		this.setcanHarvest(true);	    		
+	    		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
+	    		
+	            for (int j = 0; j < 24; ++j) {
+	            	double d0 = this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
+	            	double d1 = this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight());
+	            	double d2 = this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth();
+	            	this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+	            }   
+    		}
     	}
     	
     	if (this.getHealth() <= BeelzebubEntity.this.getMaxHealth() * 0.2F && this.getTarget() != null && !this.getTarget().getType().equals(FUREntityRegistry.PARASITE)) {
@@ -317,6 +327,9 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 		switch(id) {
 			case 10:
 				this.spellTicks = 30;
+				break;
+			case 11:
+				this.pheromoneTick = this.canHarvestLimit();
 				break;
 			default:
 				super.handleEntityEvent(id);

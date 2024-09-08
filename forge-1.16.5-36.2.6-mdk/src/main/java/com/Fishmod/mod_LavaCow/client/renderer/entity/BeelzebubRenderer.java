@@ -28,7 +28,7 @@ public class BeelzebubRenderer extends MobRenderer<BeelzebubEntity, BeelzebubMod
     public BeelzebubRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn, new BeelzebubModel<BeelzebubEntity>(), 0.5F);
         this.addLayer(new SaddleLayer<>(this, this.getModel(), new ResourceLocation("mod_lavacow:textures/mobs/beelzebub/beelzebub_saddle.png")));
-        //this.addLayer(new GlandLayer(this));
+        this.addLayer(new GlandLayer(this));
     }
     
     @Override

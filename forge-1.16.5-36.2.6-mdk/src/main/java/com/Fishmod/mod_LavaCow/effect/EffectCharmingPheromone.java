@@ -8,7 +8,7 @@ import net.minecraft.potion.EffectType;
 public class EffectCharmingPheromone extends Effect {
 
 	public EffectCharmingPheromone() {
-        super(EffectType.BENEFICIAL, 0xFFE1EE);
+        super(EffectType.BENEFICIAL, 0x6E9070);
         this.setRegistryName(mod_LavaCow.MODID, "charming_pheromone");
 	}
 }
