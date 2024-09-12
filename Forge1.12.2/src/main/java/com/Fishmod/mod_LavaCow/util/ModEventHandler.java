@@ -424,7 +424,7 @@ public class ModEventHandler {
         final EntityPlayer player = event.player;
         if (player.world.isRemote) {
             return;
-        }
+        }      
 
         if ((player.world.getTotalWorldTime() & 0x1FL) > 0L) {
             return;
@@ -746,22 +746,14 @@ public class ModEventHandler {
     		if (heldItem.equals(FishItems.BONESWORD)) {
     			if (!event.getEntityLiving().isNonBoss() && !Modconfig.BoneSword_Boss_Damage) return;
     			event.setAmount(event.getAmount() + Math.min((float)Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float)Modconfig.BoneSword_Damage * 0.01F)));
-    		}
-    		else if (heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
+    		} else if (heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD)) {
     			event.setAmount(event.getAmount() + 2.0F);
     		}
+    	}
     }
     
     @SubscribeEvent
     public void onEFall(LivingFallEvent event) {
-        if(Modconfig.Raven_Slowfall && event.getEntityLiving().isBeingRidden()) {
-        	for(Entity E : event.getEntityLiving().getPassengers()) {
-        		if(E instanceof EntityRaven) {
-        			event.setDistance(0.0F);
-        			break;
-        		}
-        	}
-    	} 
     }
     
     @SubscribeEvent

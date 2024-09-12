@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAITargetItem;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
@@ -186,20 +187,13 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         }
         
         if(!this.isFetching() && this.isTamed()) {
-        	if(this.ridingCooldown > 0)this.ridingCooldown--;
+        	if(this.ridingCooldown > 0)this.ridingCooldown--;       	
         	
 	        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer) {
 	        	this.setRotation(getRidingEntity().rotationYaw, 0F);
+	        	((EntityPlayer)this.getRidingEntity()).addPotionEffect(new PotionEffect(ModMobEffects.RAVENS_GRACE, 3 * 20, 0));
 	        	
-	        	if(Modconfig.Raven_Slowfall && 
-	        			!this.getRidingEntity().onGround && 
-	        			this.getRidingEntity().motionY < 0.0D && 
-	        			!this.getRidingEntity().hasNoGravity() && 
-	        			!((EntityPlayer)this.getRidingEntity()).isElytraFlying()) {
-	        		this.getRidingEntity().motionY *= 0.5D;
-	        	}
-	        	
-	        	if(this.ridingCooldown == 0 && (this.getRidingEntity().isSneaking() || this.getRidingEntity().isInWater())) {
+	        	if (this.ridingCooldown == 0 && (this.getRidingEntity().isSneaking() || this.getRidingEntity().isInWater())) {
 	        		this.SetDismount(this.getRidingEntity());
 	        	}
 	        }
@@ -258,6 +252,17 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         this.calculateFlapping();
     }
 
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        
+        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer) {
+        	this.setRotation(getRidingEntity().rotationYaw, 0F);
+        	//this.getRidingEntity().fallDistance = 0.0F;
+        	//System.out.println("OAO5 " + this.getRidingEntity().fallDistance);
+        }
+    }
+    
     @SideOnly(Side.CLIENT)
     public void setPartying(BlockPos pos, boolean p_191987_2_)
     {

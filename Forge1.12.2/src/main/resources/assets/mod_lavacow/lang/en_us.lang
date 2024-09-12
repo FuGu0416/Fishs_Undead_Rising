@@ -557,6 +557,9 @@ mob_effect.mod_lavacow:flourished.4.desc=All healing is boosted by (25*lvl)%.
 mob_effect.mod_lavacow:void_dust=Void Dust
 description.mob_effect.mod_lavacow:void_dust=Teleports the affected user to a nearby random location periodically.
 mob_effect.mod_lavacow:void_dust.4.desc=Teleports you to a nearby random location periodically.
+mob_effect.mod_lavacow:ravens_grace=Raven's Grace
+description.mob_effect.mod_lavacow:ravens_grace=Slows down player's falling speed and making them immune to falling damage.
+mob_effect.mod_lavacow:ravens_grace.4.desc=Slows down player's falling speed and making them immune to falling damage.
 
 ##############
 # Potions #

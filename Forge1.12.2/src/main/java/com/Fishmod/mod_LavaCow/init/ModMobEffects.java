@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFragile;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectFragileKing;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectImmolation;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectInfested;
+import com.Fishmod.mod_LavaCow.mobeffect.MobEffectRavensGrace;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectSoiled;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectThorned;
 import com.Fishmod.mod_LavaCow.mobeffect.MobEffectVoidDust;
@@ -28,4 +29,5 @@ public class ModMobEffects {
 	public static final Potion CHARMING_PHEROMONE = new MobEffectCharmingPheromone();
 	public static final Potion FLOURISHED = new MobEffectFlourished();
 	public static final Potion VOID_DUST = new MobEffectVoidDust();
+	public static final Potion RAVENS_GRACE = new MobEffectRavensGrace();
 }
