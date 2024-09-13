@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.google.common.collect.Lists;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -91,8 +92,7 @@ public class ItemNetherStew extends ItemFishCustomFood
     	if (this.equals(FishItems.GHOSTJELLY)) 
     	{
     		entityLiving.setVelocity(0.0D, 2.0D, 0.0D);
-    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 3 * 20, 2));
-    		entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6 * 20, 3));
+    		entityLiving.addPotionEffect(new PotionEffect(ModMobEffects.RAVENS_GRACE, 6 * 20, 0));
     		entityLiving.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
     	}
     	

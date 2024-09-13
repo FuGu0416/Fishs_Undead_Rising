@@ -67,7 +67,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityRaven extends EntityFishTameable implements EntityFlying{
+public class EntityRaven extends EntityFishTameable implements EntityFlying {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityRaven.class, DataSerializers.VARINT);
     private final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE, FishItems.PARASITE_ITEM, FishItems.PARASITE_ITEM_COOKED);
     public float flap;
@@ -187,7 +187,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying{
         }
         
         if(!this.isFetching() && this.isTamed()) {
-        	if(this.ridingCooldown > 0)this.ridingCooldown--;       	
+        	if(this.ridingCooldown > 0)this.ridingCooldown--;
         	
 	        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer) {
 	        	this.setRotation(getRidingEntity().rotationYaw, 0F);
