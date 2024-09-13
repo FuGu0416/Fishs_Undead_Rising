@@ -436,6 +436,9 @@ mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%時，立即死亡
 mob_effect.mod_lavacow:thorned=荊棘
 description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成反傷
 mob_effect.mod_lavacow:thorned.4.desc=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成(1*lvl)點傷害
+mob_effect.mod_lavacow:ravens_grace=渡鴉的優雅
+description.mob_effect.mod_lavacow:ravens_grace=減緩玩家的掉落速度並使他們得以免疫掉落傷害
+mob_effect.mod_lavacow:ravens_grace.4.desc=減緩玩家的掉落速度並使他們得以免疫掉落傷害
 
 ##############
 # Potions #

@@ -28,6 +28,7 @@ item.mod_lavacow.poisonspore.name=劇毒孢子
 item.mod_lavacow.undyingheart.name=不死之心
 item.mod_lavacow.goldenheart.name=黃金之心
 item.mod_lavacow.moltenbeef.name=熔核肉
+item.mod_lavacow.molten_alloy.name=熔核錠
 item.mod_lavacow.moltenaxe.name=熔核斧
 item.mod_lavacow.moltenhammer.name=熔核鎚
 item.mod_lavacow.mootenheart.name=熔核之心
@@ -108,6 +109,8 @@ item.mod_lavacow.baobing.name=刨冰
 item.mod_lavacow.ectoplasm_mass.name=靈質團塊
 item.mod_lavacow.enigmoth_larva_item.name=生謎影蛾幼蟲
 item.mod_lavacow.enigmoth_larva_item_cooked.name=炙燒謎影蛾幼蟲
+item.mod_lavacow.holy_water.name=聖水
+item.mod_lavacow.basicbomb.name=基礎炸彈
 item.mod_lavacow.foul_hide.name=惡臭皮革
 
 #Tconstruct Integration
@@ -164,6 +167,10 @@ tile.mod_lavacow.scarecrowhead_straw.name=稻草人頭
 tile.mod_lavacow.scarecrowhead_plague.name=稻草人頭
 tile.mod_lavacow.tombstone.name=墓碑
 tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
+tile.mod_lavacow.ectoplasm_block.name=靈質磚
+tile.mod_lavacow.molten_alloy_block.name=熔核磚
+tile.mod_lavacow.scythe_claw_block.name=鐮刀爪方塊
+tile.mod_lavacow.vespa_carapace_block.name=巨蜂殼方塊
 
 ############
 # Entities #
@@ -436,6 +443,9 @@ mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%時，立即死亡
 mob_effect.mod_lavacow:thorned=荊棘
 description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成反傷
 mob_effect.mod_lavacow:thorned.4.desc=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成(1*lvl)點傷害
+mob_effect.mod_lavacow:ravens_grace=渡鴉的優雅
+description.mob_effect.mod_lavacow:ravens_grace=減緩玩家的掉落速度並使他們得以免疫掉落傷害
+mob_effect.mod_lavacow:ravens_grace.4.desc=減緩玩家的掉落速度並使他們得以免疫掉落傷害
 
 ##############
 # Potions #
