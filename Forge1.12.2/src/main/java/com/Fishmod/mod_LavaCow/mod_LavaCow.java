@@ -4,7 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.compat.TinkersCompatBridge;
-import com.Fishmod.mod_LavaCow.compat.jer.FURJERIntegration;
+import com.Fishmod.mod_LavaCow.compat.FURJERIntegration;
 import com.Fishmod.mod_LavaCow.compat.ModIntegrationRegistry;
 import com.Fishmod.mod_LavaCow.compat.QuarkCompatBridge;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;

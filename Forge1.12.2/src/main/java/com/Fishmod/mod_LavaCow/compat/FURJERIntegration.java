@@ -1,6 +1,5 @@
-package com.Fishmod.mod_LavaCow.compat.jer;
+package com.Fishmod.mod_LavaCow.compat;
 
-import com.Fishmod.mod_LavaCow.compat.ModIntegration;
 import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
 import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
