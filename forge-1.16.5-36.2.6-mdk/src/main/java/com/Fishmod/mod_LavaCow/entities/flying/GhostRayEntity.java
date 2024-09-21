@@ -72,8 +72,7 @@ public class GhostRayEntity extends FlyingMobEntity {
     
     public static boolean checkGhostRaySpawnRules(EntityType<? extends GhostRayEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
     	BlockPos ground = p_223316_1_.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, p_223316_3_);
-    	boolean flag = (p_223316_1_ == World.END) ? (ground.getY() == 0) : p_223316_4_.nextInt(10) == 0;
-    	
+    	boolean flag = (p_223316_1_ == World.END) ? ((ground.getY() == 0) && (p_223316_1_.canSeeSky(p_223316_3_))) : p_223316_4_.nextInt(10) == 0;   	
     	return flag && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
     
@@ -121,6 +120,9 @@ public class GhostRayEntity extends FlyingMobEntity {
 		   this.setSkin(1);
     	} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.END)) {
  		   this.setSkin(2);
+ 		   if (p_213386_3_ != SpawnReason.SPAWN_EGG) {
+ 			   this.moveTo(this.blockPosition().above(70), 0.0F, 0.0F);
+ 		   }
      	}
     	
     	if (this.getSkin() != 2) {

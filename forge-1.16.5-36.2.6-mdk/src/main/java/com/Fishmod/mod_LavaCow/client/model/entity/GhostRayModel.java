@@ -10,16 +10,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * ModelGhostRay - Fish0016054
- * Created using Tabula 8.0.0
- */
+//Made with Blockbench 4.10.4
+//Exported for Minecraft version 1.15 - 1.16 with Mojang mappings
 @OnlyIn(Dist.CLIENT)
 public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> {
 	private final ModelRenderer Body_Base;
 	private final ModelRenderer Body1;
 	private final ModelRenderer Tail0;
 	private final ModelRenderer Tail1;
+	private final ModelRenderer Tail2;
 	private final ModelRenderer back_fin;
 	private final ModelRenderer Wing0_r;
 	private final ModelRenderer Wing1_r;
@@ -27,7 +26,9 @@ public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> 
 	private final ModelRenderer Wing1_l;
 	private final ModelRenderer Fin_l;
 	private final ModelRenderer Fin_r;
-
+	private final ModelRenderer Dorsel_Fin_l;
+	private final ModelRenderer Dorsel_Fin_r;
+	
     public GhostRayModel() {
 		texWidth = 128;
 		texHeight = 128;
@@ -54,6 +55,11 @@ public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> 
 		setRotateAngle(Tail1, 0.182F, 0.0F, 0.0F);
 		Tail1.texOffs(16, 36).addBox(-0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 8.0F, 0.0F, false);
 
+		Tail2 = new ModelRenderer(this);
+		Tail2.setPos(0.0F, 0.0F, 0.0F);
+		Tail1.addChild(Tail2);
+		Tail2.texOffs(30, 0).addBox(-4.5F, 1.5F, 0.0F, 9.0F, 0.0F, 10.0F, 0.0F, false);
+		
 		back_fin = new ModelRenderer(this);
 		back_fin.setPos(0.0F, 1.0F, 1.5F);
 		Body1.addChild(back_fin);
@@ -95,6 +101,18 @@ public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> 
 		Body_Base.addChild(Fin_r);
 		setRotateAngle(Fin_r, 0.0F, 0.0F, 1.5708F);
 		Fin_r.texOffs(0, 0).addBox(-1.0F, -0.5F, -6.0F, 2.0F, 1.0F, 6.0F, 0.0F, false);
+		
+		Dorsel_Fin_l = new ModelRenderer(this);
+		Dorsel_Fin_l.setPos(-2.0F, -2.0F, -2.0F);
+		Body_Base.addChild(Dorsel_Fin_l);
+		setRotationAngle(Dorsel_Fin_l, 0.0F, 0.0F, 1.0036F);
+		Dorsel_Fin_l.texOffs(46, 0).addBox(-7.0F, 0.0F, -6.0F, 7.0F, 0.0F, 12.0F, 0.0F, false);
+
+		Dorsel_Fin_r = new ModelRenderer(this);
+		Dorsel_Fin_r.setPos(1.8805F, -2.0F, -2.0F);
+		Body_Base.addChild(Dorsel_Fin_r);
+		setRotationAngle(Dorsel_Fin_r, 0.0F, 0.0F, 2.138F);
+		Dorsel_Fin_r.texOffs(46, 0).addBox(-7.0F, 0.0F, -6.0F, 7.0F, 0.0F, 12.0F, 0.0F, false);		
     }
     
     @Override
@@ -114,17 +132,22 @@ public class GhostRayModel<T extends GhostRayEntity> extends FlyingBaseModel<T> 
     	super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     	
     	float flap = MathHelper.sin(ageInTicks * 0.1F);
+    	float flap1 = MathHelper.sin(ageInTicks * 0.1F + 0.25F * (float)Math.PI);
+    	float flap2 = MathHelper.sin(ageInTicks * 0.1F + 0.5F * (float)Math.PI);
     	
     	this.Body_Base.y = 22.0F + flap;
     	
     	this.Wing0_r.zRot = 0.24F * flap;
         this.Wing0_l.zRot = -0.24F * flap;
         
-        this.Wing1_r.zRot = 0.36F * flap;
-        this.Wing1_l.zRot = -0.36F * flap;        
+        this.Wing1_r.zRot = 0.36F * flap1;
+        this.Wing1_l.zRot = -0.36F * flap1;        
         
-        this.Tail0.xRot = 0.18F * flap;
+        this.Tail0.xRot = 0.18F * flap1;
         
-        this.Tail1.xRot = 0.09F * flap;
+        this.Tail1.xRot = 0.09F * flap2;
+        
+        this.Dorsel_Fin_r.zRot = 2.138F + 0.18F * flap2;
+        this.Dorsel_Fin_l.zRot = 1.0036F - 0.18F * flap2;          
     }
 }

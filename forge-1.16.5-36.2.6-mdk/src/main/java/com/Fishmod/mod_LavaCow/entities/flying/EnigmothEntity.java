@@ -64,6 +64,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -113,7 +114,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     }
     
     public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-    	boolean flag = (p_223316_1_ == World.END) ? true : p_223316_4_.nextInt(20) == 0;
+    	boolean flag = (p_223316_1_ == World.END) ? (p_223316_1_.canSeeSky(p_223316_3_)) : p_223316_4_.nextInt(20) == 0;
     	return flag && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
     
@@ -333,8 +334,13 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
     	this.setHealth(this.getMaxHealth());
  
-    	if(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.END_HIGHLANDS) && p_213386_3_ != SpawnReason.SPAWN_EGG) {
-    		this.setBaby(this.level.getRandom().nextFloat() <= 0.8F);
+    	if (SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition())).equals(Biomes.END_HIGHLANDS) && p_213386_3_ != SpawnReason.SPAWN_EGG) {
+    		BlockPos ground = worldIn.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, this.blockPosition());
+    		if (this.level.getRandom().nextFloat() <= 0.8F && ground.getY() > 0) {
+    			this.setBaby(true);
+    		} else if (ground.getY() ==  0) {
+    			this.moveTo(this.blockPosition().above(70), 0.0F, 0.0F);
+    		}
     	}
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);

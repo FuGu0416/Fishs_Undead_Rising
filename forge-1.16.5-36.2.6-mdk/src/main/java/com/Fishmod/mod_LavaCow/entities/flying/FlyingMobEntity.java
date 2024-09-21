@@ -42,6 +42,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -82,7 +83,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     }
     
     public static boolean checkFlyerSpawnRulesNoRestriction(EntityType<? extends FlyingMobEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-    	return p_223316_1_.getDifficulty() != Difficulty.PEACEFUL && p_223316_3_.getY() > 30 && FURTameableEntity.isDarkEnoughToSpawn((IServerWorld) p_223316_1_, p_223316_3_, p_223316_4_);
+    	return p_223316_1_.getDifficulty() != Difficulty.PEACEFUL && FURTameableEntity.isDarkEnoughToSpawn((IServerWorld) p_223316_1_, p_223316_3_, p_223316_4_);
     }
     
     @Override
@@ -329,7 +330,9 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     }
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {         
-    	this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));                        
+    	if (!this.isBaby()) {
+    		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));       
+    	}
         return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
        
@@ -408,20 +411,27 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
         public void start() {           
             for (int i = 0; i < 3; ++i) {
             	Vector3d vector3d = this.findPos();
-            	
+            	       
             	if (vector3d != null) {
+            		BlockPos pos = new BlockPos(vector3d.x, vector3d.y, vector3d.z);
+            		int groundHeight;
+            		
             		if (this.parentEntity.level.dimension() != World.END) {
-                 		int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
-	            		
-	                    if (groundHeight > 0) {
-	        	            if (this.parentEntity.isInWaterRainOrBubble()) {
-	        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);       	            
-	                    	} else if (FURConfig.FlyingHeight_limit.get() != 0 && (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) < vector3d.y) {
-	        	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + FURConfig.FlyingHeight_limit.get()), vector3d.z);
-	        	            }
-	                    }       
-                 	}
-                    
+            			groundHeight = SpawnUtil.getHeight(this.parentEntity.level, pos).getY();
+            		} else {
+            			groundHeight = this.parentEntity.level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY();
+            			
+            			if (groundHeight == 0) {
+            				groundHeight = Math.min(((this.parentEntity.blockPosition().getY() / 16) + 1) * 8, 60);
+            			}
+            		}
+            		
+    	            if (this.parentEntity.isInWaterRainOrBubble()) {
+    	            	vector3d = new Vector3d(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);       	            
+                	} else if (FURConfig.FlyingHeight_limit.get() != 0 && ((vector3d.y > (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) + 4.0D) || (vector3d.y < (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) - 8.0D ))) {
+            			vector3d = new Vector3d(vector3d.x, groundHeight + FURConfig.FlyingHeight_limit.get(), vector3d.z);
+    	            }
+                         
             		this.parentEntity.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 1.0D);
             		if (this.parentEntity.getTarget() == null) {
             			this.parentEntity.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
