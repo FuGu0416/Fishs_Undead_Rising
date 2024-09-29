@@ -7,6 +7,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -34,11 +35,13 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
@@ -130,11 +133,18 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
             --this.spellTicks;
         }
 
-        if (target != null && this.getDistanceSq(target) < 4.0D && this.getAttackTimer() == 3 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
-        	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();
-        	this.playSound(FishItems.ENTITY_SKELETONKING_ATTACK, 1.0F, 1.25F);	        	
+        if(this.getAttackTimer() == 10 && !(this.isSpellcasting()) && this.deathTime <= 0) {
+        	this.playSound(FishItems.ENTITY_SKELETONKING_ATTACK, 1.0F, 1.25F);	
+        }
+        
+        if (target != null && this.getAttackTimer() == 5 && this.getDistanceSq(target) < 6.0D && !(this.isSpellcasting()) && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
+        	float f = this.world.getDifficultyForLocation(target.getPosition()).getAdditionalDifficulty();      	
         	this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-        		            
+        	target.knockBack(target, 2.0F * 0.5F, (double)MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F))));
+    		if (target instanceof EntityPlayer) ((EntityPlayer)target).disableShield(true);
+    		target.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20 * (int)f, 1));
+    		this.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.5F, 0.5F);
+        	
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
             	target.setFire(2 * (int)f);
             }

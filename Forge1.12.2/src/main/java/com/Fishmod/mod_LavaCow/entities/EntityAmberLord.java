@@ -31,7 +31,7 @@ public class EntityAmberLord extends EntitySludgeLord implements IAggressive {
     protected void initEntityAI() {
         this.tasks.addTask(1, new AICastingApell());
         this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySapJet.class, FishItems.ENTITY_AVATON_SPELL, 1, 2, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D));
-    	this.tasks.addTask(3, new EntityAmberLord.AISludgeLordAttack(this, 1.0D, false));
+    	this.tasks.addTask(3, new EntityAmberLord.AISludgeLordAttack(this));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
