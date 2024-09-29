@@ -106,7 +106,7 @@ public class EntityGhostRay extends EntityFlyingMob {
     */
    public boolean attackEntityFrom(DamageSource source, float amount) {
        if(source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase && Modconfig.GhostRay_Ghostly_Touch && !source.isCreativePlayer()) {
-    	   if (this.getSkin() == 2) {
+    	   if (this.getSkin() == 2 || this.getSkin() == 3) {
         	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(ModMobEffects.VOID_DUST, 6 * 20, 9));
         	   ((EntityLivingBase)source.getImmediateSource()).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 6 * 20, 4));
     	   } else {
@@ -139,7 +139,7 @@ public class EntityGhostRay extends EntityFlyingMob {
        
        // End Variant
        if (this.world.provider.getDimension() == 1) {
-    	   this.setSkin(2);
+    	   this.setSkin(this.world.rand.nextBoolean() ? 2 : 3);
        }
        
    	return super.onInitialSpawn(difficulty, livingdata);
