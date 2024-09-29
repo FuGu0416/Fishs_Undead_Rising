@@ -156,13 +156,12 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
             		if (shooter instanceof EntityLivingBase) {
             			this.applyEnchantments((EntityLivingBase) shooter, target);
             		}
-            		
-            	    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
-            		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
             	}
 	    	}
 	    }
-
+    	
+		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
+    	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
 	    this.setDead();
     }
 
