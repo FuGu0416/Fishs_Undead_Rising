@@ -189,7 +189,7 @@ public class ItemPiranhaLauncher extends ItemBow {
 				            worldIn.spawnEntity(entityammo);
 				            stack.damageItem(1, playerIn);
 							worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, FishItems.RANDOM_DEATH_COIL_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.world.rand.nextFloat() * 0.4F + 1.2F));
-							playerIn.getCooldownTracker().setCooldown(this, 40 - (power_lvl * 2));
+							playerIn.getCooldownTracker().setCooldown(this, 20 - (power_lvl * 2));
 						} else if (this.shot.equals(EntityPiranhaLauncher.class)) {
 							EntityPiranhaLauncher entityammo = (EntityPiranhaLauncher) EntityList.newEntity(this.shot, worldIn);
 							((EntityPiranhaLauncher)entityammo).shootingEntity = playerIn;
@@ -217,7 +217,7 @@ public class ItemPiranhaLauncher extends ItemBow {
 										playerIn.inventory.deleteStack(itemstack);
 									}
 								}
-							playerIn.getCooldownTracker().setCooldown(this, 40 - (power_lvl * 2));
+							playerIn.getCooldownTracker().setCooldown(this, 20 - (power_lvl * 2));
 			        	} else {			 
 							Entity entityammo = EntityList.newEntity(this.shot, worldIn);
 							((EntityEnchantableFireBall)entityammo).shootingEntity = playerIn;

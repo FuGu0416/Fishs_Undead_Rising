@@ -205,7 +205,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 			
 			// Stacks with Fire Aspect
 			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
+			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 2));
 		}
 		else if(stack.getItem() == FishItems.MOLTENPAN)
 		{
@@ -220,11 +220,12 @@ public class ItemFishCustomWeapon extends ItemSword {
 			
 			// Stacks with Fire Aspect
 			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
+			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 2));
 		}
 		else if(stack.getItem() == FishItems.SKELETONKING_MACE)
 		{
 			target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.5F);
+			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 2));
         	target.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 4));
 		}
 		
@@ -415,7 +416,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 				if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable)entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP))
 				{
 					entity1.setFire(5 + 5 * fire_aspect);
-					((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 0));
+					((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 2));
 					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 10.0F + (float)sharpness
 							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
 							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite : 0));
