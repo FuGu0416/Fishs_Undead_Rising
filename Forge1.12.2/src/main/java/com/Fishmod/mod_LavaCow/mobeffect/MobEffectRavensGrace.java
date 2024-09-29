@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 public class MobEffectRavensGrace extends MobEffectMod {
 
 	public MobEffectRavensGrace() {
-		super("ravens_grace", false, 255, 255, 255);
+		super("ravens_grace", false, 165, 92, 92);
 	}
 	   
     @Override

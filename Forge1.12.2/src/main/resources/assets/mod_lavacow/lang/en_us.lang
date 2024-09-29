@@ -600,6 +600,10 @@ potion.effect.mod_lavacow:void_dust=Potion of Void Rift
 splash_potion.effect.mod_lavacow:void_dust=Splash Potion of Void Rift
 lingering_potion.effect.mod_lavacow:void_dust=Lingering Potion of Void Rift
 tipped_arrow.effect.mod_lavacow:void_dust=Arrow of Void Rift
+potion.effect.mod_lavacow:ravens_grace=Potion of Raven's Grace
+splash_potion.effect.mod_lavacow:ravens_grace=Splash Potion of Raven's Grace
+lingering_potion.effect.mod_lavacow:ravens_grace=Lingering Potion of Raven's Grace
+tipped_arrow.effect.mod_lavacow:ravens_grace=Arrow of Raven's Grace
 
 ################
 # Advancements #
