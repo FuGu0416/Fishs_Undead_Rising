@@ -1,0 +1,24 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:mimic_claw"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:mousse",
+			"mod_lavacow:chitin",
+			"mod_lavacow:mimic_claw_cooked_from_campfire_cooking",
+			"mod_lavacow:mimic_claw_cooked_from_smoking",
+			"mod_lavacow:mimic_claw_cooked"
+		]
+	}
+}

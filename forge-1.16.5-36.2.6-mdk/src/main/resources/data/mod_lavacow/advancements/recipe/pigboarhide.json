@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:pigboarhide"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:swinearmor_boots",
+			"mod_lavacow:swinearmor_chestplate",
+			"mod_lavacow:swinearmor_helmet",
+			"mod_lavacow:swinearmor_leggings"
+		]
+	}
+}

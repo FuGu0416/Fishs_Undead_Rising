@@ -582,12 +582,7 @@ public class EventHandler {
 			if (ModList.get().isLoaded("curios") && have_DreamCatcher == null) {
 				have_DreamCatcher = CurioIntegration.findItem(FURItemRegistry.DREAMCATCHER, player);
 			}
-		}
-		
-		if (have_DreamCatcher != null)
-			System.out.println(have_DreamCatcher);
-		else
-			System.out.println("???");	
+		}		
 		
 		if (world instanceof ServerWorld && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && player.level.getDifficulty() != Difficulty.PEACEFUL) {
 			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
@@ -917,14 +912,21 @@ public class EventHandler {
     			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
     		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
     			event.setAmount(event.getAmount() + 2.0F);
-    	}    	
+    	}
+    	
+		if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW) && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float)FURConfig.Ghoul_targetHPThreshold.get() / 100.0F))) {
+			if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerWorld) {
+				((ServerWorld)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+			}
+			event.setAmount(event.getAmount() + 4.0F);
+		}
     } 
     
     @SubscribeEvent
     public void onELootingLevelEvent(LootingLevelEvent event) {
         DamageSource Attacker = event.getDamageSource();
         if (Attacker != null) {
-            if (Attacker.getEntity() instanceof GhoulEntity) {
+            if (Attacker.getEntity() instanceof GhoulEntity || event.getDamageSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW)) {
                 event.setLootingLevel(event.getLootingLevel() + 3);
             }
         }

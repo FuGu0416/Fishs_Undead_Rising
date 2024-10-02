@@ -7,6 +7,7 @@ import java.util.Random;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.item.EntityBucketItem;
+import com.Fishmod.mod_LavaCow.item.FURArrowItem;
 import com.Fishmod.mod_LavaCow.item.CactusFruitItem;
 import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.CrownItem;
@@ -91,7 +92,7 @@ public class FURItemRegistry {
 	public static final Item POISONSPORE = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:poisonspore");
 	public static final Item UNDYINGHEART = new UndyingHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:undyingheart");
 	public static final Item GOLDENHEART = new GoldenHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(250)).setRegistryName("mod_lavacow:goldenheart");
-	public static final Item MOLTENBEEF = new MoltenBeefItem("moltenbeef").setRegistryName("mod_lavacow:moltenbeef");
+	public static final Item MOLTENBEEF = new MoltenBeefItem().setRegistryName("mod_lavacow:moltenbeef");
 	public static final Item MOLTENAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).fireResistant(), "mod_lavacow:moltenaxe", ItemTier.DIAMOND, 5.0F, -3.0F, Items.GUNPOWDER, ParticleTypes.FLAME);
 	public static final Item MOLTENHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant(), "mod_lavacow:moltenhammer", ItemTier.DIAMOND, 3, -2.4F, Items.GUNPOWDER);
 	public static final Item MOOTENHEART = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), 0, UseAction.NONE, 1).setRegistryName("mod_lavacow:mootenheart");//new ItemBaubleTrinket("mootenheart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
@@ -217,10 +218,11 @@ public class FURItemRegistry {
 	public static final Item USHABTI = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ushabti");
 	public static final Item ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final Item FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
-	public static final Item FROZEN_GRIP = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
-	public static final Item GHOUL_CLAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghoul_claw");
+	public static final Item FROZEN_GRIP = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);	
 	public static final Item WETA_JAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:weta_jaw");
 	public static final Item WETA_HOE = new WetaHoeItem(new Item.Properties().tab(mod_LavaCow.TAB), "mod_lavacow:weta_hoe", ItemTier.IRON, -2, -1.0F, CHITIN);
+	public static final Item GHOUL_CLAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghoul_claw");
+	public static final Item GHOUL_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:ghoul_arrow");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

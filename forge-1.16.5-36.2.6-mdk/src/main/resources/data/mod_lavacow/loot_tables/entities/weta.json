@@ -24,26 +24,26 @@
                             }
                         }
                     ]
-                },
-			    {
-			      	"name": "rare",
-			      	"rolls": 1,
-			      	"entries": [
-			        	{
-			          		"type": "item",
-			          		"weight": 1,
-			          		"name": "mod_lavacow:weta_jaw",
-			          		"conditions": [
-			            		{
-			              			"condition": "minecraft:random_chance_with_looting",
-			              			"chance": 0.1,
-			              			"looting_multiplier": 0.03
-			            		}
-			          		]
-			        	}
-			      	]
-			    }
+                }
             ]
-        }
+        },
+        {
+		    "conditions":[
+		        {
+		            "condition":"random_chance_with_looting",
+		            "chance":0.1,
+		            "looting_multiplier":0.03
+		        }
+		    ],
+		    "name":"rare",
+		    "rolls":1,
+		    "entries":[
+		        {
+		            "type":"item",
+		            "name":"mod_lavacow:weta_jaw",
+		            "weight":1
+		        }
+		    ]
+		}
     ]
 }

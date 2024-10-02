@@ -24,6 +24,7 @@ import com.Fishmod.mod_LavaCow.client.renderer.entity.ForsakenRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.FrigidRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhostRayRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhostSwarmerRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.GhoulArrowRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhoulRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberGhostRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberRenderer;
@@ -154,6 +155,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BASIC_BOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL_ARROW, manager -> new GhoulArrowRenderer(manager));
         
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());

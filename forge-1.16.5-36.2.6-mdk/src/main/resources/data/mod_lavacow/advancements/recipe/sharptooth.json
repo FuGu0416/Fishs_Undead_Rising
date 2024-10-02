@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:sharptooth"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:raven_whistle",
+			"mod_lavacow:bonemeal_from_sharptooth",
+			"mod_lavacow:tooth_dagger",
+			"mod_lavacow:swinearmor_helmet",
+			"mod_lavacow:faminearmor_helmet",
+			"mod_lavacow:bonesword"
+		]
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:scythe_claw"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:banner_pattern_wendigo",
+			"mod_lavacow:beast_claw",
+			"mod_lavacow:reapers_scythe",
+			"mod_lavacow:faminearmor_boots",
+			"mod_lavacow:faminearmor_chestplate",
+			"mod_lavacow:faminearmor_leggings",
+			"mod_lavacow:famine"
+		]
+	}
+}

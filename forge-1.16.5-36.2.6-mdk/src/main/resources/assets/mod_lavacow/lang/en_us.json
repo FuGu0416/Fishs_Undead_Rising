@@ -146,7 +146,9 @@
 	"item.mod_lavacow.fungal_staff": "Fungal Staff",
 	"item.mod_lavacow.frozen_grip": "Frozen Grip",
 	"item.mod_lavacow.weta_jaw": "Weta Mandible",
-	"item.mod_lavacow.weta_hoe": "Weta Hoe",	
+	"item.mod_lavacow.weta_hoe": "Weta Hoe",
+	"item.mod_lavacow.ghoul_claw": "Ghoul Claw",
+	"item.mod_lavacow.ghoul_arrow": "Ghoulish Arrow",
 	
 	"item.mod_lavacow.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.mod_lavacow.spawn_egg_mycosis": "Mycosis Spawn Egg",
@@ -543,7 +545,8 @@
 	"tootip.mod_lavacow:fungal_staff": "Right click to summon an army of Mycosis.",
 	"tootip.mod_lavacow:frozen_grip": "Right click to summon an army of Frigid.",
 	"tootip.mod_lavacow:vespa_dagger": "Inflicts target with PoisonII(0:08), Poisonous enchantment will enhance the level of Poison",
-	"tootip.mod_lavacow.weta_hoe": "Right-click to harvest nearby crops or grass in a 3x3 area and replant them.",
+	"tootip.mod_lavacow:weta_hoe": "Right-click to harvest nearby crops or grass in a 3x3 area and replant them.",
+	"tootip.mod_lavacow:ghoul_arrow": "+2 damage to entities below %d%% health, also drop more loots if managed to kill one.",
 				
 	"command.mod_lavacow.sitting": "%s is waiting",
 	"command.mod_lavacow.following": "%s is following",

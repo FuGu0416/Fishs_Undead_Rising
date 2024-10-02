@@ -41,6 +41,7 @@ import com.Fishmod.mod_LavaCow.entities.projectiles.BasicBombEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.CactusThornEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.FlameJetEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.GhoulArrowEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.MothScalesEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.PiranhaLauncherEntity;
 import com.Fishmod.mod_LavaCow.entities.projectiles.SandBurstEntity;
@@ -142,6 +143,7 @@ public class FUREntityRegistry {
 	public static final EntityType<SapJetEntity> SAPJET = registerEntity(EntityType.Builder.<SapJetEntity>of(SapJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sapjet");
 	public static final EntityType<MothScalesEntity> MOTH_SCALES = registerEntity(EntityType.Builder.<MothScalesEntity>of(MothScalesEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "moth_scales");
 	public static final EntityType<BasicBombEntity> BASIC_BOMB = registerEntity(EntityType.Builder.<BasicBombEntity>of(BasicBombEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "basic_bomb");
+	public static final EntityType<GhoulArrowEntity> GHOUL_ARROW = registerEntity(EntityType.Builder.<GhoulArrowEntity>of(GhoulArrowEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "ghoul_arrow");
 	
 	@SuppressWarnings("unchecked")
 	private static final <T extends Entity> EntityType<T> registerEntity(EntityType.Builder<T> builder, String entityName) {

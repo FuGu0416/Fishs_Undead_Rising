@@ -1,0 +1,28 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:moltenpan"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:green_bacon_and_eggs",
+			"mod_lavacow:bonestew",
+			"mod_lavacow:sausage_roll",
+			"mod_lavacow:ghostjelly",
+			"mod_lavacow:lamprey_kabayaki",
+			"mod_lavacow:kung_pao_chicken",
+			"mod_lavacow:baobing",
+			"mod_lavacow:netherstew",
+			"mod_lavacow:soulfirepan_smithing"
+		]
+	}
+}

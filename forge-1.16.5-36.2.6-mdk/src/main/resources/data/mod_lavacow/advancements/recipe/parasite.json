@@ -1,0 +1,30 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": 
+						[
+							"mod_lavacow:parasite_item_common",
+							"mod_lavacow:parasite_item_desert",
+							"mod_lavacow:parasite_item_jungle",
+							"mod_lavacow:parasite_item_maggot"
+						]
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:mousse",
+			"mod_lavacow:sausage_roll",
+			"mod_lavacow:parasite_item_cooked_from_campfire_cooking",
+			"mod_lavacow:parasite_item_cooked_from_smoking",
+			"mod_lavacow:parasite_item_cooked"
+		]
+	}
+}

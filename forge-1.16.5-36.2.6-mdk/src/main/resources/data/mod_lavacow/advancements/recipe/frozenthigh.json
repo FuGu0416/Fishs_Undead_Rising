@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:frozenthigh"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:frozenthigh_to_rotten_flesh_from_campfire_cooking",
+			"mod_lavacow:frozenthigh_to_rotten_flesh_from_smoking",
+			"mod_lavacow:frozenthigh_to_rotten_flesh",
+			"mod_lavacow:frozen_grip"
+		]
+	}
+}

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class MoltenBeefItem extends FlintAndSteelItem {
 	
-	public MoltenBeefItem(String registryName) {
+	public MoltenBeefItem() {
     	super(new Item.Properties().durability(0).stacksTo(64).fireResistant().tab(mod_LavaCow.TAB));
     }     
 	

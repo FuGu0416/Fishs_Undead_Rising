@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:piranha_item"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:mousse",
+			"mod_lavacow:piranha_item_cooked_from_campfire_cooking",
+			"mod_lavacow:piranha_item_cooked_from_smoking",
+			"mod_lavacow:piranha_item_cooked"
+		]
+	}
+}

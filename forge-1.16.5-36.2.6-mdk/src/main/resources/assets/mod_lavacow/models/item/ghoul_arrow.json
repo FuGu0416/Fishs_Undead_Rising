@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "mod_lavacow:items/ghoul_claw"
+        "layer0": "mod_lavacow:items/ghoul_arrow"
     }
 }

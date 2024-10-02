@@ -147,7 +147,9 @@
 	"item.mod_lavacow.frozen_grip": "寒霜之攫",
 	"item.mod_lavacow.weta_jaw": "沙螽颚",
 	"item.mod_lavacow.weta_hoe": "沙螽锄",	
-				
+	"item.mod_lavacow.ghoul_claw": "尸鬼之爪",
+ 	"item.mod_lavacow.ghoul_arrow": "尸鬼之箭",
+ 				
 	"item.mod_lavacow.spawn_egg_lavacow": "熔岩牛刷怪蛋",
 	"item.mod_lavacow.spawn_egg_mycosis": "菌尸刷怪蛋",
 	"item.mod_lavacow.spawn_egg_parasite": "尸蛆刷怪蛋",
