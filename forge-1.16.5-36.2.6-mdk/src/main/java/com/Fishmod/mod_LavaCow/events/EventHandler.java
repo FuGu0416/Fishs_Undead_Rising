@@ -891,42 +891,48 @@ public class EventHandler {
 				if(S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
 				}
+			}		
+		
+			if (Armor_Famine_lvl >= 4 && Attacker instanceof LivingEntity) {
+				event.setAmount(event.getAmount() + 2.0F);
 			}
-	    }		
-		
-		if (Attacker != null && Armor_Famine_lvl >= 4 && Attacker instanceof LivingEntity) {
-			event.setAmount(event.getAmount() + 2.0F);
-		}
-		
-		if (Attacker != null && Attacker instanceof LilSludgeEntity) {			
-			event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
-		} else if (Attacker != null && Attacker instanceof UnburiedEntity) {	
-			event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
-		} else if (Attacker != null && Attacker instanceof ScarabEntity) {	
-			event.setAmount(event.getAmount() + ((ScarabEntity)Attacker).getBonusDamage(Attacked));		
-		}
-		
-    	if (Attacker != null && Attacker instanceof LivingEntity) {
-    		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
-    		if (heldItem.equals(FURItemRegistry.BONESWORD))
-    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
-    		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
-    			event.setAmount(event.getAmount() + 2.0F);
+			
+			if (Attacker instanceof LilSludgeEntity) {			
+				event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
+			} else if (Attacker instanceof UnburiedEntity) {	
+				event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
+			} else if (Attacker instanceof ScarabEntity) {	
+				event.setAmount(event.getAmount() + ((ScarabEntity)Attacker).getBonusDamage(Attacked));		
+			}
+			
+	    	if (Attacker instanceof LivingEntity) {
+	    		Item heldItem = ((LivingEntity)Attacker).getMainHandItem().getItem();
+	    		if (heldItem.equals(FURItemRegistry.BONESWORD))
+	    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
+	    		else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
+	    			event.setAmount(event.getAmount() + 2.0F);
+	    	}
+	    	
+			if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW) && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float)FURConfig.Ghoul_targetHPThreshold.get() / 100.0F))) {
+				if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerWorld) {
+					((ServerWorld)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+				}
+				event.setAmount(event.getAmount() + 4.0F);
+			}
     	}
-    	
-		if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW) && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float)FURConfig.Ghoul_targetHPThreshold.get() / 100.0F))) {
-			if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerWorld) {
-				((ServerWorld)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
-			}
-			event.setAmount(event.getAmount() + 4.0F);
-		}
     } 
     
     @SubscribeEvent
     public void onELootingLevelEvent(LootingLevelEvent event) {
         DamageSource Attacker = event.getDamageSource();
         if (Attacker != null) {
-            if (Attacker.getEntity() instanceof GhoulEntity || event.getDamageSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW)) {
+            if (Attacker.getEntity() instanceof GhoulEntity) {
+                event.setLootingLevel(event.getLootingLevel() + 3);
+            }
+        }
+        
+        if (event.getDamageSource().getDirectEntity() != null) {
+            if (event.getDamageSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW)) {
                 event.setLootingLevel(event.getLootingLevel() + 3);
             }
         }
