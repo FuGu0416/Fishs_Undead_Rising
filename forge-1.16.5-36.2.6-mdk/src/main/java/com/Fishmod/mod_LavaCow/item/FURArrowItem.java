@@ -64,6 +64,8 @@ public class FURArrowItem extends ArrowItem {
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW)) {
 			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName(), FURConfig.Ghoul_targetHPThreshold.get()).withStyle(TextFormatting.YELLOW));
+		} else if (stack.getItem().equals(FURItemRegistry.FANG_ARROW)) {
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName(), FURConfig.BoneSword_Damage.get(), FURConfig.BoneSword_DamageCap.get()).withStyle(TextFormatting.YELLOW));
 		} else if (this.Tooltip == 2) {
 			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()));			
 		} else if (this.Tooltip == 1) {
