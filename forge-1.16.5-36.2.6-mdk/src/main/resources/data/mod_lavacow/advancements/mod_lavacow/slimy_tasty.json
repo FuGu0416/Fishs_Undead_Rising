@@ -12,17 +12,35 @@
     },
     "parent": "mod_lavacow:mod_lavacow/kill_parasite",
     "criteria": {
-        "parasite_item": {
+        "parasite_item_common": {
             "trigger": "minecraft:consume_item",
             "conditions": {
                 "item": {
-					"items": 
-					[
-						"mod_lavacow:parasite_item_common",
-						"mod_lavacow:parasite_item_desert",
-						"mod_lavacow:parasite_item_jungle",
-						"mod_lavacow:parasite_item_maggot"
-					]
+                    "item": "mod_lavacow:parasite_item_common"
+                }
+            }
+        },
+        "parasite_item_desert": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_desert"
+                }
+            }
+        },
+        "parasite_item_jungle": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_jungle"
+                }
+            }
+        },
+        "parasite_item_maggot": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "mod_lavacow:parasite_item_maggot"
                 }
             }
         }
