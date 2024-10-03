@@ -81,6 +81,6 @@ public class MoltenAxeItem extends AxeItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    	tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
+    	tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
 	}	
 }

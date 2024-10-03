@@ -1,0 +1,21 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:bone_trout"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:bonemeal_from_bone_trout",
+			"mod_lavacow:bonestew"
+		]
+	}
+}

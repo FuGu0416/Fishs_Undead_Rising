@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:ectoplasm_mass"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:ectoplasm",
+			"mod_lavacow:soul_sand",
+			"mod_lavacow:soul_soil",
+			"mod_lavacow:ghostbomb",
+			"mod_lavacow:ectoplasm_ingot_from_blasting",
+			"mod_lavacow:ectoplasm_ingot_from_smelting"
+		]
+	}
+}

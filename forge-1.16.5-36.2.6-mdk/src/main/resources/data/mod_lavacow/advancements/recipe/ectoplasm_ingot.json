@@ -1,0 +1,26 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:ectoplasm_ingot"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:ectoplasm_block",
+			"mod_lavacow:ghostlyarmor_boots",
+			"mod_lavacow:ghostlyarmor_chestplate",
+			"mod_lavacow:ghostlyarmor_helmet",
+			"mod_lavacow:ghostlyarmor_leggings",
+			"mod_lavacow:soulfireheart",
+			"mod_lavacow:spectral_dagger"
+		]
+	}
+}

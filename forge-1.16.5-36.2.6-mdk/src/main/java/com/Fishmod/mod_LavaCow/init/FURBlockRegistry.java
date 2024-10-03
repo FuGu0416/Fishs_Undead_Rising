@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.block.CactoidSproutBlock;
+import com.Fishmod.mod_LavaCow.block.DiseasedHayBlock;
 import com.Fishmod.mod_LavaCow.block.FURHugeShroomBlock;
 import com.Fishmod.mod_LavaCow.block.FURShroomBlock;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
@@ -49,6 +50,7 @@ public class FURBlockRegistry {
 	      return 15;
 	   })).setRegistryName("mod_lavacow:glowing_air");
 	public static final Block ECTOPLASM_BLOCK = new Block(AbstractBlock.Properties.of(Material.CLAY, MaterialColor.COLOR_CYAN).speedFactor(0.4F).noOcclusion().sound(SoundType.NETHER_BRICKS)).setRegistryName("mod_lavacow:ectoplasm_block");
+	public static final Block DISEASED_HAY_BLOCK = new DiseasedHayBlock(AbstractBlock.Properties.of(Material.GRASS, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS)).setRegistryName("mod_lavacow:diseased_hay_block");
 	
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

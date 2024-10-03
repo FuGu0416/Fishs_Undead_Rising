@@ -1,0 +1,21 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:hatred_shard"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:kings_crown",
+			"mod_lavacow:reapers_scythe"
+		]
+	}
+}

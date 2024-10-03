@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.mod_LavaCow.init.FURSoundRegistry;
 import net.minecraft.block.BlockState;
@@ -71,8 +70,8 @@ public class LivingArmorEntity extends MonsterEntity implements IAggressive {
         return MobEntity.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.266D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Living_Armor_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Living_Armor_Attack.get())
+        		//.add(Attributes.MAX_HEALTH, FURConfig.Living_Armor_Health.get())
+        		//.add(Attributes.ATTACK_DAMAGE, FURConfig.Living_Armor_Attack.get())
         		.add(Attributes.ARMOR, 10.0D);
     }   
     
@@ -145,8 +144,8 @@ public class LivingArmorEntity extends MonsterEntity implements IAggressive {
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld p_213386_1_, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Living_Armor_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Living_Armor_Attack.get());
+        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Living_Armor_Health.get());
+        //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Living_Armor_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
 		this.populateDefaultEquipmentSlots(difficulty);

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "A",
+        "/",
+        "Y"
+    ],
+    "key": {
+        "A": {
+            "item": "mod_lavacow:sharptooth"
+        },    
+    	"/": {
+			"tag": "forge:rods/wooden"
+        },
+        "Y": {
+            "item": "mod_lavacow:feather_black"
+        }
+    },
+    "result": {
+        "item": "mod_lavacow:fang_arrow",
+        "count": 4
+    }
+}

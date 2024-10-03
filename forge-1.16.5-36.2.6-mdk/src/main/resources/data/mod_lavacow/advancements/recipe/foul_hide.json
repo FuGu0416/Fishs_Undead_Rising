@@ -1,0 +1,24 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:foul_hide"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:foul_bristle",
+			"mod_lavacow:faminearmor_boots",
+			"mod_lavacow:faminearmor_chestplate",
+			"mod_lavacow:faminearmor_helmet",
+			"mod_lavacow:faminearmor_leggings"
+		]
+	}
+}

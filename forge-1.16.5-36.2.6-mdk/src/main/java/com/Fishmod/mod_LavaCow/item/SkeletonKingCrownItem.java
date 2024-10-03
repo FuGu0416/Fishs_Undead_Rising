@@ -117,7 +117,7 @@ public class SkeletonKingCrownItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:skeletonking_crown").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:skeletonking_crown").withStyle(TextFormatting.YELLOW));
 	}
     
     @Override

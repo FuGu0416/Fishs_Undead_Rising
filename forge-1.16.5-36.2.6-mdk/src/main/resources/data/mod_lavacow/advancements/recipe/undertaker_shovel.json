@@ -1,0 +1,22 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:undertaker_shovel"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:frozen_grip",
+			"mod_lavacow:ankh_scepter",
+			"mod_lavacow:fungal_staff"
+		]
+	}
+}

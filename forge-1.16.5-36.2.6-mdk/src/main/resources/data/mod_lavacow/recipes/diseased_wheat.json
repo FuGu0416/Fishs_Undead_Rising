@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mod_lavacow:diseased_hay_block"
+    }
+  ],
+  
+  "result": {
+    "item": "mod_lavacow:diseased_wheat",
+    "count": 9
+  }
+}

@@ -11,6 +11,7 @@
     "mod_lavacow:deathcoil",
     "mod_lavacow:flamejet",
     "mod_lavacow:cactus_thorn",
-    "mod_lavacow:ghoul_arrow"
+    "mod_lavacow:ghoul_arrow",
+  	"mod_lavacow:fang_arrow"
   ]
 }

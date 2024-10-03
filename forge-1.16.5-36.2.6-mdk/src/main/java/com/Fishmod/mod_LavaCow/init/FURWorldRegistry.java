@@ -354,9 +354,9 @@ public class FURWorldRegistry {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.GRAVEROBBER, FURConfig.pSpawnRate_GraveRobber.get(), 4, 8));
 		}
 		
-		if (FURConfig.pSpawnRate_Living_Armor.get() > 0 && event.getStructure().equals(Structure.STRONGHOLD)) {
+		/*if (FURConfig.pSpawnRate_Living_Armor.get() > 0 && event.getStructure().equals(Structure.STRONGHOLD)) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.LIVING_ARMOR, FURConfig.pSpawnRate_Living_Armor.get(), 4, 8));
-		}
+		}*/
 	}
 	
     public static void addStructureSeperation(RegistryKey<DimensionSettings> preset, Structure<?> structure, StructureSeparationSettings settings) {

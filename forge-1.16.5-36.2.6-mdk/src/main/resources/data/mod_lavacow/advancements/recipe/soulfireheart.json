@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:soulfireheart"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:ghostlyarmor_chestplate",
+			"mod_lavacow:soulfireaxe_smithing",
+			"mod_lavacow:soulfirehammer_smithing",
+			"mod_lavacow:soulfirepan_smithing"
+		]
+	}
+}

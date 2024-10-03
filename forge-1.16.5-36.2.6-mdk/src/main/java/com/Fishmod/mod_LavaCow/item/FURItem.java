@@ -134,13 +134,13 @@ public class FURItem extends Item {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if(stack.getItem().equals(FURItemRegistry.SOULFIREHEART)) {
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName(), FURConfig.MootenHeart_Damage.get()).withStyle(TextFormatting.YELLOW));
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName() + ".l2", 25).withStyle(TextFormatting.GREEN));
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName(), FURConfig.MootenHeart_Damage.get()).withStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName() + ".l2", 25).withStyle(TextFormatting.GREEN));
 		} else if(stack.getItem().equals(FURItemRegistry.MOOTENHEART))
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName(), FURConfig.MootenHeart_Damage.get()).withStyle(TextFormatting.YELLOW).append(new TranslationTextComponent("item.mod_lavacow.potion_of_mooten_lava").withStyle(TextFormatting.YELLOW)));
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName(), FURConfig.MootenHeart_Damage.get()).withStyle(TextFormatting.YELLOW).append(new TranslationTextComponent("item.mod_lavacow.potion_of_mooten_lava").withStyle(TextFormatting.YELLOW)));
 		else if(this.Tooltip == 2)
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()));			
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()));			
 		else if(this.Tooltip == 1)
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
 	}	
 }

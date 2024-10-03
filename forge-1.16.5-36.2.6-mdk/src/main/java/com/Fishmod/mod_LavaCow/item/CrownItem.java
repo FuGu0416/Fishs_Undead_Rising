@@ -86,10 +86,10 @@ public class CrownItem extends Item {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:kings_crown." + this.type));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:kings_crown." + this.type));
 		tooltip.add(new TranslationTextComponent(""));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:kings_crown." + this.type + ".desc0").withStyle(TextFormatting.ITALIC));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:kings_crown." + this.type + ".desc1").withStyle(TextFormatting.ITALIC));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:kings_crown." + this.type + ".desc2").withStyle(TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:kings_crown." + this.type + ".desc0").withStyle(TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:kings_crown." + this.type + ".desc1").withStyle(TextFormatting.ITALIC));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:kings_crown." + this.type + ".desc2").withStyle(TextFormatting.ITALIC));
 	}
 }

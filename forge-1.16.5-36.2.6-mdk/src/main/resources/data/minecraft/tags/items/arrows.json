@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-  	"mod_lavacow:ghoul_arrow"
+  	"mod_lavacow:ghoul_arrow",
+  	"mod_lavacow:fang_arrow"
   ]
 }

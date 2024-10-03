@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:curseweave_clothu"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:cursed_bandage_dmg",
+			"mod_lavacow:cursed_bandage_heal",
+			"mod_lavacow:cursed_bandage_res",
+			"mod_lavacow:cursed_bandage"
+		]
+	}
+}

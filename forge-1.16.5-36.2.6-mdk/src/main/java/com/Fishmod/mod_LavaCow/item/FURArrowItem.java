@@ -5,10 +5,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.entities.projectiles.GhoulArrowEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.FURArrowEntity;
+import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ArrowItem;
@@ -38,8 +40,16 @@ public class FURArrowItem extends ArrowItem {
 	}
 
 	@Override
-	public AbstractArrowEntity createArrow(World p_200887_1_, ItemStack p_200887_2_, LivingEntity p_200887_3_) {
-		GhoulArrowEntity arrowentity = new GhoulArrowEntity(p_200887_1_, p_200887_3_);
+	public AbstractArrowEntity createArrow(World p_200887_1_, ItemStack stack, LivingEntity p_200887_3_) {
+		EntityType<? extends FURArrowEntity> Type = FUREntityRegistry.GHOUL_ARROW;
+		
+		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW)) {
+			Type = FUREntityRegistry.GHOUL_ARROW;
+		} else if (stack.getItem().equals(FURItemRegistry.FANG_ARROW)) {
+			Type = FUREntityRegistry.FANG_ARROW;
+		}
+		
+		FURArrowEntity arrowentity = new FURArrowEntity(Type, p_200887_1_, p_200887_3_);
 		return arrowentity;
 	}
 
@@ -52,12 +62,12 @@ public class FURArrowItem extends ArrowItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		if(stack.getItem().equals(FURItemRegistry.GHOUL_ARROW)) {
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName(), FURConfig.Ghoul_targetHPThreshold.get()).withStyle(TextFormatting.YELLOW));
+		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW)) {
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName(), FURConfig.Ghoul_targetHPThreshold.get()).withStyle(TextFormatting.YELLOW));
 		} else if (this.Tooltip == 2) {
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()));			
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()));			
 		} else if (this.Tooltip == 1) {
-			tooltip.add(new TranslationTextComponent("tootip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslationTextComponent("tooltip." + this.getRegistryName()).withStyle(TextFormatting.YELLOW));
 		}
 	}	
 }

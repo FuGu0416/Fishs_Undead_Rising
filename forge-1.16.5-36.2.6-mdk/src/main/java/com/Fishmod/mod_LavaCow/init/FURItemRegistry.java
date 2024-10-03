@@ -223,6 +223,7 @@ public class FURItemRegistry {
 	public static final Item WETA_HOE = new WetaHoeItem(new Item.Properties().tab(mod_LavaCow.TAB), "mod_lavacow:weta_hoe", ItemTier.IRON, -2, -1.0F, CHITIN);
 	public static final Item GHOUL_CLAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghoul_claw");
 	public static final Item GHOUL_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:ghoul_arrow");
+	public static final Item FANG_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:fang_arrow");
 	
     public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
     public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");

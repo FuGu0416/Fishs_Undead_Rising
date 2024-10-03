@@ -61,7 +61,7 @@ public class GhostlyArmorItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:ghostlyarmor").withStyle(TextFormatting.YELLOW));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:ghostlyarmor.l2").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:ghostlyarmor").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:ghostlyarmor.l2").withStyle(TextFormatting.YELLOW));
 	}
 }

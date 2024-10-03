@@ -77,7 +77,7 @@ public class FURWeaponItem extends SwordItem {
         this.Damage = (float)damageIn + 3.0F;
         this.repair_material = repair;
         this.efficiency = materialIn.getSpeed();
-        this.Tooltip = "tootip." + registryName;
+        this.Tooltip = "tooltip." + registryName;
         Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.Damage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackspeedIn, AttributeModifier.Operation.ADDITION));

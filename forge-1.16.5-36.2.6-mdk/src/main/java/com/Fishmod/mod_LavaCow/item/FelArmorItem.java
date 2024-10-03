@@ -77,7 +77,7 @@ public class FelArmorItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:felarmor", (int)(this.effectlevel * 100.0F)).withStyle(TextFormatting.YELLOW));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:felarmor.l2", (int)(this.fireprooflevel * 100.0F)).withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:felarmor", (int)(this.effectlevel * 100.0F)).withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:felarmor.l2", (int)(this.fireprooflevel * 100.0F)).withStyle(TextFormatting.YELLOW));
 	}
 }

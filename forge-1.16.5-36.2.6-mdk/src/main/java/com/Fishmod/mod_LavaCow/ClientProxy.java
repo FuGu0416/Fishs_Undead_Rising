@@ -24,14 +24,13 @@ import com.Fishmod.mod_LavaCow.client.renderer.entity.ForsakenRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.FrigidRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhostRayRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhostSwarmerRenderer;
-import com.Fishmod.mod_LavaCow.client.renderer.entity.GhoulArrowRenderer;
+import com.Fishmod.mod_LavaCow.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GhoulRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberGhostRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.GraveRobberRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.LampreyRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.LilSludgeRenderer;
-import com.Fishmod.mod_LavaCow.client.renderer.entity.LivingArmorRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.MimicRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.MummifiedCodRenderer;
 import com.Fishmod.mod_LavaCow.client.renderer.entity.MummyRenderer;
@@ -139,7 +138,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BONETROUT, manager -> new BoneTroutRenderer(manager)); 
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.LAMPREY, manager -> new LampreyRenderer(manager)); 
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL, manager -> new GhoulRenderer(manager)); 
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
+        //RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
         
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
@@ -155,7 +154,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BASIC_BOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL_ARROW, manager -> new GhoulArrowRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL_ARROW, manager -> new FURArrowRenderer(manager, 0));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FANG_ARROW, manager -> new FURArrowRenderer(manager, 1));
         
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
@@ -166,6 +166,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.VEIL_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK, RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK, RenderType.solid());
         
         ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_COMMON, manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
         ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_STRAW, manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));

@@ -16,7 +16,8 @@
 		"recipes": [
 			"mod_lavacow:raven_whistle",
 			"mod_lavacow:dreamcatcher",
-			"mod_lavacow:ghoul_arrow"
+			"mod_lavacow:ghoul_arrow",
+			"mod_lavacow:fang_arrow"
 		]
 	}
 }

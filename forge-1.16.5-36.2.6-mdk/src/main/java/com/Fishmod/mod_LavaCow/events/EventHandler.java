@@ -919,6 +919,13 @@ public class EventHandler {
 				}
 				event.setAmount(event.getAmount() + 4.0F);
 			}
+			
+			if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.FANG_ARROW)) {
+				if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerWorld) {
+					((ServerWorld)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+				}
+				event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
+			}
     	}
     } 
     

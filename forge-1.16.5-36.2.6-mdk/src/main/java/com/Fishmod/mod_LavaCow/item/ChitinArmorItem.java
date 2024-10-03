@@ -37,7 +37,7 @@ public class ChitinArmorItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:chitinarmor").withStyle(TextFormatting.YELLOW));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:chitinarmor.l2").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:chitinarmor").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:chitinarmor.l2").withStyle(TextFormatting.YELLOW));
 	}
 }

@@ -35,8 +35,8 @@ public class CursedBandageItem extends FURItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:cursed_bandage." + this.type + ".desc0"));
-		tooltip.add(new TranslationTextComponent("tootip.mod_lavacow:cursed_bandage." + this.type + ".desc1").withStyle(TextFormatting.YELLOW));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:cursed_bandage." + this.type + ".desc0"));
+		tooltip.add(new TranslationTextComponent("tooltip.mod_lavacow:cursed_bandage." + this.type + ".desc1").withStyle(TextFormatting.YELLOW));
 	}
 	
     @Override

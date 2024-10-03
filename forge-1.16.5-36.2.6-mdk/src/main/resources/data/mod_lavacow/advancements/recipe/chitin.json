@@ -1,0 +1,26 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_item": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "mod_lavacow:chitin"
+					}
+				]
+			}
+		}
+	},
+  	"rewards": {
+		"recipes": [
+			"mod_lavacow:chitinarmor_boots",
+			"mod_lavacow:chitinarmor_chestplate",
+			"mod_lavacow:chitinarmor_helmet",
+			"mod_lavacow:chitinarmor_leggings",
+			"mod_lavacow:basic_bomb",
+			"mod_lavacow:leather",
+			"mod_lavacow:weta_hoe"
+		]
+	}
+}
