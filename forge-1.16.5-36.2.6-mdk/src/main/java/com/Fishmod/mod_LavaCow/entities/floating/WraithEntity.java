@@ -36,7 +36,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class WraithEntity extends FloatingMobEntity {
 	private static final DataParameter<Boolean> ISFADING = EntityDataManager.defineId(WraithEntity.class, DataSerializers.BOOLEAN);
-	public static final int SPELL_WARMUP_TIMER = 30;
+	public static final int SPELL_WARMUP_TIMER = 50;
 	public static final int SPELL_TIMER = 30;
     private float fadeProgress = SPELL_WARMUP_TIMER;
     
