@@ -160,7 +160,7 @@ public class BansheeModel<T extends BansheeEntity> extends FURBaseModel<T> imple
     @Override
     public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) { 
         ImmutableList.of(this.Body_base).forEach((modelRenderer) -> { 
-            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, 0.85F);
+            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, Math.min(alpha, 0.85F));
         });
     }
     

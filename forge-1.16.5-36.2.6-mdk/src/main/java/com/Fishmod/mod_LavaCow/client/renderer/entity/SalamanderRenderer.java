@@ -39,10 +39,7 @@ public class SalamanderRenderer extends MobRenderer<SalamanderEntity, Salamander
     
     @Override
 	public ResourceLocation getTextureLocation(SalamanderEntity entity) {
-        if(!entity.isNymph())
-        	return TEXTURES[entity.getSkin()];
-        else
-        	return TEXTURES_CHILD[entity.getSkin()];
+    	return entity.isNymph() ? TEXTURES_CHILD[entity.getSkin()] : TEXTURES[entity.getSkin()];
     }
     
     @Override

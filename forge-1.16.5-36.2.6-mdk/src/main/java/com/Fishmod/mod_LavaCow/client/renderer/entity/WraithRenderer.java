@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.client.renderer.entity;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
+import com.Fishmod.mod_LavaCow.client.layer.LayerWraith;
 import com.Fishmod.mod_LavaCow.client.model.entity.AvatonModel;
 import com.Fishmod.mod_LavaCow.entities.floating.WraithEntity;
 import net.minecraft.client.renderer.RenderType;
@@ -17,18 +18,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class WraithRenderer extends MobRenderer<WraithEntity, AvatonModel<WraithEntity>> {
 	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/wraith/wraith_glow.png");
 	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/wraith/wraith.png");
+	private static final ResourceLocation TEXTURES_OVERLAY = new ResourceLocation("mod_lavacow:textures/mobs/wraith/wraith_overlay.png");
+	
 	static{
         System.out.println(TEXTURES.getPath());
     }
 
     public WraithRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn, new AvatonModel<>(), 0.0F);
+        this.addLayer(new LayerWraith<WraithEntity, AvatonModel<WraithEntity>>(this, this.getModel(), TEXTURES));
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));
     }
     
     @Override
     public ResourceLocation getTextureLocation(WraithEntity entity) {
-    	return TEXTURES;
+    	return TEXTURES_OVERLAY;
     }
     
     @Nullable
