@@ -241,6 +241,7 @@ entity.mod_lavacow.cactoid.name=Cactoid
 entity.mod_lavacow.cactyrant.name=Cactyrant
 entity.mod_lavacow.sea_hag.name=Sea Hag
 entity.mod_lavacow.grave_robber.name=Grave Robber
+entity.mod_lavacow.grave_robber_ghost.name=Ghost of Grave Robber
 entity.mod_lavacow.wraith.name=Revenant
 entity.mod_lavacow.ghost_swarmer.name=Ghost Swarmer
 entity.mod_lavacow.amber_scarab.name=Amber Scarab
@@ -391,9 +392,13 @@ entity_wraith_ambient=Revenant whispers
 entity_wraith_attack=Revenant shrieks
 entity_wraith_death=Revenant dies
 
-entity_scarab_ambient=Weta chirps
-entity_scarab_death=Weta dies
-entity_scarab_hurt=Weta hurts
+entity_graverobberghost_ambient=Ghost of Grave Robber murmurs
+entity_graverobberghost_death=Ghost of Grave Robber dies
+entity_graverobberghost_hurt=Ghost of Grave Robber hurts
+
+entity_scarab_ambient=Scarab chirps
+entity_scarab_death=Scarab dies
+entity_scarab_hurt=Scarab hurts
 
 entity_enigmoth_ambient=Enigmoth chirps
 entity_enigmoth_flap=Enigmoth flaps
