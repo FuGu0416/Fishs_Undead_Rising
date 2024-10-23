@@ -123,6 +123,16 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
+	maven {
+		// location of the maven that hosts JEI files
+	    name = "Progwml6 maven"
+	    url = "https://dvs1.progwml6.com/files/maven/"
+	}
+	maven {
+	    // location of a maven mirror for JEI files, as a fallback
+	    name = "ModMaven"
+	    url = "https://modmaven.dev"
+	}    
 }
 
 dependencies {
@@ -134,9 +144,12 @@ dependencies {
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0:api")
-    	
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${mc_version}-4.1.0.0")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${mc_version}-4.1.0.0:api")
+
+	compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
+	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+		
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
