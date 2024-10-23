@@ -133,7 +133,7 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
 	    	
 	    		if (target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, (EntityLivingBase)shooter).setProjectile(), this.getDamage())) {
 	    			float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-		    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WITHER, 10 * 20 * (int)local_difficulty, 1));
+		    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WITHER, 10 * 20 * (int)local_difficulty, 2));
 		    		
 		    		if (shooter instanceof EntityForsaken && ((EntityForsaken) shooter).getOwner() instanceof EntitySkeletonKing) { 
 		    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE_KING, 10 * 20 * (int)local_difficulty, 2));
@@ -156,13 +156,12 @@ public class EntityDeathCoil extends EntityWitherSkull implements IEntityAdditio
             		if (shooter instanceof EntityLivingBase) {
             			this.applyEnchantments((EntityLivingBase) shooter, target);
             		}
-            		
-            	    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
-            		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
             	}
 	    	}
 	    }
-
+    	
+		this.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.0F, 3.0F / (this.world.rand.nextFloat() * 0.4F + 1.2F));
+    	this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
 	    this.setDead();
     }
 

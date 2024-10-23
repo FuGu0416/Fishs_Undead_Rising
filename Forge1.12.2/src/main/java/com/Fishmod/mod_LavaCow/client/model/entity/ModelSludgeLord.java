@@ -363,7 +363,7 @@ public class ModelSludgeLord extends FishModelBase {
     @Override
 	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float ageInTicks) {
     	EntitySludgeLord Entity = ((EntitySludgeLord)entity);
-    	float i = (float)Entity.getAttackTimer() / 30.0F;  
+    	float i = (float)Entity.getAttackTimer() / (float)EntitySludgeLord.ATTACK_TIMER;  
     	float Anime_threshold[] = {1.0F, 0.5F, 0.2F};
     	float j = 1.0F / (Anime_threshold[0] - Anime_threshold[1]);
     	float k = 1.0F / (Anime_threshold[1] - Anime_threshold[2]);

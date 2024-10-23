@@ -270,6 +270,8 @@ public class EntityScarecrow  extends EntityFishTameable {
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource source, float amount) {
+    	Entity entity = source.getTrueSource();
+    	
     	if(source.isFireDamage()) {
     		return super.attackEntityFrom(source, 2.0F * amount);
     	}
@@ -280,6 +282,10 @@ public class EntityScarecrow  extends EntityFishTameable {
 			this.doWanderCommand(null);
 			this.setSilent(false);
 		}
+    	
+        if (entity != null && entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isOnSameTeam(this)) {
+            return false;
+        }
     	
     	return super.attackEntityFrom(source, amount);
     }
@@ -335,6 +341,37 @@ public class EntityScarecrow  extends EntityFishTameable {
         		isAggressive = false;
         		this.world.setEntityState(this, (byte)34);
         	}
+    }
+    
+	@Override
+	public boolean isOnSameTeam(Entity entity) {
+        if (this.isTamed()) {
+            EntityLivingBase entitylivingbase = this.getOwner();
+
+            if (entity == entitylivingbase) {
+                return true;
+            }
+
+            if (entitylivingbase != null) {
+                return entitylivingbase.isOnSameTeam(entity);
+            }
+        }
+        
+        if (entity == null) {
+            return false;
+        }
+        else if (entity == this) {
+            return true;
+        }
+        else if (super.isOnSameTeam(entity)) {
+            return true;
+        }
+        else if (entity instanceof EntityScarecrow || entity instanceof EntityRaven) {
+            return this.getTeam() == null && entity.getTeam() == null;
+        }
+        else {
+            return false;
+        }
     }
     
     @SideOnly(Side.CLIENT)

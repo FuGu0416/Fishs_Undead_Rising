@@ -241,6 +241,7 @@ entity.mod_lavacow.cactoid.name=Cactoid
 entity.mod_lavacow.cactyrant.name=Cactyrant
 entity.mod_lavacow.sea_hag.name=Sea Hag
 entity.mod_lavacow.grave_robber.name=Grave Robber
+entity.mod_lavacow.grave_robber_ghost.name=Ghost of Grave Robber
 entity.mod_lavacow.wraith.name=Revenant
 entity.mod_lavacow.ghost_swarmer.name=Ghost Swarmer
 entity.mod_lavacow.amber_scarab.name=Amber Scarab
@@ -391,9 +392,13 @@ entity_wraith_ambient=Revenant whispers
 entity_wraith_attack=Revenant shrieks
 entity_wraith_death=Revenant dies
 
-entity_scarab_ambient=Weta chirps
-entity_scarab_death=Weta dies
-entity_scarab_hurt=Weta hurts
+entity_graverobberghost_ambient=Ghost of Grave Robber murmurs
+entity_graverobberghost_death=Ghost of Grave Robber dies
+entity_graverobberghost_hurt=Ghost of Grave Robber hurts
+
+entity_scarab_ambient=Scarab chirps
+entity_scarab_death=Scarab dies
+entity_scarab_hurt=Scarab hurts
 
 entity_enigmoth_ambient=Enigmoth chirps
 entity_enigmoth_flap=Enigmoth flaps
@@ -476,7 +481,7 @@ tootip.mod_lavacow.kings_crown.1.desc2=Even a dead corpse can fulfill his ambiti
 tootip.mod_lavacow.skeletonking_crown=Forces nearby skeletons to become your loyal servants.
 tootip.mod_lavacow.beast_claw.desc0=Right-click to pounce forward.
 tootip.mod_lavacow.beast_claw.desc1=Set Bonus (2): Gives Strength (0:03) & Haste (0:03) after pouncing.
-tootip.mod_lavacow.skeletonking_mace=Inflicts target with Deathtouched V (0:10)!
+tootip.mod_lavacow.skeletonking_mace=Inflicts target with Deathtouched V (0:10) and Wither III (0:15)!
 tootip.mod_lavacow.chitinarmor=Set Bonus (2): -50%% Falling Damage
 tootip.mod_lavacow.chitinarmor.l2=Set Bonus (4): Grants Speed (0:03) after jumping.
 tootip.mod_lavacow.cactus_fruit=Can be used to brew a Potion of Thorn or as a seed to plant in the sand (sneak and right-click).
@@ -600,6 +605,10 @@ potion.effect.mod_lavacow:void_dust=Potion of Void Rift
 splash_potion.effect.mod_lavacow:void_dust=Splash Potion of Void Rift
 lingering_potion.effect.mod_lavacow:void_dust=Lingering Potion of Void Rift
 tipped_arrow.effect.mod_lavacow:void_dust=Arrow of Void Rift
+potion.effect.mod_lavacow:ravens_grace=Potion of Raven's Grace
+splash_potion.effect.mod_lavacow:ravens_grace=Splash Potion of Raven's Grace
+lingering_potion.effect.mod_lavacow:ravens_grace=Lingering Potion of Raven's Grace
+tipped_arrow.effect.mod_lavacow:ravens_grace=Arrow of Raven's Grace
 
 ################
 # Advancements #
