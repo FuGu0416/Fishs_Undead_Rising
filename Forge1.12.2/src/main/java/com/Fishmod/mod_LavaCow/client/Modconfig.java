@@ -21,7 +21,7 @@ public class Modconfig {
 
     public static double Lavacow_Health;
     public static boolean Lavacow_Bucket;
-    public static boolean Lavacow_Texture;
+    public static double Lavacow_Classic_Texture_Chance;
 
     public static int pSpawnRate_Foglet;
     public static double Foglet_Health;
@@ -135,6 +135,7 @@ public class Modconfig {
     public static int GhostRay_FlyingHeight_limit;
     public static boolean GhostRay_Middle_End_Island;
     public static boolean GhostRay_Ghostly_Touch;
+    public static boolean GhostRay_End_Variants;
 
     public static int pSpawnRate_Banshee;
     public static double Banshee_Health;
@@ -323,7 +324,7 @@ public class Modconfig {
 
         Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
         Lavacow_Bucket = config.get("Moogma", "moogma lava source", true, "Should lava buckets be obtainable from Moogma [false/true]").getBoolean(true);
-        Lavacow_Texture = config.get("Moogma", "moogma classic texture", true, "Loading Moogma with classic texture [false/true]").getBoolean(true);
+        Lavacow_Classic_Texture_Chance = config.get("Moogma", "moogma classic texture chance", 1.0D, "Chance for Moogmas to spawn with the classic texture (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(1.0D);
 
         pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
         Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);
@@ -427,7 +428,7 @@ public class Modconfig {
         Vespa_Attack = config.get("Vespa", "vespa attack", 5.0D, "Vespa strength [1-1000]", 1, 1000).getDouble(5.0D);
         Vespa_FlyingHeight_limit = config.get("Vespa", "vespa height limit", 16, "Set the height limit to X blocks above the ground for Vespas, 0 = Infinite [0-100]", 0, 100).getInt(16);
         Vespa_Spread_Parasites = config.get("Vespa", "vespa spread parasites", true, "Should Vespas spread parasites by sometimes inflicting Infested when hitting a target [false/true]").getBoolean(true);
-        Vespa_Hornet_Variant = config.get("Vespa", "vespa hornet variant chance", 0.1D, "Set the chance for naturally spawned Vespa to become a hornet variant [0-1]", 0, 1).getDouble(0.1D);
+        Vespa_Hornet_Variant = config.get("Vespa", "vespa hornet variant chance", 0.1D, "Set the chance for naturally spawned Vespa to become a hornet variant (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(0.1D);
 
         pSpawnRate_Scarecrow = config.get("Scarecrow", "scarecrow spawn rate", 15, "Set the spawn rate of Scarecrow [0-100]", 0, 100).getInt(15);
         Scarecrow_Health = config.get("Scarecrow", "scarecrow health", 40.0D, "Maximum Scarecrow health [1-1000]", 1, 1000).getDouble(40.0D);
@@ -471,6 +472,7 @@ public class Modconfig {
         GhostRay_FlyingHeight_limit = config.get("Ghost Ray", "ghost ray height limit", 48, "Set the height limit to X blocks above the ground for Ghost Rays, 0 = Infinite [0-100]", 0, 100).getInt(48);
         GhostRay_Middle_End_Island = config.get("Ghost Ray", "ghost ray middle end island spawn", false, "Should Ghost Rays spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
         GhostRay_Ghostly_Touch = config.get("Ghost Ray", "ghost ray ghostly touch", true, "Should Ghost Rays inflict an effect (weakness/void dust) on hit [false/true]").getBoolean(true);
+        GhostRay_End_Variants = config.get("Ghost Ray", "ghost ray end variants", true, "Should End Ghost Rays have alternate texture variants when spawning? [false/true]").getBoolean(true);
 
         pSpawnRate_Banshee = config.get("Banshee", "banshee spawn rate", 20, "Set the spawn rate of Banshee [0-100]", 0, 100).getInt(20);
         Banshee_Health = config.get("Banshee", "banshee health", 34.0D, "Maximum Banshee health [1-1000]", 1, 1000).getDouble(34.0D);
