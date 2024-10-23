@@ -204,6 +204,10 @@ public class Modconfig {
     public static double Grave_Robber_Ghost_Chance;
     public static double Grave_Robber_Health;
     public static double Grave_Robber_Attack;
+    public static int Grave_Robber_Ghost_Ability_Num;
+    public static int Grave_Robber_Ghost_Ability_Max;
+    public static int Grave_Robber_Ghost_Ability_Cooldown;
+    public static int Grave_Robber_Ghost_Minion_Lifespan;
 
     public static int pSpawnRate_Grave_Robber_Ghost;
     public static double Grave_Robber_Ghost_Health;
@@ -526,7 +530,7 @@ public class Modconfig {
         Sea_Hag_Attack = config.get("Sea Hag", "sea hag attack", 5.0D, "Sea Hag strength [1-1000]", 1, 1000).getDouble(5.0D);
         Sea_Hag_Ability_Num = config.get("Sea Hag", "sea hag summon number", 4, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(4);
         Sea_Hag_Ability_Max = config.get("Sea Hag", "sea hag summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
-        Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "avaton summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
+        Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "sea hag summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
 
         pSpawnRate_Grave_Robber = config.get("Grave Robber", "grave robber spawn rate", 15, "Set the spawn rate of Grave Robber [0-100]", 0, 100).getInt(15);
         Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-100]", 0, 100).getDouble(0.5D);
@@ -536,6 +540,10 @@ public class Modconfig {
         pSpawnRate_Grave_Robber_Ghost = config.get("Ghost of Grave Robber", "grave robber ghost spawn rate", 2, "Set the spawn rate of Ghost of Grave Robber [0-100]", 0, 100).getInt(2);
         Grave_Robber_Ghost_Health = config.get("Ghost of Grave Robber", "grave robber ghost health", 34.0D, "Maximum Ghost of Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
         Grave_Robber_Ghost_Attack = config.get("Ghost of Grave Robber", "grave robber ghost attack", 6.0D, "Ghost of Grave Robber strength [1-1000]", 1, 1000).getDouble(6.0D);
+        Grave_Robber_Ghost_Ability_Num = config.get("Ghost of Grave Robber", "grave robber ghost summon number", 2, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(2);
+        Grave_Robber_Ghost_Ability_Max = config.get("Ghost of Grave Robber", "grave robber ghost summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
+        Grave_Robber_Ghost_Ability_Cooldown = config.get("Ghost of Grave Robber", "grave robber ghost summon cooldown", 20, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(20);
+        Grave_Robber_Ghost_Minion_Lifespan = config.get("Ghost of Grave Robber", "grave robber ghost minion lifespan", 60, "Summoned Vex lifespan [1-10000]", 1, 10000).getInt(60);
 
         pSpawnRate_Wraith = config.get("Revenant", "revenant spawn rate", 20, "Set the spawn rate of Revenant [0-10000]", 0, 10000).getInt(20);
         Wraith_Health = config.get("Revenant", "revenant health", 25.0D, "Maximum Revenant health [1-1000]", 1, 1000).getDouble(25.0D);
