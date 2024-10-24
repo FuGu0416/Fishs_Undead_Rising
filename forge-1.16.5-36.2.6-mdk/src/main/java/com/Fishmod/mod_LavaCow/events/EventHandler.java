@@ -17,7 +17,6 @@ import com.Fishmod.mod_LavaCow.entities.tameable.MimicEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.RavenEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.ScarabEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.unburied.UnburiedEntity;
-import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREnchantmentRegistry;
 import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
@@ -39,7 +38,6 @@ import com.Fishmod.mod_LavaCow.misc.LootTableHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -72,6 +70,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -238,59 +237,51 @@ public class EventHandler {
     	ItemStack tool = event.getLeft();
     	ItemStack ench = event.getRight();
     	ItemStack outputStack = tool.copy();
-    	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);
-    	int ench_lvl = 1;
+    	Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(tool);    	
+    	int cost = 0, k = 0;
+    	boolean flag = false;
     	
-    	if (Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURItemRegistry.PARASITE_COMMON && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
-    		ench_lvl = 1;
-    		event.setOutput(outputStack);
-    		event.setCost(ench_lvl * 2);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
-    		event.setMaterialCost(1);
-    	} else if (Enchantments.FISHING_SPEED.canEnchant(tool) && ench.getItem() == FURBlockRegistry.GLOWSHROOM.asItem() && !currentEnchantments.containsKey(Enchantments.FISHING_SPEED)) {
-    		ench_lvl = 3;
-    		event.setOutput(outputStack);
-    		event.setCost(ench_lvl * 2);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(Enchantments.FISHING_SPEED, ench_lvl);
-    		event.setMaterialCost(1);
-    	} else if (FUREnchantmentRegistry.POISONOUS.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.POISONSPORE && !currentEnchantments.containsKey(FUREnchantmentRegistry.POISONOUS)) {
-    		ench_lvl = 3;
-    		event.setOutput(outputStack);
-    		event.setCost(13);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(FUREnchantmentRegistry.POISONOUS, ench_lvl);
-    		event.setMaterialCost(1);
-    	} else if (FUREnchantmentRegistry.LIFESTEAL.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.UNDYINGHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.LIFESTEAL)) {
-    		ench_lvl = 3;
-    		event.setOutput(outputStack);
-    		event.setCost(13);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(FUREnchantmentRegistry.LIFESTEAL, ench_lvl);
-    		event.setMaterialCost(1);
-    	} else if (FUREnchantmentRegistry.CORROSIVE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.ACIDICHEART && !currentEnchantments.containsKey(FUREnchantmentRegistry.CORROSIVE)) {
-    		ench_lvl = 1;
-    		event.setOutput(outputStack);
-    		event.setCost(4);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(FUREnchantmentRegistry.CORROSIVE, ench_lvl);
-    		event.setMaterialCost(1);
-    	} else if (FUREnchantmentRegistry.CRITICALBOOST.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.SINISTER_WHETSTONE && !currentEnchantments.containsKey(FUREnchantmentRegistry.CRITICALBOOST)) {
-    		CompoundNBT compoundnbt = ench.getTag();
-    		ench_lvl = compoundnbt == null ? 1 : compoundnbt.getInt("level");
-    		event.setOutput(outputStack);
-    		event.setCost(4 * ench_lvl);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(FUREnchantmentRegistry.CRITICALBOOST, ench_lvl);		
-    		event.setMaterialCost(1);
-    	} else if (Enchantments.SMITE.canEnchant(tool) && FURConfig.Enchantment_Enable.get() && ench.getItem() == FURItemRegistry.HOLY_WATER && !currentEnchantments.containsKey(Enchantments.SMITE)) {
-    		ench_lvl = 3;
-    		event.setOutput(outputStack);
-    		event.setCost(1 * ench_lvl);
-			event.setOutput(event.getLeft().copy());
-			event.getOutput().enchant(Enchantments.SMITE, ench_lvl);		
-    		event.setMaterialCost(1);
+    	if (FURConfig.Enchantment_Enable.get()) {
+	    	for (Tuple<Enchantment, Tuple<ItemStack, Integer>> recipe : LootTableHandler.ANVIL_RECIPE) {
+	    		if (recipe.getA().canEnchant(tool) && ench.getItem().equals(recipe.getB().getA().getItem())) {
+	    			cost = 0;
+	    			flag = true;
+	    			
+                    for (Enchantment enchantment : currentEnchantments.keySet()) {
+                    	if (enchantment != recipe.getA() && recipe.getA().isCompatibleWith(enchantment)) {
+                    		cost++;
+                    	} else {
+                    		flag = false;
+                    		break;
+                    	}
+                    }
+                    
+                    if (flag) {
+                        switch(recipe.getA().getRarity()) {
+                        	case COMMON:
+                        		k = 1;
+                        		break;
+                        	case UNCOMMON:
+                        		k = 2;
+                        		break;
+                        	case RARE:
+                        		k = 4;
+                        		break;
+                        	case VERY_RARE:
+                        		k = 8;
+                        }
+                        
+                        k = Math.max(1, k / 2);
+                        cost += k * recipe.getB().getB();
+                        
+		        		event.setOutput(outputStack);
+		        		event.setCost(cost);
+		    			event.setOutput(event.getLeft().copy());
+		    			event.getOutput().enchant(recipe.getA(), recipe.getB().getB());
+		        		event.setMaterialCost(1);
+                    }
+	        	}
+	    	}
     	}
     }
     
