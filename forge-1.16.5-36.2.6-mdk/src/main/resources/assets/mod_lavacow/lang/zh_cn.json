@@ -777,6 +777,8 @@
 	"advancements.mod_lavacow.tame_scarecrow.description": "制造一只稻草人",
 	"advancements.mod_lavacow.kill_ghoul.title": "吾噬亡者",
 	"advancements.mod_lavacow.kill_ghoul.description": "杀死一只食尸鬼",
-								
+	"advancements.mod_lavacow.get_green_bacon_and_eggs.title": "我在哪儿都不想吃",
+	"advancements.mod_lavacow.get_green_bacon_and_eggs.description": "获得绿培根蛋",	
+									
 	"death.mod_lavacow.timeup": "%1$s的生命消逝于尘土之中"
 }
