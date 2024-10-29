@@ -17,6 +17,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
+import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityGraveRobber;
@@ -272,6 +273,14 @@ public class ModEntities {
                     .name(mod_LavaCow.MODID + "." + "boneworm")
                     .tracker(64, 1, false)
                     .egg(0x989898, 0x410E0E)
+                    .build(),
+
+            EntityEntryBuilder.create()
+                    .entity(EntitySoulWorm.class)
+                    .id(new ResourceLocation(mod_LavaCow.MODID, "soulworm"), id++)
+                    .name(mod_LavaCow.MODID + "." + "soulworm")
+                    .tracker(64, 1, false)
+                    .egg(0x36261F, 0x32EFEF)
                     .build(),
 
             EntityEntryBuilder.create()
@@ -581,6 +590,7 @@ public class ModEntities {
         tweakEntitySpawn(EntityVespa.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Vespa, 2, 4, BiomeDictionary.Type.JUNGLE);
         tweakEntitySpawn(EntityScarecrow.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Scarecrow, 1, 1, BiomeDictionary.Type.PLAINS);
         tweakEntitySpawn(EntityBoneWorm.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_BoneWorm, 1, 2, BiomeDictionary.Type.SANDY);
+        tweakEntitySpawn(EntitySoulWorm.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_SoulWorm, 1, 2, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityPingu.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Pingu, 4, 8, BiomeDictionary.Type.SNOWY);
         tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay, 1, 2, BiomeDictionary.Type.DRY);
         tweakEntitySpawn(EntityGhostRay.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_GhostRay_End, 1, 2, BiomeDictionary.Type.END);
@@ -621,6 +631,7 @@ public class ModEntities {
         EntitySpawnPlacementRegistry.setPlacementType(EntityPiranha.class, SpawnPlacementType.IN_WATER);
         EntitySpawnPlacementRegistry.setPlacementType(EntityZombiePiranha.class, SpawnPlacementType.IN_WATER);
         EntitySpawnPlacementRegistry.setPlacementType(EntityBoneWorm.class, SpawnPlacementType.ON_GROUND);
+        EntitySpawnPlacementRegistry.setPlacementType(EntitySoulWorm.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntityPingu.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntityScarecrow.class, SpawnPlacementType.ON_GROUND);
         EntitySpawnPlacementRegistry.setPlacementType(EntityUndertaker.class, SpawnPlacementType.ON_GROUND);

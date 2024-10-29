@@ -170,17 +170,18 @@ public class EntityWraith extends EntityFloatingMob implements IAggressive {
             if (EntityWraith.this.getAttackTarget() != null) {
                 EntityLivingBase target = EntityWraith.this.getAttackTarget();
                 float local_difficulty = EntityWraith.this.world.getDifficultyForLocation(new BlockPos(EntityWraith.this)).getAdditionalDifficulty();
-                int difficulty_calculation = (int) (20 * local_difficulty);
+                // 10 seconds * regional difficulty
+                int difficulty_calculation = (int) (200 * local_difficulty);
 
                 if (this.isAlly) {
-                    target.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 20 * 20 + (20 * difficulty_calculation), 2));
-                    target.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * 20 + (20 * difficulty_calculation), 1));
-                    target.addPotionEffect(new PotionEffect(MobEffects.SPEED, 20 * 20 + (20 * difficulty_calculation), 2));
+                    target.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 20 * 20 + difficulty_calculation, 2));
+                    target.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * 20 + difficulty_calculation, 1));
+                    target.addPotionEffect(new PotionEffect(MobEffects.SPEED, 20 * 20 + difficulty_calculation, 2));
                     target.setHealth(Math.min(target.getHealth() + EntityWraith.this.getHealth(), target.getMaxHealth()));
                 } else {
-                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 20 * 20 + (20 * difficulty_calculation), 0));
-                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 20 * 20 + (20 * difficulty_calculation), 4));
-                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 20 + (20 * difficulty_calculation), 0));
+                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 20 * 20 + difficulty_calculation, 0));
+                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 20 * 20 + difficulty_calculation, 4));
+                    EntityWraith.this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 20 + difficulty_calculation, 0));
                 }
 
                 if (EntityWraith.this.world instanceof WorldServer) {

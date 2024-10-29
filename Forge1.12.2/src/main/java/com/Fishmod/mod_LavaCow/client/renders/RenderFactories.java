@@ -44,6 +44,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderIsnachi;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeLord;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSonicBomb;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSoulWorm;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUnburied;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndeadSwine;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndertaker;
@@ -71,6 +72,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
+import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
 import com.Fishmod.mod_LavaCow.entities.EntityGraveRobber;
@@ -153,6 +155,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityZombiePiranha.class, RenderFactoryEntityZombiePiranha.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityPiranhaLauncher.class, RenderFactoryEntityPiranhaLauncher.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityBoneWorm.class, RenderFactoryEntityBoneWorm.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySoulWorm.class, RenderFactoryEntitySoulWorm.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityAcidJet.class, RenderFactoryEntityAcidJet.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameJet.class, RenderFactoryEntityFlameJet.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityHolyGrenade.class, RenderFactoryEntityHolyGrenade.INSTANCE);
@@ -499,6 +502,18 @@ public class RenderFactories {
         @Override
         public Render<EntityBoneWorm> createRenderFor(RenderManager manager) {
             return new RenderBoneWorm(manager);
+        }
+    }
+
+    public static class RenderFactoryEntitySoulWorm implements IRenderFactory<EntitySoulWorm> {
+        public final static RenderFactoryEntitySoulWorm INSTANCE = new RenderFactoryEntitySoulWorm();
+
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntitySoulWorm> createRenderFor(RenderManager manager) {
+            return new RenderSoulWorm(manager);
         }
     }
 

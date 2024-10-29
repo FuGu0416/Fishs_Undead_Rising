@@ -117,6 +117,10 @@ public class Modconfig {
     public static double BoneWorm_Health;
     public static double BoneWorm_Attack;
 
+    public static int pSpawnRate_SoulWorm;
+    public static double SoulWorm_Health;
+    public static double SoulWorm_Attack;
+
     public static int pSpawnRate_Pingu;
     public static double Pingu_Health;
     public static double Pingu_Attack;
@@ -449,9 +453,13 @@ public class Modconfig {
         Piranha_Health = config.get("Piranha", "piranha health", 5.0D, "Maximum Piranha health [1-1000]", 1, 1000).getDouble(5.0D);
         Piranha_Attack = config.get("Piranha", "piranha attack", 3.5D, "Piranha strength [1-1000]", 1, 1000).getDouble(3.5D);
 
-        pSpawnRate_BoneWorm = config.get("Osvermis", "boneworm spawn rate", 20, "Set the spawn rate of OsVermis [0-100]", 0, 100).getInt(20);
-        BoneWorm_Health = config.get("Osvermis", "boneworm health", 32.0D, "Maximum OsVermis health [1-1000]", 1, 1000).getDouble(32.0D);
-        BoneWorm_Attack = config.get("Osvermis", "boneworm attack", 6.0D, "OsVermis strength [1-1000]", 1, 1000).getDouble(6.0D);
+        pSpawnRate_BoneWorm = config.get("Osvermis", "boneworm spawn rate", 20, "Set the spawn rate of Osvermis [0-100]", 0, 100).getInt(20);
+        BoneWorm_Health = config.get("Osvermis", "boneworm health", 40.0D, "Maximum Osvermis health [1-1000]", 1, 1000).getDouble(40.0D);
+        BoneWorm_Attack = config.get("Osvermis", "boneworm attack", 6.0D, "Osvermis strength [1-1000]", 1, 1000).getDouble(6.0D);
+
+        pSpawnRate_SoulWorm = config.get("Osvermis Spiritus", "soulworm spawn rate", 3, "Set the spawn rate of Osvermis Spiritus [0-100]", 0, 100).getInt(3);
+        SoulWorm_Health = config.get("Osvermis Spiritus", "soulworm health", 50.0D, "Maximum Osvermis Spiritus health [1-1000]", 1, 1000).getDouble(50.0D);
+        SoulWorm_Attack = config.get("Osvermis Spiritus", "soulworm attack", 6.0D, "Osvermis Spiritus strength [1-1000]", 1, 1000).getDouble(6.0D);
 
         pSpawnRate_Pingu = config.get("Penghoul", "penghoul spawn rate", 20, "Set the spawn rate of Penghoul [0-100]", 0, 100).getInt(20);
         Pingu_Health = config.get("Penghoul", "penghoul health", 10.0D, "Maximum Penghoul health [1-1000]", 1, 1000).getDouble(10.0D);

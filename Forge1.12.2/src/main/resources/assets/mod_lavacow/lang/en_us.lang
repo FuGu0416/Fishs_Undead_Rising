@@ -226,6 +226,7 @@ entity.mod_lavacow.vespacocoon.name=Vespa Cocoon
 entity.mod_lavacow.zombiepiranha.name=Swarmer
 entity.mod_lavacow.piranha.name=Piranha
 entity.mod_lavacow.boneworm.name=Osvermis
+entity.mod_lavacow.soulworm.name=Osvermis Spiritus
 entity.mod_lavacow.raven.seagull=Seagull
 entity.mod_lavacow.pingu.name=Penghoul
 entity.mod_lavacow.undertaker.name=Undertaker
@@ -660,6 +661,8 @@ advancements.mod_lavacow.kill_ptera.title=Vultursaur
 advancements.mod_lavacow.kill_ptera.description=Kill a Ptera
 advancements.mod_lavacow.kill_boneworm.title=The One Re-Bone
 advancements.mod_lavacow.kill_boneworm.description=Kill an Osvermis
+advancements.mod_lavacow.kill_soulworm.title=The King's Vengeance
+advancements.mod_lavacow.kill_soulworm.description=Kill an Osvermis Spiritus
 advancements.mod_lavacow.kill_ghostray.title=Fish Night
 advancements.mod_lavacow.kill_ghostray.description=Kill a Ghost Ray
 advancements.mod_lavacow.kill_banshee.title=Silent Chills
@@ -700,7 +703,7 @@ advancements.mod_lavacow.get_molten_armor.title=Fire it Up!
 advancements.mod_lavacow.get_molten_armor.description=Upgrade your diamonds and get yourself some molten armor!
 advancements.mod_lavacow.get_molten_tool.title=Molten Warrior
 advancements.mod_lavacow.get_molten_tool.description=Obtain a molten tool!
-advancements.mod_lavacow.tame_scarecrow.title=You Want to Build a Scarecrow?
+advancements.mod_lavacow.tame_scarecrow.title=Do You Wanna Build a Scarecrow?
 advancements.mod_lavacow.tame_scarecrow.description=Build a Scarecrow
 
 #################

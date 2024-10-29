@@ -56,7 +56,7 @@ public class LootTableHandler {
     public static ResourceLocation ZOMBIEPIRANHA = null;
     public static ResourceLocation PIRANHA = null;
     public static ResourceLocation BONEWORM = null;
-    public static ResourceLocation BONEWORM_NETHER = null;
+    public static ResourceLocation SOULWORM = null;
     public static ResourceLocation PINGU = null;
     public static ResourceLocation GHOSTRAY = null;
     public static ResourceLocation CEMETERY_CHEST = null;
@@ -152,7 +152,7 @@ public class LootTableHandler {
         ZOMBIEPIRANHA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/swarmer"));
         PIRANHA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/piranha"));
         BONEWORM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/boneworm"));
-        BONEWORM_NETHER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/boneworm_nether"));
+        SOULWORM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/soulworm"));
         PINGU = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/pingu"));
         GHOSTRAY = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ghost_ray"));
         BANSHEE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/banshee"));

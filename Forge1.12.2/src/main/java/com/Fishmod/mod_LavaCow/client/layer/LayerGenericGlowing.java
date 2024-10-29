@@ -1,11 +1,11 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
 import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
-import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
+import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGhostSwarmer;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
@@ -52,6 +52,11 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
             new ResourceLocation("mod_lavacow:textures/mobs/cactyrant/cactyrant_glow.png")
     };
 
+    private static final ResourceLocation[] TEXTURES_GLOW_SOUL_WORM = new ResourceLocation[]{
+            new ResourceLocation("mod_lavacow:textures/mobs/soulworm/soulworm_glow.png"),
+            new ResourceLocation("mod_lavacow:textures/mobs/soulworm/soulworm_glow1.png")
+    };
+
     private static final ResourceLocation[] TEXTURES_GLOW_GHOST_SWARMER = new ResourceLocation[]{
             new ResourceLocation("mod_lavacow:textures/mobs/ghostswarmer/ghostswarmer_glow.png"),
             new ResourceLocation("mod_lavacow:textures/mobs/ghostswarmer/ghostswarmer_glow1.png")
@@ -93,8 +98,9 @@ public class LayerGenericGlowing<T extends EntityLiving> implements LayerRendere
             }
         }
 
-        if (entitylivingIn instanceof EntityBoneWorm && ((EntityBoneWorm) entitylivingIn).getSkin() == 0)
-            return;
+        if (entitylivingIn instanceof EntitySoulWorm) {
+            GLOW_LAYER = TEXTURES_GLOW_SOUL_WORM[((EntitySoulWorm) entitylivingIn).getSkin()];
+        }
 
         if (entitylivingIn instanceof EntitySludgeLord && !(entitylivingIn instanceof EntityAmberLord)) {
             GLOW_LAYER = TEXTURES_GLOW_SLUDGE_LORD[0];
