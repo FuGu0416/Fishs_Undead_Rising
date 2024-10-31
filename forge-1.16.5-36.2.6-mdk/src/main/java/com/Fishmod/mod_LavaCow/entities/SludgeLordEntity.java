@@ -78,9 +78,9 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AICastingApell());    	
-    	this.goalSelector.addGoal(3, new AttackGoal(this));    	
-    	if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
+    	this.goalSelector.addGoal(4, new AttackGoal(this));    	
+    	if(!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.applyEntityAI();
@@ -167,6 +167,18 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
     		return super.hurt(source, 2.0F * amount);
     	return super.hurt(source, amount);
     }
+	
+	private void addRangeAtkBehavior(int skin) {
+		switch (skin) {
+			case 1:
+				this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SAPJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D));
+				break;
+			default:
+	 	   		this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SLUDGEJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
+	 	   		this.goalSelector.addGoal(3, new SludgeLordEntity.AIUseSpell());
+				break;
+		}
+	}
     
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
@@ -186,12 +198,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
 		   this.setSkin(1);
  	   	}
  	   	
- 	   	if (this.getSkin() == 1) {
- 	   		this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SAPJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D));
- 	   	} else {
- 	   		this.goalSelector.addGoal(2, new EntityFishAIAttackRange<>(this, FUREntityRegistry.SLUDGEJET, FURSoundRegistry.SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
- 	   		this.goalSelector.addGoal(4, new SludgeLordEntity.AIUseSpell());
- 	   	}
+ 	   	this.addRangeAtkBehavior(this.getSkin());
  	   	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -256,6 +263,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         super.readAdditionalSaveData(compound);
         this.spellTicks = compound.getInt("SpellTicks");
         this.setSkin(compound.getInt("Variant"));
+        this.addRangeAtkBehavior(this.getSkin());
     }
 
     /**
@@ -280,7 +288,7 @@ public class SludgeLordEntity extends MonsterEntity implements IAggressive {
         public boolean canUse() {
             return SludgeLordEntity.this.getSpellTicks() > 0;
         }
-
+        
         /**
          * Execute a one shot task or start executing a continuous task
          */

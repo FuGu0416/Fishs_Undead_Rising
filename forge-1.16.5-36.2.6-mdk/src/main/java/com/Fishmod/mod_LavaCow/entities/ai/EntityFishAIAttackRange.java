@@ -91,10 +91,20 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
      */
     public boolean canUse() {
        LivingEntity LivingEntity = this.shooter.getTarget();
-
-       return LivingEntity != null && LivingEntity.isAlive();
+       boolean flag = true;
+ 
+       if (LivingEntity != null && LivingEntity.isAlive()) {
+    	   double d0 = this.shooter.distanceToSqr(LivingEntity);
+    	   if (d0 < (this.shooter.getBbWidth() + LivingEntity.getBbWidth()) * (this.shooter.getBbWidth() + LivingEntity.getBbWidth())) {
+    		   flag = false;
+    	   }
+       } else {
+    	   flag = false;
+       }
+       
+       return flag;
     }
-
+    
     /**
      * Execute a one shot task or start executing a continuous task
      */
@@ -119,14 +129,7 @@ public class EntityFishAIAttackRange<T extends AbstractFireballEntity> extends G
 
        if (LivingEntity != null) {
            double d0 = this.shooter.distanceToSqr(LivingEntity);
-           if (d0 < (this.shooter.getBbWidth() + LivingEntity.getBbWidth()) * (this.shooter.getBbWidth() + LivingEntity.getBbWidth())) {
-              if (this.attackTime <= 0) {
-                 this.attackTime = 20;
-                 this.shooter.doHurtTarget(LivingEntity);
-              }
-
-              this.shooter.getNavigation().moveTo(LivingEntity.getX(), LivingEntity.getY(), LivingEntity.getZ(), 1.0D);
-           } else if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
+           if (d0 < this.getFollowDistance() * this.getFollowDistance()) {
               double d1 = LivingEntity.getX() - this.shooter.getX();
               double d2 = LivingEntity.getBoundingBox().minY + (double)(LivingEntity.getBbHeight() / 2.0F) - (this.shooter.getY() + (double)(this.shooter.getBbHeight() / 2.0F));
               double d3 = LivingEntity.getZ() - this.shooter.getZ();
