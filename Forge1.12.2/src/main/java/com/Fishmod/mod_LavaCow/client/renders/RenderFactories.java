@@ -49,6 +49,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUnburied;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndeadSwine;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndertaker;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespa;
+import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaBrood;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaCocoon;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWendigo;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWeta;
@@ -92,6 +93,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.misc.EntityVespaBrood;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
@@ -132,6 +134,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityLavaCow.class, RenderFactoryEntityLavaCow.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieMushroom.class, RenderFactoryEntityZombieMushroom.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityParasite.class, RenderFactoryEntityParasite.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityVespaBrood.class, RenderFactoryEntityVespaBrood.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityFoglet.class, RenderFactoryEntityFoglet.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityIsnachi.class, RenderFactoryEntityIsnachi.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityImp.class, RenderFactoryEntityImp.INSTANCE);
@@ -226,6 +229,18 @@ public class RenderFactories {
         @Override
         public Render<EntityParasite> createRenderFor(RenderManager manager) {
             return new RenderParasite(manager);
+        }
+    }
+
+    public static class RenderFactoryEntityVespaBrood implements IRenderFactory<EntityVespaBrood> {
+        public final static RenderFactoryEntityVespaBrood INSTANCE = new RenderFactoryEntityVespaBrood();
+
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityVespaBrood> createRenderFor(RenderManager manager) {
+            return new RenderVespaBrood(manager);
         }
     }
 

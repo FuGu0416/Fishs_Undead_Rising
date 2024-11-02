@@ -406,7 +406,7 @@ public class Modconfig {
         AmberLord_Attack = config.get("Amber Lord", "amber lord attack", 5.0D, "Amber Lord strength [1-1000]", 1, 1000).getDouble(5.0D);
 
         LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 12.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
-        LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 2.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.0D);
+        LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 3.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.5D);
         LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 60, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(60);
 
         pSpawnRate_Raven = config.get("Raven", "raven spawn rate", 8, "Set the spawn rate of Raven [0-10000]", 0, 10000).getInt(8);
@@ -563,7 +563,7 @@ public class Modconfig {
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
         Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 60, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(60);
 
-        Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 8.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(8.0D);
+        Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 14.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(14.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);
         Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 60, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(60);
 

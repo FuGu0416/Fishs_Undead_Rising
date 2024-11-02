@@ -37,6 +37,7 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.misc.EntityVespaBrood;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityBomb;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
@@ -108,6 +109,14 @@ public class ModEntities {
                     .name(mod_LavaCow.MODID + "." + "parasite")
                     .tracker(64, 1, false)
                     .egg(0xAAFFEE, 0xBBFFEE)
+                    .build(),
+
+            // Used for the Brood Mother trait
+            EntityEntryBuilder.create()
+                    .entity(EntityVespaBrood.class)
+                    .id(new ResourceLocation(mod_LavaCow.MODID, "vespa_brood"), id++)
+                    .name(mod_LavaCow.MODID + "." + "vespa_brood")
+                    .tracker(64, 1, true)
                     .build(),
 
             EntityEntryBuilder.create()

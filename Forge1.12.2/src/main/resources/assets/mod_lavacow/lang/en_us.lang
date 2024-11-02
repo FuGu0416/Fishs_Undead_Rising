@@ -148,7 +148,7 @@ material.mod_lavacow.scythe_claw.name=Scythe Claw
 material.mod_lavacow.ectoplasm.name=Ectoplasm
 
 modifier.mod_lavacow.broodmother.name=Broodmother
-modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nSpawn a Vespa larva during combat or when a block is harvested.
+modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nYour tool has a chance to spawn a Vespa Brood during combat or when it harvests a block.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger point or 2 while the Hunger effect is active when hitting an entity or harvesting a block. 
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
@@ -207,6 +207,7 @@ tile.mod_lavacow.vespa_carapace_block.name=Vespa Carapace Block
 entity.mod_lavacow.lavacow.name=Moogma
 entity.mod_lavacow.zombiemushroom.name=Mycosis
 entity.mod_lavacow.parasite.name=Parasite
+entity.mod_lavacow.vespa_brood.name=Vespa Brood
 entity.mod_lavacow.foglet.name=Foglet
 entity.mod_lavacow.isnachi.name=Isnachi
 entity.mod_lavacow.imp.name=Flame Imp
