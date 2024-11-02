@@ -565,7 +565,7 @@ public class Modconfig {
 
         Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 8.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(8.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);
-        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 60, "Summoend Amber Scarab lifespan [1-10000]", 1, 10000).getInt(60);
+        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 60, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(60);
 
         pSpawnRate_Enigmoth = config.get("Enigmoth", "enigmoth spawn rate", 1, "Set the spawn rate of Enigmoth [0-10000]", 0, 10000).getInt(1);
         Enigmoth_Health = config.get("Enigmoth", "enigmoth health", 60.0D, "Maximum Enigmoth health [1-1000]", 1, 1000).getDouble(60.0D);

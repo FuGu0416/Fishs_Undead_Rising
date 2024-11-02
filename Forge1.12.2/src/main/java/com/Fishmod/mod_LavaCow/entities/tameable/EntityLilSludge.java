@@ -148,23 +148,21 @@ public class EntityLilSludge extends EntityFishTameable {
      */
     @Override
     public void onLivingUpdate() {
-        if (this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {
-            if (Modconfig.Suicidal_Minion) {
-                if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
-                    this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
-                }
-
-                if (this.world instanceof World) {
-                    for (int j = 0; j < 24; ++j) {
-                        double d0 = this.posX + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-                        double d1 = this.posY + (double) (this.world.rand.nextFloat() * this.height);
-                        double d2 = this.posZ + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
-                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
-                    }
-                }
-
-                this.setDead();
+        if (this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null && Modconfig.Suicidal_Minion) {
+            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
+                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
             }
+
+            if (this.world instanceof World) {
+                for (int j = 0; j < 24; ++j) {
+                    double d0 = this.posX + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                    double d1 = this.posY + (double) (this.world.rand.nextFloat() * this.height);
+                    double d2 = this.posZ + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                    mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+                }
+            }
+
+            this.setDead();
         }
 
         super.onLivingUpdate();
