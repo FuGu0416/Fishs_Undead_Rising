@@ -39,32 +39,32 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAggressive {
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityGhostSwarmer.class, DataSerializers.VARINT);
-	private int limitedLifeTicks;
-	
-	public EntityGhostSwarmer(World worldIn) {
+    private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityGhostSwarmer.class, DataSerializers.VARINT);
+    private int limitedLifeTicks;
+
+    public EntityGhostSwarmer(World worldIn) {
         super(worldIn);
         this.setSize(1.0F, 0.8F);
         this.limitedLifeTicks = -1;
     }
-	
+
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityTameableFloatingMob.AIChargeAttack());
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
     }
 
     protected void applyEntityAI() {
-    	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-    	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-    	this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
-    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
-	  	      return this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
-	   }));
+        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
+        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, true, (p_210136_0_) -> {
+            return this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
+        }));
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
@@ -73,18 +73,18 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Ghost_Swarmer_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
-    
+
     protected void entityInit() {
-    	super.entityInit();
+        super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
-    
+
     public void setLimitedLife(int limitedLifeTicksIn) {
-    	if (limitedLifeTicksIn != 0) {
-    		this.limitedLifeTicks = limitedLifeTicksIn;
-    	}
+        if (limitedLifeTicksIn != 0) {
+            this.limitedLifeTicks = limitedLifeTicksIn;
+        }
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
@@ -93,47 +93,49 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Ghost_Swarmer_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Ghost_Swarmer_Attack);
-    	this.setHealth(this.getMaxHealth());
-        
+        this.setHealth(this.getMaxHealth());
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
-    
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onLivingUpdate() {  	
-    	if(this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {    		
-            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
-                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+    public void onLivingUpdate() {
+        if (this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {
+            if (Modconfig.Suicidal_Minion) {
+                if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
+                    this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+                }
+
+                if (this.world instanceof World) {
+                    for (int j = 0; j < 24; ++j) {
+                        double d0 = this.posX + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                        double d1 = this.posY + (double) (this.world.rand.nextFloat() * this.height);
+                        double d2 = this.posZ + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+                    }
+                }
+
+                this.setDead();
             }
-            
-    		if(this.world instanceof World) {
-    			for (int j = 0; j < 24; ++j) {
-    				double d0 = this.posX + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
-    				double d1 = this.posY + (double)(this.world.rand.nextFloat() * this.height);
-    				double d2 = this.posZ + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
-    				mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
-    			}
-    		}
-    		
-    		this.setDead();
-    	}
-    	
-        if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote) {
-            this.world.spawnParticle(EnumParticleTypes.TOWN_AURA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
         }
-    	
-    	super.onLivingUpdate();
+
+        if (this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote) {
+            this.world.spawnParticle(EnumParticleTypes.TOWN_AURA, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
+        }
+
+        super.onLivingUpdate();
     }
-    
+
     @Override
-	public boolean attackEntityAsMob(Entity entity) {
-    	this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_ATTACK, 1.0F, 1.0F);
-    	return super.attackEntityAsMob(entity);
-	}
-    
+    public boolean attackEntityAsMob(Entity entity) {
+        this.playSound(FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_ATTACK, 1.0F, 1.0F);
+        return super.attackEntityAsMob(entity);
+    }
+
     class AICopyOwnerTarget extends EntityAITarget {
         public AICopyOwnerTarget(EntityCreature creature) {
             super(creature, false);
@@ -150,11 +152,11 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
          * Execute a one shot task or start executing a continuous task
          */
         public void startExecuting() {
-        	EntityGhostSwarmer.this.setAttackTarget(((EntityLiving) EntityGhostSwarmer.this.getOwner()).getAttackTarget());
+            EntityGhostSwarmer.this.setAttackTarget(((EntityLiving) EntityGhostSwarmer.this.getOwner()).getAttackTarget());
             super.startExecuting();
         }
     }
-    
+
     protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_AMBIENT;
     }
@@ -166,12 +168,12 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_ZOMBIEPIRANHA_GHOST_DEATH;
     }
-    
+
     @Override
     public int getTalkInterval() {
-    	return 150;
+        return 150;
     }
-    
+
     public int getSkin() {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
@@ -179,32 +181,32 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     public void setSkin(int skinType) {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
-    
- 	@Override
- 	public void writeEntityToNBT(NBTTagCompound nbt) {
- 		super.writeEntityToNBT(nbt);
- 		nbt.setInteger("Variant", getSkin());
- 	}
 
- 	@Override
- 	public void readEntityFromNBT(NBTTagCompound nbt) {
- 		super.readEntityFromNBT(nbt);
- 		setSkin(nbt.getInteger("Variant"));
- 	}
-    
     @Override
-	public float getEyeHeight() {
-		return this.height * 0.5F;
-	}
-    
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+        nbt.setInteger("Variant", getSkin());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        super.readEntityFromNBT(nbt);
+        setSkin(nbt.getInteger("Variant"));
+    }
+
+    @Override
+    public float getEyeHeight() {
+        return this.height * 0.5F;
+    }
+
     /**
      * Entity won't drop items or experience points if this returns false
      */
     @Override
     protected boolean canDropLoot() {
-       return !this.isTamed();
+        return !this.isTamed();
     }
-    
+
     /**
      * Get this Entity's EnumCreatureAttribute
      */
@@ -212,14 +214,14 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableHandler.GHOST_SWARMER;
     }
-    
-	@Override
+
+    @Override
     public boolean isPreventingPlayerRest(EntityPlayer playerIn) {
         return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }

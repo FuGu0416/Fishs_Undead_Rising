@@ -55,29 +55,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySummonedZombie extends EntityFishTameable implements IAggressive {
-	private boolean isAggressive = false;
-	protected int attackTimer;
-	protected int risingTicks;
-	protected int limitedLifeTicks;
-	protected int fire_aspect;
-	protected int sharpness;
-	protected int knockback;
-	protected int bane_of_arthropods;
-	protected int smite;
-	protected int lifesteal;
-	protected int poisonous;
-	protected int corrosive;
-	protected int unbreaking;
-	protected boolean daytimeBurning;
-	
-	public EntitySummonedZombie(World worldIn) {
+    private boolean isAggressive = false;
+    protected int attackTimer;
+    protected int risingTicks;
+    protected int limitedLifeTicks;
+    protected int fire_aspect;
+    protected int sharpness;
+    protected int knockback;
+    protected int bane_of_arthropods;
+    protected int smite;
+    protected int lifesteal;
+    protected int poisonous;
+    protected int corrosive;
+    protected int unbreaking;
+    protected boolean daytimeBurning;
+
+    public EntitySummonedZombie(World worldIn) {
         super(worldIn);
         this.setSize(1.0F, 1.95F);
         this.limitedLifeTicks = -1;
         this.daytimeBurning = true;
     }
-	
-	@Override
+
+    @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityFishAIBreakDoor(this));
@@ -90,25 +90,25 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     }
 
     protected void applyEntityAI() {
-    	this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-    	this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
-    	this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
-    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 10, true, true, (p_210136_0_) -> {
-    		if (this.getOwner() instanceof EntityLiving && !(this.getOwner() instanceof EntityPlayer)) {
-    			return this.getBrightness() < 0.5F; 
-    		} else {
-	  	      return !(this.getOwner() instanceof EntityPlayer);
-    		}
-	   }));
-    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, 10, true, true, (p_210136_0_) -> {
-	  	      return !(this.getOwner() instanceof EntityPlayer);
-  	   }));
-    	this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, 10, true, true, (p_210136_0_) -> {
-	  	      return !(this.getOwner() instanceof EntityPlayer);
-	   }));
+        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
+        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 10, true, true, (p_210136_0_) -> {
+            if (this.getOwner() instanceof EntityLiving && !(this.getOwner() instanceof EntityPlayer)) {
+                return this.getBrightness() < 0.5F;
+            } else {
+                return !(this.getOwner() instanceof EntityPlayer);
+            }
+        }));
+        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, 10, true, true, (p_210136_0_) -> {
+            return !(this.getOwner() instanceof EntityPlayer);
+        }));
+        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<EntityIronGolem>(this, EntityIronGolem.class, 10, true, true, (p_210136_0_) -> {
+            return !(this.getOwner() instanceof EntityPlayer);
+        }));
     }
-    
+
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -118,113 +118,115 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Unburied_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
-    
+
     @Override
-	public boolean getCanSpawnHere() {
-		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
-	}
-    
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
     public void setLimitedLife(int limitedLifeTicksIn) {
-    	if (limitedLifeTicksIn != 0) {
-    		this.limitedLifeTicks = limitedLifeTicksIn;
-    	}
+        if (limitedLifeTicksIn != 0) {
+            this.limitedLifeTicks = limitedLifeTicksIn;
+        }
     }
-    
+
     public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
-    	return (0.5f * this.sharpness + 0.5f)
-				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
-				+ (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite * 2.5f : 0);
+        return (0.5f * this.sharpness + 0.5f)
+                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods * 2.5f : 0)
+                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite * 2.5f : 0);
     }
-    
+
     public int getLifestealLevel() {
-    	return this.lifesteal;
+        return this.lifesteal;
     }
-    
+
     public boolean isRising() {
-    	return this.risingTicks > 0;
+        return this.risingTicks > 0;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public int getRisingTicks() {
         return this.risingTicks;
     }
-    
+
     public boolean daytimeBurning() {
         return daytimeBurning;
     }
-    
+
     @Override
     protected boolean isCommandable() {
-    	return false;
+        return false;
     }
-    
+
     @Override
     public double getMountedYOffset() {
         return this.isChild() ? 0.0D : -0.25D;
     }
-	
+
     /**
      * Called to update the entity's position/logic.
      */
-	@Override
+    @Override
     public void onLivingUpdate() {
         IBlockState state = world.getBlockState(new BlockPos(this.posX, this.posY, this.posZ).down());
         int blockId = Block.getStateId(state);
-        
-        if (this.isRising()) {        
-	        if (state.isOpaqueCube()) {
-	            if (world.isRemote) {
-	            	for(int i = 0; i < 4; i++)
-	            		this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
-	            }
-	        }
-	        
-	        if (this.ticksExisted % 10 == 0) {
-	            this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
-	        }
-	        
-	        this.motionX = 0;
-	        this.motionY = 0;
-	        this.motionZ = 0;
+
+        if (this.isRising()) {
+            if (state.isOpaqueCube()) {
+                if (world.isRemote) {
+                    for (int i = 0; i < 4; i++)
+                        this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
+                }
+            }
+
+            if (this.ticksExisted % 10 == 0) {
+                this.playSound(SoundEvents.BLOCK_SAND_BREAK, 1, 0.5F);
+            }
+
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
         }
-		
-		super.onLivingUpdate();
+
+        super.onLivingUpdate();
     }
-    
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onUpdate() {	
-    	if (this.attackTimer > 0) {
+    public void onUpdate() {
+        if (this.attackTimer > 0) {
             --this.attackTimer;
         }
-        
+
         if (this.risingTicks > 0) {
             --this.risingTicks;
         }
-        
-        if(this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {        	       	
-            if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
-                this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+
+        if (this.isTamed() && this.limitedLifeTicks >= 0 && this.ticksExisted >= this.limitedLifeTicks || this.limitedLifeTicks >= 0 && this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.isTamed() && !(this.getOwner() instanceof EntityPlayer) || this.isTamed() && this.getOwner() == null) {
+            if (Modconfig.Suicidal_Minion) {
+                if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
+                    this.getOwner().sendMessage(SpawnUtil.TimeupDeathMessage(this));
+                }
+
+                if (this.world instanceof World) {
+                    for (int j = 0; j < 24; ++j) {
+                        double d0 = this.posX + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                        double d1 = this.posY + (double) (this.world.rand.nextFloat() * this.height);
+                        double d2 = this.posZ + (double) (this.world.rand.nextFloat() * this.width * 2.0F) - (double) this.width;
+                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                    }
+                }
+
+                this.setDead();
             }
-            
-    		if(this.world instanceof World) {
-    			for (int j = 0; j < 24; ++j) {
-    				double d0 = this.posX + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
-    				double d1 = this.posY + (double)(this.world.rand.nextFloat() * this.height);
-    				double d2 = this.posZ + (double)(this.world.rand.nextFloat() * this.width * 2.0F) - (double)this.width;
-    				mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
-    			}
-    		}
-    		
-            this.setDead();
         }
-    	
-    	if (!Modconfig.SunScreen_Mode && this.getOwner() == null && this.world.isDaytime() && !this.world.isRemote && this.daytimeBurning()) {
-    		float f = this.getBrightness();
-    		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ))) {
+
+        if (!Modconfig.SunScreen_Mode && this.getOwner() == null && this.world.isDaytime() && !this.world.isRemote && this.daytimeBurning()) {
+            float f = this.getBrightness();
+            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ))) {
                 boolean flag = true;
                 ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
@@ -244,12 +246,12 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
                 if (flag) {
                     this.setFire(8);
                 }
-    		}
-    	}
-    	
-    	super.onUpdate();
+            }
+        }
+
+        super.onUpdate();
     }
-    
+
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
@@ -261,36 +263,35 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         if (super.attackEntityAsMob(entityIn)) {
-        	this.attackTimer = 5;
-	        this.world.setEntityState(this, (byte)4);
-	        this.applyEnchantments(this, entityIn);
-	        
-            if(entityIn instanceof EntityLivingBase) {
-	            if(this.fire_aspect > 0)
-	            	entityIn.setFire((this.fire_aspect * 4) - 1);
-	            
-	            if(this.knockback > 0)
-	            	((EntityLivingBase)entityIn).knockBack(this, (float)this.knockback * 0.5F, (this.posX - entityIn.posX)/this.getDistance(entityIn), (this.posZ - entityIn.posZ)/this.getDistance(entityIn));
-	            
-	            if(this.bane_of_arthropods > 0 && (((EntityLivingBase) entityIn).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
-	                int i = 20 + this.rand.nextInt(10 * bane_of_arthropods);
-	                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
-	            }
-	            
-	            if(this.poisonous > 0)
-	    			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 8 * 20, this.poisonous - 1));
-	            
-	            if(this.corrosive > 0)
-	            	((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20, this.corrosive - 1));
+            this.attackTimer = 5;
+            this.world.setEntityState(this, (byte) 4);
+            this.applyEnchantments(this, entityIn);
+
+            if (entityIn instanceof EntityLivingBase) {
+                if (this.fire_aspect > 0)
+                    entityIn.setFire((this.fire_aspect * 4) - 1);
+
+                if (this.knockback > 0)
+                    ((EntityLivingBase) entityIn).knockBack(this, (float) this.knockback * 0.5F, (this.posX - entityIn.posX) / this.getDistance(entityIn), (this.posZ - entityIn.posZ) / this.getDistance(entityIn));
+
+                if (this.bane_of_arthropods > 0 && (((EntityLivingBase) entityIn).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
+                    int i = 20 + this.rand.nextInt(10 * bane_of_arthropods);
+                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+                }
+
+                if (this.poisonous > 0)
+                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 8 * 20, this.poisonous - 1));
+
+                if (this.corrosive > 0)
+                    ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20, this.corrosive - 1));
             }
-            
+
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
@@ -300,64 +301,64 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Unburied_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Unburied_Attack);
-    	this.setHealth(this.getMaxHealth());
-    	
+        this.setHealth(this.getMaxHealth());
+
         this.setEquipmentBasedOnDifficulty(difficulty);
-        
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
-    
+
     @Override
     protected void updateAITasks() {
         super.updateAITasks();
-        
-        if(this.getAttackTarget() != null) {       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	} else {
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+
+        if (this.getAttackTarget() != null) {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte) 11);
+        } else {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte) 34);
+        }
     }
-    
+
     @Override
     public boolean isAggressive() {
-    	return isAggressive;
+        return isAggressive;
     }
-    
+
     @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
+    public int getAttackTimer() {
+        return this.attackTimer;
+    }
+
+    @Override
+    public void setAttackTimer(int i) {
+        this.attackTimer = i;
+    }
+
     /**
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
     @Override
     public void handleStatusUpdate(byte id) {
-		switch(id) {
-		case 32:
-			this.risingTicks = 20;
-			break;
-		case 4:
-			this.attackTimer = 5;
-			break;
-		case 11:
-			this.isAggressive = true;
-			break;
-		case 34:
-			this.isAggressive = false;
-			break;
-		default:
-			super.handleStatusUpdate(id);
-			break;
-		}
+        switch (id) {
+            case 32:
+                this.risingTicks = 20;
+                break;
+            case 4:
+                this.attackTimer = 5;
+                break;
+            case 11:
+                this.isAggressive = true;
+                break;
+            case 34:
+                this.isAggressive = false;
+                break;
+            default:
+                super.handleStatusUpdate(id);
+                break;
+        }
     }
 
     @Override
@@ -365,12 +366,12 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
         float f = 1.74F;
 
         if (this.isChild()) {
-            f = (float)((double)f - 0.81D);
+            f = (float) ((double) f - 0.81D);
         }
 
         return f;
     }
-    
+
     class AICopyOwnerTarget extends EntityAITarget {
         public AICopyOwnerTarget(EntityCreature creature) {
             super(creature, false);
@@ -391,7 +392,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
             super.startExecuting();
         }
     }
-    
+
     @Override
     protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_ZOMBIEFROZEN_AMBIENT;
@@ -414,7 +415,7 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     protected void playStepSound(BlockPos pos, Block blockIn) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
-    
+
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
@@ -422,24 +423,23 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setLimitedLife(compound.getInteger("LifeTicks"));
-    	this.fire_aspect = compound.getInteger("fire_aspect");
-    	this.sharpness = compound.getInteger("sharpness");
-    	this.knockback = compound.getInteger("knockback");
-    	this.bane_of_arthropods = compound.getInteger("bane_of_arthropods");
-    	this.smite = compound.getInteger("fire_aspect");
-    	this.lifesteal = compound.getInteger("lifesteal");
-    	this.poisonous = compound.getInteger("poisonous");
-    	this.corrosive = compound.getInteger("corrosive");
-    	this.unbreaking = compound.getInteger("unbreaking");   
-    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Unburied_Health + ((float)this.unbreaking * 2.0F));
+        this.fire_aspect = compound.getInteger("fire_aspect");
+        this.sharpness = compound.getInteger("sharpness");
+        this.knockback = compound.getInteger("knockback");
+        this.bane_of_arthropods = compound.getInteger("bane_of_arthropods");
+        this.smite = compound.getInteger("fire_aspect");
+        this.lifesteal = compound.getInteger("lifesteal");
+        this.poisonous = compound.getInteger("poisonous");
+        this.corrosive = compound.getInteger("corrosive");
+        this.unbreaking = compound.getInteger("unbreaking");
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Unburied_Health + ((float) this.unbreaking * 2.0F));
     }
 
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound)
-    {
+    public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("LifeTicks", this.limitedLifeTicks - this.ticksExisted);
         compound.setInteger("fire_aspect", this.fire_aspect);
@@ -460,36 +460,36 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
-    
+
     /**
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
      */
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-       return false;
+        return false;
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-    	return LootTableHandler.UNBURIED;
+        return LootTableHandler.UNBURIED;
     }
-    
+
     /**
      * Entity won't drop items or experience points if this returns false
      */
     @Override
     protected boolean canDropLoot() {
-       return !this.isTamed();
+        return !this.isTamed();
     }
 
-	@Override
-	public EntityAgeable createChild(EntityAgeable ageable) {
-		return null;
-	}
-	
-	@Override
+    @Override
+    public EntityAgeable createChild(EntityAgeable ageable) {
+        return null;
+    }
+
+    @Override
     public boolean isPreventingPlayerRest(EntityPlayer playerIn) {
         return !this.isTamed() && !(this.getOwner() instanceof EntityPlayer);
     }

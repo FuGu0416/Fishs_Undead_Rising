@@ -29,54 +29,56 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityMummy extends EntitySummonedZombie implements IAggressive {
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMummy.class, DataSerializers.VARINT);
-	
+    private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityMummy.class, DataSerializers.VARINT);
+
     public EntityMummy(World worldIn) {
         super(worldIn);
         this.daytimeBurning = false;
     }
-    
+
     @Override
-	protected void entityInit() {
-		super.entityInit();
-		dataManager.register(SKIN_TYPE, Integer.valueOf(0));
-	}
-    
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(SKIN_TYPE, Integer.valueOf(0));
+    }
+
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mummy_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mummy_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
     }
-    
+
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate() {
-    	super.onUpdate();
+        super.onUpdate();
 
-        if(this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
-        	mod_LavaCow.PROXY.spawnCustomParticle("locust_swarm", world, this.posX + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(new Random().nextFloat() * this.height), this.posZ + (double)(new Random().nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F);
+        if (this.ticksExisted % 2 == 0 && this.getEntityWorld().isRemote)
+            mod_LavaCow.PROXY.spawnCustomParticle("locust_swarm", world, this.posX + (double) (new Random().nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (new Random().nextFloat() * this.height), this.posZ + (double) (new Random().nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F);
     }
-    
+
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity) {
         if (super.attackEntityAsMob(par1Entity)) {
-        	this.attackTimer = 5;
-	        this.world.setEntityState(this, (byte)4);
-        	
-        	if (par1Entity instanceof EntityLivingBase) {
-            	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+            this.attackTimer = 5;
+            this.world.setEntityState(this, (byte) 4);
 
-            	((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int)local_difficulty, 1));
+            if (par1Entity instanceof EntityLivingBase) {
+                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+
+                ((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2 * 20 * (int) local_difficulty, 1));
             }
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
@@ -89,28 +91,28 @@ public class EntityMummy extends EntitySummonedZombie implements IAggressive {
 
             if (i == 0) {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
-            }
-            else {
+            } else {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SHOVEL));
             }
         }
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mummy_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mummy_Attack);
-    	this.setHealth(this.getMaxHealth());
-    	
+        this.setHealth(this.getMaxHealth());
+
         this.setEquipmentBasedOnDifficulty(difficulty);
-        
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
-    
+
     public int getSkin() {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
@@ -118,24 +120,26 @@ public class EntityMummy extends EntitySummonedZombie implements IAggressive {
     public void setSkin(int skinType) {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
-	
+
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-		setSkin(compound.getInteger("Variant")); 
-    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mummy_Health + ((float)this.unbreaking * 2.0F));
+        setSkin(compound.getInteger("Variant"));
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mummy_Health + ((float) this.unbreaking * 2.0F));
     }
 
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        compound.setInteger("Variant", getSkin());    
+        compound.setInteger("Variant", getSkin());
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {

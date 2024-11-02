@@ -24,11 +24,11 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
-public class EntityZombieFrozen extends EntitySummonedZombie implements IAggressive {	
+public class EntityZombieFrozen extends EntitySummonedZombie implements IAggressive {
     public EntityZombieFrozen(World worldIn) {
         super(worldIn);
     }
-    
+
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -36,21 +36,22 @@ public class EntityZombieFrozen extends EntitySummonedZombie implements IAggress
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
-    
+
     @Override
-	public boolean getCanSpawnHere() {
-    	return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
-	}
-    
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity) {
         if (super.attackEntityAsMob(par1Entity)) {
-        	this.attackTimer = 5;
-	        this.world.setEntityState(this, (byte)4);
-        	
-        	if (par1Entity instanceof EntityLivingBase) {
-            	float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+            this.attackTimer = 5;
+            this.world.setEntityState(this, (byte) 4);
 
-            	((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int)local_difficulty, 4));
+            if (par1Entity instanceof EntityLivingBase) {
+                float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
+
+                ((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2 * 20 * (int) local_difficulty, 4));
             }
 
             return true;
@@ -58,7 +59,7 @@ public class EntityZombieFrozen extends EntitySummonedZombie implements IAggress
             return false;
         }
     }
-    
+
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
@@ -71,39 +72,39 @@ public class EntityZombieFrozen extends EntitySummonedZombie implements IAggress
 
             if (i == 0) {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
-            }
-            else if (i == 1) {
+            } else if (i == 1) {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
-            }
-            else {
+            } else {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(FishItems.FROZENTHIGH));
             }
         }
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
-    	this.setHealth(this.getMaxHealth());
-    	
+        this.setHealth(this.getMaxHealth());
+
         this.setEquipmentBasedOnDifficulty(difficulty);
-        
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
-    
+
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health + ((float)this.unbreaking * 2.0F));
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health + ((float) this.unbreaking * 2.0F));
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {

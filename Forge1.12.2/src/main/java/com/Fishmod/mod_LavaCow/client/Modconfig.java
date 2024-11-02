@@ -759,7 +759,7 @@ public class Modconfig {
 
         Spawn_AllowList = config.get(Configuration.CATEGORY_GENERAL, "mob spawn allow dimensions", new int[]{DimensionType.OVERWORLD.getId(), DimensionType.NETHER.getId(), DimensionType.THE_END.getId()}, "All mobs are only allowed to spawn in these dimensions' IDs").getIntList();
 
-        Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs die when their summoner dies. [false/true]").getBoolean(true);
+        Suicidal_Minion = config.get(Configuration.CATEGORY_GENERAL, "suicidal minion", true, "Entities summoned by other mobs vanish when their summoner dies or despawns. [false/true]").getBoolean(true);
 
         MootenHeart_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten heart damage reduction", 20, "Set the fire damage reduction of Molten Heart/Soulforged Heart to X% [0-10000]", 0, 10000).getInt(20);
         SoulforgedHeart_Healing = config.get(Configuration.CATEGORY_GENERAL, "soulforged heart healing boost", 25, "Sets the amount of extra health healed with a Soulforged Heart equipped to X% [0-10000]", 0, 10000).getInt(25);
