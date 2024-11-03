@@ -5,9 +5,9 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import slimeknights.tconstruct.library.client.MaterialRenderInfo;
 
 public class TinkersCompatClient {
-	
+
     public static void preInit() {
-    	MaterialRenderInfo MoltenMeatInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("mod_lavacow:tinkers/molten_meat"));
+        MaterialRenderInfo MoltenMeatInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("mod_lavacow:tinkers/molten_meat"));
         TinkersCompat.MOLTEN_MEAT.setRenderInfo(MoltenMeatInfo);
         MaterialRenderInfo VespaCarapaceInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("mod_lavacow:tinkers/vespa_carapace"));
         TinkersCompat.VESPA_CARAPACE.setRenderInfo(VespaCarapaceInfo);

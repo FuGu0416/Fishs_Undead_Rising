@@ -150,9 +150,9 @@ material.mod_lavacow.ectoplasm.name=Ectoplasm
 modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nYour tool has a chance to spawn a Vespa Brood during combat or when it harvests a block.
 modifier.mod_lavacow.famine.name=Famine
-modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nGives Hunger. Restore 1 hunger point or 2 while the Hunger effect is active when hitting an entity or harvesting a block. 
+modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nA single hunger point is restored when hitting a target or when a block is harvested. The amount restored is doubled while the Hunger effect is active.
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
-modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage to non-undead entities and applies Weakness.
+modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage and applies Weakness to non-undead mobs.
 
 #JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=Small Cemetery

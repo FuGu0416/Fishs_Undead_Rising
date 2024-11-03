@@ -405,7 +405,7 @@ public class Modconfig {
         AmberLord_Health = config.get("Amber Lord", "amber lord health", 70.0D, "Maximum Amber Lord health [1-1000]", 1, 1000).getDouble(70.0D);
         AmberLord_Attack = config.get("Amber Lord", "amber lord attack", 5.0D, "Amber Lord strength [1-1000]", 1, 1000).getDouble(5.0D);
 
-        LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 12.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
+        LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 16.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
         LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 3.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.5D);
         LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 60, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(60);
 
