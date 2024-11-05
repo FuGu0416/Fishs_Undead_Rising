@@ -18,8 +18,8 @@ import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 
 public class TraitBroodMother extends AbstractTrait {
-    private static float chance = 0.1F;
-    private static float chance_fight = 0.4F;
+    private static float chance = 0.15F;
+    private static float chance_fight = 0.3F;
 
     public TraitBroodMother() {
         super("mod_lavacow.broodmother", 0x85E214);

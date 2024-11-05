@@ -19,17 +19,19 @@ import slimeknights.tconstruct.tools.TinkerMaterials;
 import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
 
 import slimeknights.tconstruct.tools.TinkerTraits;
-import slimeknights.tconstruct.tools.TinkerModifiers;
+//import slimeknights.tconstruct.tools.TinkerModifiers;
 
 public class TinkersCompat {
     private static final TinkersCompat INSTANCE = new TinkersCompat();
     private static boolean registered = false;
 
+    // Materials are used universally between Tinkers' Construct tools and Construct's Armory armor
     public static final Material MOLTEN_MEAT = new Material("mod_lavacow.moltenbeef", 0xFF542B);
     public static final Material VESPA_CARAPACE = new Material("mod_lavacow.vespa_carapace", 0x85E214);
     public static final Material SCYTHE_CLAW = new Material("mod_lavacow.scythe_claw", 0x625E5E);
     public static final Material ECTOPLASM = new Material("mod_lavacow.ectoplasm", 0x7AF2FF);
 
+    // These traits are for Tinkers' Construct tools and not Construct's Armory armor
     public static final AbstractTrait BROODMOTHER = new TraitBroodMother();
     public static final AbstractTrait FAMINE = new TraitFamine();
     public static final AbstractTrait UNHOLYTOUCH = new TraitUnholyTouch();
@@ -89,7 +91,6 @@ public class TinkersCompat {
                 new ExtraMaterialStats(100),
                 new BowMaterialStats(1.05F, 1.2F, 0.0F));
         SCYTHE_CLAW.addTrait(FAMINE, HEAD);
-        SCYTHE_CLAW.addTrait(TinkerTraits.coldblooded, HEAD);
         SCYTHE_CLAW.addTrait(TinkerTraits.coldblooded);
 
         TinkerMaterials.materials.add(ECTOPLASM);

@@ -27,7 +27,7 @@ public class TraitUnholyTouch extends AbstractTrait {
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
         if (wasHit && target.isEntityAlive() && target.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
-            target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 0, false, true));
+            target.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 5 * 20, 0, false, true));
         }
     }
 }

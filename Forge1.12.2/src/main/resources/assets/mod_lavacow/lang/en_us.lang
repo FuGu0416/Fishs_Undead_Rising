@@ -141,20 +141,30 @@ item.mod_lavacow.holy_water.name=Holy Water
 item.mod_lavacow.basicbomb.name=Basic Grenade
 item.mod_lavacow.foul_hide.name=Foul Hide
 
-#Tconstruct Integration
+# Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
 material.mod_lavacow.scythe_claw.name=Scythe Claw
 material.mod_lavacow.ectoplasm.name=Ectoplasm
 
 modifier.mod_lavacow.broodmother.name=Broodmother
-modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nYour tool has a chance to spawn a Vespa Brood during combat or when it harvests a block.
+modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nYour tool has a chance to spawn a loyal Vespa Brood during combat or when it harvests a block.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nA single hunger point is restored when hitting a target or when a block is harvested. The amount restored is doubled while the Hunger effect is active.
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
 modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage and applies Weakness to non-undead mobs.
 
-#JER Integration
+# Construct's Armory Integration
+modifier.mod_lavacow.broodmother_armor.name=Broodmother
+modifier.mod_lavacow.broodmother_armor.desc=§oEnjoy a Wormy Cuddle§r\nYour armor has a chance to spawn a loyal Vespa Brood when you get hurt.
+modifier.mod_lavacow.feeding_frenzy_armor.name=Feeding Frenzy
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§oVoracious!§r\nDamage dealt to mobs is increased by an additional 25% for each armor piece worn, but Hunger V and Corroded III are active at all times.
+modifier.mod_lavacow.unholy_aura_armor.name=Unholy Aura
+modifier.mod_lavacow.unholy_aura_armor.desc=§oDamn to the livings!§r\nYour armor will provide extra protection from non-undead mobs and will weaken them when you get hurt.
+modifier.mod_lavacow.vespa_ward_armor.name=Vespa's Ward
+modifier.mod_lavacow.vespa_ward_armor.desc=§oNot the Vespas!§r\nGetting hurt deals damage and applies Poison to the attacker at the cost of durability.
+
+# JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=Small Cemetery
 JER.catagory.mod_lavacow.desert_tomb_chest=Desert Tomb
 
