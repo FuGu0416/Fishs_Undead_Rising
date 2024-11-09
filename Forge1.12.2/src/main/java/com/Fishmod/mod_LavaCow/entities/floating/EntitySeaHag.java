@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -22,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -223,6 +225,12 @@ public class EntitySeaHag extends EntityFloatingMob implements IAggressive {
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
         setSkin(nbt.getInteger("Variant"));
+    }
+
+    // Immune to Infested
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.INFESTED && super.isPotionApplicable(effect);
     }
 
     /**

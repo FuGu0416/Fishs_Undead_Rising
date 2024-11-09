@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -274,11 +275,13 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         compound.setInteger("Variant", getSkin());
     }
 
-    // Immune to Poison
+    // Immune to Deathtouched, Corroded, Fear, Wither, Poison, and Slowness
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != ModMobEffects.FEAR
+                && effect.getPotion() != MobEffects.WITHER && effect.getPotion() != MobEffects.POISON && effect.getPotion() != MobEffects.SLOWNESS && super.isPotionApplicable(effect);
     }
+
 
     public class AICastingApell extends EntityAIBase {
         public AICastingApell() {

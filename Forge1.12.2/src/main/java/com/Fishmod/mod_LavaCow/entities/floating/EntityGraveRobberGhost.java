@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -218,10 +219,10 @@ public class EntityGraveRobberGhost extends EntityFloatingMob implements IAggres
         }
     }
 
-    // Immune to Poison
+    // Immune to Poison and Infested
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
+        return effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.INFESTED && super.isPotionApplicable(effect);
     }
 
     @Override

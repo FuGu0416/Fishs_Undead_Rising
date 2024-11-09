@@ -45,33 +45,30 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityEnigmothLarva extends EntityFishTameable {
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityEnigmothLarva.class, DataSerializers.VARINT);
-	protected int spellTicks;
-	
-	public EntityEnigmothLarva(World worldIn)
-    {
+    private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityEnigmothLarva.class, DataSerializers.VARINT);
+    protected int spellTicks;
+
+    public EntityEnigmothLarva(World worldIn) {
         super(worldIn);
         this.setSize(1.0F, 1.0F);
         this.experienceValue = 3;
         this.isImmuneToFire = true;
     }
-	
-	@Override
-	protected void initEntityAI()
-    {
-		this.tasks.addTask(1, new AICastingSpell());
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new AICastingSpell());
         this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(4, new EntityEnigmothLarva.AIUseSpell());
+        this.tasks.addTask(4, new EntityEnigmothLarva.AIUseSpell());
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityEnigmoth.class}));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityEnigmoth.class}));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true).setUnseenMemoryTicks(160));
     }
 
-	@Override
-    protected void applyEntityAttributes()
-    {
+    @Override
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Larva_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
@@ -79,182 +76,177 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
     }
-	
-	@Override
-    protected void entityInit() {
-		super.entityInit();
-		this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
-    }
-	
-	@Override
-	@Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-	    this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Larva_Health);
-	    this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
-	    this.setHealth(this.getMaxHealth());
-	    this.setChild(true);
-	    this.setGrowingAge(-24000);
-	       
-	   	return super.onInitialSpawn(difficulty, livingdata);
-    }
-	
-	@Override
-	   public boolean getCanSpawnHere() {
-	    	// Middle end island check
-	    	if (this.world.provider.getDimension() == 1) {
-	    		// Only spawn above Y of 50 to prevent spawning in end caves added by other mods
-	    		if (!Modconfig.Enigmoth_Larva_Middle_End_Island) {
-	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
-	    		}
-	    		else {
-	    			return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
-	    		}
-	    	}
-		   	
-		       return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
-		   }
-	   
-	   public int getSkin() {
-	        return this.dataManager.get(SKIN_TYPE).intValue();
-	    }
 
-	    public void setSkin(int skinType) {
-	        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
-	    }
-	   
-	   /**
-		 * Will return how many at most can spawn in a chunk at once.
-		*/
-		@Override
-		public int getMaxSpawnedInChunk() {
-			return 1;
-		}
-	
-    public boolean isSpellcasting() {
-    	return this.spellTicks > 0;
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
     }
-    
+
+    @Override
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Larva_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
+        this.setHealth(this.getMaxHealth());
+        this.setChild(true);
+        this.setGrowingAge(-24000);
+
+        return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        // Middle end island check
+        if (this.world.provider.getDimension() == 1) {
+            // Only spawn above Y of 50 to prevent spawning in end caves added by other mods
+            if (!Modconfig.Enigmoth_Larva_Middle_End_Island) {
+                return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+            } else {
+                return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
+            }
+        }
+
+        return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+    }
+
+    public int getSkin() {
+        return this.dataManager.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+        this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+
+    /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnedInChunk() {
+        return 1;
+    }
+
+    public boolean isSpellcasting() {
+        return this.spellTicks > 0;
+    }
+
     public int getSpellTicks() {
         return this.spellTicks;
     }
-	
+
     @Override
-    protected void onGrowingAdult()
-    {
-    	this.setChild(false);
-    	super.onGrowingAdult();
+    protected void onGrowingAdult() {
+        this.setChild(false);
+        super.onGrowingAdult();
     }
-    
-    protected void setChild(boolean isChild) { 	
-    	if(isChild) {
+
+    protected void setChild(boolean isChild) {
+        if (isChild) {
             this.experienceValue = 3;
-	    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Larva_Health);
-	        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
-    	} else {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Enigmoth_Larva_Health);
+            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Enigmoth_Larva_Attack);
+        } else {
             if (!this.world.isRemote) {
-	        	this.playSound(FishItems.ENTITY_PARASITE_WEAVE, 1.0F, 1.0F);
-	        	
-	        	NBTTagCompound compoundnbt = new NBTTagCompound();
-    	        this.writeToNBT(compoundnbt);
-    	         	        
-	    		EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
-	    		pupa.serializeNBT().setTag("EnigmothData", compoundnbt);
-	    		pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-	    		pupa.setSkin(1);
-	    		this.world.spawnEntity(pupa);
-    		}
-            
+                this.playSound(FishItems.ENTITY_PARASITE_WEAVE, 1.0F, 1.0F);
+
+                NBTTagCompound compoundnbt = new NBTTagCompound();
+                this.writeToNBT(compoundnbt);
+
+                EntityVespaCocoon pupa = new EntityVespaCocoon(this.world);
+                pupa.serializeNBT().setTag("EnigmothData", compoundnbt);
+                pupa.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                pupa.setSkin(1);
+                this.world.spawnEntity(pupa);
+            }
+
             this.setDead();
-    	}
+        }
     }
-    
+
     @Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
         super.onUpdate();
-        
+
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
     }
-	
-	@Override
-	public void onLivingUpdate()
-    {
-		
-    	if (this.world.isRemote) {
-			if (this.getSpellTicks() > 0) {
-				for(int i = 0; i < 2 + ((60 - this.getSpellTicks()) / 5); ++i) {
-					this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
-				}				
-			}
-		}
-        
+
+    @Override
+    public void onLivingUpdate() {
+
+        if (this.world.isRemote) {
+            if (this.getSpellTicks() > 0) {
+                for (int i = 0; i < 2 + ((60 - this.getSpellTicks()) / 5); ++i) {
+                    this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
+                }
+            }
+        }
+
         super.onLivingUpdate();
     }
-	
-	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
 
         if (hand == EnumHand.MAIN_HAND && itemstack.isEmpty() && player.isSneaking() && Modconfig.Enigmoth_Larva_Pickup) {
-        	player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-        	
-        	if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.ENIGMOTH_LARVA_ITEM, 1))) {
+            player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+
+            if (!player.inventory.addItemStackToInventory(new ItemStack(FishItems.ENIGMOTH_LARVA_ITEM, 1))) {
                 player.dropItem(new ItemStack(FishItems.ENIGMOTH_LARVA_ITEM, 1), false);
             }
-        	this.setDead();
+            this.setDead();
             return true;
-        }
-        else {
+        } else {
             return super.processInteract(player, hand);
         }
     }
-	
+
     /**
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-		switch(id) {
-		case 10:
-			this.spellTicks = 60;
-			break;
-		default:
-			super.handleStatusUpdate(id);
-			break;
-		}
+        switch (id) {
+            case 10:
+                this.spellTicks = 60;
+                break;
+            default:
+                super.handleStatusUpdate(id);
+                break;
+        }
     }
-    
-	@Override
+
+    @Override
     public float getEyeHeight() {
         return 0.1F;
     }
-	
-	@Override
+
+    @Override
     protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_PARASITE_AMBIENT;
     }
-	
-	@Override
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return FishItems.ENTITY_PARASITE_HURT;
     }
 
-	@Override
+    @Override
     protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_PARASITE_DEATH;
     }
-	
-	@Override
-	protected void playStepSound(BlockPos pos, Block blockIn) {
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn) {
         this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
     }
-	
+
     public SoundEvent getSpellSound() {
         return SoundEvents.ENTITY_ENDERMEN_TELEPORT;
     }
-    
+
     /**
      * Get this Entity's EnumCreatureAttribute
      */
@@ -262,71 +254,65 @@ public class EntityEnigmothLarva extends EntityFishTameable {
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.ARTHROPOD;
     }
-	
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-    	return LootTableHandler.ENIGMOTH_LARVA;
+        return LootTableHandler.ENIGMOTH_LARVA;
     }
-    
+
     @Override
     protected boolean canDropLoot() {
         return true;
     }
-    
-    static class AIParasiteAttack extends EntityAIAttackMelee
-    {
-        public AIParasiteAttack(EntityEnigmothLarva parasite)
-        {
+
+    static class AIParasiteAttack extends EntityAIAttackMelee {
+        public AIParasiteAttack(EntityEnigmothLarva parasite) {
             super(parasite, 1.0D, true);
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
-        public boolean shouldContinueExecuting()
-        {
+        public boolean shouldContinueExecuting() {
             float f = this.attacker.getBrightness();
 
-            if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0)
-            {
-                this.attacker.setAttackTarget((EntityLivingBase)null);
+            if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
+                this.attacker.setAttackTarget((EntityLivingBase) null);
                 return false;
-            }
-            else
-            {
+            } else {
                 return super.shouldContinueExecuting();
             }
         }
 
-        protected double getAttackReachSqr(EntityLivingBase attackTarget)
-        {
-            return (double)(attackTarget.width + 0.1F);
+        protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+            return (double) (attackTarget.width + 0.1F);
         }
     }
-    
-    @Override
-	public EntityEnigmothLarva createChild(EntityAgeable ageable) {
-    	EntityEnigmothLarva entity = new EntityEnigmothLarva(this.world);
-		UUID uuid = this.getOwnerId();
-		if (uuid != null) {
-			entity.setOwnerId(uuid);
-			entity.setTamed(true);
-			entity.setHealth(this.getMaxHealth());
-		}
 
-		return entity;
-	}
-    
-	// Immune to Corroded, Poison, and Void Dust
     @Override
-	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
-	}
-    
+    public EntityEnigmothLarva createChild(EntityAgeable ageable) {
+        EntityEnigmothLarva entity = new EntityEnigmothLarva(this.world);
+        UUID uuid = this.getOwnerId();
+        if (uuid != null) {
+            entity.setOwnerId(uuid);
+            entity.setTamed(true);
+            entity.setHealth(this.getMaxHealth());
+        }
+
+        return entity;
+    }
+
+    // Immune to Corroded, Poison, Infested, and Void Dust
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.VOID_DUST
+                && effect.getPotion() != ModMobEffects.INFESTED && super.isPotionApplicable(effect);
+    }
+
     public class AICastingSpell extends EntityAIBase {
         public AICastingSpell() {
-        	this.setMutexBits(3);
+            this.setMutexBits(3);
         }
 
         /**
@@ -343,7 +329,7 @@ public class EntityEnigmothLarva extends EntityFishTameable {
             super.startExecuting();
             EntityEnigmothLarva.this.navigator.clearPath();
         }
-        
+
         public void resetTask() {
             super.resetTask();
         }
@@ -353,11 +339,11 @@ public class EntityEnigmothLarva extends EntityFishTameable {
          */
         public void updateTask() {
             if (EntityEnigmothLarva.this.getAttackTarget() != null) {
-            	EntityEnigmothLarva.this.getLookHelper().setLookPositionWithEntity(EntityEnigmothLarva.this.getAttackTarget(), (float)EntityEnigmothLarva.this.getHorizontalFaceSpeed(), (float)EntityEnigmothLarva.this.getVerticalFaceSpeed());
+                EntityEnigmothLarva.this.getLookHelper().setLookPositionWithEntity(EntityEnigmothLarva.this.getAttackTarget(), (float) EntityEnigmothLarva.this.getHorizontalFaceSpeed(), (float) EntityEnigmothLarva.this.getVerticalFaceSpeed());
             }
         }
     }
-	
+
     public class AIUseSpell extends EntityAIBase {
         protected int spellWarmup;
         protected int spellCooldown;
@@ -366,12 +352,12 @@ public class EntityEnigmothLarva extends EntityFishTameable {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean shouldExecute() {
-    		if (EntityEnigmothLarva.this.getAttackTarget() == null)
+            if (EntityEnigmothLarva.this.getAttackTarget() == null)
                 return false;
             if (EntityEnigmothLarva.this.isSpellcasting() || EntityEnigmothLarva.this.getDistance(EntityEnigmothLarva.this.getAttackTarget()) > (8.0F))
                 return false;
-            else {                
-            	return EntityEnigmothLarva.this.ticksExisted >= this.spellCooldown;
+            else {
+                return EntityEnigmothLarva.this.ticksExisted >= this.spellCooldown;
             }
         }
 
@@ -390,9 +376,9 @@ public class EntityEnigmothLarva extends EntityFishTameable {
             EntityEnigmothLarva.this.spellTicks = this.getCastingTime();
             this.spellCooldown = EntityEnigmothLarva.this.ticksExisted + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
-            EntityEnigmothLarva.this.world.setEntityState(EntityEnigmothLarva.this, (byte)10);
+            EntityEnigmothLarva.this.world.setEntityState(EntityEnigmothLarva.this, (byte) 10);
             if (soundevent != null) {
-            	EntityEnigmothLarva.this.playSound(soundevent, 1.0F, 1.0F);
+                EntityEnigmothLarva.this.playSound(soundevent, 1.0F, 1.0F);
             }
         }
 
@@ -403,13 +389,13 @@ public class EntityEnigmothLarva extends EntityFishTameable {
             --this.spellWarmup;
 
             if (this.spellWarmup == 0) {
-            	this.castSpell();
+                this.castSpell();
             }
         }
 
         protected void castSpell() {
-        	EntityEnigmothLarva.this.playSound(EntityEnigmothLarva.this.getSpellSound(), 0.175F, 1.0F);
-        	EntityEnigmothLarva.this.setDead();
+            EntityEnigmothLarva.this.playSound(EntityEnigmothLarva.this.getSpellSound(), 0.175F, 1.0F);
+            EntityEnigmothLarva.this.setDead();
         }
 
         protected int getCastWarmupTime() {

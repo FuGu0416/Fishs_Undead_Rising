@@ -459,10 +459,11 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         }
     }
 
-    // Immune to Deathtouched, Corroded, and Wither
+    // Immune to Deathtouched, Corroded, Infested, and Wither
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.FRAGILE_KING && effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != MobEffects.WITHER && super.isPotionApplicable(effect);
+        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.FRAGILE_KING && effect.getPotion() != ModMobEffects.CORRODED
+                && effect.getPotion() != ModMobEffects.INFESTED && effect.getPotion() != MobEffects.WITHER && super.isPotionApplicable(effect);
     }
 
 

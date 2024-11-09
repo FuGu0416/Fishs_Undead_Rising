@@ -231,6 +231,12 @@ public class EntityWraith extends EntityFloatingMob implements IAggressive {
         return FishItems.ENTITY_SKELETONKING_KNOCKBACK;
     }
 
+    // Immune to Infested
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.INFESTED && super.isPotionApplicable(effect);
+    }
+
     /**
      * Get this Entity's EnumCreatureAttribute
      */

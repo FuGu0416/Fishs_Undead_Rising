@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityKingsWrath;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +26,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -131,6 +133,12 @@ public class EntitySoulWorm extends EntityBoneWorm {
                 }
             }
         }
+    }
+
+    // Immune to Infested
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.INFESTED && super.isPotionApplicable(effect);
     }
 
     @Override

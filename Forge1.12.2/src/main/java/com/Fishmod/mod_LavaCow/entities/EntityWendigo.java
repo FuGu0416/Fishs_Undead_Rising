@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
 
@@ -18,6 +19,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -69,7 +71,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        if (!Modconfig.SunScreen_Mode) this.tasks.addTask(1, new EntityAIFleeSun(this, 1.0D));
+        if (!Modconfig.SunScreen_Mode) this.tasks.addTask(1, new EntityAIFleeSun(this, 2.0D));
         this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.25D, false));
@@ -82,11 +84,22 @@ public class EntityWendigo extends EntityMob implements IAggressive {
     protected void applyEntityAI() {
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.targetTasks.addTask(2, new EntityAIPickupMeat<>(this, EntityItem.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        if (this.getAttackTarget() == null && Modconfig.Wendigo_KeepDistance)
+            this.targetTasks.addTask(2, new EntityAIAvoidEntity<Entity>(this, Entity.class, new Predicate<Entity>() {
+                @Override
+                public boolean apply(Entity input) {
+                    return input instanceof EntityPlayer && input.world.isDaytime();
+                }
+            }, 30.0F, 2.0D, 2.0D));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, new Predicate<Entity>() {
+            public boolean apply(@Nullable Entity input) {
+                return !input.world.isDaytime();
+            }
+        }));
         if (Modconfig.Wendigo_AnimalAttack)
             this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<>(this, EntityAgeable.class, 0, true, false, new Predicate<Entity>() {
-                public boolean apply(@Nullable Entity p_apply_1_) {
-                    return !(p_apply_1_ instanceof EntityTameable);
+                public boolean apply(@Nullable Entity input) {
+                    return !(input instanceof EntityTameable) && !input.world.isDaytime();
                 }
             }));
     }
@@ -95,7 +108,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Wendigo_Health);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
@@ -145,12 +158,6 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         }
 
         if (!this.world.isRemote) {
-            if (!Modconfig.SunScreen_Mode && this.world.isDaytime() && !this.world.isRemote) {
-                float f = this.getBrightness();
-                if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)))
-                    this.setFire(8);
-            }
-
             if (target != null && this.getDistanceSq(target) < 4D && this.getAttackTimer() == 10 && this.deathTime <= 0 && this.canEntityBeSeen(target)) {
                 boolean flag = false;
 
@@ -358,6 +365,13 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         return 200;
     }
 
+    // Immune to Deathtouched, Corroded, Fear, Wither, and Slowness
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != ModMobEffects.FEAR
+                && effect.getPotion() != MobEffects.WITHER && effect.getPotion() != MobEffects.SLOWNESS && super.isPotionApplicable(effect);
+    }
+
     @Override
     protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_WENDIGO_AMBIENT;
@@ -392,13 +406,5 @@ public class EntityWendigo extends EntityMob implements IAggressive {
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableHandler.WENDIGO;
-    }
-
-    /**
-     * Entity won't drop items or experience points if this returns false
-     */
-    @Override
-    protected boolean canDropLoot() {
-        return !this.isBurning() || this.recentlyHit != 0;
     }
 }

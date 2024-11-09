@@ -252,6 +252,7 @@ public class Modconfig {
     public static int Parasite_SandSpawn;
     public static boolean Parasite_Plague;
     public static boolean Wendigo_AnimalAttack;
+    public static boolean Wendigo_KeepDistance;
     public static boolean Fission_ModEntity;
     public static String[] Fission_Allowlist = new String[0];
     public static boolean Parasite_Attach;
@@ -387,6 +388,7 @@ public class Modconfig {
 
         pSpawnRate_Wendigo = config.get("Ithaqua", "ithaqua spawn rate", 15, "Set the spawn rate of Ithaqua [0-10000]", 0, 10000).getInt(15);
         Wendigo_AnimalAttack = config.get("Ithaqua", "ithaqua attacks animals", true, "Should Ithaqua attack innocent animals [false/true]").getBoolean(true);
+        Wendigo_KeepDistance = config.get("Ithaqua", "ithaqua keeps distance", true, "Should Ithaqua keep distance from the player during daytime [false/true]").getBoolean(true);
         Wendigo_Health = config.get("Ithaqua", "ithaqua health", 60.0D, "Maximum Ithaqua health [1-1000]", 1, 1000).getDouble(60.0D);
         Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
 

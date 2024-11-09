@@ -9,7 +9,6 @@ import com.google.common.collect.Multimap;
 
 import c4.conarm.lib.traits.AbstractArmorTrait;
 
-import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -40,7 +39,6 @@ public class TraitFeedingFrenzyArmor extends AbstractArmorTrait {
     public void onArmorTick(ItemStack armor, World world, EntityPlayer player) {
         if (player instanceof EntityPlayer && ToolHelper.getCurrentDurability(armor) >= 1) {
             player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 2, 4, true, false));
-            player.addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 2, 2, true, false));
         }
     }
 

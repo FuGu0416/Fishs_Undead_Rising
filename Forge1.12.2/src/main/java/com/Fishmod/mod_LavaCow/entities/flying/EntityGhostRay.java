@@ -8,6 +8,7 @@ import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIPanic;
@@ -147,10 +148,10 @@ public class EntityGhostRay extends EntityFlyingMob {
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
-    // Immune to Void Dust
+    // Immune to Infested and Void Dust
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
+        return effect.getPotion() != ModMobEffects.INFESTED && effect.getPotion() != ModMobEffects.VOID_DUST && super.isPotionApplicable(effect);
     }
 
     public int getSkin() {
@@ -197,6 +198,14 @@ public class EntityGhostRay extends EntityFlyingMob {
 
     protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_GHOSTRAY_DEATH;
+    }
+
+    /**
+     * Get this Entity's EnumCreatureAttribute
+     */
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return EnumCreatureAttribute.UNDEAD;
     }
 
     @Nullable

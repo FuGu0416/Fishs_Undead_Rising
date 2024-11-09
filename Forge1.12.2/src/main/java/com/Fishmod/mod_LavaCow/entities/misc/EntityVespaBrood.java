@@ -4,6 +4,7 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -128,6 +129,12 @@ public class EntityVespaBrood extends EntityFishTameable {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setLimitedLife(compound.getInteger("LifeTicks"));
+    }
+
+    // Immune to Poison, Infested, and Corroded
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != MobEffects.POISON && effect.getPotion() != ModMobEffects.INFESTED && effect.getPotion() != ModMobEffects.CORRODED && super.isPotionApplicable(effect);
     }
 
     @Override
