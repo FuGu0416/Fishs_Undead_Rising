@@ -19,6 +19,7 @@ public class ConstructsArmoryCompat {
     public static final AbstractArmorTrait FEEDING_FRENZY = new TraitFeedingFrenzyArmor();
     public static final AbstractArmorTrait UNHOLY_AURA = new TraitUnholyAuraArmor();
     public static final AbstractArmorTrait VESPA_WARD_ARMOR = new TraitVespaWardArmor();
+    public static final AbstractArmorTrait AMBER_PHARAOH_ARMOR = new TraitAmberPharaohArmor();
 
     public static void register() {
         if (!registered) {
@@ -36,7 +37,7 @@ public class ConstructsArmoryCompat {
                 new CoreMaterialStats(10.0F, 14.0F),
                 new PlatesMaterialStats(1.0F, 6.0F, 1.0F),
                 new TrimMaterialStats(7.0F));
-        ArmorMaterials.addArmorTrait(TinkersCompat.MOLTEN_MEAT, ArmorTraits.aridiculous, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.MOLTEN_MEAT, ArmorTraits.infernal, ArmorMaterialType.CORE);
         ArmorMaterials.addArmorTrait(TinkersCompat.MOLTEN_MEAT, ArmorTraits.superhot, ArmorMaterialType.CORE);
         ArmorMaterials.addArmorTrait(TinkersCompat.MOLTEN_MEAT, ArmorTraits.superhot, ArmorMaterialType.PLATES);
         ArmorMaterials.addArmorTrait(TinkersCompat.MOLTEN_MEAT, ArmorTraits.superhot, ArmorMaterialType.TRIM);
@@ -65,5 +66,31 @@ public class ConstructsArmoryCompat {
         ArmorMaterials.addArmorTrait(TinkersCompat.ECTOPLASM, UNHOLY_AURA, ArmorMaterialType.CORE);
         ArmorMaterials.addArmorTrait(TinkersCompat.ECTOPLASM, UNHOLY_AURA, ArmorMaterialType.PLATES);
         ArmorMaterials.addArmorTrait(TinkersCompat.ECTOPLASM, UNHOLY_AURA, ArmorMaterialType.TRIM);
+
+        TinkerRegistry.addMaterialStats(TinkersCompat.HOLY_SLUDGE,
+                new CoreMaterialStats(19.0F, 15.0F),
+                new PlatesMaterialStats(1.0F, -6.0F, 2.4F),
+                new TrimMaterialStats(11.5F));
+        ArmorMaterials.addArmorTrait(TinkersCompat.HOLY_SLUDGE, ArmorTraits.blessed, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.HOLY_SLUDGE, ArmorTraits.bouncy, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.HOLY_SLUDGE, ArmorTraits.blessed, ArmorMaterialType.PLATES);
+        ArmorMaterials.addArmorTrait(TinkersCompat.HOLY_SLUDGE, ArmorTraits.blessed, ArmorMaterialType.TRIM);
+
+        TinkerRegistry.addMaterialStats(TinkersCompat.ANCIENT_AMBER,
+                new CoreMaterialStats(14.0F, 14.5F),
+                new PlatesMaterialStats(1.05F, 5.0F, 0.0F),
+                new TrimMaterialStats(5.0F));
+        ArmorMaterials.addArmorTrait(TinkersCompat.ANCIENT_AMBER, AMBER_PHARAOH_ARMOR, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.ANCIENT_AMBER, ArmorTraits.aridiculous, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.ANCIENT_AMBER, ArmorTraits.aridiculous, ArmorMaterialType.PLATES);
+        ArmorMaterials.addArmorTrait(TinkersCompat.ANCIENT_AMBER, ArmorTraits.aridiculous, ArmorMaterialType.TRIM);
+
+        TinkerRegistry.addMaterialStats(TinkersCompat.CHITIN,
+                new CoreMaterialStats(12.0F, 14.0F),
+                new PlatesMaterialStats(0.95F, 5.0F, 3.0F),
+                new TrimMaterialStats(5.0F));
+        ArmorMaterials.addArmorTrait(TinkersCompat.CHITIN, ArmorTraits.spiny, ArmorMaterialType.CORE);
+        ArmorMaterials.addArmorTrait(TinkersCompat.CHITIN, ArmorTraits.spiny, ArmorMaterialType.PLATES);
+        ArmorMaterials.addArmorTrait(TinkersCompat.CHITIN, ArmorTraits.spiny, ArmorMaterialType.TRIM);
     }
 }

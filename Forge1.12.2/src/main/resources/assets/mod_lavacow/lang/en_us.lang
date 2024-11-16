@@ -143,26 +143,39 @@ item.mod_lavacow.foul_hide.name=Foul Hide
 
 # Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
+material.mod_lavacow.chitin.name=Chitin
 material.mod_lavacow.vespa_carapace.name=Vespa Carapace
 material.mod_lavacow.scythe_claw.name=Scythe Claw
 material.mod_lavacow.ectoplasm.name=Ectoplasm
+material.mod_lavacow.holy_sludge.name=Holy Sludge
+material.mod_lavacow.ancient_amber.name=Ancient Amber
+material.mod_lavacow.curseweave_fabric.name=Curseweave Fabric
+material.mod_lavacow.hyphae.name=Hyphae
+material.mod_lavacow.mossy_stick.name=Mossy Stick
+material.mod_lavacow.cactus_thorn.name=Cactus Thorn
+material.mod_lavacow.poison_stinger.name=Poison Stinger
+material.mod_lavacow.black_feather.name=Black Feather
 
 modifier.mod_lavacow.broodmother.name=Broodmother
-modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle§r\nYour tool has a chance to spawn a loyal Vespa Brood during combat or when it harvests a block.
+modifier.mod_lavacow.broodmother.desc=§oEnjoy a Wormy Cuddle!§r\nYour tool has a chance to spawn a loyal Vespa Brood during combat or when it harvests a block.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oHorseman of Famine§r\nA single hunger point is restored when hitting a target or when a block is harvested. The amount restored is doubled while the Hunger effect is active.
 modifier.mod_lavacow.unholytouch.name=Unholy Touch
-modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeals bonus damage and applies Weakness to non-undead mobs.
+modifier.mod_lavacow.unholytouch.desc=§oDamn to the livings!§r\nDeal bonus damage and apply Weakness to non-undead mobs.
+modifier.mod_lavacow.amber_pharaoh.name=Amber Pharaoh
+modifier.mod_lavacow.amber_pharaoh.desc=§oStrike through the sands!§r\nYour tool has a chance to spawn a loyal Amber Scarab and provide Regeneration II during combat or when it harvests a block.
 
 # Construct's Armory Integration
 modifier.mod_lavacow.broodmother_armor.name=Broodmother
-modifier.mod_lavacow.broodmother_armor.desc=§oEnjoy a Wormy Cuddle§r\nYour armor has a chance to spawn a loyal Vespa Brood when you get hurt.
+modifier.mod_lavacow.broodmother_armor.desc=§oEnjoy a Wormy Cuddle!§r\nYour armor has a chance to spawn a loyal Vespa Brood when you get hurt.
 modifier.mod_lavacow.feeding_frenzy_armor.name=Feeding Frenzy
 modifier.mod_lavacow.feeding_frenzy_armor.desc=§oVoracious!§r\nDamage dealt to mobs is increased by an additional 25% for each armor piece worn, but Hunger V is active at all times.
 modifier.mod_lavacow.unholy_aura_armor.name=Unholy Aura
 modifier.mod_lavacow.unholy_aura_armor.desc=§oDamn to the livings!§r\nYour armor will provide extra protection from non-undead mobs and will weaken them when you get hurt.
 modifier.mod_lavacow.vespa_ward_armor.name=Vespa's Ward
 modifier.mod_lavacow.vespa_ward_armor.desc=§oNot the Vespas!§r\nGetting hurt deals damage and applies Poison to the attacker at the cost of durability.
+modifier.mod_lavacow.amber_pharaoh_armor.name=Amber Pharaoh
+modifier.mod_lavacow.amber_pharaoh_armor.desc=§oStrike through the sands!§r\nYour armor has a chance to spawn a loyal Amber Scarab and provide Regeneration II when you get hurt.
 
 # JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=Small Cemetery
