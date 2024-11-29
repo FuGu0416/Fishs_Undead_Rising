@@ -66,7 +66,7 @@ public class LavaCowEntity extends CowEntity
 	}	
 		
     public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) {
-        return true;//SpawnUtil.isAllowedDimension(this.dimension);
+        return true;
     }
 	
     private boolean isWalkingonLand()
