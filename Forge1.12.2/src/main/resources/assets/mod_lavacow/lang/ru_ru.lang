@@ -1,4 +1,5 @@
 #Ru-Translated by Doctor Wratch
+#Updated by Astard Grimoire
 #########
 # ITEMS #
 #########
@@ -71,7 +72,7 @@ item.mod_lavacow.halo_necklace.name=Сияющее ожерелье
 item.mod_lavacow.dreamcatcher.name=Ловец снов
 item.mod_lavacow.undertaker_shovel.name=Полночная Скорбь
 item.mod_lavacow.raven_whistle.name=Крик Ворона
-item.mod_lavacow.acidicheart.name=Кислотное Сердце
+item.mod_lavacow.acidicheart.name=Кислотное сердце
 item.mod_lavacow.faminearmor_helmet.name=Шлем вечного голода
 item.mod_lavacow.faminearmor_chestplate.name=Туника вечного голода
 item.mod_lavacow.faminearmor_leggings.name=Штаны вечного голода
@@ -87,6 +88,16 @@ item.mod_lavacow.ghostbomb.name=Призрачная бомба
 item.mod_lavacow.sonicbomb.name=Ослабляющая бомба
 item.mod_lavacow.weta_hoe.name=Мотыга из хитина саранчи
 item.mod_lavacow.bonestew.name=Суп с косточками
+item.mod_lavacow.vespa_shield.name=Щит веспы
+item.mod_lavacow.frozen_dagger.name=Замороженный клинок
+item.mod_lavacow.spectral_dagger.name=Призрачный клинок
+item.mod_lavacow.kings_crown.name=Корона Короля
+item.mod_lavacow.skeletonking_crown.name=Корона Правления
+item.mod_lavacow.emblem_of_king.name=Королевская эмблема
+item.mod_lavacow.beast_claw.name=Чудовищные когти
+item.mod_lavacow.hatred_shard.name=Воспоминания Тысячи Армий
+item.mod_lavacow.curseweave_cloth.name=Проклятая ткань
+item.mod_lavacow.skeletonking_mace.name=Булава Смерти
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=Пламенное мясо
@@ -100,6 +111,27 @@ modifier.mod_lavacow.famine.name=Клинок вечного голода
 modifier.mod_lavacow.famine.desc=Накладывает эффект голода, но восстанавливает 1 ед. сытости при убийстве существ, не являющихся нежитью.
 modifier.mod_lavacow.unholytouch.name=Прикосновение нежити
 modifier.mod_lavacow.unholytouch.desc=§oБудь ты проклят, смертный!§r\nНаносит дополнительный урон всем живым существам и делает их слабыми.
+
+###########
+# BANNERS #
+###########    
+
+item.banner.skeletonking.white=Белый знак Короля
+item.banner.skeletonking.orange=Оранжевый знак Короля
+item.banner.skeletonking.magenta=Пурпурный знак Короля
+item.banner.skeletonking.lightBlue=Светло-синий Знак Короля
+item.banner.skeletonking.yellow=Жёлтый знак Короля
+item.banner.skeletonking.lime=Лаймовый знак Короля
+item.banner.skeletonking.pink=Розовый знак Короля
+item.banner.skeletonking.gray=Серый знак Короля
+item.banner.skeletonking.silver=Светло-серый знак Короля
+item.banner.skeletonking.cyan=Бирюзовый знак Короля
+item.banner.skeletonking.purple=Фиолетовый знак Короля
+item.banner.skeletonking.blue=Синий знак Короля
+item.banner.skeletonking.brown=Коричневый знак Короля
+item.banner.skeletonking.green=Зелёный знак Короля
+item.banner.skeletonking.red=Красный знак Короля
+item.banner.skeletonking.black=Чёрный знак Короля
 
 ##########
 # BLOCKS #
@@ -148,107 +180,116 @@ entity.mod_lavacow.ghostray.name=Вестник кошмаров
 entity.mod_lavacow.banshee.name=Банши
 entity.mod_lavacow.weta.name=Саранча
 entity.mod_lavacow.avaton.name=Полуденница
+entity.mod_lavacow.skeletonking.name=Король Скелетов
+entity.mod_lavacow.mummy.name=Муммия
+entity.mod_lavacow.forsaken.name=Забвенный
 
 ##########
 # Sounds #
 ##########
 
 entity_parasite_ambient=Паразит извивается
-entity_parasite_death=Паразит умирает
-entity_parasite_hurt=Паразиту больно
+entity_parasite_death=Паразит погибает
+entity_parasite_hurt=Паразит ранен
 
 entity_foglet_ambient=Туманник стонет
-entity_foglet_death=Туманник умирает
-entity_foglet_hurt=Туманнику больно
+entity_foglet_death=Туманник погибает
+entity_foglet_hurt=Туманник ранен
 
 entity_undeadswine_attack=Чумная свинья сопит
 entity_undeadswine_charge=Чумная свинья злится
-entity_undeadswine_death=Чумная свинья умирает
-entity_undeadswine_hurt=Чумной свинье больно
+entity_undeadswine_death=Чумная свинья погибает
+entity_undeadswine_hurt=Чумной свинья ранена
 
 entity_salamander_ambient=Саламандра рычит
-entity_salamander_death=Саламандра умирает
-entity_salamander_hurt=Саламандре больно
+entity_salamander_death=Саламандра погибает
+entity_salamander_hurt=Саламандра ранена
 
 entity_zombiepiranha_attack=Мертвая пиранья кусает
 
 entity_wendigo_ambient=Вендиго рычит
 entity_wendigo_attack=Вендиго воет
-entity_wendigo_death=Вендиго умирает
-entity_wendigo_hurt=Вендиго больно
+entity_wendigo_death=Вендиго погибает
+entity_wendigo_hurt=Вендиго ранен
 
 entity_mimic_ambient=Мимик щелкает клешнями
-entity_mimic_death=Мимик умирает
-entity_mimic_hurt=Мимику больно
+entity_mimic_death=Мимик погибает
+entity_mimic_hurt=Мимик ранен
 
 entity_sludgelord_ambient=Чумной монстр воет
 entity_sludgelord_attack=Чумной монстр атакует
-entity_sludgelord_death=Чумной монстр умирает
-entity_sludgelord_hurt=Чумному монстру больно
+entity_sludgelord_death=Чумной монстр погибает
+entity_sludgelord_hurt=Чумной монстр ранен
 
 entity_lilsludge_ambient=Чумной монстр воет
-entity_lilsludge_death=Чумной монстр умирает
-entity_lilsludge_hurt=Чумной монстру больно
+entity_lilsludge_death=Чумной монстр погибает
+entity_lilsludge_hurt=Чумной монстр ранен
 
 entity_raven_ambient=Ворон кричит
 entity_raven_call=Раздается свист
-entity_raven_death=Ворон умирает
-entity_raven_hurt=Ворону больно
+entity_raven_death=Ворон погибает
+entity_raven_hurt=Ворону ранен
 
 entity_ptera_ambient=Птера вопит
-entity_ptera_death=Птера умирает
-entity_ptera_hurt=Птере больно
+entity_ptera_death=Птера панена
+entity_ptera_hurt=Птера ранена
 
-entity_vespa_ambient=Веспа делает "бз-з-з-з-з-з"
-entity_vespa_death=Веспа умирает
-entity_vespa_hurt=Веспе больно
+entity_vespa_ambient=Веспа жужжит
+entity_vespa_death=Веспа погибает
+entity_vespa_hurt=Веспа ранена
 
 entity_scarecrow_ambient=Чучело пытается что-то сказать
-entity_scarecrow_death=Чучело умирает
-entity_scarecrow_hurt=Чучелу больно
+entity_scarecrow_death=Чучело погибает
+entity_scarecrow_hurt=Чучело ранено
 
 entity_zombiepiranha_ambient=Мертвая пиранья щелкает
-entity_zombiepiranha_death=Мертвая пиранья умирает
-entity_zombiepiranha_hurt=Мертвой пиранье больно
+entity_zombiepiranha_death=Мертвая пиранья погибает
+entity_zombiepiranha_hurt=Мертвой пиранье ранена
 
 entity_zombiefrozen_ambient=Обмороженный зомби пытается что-то прорычать
 entity_zombiefrozen_death=Обмороженный зомби окончательно умирает
-entity_zombiefrozen_hurt=Обмороженному зомби больно
+entity_zombiefrozen_hurt=Обмороженный зомби ранен
 
 entity_boneworm_ambient=Некрочервь рычит
 entity_boneworm_attack=Некрочервь атакует
 entity_boneworm_burrow=Некрочервь закапывается
-entity_boneworm_death=Некрочервь умирает
-entity_boneworm_hurt=Некрочервю больно
+entity_boneworm_death=Некрочервь погибает
+entity_boneworm_hurt=Некрочервь ранен
 
 entity_seagull_ambient=Чайка кричит
-entity_seagull_death=Чайка умирает
-entity_seagull_hurt=Чайке больно
+entity_seagull_death=Чайка погибает
+entity_seagull_hurt=Чайка ранена
 
 entity_pingu_ambient=Мертвый пингвин кричит
-entity_pingu_death=Мертвый пингвин умирает
-entity_pingu_hurt=Мертвому пингвину больно
+entity_pingu_death=Мертвый пингвин погибает
+entity_pingu_hurt=Мертвому пингвину ранен
 
 entity_undertaker_ambient=Гробовщик рычит
-entity_undertaker_death=Гробовщик умирает
-entity_undertaker_hurt=Гробовщику больно
+entity_undertaker_death=Гробовщик погибает
+entity_undertaker_hurt=Гробовщик ранен
 
 entity_ghostray_ambient=Вестник кошмаров что-то напевает
-entity_ghostray_death=Вестник кошмаров умирает
-entity_ghostray_hurt=Вестнику кошмаров больно
+entity_ghostray_death=Вестник кошмаров погибает
+entity_ghostray_hurt=Вестник кошмаров ранен
 
 entity_banshee_ambient=Банши плачет
 entity_banshee_attack=Банши злится
-entity_banshee_death=Банш умирает
-entity_banshee_hurt=Банши больно
+entity_banshee_death=Банш погибает
+entity_banshee_hurt=Банши ранена
 
 entity_weta_ambient=Саранча стрекочет
-entity_weta_death=Саранча умирает
-entity_weta_hurt=Саранче больно
+entity_weta_death=Саранча погибает
+entity_weta_hurt=Саранча ранена
 
 entity_avaton_ambient=Полуденница что-то шепчет
 entity_avaton_spell=Полуденница произносит заклинание
-entity_avaton_death=Полуденница умирает
+entity_avaton_death=Полуденница погибает
+
+entity_skeletonking_attack=Король Скелетов атакует
+entity_skeletonking_death=Король Скелетов погибает
+entity_skeletonking_spell_summon=Король Скелетов колдует
+entity_skeletonking_spell_teleport=Король Скелетов телепортируется
+entity_skeletonking_spell_toss=SКороль Скелетов колдует
 
 ############
 # Tooltips #
@@ -257,7 +298,7 @@ entity_avaton_death=Полуденница умирает
 tootip.mod_lavacow.bonesword=Наносит доп. урон в размере %d%% от максимального здоровья цели (Макс. %d).
 tootip.mod_lavacow.canebeef=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит саламандра.
 tootip.mod_lavacow.canepork=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит саранча.
-tootip.mod_lavacow.canerottenmeat=Накладывает эффект регенерации на 8 сек.
+tootip.mod_lavacow.canerottenmeat=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит мимик.
 tootip.mod_lavacow.netherstew=Накладывает случайный эффект на 40 сек.
 tootip.mod_lavacow.goldenheart=Накладывает эффект регенерации и восстанавливает броню 1 ед./сек.
 tootip.mod_lavacow.moltenaxe=Позволяет получать уголь при рубке дерева.
@@ -273,11 +314,18 @@ tootip.mod_lavacow.war=Выбрасывает огненный шар.
 tootip.mod_lavacow.moltenpan=Используется для приготовления всяких вкусных штук.
 tootip.mod_lavacow.intestine=Кажется, содержит что-то внутри. Возможно, что это даже не остатки пищи...
 tootip.mod_lavacow.felarmor=Наносит доп. урон горящим в агонии существам.
-tootip.mod_lavacow.felarmor.l2=Уменьшает получаемый урон.
-tootip.mod_lavacow.swinearmor=Комплект свиной брони (2): Дает иммунитет к отравлению.
-tootip.mod_lavacow.swinearmor.l2=Комплект свиной брони (4): Мертвые свиньи становаятся нейтральны по отношению к вам.
-tootip.mod_lavacow.piranhalauncher=Запустить опасную всеядную рыбку во вражескую цель.
-tootip.mod_lavacow.cursed_bandage=Восстанавливает 2 ед. здоровья питомцу.
+tootip.mod_lavacow.felarmor.l2=Уменьшает получаемый урон от огня.
+tootip.mod_lavacow.swinearmor=Комплект свиной брони (2): Время употребления пищи уменьшается на 20%.
+tootip.mod_lavacow.swinearmor.l2=Комплект свиной брони (4): Убирает негативные эффекты после употребления пищи.
+tootip.mod_lavacow.piranhalauncher=Запускает опасную всеядную рыбку во вражескую цель.
+tootip.mod_lavacow.cursed_bandage.0.desc0=Восстановление
+tootip.mod_lavacow.cursed_bandage.0.desc1=Восстанавливает 2 ед. здоровья питомцу.
+tootip.mod_lavacow.cursed_bandage.1.desc0=Сила
+tootip.mod_lavacow.cursed_bandage.1.desc1=Восстанавливает 2 ед. здоровья питомцу, а так-же накладывает эффект силы на 3 мин.
+tootip.mod_lavacow.cursed_bandage.2.desc0=Усиленное восстановление
+tootip.mod_lavacow.cursed_bandage.2.desc1=Восстанавливает 6 ед. здоровья питомцу.
+tootip.mod_lavacow.cursed_bandage.3.desc0=Сопротивление
+tootip.mod_lavacow.cursed_bandage.3.desc1=Восстанавливает 2 ед. здоровья питомцу, а так-же накладывает эффект сопротивления на 3 мин.
 tootip.mod_lavacow.holy_grenade=При взрыве наносит 300%% урона нежити и поджигает ее на 8 сек.
 tootip.mod_lavacow.halo_necklace=Дает +%d%% к урону против нежити.
 tootip.mod_lavacow.dreamcatcher=Ловит кошмарных созданий из снов.
@@ -285,20 +333,37 @@ tootip.mod_lavacow.undertaker_shovel=Нажмите ПКМ, чтобы приз�
 tootip.mod_lavacow.raven_whistle=Нажмите ПКМ, чтобы приказать ворону лететь к цели.
 tootip.mod_lavacow.faminearmor=Комплект брони вечного голода (2): +2 к урону во время голода
 tootip.mod_lavacow.faminearmor.l2=Комплект брони вечного голода (4): +4 к голоду и +1 к регенерации при убийстве, однако вы больше не можете есть
-tootip.mod_lavacow.ghostjelly=Накормить ворона, чтобы он стал призрачным.
+tootip.mod_lavacow.ghostjelly=Накормите этим ворона, чтобы он стал призрачным.
 tootip.mod_lavacow.ghostbomb=Делает Бум! Все существа, затронутые взрывом, получает эффект левитации на 1 сек.
 tootip.mod_lavacow.sonicbomb=Делает Бум! Все существа, затронутые взрывом, ощущают сильную слабость в течение 4 сек.
 tootip.mod_lavacow.weta_hoe=При вспахивании земли можно собрать соседний урожай в радиусе 1 блока.
 tootip.mod_lavacow.parasite.0=Обычный
 tootip.mod_lavacow.parasite.1=Пустынный
 tootip.mod_lavacow.parasite.2=Тропический
-tootip.mod_lavacow.bonestew=При употреблении: Накладывает сопротивление и поглощение урона на 20 сек.
+tootip.mod_lavacow.bonestew=Накладывает сопротивление и поглощение урона на 20 сек.
+tootip.mod_lavacow.mootenheart=Умньшает урон от огня на %d%%. Может использоваться в зельеварении 
+tootip.mod_lavacow.vespa_shield=Блокируя урон, наносит 2 ед. урна атакующему и накладывает эффект отравления на 6 сек.
+tootip.mod_lavacow.frozen_dagger=Восстанавливает прочность находясь в воде.
+tootip.mod_lavacow.spectral_dagger=Бесконечная прочность и +2 урона всем, кроме нежити
+tootip.mod_lavacow.kings_crown.0=Испачкана
+tootip.mod_lavacow.kings_crown.0.desc0=С кристаллом, о котором многие мечтают
+tootip.mod_lavacow.kings_crown.0.desc1=Наполненным воспоминаниями из прошлого
+tootip.mod_lavacow.kings_crown.0.desc2=Король снова возглавит своё королевство
+tootip.mod_lavacow.kings_crown.1=Проклята
+tootip.mod_lavacow.kings_crown.1.desc0=Королю не нужно тело
+tootip.mod_lavacow.kings_crown.1.desc1=Пока его душа связана с короной
+tootip.mod_lavacow.kings_crown.1.desc2=Даже мёртвые могут быть полны амбиций
+tootip.mod_lavacow.skeletonking_crown=Скелеты будут защищать вас, пока на вас эта корона.
+tootip.mod_lavacow.beast_claw.desc0=Делает рывок вперёд.
+tootip.mod_lavacow.beast_claw.desc1=Когда в обоих руках: Даёт силу и спешку на 3 сек. после рывка
+tootip.mod_lavacow.skeletonking_mace=Накладывает на атакованных сильный эффект прикосновения Смерти на 10сек.
 
 message.mod_lavacow.metamorphosis= эволюционирует!
 command.mod_lavacow.sitting= ждет.
 command.mod_lavacow.following= следует за вами.
 command.mod_lavacow.wandering= бродит.
 command.mod_lavacow.whistle= свистит.
+command.mod_lavacow.whistle_err= цель слишком далеко.
 itemGroup.mod_lavacow_items=Нашествие чумы
 key.mod_lavacow.special=Способность ездового животного
 
@@ -317,8 +382,14 @@ enchantment.mod_lavacow.corrosive.desc=Ослабляет цель, позвол
 # MobEffects #
 ##############
 
-mob_effect.mod_lavacow:corroded=Разлагающийся
+mob_effect.mod_lavacow:corroded=Разложение
+description.mob_effect.mod_lavacow:corroded=Увеличивает получаемый урон.
 mob_effect.mod_lavacow:soiled=Грязный
+description.mob_effect.mod_lavacow:soiled=Не даёт есть и пить.
+mob_effect.mod_lavacow:infested=Заражение
+description.mob_effect.mod_lavacow:infested=Накладывает голод и замедление. После смерти с этим эффетом плявятся нескольео паразитов.
+mob_effect.mod_lavacow:fragile=Прикосновение Смерти
+description.mob_effect.mod_lavacow:fragile=Мнгновенно убивает жертву, когда у неё мало здоровья.
 
 ##############
 # Potions #
@@ -331,7 +402,15 @@ tipped_arrow.effect.mod_lavacow:corrosive=Обработанная зельем 
 potion.effect.mod_lavacow:foulodor=Зелье с неприятным запашком
 splash_potion.effect.mod_lavacow:foulodor=Взрывное зелье с неприятным запашком
 lingering_potion.effect.mod_lavacow:foulodor=Туманное зелье с неприятным запашком
-tipped_arrow.effect.mod_lavacow:foulodor=Обработанная зельем с неприятным запашком
+tipped_arrow.effect.mod_lavacow:foulodor=Стрела обработанная зельем с неприятным запашком 
+potion.effect.mod_lavacow:infestation=Зелье заражения
+splash_potion.effect.mod_lavacow:infestation=Взрывное зелье заражения
+lingering_potion.effect.mod_lavacow:infestation=Туманное зелье заражения
+tipped_arrow.effect.mod_lavacow:infestation=Обработанная зельем заражения стреда
+potion.effect.mod_lavacow:fragile=Зелье прикосновения Смерти
+splash_potion.effect.mod_lavacow:fragile=Взрывное зелье прикосновения Смерти
+lingering_potion.effect.mod_lavacow:fragile=Туманное зелье прикосновения Смерти
+tipped_arrow.effect.mod_lavacow:fragile=Обработанная зельем прикосновения Смерти стрела
 
 ################
 # Advancements #
@@ -391,3 +470,17 @@ advancements.mod_lavacow.kill_weta.title=Месть Флика
 advancements.mod_lavacow.kill_weta.description=Убейте саранчу
 advancements.mod_lavacow.kill_avaton.title=Во тьме ночной, при свете дня
 advancements.mod_lavacow.kill_avaton.description=Убейте полуденницу
+advancements.mod_lavacow.kill_skeletonking.title=Цареубийца
+advancements.mod_lavacow.kill_skeletonking.description=Победите Короля скелетов
+advancements.mod_lavacow.kill_mummy.title=Смерть - это только начало
+advancements.mod_lavacow.kill_mummy.description=Убейте муммию
+advancements.mod_lavacow.kill_forsaken.title=Я помню...
+advancements.mod_lavacow.kill_forsaken.description=Убейте забвенного
+advancements.mod_lavacow.get_hatred_shard.title=В глубинах памяти
+advancements.mod_lavacow.get_hatred_shard.description=Получите воспоминания Тысячи Армий
+
+#################
+# Death Message #
+#################
+
+death.mod_lavacow.timeup=%1$s обратился в пыль
