@@ -58,17 +58,28 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(mod_LavaCow.MODID)
 public class FishItems {
-    public static ArmorMaterial ARMOR_FEL = EnumHelper.addArmorMaterial("armor_fel", "fel", 35, new int[]{3, 6, 8, 3}, 14, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.5F);
-    public static ArmorMaterial ARMOR_SWINE = EnumHelper.addArmorMaterial("armor_swine", "swine", 15, new int[]{2, 5, 5, 2}, 10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
-    public static ArmorMaterial ARMOR_FAMINE = EnumHelper.addArmorMaterial("armor_famine", "famine", 34, new int[]{3, 6, 8, 3}, 12, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2.0F);
-    public static ArmorMaterial ARMOR_CHITIN = EnumHelper.addArmorMaterial("armor_chitin", "chitin", 17, new int[]{2, 6, 6, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.0F);
-    public static ArmorMaterial ARMOR_GHOSTLY = EnumHelper.addArmorMaterial("armor_ghostly", "ghostly", 38, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
-    public static ArmorMaterial ARMOR_SOULFORGED = EnumHelper.addArmorMaterial("armor_soulforged", "soulforged", 40, new int[]{3, 7, 8, 4}, 16, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F);
-    
-    public static ToolMaterial TOOL_MOLTEN = EnumHelper.addToolMaterial("tool_molten", 4, 1872, 8.5F, 3.0F, 14);
-    public static ToolMaterial TOOL_SCEPTER = EnumHelper.addToolMaterial("tool_scepter", 0, 400, 12.0F, 0.0F, 18);
-    public static ToolMaterial TOOL_SOULFORGED = EnumHelper.addToolMaterial("tool_soulforged", 5, 2431, 9.0F, 3.0F, 15);
-    public static ToolMaterial TOOL_SKELETON_KING = EnumHelper.addToolMaterial("tool_skeleton_king", 5, 3384, 12.0F, 3.0F, 25);
+    public static ArmorMaterial ARMOR_CHITIN = EnumHelper.addArmorMaterial("fur_armor_chitin", "chitin", 17, new int[]{2, 6, 6, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 1.0F);
+    public static ArmorMaterial ARMOR_CROWN = EnumHelper.addArmorMaterial("fur_armor_crown", "crown", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
+    public static ArmorMaterial ARMOR_FAMINE = EnumHelper.addArmorMaterial("fur_armor_famine", "famine", 34, new int[]{3, 6, 8, 3}, 12, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2.0F);
+    public static ArmorMaterial ARMOR_FEL = EnumHelper.addArmorMaterial("fur_armor_fel", "fel", 35, new int[]{3, 6, 8, 3}, 14, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.5F);
+    public static ArmorMaterial ARMOR_GHOSTLY = EnumHelper.addArmorMaterial("fur_armor_ghostly", "ghostly", 38, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
+    public static ArmorMaterial ARMOR_SOULFORGED = EnumHelper.addArmorMaterial("fur_armor_soulforged", "soulforged", 40, new int[]{3, 7, 8, 4}, 16, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F);
+    public static ArmorMaterial ARMOR_SWINE = EnumHelper.addArmorMaterial("fur_armor_swine", "swine", 15, new int[]{2, 5, 5, 2}, 10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
+
+    public static ToolMaterial TOOL_BONE = EnumHelper.addToolMaterial("fur_tool_bone", 2, 250, 6.0F, 2.0F, 14);
+    public static ToolMaterial TOOL_FAMINE = EnumHelper.addToolMaterial("fur_tool_famine", 3, 1561, 8.0F, 3.0F, 10);
+    public static ToolMaterial TOOL_FROZEN = EnumHelper.addToolMaterial("fur_tool_frozen", 0, 59, 2.0F, 0.0F, 15);
+    public static ToolMaterial TOOL_MOLTEN = EnumHelper.addToolMaterial("fur_tool_molten", 4, 1872, 8.5F, 3.0F, 14);
+    public static ToolMaterial TOOL_SCEPTER_SCARAB = EnumHelper.addToolMaterial("fur_tool_scepter_scarab", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SCEPTER_SLUDGE = EnumHelper.addToolMaterial("fur_tool_scepter_sludge", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SCEPTER_UNDERTAKER = EnumHelper.addToolMaterial("fur_tool_scepter_undertaker", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SCYTHE = EnumHelper.addToolMaterial("fur_tool_scythe", 3, 1561, 8.0F, 3.0F, 10);
+    public static ToolMaterial TOOL_SOULFORGED = EnumHelper.addToolMaterial("fur_tool_soulforged", 5, 2431, 9.0F, 3.0F, 15);
+    public static ToolMaterial TOOL_SKELETON_KING = EnumHelper.addToolMaterial("fur_tool_skeleton_king", 5, 3384, 12.0F, 3.0F, 25);
+    public static ToolMaterial TOOL_SPECTRAL = EnumHelper.addToolMaterial("fur_tool_spectral", 2, 250, 6.0F, 2.0F, 14);
+    public static ToolMaterial TOOL_TOOTH = EnumHelper.addToolMaterial("fur_tool_tooth", 1, 131, 4.0F, 1.0F, 5);
+    public static ToolMaterial TOOL_VESPA = EnumHelper.addToolMaterial("fur_tool_vespa", 2, 250, 6.0F, 2.0F, 14);
+    public static ToolMaterial TOOL_WETA = EnumHelper.addToolMaterial("fur_tool_weta", 2, 250, 6.0F, 2.0F, 14);
 
     public static final Item NETHERSTEW = new ItemNetherStew("netherstew", 6, 0.6F).setRandPotionEffect(ItemNetherStew.Effect_nethersoup);
     public static final Item CANEBEEF = new ItemFishCustomFood("canebeef", 5, 0.5F, true, 16, true);
@@ -85,7 +96,7 @@ public class FishItems {
     public static final Item MOUSSE = new ItemFishCustomFood("mousse", 3, 0.1F, true, 32, false).setItemUseAction(EnumAction.DRINK);
     public static final Item MEATBALL = new ItemFishCustomFood("meatball", 2, 0.6F, true, 8, false);
     public static final Item SHARPTOOTH = new ItemFishCustom("sharptooth", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item BONESWORD = new ItemFishCustomWeapon("bonesword", ToolMaterial.IRON, 2.0F, -2.4F, Item.getItemFromBlock(Blocks.BONE_BLOCK), EnumRarity.COMMON);
+    public static final Item BONESWORD = new ItemFishCustomWeapon("bonesword", TOOL_BONE, 2.0F, -2.4F, Item.getItemFromBlock(Blocks.BONE_BLOCK), EnumRarity.COMMON);
     public static final Item INTESTINE = new ItemIntestine("intestine");
     public static final Item FROZENTHIGH = new ItemFrozenThigh("frozenthigh", 10, 1.2F, true, 128);
     public static final Item POISONSPORE = new ItemRareLoot("poisonspore", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
@@ -102,13 +113,13 @@ public class FishItems {
     public static final Item GREEN_BACON_AND_EGGS = new ItemNetherStew("green_bacon_and_eggs", 10, 1.2F).setPotionEffect(new PotionEffect(MobEffects.HASTE, 60 * 20, 1), 1.0F).setAlwaysEdible();
     public static final Item PIGBOARHIDE = new ItemFishCustom("pigboarhide", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item SCYTHE_CLAW = new ItemFishCustom("scythe_claw", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item REAPERS_SCYTHE = new ItemFishCustomWeapon("reapers_scythe", ToolMaterial.DIAMOND, 8.0F, -3.1F, FishItems.SCYTHE_CLAW, EnumRarity.RARE);
-    public static final Item FAMINE = new ItemFishCustomWeapon("famine", ToolMaterial.DIAMOND, 0.0F, -1.6F, FishItems.SCYTHE_CLAW, EnumRarity.RARE);
+    public static final Item REAPERS_SCYTHE = new ItemFishCustomWeapon("reapers_scythe", TOOL_SCYTHE, 8.0F, -3.1F, FishItems.SCYTHE_CLAW, EnumRarity.RARE);
+    public static final Item FAMINE = new ItemFishCustomWeapon("famine", TOOL_FAMINE, 0.0F, -1.6F, FishItems.SCYTHE_CLAW, EnumRarity.RARE);
     public static final Item MIMIC_CLAW = new ItemFishCustomFood("mimic_claw", 3, 0.3F, true, 64, false).setPotionEffect(new PotionEffect(MobEffects.NAUSEA, 3 * 20, 0), 0.3F);
     public static final Item MIMIC_CLAW_COOKED = new ItemFishCustomFood("mimic_claw_cooked", 8, 0.8F, true, 32, false);
     public static final Item SILKY_SLUDGE = new ItemFishCustom("silky_sludge", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item MOSSY_STICK = new ItemFishCustom("mossy_stick", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item SLUDGE_WAND = new ItemFishCustomWeapon("sludge_wand", TOOL_SCEPTER, -2.0F, -3.3F, FishItems.SILKY_SLUDGE, EnumRarity.RARE);
+    public static final Item SLUDGE_WAND = new ItemFishCustomWeapon("sludge_wand", TOOL_SCEPTER_SLUDGE, -2.0F, -3.3F, FishItems.SILKY_SLUDGE, EnumRarity.RARE);
     public static final Item BURNTOVIPOSITOR = new ItemRareLoot("burntovipositor", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
     public static final Item WAR = new ItemPiranhaLauncher("war", Items.FIRE_CHARGE, EntityWarSmallFireball.class, FishItems.MOLTENBEEF, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS);
     public static final Item MOLTENPAN = new ItemFishCustomWeapon("moltenpan", TOOL_MOLTEN, 2.5F, -2.8F, FishItems.MOLTENBEEF, EnumRarity.RARE);
@@ -120,8 +131,8 @@ public class FishItems {
     public static final Item PTERA_WING_COOKED = new ItemFishCustomFood("ptera_wing_cooked", 8, 0.8F, true, 32, false);
     public static final Item POISONSTINGER = new ItemFishCustom("poisonstinger", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item VESPA_CARAPACE = new ItemFishCustom("vespa_carapace", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item TOOTH_DAGGER = new ItemFishCustomWeapon("tooth_dagger", ToolMaterial.STONE, 1.0F, -2.0F, FishItems.SHARPTOOTH, EnumRarity.COMMON).setNoDescription();
-    public static final Item VESPA_DAGGER = new ItemFishCustomWeapon("vespa_dagger", ToolMaterial.IRON, 2.0F, -2.0F, FishItems.POISONSTINGER, EnumRarity.COMMON).setNoDescription();
+    public static final Item TOOTH_DAGGER = new ItemFishCustomWeapon("tooth_dagger", TOOL_TOOTH, 1.0F, -2.0F, FishItems.SHARPTOOTH, EnumRarity.COMMON).setNoDescription();
+    public static final Item VESPA_DAGGER = new ItemFishCustomWeapon("vespa_dagger", TOOL_VESPA, 2.0F, -2.0F, FishItems.POISONSTINGER, EnumRarity.COMMON).setNoDescription();
     public static final Item SAUSAGE_ROLL = new ItemFishCustomFood("sausage_roll", 8, 0.8F, true, 32, false);
     public static final Item SWINEARMOR_CHESTPLATE = new ItemSwineArmor("swinearmor_chestplate", 2, EntityEquipmentSlot.CHEST, 0.5F);
     public static final Item SWINEARMOR_LEGGINGS = new ItemSwineArmor("swinearmor_leggings", 2, EntityEquipmentSlot.LEGS, 0.2F);
@@ -155,15 +166,15 @@ public class FishItems {
     public static final Item WETA_HOE = new ItemWetaHoe("weta_hoe");
     public static final Item BONE_STEW = new ItemNetherStew("bonestew", 6, 0.6F).setMultiPotionEffect(ItemNetherStew.Effect_bonestew).setAlwaysEdible();
     public static final Item VESPA_SHIELD = new ItemVespaShield("vespa_shield");
-    public static final Item FROZEN_DAGGER = new ItemFishCustomWeapon("frozen_dagger", ToolMaterial.WOOD, 1.0F, -2.0F, FishItems.SHATTERED_ICE, EnumRarity.COMMON);
-    public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", ToolMaterial.IRON, -1.0F, -1.6F, FishItems.ECTOPLASM_INGOT, EnumRarity.COMMON).setMaxDamage(0);
+    public static final Item FROZEN_DAGGER = new ItemFishCustomWeapon("frozen_dagger", TOOL_FROZEN, 1.0F, -2.0F, FishItems.SHATTERED_ICE, EnumRarity.COMMON);
+    public static final Item SPECTRAL_DAGGER = new ItemFishCustomWeapon("spectral_dagger", TOOL_SPECTRAL, -1.0F, -1.6F, FishItems.ECTOPLASM_INGOT, EnumRarity.COMMON).setMaxDamage(0);
     public static final Item HATRED_SHARD = new ItemFishCustom("hatred_shard", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item KINGS_CROWN = new ItemCrown("kings_crown", mod_LavaCow.TAB_ITEMS, false);
     public static final Item SKELETONKING_CROWN = new ItemSkeletonKingCrown("skeletonking_crown", 4, EntityEquipmentSlot.HEAD).setCreativeTab(mod_LavaCow.TAB_ITEMS);
     public static final Item EMBLEM_OF_KING = new ItemRareLoot("emblem_of_king", mod_LavaCow.TAB_ITEMS, EnumRarity.UNCOMMON, false);
-    public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", ToolMaterial.DIAMOND, 3.0F, -2.0F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);
+    public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", TOOL_FAMINE, 3.0F, -2.0F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);
     public static final Item CURSEWEAVE_CLOTH = new ItemFishCustom("curseweave_cloth", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", TOOL_SCEPTER, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE).setMaxDamage(200);
+    public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", TOOL_SCEPTER_UNDERTAKER, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE).setMaxDamage(200);
     public static final Item SKELETONKING_MACE = new ItemFishCustomWeapon("skeletonking_mace", TOOL_SKELETON_KING, 12.0F, -3.2F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item IMP_HORN = new ItemFishCustom("imp_horn", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item CHITIN_HELMET = new ItemChitinArmor("chitinarmor_helmet", 2, EntityEquipmentSlot.HEAD);
@@ -193,7 +204,7 @@ public class FishItems {
     public static final Item FORSAKEN_STAFF = new ItemPiranhaLauncher("forsaken_staff", EntityDeathCoil.class, FishItems.HATRED_SHARD, EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(333);
     public static final Item SINISTER_WHETSTONE = new ItemSinisterWhetstone("sinister_whetstone");
     public static final Item ANCIENT_AMBER = new ItemFishCustom("ancient_amber", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE).setMaxDamage(500);
+    public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER_SCARAB, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE).setMaxDamage(500);
     public static final Item DISEASED_WHEAT = new ItemFishCustom("diseased_wheat", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item DISEASED_BREAD = new ItemFishCustomFood("diseased_bread", 7, 0.6F, false, 32, true).setRandPotionEffect(ItemFishCustomFood.Effect_diseasedbread).setAlwaysEdible();
     public static final Item PHEROMONE_GLAND = new ItemFishCustomFood("pheromone_gland", 1, 0.1F, false, 32, true);

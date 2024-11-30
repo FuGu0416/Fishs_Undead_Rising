@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:cactus_fruit"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.tame_cactoid.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.tame_cactoid.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:cactus_fruit"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_cactyrant",
-    "criteria": {
-        "tamed_raven": {
-            "trigger": "minecraft:tame_animal",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:cactoid"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.tame_cactoid.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.tame_cactoid.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_cactyrant",
+  "criteria": {
+    "tamed_cactoid": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:cactoid"
+        }
+      }
+    }
+  }
 }

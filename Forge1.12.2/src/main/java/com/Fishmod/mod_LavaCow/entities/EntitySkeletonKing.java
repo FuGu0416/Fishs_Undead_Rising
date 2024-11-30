@@ -35,7 +35,6 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -224,7 +223,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
                     if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer) entitylivingbase).disableShield(true);
 
                     if (this.isAngered()) {
-                        entitylivingbase.knockBack(entitylivingbase, 3.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F))));
+                        entitylivingbase.knockBack(entitylivingbase, 4.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F))));
                         this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 0.0D, 0.0D, 0.0D);
                         this.playSound(FishItems.ENTITY_SKELETONKING_KNOCKBACK, 2.0F, 1.0F);
 
@@ -233,7 +232,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
                             this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, entitylivingbase.posX + (double) (this.rand.nextFloat() * entitylivingbase.width * 2.0F) - (double) entitylivingbase.width, entitylivingbase.posY + (double) (this.rand.nextFloat() * entitylivingbase.height), entitylivingbase.posZ + (double) (this.rand.nextFloat() * entitylivingbase.width * 2.0F) - (double) entitylivingbase.width, d3, 0.0D, d3);
                         }
                     } else {
-                        entitylivingbase.knockBack(entitylivingbase, 0.4F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                        entitylivingbase.knockBack(entitylivingbase, 2.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F))));
                     }
                 }
             }
@@ -459,11 +458,10 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         }
     }
 
-    // Immune to Deathtouched, Corroded, Infested, and Wither
+    // Immune to all effects like the Ender Dragon and the Wither
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.FRAGILE_KING && effect.getPotion() != ModMobEffects.CORRODED
-                && effect.getPotion() != ModMobEffects.INFESTED && effect.getPotion() != MobEffects.WITHER && super.isPotionApplicable(effect);
+        return false;
     }
 
 
@@ -519,7 +517,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         }
 
         protected void castSpell() {
-            this.fangCount = ((isAngered()) ? 24 : 16);
+            this.fangCount = ((isAngered()) ? 40 : 24);
             this.fangTime = ((isAngered()) ? 10 : 15);
 
             for (int i = 0; i < fangCount; ++i) {

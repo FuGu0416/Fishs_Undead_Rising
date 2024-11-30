@@ -131,6 +131,11 @@ public class EntityVespaBrood extends EntityFishTameable {
         this.setLimitedLife(compound.getInteger("LifeTicks"));
     }
 
+    @Override
+    protected boolean isCommandable() {
+        return false;
+    }
+
     // Immune to Poison, Infested, and Corroded
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {

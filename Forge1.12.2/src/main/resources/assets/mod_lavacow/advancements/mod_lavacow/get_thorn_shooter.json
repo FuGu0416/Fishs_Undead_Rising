@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:thorn_shooter"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_thorn_shooter.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_thorn_shooter.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:thorn_shooter"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_cactyrant",
-    "criteria": {
-        "get_fissionpotion": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:thorn_shooter"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.get_thorn_shooter.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_thorn_shooter.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_cactyrant",
+  "criteria": {
+    "get_thorn_shooter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:thorn_shooter"
+          }
+        ]
+      }
+    }
+  }
 }

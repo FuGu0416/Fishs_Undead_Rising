@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:piranhalauncher"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_piranha_launcher.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_piranha_launcher.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:piranhalauncher"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_zombiepiranha",
-    "criteria": {
-        "get_fissionpotion": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:piranhalauncher"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.get_piranha_launcher.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_piranha_launcher.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_zombiepiranha",
+  "criteria": {
+    "get_piranha_launcher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:piranhalauncher"
+          }
+        ]
+      }
+    }
+  }
 }

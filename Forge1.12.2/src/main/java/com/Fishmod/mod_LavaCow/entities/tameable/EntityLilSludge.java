@@ -46,6 +46,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -65,6 +66,7 @@ public class EntityLilSludge extends EntityFishTameable {
     private int poisonous;
     private int corrosive;
     private int unbreaking;
+    private boolean isSmoking = false;
 
     public EntityLilSludge(World worldIn) {
         super(worldIn);
@@ -72,20 +74,22 @@ public class EntityLilSludge extends EntityFishTameable {
         this.limitedLifeTicks = -1;
     }
 
+    @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(this.rand.nextInt(2)));
+        this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
 
+    @Override
     protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(8, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(10, new EntityAILookIdle(this));
         this.applyEntityAI();
     }
 
@@ -96,13 +100,13 @@ public class EntityLilSludge extends EntityFishTameable {
         this.targetTasks.addTask(4, new AICopyOwnerTarget(this));
     }
 
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.LilSludge_Health);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.LilSludge_Attack);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
     public void setLimitedLife(int limitedLifeTicksIn) {
@@ -112,9 +116,9 @@ public class EntityLilSludge extends EntityFishTameable {
     }
 
     public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
-        return (0.5f * this.sharpness + 0.5f)
-                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods * 2.5f : 0)
-                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite * 2.5f : 0);
+        return (0.5F * this.sharpness + 0.5F)
+                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods * 2.5F : 0)
+                + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite * 2.5F : 0);
     }
 
     public int getLifestealLevel() {
@@ -165,16 +169,24 @@ public class EntityLilSludge extends EntityFishTameable {
             this.setDead();
         }
 
+        if (this.isSmoking) {
+            for (int j = 0; j < 8; ++j) {
+                float f = this.rand.nextFloat() * ((float) Math.PI * 2F);
+                float f1 = this.height * 0.4F + this.rand.nextFloat() * 0.5F;
+                float f2 = MathHelper.sin(f) * f1;
+                float f3 = MathHelper.cos(f) * f1;
+                World world = this.world;
+                EnumParticleTypes enumparticletypes = EnumParticleTypes.SMOKE_LARGE;
+                double d0 = this.posX + (double) f2;
+                double d1 = this.posZ + (double) f3;
+                world.spawnParticle(enumparticletypes, d0, this.getCollisionBoundingBox().minY + (double) f1, d1, 0.0D, 0.05D, 0.0D);
+            }
+        }
+
         super.onLivingUpdate();
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        return super.attackEntityFrom(source, amount);
-    }
-
+    @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
 
@@ -208,12 +220,17 @@ public class EntityLilSludge extends EntityFishTameable {
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
+    @Override
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
-        return livingdata;
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.LilSludge_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.LilSludge_Attack);
+        this.setHealth(this.getMaxHealth());
+
+        return super.onInitialSpawn(difficulty, livingdata);
     }
 
+    @Override
     protected void updateAITasks() {
         super.updateAITasks();
         if (this.getAttackTarget() != null) {
@@ -233,6 +250,7 @@ public class EntityLilSludge extends EntityFishTameable {
     /**
      * Handler for {@link World#setEntityState}
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 11) {
@@ -247,10 +265,12 @@ public class EntityLilSludge extends EntityFishTameable {
     /**
      * If Animal, checks if the age timer is negative
      */
+    @Override
     public boolean isChild() {
         return true;
     }
 
+    @Override
     public float getEyeHeight() {
         return 0.6F;
     }
@@ -295,6 +315,7 @@ public class EntityLilSludge extends EntityFishTameable {
         return SoundEvents.ENTITY_CHICKEN_STEP;
     }
 
+    @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
@@ -302,6 +323,7 @@ public class EntityLilSludge extends EntityFishTameable {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setLimitedLife(compound.getInteger("LifeTicks"));
@@ -321,6 +343,7 @@ public class EntityLilSludge extends EntityFishTameable {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("LifeTicks", this.limitedLifeTicks - this.ticksExisted);
@@ -339,6 +362,7 @@ public class EntityLilSludge extends EntityFishTameable {
     /**
      * Get this Entity's EnumCreatureAttribute
      */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }

@@ -516,7 +516,7 @@ public class Modconfig {
         SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
         SkeletonKing_Ability_Sand_Tomb_Cooldown = config.get("Skeleton King", "skeleton king sand tomb cooldown", 10, "Set the cooldown of Sand Tomb [0-100]", 0, 100).getInt(10);
         SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
-        SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 80, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);
+        SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 60, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);
         SkeletonKing_Ability_Summon_Cooldown = config.get("Skeleton King", "skeleton king summon cooldown", 16, "Set the cooldown of summoning Unburied [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Summon_Num = config.get("Skeleton King", "skeleton king summon number", 6, "Set the number of Forsaken summoned per cast [0-100]", 0, 100).getInt(6);
         SkeletonKing_Ability_Summon_Max = config.get("Skeleton King", "skeleton king summon max", 24, "Set the max number of Forsaken summoned [0-100]", 0, 100).getInt(24);

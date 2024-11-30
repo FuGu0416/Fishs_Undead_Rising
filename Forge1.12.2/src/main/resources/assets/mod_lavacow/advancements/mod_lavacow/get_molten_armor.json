@@ -1,64 +1,64 @@
 {
-    "display": {
-        "icon": {
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:felarmor_helmet"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.get_molten_armor.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_molten_armor.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/get_molten_alloy",
+  "criteria": {
+    "felarmor_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
             "item": "mod_lavacow:felarmor_helmet"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_molten_armor.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_molten_armor.description"
-        }
-    },
-    "parent": "mod_lavacow:mod_lavacow/get_molten_alloy",
-    "criteria": {
-        "felarmor_helmet": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:felarmor_helmet"
-                    }
-                ]
-            }
-        },
-        "felarmor_chestplate": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:felarmor_chestplate"
-                    }
-                ]
-            }
-        },
-        "felarmor_leggings": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:felarmor_leggings"
-                    }
-                ]
-            }
-        },
-        "felarmor_boots": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:felarmor_boots"
-                    }
-                ]
-            }
-        }
-    },
-	"requirements": [
-        [
-            "felarmor_helmet",
-            "felarmor_chestplate",
-            "felarmor_leggings",
-            "felarmor_boots"
+          }
         ]
+      }
+    },
+    "felarmor_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:felarmor_chestplate"
+          }
+        ]
+      }
+    },
+    "felarmor_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:felarmor_leggings"
+          }
+        ]
+      }
+    },
+    "felarmor_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:felarmor_boots"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "felarmor_helmet",
+      "felarmor_chestplate",
+      "felarmor_leggings",
+      "felarmor_boots"
     ]
+  ]
 }

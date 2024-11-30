@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:parasite_item"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.kill_parasite.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.kill_parasite.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:parasite_item"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
-    "criteria": {
-        "kill_parasite": {
-            "trigger": "minecraft:player_killed_entity",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:parasite"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_parasite.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_parasite.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_parasite": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:parasite"
+        }
+      }
+    }
+  }
 }

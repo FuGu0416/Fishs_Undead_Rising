@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:hatred_shard"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.kill_forsaken.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.kill_forsaken.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:hatred_shard"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
-    "criteria": {
-        "kill_piranha": {
-            "trigger": "minecraft:player_killed_entity",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:forsaken"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_forsaken.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_forsaken.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_forsaken": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:forsaken"
+        }
+      }
+    }
+  }
 }

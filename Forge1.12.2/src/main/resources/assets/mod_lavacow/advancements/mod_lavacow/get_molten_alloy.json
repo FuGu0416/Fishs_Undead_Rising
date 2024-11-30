@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:molten_alloy"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_molten_alloy.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_molten_alloy.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:molten_alloy"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_salamander",
-    "criteria": {
-        "get_molten_alloy": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:molten_alloy"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.get_molten_alloy.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_molten_alloy.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_salamander",
+  "criteria": {
+    "get_molten_alloy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:molten_alloy"
+          }
+        ]
+      }
+    }
+  }
 }

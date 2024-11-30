@@ -41,7 +41,7 @@ public class ItemSkeletonKingCrown extends ItemArmor {
     private ModelCrown modelCrown;
 
     public ItemSkeletonKingCrown(String registryName, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn) {
-        super(ArmorMaterial.DIAMOND, renderIndexIn, equipmentSlotIn);
+        super(FishItems.ARMOR_CROWN, renderIndexIn, equipmentSlotIn);
         setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
     }

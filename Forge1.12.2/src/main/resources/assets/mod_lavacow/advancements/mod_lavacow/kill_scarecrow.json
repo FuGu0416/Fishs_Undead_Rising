@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:scarecrowhead_common"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.kill_scarecrow.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.kill_scarecrow.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:scarecrowhead_common"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
-    "criteria": {
-        "kill_scarecrow": {
-            "trigger": "minecraft:player_killed_entity",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:scarecrow"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_scarecrow.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_scarecrow.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_scarecrow": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:scarecrow"
+        }
+      }
+    }
+  }
 }

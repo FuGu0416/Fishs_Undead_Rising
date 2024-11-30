@@ -1,43 +1,43 @@
 {
   "display": {
     "icon": {
-      "item": "mod_lavacow:moltenhammer"
+      "item": "mod_lavacow:soulforged_hammer"
     },
     "title": {
-      "translate": "advancements.mod_lavacow.get_molten_tool.title"
+      "translate": "advancements.mod_lavacow.get_soulforged_tool.title"
     },
     "description": {
-      "translate": "advancements.mod_lavacow.get_molten_tool.description"
+      "translate": "advancements.mod_lavacow.get_soulforged_tool.description"
     }
   },
-  "parent": "mod_lavacow:mod_lavacow/get_molten_alloy",
+  "parent": "mod_lavacow:mod_lavacow/get_molten_tool",
   "criteria": {
-    "moltenhammer": {
+    "soulforged_hammer": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mod_lavacow:moltenhammer"
+            "item": "mod_lavacow:soulforged_hammer"
           }
         ]
       }
     },
-    "moltenaxe": {
+    "soulforged_axe": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mod_lavacow:moltenaxe"
+            "item": "mod_lavacow:soulforged_axe"
           }
         ]
       }
     },
-    "moltenpan": {
+    "soulforged_pan": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mod_lavacow:moltenpan"
+            "item": "mod_lavacow:soulforged_pan"
           }
         ]
       }
@@ -45,9 +45,9 @@
   },
   "requirements": [
     [
-      "moltenhammer",
-      "moltenaxe",
-      "moltenpan"
+      "soulforged_hammer",
+      "soulforged_axe",
+      "soulforged_pan"
     ]
   ]
 }

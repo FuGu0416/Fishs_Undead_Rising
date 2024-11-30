@@ -1,22 +1,22 @@
 {
   "display": {
     "icon": {
-      "item": "mod_lavacow:banshee_vocal_cord"
+      "item": "minecraft:iron_shovel"
     },
     "title": {
-      "translate": "advancements.mod_lavacow.kill_banshee.title"
+      "translate": "advancements.mod_lavacow.kill_grave_robber.title"
     },
     "description": {
-      "translate": "advancements.mod_lavacow.kill_banshee.description"
+      "translate": "advancements.mod_lavacow.kill_grave_robber.description"
     }
   },
   "parent": "mod_lavacow:mod_lavacow/root",
   "criteria": {
-    "kill_banshee": {
+    "kill_grave_robber": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "mod_lavacow:banshee"
+          "type": "mod_lavacow:grave_robber"
         }
       }
     }

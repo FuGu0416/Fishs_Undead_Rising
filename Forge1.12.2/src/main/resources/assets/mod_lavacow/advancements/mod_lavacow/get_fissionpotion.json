@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:fissionpotion"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_fissionpotion.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_fissionpotion.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:fissionpotion"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
-    "criteria": {
-        "get_fissionpotion": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:fissionpotion"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.get_fissionpotion.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_fissionpotion.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "get_fissionpotion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:fissionpotion"
+          }
+        ]
+      }
+    }
+  }
 }
