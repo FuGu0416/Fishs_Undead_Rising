@@ -561,7 +561,7 @@ public class Modconfig {
         Wraith_Attack = config.get("Revenant", "revenant attack", 5.0D, "Revenant strength [1-1000]", 1, 1000).getDouble(5.0D);
         Wraith_Ability_Radius = config.get("Revenant", "revenant scream radius", 8.0D, "Set the effect radius of Revenant scream [1-1000]", 1, 1000).getDouble(8.0D);
 
-        pSpawnRate_Ghost_Swarmer = config.get("Ghost Swarmer", "ghost swarmer spawn rate", 0, "Set the spawn rate of Ghost Swarmer [0-100]", 0, 100).getInt(0);
+        pSpawnRate_Ghost_Swarmer = config.get("Ghost Swarmer", "ghost swarmer spawn rate", 10, "Set the spawn rate of Ghost Swarmer [0-100]", 0, 100).getInt(0);
         Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 8.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(8.0D);
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
         Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 60, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(60);
@@ -741,7 +741,8 @@ public class Modconfig {
                         "mod_lavacow:banshee,20,1,1",
                         "mod_lavacow:avaton,20,1,1",
                         "mod_lavacow:wraith,20,1,1",
-                        "mod_lavacow:sea_hag,20,1,1"
+                        "mod_lavacow:sea_hag,20,1,1",
+                        "mod_lavacow:graverobberghost,20,1,1"
                 },
                 "Customize the Spawn list for the Dreamcatcher. Ex. \"mod_lavacow:foglet,40,1,2\" or \"mod_lavacow:vespa,20,1,1\"");
 

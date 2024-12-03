@@ -618,6 +618,7 @@ public class ModEntities {
         tweakEntitySpawn(EntityGraveRobber.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Grave_Robber, 1, 1, BiomeDictionary.Type.SPOOKY);
         tweakEntitySpawn(EntityGraveRobberGhost.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Grave_Robber_Ghost, 1, 1, BiomeDictionary.Type.SPOOKY);
         tweakEntitySpawn(EntityWraith.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Wraith, 1, 2, BiomeDictionary.Type.FOREST);
+        tweakEntitySpawn(EntityGhostSwarmer.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Ghost_Swarmer, 1, 2, BiomeDictionary.Type.DRY);
         tweakEntitySpawn(EntityEnigmoth.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth, 1, 2, BiomeDictionary.Type.END);
         tweakEntitySpawn(EntityEnigmothLarva.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Enigmoth_Larva, 1, 2, BiomeDictionary.Type.END);
 

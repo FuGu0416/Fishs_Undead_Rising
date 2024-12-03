@@ -88,6 +88,14 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
     }
 
     /**
+     * Will return how many at most can spawn in a chunk at once.
+     */
+    @Override
+    public int getMaxSpawnedInChunk() {
+        return 2;
+    }
+
+    /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
@@ -193,7 +201,7 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
         super.readEntityFromNBT(nbt);
         setSkin(nbt.getInteger("Variant"));
     }
-    
+
     // Immune to Infested and Void Dust
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
