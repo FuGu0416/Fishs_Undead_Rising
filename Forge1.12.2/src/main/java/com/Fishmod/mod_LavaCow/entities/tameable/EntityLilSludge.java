@@ -231,6 +231,11 @@ public class EntityLilSludge extends EntityFishTameable {
     }
 
     @Override
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
+    @Override
     protected void updateAITasks() {
         super.updateAITasks();
         if (this.getAttackTarget() != null) {
