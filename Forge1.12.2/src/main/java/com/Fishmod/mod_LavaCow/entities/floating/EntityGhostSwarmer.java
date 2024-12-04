@@ -36,6 +36,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -106,6 +107,15 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
         this.setHealth(this.getMaxHealth());
 
         return super.onInitialSpawn(difficulty, livingdata);
+    }
+    
+    @Override
+    public boolean getCanSpawnHere() {
+        if (!Modconfig.Ghost_Swarmer_Spawn_Underground) {
+            return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
+        return super.getCanSpawnHere();
     }
 
     /**

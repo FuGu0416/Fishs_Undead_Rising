@@ -95,6 +95,10 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
 
     @Override
     public boolean getCanSpawnHere() {
+        if (!Modconfig.SludgeLord_Spawn_Underground && !(this instanceof EntityAmberLord)) {
+            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
         return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 

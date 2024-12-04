@@ -116,6 +116,10 @@ public class EntityWendigo extends EntityMob implements IAggressive {
 
     @Override
     public boolean getCanSpawnHere() {
+        if (!Modconfig.Wendigo_Spawn_Underground) {
+            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
         return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 

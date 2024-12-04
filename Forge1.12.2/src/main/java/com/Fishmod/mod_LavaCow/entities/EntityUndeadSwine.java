@@ -97,6 +97,10 @@ public class EntityUndeadSwine extends EntityMob {
 
     @Override
     public boolean getCanSpawnHere() {
+        if (!Modconfig.UndeadSwine_Spawn_Underground) {
+            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
         return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 

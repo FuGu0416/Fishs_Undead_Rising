@@ -46,6 +46,7 @@ public class Modconfig {
     public static int pSpawnRate_UndeadSwine;
     public static double UndeadSwine_Health;
     public static double UndeadSwine_Attack;
+    public static boolean UndeadSwine_Spawn_Underground;
 
     public static int pSpawnRate_ZombieMushroom;
     public static double ZombieMushroom_Health;
@@ -63,6 +64,7 @@ public class Modconfig {
     public static int pSpawnRate_Wendigo;
     public static double Wendigo_Health;
     public static double Wendigo_Attack;
+    public static boolean Wendigo_Spawn_Underground;
 
     public static int pSpawnRate_Mimic;
     public static double Mimic_Health;
@@ -75,10 +77,12 @@ public class Modconfig {
     public static int SludgeLord_Ability_Num;
     public static int SludgeLord_Ability_Max;
     public static int SludgeLord_Ability_Cooldown;
+    public static boolean SludgeLord_Spawn_Underground;
 
     public static int pSpawnRate_AmberLord;
     public static double AmberLord_Health;
     public static double AmberLord_Attack;
+    public static boolean AmberLord_Spawn_Underground;
 
     public static int pSpawnRate_Raven;
     public static double Raven_Health;
@@ -103,6 +107,7 @@ public class Modconfig {
     public static int pSpawnRate_Scarecrow;
     public static double Scarecrow_Health;
     public static double Scarecrow_Attack;
+    public static boolean Scarecrow_Spawn_Underground;
     public static boolean Scarecrow_Old_Sounds;
 
     public static int pSpawnRate_ZombiePiranha;
@@ -208,6 +213,8 @@ public class Modconfig {
     public static double Grave_Robber_Ghost_Chance;
     public static double Grave_Robber_Health;
     public static double Grave_Robber_Attack;
+    public static boolean Grave_Robber_Spawn_Underground;
+
     public static int Grave_Robber_Ghost_Ability_Num;
     public static int Grave_Robber_Ghost_Ability_Max;
     public static int Grave_Robber_Ghost_Ability_Cooldown;
@@ -226,6 +233,7 @@ public class Modconfig {
     public static double Ghost_Swarmer_Health;
     public static double Ghost_Swarmer_Attack;
     public static int Ghost_Swarmer_Lifespan;
+    public static boolean Ghost_Swarmer_Spawn_Underground;
 
     public static double Amber_Scarab_Health;
     public static double Amber_Scarab_Attack;
@@ -371,6 +379,7 @@ public class Modconfig {
         pSpawnRate_UndeadSwine = config.get("Undead Swine", "undeadswine spawn rate", 15, "Set the spawn rate of Undead swine [0-10000]", 0, 10000).getInt(15);
         UndeadSwine_Health = config.get("Undead Swine", "undeadswine health", 50.0D, "Maximum Undead Swine health [1-1000]", 1, 1000).getDouble(50.0D);
         UndeadSwine_Attack = config.get("Undead Swine", "undeadswine attack", 4.0D, "Undead Swine strength [1-1000]", 1, 1000).getDouble(4.0D);
+        UndeadSwine_Spawn_Underground = config.get("Undead Swine", "undead swine underground spawn", false, "Should Undead Swines spawn underground").getBoolean(false);
 
         pSpawnRate_ZombieMushroom = config.get("Mycosis", "mycosis spawn rate", 40, "Set the spawn rate of Mycosis [0-10000]", 0, 10000).getInt(40);
         ZombieMushroom_Health = config.get("Mycosis", "mycosis health", 20.0D, "Maximum Mycosis health [1-1000]", 1, 1000).getDouble(20.0D);
@@ -391,9 +400,10 @@ public class Modconfig {
         Wendigo_KeepDistance = config.get("Ithaqua", "ithaqua keeps distance", true, "Should Ithaqua keep distance from the player during daytime [false/true]").getBoolean(true);
         Wendigo_Health = config.get("Ithaqua", "ithaqua health", 60.0D, "Maximum Ithaqua health [1-1000]", 1, 1000).getDouble(60.0D);
         Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
+        Wendigo_Spawn_Underground = config.get("Ithaqua", "ithaqua underground spawn", false, "Should Ithaquas spawn underground").getBoolean(false);
 
         pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
-        Mimic_Health = config.get("Mimicrab", "mimicrab health", 10.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(10.0D);
+        Mimic_Health = config.get("Mimicrab", "mimicrab health", 50.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(50.0D);
         Mimic_Attack = config.get("Mimicrab", "mimicrab attack", 8.0D, "Mimicrab strength [1-1000]", 1, 1000).getDouble(8.0D);
         pSpawnRate_DeathMimic = config.get("Mimicrab", "mimicrab spawn rate near player death", 0.0D, "Set the spawn rate of Mimicrab near player death [0-1]", 0, 1).getDouble(0.0D);
 
@@ -403,10 +413,12 @@ public class Modconfig {
         SludgeLord_Ability_Num = config.get("Sludge Lord", "sludge lord summon number", 3, "Set the number of Lil' Sludges summoned per cast [0-100]", 0, 100).getInt(3);
         SludgeLord_Ability_Max = config.get("Sludge Lord", "sludge lord summon max", 8, "Set the max number of Lil' Sludges summoned [0-100]", 0, 100).getInt(8);
         SludgeLord_Ability_Cooldown = config.get("Sludge Lord", "sludge lord summon cooldown", 17, "Set the cooldown of summoning Lil' Sludges [0-100]", 0, 100).getInt(17);
+        SludgeLord_Spawn_Underground = config.get("Sludge Lord", "sludge lord underground spawn", false, "Should Sludge Lords spawn underground").getBoolean(false);
 
         pSpawnRate_AmberLord = config.get("Amber Lord", "amber lord spawn rate", 10, "Set the spawn rate of Amber Lord [0-10000]", 0, 10000).getInt(10);
         AmberLord_Health = config.get("Amber Lord", "amber lord health", 70.0D, "Maximum Amber Lord health [1-1000]", 1, 1000).getDouble(70.0D);
         AmberLord_Attack = config.get("Amber Lord", "amber lord attack", 5.0D, "Amber Lord strength [1-1000]", 1, 1000).getDouble(5.0D);
+        AmberLord_Spawn_Underground = config.get("Amber Lord", "amber lord underground spawn", false, "Should Amber Lords spawn underground").getBoolean(false);
 
         LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 16.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
         LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 3.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.5D);
@@ -445,6 +457,7 @@ public class Modconfig {
         Scarecrow_Health = config.get("Scarecrow", "scarecrow health", 40.0D, "Maximum Scarecrow health [1-1000]", 1, 1000).getDouble(40.0D);
         Scarecrow_Attack = config.get("Scarecrow", "scarecrow attack", 8.0D, "Scarecrow strength [1-1000]", 1, 1000).getDouble(8.0D);
         Scarecrow_Old_Sounds = config.get("Scarecrow", "scarecrow old sounds", false, "Should Scarecrows play sounds from old versions of Fish's Undead Rising [false/true]").getBoolean(false);
+        Scarecrow_Spawn_Underground = config.get("Scarecrow", "scarecrow underground spawn", false, "Should Scarecrows spawn underground").getBoolean(false);
         pScarecrow_PlagueDoctor = config.get("Scarecrow", "plague doctor scarecrow spawn rate", 30, "Set the spawn rate of Plague Doctor Scarecrow when a Raven was killed. [0-100]", 0, 100).getInt(30);
 
         pSpawnRate_ZombiePiranha = config.get("Swarmer", "swarmer spawn rate", 40, "Set the spawn rate of Swarmer [0-100]", 0, 100).getInt(40);
@@ -547,6 +560,7 @@ public class Modconfig {
         Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-100]", 0, 100).getDouble(0.5D);
         Grave_Robber_Health = config.get("Grave Robber", "grave robber health", 34.0D, "Maximum Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
         Grave_Robber_Attack = config.get("Grave Robber", "grave robber attack", 6.0D, "Grave Robber strength [1-1000]", 1, 1000).getDouble(6.0D);
+        Grave_Robber_Spawn_Underground = config.get("Grave Robber", "grave robber underground spawn", false, "Should Grave Robbers spawn underground").getBoolean(false);
 
         pSpawnRate_Grave_Robber_Ghost = config.get("Ghost of Grave Robber", "grave robber ghost spawn rate", 2, "Set the spawn rate of Ghost of Grave Robber [0-100]", 0, 100).getInt(2);
         Grave_Robber_Ghost_Health = config.get("Ghost of Grave Robber", "grave robber ghost health", 34.0D, "Maximum Ghost of Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
@@ -562,9 +576,10 @@ public class Modconfig {
         Wraith_Ability_Radius = config.get("Revenant", "revenant scream radius", 8.0D, "Set the effect radius of Revenant scream [1-1000]", 1, 1000).getDouble(8.0D);
 
         pSpawnRate_Ghost_Swarmer = config.get("Ghost Swarmer", "ghost swarmer spawn rate", 10, "Set the spawn rate of Ghost Swarmer [0-100]", 0, 100).getInt(0);
-        Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 8.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(8.0D);
+        Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 12.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(12.0D);
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
         Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 60, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(60);
+        Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghots Swarmers spawn underground").getBoolean(false);
 
         Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 14.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(14.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);

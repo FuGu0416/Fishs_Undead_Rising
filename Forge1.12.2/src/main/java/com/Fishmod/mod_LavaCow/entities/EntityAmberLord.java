@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -70,6 +71,15 @@ public class EntityAmberLord extends EntitySludgeLord implements IAggressive {
         this.setHealth(this.getMaxHealth());
 
         return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        if (!Modconfig.AmberLord_Spawn_Underground) {
+            return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
+        return super.getCanSpawnHere();
     }
 
     /**

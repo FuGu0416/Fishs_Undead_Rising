@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
+import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGraveRobberGhost;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -37,6 +38,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -128,6 +130,15 @@ public class EntityGraveRobber extends AbstractIllager {
         this.setEquipmentBasedOnDifficulty(difficulty);
         this.setEnchantmentBasedOnDifficulty(difficulty);
         return ientitylivingdata;
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        if (!Modconfig.Grave_Robber_Spawn_Underground) {
+            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 
     /**
