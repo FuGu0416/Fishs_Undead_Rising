@@ -349,7 +349,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
             this.leaper.getNavigator().clearPath();
             this.leaper.setRotationYawHead(-((float) Math.atan2(vec3d.x, vec3d.z)) * (180F / (float) Math.PI));
             this.leaper.rotationYaw = this.leaper.getRotationYawHead(); // ???
-            this.leaper.playSound(FishItems.ENTITY_WENDIGO_ATTACK, 4.0F, 1.0F);
+            this.leaper.playSound(FishItems.ENTITY_WENDIGO_ATTACK, (float) Modconfig.Wendigo_Attack_Volume, 1.0F);
             ((EntityWendigo) this.leaper).jumpTimer = 240;
         }
 

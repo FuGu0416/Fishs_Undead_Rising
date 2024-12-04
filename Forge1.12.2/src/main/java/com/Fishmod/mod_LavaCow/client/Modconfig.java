@@ -64,6 +64,7 @@ public class Modconfig {
     public static int pSpawnRate_Wendigo;
     public static double Wendigo_Health;
     public static double Wendigo_Attack;
+    public static double Wendigo_Attack_Volume;
     public static boolean Wendigo_Spawn_Underground;
 
     public static int pSpawnRate_Mimic;
@@ -400,6 +401,7 @@ public class Modconfig {
         Wendigo_KeepDistance = config.get("Ithaqua", "ithaqua keeps distance", true, "Should Ithaqua keep distance from the player during daytime [false/true]").getBoolean(true);
         Wendigo_Health = config.get("Ithaqua", "ithaqua health", 60.0D, "Maximum Ithaqua health [1-1000]", 1, 1000).getDouble(60.0D);
         Wendigo_Attack = config.get("Ithaqua", "ithaqua attack", 8.0D, "Ithaqua strength [1-1000]", 1, 1000).getDouble(8.0D);
+        Wendigo_Attack_Volume = config.get("Ithaqua", "ithaqua attack volume", 4.0D, "Ithaqua attack volume [1-5]", 1, 5).getDouble(4.0D);
         Wendigo_Spawn_Underground = config.get("Ithaqua", "ithaqua underground spawn", false, "Should Ithaquas spawn underground").getBoolean(false);
 
         pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
