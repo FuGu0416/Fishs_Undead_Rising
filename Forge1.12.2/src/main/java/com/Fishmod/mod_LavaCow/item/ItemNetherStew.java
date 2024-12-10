@@ -28,15 +28,15 @@ import net.minecraft.world.World;
 
 public class ItemNetherStew extends ItemFishCustomFood {
     public static List<Triple<Potion, Integer, Integer>> Effect_nethersoup = Lists.newArrayList(
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.STRENGTH, 40 * 20, 1),
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 40 * 20, 1),
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.SPEED, 40 * 20, 1),
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 40 * 20, 1)
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.STRENGTH, 60 * 20, 1),
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 60 * 20, 1),
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.SPEED, 60 * 20, 1),
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 60 * 20, 1)
     );
 
     public static List<Triple<Potion, Integer, Integer>> Effect_bonestew = Lists.newArrayList(
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 20 * 20, 1),
-            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 20 * 20, 0)
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.ABSORPTION, 60 * 20, 1),
+            new ImmutableTriple<Potion, Integer, Integer>(MobEffects.RESISTANCE, 60 * 20, 0)
     );
 
     public ItemNetherStew(String registryName, int amount, float saturation) {

@@ -20,7 +20,7 @@
               "function": "looting_enchant",
               "count": {
                 "min": 0,
-                "max": 1
+                "max": 3
               }
             }
           ]
@@ -40,14 +40,14 @@
               "function": "minecraft:set_count",
               "count": {
                 "min": 0,
-                "max": 1
+                "max": 2
               }
             },
             {
               "function": "looting_enchant",
               "count": {
                 "min": 0,
-                "max": 1
+                "max": 3
               }
             }
           ]
