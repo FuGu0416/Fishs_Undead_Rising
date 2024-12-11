@@ -318,9 +318,12 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
                 EntityCreeper entitycreeper = (EntityCreeper) cause.getTrueSource();
 
                 // Skull
-                if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
+                if (!(this instanceof EntitySoulWorm) && entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
                     entitycreeper.incrementDroppedSkulls();
                     this.entityDropItem(new ItemStack(Items.SKULL, 1, 0), 0.0F);
+                } else if ((this instanceof EntitySoulWorm) && entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
+                    entitycreeper.incrementDroppedSkulls();
+                    this.entityDropItem(new ItemStack(Items.SKULL, 1, 1), 0.0F);
                 }
             }
         }

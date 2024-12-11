@@ -39,8 +39,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 0,
-                "max": 2
+                "min": 2,
+                "max": 4
               }
             },
             {
@@ -97,7 +97,7 @@
       ]
     },
     {
-      "name": "wither_skull",
+      "name": "skull",
       "rolls": 1,
       "entries": [
         {

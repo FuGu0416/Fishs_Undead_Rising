@@ -195,6 +195,7 @@ public class Modconfig {
     public static double Mummy_Attack;
 
     public static int pSpawnRate_Cactyrant;
+    public static int pSpawnRate_Cactyrant_Nether;
     public static double Cactyrant_Health;
     public static double Cactyrant_Attack;
     public static int Cactyrant_Ability_Cooldown;
@@ -527,7 +528,7 @@ public class Modconfig {
         Forsaken_Attack = config.get("Forsaken", "forsaken attack", 4.0D, "Forsaken strength [1-1000]", 1, 1000).getDouble(4.0D);
 
         pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
-        SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 360.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(360.0D);
+        SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 400.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(400.0D);
         SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
         SkeletonKing_Ability_Sand_Tomb_Cooldown = config.get("Skeleton King", "skeleton king sand tomb cooldown", 10, "Set the cooldown of Sand Tomb [0-100]", 0, 100).getInt(10);
         SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
@@ -543,6 +544,7 @@ public class Modconfig {
         Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
 
         pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 10, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(10);
+        pSpawnRate_Cactyrant_Nether = config.get("Cactyrant", "cactyrant nether dimension spawn rate", 3, "Set the spawn rate of Cactyrant in the Nether dimension [0-10000]", 0, 10000).getInt(3);
         Cactyrant_Health = config.get("Cactyrant", "cactyrant health", 60.0D, "Maximum Cactyrant health [1-1000]", 1, 1000).getDouble(60.0D);
         Cactyrant_Attack = config.get("Cactyrant", "cactyrant attack", 8.0D, "Cactyrant strength [1-1000]", 1, 1000).getDouble(8.0D);
         Cactyrant_Ability_Cooldown = config.get("Cactyrant", "cactyrant summon cooldown", 3, "Set the cooldown of thorn barrage [0-100]", 0, 100).getInt(3);

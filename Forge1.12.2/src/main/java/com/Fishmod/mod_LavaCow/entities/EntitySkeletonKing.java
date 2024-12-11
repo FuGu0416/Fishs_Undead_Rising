@@ -35,6 +35,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -220,6 +221,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
                 if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
                     entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
                     entitylivingbase.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE_KING, 20 * 20, 3));
+                    entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.WITHER, 15 * 20, 2));
                     if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer) entitylivingbase).disableShield(true);
 
                     if (this.isAngered()) {

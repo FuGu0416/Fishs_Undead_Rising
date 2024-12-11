@@ -613,6 +613,7 @@ public class ModEntities {
         tweakEntitySpawn(EntityMummy.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mummy, 8, 16, BiomeDictionary.Type.SANDY);
         tweakEntitySpawn(EntityForsaken.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Forsaken, 4, 8, BiomeDictionary.Type.SANDY);
         tweakEntitySpawn(EntityCactyrant.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactyrant, 1, 2, BiomeDictionary.Type.SANDY);
+        tweakEntitySpawn(EntityCactyrant.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactyrant_Nether, 1, 2, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityCactoid.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Cactoid, 4, 8, BiomeDictionary.Type.SANDY);
         tweakEntitySpawn(EntitySeaHag.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Sea_Hag, 1, 2, BiomeDictionary.Type.BEACH);
         tweakEntitySpawn(EntityGraveRobber.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Grave_Robber, 1, 1, BiomeDictionary.Type.SPOOKY);
