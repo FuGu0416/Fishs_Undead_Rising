@@ -547,10 +547,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         	this.setAggressive(false);
             this.level.broadcastEntityEvent(this, (byte)34);
         }
-        
-        if (this.isInSittingPose()) {
-        	this.setDeltaMovement(Vector3d.ZERO);
-        }
     }
 
     public void openGUI(PlayerEntity playerIn, ITextComponent NameIn) {

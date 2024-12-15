@@ -190,8 +190,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 		super.customServerAiStep();
 		
 		if (this.getInvulnerableTicks() > 0) {
-			this.setInvulnerableTicks(this.getInvulnerableTicks() - 1);
-			this.setDeltaMovement(Vector3d.ZERO);
+			this.setInvulnerableTicks(this.getInvulnerableTicks() - 1);			
 			if (this.tickCount % 5 == 0) {
 				this.heal(this.getMaxHealth() * 0.03F);
 			}
@@ -310,6 +309,14 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
             }
         }
     }
+    
+    @Override
+    public void travel(Vector3d p_213352_1_) {
+		if (this.getInvulnerableTicks() > 0) {
+            this.setDeltaMovement(Vector3d.ZERO);
+		} else
+			super.travel(p_213352_1_);
+	}
     
     public class AISummoningSpell extends Goal {
         protected int spellWarmup;
