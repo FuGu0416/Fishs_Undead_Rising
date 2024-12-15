@@ -534,6 +534,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        
         if (this.getTarget() != null || this.AggressiveTimer > 0 || this.lastHurtByPlayerTime > 58) {
             this.setAggressive(true);
             this.level.broadcastEntityEvent(this, (byte)11);
@@ -545,6 +546,10 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         } else if (this.getRandom().nextInt(1000) < 100) {
         	this.setAggressive(false);
             this.level.broadcastEntityEvent(this, (byte)34);
+        }
+        
+        if (this.isInSittingPose()) {
+        	this.setDeltaMovement(Vector3d.ZERO);
         }
     }
 

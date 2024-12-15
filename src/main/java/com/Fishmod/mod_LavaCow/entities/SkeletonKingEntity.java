@@ -149,7 +149,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
     @Override
     public void tick() {
 		super.tick();
-		
+
         if (this.attackTimer > 0) {
             --this.attackTimer;
             if(this.attackTimer > 20 && this.getTarget() != null)
@@ -191,6 +191,7 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
 		
 		if (this.getInvulnerableTicks() > 0) {
 			this.setInvulnerableTicks(this.getInvulnerableTicks() - 1);
+			this.setDeltaMovement(Vector3d.ZERO);
 			if (this.tickCount % 5 == 0) {
 				this.heal(this.getMaxHealth() * 0.03F);
 			}
@@ -388,6 +389,12 @@ public class SkeletonKingEntity extends MonsterEntity implements IAggressive {
         	return FURSoundRegistry.SKELETONKING_SPELL_SUMMON;
         }
     }
+    
+    public void push(Entity p_70108_1_) {
+        if (this.getInvulnerableTicks() <= 0) {
+           super.push(p_70108_1_);
+        }
+     }
     
     public class AITeleportSpell extends Goal {
         protected int spellWarmup;
