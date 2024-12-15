@@ -355,7 +355,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source != DamageSource.DROWN && !(source.getTrueSource() instanceof EntitySkeletonKing)) {
-            if (getInvulTime() > 0 && source != DamageSource.OUT_OF_WORLD || source == DamageSource.FALL || source == DamageSource.CACTUS
+            if (this.getInvulTime() > 0 && source != DamageSource.OUT_OF_WORLD || source == DamageSource.FALL || source == DamageSource.CACTUS
                     || source == DamageSource.LIGHTNING_BOLT || source == DamageSource.DROWN) {
                 return false;
             } else {
@@ -423,6 +423,22 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         }
     }
 
+    // Immune to all effects like the Ender Dragon and the Wither
+    @Override
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return false;
+    }
+    
+    @Override
+    public void travel(float strafe, float vertical, float forward) {
+        if (this.getInvulTime() > 0) {
+            this.motionX = 0.0D;
+            this.motionY = 0.0D;
+            this.motionZ = 0.0D;
+        } else
+            super.travel(strafe, vertical, forward);
+    }
+
     public class AICastingApell extends EntityAIBase {
         public AICastingApell() {
             this.setMutexBits(3);
@@ -459,13 +475,6 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
             }
         }
     }
-
-    // Immune to all effects like the Ender Dragon and the Wither
-    @Override
-    public boolean isPotionApplicable(PotionEffect effect) {
-        return false;
-    }
-
 
     public class AISummoningSpell extends EntityAIBase {
         protected int spellWarmup;
