@@ -58,7 +58,7 @@ public class EntityMothScales extends EntityFireball {
         if (!this.collidedHorizontally && !this.collidedVertically) this.accelerationY -= 0.006D;
 
         if (this.world.isRemote) for (int i = 0; i < 2 + this.rand.nextInt(2); i++) {
-            mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D,Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][0] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)), Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][1] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)), Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][2] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+            mod_LavaCow.PROXY.spawnCustomParticle("spore", world, this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D, Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][0] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)), Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][1] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)), Math.max(0.0F, Math.min(1.0F, SCALECOLOR[this.getScaleType()][2] + (this.rand.nextFloat() * 2.0F - 1.0F) * 0.05F)));
             if (this.rand.nextFloat() < 0.15F) {
                 this.world.spawnParticle(this.getAdditionalParticle(this.getScaleType()), this.posX + this.rand.nextDouble() * 0.5D, this.posY + 0.5D + this.rand.nextDouble() * 0.5D, this.posZ + this.rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
             }
@@ -74,69 +74,69 @@ public class EntityMothScales extends EntityFireball {
         EntityLivingBase owner = this.shootingEntity;
 
         if (!this.world.isRemote && result != null && result.typeOfHit != RayTraceResult.Type.MISS) {
-        	if (entity != this.shootingEntity && owner != null) {
-        		switch (this.getScaleType()) {
-                	default:
-                	case 1:
-                		if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
-	                		if (entity != null && entity != owner && !entity.isOnSameTeam(owner)) {
-	                			// Currently causes issues with velocity
+            if (entity != this.shootingEntity && owner != null) {
+                switch (this.getScaleType()) {
+                    default:
+                    case 1:
+                        if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+                            if (entity != null && entity != owner && !entity.isOnSameTeam(owner)) {
+                                // Currently causes issues with velocity
 	                			/*\if (!entity.isImmuneToFire() && entity.attackEntityFrom(DamageSource.causeFireballDamage(this, owner), 5.0F)) {
 	                            	this.applyEnchantments(owner, entity);
 	                            	entity.setFire(5);
 	                            	break;
 	                        	}*/
-	                			break;
-	                		}
-                		} else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                			boolean flag = true;
-                			
-                			if (this.shootingEntity instanceof EntityLiving) {
-                				flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-                			}
-                			
-                			if (flag) {
-                				BlockPos blockpos = result.getBlockPos().offset(result.sideHit);
-                				if (this.world.isAirBlock(blockpos)) {
-                					this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
-                					break;
-                				}
-                			}
-                		}
-                		break;
-                	case 0:
-                	case 2:
-                		if (result.typeOfHit != RayTraceResult.Type.BLOCK) {
-                			List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
-                			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
+                                break;
+                            }
+                        } else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
+                            boolean flag = true;
 
-                			entityareaeffectcloud.setOwner(owner);
-                			entityareaeffectcloud.setRadius(2.0F);
-                			entityareaeffectcloud.setRadiusOnUse(-0.5F);
-                			entityareaeffectcloud.setWaitTime(10);
-                			entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
-                			entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
-                        
-                			if (this.getScaleType() == 0) {
-                				entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 4 * 20, 9));
-                			} else {
-                				entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.CORRODED, 20 * 20, 1));
-                			}
+                            if (this.shootingEntity instanceof EntityLiving) {
+                                flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
+                            }
 
-                			if (!list.isEmpty()) {
-                				for (EntityLivingBase entitylivingbase : list) {
-                					double distSq = this.getDistanceSq(entitylivingbase);
+                            if (flag) {
+                                BlockPos blockpos = result.getBlockPos().offset(result.sideHit);
+                                if (this.world.isAirBlock(blockpos)) {
+                                    this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case 0:
+                    case 2:
+                        if (result.typeOfHit != RayTraceResult.Type.BLOCK) {
+                            List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
+                            EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 
-                					if (distSq < 16.0D) {
-                						entityareaeffectcloud.setPosition(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ);
-                						break;
-                					}
-                				}
-                			}
-                			this.world.spawnEntity(entityareaeffectcloud);
-                			break;
-                		}
-            	}
+                            entityareaeffectcloud.setOwner(owner);
+                            entityareaeffectcloud.setRadius(2.0F);
+                            entityareaeffectcloud.setRadiusOnUse(-0.5F);
+                            entityareaeffectcloud.setWaitTime(10);
+                            entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
+                            entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
+
+                            if (this.getScaleType() == 0) {
+                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 4 * 20, 9));
+                            } else {
+                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.CORRODED, 20 * 20, 2));
+                            }
+
+                            if (!list.isEmpty()) {
+                                for (EntityLivingBase entitylivingbase : list) {
+                                    double distSq = this.getDistanceSq(entitylivingbase);
+
+                                    if (distSq < 16.0D) {
+                                        entityareaeffectcloud.setPosition(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ);
+                                        break;
+                                    }
+                                }
+                            }
+                            this.world.spawnEntity(entityareaeffectcloud);
+                            break;
+                        }
+                }
             }
         }
     }

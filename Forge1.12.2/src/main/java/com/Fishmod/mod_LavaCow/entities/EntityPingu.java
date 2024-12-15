@@ -37,21 +37,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityPingu  extends EntityMob{
-	
-	private boolean isAggressive = false;
-	protected Block spawnableBlock = Blocks.ICE;
-	private boolean HPbelow30 = false;
-	private boolean HPbelow50 = false;
-	
-	public EntityPingu(World worldIn)
-    {
+public class EntityPingu extends EntityMob {
+
+    private boolean isAggressive = false;
+    protected Block spawnableBlock = Blocks.ICE;
+    private boolean HPbelow30 = false;
+    private boolean HPbelow50 = false;
+
+    public EntityPingu(World worldIn) {
         super(worldIn);
         this.setSize(0.5F, 0.8F);
     }
-	
-    protected void initEntityAI()
-    {
+
+    protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 2.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -60,13 +58,11 @@ public class EntityPingu  extends EntityMob{
         this.applyEntityAI();
     }
 
-    protected void applyEntityAI()
-    {
-    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+    protected void applyEntityAI() {
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
     }
-    
-    protected void applyEntityAttributes()
-    {
+
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Pingu_Health);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.16D);
@@ -74,233 +70,197 @@ public class EntityPingu  extends EntityMob{
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
         this.getEntityAttribute(SWIM_SPEED).setBaseValue(0.25D);
     }
-    
-    public float getBlockPathWeight(BlockPos pos)
-    {
-    	return this.world.getBlockState(pos.down()).getBlock() == this.spawnableBlock ? 10.0F : 10.0F - this.world.getLightBrightness(pos);
+
+    public float getBlockPathWeight(BlockPos pos) {
+        return this.world.getBlockState(pos.down()).getBlock() == this.spawnableBlock ? 10.0F : 10.0F - this.world.getLightBrightness(pos);
     }
-    
+
     @Override
-	public boolean getCanSpawnHere() {
-    	IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
-    	
-		return SpawnUtil.isAllowedDimension(this.dimension)
-				&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
-    			&& iblockstate.canEntitySpawn(this);
-	}
-    
-    public boolean canBreatheUnderwater()
-    {
+    public boolean getCanSpawnHere() {
+        IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
+
+        return SpawnUtil.isAllowedDimension(this.dimension)
+                && this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F
+                && iblockstate.canEntitySpawn(this)
+                && this.world.canSeeSky(new BlockPos(this));
+    }
+
+    public boolean canBreatheUnderwater() {
         return true;
     }
-    
-    protected float getWaterSlowDown()
-    {
+
+    protected float getWaterSlowDown() {
         return 1.0F;
     }
-    
+
     /**
      * Called to update the entity's position/logic.
      */
-	@Override
-    public void onUpdate()
-    {
+    @Override
+    public void onUpdate() {
         super.onUpdate();
     }
-    
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void onLivingUpdate()
-    {
-        if (!Modconfig.SunScreen_Mode && !this.world.isRemote && this.ticksExisted % 20 == 0 && !this.isWet())
-        {
+    public void onLivingUpdate() {
+        if (!Modconfig.SunScreen_Mode && !this.world.isRemote && this.ticksExisted % 20 == 0 && !this.isWet()) {
             int i = MathHelper.floor(this.posX);
             int j = MathHelper.floor(this.posY);
             int k = MathHelper.floor(this.posZ);
 
-            if (this.world.getBiome(new BlockPos(i, 0, k)).getTemperature(new BlockPos(i, j, k)) > 1.0F)
-            {
+            if (this.world.getBiome(new BlockPos(i, 0, k)).getTemperature(new BlockPos(i, j, k)) > 1.0F) {
                 this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
             }
         }
-    	
-        if(this.getHealth() < this.getMaxHealth() * 0.3F && !this.HPbelow30) {
-    		if (this.isServerWorld() && !this.isBurning()) {
-    			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
-    			if (Modconfig.Pingu_Extra_Ice) {
-    				int chance = rand.nextInt(2) + 1;
-    				for (int amount = 0; amount < chance; ++amount)
-    					entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
-    			}
-    		}
-        	this.HPbelow30 = true;
+
+        if (this.getHealth() < this.getMaxHealth() * 0.3F && !this.HPbelow30) {
+            if (this.isServerWorld() && !this.isBurning()) {
+                this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+                if (Modconfig.Pingu_Extra_Ice) {
+                    int chance = rand.nextInt(2) + 1;
+                    for (int amount = 0; amount < chance; ++amount)
+                        entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+                }
+            }
+            this.HPbelow30 = true;
+        } else if (this.getHealth() < this.getMaxHealth() * 0.5F && !this.HPbelow50) {
+            if (this.isServerWorld() && !this.isBurning()) {
+                this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
+                if (Modconfig.Pingu_Extra_Ice) {
+                    int chance = rand.nextInt(2) + 1;
+                    for (int amount = 0; amount < chance; ++amount)
+                        entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
+                }
+            }
+            this.HPbelow50 = true;
+        } else if (this.getHealth() >= this.getMaxHealth() * 0.5F && this.HPbelow30 && this.HPbelow50) {
+            this.HPbelow30 = false;
+            this.HPbelow50 = false;
         }
-        else if(this.getHealth() < this.getMaxHealth() * 0.5F && !this.HPbelow50) {
-    		if (this.isServerWorld() && !this.isBurning()) {
-    			this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
-    			if (Modconfig.Pingu_Extra_Ice) {
-    				int chance = rand.nextInt(2) + 1;
-    				for (int amount = 0; amount < chance; ++amount)
-    					entityDropItem(new ItemStack(FishItems.SHATTERED_ICE), 0.0F);
-    			}
-    		}
-        	this.HPbelow50 = true;
-        }
-        else if(this.getHealth() >= this.getMaxHealth() * 0.5F && this.HPbelow30 && this.HPbelow50) {
-        	this.HPbelow30 = false;
-        	this.HPbelow50 = false;
-        }
-        
-        if(this.recentlyHit == 0 && this.isWet() && this.rand.nextInt(50) < 2)
-        	this.heal(0.5F);
-        
+
+        if (this.recentlyHit == 0 && this.isWet() && this.rand.nextInt(50) < 2)
+            this.heal(0.5F);
+
         super.onLivingUpdate();
     }
-    
+
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        if (this.isEntityInvulnerable(source))
-        {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isEntityInvulnerable(source)) {
             return false;
-        }
-        else if(source.getTrueSource() instanceof EntityLivingBase)
-        {
+        } else if (source.getTrueSource() instanceof EntityLivingBase) {
             Entity entity = source.getTrueSource();
 
-            List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D), new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
-                {
+            List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D), new Predicate<Entity>() {
+                public boolean apply(@Nullable Entity p_apply_1_) {
                     return p_apply_1_ instanceof EntityPingu;
                 }
             });
-            
-            for(Entity E : list)
-            		((EntityPingu)E).setAttackTarget((EntityLivingBase) entity);
 
-            
+            for (Entity E : list)
+                ((EntityPingu) E).setAttackTarget((EntityLivingBase) entity);
+
+
         }
-        
+
         return super.attackEntityFrom(source, amount);
     }
 
-    public boolean attackEntityAsMob(Entity entityIn)
-    {
+    public boolean attackEntityAsMob(Entity entityIn) {
         boolean flag = super.attackEntityAsMob(entityIn);
 
-        if (flag)
-        {
+        if (flag) {
             float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F)
-            {
-                entityIn.setFire(2 * (int)f);
+            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
+                entityIn.setFire(2 * (int) f);
             }
         }
 
         return flag;
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
-    {
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
 
         return livingdata;
     }
-    
-    protected void updateAITasks()
-    {
+
+    protected void updateAITasks() {
         super.updateAITasks();
-        if(this.getAttackTarget() != null && !this.getAttackTarget().isDead)
-        	{       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	}
-        else 
-        	{
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+        if (this.getAttackTarget() != null && !this.getAttackTarget().isDead) {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte) 11);
+        } else {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte) 34);
+        }
     }
-    
+
     @SideOnly(Side.CLIENT)
-    public boolean isAggressive()
-    {
-    	return isAggressive;
+    public boolean isAggressive() {
+        return isAggressive;
     }
-    
+
     /**
      * Handler for {@link World#setEntityState}
      */
     @SideOnly(Side.CLIENT)
-    public void handleStatusUpdate(byte id)
-    {
-        if (id == 11)
-        {
+    public void handleStatusUpdate(byte id) {
+        if (id == 11) {
             this.isAggressive = true;
-        }
-        else if (id == 34)
-        {
+        } else if (id == 34) {
             this.isAggressive = false;
-        }
-        else
-        {
+        } else {
             super.handleStatusUpdate(id);
         }
     }
 
-    public float getEyeHeight()
-    {
+    public float getEyeHeight() {
         return this.height * 0.8F;
     }
-    
+
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return this.HPbelow50 ? null : FishItems.ENTITY_PINGU_AMBIENT;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
-    	return this.HPbelow50 ? null : FishItems.ENTITY_PINGU_HURT;
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return this.HPbelow50 ? null : FishItems.ENTITY_PINGU_HURT;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_PINGU_DEATH;
     }
 
-    protected SoundEvent getStepSound()
-    {
+    protected SoundEvent getStepSound() {
         return SoundEvents.ENTITY_CHICKEN_STEP;
     }
 
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        if(!this.isAggressive)
-        	this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    protected void playStepSound(BlockPos pos, Block blockIn) {
+        if (!this.isAggressive)
+            this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
+    public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {

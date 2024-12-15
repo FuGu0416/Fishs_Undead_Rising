@@ -101,6 +101,9 @@ public class AddRecipes {
 			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.ENIGMOTH_LARVA_ITEM), ModPotions.VOID_DUST);
 			PotionHelper.addMix(ModPotions.VOID_DUST, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_VOID_DUST);
 			PotionHelper.addMix(ModPotions.VOID_DUST, Ingredient.fromItem(Items.GLOWSTONE_DUST), ModPotions.STRONG_VOID_DUST);
+			
+			PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(FishItems.FEATHER_BLACK), ModPotions.RAVENS_GRACE);
+			PotionHelper.addMix(ModPotions.RAVENS_GRACE, Ingredient.fromItem(Items.REDSTONE), ModPotions.LONG_RAVENS_GRACE);
 	    }
 	    
 	    public static void addTrading() {

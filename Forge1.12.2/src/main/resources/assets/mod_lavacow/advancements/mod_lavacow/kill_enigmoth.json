@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:ender_eye"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_enigmoth.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_enigmoth.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_enigmoth": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:enigmoth"
+        }
+      }
+    }
+  }
+}

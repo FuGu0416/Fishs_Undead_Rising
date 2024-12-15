@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:moltenbeef"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.tame_salamander.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.tame_salamander.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:moltenbeef"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_salamander",
-    "criteria": {
-        "tamed_salamander": {
-            "trigger": "minecraft:tame_animal",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:salamander"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.tame_salamander.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.tame_salamander.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_salamander",
+  "criteria": {
+    "tamed_salamander": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:salamander"
+        }
+      }
+    }
+  }
 }

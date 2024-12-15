@@ -27,7 +27,7 @@ public class TraitFamine extends AbstractTrait {
     public String getLocalizedDesc() {
         return Util.translate(String.format(LOC_Desc, "mod_lavacow.famine"));
     }
-    
+
     @Override
     public void onUpdate(ItemStack tool, World world, Entity entity, int itemSlot, boolean isSelected) {
     }
@@ -35,18 +35,18 @@ public class TraitFamine extends AbstractTrait {
     @Override
     public void afterBlockBreak(ItemStack tool, World world, IBlockState state, BlockPos pos, EntityLivingBase player, boolean wasEffective) {
         if (wasEffective && player instanceof EntityPlayer) {
-        	RefillHunger(player);
+            RefillHunger(player);
         }
     }
 
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
         if (player instanceof EntityPlayer) {
-        	RefillHunger(player);
+            RefillHunger(player);
         }
     }
-    
+
     private void RefillHunger(EntityLivingBase player) {
-			((EntityPlayer)player).getFoodStats().addStats(player.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
+        ((EntityPlayer) player).getFoodStats().addStats(player.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
     }
 }

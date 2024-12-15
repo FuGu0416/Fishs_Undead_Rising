@@ -1,0 +1,64 @@
+{
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:soulforgedarmor_helmet"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.get_soulforged_armor.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_soulforged_armor.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/get_molten_armor",
+  "criteria": {
+    "soulforgedarmor_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforgedarmor_helmet"
+          }
+        ]
+      }
+    },
+    "soulforgedarmor_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforgedarmor_chestplate"
+          }
+        ]
+      }
+    },
+    "soulforgedarmor_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforgedarmor_leggings"
+          }
+        ]
+      }
+    },
+    "soulforgedarmor_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforgedarmor_boots"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soulforgedarmor_helmet",
+      "soulforgedarmor_chestplate",
+      "soulforgedarmor_leggings",
+      "soulforgedarmor_boots"
+    ]
+  ]
+}

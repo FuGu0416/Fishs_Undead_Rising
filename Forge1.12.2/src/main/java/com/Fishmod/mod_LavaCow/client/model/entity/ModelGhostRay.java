@@ -14,6 +14,7 @@ public class ModelGhostRay extends ModelFlyingBase {
 	private final ModelRenderer Body1;
 	private final ModelRenderer Tail0;
 	private final ModelRenderer Tail1;
+	private final ModelRenderer Tail2;
 	private final ModelRenderer back_fin;
 	private final ModelRenderer Wing0_r;
 	private final ModelRenderer Wing1_r;
@@ -21,6 +22,9 @@ public class ModelGhostRay extends ModelFlyingBase {
 	private final ModelRenderer Wing1_l;
 	private final ModelRenderer Fin_l;
 	private final ModelRenderer Fin_r;
+	
+	private final ModelRenderer Dorsel_Fin_l;
+	private final ModelRenderer Dorsel_Fin_r;
 
     public ModelGhostRay() {
 		textureWidth = 128;
@@ -47,6 +51,11 @@ public class ModelGhostRay extends ModelFlyingBase {
 		Tail0.addChild(Tail1);
 		setRotateAngle(Tail1, 0.182F, 0.0F, 0.0F);
 		Tail1.setTextureOffset(16, 36).addBox(-0.5F, 0.5F, 0.0F, 1, 1, 8, false);
+		
+		Tail2 = new ModelRenderer(this);
+		Tail2.setRotationPoint(0.0F, 0.0F, 0.0F);
+		Tail1.addChild(Tail2);
+		Tail2.setTextureOffset(30, 0).addBox(-4.5F, 1.5F, 0.0F, 9, 0, 10, false);
 
 		back_fin = new ModelRenderer(this);
 		back_fin.setRotationPoint(0.0F, 1.0F, 1.5F);
@@ -89,6 +98,18 @@ public class ModelGhostRay extends ModelFlyingBase {
 		Body_Base.addChild(Fin_r);
 		setRotateAngle(Fin_r, 0.0F, 0.0F, 1.5708F);
 		Fin_r.setTextureOffset(0, 0).addBox(-1.0F, -0.5F, -6.0F, 2, 1, 6, false);
+		
+		Dorsel_Fin_l = new ModelRenderer(this);
+		Dorsel_Fin_l.setRotationPoint(-2.0F, -2.0F, -2.0F);
+		Body_Base.addChild(Dorsel_Fin_l);
+		setRotationAngle(Dorsel_Fin_l, 0.0F, 0.0F, 1.0036F);
+		Dorsel_Fin_l.setTextureOffset(46, 0).addBox(-7.0F, 0.0F, -6.0F, 7, 0, 12, false);
+		
+		Dorsel_Fin_r = new ModelRenderer(this);
+		Dorsel_Fin_r.setRotationPoint(1.8805F, -2.0F, -2.0F);
+		Body_Base.addChild(Dorsel_Fin_r);
+		setRotationAngle(Dorsel_Fin_r, 0.0F, 0.0F, 2.138F);
+		Dorsel_Fin_r.setTextureOffset(46, 0).addBox(-7.0F, 0.0F, -6.0F, 7, 0, 12, false);		
     }
     
     @Override
@@ -112,17 +133,22 @@ public class ModelGhostRay extends ModelFlyingBase {
     	super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
     	
     	float flap = MathHelper.sin(ageInTicks * 0.1F);
+    	float flap1 = MathHelper.sin(ageInTicks * 0.1F + 0.25F * (float)Math.PI);
+    	float flap2 = MathHelper.sin(ageInTicks * 0.1F + 0.5F * (float)Math.PI);
     	
     	this.Body_Base.rotationPointY = 22.0F + flap;
     	
     	this.Wing0_r.rotateAngleZ = 0.24F * flap;
         this.Wing0_l.rotateAngleZ = -0.24F * flap;
         
-        this.Wing1_r.rotateAngleZ = 0.36F * flap;
-        this.Wing1_l.rotateAngleZ = -0.36F * flap;        
+        this.Wing1_r.rotateAngleZ = 0.36F * flap1;
+        this.Wing1_l.rotateAngleZ = -0.36F * flap1;        
         
-        this.Tail0.rotateAngleX = 0.18F * flap;
+        this.Tail0.rotateAngleX = 0.18F * flap1;
         
-        this.Tail1.rotateAngleX = 0.09F * flap;
+        this.Tail1.rotateAngleX = 0.09F * flap2;
+        
+        this.Dorsel_Fin_r.rotateAngleZ = 2.138F + 0.18F * flap2;
+        this.Dorsel_Fin_l.rotateAngleZ = 1.0036F - 0.18F * flap2;   
     }
 }

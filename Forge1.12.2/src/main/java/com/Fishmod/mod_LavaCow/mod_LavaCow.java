@@ -35,29 +35,30 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = mod_LavaCow.MODID, name = mod_LavaCow.NAME, version = mod_LavaCow.VERSION, acceptedMinecraftVersions = mod_LavaCow.MC_VERSION, guiFactory = "com.Fishmod.mod_LavaCow.client.gui.FishGuiFactory")
+@Mod(modid = mod_LavaCow.MODID, name = mod_LavaCow.NAME, version = mod_LavaCow.VERSION, acceptedMinecraftVersions = mod_LavaCow.MC_VERSION, dependencies = mod_LavaCow.DEPENDENCIES, guiFactory = "com.Fishmod.mod_LavaCow.client.gui.FishGuiFactory")
 public class mod_LavaCow {
- 
+
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
     public static final String VERSION = "1.5.0";
     public static final String MC_VERSION = "[1.12.2]";
-    
+    public static final String DEPENDENCIES = "after:tconstruct;after:conarm";
+
     public static final String CLIENT = "com.Fishmod.mod_LavaCow.proxy.ClientProxy";
     public static final String SERVER = "com.Fishmod.mod_LavaCow.proxy.ServerProxy";
-     
+
     @SidedProxy(clientSide = mod_LavaCow.CLIENT, serverSide = mod_LavaCow.SERVER)
     public static IProxy PROXY;
-    
+
     @Instance(mod_LavaCow.MODID)
-	public static mod_LavaCow INSTANCE;
-    
+    public static mod_LavaCow INSTANCE;
+
     public static Logger logger;
-    
+
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
-    
+
     public static CreativeTabs TAB_ITEMS;
- 
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
@@ -67,16 +68,16 @@ public class mod_LavaCow {
 
         PROXY.preRender();
         PROXY.registerItemAndBlockRenderers();
-        
+
         TinkersCompatBridge.loadTinkersCompat();
         QuarkCompatBridge.loadQuarkCompat();
         PROXY.preInit(event);
-        
+
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
         NETWORK_WRAPPER.registerMessage(PacketMountSpecial.class, PacketMountSpecial.class, 3, Side.SERVER);
         NETWORK_WRAPPER.registerMessage(PacketParticle.class, PacketParticle.class, 0, Side.CLIENT);
     }
- 
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ModEventHandler());
@@ -85,25 +86,25 @@ public class mod_LavaCow {
         GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
         AddRecipes.addRecipies();
         LootTableHandler.addLootTable();
-        
+
         // Implements mobs to the monster spawner list
         if (Modconfig.MonsterSpawner_Mobs) {
-        	DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "unburied"), 50);
-        	DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "foglet"), 50);
+            DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "unburied"), 50);
+            DungeonHooks.addDungeonMob(new ResourceLocation(mod_LavaCow.MODID + ":" + "foglet"), 50);
         }
-        
+
         PROXY.init(event);
     }
- 
+
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-    	PROXY.postInit(event);
-    	
-    	TinkersCompatBridge.loadTinkersPostInitCompat();
-    	
-    	if (Loader.isModLoaded("jeresources")) {
-    		ModIntegrationRegistry.registerModIntegration(new FURJERIntegration());
-    	} 
+        PROXY.postInit(event);
+
+        TinkersCompatBridge.loadTinkersPostInitCompat();
+
+        if (Loader.isModLoaded("jeresources")) {
+            ModIntegrationRegistry.registerModIntegration(new FURJERIntegration());
+        }
     }
-    
+
 }

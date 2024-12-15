@@ -64,16 +64,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFishCustomWeapon extends ItemSword {
 
-	private Item repair_material;
-	private float Damage;
-	private float AttackSpeed;
-	private EnumRarity Rarity;
-	protected float efficiency;
-	private String Tooltip = null;
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
-	
-	public ItemFishCustomWeapon(String registryName, ToolMaterial materialIn, float damageIn, float attackspeedIn, Item repair, EnumRarity rarity) {
-		super(materialIn);
+    private Item repair_material;
+    private float Damage;
+    private float AttackSpeed;
+    private EnumRarity Rarity;
+    protected float efficiency;
+    private String Tooltip = null;
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
+
+    public ItemFishCustomWeapon(String registryName, ToolMaterial materialIn, float damageIn, float attackspeedIn, Item repair, EnumRarity rarity) {
+        super(materialIn);
         setUnlocalizedName(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
         setCreativeTab(mod_LavaCow.TAB_ITEMS);
@@ -83,67 +83,60 @@ public class ItemFishCustomWeapon extends ItemSword {
         this.Rarity = rarity;
         this.efficiency = materialIn.getEfficiency();
         this.Tooltip = "tootip." + mod_LavaCow.MODID + "." + registryName;
-	}
-	
-    public float getDestroySpeed(ItemStack stack, IBlockState state)
-    {
-        for (String type : getToolClasses(stack))
-        {
+    }
+
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        for (String type : getToolClasses(stack)) {
             if (state.getBlock().isToolEffective(type, state))
                 return efficiency;
         }
         return stack.getItem().equals(FishItems.UNDERTAKER_SHOVEL) && EFFECTIVE_ON.contains(state.getBlock()) ? this.efficiency : 1.0F;
     }
-	
-	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(entityIn instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && isSelected) {
-			((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 4));
-		}
-		
-		if(entityIn instanceof EntityLivingBase && stack.getItem() == FishItems.FROZEN_DAGGER && entityIn.isWet() && worldIn.rand.nextInt(50) < 2)
-			stack.setItemDamage(Math.max(stack.getItemDamage() - 1, 0));
-	}
-	
-	/**
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if (entityIn instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE && isSelected) {
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20, 4));
+        }
+
+        if (entityIn instanceof EntityLivingBase && stack.getItem() == FishItems.FROZEN_DAGGER && entityIn.isWet() && worldIn.rand.nextInt(50) < 2)
+            stack.setItemDamage(Math.max(stack.getItemDamage() - 1, 0));
+    }
+
+    /**
      * Returns the amount of damage this item will deal. One heart of damage is equal to 2 damage points.
      */
-	@Override
-    public float getAttackDamage()
-    {
+    @Override
+    public float getAttackDamage() {
         return this.Damage;
     }
-	
+
     /**
      * Return an item rarity from EnumRarity
      */
-    public EnumRarity getRarity(ItemStack stack)
-    {
+    public EnumRarity getRarity(ItemStack stack) {
         return this.Rarity;
     }
-    
-	@Override
-    public boolean hasContainerItem(ItemStack stack)
-    {
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack) {
         return stack.getItem() == FishItems.MOLTENPAN && stack.getItemDamage() < stack.getMaxDamage();
     }
-    
-	@Override
-    public ItemStack getContainerItem(ItemStack itemStack)
-    {
-		if(this.hasContainerItem(itemStack)) {
-			ItemStack result = itemStack.copy();
-			result.setItemDamage(itemStack.getItemDamage() + 8);
-			return result;
-		}
-		else return ItemStack.EMPTY;
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        if (this.hasContainerItem(itemStack)) {
+            ItemStack result = itemStack.copy();
+            result.setItemDamage(itemStack.getItemDamage() + 8);
+            return result;
+        } else return ItemStack.EMPTY;
     }
-	
-	/**
-	* Called when this item is used when targetting a Block
-	*/
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+    /**
+     * Called when this item is used when targetting a Block
+     */
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		
 		/*Biome biome = worldIn.getBiomeForCoordsBody(pos);
 		for(SpawnListEntry E: biome.getSpawnableList(EnumCreatureType.MONSTER)) {
@@ -155,502 +148,470 @@ public class ItemFishCustomWeapon extends ItemSword {
 		for(SpawnListEntry E: biome.getSpawnableList(EnumCreatureType.WATER_CREATURE)) {
 			System.out.println(biome.getBiomeName() + ": " + E.entityClass.getName() + " " + E.itemWeight);
 		}*/
-		
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitZ, hitZ, hitZ);
-	}
-	
+
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitZ, hitZ, hitZ);
+    }
+
     /**
      * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
      * the damage on the stack.
      */
-	@Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
-		float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-		
-		if(attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE)
-		{
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+        float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+
+        if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE) {
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
-            for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D)))
-            {
-                if (entitylivingbase != attacker && entitylivingbase != target && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 16.0D)
-                {
-                    entitylivingbase.knockBack(attacker, 0.4F, (double)MathHelper.sin(attacker.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(attacker.rotationYaw * 0.017453292F)));
+            for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
+                if (entitylivingbase != attacker && entitylivingbase != target && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 16.0D) {
+                    entitylivingbase.knockBack(attacker, 0.4F, (double) MathHelper.sin(attacker.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(attacker.rotationYaw * 0.017453292F)));
                     entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), f3);
                 }
             }
 
-            attacker.world.playSound((EntityPlayer)null, attacker.posX, attacker.posY, attacker.posZ, FishItems.ENTITY_SCARECROW_SCYTHE, attacker.getSoundCategory(), 1.0F, 1.0F / (attacker.world.rand.nextFloat() * 0.4F + 0.8F));
+            attacker.world.playSound((EntityPlayer) null, attacker.posX, attacker.posY, attacker.posZ, FishItems.ENTITY_SCARECROW_SCYTHE, attacker.getSoundCategory(), 1.0F, 1.0F / (attacker.world.rand.nextFloat() * 0.4F + 0.8F));
             ((EntityPlayer) attacker).spawnSweepParticles();
-		}
-		else if(attacker instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE) {
-			((EntityPlayer)attacker).getFoodStats().addStats(attacker.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
-		}
-		else if(stack.getItem() == FishItems.VESPA_DAGGER)
-		{
-			// Stacks with Poisonous
-			target.addPotionEffect(new PotionEffect(MobEffects.POISON, 320 + 160 * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, attacker.getHeldItem(attacker.getActiveHand())), 0));
-		}
-		else if(stack.getItem() == FishItems.MOLTENHAMMER)
-		{
-			target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
-			
-			// Stacks with Fire Aspect
-			target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-		}
-		else if(stack.getItem() == FishItems.SOULFORGED_HAMMER)
-		{
-			target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
-			
-			// Stacks with Fire Aspect
-			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
-		}
-		else if(stack.getItem() == FishItems.MOLTENPAN)
-		{
-			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
-			
-			// Stacks with Fire Aspect
-			target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-		}
-		else if(stack.getItem() == FishItems.SOULFORGED_PAN)
-		{
-			target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
-			
-			// Stacks with Fire Aspect
-			target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
-			target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 0));
-		}
-		else if(stack.getItem() == FishItems.SKELETONKING_MACE)
-		{
-			target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.5F);
-        	target.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 4));
-		}
-		
-		stack.damageItem(1, attacker);
+        } else if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.FAMINE) {
+            ((EntityPlayer) attacker).getFoodStats().addStats(attacker.isPotionActive(MobEffects.HUNGER) ? 2 : 1, 0.0F);
+        } else if (stack.getItem() == FishItems.VESPA_DAGGER) {
+            // Stacks with Poisonous
+            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 320 + 160 * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, attacker.getHeldItem(attacker.getActiveHand())), 0));
+        } else if (stack.getItem() == FishItems.MOLTENHAMMER) {
+            target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
+
+            // Stacks with Fire Aspect
+            target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+        } else if (stack.getItem() == FishItems.SOULFORGED_HAMMER) {
+            target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
+
+            // Stacks with Fire Aspect
+            target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+            target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 2));
+        } else if (stack.getItem() == FishItems.MOLTENPAN) {
+            target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
+
+            // Stacks with Fire Aspect
+            target.setFire(8 + 4 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+        } else if (stack.getItem() == FishItems.SOULFORGED_PAN) {
+            target.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0F, 0.75F);
+
+            // Stacks with Fire Aspect
+            target.setFire(10 + 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())));
+            target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 200 + 100 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, attacker.getHeldItem(attacker.getActiveHand())), 2));
+        } else if (stack.getItem() == FishItems.SKELETONKING_MACE) {
+            target.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.5F);
+            target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 300, 2));
+            target.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE, 200, 3));
+        }
+
+        stack.damageItem(1, attacker);
         return true;
     }
-	
-	public static void LavaBurst(World worldIn, double x, double y, double z, double radius, EnumParticleTypes particleIn)
-	{		
-		double NumberofParticles = radius * 8.0D;
-		
-		for(double i = 0.0D; i < NumberofParticles; i++)
-		{
-			double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
-            double d1 = (double)(y + 1);
+
+    public static void LavaBurst(World worldIn, double x, double y, double z, double radius, EnumParticleTypes particleIn) {
+        double NumberofParticles = radius * 8.0D;
+
+        for (double i = 0.0D; i < NumberofParticles; i++) {
+            double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
+            double d1 = (double) (y + 1);
             double d2 = z + radius * MathHelper.cos((float) (i / NumberofParticles * 360.0f));
-            
-            worldIn.spawnParticle(particleIn, d0, d1, d2, 0.0D, 0.0D, 0.0D); 
-		}
-	}
-	
-	public static void WitherBurst(World worldIn, double x, double y, double z, double radius, String particleIn)
-	{		
-		double NumberofParticles = radius * 8.0D;
-		
-		for(double i = 0.0D; i < NumberofParticles; i++)
-		{
-			double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
-            double d1 = (double)(y + 1);
+
+            worldIn.spawnParticle(particleIn, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    public static void WitherBurst(World worldIn, double x, double y, double z, double radius, String particleIn) {
+        double NumberofParticles = radius * 8.0D;
+
+        for (double i = 0.0D; i < NumberofParticles; i++) {
+            double d0 = x + radius * MathHelper.sin((float) (i / NumberofParticles * 360.0f));
+            double d1 = (double) (y + 1);
             double d2 = z + radius * MathHelper.cos((float) (i / NumberofParticles * 360.0f));
-            
-            mod_LavaCow.PROXY.spawnCustomParticle(particleIn, worldIn, d0, d1, d2, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F); 
-		}
-	}
-	
+
+            mod_LavaCow.PROXY.spawnCustomParticle(particleIn, worldIn, d0, d1, d2, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, 0.0F);
+        }
+    }
+
     /**
      * Called when the equipped item is right clicked.
      */
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
-		int fire_aspect = EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, playerIn.getHeldItem(handIn));
-		int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getHeldItem(handIn));
-		int knockback = EnchantmentHelper.getEnchantmentLevel(Enchantments.KNOCKBACK, playerIn.getHeldItem(handIn));
-		int bane_of_arthropods = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getHeldItem(handIn));
-		int smite = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, playerIn.getHeldItem(handIn));
-		int lifesteal = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL, playerIn.getHeldItem(handIn));
-		int poisonous = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, playerIn.getHeldItem(handIn));
-		int corrosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CORROSIVE, playerIn.getHeldItem(handIn));
-		int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getHeldItem(handIn));
-		
-    	if(playerIn.getHeldItem(handIn).getItem() == FishItems.SLUDGE_WAND) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        int fire_aspect = EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, playerIn.getHeldItem(handIn));
+        int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getHeldItem(handIn));
+        int knockback = EnchantmentHelper.getEnchantmentLevel(Enchantments.KNOCKBACK, playerIn.getHeldItem(handIn));
+        int bane_of_arthropods = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getHeldItem(handIn));
+        int smite = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, playerIn.getHeldItem(handIn));
+        int lifesteal = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL, playerIn.getHeldItem(handIn));
+        int poisonous = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, playerIn.getHeldItem(handIn));
+        int corrosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CORROSIVE, playerIn.getHeldItem(handIn));
+        int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getHeldItem(handIn));
+
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.SLUDGE_WAND) {
             for (int i = 0; i < 2; ++i) {
-        		NBTTagCompound nbttagcompound = new NBTTagCompound();
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
-            	EntityLilSludge entity = new EntityLilSludge(worldIn);
-            	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-        		entity.setOwnerId(playerIn.getUniqueID());
-        		entity.setTamed(true);     	
-        		nbttagcompound.setInteger("fire_aspect", fire_aspect);
-        		nbttagcompound.setInteger("sharpness", sharpness);
-        		nbttagcompound.setInteger("knockback", knockback);
-        		nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-        		nbttagcompound.setInteger("smite", smite);
-        		nbttagcompound.setInteger("unbreaking", unbreaking);
-        		nbttagcompound.setInteger("lifesteal", lifesteal);
-        		nbttagcompound.setInteger("poisonous", poisonous);
-        		nbttagcompound.setInteger("corrosive", corrosive);
-        		entity.readEntityFromNBT(nbttagcompound);
-        		entity.setLimitedLife(Modconfig.LilSludge_Lifespan * 20);
-        		entity.setSkin((fire_aspect > 0) ? 1 : 0);
-        	
-        		if(playerIn.world instanceof World) {
-        			for (int j = 0; j < 24; ++j) {
-        				double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-        				double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-        				double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-        				mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
-        			}
-        		}
-        		
-        		if(!worldIn.isRemote) {
-    				worldIn.spawnEntity(entity);
-    			}
-        		
-        		worldIn.setEntityState(entity, (byte)32);
-        	}
-            
+                EntityLilSludge entity = new EntityLilSludge(worldIn);
+                entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                entity.setOwnerId(playerIn.getUniqueID());
+                entity.setTamed(true);
+                nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                nbttagcompound.setInteger("sharpness", sharpness);
+                nbttagcompound.setInteger("knockback", knockback);
+                nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                nbttagcompound.setInteger("smite", smite);
+                nbttagcompound.setInteger("unbreaking", unbreaking);
+                nbttagcompound.setInteger("lifesteal", lifesteal);
+                nbttagcompound.setInteger("poisonous", poisonous);
+                nbttagcompound.setInteger("corrosive", corrosive);
+                entity.readEntityFromNBT(nbttagcompound);
+                entity.setLimitedLife(Modconfig.LilSludge_Lifespan * 20);
+                entity.setSkin((fire_aspect > 0) ? 1 : 0);
+
+                if (playerIn.world instanceof World) {
+                    for (int j = 0; j < 24; ++j) {
+                        double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                        double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+                    }
+                }
+
+                if (!worldIn.isRemote) {
+                    worldIn.spawnEntity(entity);
+                }
+
+                worldIn.setEntityState(entity, (byte) 32);
+            }
+
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(2, playerIn);
-			playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
-			playerIn.getCooldownTracker().setCooldown(this, Modconfig.SludgeWand_Cooldown * 20);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-            
-        	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+            playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
+            playerIn.getCooldownTracker().setCooldown(this, Modconfig.SludgeWand_Cooldown * 20);
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
         }
-    	
-        if(playerIn.getHeldItem(handIn).getItem() == FishItems.SCARAB_WAND && worldIn instanceof World) {
+
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.SCARAB_WAND && worldIn instanceof World) {
             for (int i = 0; i < 4; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
                 EntityScarab entity = new EntityScarab(worldIn);
-            	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entity.setOwnerId(playerIn.getUniqueID());
                 entity.setTamed(true);
-            	nbttagcompound.setInteger("fire_aspect", fire_aspect);
-            	nbttagcompound.setInteger("sharpness", sharpness);
-            	nbttagcompound.setInteger("knockback", knockback);
-            	nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-            	nbttagcompound.setInteger("smite", smite);
-            	nbttagcompound.setInteger("unbreaking", unbreaking);
-            	nbttagcompound.setInteger("lifesteal", lifesteal);
-            	nbttagcompound.setInteger("poisonous", poisonous);
-            	nbttagcompound.setInteger("corrosive", corrosive);
-            	entity.readEntityFromNBT(nbttagcompound);
+                nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                nbttagcompound.setInteger("sharpness", sharpness);
+                nbttagcompound.setInteger("knockback", knockback);
+                nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                nbttagcompound.setInteger("smite", smite);
+                nbttagcompound.setInteger("unbreaking", unbreaking);
+                nbttagcompound.setInteger("lifesteal", lifesteal);
+                nbttagcompound.setInteger("poisonous", poisonous);
+                nbttagcompound.setInteger("corrosive", corrosive);
+                entity.readEntityFromNBT(nbttagcompound);
                 entity.setLimitedLife(Modconfig.Amber_Scarab_Lifespan * 20);
-                
-                if(playerIn.world instanceof World) {
-                	for (int j = 0; j < 24; ++j) {
-                		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2));
-                	}
+
+                if (playerIn.world instanceof World) {
+                    for (int j = 0; j < 24; ++j) {
+                        double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                        double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2));
+                    }
                 }
-                
-                if(!worldIn.isRemote) {
-    	            worldIn.spawnEntity(entity);
-            	}
-                
-                worldIn.setEntityState(entity, (byte)32);
+
+                if (!worldIn.isRemote) {
+                    worldIn.spawnEntity(entity);
+                }
+
+                worldIn.setEntityState(entity, (byte) 32);
             }
-            
+
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(4, playerIn);
-			playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
+            playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.ScarabWand_Cooldown * 20);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-			
-        	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		}
-        
-        if(playerIn.getHeldItem(handIn).getItem() == FishItems.MOLTENHAMMER)
-		{
-			double radius = 4.0D;
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
 
-			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(radius, radius, radius));
-			for(Entity entity1 : list)
-			{
-				if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable)entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP))
-				{
-					entity1.setFire(4 + 4 * fire_aspect);
-					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 8.0F + (float)sharpness
-							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
-							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite : 0));
-					
-					((EntityLivingBase)entity1).knockBack(playerIn, (float)knockback * 0.5F, (playerIn.posX - entity1.posX)/playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ)/playerIn.getDistance(entity1));
-					
-		            if (bane_of_arthropods > 0 && (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD)))
-		            {
-		                int i = 20 + worldIn.rand.nextInt(10 * bane_of_arthropods);
-		                ((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
-		            }
-		            
-		            if(poisonous > 0)
-		    			((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, poisonous - 1));
-		            
-		            if(corrosive > 0)
-		            	((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4*20, corrosive - 1));
-				}
-			}
-			
-			LavaBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, EnumParticleTypes.FLAME);
-			playerIn.getHeldItem(handIn).damageItem(8, playerIn);
-			playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
-			playerIn.getCooldownTracker().setCooldown(this, 80);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-			
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		}
-        
-        if(playerIn.getHeldItem(handIn).getItem() == FishItems.SOULFORGED_HAMMER)
-		{
-			double radius = 5.0D;
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        }
 
-			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(radius, radius, radius));
-			for(Entity entity1 : list)
-			{
-				if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable)entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP))
-				{
-					entity1.setFire(5 + 5 * fire_aspect);
-					((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 0));
-					entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn) , 10.0F + (float)sharpness
-							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods : 0)
-							+ (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float)smite : 0));
-					
-					((EntityLivingBase)entity1).knockBack(playerIn, (float)knockback * 0.5F, (playerIn.posX - entity1.posX)/playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ)/playerIn.getDistance(entity1));
-					
-		            if (bane_of_arthropods > 0 && (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD)))
-		            {
-		                int i = 20 + worldIn.rand.nextInt(10 * bane_of_arthropods);
-		                ((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
-		            }
-		            
-		            if(poisonous > 0)
-		    			((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 8*20, poisonous - 1));
-		            
-		            if(corrosive > 0)
-		            	((EntityLivingBase)entity1).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4*20, corrosive - 1));
-				}
-			}
-			
-			WitherBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, "wither_flame");
-			playerIn.getHeldItem(handIn).damageItem(6, playerIn);
-			playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
-			playerIn.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.5F, 0.75F);
-			playerIn.getCooldownTracker().setCooldown(this, 80);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-			
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		}
-        
-        if(playerIn.getHeldItem(handIn).getItem() == FishItems.BEAST_CLAW && playerIn.onGround)
-		{
-        	Vec3d lookVec = playerIn.getLookVec();
-        	
-        	if(playerIn.getHeldItemOffhand().getItem() == FishItems.BEAST_CLAW && playerIn.getHeldItemMainhand().getItem() == FishItems.BEAST_CLAW) {
-        		playerIn.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 3 * 20, 0));
-        		playerIn.addPotionEffect(new PotionEffect(MobEffects.HASTE, 3 * 20, 0));
-        	}
-        	
-        	playerIn.addVelocity(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D);
-        	playerIn.getHeldItem(handIn).damageItem(8, playerIn);
-			playerIn.getCooldownTracker().setCooldown(this, 120);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-			
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		}
-        
-        if(playerIn.getHeldItem(handIn).getItem() == FishItems.UNDERTAKER_SHOVEL) {
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.MOLTENHAMMER) {
+            double radius = 4.0D;
+
+            List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(radius, radius, radius));
+            for (Entity entity1 : list) {
+                if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable) entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP)) {
+                    entity1.setFire(4 + 4 * fire_aspect);
+                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), 8.0F + (float) sharpness
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods : 0)
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite : 0));
+
+                    ((EntityLivingBase) entity1).knockBack(playerIn, (float) knockback * 0.5F, (playerIn.posX - entity1.posX) / playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ) / playerIn.getDistance(entity1));
+
+                    if (bane_of_arthropods > 0 && (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
+                        int i = 20 + worldIn.rand.nextInt(10 * bane_of_arthropods);
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+                    }
+
+                    if (poisonous > 0)
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 8 * 20, poisonous - 1));
+
+                    if (corrosive > 0)
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20, corrosive - 1));
+                }
+            }
+
+            LavaBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, EnumParticleTypes.FLAME);
+            playerIn.getHeldItem(handIn).damageItem(8, playerIn);
+            playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
+            playerIn.getCooldownTracker().setCooldown(this, 80);
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        }
+
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.SOULFORGED_HAMMER) {
+            double radius = 5.0D;
+
+            List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(radius, radius, radius));
+            for (Entity entity1 : list) {
+                if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable) entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP)) {
+                    entity1.setFire(5 + 5 * fire_aspect);
+                    ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 2));
+                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), 10.0F + (float) sharpness
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods : 0)
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite : 0));
+
+                    ((EntityLivingBase) entity1).knockBack(playerIn, (float) knockback * 0.5F, (playerIn.posX - entity1.posX) / playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ) / playerIn.getDistance(entity1));
+
+                    if (bane_of_arthropods > 0 && (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD))) {
+                        int i = 20 + worldIn.rand.nextInt(10 * bane_of_arthropods);
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, i, 3));
+                    }
+
+                    if (poisonous > 0)
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 8 * 20, poisonous - 1));
+
+                    if (corrosive > 0)
+                        ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(ModMobEffects.CORRODED, 4 * 20, corrosive - 1));
+                }
+            }
+
+            WitherBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, "wither_flame");
+            playerIn.getHeldItem(handIn).damageItem(6, playerIn);
+            playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
+            playerIn.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.5F, 0.75F);
+            playerIn.getCooldownTracker().setCooldown(this, 80);
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        }
+
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.BEAST_CLAW && playerIn.onGround) {
+            Vec3d lookVec = playerIn.getLookVec();
+
+            if (playerIn.getHeldItemOffhand().getItem() == FishItems.BEAST_CLAW && playerIn.getHeldItemMainhand().getItem() == FishItems.BEAST_CLAW) {
+                playerIn.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 3 * 20, 0));
+                playerIn.addPotionEffect(new PotionEffect(MobEffects.HASTE, 3 * 20, 0));
+            }
+
+            playerIn.addVelocity(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D);
+            playerIn.getHeldItem(handIn).damageItem(8, playerIn);
+            playerIn.getCooldownTracker().setCooldown(this, 120);
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
+
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        }
+
+        if (playerIn.getHeldItem(handIn).getItem() == FishItems.UNDERTAKER_SHOVEL) {
             for (int i = 0; i < 4; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
-                if(worldIn.rand.nextFloat() < 0.15F) {
-                	if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.DRY)) {
-                    	EntityMummy entity = new EntityMummy(worldIn);
-                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                if (worldIn.rand.nextFloat() < 0.15F) {
+                    if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.DRY)) {
+                        EntityMummy entity = new EntityMummy(worldIn);
+                        entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setOwnerId(playerIn.getUniqueID());
-                    	entity.setCanPickUpLoot(false);
+                        entity.setCanPickUpLoot(false);
                         entity.setTamed(true);
-                    	nbttagcompound.setInteger("fire_aspect", fire_aspect);
-                    	nbttagcompound.setInteger("sharpness", sharpness);
-                    	nbttagcompound.setInteger("knockback", knockback);
-                    	nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-                    	nbttagcompound.setInteger("smite", smite);
-                    	nbttagcompound.setInteger("unbreaking", unbreaking);
-                    	nbttagcompound.setInteger("lifesteal", lifesteal);
-                    	nbttagcompound.setInteger("poisonous", poisonous);
-                    	nbttagcompound.setInteger("corrosive", corrosive);
-                    	entity.readEntityFromNBT(nbttagcompound);
+                        nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                        nbttagcompound.setInteger("sharpness", sharpness);
+                        nbttagcompound.setInteger("knockback", knockback);
+                        nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                        nbttagcompound.setInteger("smite", smite);
+                        nbttagcompound.setInteger("unbreaking", unbreaking);
+                        nbttagcompound.setInteger("lifesteal", lifesteal);
+                        nbttagcompound.setInteger("poisonous", poisonous);
+                        nbttagcompound.setInteger("corrosive", corrosive);
+                        entity.readEntityFromNBT(nbttagcompound);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
-                        
-                        if(playerIn.world instanceof World) {
-                        	for (int j = 0; j < 24; ++j) {
-                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
-                        	}
+
+                        if (playerIn.world instanceof World) {
+                            for (int j = 0; j < 24; ++j) {
+                                double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                                double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                            }
                         }
-                        
-                        if(!worldIn.isRemote) {
-            	            worldIn.spawnEntity(entity);
-                    	}
-                        
-                        worldIn.setEntityState(entity, (byte)32);
+
+                        if (!worldIn.isRemote) {
+                            worldIn.spawnEntity(entity);
+                        }
+
+                        worldIn.setEntityState(entity, (byte) 32);
                     } else if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.COLD)) {
-                    	EntityZombieFrozen entity = new EntityZombieFrozen(worldIn);
-                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        EntityZombieFrozen entity = new EntityZombieFrozen(worldIn);
+                        entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setOwnerId(playerIn.getUniqueID());
-                    	entity.setCanPickUpLoot(false);
+                        entity.setCanPickUpLoot(false);
                         entity.setTamed(true);
-                    	nbttagcompound.setInteger("fire_aspect", fire_aspect);
-                    	nbttagcompound.setInteger("sharpness", sharpness);
-                    	nbttagcompound.setInteger("knockback", knockback);
-                    	nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-                    	nbttagcompound.setInteger("smite", smite);
-                    	nbttagcompound.setInteger("unbreaking", unbreaking);
-                    	nbttagcompound.setInteger("lifesteal", lifesteal);
-                    	nbttagcompound.setInteger("poisonous", poisonous);
-                    	nbttagcompound.setInteger("corrosive", corrosive);
-                    	entity.readEntityFromNBT(nbttagcompound);
+                        nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                        nbttagcompound.setInteger("sharpness", sharpness);
+                        nbttagcompound.setInteger("knockback", knockback);
+                        nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                        nbttagcompound.setInteger("smite", smite);
+                        nbttagcompound.setInteger("unbreaking", unbreaking);
+                        nbttagcompound.setInteger("lifesteal", lifesteal);
+                        nbttagcompound.setInteger("poisonous", poisonous);
+                        nbttagcompound.setInteger("corrosive", corrosive);
+                        entity.readEntityFromNBT(nbttagcompound);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
-                        
-                        if(playerIn.world instanceof World) {
-                        	for (int j = 0; j < 24; ++j) {
-                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
-                        	}
+
+                        if (playerIn.world instanceof World) {
+                            for (int j = 0; j < 24; ++j) {
+                                double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                                double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                            }
                         }
-                        
-                        if(!worldIn.isRemote) {
-            	            worldIn.spawnEntity(entity);
-                    	}
-                        
-                        worldIn.setEntityState(entity, (byte)32);
+
+                        if (!worldIn.isRemote) {
+                            worldIn.spawnEntity(entity);
+                        }
+
+                        worldIn.setEntityState(entity, (byte) 32);
                     } else if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.WET)) {
-                    	EntityZombieMushroom entity = new EntityZombieMushroom(worldIn);
-                    	entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                        EntityZombieMushroom entity = new EntityZombieMushroom(worldIn);
+                        entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
+                        entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setOwnerId(playerIn.getUniqueID());
-                    	entity.setCanPickUpLoot(false);
+                        entity.setCanPickUpLoot(false);
                         entity.setTamed(true);
-                    	nbttagcompound.setInteger("fire_aspect", fire_aspect);
-                    	nbttagcompound.setInteger("sharpness", sharpness);
-                    	nbttagcompound.setInteger("knockback", knockback);
-                    	nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-                    	nbttagcompound.setInteger("smite", smite);
-                    	nbttagcompound.setInteger("unbreaking", unbreaking);
-                    	nbttagcompound.setInteger("lifesteal", lifesteal);
-                    	nbttagcompound.setInteger("poisonous", poisonous);
-                    	nbttagcompound.setInteger("corrosive", corrosive);
-                    	entity.readEntityFromNBT(nbttagcompound);
+                        nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                        nbttagcompound.setInteger("sharpness", sharpness);
+                        nbttagcompound.setInteger("knockback", knockback);
+                        nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                        nbttagcompound.setInteger("smite", smite);
+                        nbttagcompound.setInteger("unbreaking", unbreaking);
+                        nbttagcompound.setInteger("lifesteal", lifesteal);
+                        nbttagcompound.setInteger("poisonous", poisonous);
+                        nbttagcompound.setInteger("corrosive", corrosive);
+                        entity.readEntityFromNBT(nbttagcompound);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
-                        
-                        if(playerIn.world instanceof World) {
-                        	for (int j = 0; j < 24; ++j) {
-                        		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                        		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                        		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
-                        	}
+
+                        if (playerIn.world instanceof World) {
+                            for (int j = 0; j < 24; ++j) {
+                                double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                                double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                                mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                            }
                         }
-                        
-                        if(!worldIn.isRemote) {
-            	            worldIn.spawnEntity(entity);
-                    	}
-                        
-                        worldIn.setEntityState(entity, (byte)32);
+
+                        if (!worldIn.isRemote) {
+                            worldIn.spawnEntity(entity);
+                        }
+
+                        worldIn.setEntityState(entity, (byte) 32);
                     }
                 } else {
                     EntityUnburied entity = new EntityUnburied(worldIn);
                     entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                    entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                    entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                     entity.setOwnerId(playerIn.getUniqueID());
-                	entity.setCanPickUpLoot(false);
+                    entity.setCanPickUpLoot(false);
                     entity.setTamed(true);
-                	nbttagcompound.setInteger("fire_aspect", fire_aspect);
-                	nbttagcompound.setInteger("sharpness", sharpness);
-                	nbttagcompound.setInteger("knockback", knockback);
-                	nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
-                	nbttagcompound.setInteger("smite", smite);
-                	nbttagcompound.setInteger("unbreaking", unbreaking);
-                	nbttagcompound.setInteger("lifesteal", lifesteal);
-                	nbttagcompound.setInteger("poisonous", poisonous);
-                	nbttagcompound.setInteger("corrosive", corrosive);
-                	entity.readEntityFromNBT(nbttagcompound);
+                    nbttagcompound.setInteger("fire_aspect", fire_aspect);
+                    nbttagcompound.setInteger("sharpness", sharpness);
+                    nbttagcompound.setInteger("knockback", knockback);
+                    nbttagcompound.setInteger("bane_of_arthropods", bane_of_arthropods);
+                    nbttagcompound.setInteger("smite", smite);
+                    nbttagcompound.setInteger("unbreaking", unbreaking);
+                    nbttagcompound.setInteger("lifesteal", lifesteal);
+                    nbttagcompound.setInteger("poisonous", poisonous);
+                    nbttagcompound.setInteger("corrosive", corrosive);
+                    entity.readEntityFromNBT(nbttagcompound);
                     entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
-                    
-                    if(playerIn.world instanceof World) {
-                    	for (int j = 0; j < 24; ++j) {
-                    		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                    		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                    		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                    		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
-                    	}
+
+                    if (playerIn.world instanceof World) {
+                        for (int j = 0; j < 24; ++j) {
+                            double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                            double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                            double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                            mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(fire_aspect > 0 ? EnumParticleTypes.FLAME : EnumParticleTypes.SMOKE_LARGE, d0, d1, d2));
+                        }
                     }
-                    
-                    if(!worldIn.isRemote) {
-        	            worldIn.spawnEntity(entity);
-                	}
-                    
-                    worldIn.setEntityState(entity, (byte)32);
-                }  
+
+                    if (!worldIn.isRemote) {
+                        worldIn.spawnEntity(entity);
+                    }
+
+                    worldIn.setEntityState(entity, (byte) 32);
+                }
             }
-            
+
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(4, playerIn);
-			playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
+            playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.Undertaker_Shovel_Cooldown * 20);
-			playerIn.getHeldItem(handIn).setAnimationsToGo(5);
-			
-        	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-		}
+            playerIn.getHeldItem(handIn).setAnimationsToGo(5);
 
-    	return super.onItemRightClick(worldIn, playerIn, handIn);
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+        }
+
+        return super.onItemRightClick(worldIn, playerIn, handIn);
     }
-	
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-	{
-		return par2ItemStack.getItem() == this.repair_material ? true : false;
-	}
-	
-	public ItemFishCustomWeapon setNoDescription() {
-		this.Tooltip = null;
-		return this;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
-		if (stack.getItem().equals(FishItems.BONESWORD)) {
-			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.BoneSword_Damage, Modconfig.BoneSword_DamageCap));
-			if (!Modconfig.BoneSword_Boss_Damage) list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip+".warning"));
-		} else if (stack.getItem().equals(FishItems.BEAST_CLAW)) {
-			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip+".desc0"));
-			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip+".desc1"));
-		} else if(this.Tooltip != null)
-			list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip));
-	}
-	
+
+    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+        return par2ItemStack.getItem() == this.repair_material ? true : false;
+    }
+
+    public ItemFishCustomWeapon setNoDescription() {
+        this.Tooltip = null;
+        return this;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+        if (stack.getItem().equals(FishItems.BONESWORD)) {
+            list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip, Modconfig.BoneSword_Damage, Modconfig.BoneSword_DamageCap));
+            if (!Modconfig.BoneSword_Boss_Damage)
+                list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip + ".warning"));
+        } else if (stack.getItem().equals(FishItems.BEAST_CLAW)) {
+            list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip + ".desc0"));
+            list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip + ".desc1"));
+        } else if (this.Tooltip != null)
+            list.add(TextFormatting.YELLOW + I18n.format(this.Tooltip));
+    }
+
     /**
      * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
      */
-	@Override
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-    {
+    @Override
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-        {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.Damage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)this.AttackSpeed, 0));
+        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.Damage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double) this.AttackSpeed, 0));
         }
 
         return multimap;

@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.compat.quark;
 
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

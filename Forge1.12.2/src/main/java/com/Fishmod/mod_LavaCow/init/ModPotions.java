@@ -30,4 +30,6 @@ public class ModPotions {
 	public static final PotionType VOID_DUST = new PotionType(mod_LavaCow.MODID + ":void_dust", new PotionEffect(ModMobEffects.VOID_DUST, 900)).setRegistryName(mod_LavaCow.MODID + ":void_dust");
 	public static final PotionType STRONG_VOID_DUST = new PotionType(mod_LavaCow.MODID + ":void_dust", new PotionEffect(ModMobEffects.VOID_DUST, 450, 2)).setRegistryName(mod_LavaCow.MODID + ":strong_void_dust");
 	public static final PotionType LONG_VOID_DUST = new PotionType(mod_LavaCow.MODID + ":void_dust", new PotionEffect(ModMobEffects.VOID_DUST, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_void_dust");
+	public static final PotionType RAVENS_GRACE = new PotionType(mod_LavaCow.MODID + ":ravens_grace", new PotionEffect(ModMobEffects.RAVENS_GRACE, 1800)).setRegistryName(mod_LavaCow.MODID + ":ravens_grace");
+	public static final PotionType LONG_RAVENS_GRACE = new PotionType(mod_LavaCow.MODID + ":ravens_grace", new PotionEffect(ModMobEffects.RAVENS_GRACE, 4800)).setRegistryName(mod_LavaCow.MODID + ":long_ravens_grace");
 }

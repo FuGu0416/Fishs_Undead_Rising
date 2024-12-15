@@ -5,10 +5,12 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackMelee;
 import com.Fishmod.mod_LavaCow.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.init.FishItems;
+import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -19,7 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -50,37 +51,38 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySludgeLord extends EntityMob implements IAggressive {
-	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntitySludgeLord.class, DataSerializers.VARINT);
-	private int attackTimer;
-	private int RattackTimer;
-	private boolean isAggressive = false;
-	protected int spellTicks;
-	
-	public EntitySludgeLord(World worldIn) {
+    private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntitySludgeLord.class, DataSerializers.VARINT);
+    public static final int ATTACK_TIMER = 30;
+    private int attackTimer;
+    private int RattackTimer;
+    private boolean isAggressive = false;
+    protected int spellTicks;
+
+    public EntitySludgeLord(World worldIn) {
         super(worldIn);
         this.setSize(2.2F, 3.7F);
         this.experienceValue = 20;
     }
-	
+
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new AICastingApell());
         this.tasks.addTask(2, new EntityFishAIAttackRange(this, EntitySludgeJet.class, FishItems.ENTITY_SLUDGELORD_ATTACK, 1, 2, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D));
-    	this.tasks.addTask(3, new EntitySludgeLord.AISludgeLordAttack(this, 1.0D, false));
-    	this.tasks.addTask(4, new EntitySludgeLord.AIUseSpell());
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(3, new EntitySludgeLord.AIUseSpell());
+        this.tasks.addTask(4, new EntitySludgeLord.AISludgeLordAttack(this));
+        this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        
+
         this.applyEntityAI();
     }
 
     protected void applyEntityAI() {
-    	this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-    	this.targetTasks.addTask(2, new EntitySludgeLord.AISludgeLordTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntitySludgeLord.AISludgeLordTarget<>(this, EntityPlayer.class, true));
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.19D);
@@ -90,112 +92,87 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
     }
-    
+
     @Override
-	public boolean getCanSpawnHere() {
-		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
-	}
-    
+    public boolean getCanSpawnHere() {
+        if (!Modconfig.SludgeLord_Spawn_Underground && !(this instanceof EntityAmberLord)) {
+            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+        }
+
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
     protected void entityInit() {
-    	super.entityInit();
+        super.entityInit();
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
-    
+
     public boolean isSpellcasting() {
-    	return this.spellTicks > 0;
+        return this.spellTicks > 0;
     }
-    
+
     public int getSpellTicks() {
         return this.spellTicks;
     }
-    
+
     @Override
     public double getMountedYOffset() {
         return -0.65D;
     }
-	
+
     /**
      * Called to update the entity's position/logic.
      */
-	@Override
+    @Override
     public void onUpdate() {
-		super.onUpdate();
-  	   	
+        super.onUpdate();
+
         if (this.attackTimer > 0) {
             --this.attackTimer;
-            if(this.attackTimer > 20 && this.getAttackTarget() != null)
-            	this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 10.0F, 10.0F);
-            
+
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
         }
-        
+
         if (this.RattackTimer > 0) {
             --this.RattackTimer;
         }
-        
+
         if (this.spellTicks > 0) {
             --this.spellTicks;
-            
+
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
         }
-    	
-        if (this.getAttackTimer() == 18 && this.deathTime <= 0) {       
-        	float f = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
-        	double d0 = this.posX + 2.5D * this.getLookVec().normalize().x;
-            double d1 = this.posY;
-            double d2 = this.posZ + 2.5D * this.getLookVec().normalize().z;
-            IBlockState state = this.world.getBlockState(new BlockPos(d0, d1, d2).down());
-    		int blockId = Block.getStateId(state);
-                	
-	        if (state.getMaterial().isSolid()) {
-	        	this.playSound(state.getBlock().getSoundType(state, this.world, new BlockPos(d0, d1, d2).down(), this).getBreakSound(), 1, 0.5F);
-	        	
-	            if (this.world.isRemote) {
-	            	for(int i = 0; i < 64; i++) {
-            			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d1 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2 + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
-	            	}
-	            }
-	        }
-	        
-            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.5D))) {
-                if (!this.equals(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
-                	if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer)entitylivingbase).disableShield(true);
-                	if(!(entitylivingbase instanceof EntityTameable && ((EntityTameable) entitylivingbase).isOwner(this))) {
-                		entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                        if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
-                        	entitylivingbase.setFire(2 * (int)f);
-                        }
-                	}
-                }        
-            }
-        }
     }
-    
+
     /**
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource source, float amount) {
-    	if (source == DamageSource.CACTUS) return false;
-    	
-    	if(source.isFireDamage())
-    		return super.attackEntityFrom(source, 2.0F * amount);
-    	return super.attackEntityFrom(source, amount);
+        if (source == DamageSource.CACTUS) return false;
+
+        if (source.isFireDamage())
+            return super.attackEntityFrom(source, 2.0F * amount);
+        return super.attackEntityFrom(source, amount);
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-    	if (this.attackTimer == 0) {
-	        this.attackTimer = 30;
-	        this.world.setEntityState(this, (byte)4);
-	        return true;
-    	}
+    public boolean attackEntityAsMob(Entity entity) {
+        boolean flag = super.attackEntityAsMob(entity);
 
-        return false;
+        if (flag) {
+            float f = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
+
+            if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.getRNG().nextFloat() < f * 0.3F) {
+                entity.setFire(2 * (int) f);
+            }
+        }
+
+        return flag;
     }
-    
+
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
@@ -205,32 +182,32 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.SludgeLord_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.SludgeLord_Attack);
-    	this.setHealth(this.getMaxHealth());
-    	
-    	return super.onInitialSpawn(difficulty, livingdata);
+        this.setHealth(this.getMaxHealth());
+
+        return super.onInitialSpawn(difficulty, livingdata);
     }
-    
+
     protected void updateAITasks() {
         super.updateAITasks();
-        
-        if(this.getAttackTarget() != null) {       		
-        		isAggressive = true;
-        		this.world.setEntityState(this, (byte)11);
-        	} else {
-        		isAggressive = false;
-        		this.world.setEntityState(this, (byte)34);
-        	}
+
+        if (this.getAttackTarget() != null) {
+            isAggressive = true;
+            this.world.setEntityState(this, (byte) 11);
+        } else {
+            isAggressive = false;
+            this.world.setEntityState(this, (byte) 34);
+        }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public boolean isAggressive() {
-    	return isAggressive;
+        return isAggressive;
     }
 
     public float getEyeHeight() {
         return height * 0.8F;
     }
-    
+
     public int getSkin() {
         return this.dataManager.get(SKIN_TYPE).intValue();
     }
@@ -238,59 +215,59 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     public void setSkin(int skinType) {
         this.dataManager.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
-    
-	public int getAttackTimer() {
+
+    public int getAttackTimer() {
         return this.attackTimer;
     }
 
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
-	public int getRAttackTimer() {
+    @Override
+    public void setAttackTimer(int i) {
+        this.attackTimer = i;
+    }
+
+    public int getRAttackTimer() {
         return this.RattackTimer;
     }
 
-	public void setRAttackTimer(int i) {
-		this.RattackTimer = i;
-	}
-    
+    public void setRAttackTimer(int i) {
+        this.RattackTimer = i;
+    }
+
     /**
      * Handler for {@link World#setEntityState}
      */
     @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-		switch(id) {
-		case 4:
-			this.attackTimer = 30;
-			break;
-		case 5:
-			this.RattackTimer = 40;
-			break;
-		case 10:
-			this.spellTicks = 100;
-			break;
-		case 11:
-			this.isAggressive = true;
-			break;
-		case 34:
-			this.isAggressive = false;
-			break;
-		default:
-			super.handleStatusUpdate(id);
-			break;
-		}
+        switch (id) {
+            case 4:
+                this.attackTimer = ATTACK_TIMER;
+                break;
+            case 5:
+                this.RattackTimer = 40;
+                break;
+            case 10:
+                this.spellTicks = 100;
+                break;
+            case 11:
+                this.isAggressive = true;
+                break;
+            case 34:
+                this.isAggressive = false;
+                break;
+            default:
+                super.handleStatusUpdate(id);
+                break;
+        }
     }
-    
+
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.spellTicks = compound.getInteger("SpellTicks");
- 		setSkin(compound.getInteger("Variant"));
+        setSkin(compound.getInteger("Variant"));
     }
 
     /**
@@ -299,15 +276,17 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("SpellTicks", this.spellTicks);
- 		compound.setInteger("Variant", getSkin());
+        compound.setInteger("Variant", getSkin());
     }
-    
-	// Immune to Poison
+
+    // Immune to Deathtouched, Corroded, Fear, Wither, Poison, and Slowness
     @Override
-	public boolean isPotionApplicable(PotionEffect effect) {
-		return effect.getPotion() != MobEffects.POISON && super.isPotionApplicable(effect);
-	}
-    
+    public boolean isPotionApplicable(PotionEffect effect) {
+        return effect.getPotion() != ModMobEffects.FRAGILE && effect.getPotion() != ModMobEffects.CORRODED && effect.getPotion() != ModMobEffects.FEAR
+                && effect.getPotion() != MobEffects.WITHER && effect.getPotion() != MobEffects.POISON && effect.getPotion() != MobEffects.SLOWNESS && super.isPotionApplicable(effect);
+    }
+
+
     public class AICastingApell extends EntityAIBase {
         public AICastingApell() {
             this.setMutexBits(3);
@@ -340,7 +319,7 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
          */
         public void updateTask() {
             if (EntitySludgeLord.this.getAttackTarget() != null) {
-                EntitySludgeLord.this.getLookHelper().setLookPositionWithEntity(EntitySludgeLord.this.getAttackTarget(), (float)EntitySludgeLord.this.getHorizontalFaceSpeed(), (float)EntitySludgeLord.this.getVerticalFaceSpeed());
+                EntitySludgeLord.this.getLookHelper().setLookPositionWithEntity(EntitySludgeLord.this.getAttackTarget(), (float) EntitySludgeLord.this.getHorizontalFaceSpeed(), (float) EntitySludgeLord.this.getVerticalFaceSpeed());
             }
         }
     }
@@ -355,13 +334,11 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         public boolean shouldExecute() {
             if (EntitySludgeLord.this.getAttackTarget() == null) {
                 return false;
-            }
-            else if (EntitySludgeLord.this.isSpellcasting() || EntitySludgeLord.this.getAttackTimer() > 0 || EntitySludgeLord.this.getRAttackTimer() > 0) {
+            } else if (EntitySludgeLord.this.isSpellcasting() || EntitySludgeLord.this.getAttackTimer() > 0 || EntitySludgeLord.this.getRAttackTimer() > 0) {
                 return false;
-            }
-            else {
+            } else {
                 int i = EntitySludgeLord.this.world.getEntitiesWithinAABB(EntityLilSludge.class, EntitySludgeLord.this.getEntityBoundingBox().grow(16.0D)).size();
-            	return EntitySludgeLord.this.ticksExisted >= this.spellCooldown && i < Modconfig.SludgeLord_Ability_Max;
+                return EntitySludgeLord.this.ticksExisted >= this.spellCooldown && i < Modconfig.SludgeLord_Ability_Max;
             }
         }
 
@@ -380,7 +357,7 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
             EntitySludgeLord.this.spellTicks = this.getCastingTime();
             this.spellCooldown = EntitySludgeLord.this.ticksExisted + this.getCastingInterval();
             SoundEvent soundevent = this.getSpellPrepareSound();
-	        EntitySludgeLord.this.world.setEntityState(EntitySludgeLord.this, (byte)10);
+            EntitySludgeLord.this.world.setEntityState(EntitySludgeLord.this, (byte) 10);
 
             if (soundevent != null) {
                 EntitySludgeLord.this.playSound(soundevent, 1.0F, 1.0F);
@@ -406,24 +383,24 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
                 entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
                 entity.setHealth(entity.getMaxHealth());
                 entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
-                entity.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
+                entity.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                 entity.setOwnerId(EntitySludgeLord.this.getUniqueID());
                 entity.setTamed(true);
                 entity.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
-                
-                if(!EntitySludgeLord.this.world.isRemote) {
-                	EntitySludgeLord.this.world.spawnEntity(entity);
+
+                if (!EntitySludgeLord.this.world.isRemote) {
+                    EntitySludgeLord.this.world.spawnEntity(entity);
                 }
-                
+
                 entity.setAttackTarget(EntitySludgeLord.this.getAttackTarget());
-                
-                if(EntitySludgeLord.this.world instanceof World) {
-                	for (int j = 0; j < 24; ++j) {
-                		double d0 = entity.posX + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                		double d1 = entity.posY + (double)(entity.world.rand.nextFloat() * entity.height);
-                		double d2 = entity.posZ + (double)(entity.world.rand.nextFloat() * entity.width * 2.0F) - (double)entity.width;
-                		mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
-                	}
+
+                if (EntitySludgeLord.this.world instanceof World) {
+                    for (int j = 0; j < 24; ++j) {
+                        double d0 = entity.posX + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        double d1 = entity.posY + (double) (entity.world.rand.nextFloat() * entity.height);
+                        double d2 = entity.posZ + (double) (entity.world.rand.nextFloat() * entity.width * 2.0F) - (double) entity.width;
+                        mod_LavaCow.NETWORK_WRAPPER.sendToAll(new PacketParticle(EnumParticleTypes.WATER_SPLASH, d0, d1, d2));
+                    }
                 }
             }
         }
@@ -441,21 +418,35 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         }
 
         @Nullable
-        protected SoundEvent getSpellPrepareSound()
-        {
+        protected SoundEvent getSpellPrepareSound() {
             return SoundEvents.EVOCATION_ILLAGER_PREPARE_ATTACK;
         }
     }
-    
-    static class AISludgeLordAttack extends EntityAIAttackMelee {
-        public AISludgeLordAttack(EntitySludgeLord entity, double speedIn, boolean useLongMemory) {
-            super(entity, speedIn, useLongMemory);
+
+    static class AISludgeLordAttack extends EntityFishAIAttackMelee {
+        float f = this.attacker.getBrightness();
+
+        public AISludgeLordAttack(EntitySludgeLord entity) {
+            super(entity, 1.0D, false);
+        }
+
+        @Override
+        protected int atkTimerMax() {
+            return ATTACK_TIMER;
+        }
+
+        @Override
+        protected int atkTimerHit() {
+            return 18;
+        }
+
+        @Override
+        protected byte atkTimerEvent() {
+            return (byte) 4;
         }
 
         @Override
         public boolean shouldContinueExecuting() {
-            float f = this.attacker.getBrightness();
-
             if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
                 this.attacker.setAttackTarget(null);
                 return false;
@@ -467,6 +458,35 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
         @Override
         protected double getAttackReachSqr(EntityLivingBase attackTarget) {
             return 4.0F + attackTarget.width;
+        }
+
+        @Override
+        protected void dmgEvent(EntityLivingBase target) {
+            double d0 = this.attacker.posX + 2.5D * this.attacker.getLookVec().normalize().x;
+            double d1 = this.attacker.posY;
+            double d2 = this.attacker.posZ + 2.5D * this.attacker.getLookVec().normalize().z;
+            IBlockState state = this.attacker.world.getBlockState(new BlockPos(d0, d1, d2).down());
+            int blockId = Block.getStateId(state);
+
+            if (state.getMaterial().isSolid()) {
+                this.attacker.playSound(state.getBlock().getSoundType(state, this.attacker.world, new BlockPos(d0, d1, d2).down(), this.attacker).getBreakSound(), 1, 0.5F);
+
+                if (this.attacker.world.isRemote) {
+                    for (int i = 0; i < 64; i++) {
+                        this.attacker.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, d1 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, d2 + (double) (this.attacker.getRNG().nextFloat() * this.attacker.width * 2.0F) - (double) this.attacker.width, this.attacker.getRNG().nextGaussian() * 0.02D, this.attacker.getRNG().nextGaussian() * 0.02D, this.attacker.getRNG().nextGaussian() * 0.02D, blockId);
+                    }
+                }
+            }
+
+            for (EntityLivingBase entitylivingbase : this.attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.5D))) {
+                if (!this.attacker.equals(entitylivingbase) && !this.attacker.isOnSameTeam(entitylivingbase)) {
+                    if (entitylivingbase instanceof EntityPlayer) ((EntityPlayer) entitylivingbase).disableShield(true);
+                    if (!(entitylivingbase instanceof EntityTameable && ((EntityTameable) entitylivingbase).isOwner(this.attacker))) {
+                        entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this.attacker), (float) this.attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+                        super.dmgEvent(entitylivingbase);
+                    }
+                }
+            }
         }
     }
 
@@ -481,12 +501,12 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
             return f < 0.5F && super.shouldExecute();
         }
     }
-	
-	@Override
+
+    @Override
     public int getTalkInterval() {
         return 320;
     }
-    
+
     @Override
     protected SoundEvent getAmbientSound() {
         return FishItems.ENTITY_SLUDGELORD_AMBIENT;
@@ -501,7 +521,7 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     protected SoundEvent getDeathSound() {
         return FishItems.ENTITY_SLUDGELORD_DEATH;
     }
-    
+
     protected SoundEvent getSpellSound() {
         return SoundEvents.EVOCATION_ILLAGER_CAST_SPELL;
     }
@@ -517,11 +537,10 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
     /**
      * Get this Entity's EnumCreatureAttribute
      */
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
+    public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
-    
+
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {

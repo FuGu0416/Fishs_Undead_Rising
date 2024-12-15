@@ -12,7 +12,8 @@ public class RenderGhostRay extends RenderLiving<EntityGhostRay>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray2.png"),
-			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray3.png")
+			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray3.png"),
+			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray4.png")
 	};
 	
 	static {

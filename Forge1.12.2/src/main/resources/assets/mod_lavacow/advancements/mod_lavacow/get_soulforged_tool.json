@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:soulforged_hammer"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.get_soulforged_tool.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_soulforged_tool.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/get_molten_tool",
+  "criteria": {
+    "soulforged_hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforged_hammer"
+          }
+        ]
+      }
+    },
+    "soulforged_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforged_axe"
+          }
+        ]
+      }
+    },
+    "soulforged_pan": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:soulforged_pan"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soulforged_hammer",
+      "soulforged_axe",
+      "soulforged_pan"
+    ]
+  ]
+}

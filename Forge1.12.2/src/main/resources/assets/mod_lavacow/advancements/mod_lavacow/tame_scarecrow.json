@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "minecraft:hay_block"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.tame_scarecrow.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.tame_scarecrow.description"
-        }
+  "display": {
+    "icon": {
+      "item": "minecraft:hay_block"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_scarecrow",
-    "criteria": {
-        "tamed_salamander": {
-            "trigger": "minecraft:tame_animal",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:scarecrow"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.tame_scarecrow.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.tame_scarecrow.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_scarecrow",
+  "criteria": {
+    "tamed_scarecrow": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:scarecrow"
+        }
+      }
+    }
+  }
 }

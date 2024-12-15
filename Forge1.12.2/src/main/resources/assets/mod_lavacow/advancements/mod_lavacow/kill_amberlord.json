@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:ancient_amber"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_amberlord.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_amberlord.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_amberlord": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:amberlord"
+        }
+      }
+    }
+  }
+}

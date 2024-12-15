@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:hatred_shard"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.get_hatred_shard.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.get_hatred_shard.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:hatred_shard"
     },
-    "parent": "mod_lavacow:mod_lavacow/kill_forsaken",
-    "criteria": {
-        "get_hatred_shard": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "mod_lavacow:hatred_shard"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.get_hatred_shard.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_hatred_shard.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/kill_forsaken",
+  "criteria": {
+    "get_hatred_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:hatred_shard"
+          }
+        ]
+      }
+    }
+  }
 }

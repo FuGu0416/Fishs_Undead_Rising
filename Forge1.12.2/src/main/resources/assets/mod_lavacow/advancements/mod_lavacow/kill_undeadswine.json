@@ -1,24 +1,24 @@
 {
-    "display": {
-        "icon": {
-            "item": "mod_lavacow:pigboarhide"
-        },
-        "title": {
-            "translate": "advancements.mod_lavacow.kill_undeadswine.title"
-        },
-        "description": {
-            "translate": "advancements.mod_lavacow.kill_undeadswine.description"
-        }
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:pigboarhide"
     },
-    "parent": "mod_lavacow:mod_lavacow/root",
-    "criteria": {
-        "kill_undertaker": {
-            "trigger": "minecraft:player_killed_entity",
-		    "conditions": {
-				"entity": {
-					"type": "mod_lavacow:undeadswine"
-		        }
-		      }
-        }
+    "title": {
+      "translate": "advancements.mod_lavacow.kill_undeadswine.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.kill_undeadswine.description"
     }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "kill_undeadswine": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "mod_lavacow:undeadswine"
+        }
+      }
+    }
+  }
 }

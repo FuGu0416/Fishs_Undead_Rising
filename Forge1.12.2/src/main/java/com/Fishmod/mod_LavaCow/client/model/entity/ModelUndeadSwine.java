@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * ModelPolarBear - Either Mojang or a mod author
  * Created using Tabula 7.0.1
  */
 public class ModelUndeadSwine extends ModelBase {
@@ -139,7 +138,7 @@ public class ModelUndeadSwine extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.Body2.render(f5);
     }
 
@@ -151,42 +150,40 @@ public class ModelUndeadSwine extends ModelBase {
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-    
+
     private float GradientAnimation(float AnimStart, float AnimEnd, float TickIn) {
-    	return AnimStart * MathHelper.sin((float)Math.PI * 0.5F * TickIn) + AnimEnd * MathHelper.sin((float)Math.PI * 0.5F * (1.0F - TickIn));
+        return AnimStart * MathHelper.sin((float) Math.PI * 0.5F * TickIn) + AnimEnd * MathHelper.sin((float) Math.PI * 0.5F * (1.0F - TickIn));
     }
-    
+
     /**
      * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {	
-        this.Jaw.rotateAngleX = 0.3662880558742251F + (-0.15F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float)Math.PI));
-        
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        this.Jaw.rotateAngleX = 0.3662880558742251F + (-0.15F * MathHelper.sin(0.03F * ageInTicks + 0.2F * (float) Math.PI));
+
         this.Body1.rotateAngleY = netHeadYaw * 0.004F;
-        
+
         this.Leg_front_r_1.rotateAngleX = 0.136659280431156F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        this.Leg_front_l_1.rotateAngleX = 0.136659280431156F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
-        this.Leg_hind_r_1.rotateAngleX = -0.27314402793711257F + MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.7F * limbSwingAmount;
+        this.Leg_front_l_1.rotateAngleX = 0.136659280431156F + MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 0.7F * limbSwingAmount;
+        this.Leg_hind_r_1.rotateAngleX = -0.27314402793711257F + MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 0.7F * limbSwingAmount;
         this.Leg_hind_l_1.rotateAngleX = -0.27314402793711257F + MathHelper.cos(limbSwing * 0.6662F) * 0.7F * limbSwingAmount;
-        
-        float i = (float)((EntityUndeadSwine) entityIn).getAttackTimer() / 10.0F;
-        if(i > 0) {
-        	this.Head.rotateAngleX = GradientAnimation(0.5462880558742251F, -0.4553564018453205F, i);
-        	this.Snout.rotateAngleX = -0.22759093446006054F;
-        }
-        else {
-        	
-            if(((EntityUndeadSwine)entityIn).isDigging())
-            	this.Head.rotateAngleX = 0.7F + 0.15F * MathHelper.sin(ageInTicks);
+
+        float i = (float) ((EntityUndeadSwine) entityIn).getAttackTimer() / 10.0F;
+        if (i > 0) {
+            this.Head.rotateAngleX = GradientAnimation(0.5462880558742251F, -0.4553564018453205F, i);
+            this.Snout.rotateAngleX = -0.22759093446006054F;
+        } else {
+
+            if (((EntityUndeadSwine) entityIn).isDigging())
+                this.Head.rotateAngleX = 0.7F + 0.15F * MathHelper.sin(ageInTicks);
             else this.Head.rotateAngleX = -0.136659280431156F + headPitch * 0.017453292F;
-        	
-            this.Head.rotateAngleY = netHeadYaw * 0.008F; 
+
+            this.Head.rotateAngleY = netHeadYaw * 0.008F;
             this.Head.rotationPointY = -0.3F * MathHelper.sin(0.03F * ageInTicks);
-            
-            this.Snout.rotateAngleX = headPitch * 0.008F; 
+
+            this.Snout.rotateAngleX = headPitch * 0.008F;
         }
     }
 }

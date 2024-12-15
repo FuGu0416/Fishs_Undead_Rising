@@ -12,15 +12,15 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 4,
-                "max": 8
+                "min": 8,
+                "max": 12
               }
             },
             {
               "function": "looting_enchant",
               "count": {
                 "min": 0,
-                "max": 1
+                "max": 2
               }
             }
           ]
@@ -28,12 +28,12 @@
       ]
     },
     {
-      "name": "cactus",
+      "name": "soul_sand",
       "rolls": 1,
       "entries": [
         {
           "type": "item",
-          "name": "minecraft:cactus",
+          "name": "minecraft:soul_sand",
           "weight": 1,
           "functions": [
             {
@@ -49,18 +49,6 @@
                 "min": 0,
                 "max": 1
               }
-            },
-            {
-              "function": "furnace_smelt",
-              "conditions": [
-                {
-                  "condition": "entity_properties",
-                  "entity": "this",
-                  "properties": {
-                    "on_fire": true
-                  }
-                }
-              ]
             }
           ]
         }
@@ -78,8 +66,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 0,
-                "max": 2
+                "min": 1,
+                "max": 4
               }
             },
             {

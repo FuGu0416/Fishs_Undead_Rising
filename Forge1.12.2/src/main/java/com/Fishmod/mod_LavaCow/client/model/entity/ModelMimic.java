@@ -175,149 +175,144 @@ public class ModelMimic extends FishModelBase {
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) { 
-    	this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
-    	this.Chest_Base.render(scale);
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+        this.Chest_Base.render(scale);
     }
-    
+
     /**
      * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {       
-    	
-    }
-    
-    private void hideAllBodyPart(boolean showIn) 
-    {
-    	this.Leg0_r_Seg0.isHidden = showIn;
-    	this.Leg0_l_Seg0.isHidden = showIn;
-    	this.Leg0_r_Seg1.isHidden = showIn;
-    	this.Leg0_l_Seg1.isHidden = showIn;
-    	this.Leg0_r_Seg2.isHidden = showIn;
-    	this.Leg0_l_Seg2.isHidden = showIn;
-    	this.Leg1_r_Seg0.isHidden = showIn;
-    	this.Leg1_l_Seg0.isHidden = showIn;
-    	this.Leg1_r_Seg1.isHidden = showIn;
-    	this.Leg1_l_Seg1.isHidden = showIn;
-    	this.Leg1_r_Seg2.isHidden = showIn;
-    	this.Leg1_l_Seg2.isHidden = showIn;
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 
-    	this.Pincer_r_Seg0.isHidden = showIn;
-    	this.Pincer_l_Seg0.isHidden = showIn;
-    	this.Pincer_r_Seg1.isHidden = showIn;
-    	this.Pincer_l_Seg1.isHidden = showIn;
-    	this.Pincer_r_Seg2.isHidden = showIn;
-    	this.Pincer_l_Seg2.isHidden = showIn;
-    	this.Pincer_r_Seg3.isHidden = showIn;
-    	this.Pincer_l_Seg3.isHidden = showIn;
     }
-    
+
+    private void hideAllBodyPart(boolean showIn) {
+        this.Leg0_r_Seg0.isHidden = showIn;
+        this.Leg0_l_Seg0.isHidden = showIn;
+        this.Leg0_r_Seg1.isHidden = showIn;
+        this.Leg0_l_Seg1.isHidden = showIn;
+        this.Leg0_r_Seg2.isHidden = showIn;
+        this.Leg0_l_Seg2.isHidden = showIn;
+        this.Leg1_r_Seg0.isHidden = showIn;
+        this.Leg1_l_Seg0.isHidden = showIn;
+        this.Leg1_r_Seg1.isHidden = showIn;
+        this.Leg1_l_Seg1.isHidden = showIn;
+        this.Leg1_r_Seg2.isHidden = showIn;
+        this.Leg1_l_Seg2.isHidden = showIn;
+
+        this.Pincer_r_Seg0.isHidden = showIn;
+        this.Pincer_l_Seg0.isHidden = showIn;
+        this.Pincer_r_Seg1.isHidden = showIn;
+        this.Pincer_l_Seg1.isHidden = showIn;
+        this.Pincer_r_Seg2.isHidden = showIn;
+        this.Pincer_l_Seg2.isHidden = showIn;
+        this.Pincer_r_Seg3.isHidden = showIn;
+        this.Pincer_l_Seg3.isHidden = showIn;
+    }
+
     private void toCamouflagePose(float TickIn) {
-		this.Leg0_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.5918411493512771F, TickIn);
-    	this.Leg0_r_Seg0.rotationPointX = GradientAnimation(-6.0F, -5.0F, TickIn);
-    	this.Leg0_r_Seg0.rotationPointY = GradientAnimation(4.0F, 3.5F, TickIn);
-    	this.Leg0_l_Seg0.rotateAngleZ = GradientAnimation(0.5009094953223726F, -0.5918411493512771F, TickIn);
-    	this.Leg0_l_Seg0.rotationPointX = GradientAnimation(6.0F, 5.0F, TickIn);
-    	this.Leg0_l_Seg0.rotationPointY = GradientAnimation(4.0F, 3.5F, TickIn);
-    	
-    	this.Leg0_r_Seg1.rotateAngleZ = GradientAnimation(0.8651597102135892F, 0.136659280431156F, TickIn);
-    	this.Leg0_l_Seg1.rotateAngleZ = GradientAnimation(-0.8651597102135892F, -0.136659280431156F, TickIn);
-    	
-    	this.Leg1_r_Seg0.rotateAngleX = GradientAnimation(0.0F, -0.045553093477052F, TickIn);
-    	this.Leg1_r_Seg0.rotateAngleY = GradientAnimation(0.5462880558742251F, 0.0F, TickIn);
-    	this.Leg1_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.31869712141416456F, TickIn);
-    	this.Leg1_r_Seg0.rotationPointX = GradientAnimation(-6.0F, -5.0F, TickIn);
-    	this.Leg1_r_Seg0.rotationPointY = GradientAnimation(4.0F, 3.0F, TickIn);
-    	this.Leg1_l_Seg0.rotateAngleX = GradientAnimation(0.0F, -0.045553093477052F, TickIn);
-    	this.Leg1_l_Seg0.rotateAngleY = GradientAnimation(-0.5462880558742251F, 0.0F, TickIn);
-    	this.Leg1_l_Seg0.rotateAngleZ = GradientAnimation(0.5009094953223726F, -0.31869712141416456F, TickIn);
-    	this.Leg1_l_Seg0.rotationPointX = GradientAnimation(6.0F, 5.0F, TickIn);
-    	this.Leg1_l_Seg0.rotationPointY = GradientAnimation(4.0F, 3.0F, TickIn);
-    	
-    	this.Leg1_r_Seg1.rotateAngleZ = GradientAnimation(0.8651597102135892F, 0.136659280431156F, TickIn);
-    	this.Leg1_l_Seg1.rotateAngleZ = GradientAnimation(-0.8651597102135892F, -0.136659280431156F, TickIn);
-    	
-    	this.Pincer_r_Seg0.rotationPointX = GradientAnimation(-6.0F, 0.6F, TickIn);
-    	this.Pincer_r_Seg0.rotationPointZ = GradientAnimation(-4.0F, 3.6F, TickIn);
-    	this.Pincer_l_Seg0.rotationPointX = GradientAnimation(6.0F, -0.6F, TickIn);
-    	this.Pincer_l_Seg0.rotationPointZ = GradientAnimation(-4.0F, 3.6F, TickIn);
-    	
-    	this.Pincer_r_Seg1.rotateAngleX = GradientAnimation(-0.36425021489121656F, -0.5918411493512771F, TickIn);
-    	this.Pincer_r_Seg1.rotateAngleY = GradientAnimation(0.0F, -0.6373942428283291F, TickIn);
-    	this.Pincer_l_Seg1.rotateAngleX = GradientAnimation(-0.36425021489121656F, -0.5918411493512771F, TickIn);
-    	this.Pincer_l_Seg1.rotateAngleY = GradientAnimation(0.0F, 0.6373942428283291F, TickIn);
-    	
-    	this.Pincer_r_Seg3.rotateAngleX = GradientAnimation(0.0F, -0.4553564018453205F, TickIn);
-    	this.Pincer_l_Seg3.rotateAngleX = GradientAnimation(0.0F, -0.4553564018453205F, TickIn);
+        this.Leg0_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.5918411493512771F, TickIn);
+        this.Leg0_r_Seg0.rotationPointX = GradientAnimation(-6.0F, -5.0F, TickIn);
+        this.Leg0_r_Seg0.rotationPointY = GradientAnimation(4.0F, 3.5F, TickIn);
+        this.Leg0_l_Seg0.rotateAngleZ = GradientAnimation(0.5009094953223726F, -0.5918411493512771F, TickIn);
+        this.Leg0_l_Seg0.rotationPointX = GradientAnimation(6.0F, 5.0F, TickIn);
+        this.Leg0_l_Seg0.rotationPointY = GradientAnimation(4.0F, 3.5F, TickIn);
+
+        this.Leg0_r_Seg1.rotateAngleZ = GradientAnimation(0.8651597102135892F, 0.136659280431156F, TickIn);
+        this.Leg0_l_Seg1.rotateAngleZ = GradientAnimation(-0.8651597102135892F, -0.136659280431156F, TickIn);
+
+        this.Leg1_r_Seg0.rotateAngleX = GradientAnimation(0.0F, -0.045553093477052F, TickIn);
+        this.Leg1_r_Seg0.rotateAngleY = GradientAnimation(0.5462880558742251F, 0.0F, TickIn);
+        this.Leg1_r_Seg0.rotateAngleZ = GradientAnimation(-0.5009094953223726F, 0.31869712141416456F, TickIn);
+        this.Leg1_r_Seg0.rotationPointX = GradientAnimation(-6.0F, -5.0F, TickIn);
+        this.Leg1_r_Seg0.rotationPointY = GradientAnimation(4.0F, 3.0F, TickIn);
+        this.Leg1_l_Seg0.rotateAngleX = GradientAnimation(0.0F, -0.045553093477052F, TickIn);
+        this.Leg1_l_Seg0.rotateAngleY = GradientAnimation(-0.5462880558742251F, 0.0F, TickIn);
+        this.Leg1_l_Seg0.rotateAngleZ = GradientAnimation(0.5009094953223726F, -0.31869712141416456F, TickIn);
+        this.Leg1_l_Seg0.rotationPointX = GradientAnimation(6.0F, 5.0F, TickIn);
+        this.Leg1_l_Seg0.rotationPointY = GradientAnimation(4.0F, 3.0F, TickIn);
+
+        this.Leg1_r_Seg1.rotateAngleZ = GradientAnimation(0.8651597102135892F, 0.136659280431156F, TickIn);
+        this.Leg1_l_Seg1.rotateAngleZ = GradientAnimation(-0.8651597102135892F, -0.136659280431156F, TickIn);
+
+        this.Pincer_r_Seg0.rotationPointX = GradientAnimation(-6.0F, 0.6F, TickIn);
+        this.Pincer_r_Seg0.rotationPointZ = GradientAnimation(-4.0F, 3.6F, TickIn);
+        this.Pincer_l_Seg0.rotationPointX = GradientAnimation(6.0F, -0.6F, TickIn);
+        this.Pincer_l_Seg0.rotationPointZ = GradientAnimation(-4.0F, 3.6F, TickIn);
+
+        this.Pincer_r_Seg1.rotateAngleX = GradientAnimation(-0.36425021489121656F, -0.5918411493512771F, TickIn);
+        this.Pincer_r_Seg1.rotateAngleY = GradientAnimation(0.0F, -0.6373942428283291F, TickIn);
+        this.Pincer_l_Seg1.rotateAngleX = GradientAnimation(-0.36425021489121656F, -0.5918411493512771F, TickIn);
+        this.Pincer_l_Seg1.rotateAngleY = GradientAnimation(0.0F, 0.6373942428283291F, TickIn);
+
+        this.Pincer_r_Seg3.rotateAngleX = GradientAnimation(0.0F, -0.4553564018453205F, TickIn);
+        this.Pincer_l_Seg3.rotateAngleX = GradientAnimation(0.0F, -0.4553564018453205F, TickIn);
     }
-    
+
     @Override
-	public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
-    	EntityMimic Entity = (EntityMimic)entityIn;
-    	float i = ((float)Entity.getSitTimer()) / 20.0F;
-    	float j = ((float)Entity.getAttackTimer()) / 5.0F;
+    public void setLivingAnimations(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks) {
+        EntityMimic Entity = (EntityMimic) entityIn;
+        float i = ((float) Entity.getSitTimer()) / 20.0F;
+        float j = ((float) Entity.getAttackTimer()) / 5.0F;
+        float f = 0.5F;
 
-    	if((Entity.isAggressive() || Entity.isTamed()) && !Entity.isSitting())
-        {   		
-    		this.hideAllBodyPart(false); 
-    		if(i <= 1.0F)
-    			this.toCamouflagePose(i);
-    		
-    		if(i == 1.0F)
-    		{
-	    		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
-	    		this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing);
-	    		this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing);
-	
-	        	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
-	        	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
-	        	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
-	        	
-	        	this.Leg0_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
-	        	this.Leg0_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
-	        	this.Leg1_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing + (float)Math.PI) * 0.7F * limbSwingAmount;
-	        	this.Leg1_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float)Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
-    		}
-    		
-    		if(j > 0.0F)
-    		{
-    			this.Pincer_l_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);   	
-    			this.Pincer_r_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);   			
-    		}
-    		else
-    		{
-    	    	this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
-    	    	this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks)); 
-    		}
+        if ((Entity.isAggressive() || Entity.isTamed()) && !Entity.isSitting()) {
+            this.hideAllBodyPart(false);
+            if (i <= 1.0F)
+                this.toCamouflagePose(i);
+
+            if (i == 1.0F) {
+                this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * ageInTicks + 0.1F)) + (0.06F * MathHelper.cos(limbSwing * f) * limbSwingAmount);
+                this.Chest_Base.rotateAngleY = 0.12F * MathHelper.cos(limbSwing * f) * limbSwingAmount;
+                this.Chest_Base.rotationPointY = 18.0F + MathHelper.cos(limbSwing * f);
+
+                this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
+                this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
+                this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
+
+                this.Leg0_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing) * 0.7F * limbSwingAmount;
+                this.Leg0_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float) Math.PI * 0.5F)) * 0.7F * limbSwingAmount;
+                this.Leg1_r_Seg0.rotateAngleZ = -0.5F + MathHelper.cos(limbSwing + (float) Math.PI) * 0.7F * limbSwingAmount;
+                this.Leg1_l_Seg0.rotateAngleZ = 0.5F + MathHelper.cos(limbSwing + ((float) Math.PI * 1.5F)) * 0.7F * limbSwingAmount;
+            }
+
+            if (j > 0.0F) {
+                this.Pincer_l_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);
+                this.Pincer_r_Seg0.rotationPointY = GradientAnimation(-4.0F, 1.0F, j);
+            } else {
+                this.Pincer_l_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
+                this.Pincer_r_Seg0.rotationPointY = 1.0F + (-0.55F * MathHelper.sin(0.12F * ageInTicks));
+            }
+        } else if (Entity.isSitting()) {
+            //this.Chest_Base.rotateAngleY = Entity.rotationAngle;
+            if (i >= 0.0F) {
+                this.toCamouflagePose(i);
+                this.hideAllBodyPart(false);
+            }
+
+            if (i == 0.0F) {
+                this.hideAllBodyPart(true);
+                if (Entity.isTamed() || Entity.IdleTimer > 0) {
+                    this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F));
+                    this.Chest_Base.rotateAngleZ = 0.0F;
+                    this.Chest_Base.rotationPointY = 18.0F;
+
+                    this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
+                    this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
+                    this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
+                } else {
+                    this.Chest_top.rotateAngleX = 0.0F;
+                    this.Chest_Base.rotateAngleZ = 0.0F;
+                    this.Chest_Base.rotationPointY = 18.0F;
+
+                    this.Chest_Base.setRotationPoint(0.0F, 19.0F, 1.0F);
+                    this.Eye_r.setRotationPoint(0.0F, 0.0F, 0.0F);
+                    this.Eye_l.setRotationPoint(0.0F, 0.0F, 0.0F);
+                }
+            }
         }
-        else if(Entity.isSitting())
-        {     	       	
-        	this.Chest_Base.rotateAngleY = Entity.rotationAngle;
-        	if(i >= 0.0F) {
-        		this.toCamouflagePose(i);
-        		this.hideAllBodyPart(false); 
-        	}
-
-        	if(i == 0.0F)
-        	{
-        		this.hideAllBodyPart(true); 
-        		if(Entity.isTamed() || Entity.IdleTimer > 0) {
-	        		this.Chest_top.rotateAngleX = -0.2F + (-0.02F * MathHelper.sin(0.12F * entityIn.ticksExisted + 0.1F)); 
-	
-	            	this.Chest_Base.setRotationPoint(0.0F, 18.0F, 1.0F);
-	            	this.Eye_r.setRotationPoint(-2.0F, -4.0F, -5.0F);
-	            	this.Eye_l.setRotationPoint(2.0F, -4.0F, -5.0F);
-	        	}
-	        	else {
-	            	this.Chest_top.rotateAngleX = 0.0F;
-	            	this.Chest_Base.setRotationPoint(0.0F, 19.0F, 1.0F);
-	            	this.Eye_r.setRotationPoint(0.0F, 0.0F, 0.0F);
-	            	this.Eye_l.setRotationPoint(0.0F, 0.0F, 0.0F);
-	        	}
-        	}      	
-        }   	
     }
 }
