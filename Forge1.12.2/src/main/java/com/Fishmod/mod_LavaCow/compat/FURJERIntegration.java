@@ -16,6 +16,7 @@ import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
+import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
@@ -77,6 +78,7 @@ public class FURJERIntegration implements ModIntegration {
         jerAPI.getMobRegistry().register(new EntityPiranha(world), LootTableHandler.PIRANHA);
         jerAPI.getMobRegistry().register(new EntityZombiePiranha(world), LootTableHandler.ZOMBIEPIRANHA);
         jerAPI.getMobRegistry().register(new EntityBoneWorm(world), LightLevel.hostile, LootTableHandler.BONEWORM);
+        jerAPI.getMobRegistry().register(new EntitySoulWorm(world), LightLevel.hostile, LootTableHandler.SOULWORM);
         jerAPI.getMobRegistry().register(new EntityPingu(world), LootTableHandler.PINGU);
         jerAPI.getMobRegistry().register(new EntityUndertaker(world), LightLevel.hostile, LootTableHandler.UNDERTAKER);
         jerAPI.getMobRegistry().register(new EntityUnburied(world), LightLevel.hostile, LootTableHandler.UNBURIED);
