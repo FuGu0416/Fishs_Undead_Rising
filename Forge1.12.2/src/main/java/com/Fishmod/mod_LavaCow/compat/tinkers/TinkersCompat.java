@@ -84,7 +84,7 @@ public class TinkersCompat {
         CHITIN.setCraftable(true);
         CHITIN.setCastable(false);
         TinkerRegistry.addMaterialStats(CHITIN,
-                new HeadMaterialStats(200, 5.0F, 3.0F, HarvestLevels.IRON),
+                new HeadMaterialStats(200, 5.0F, 3.0F, HarvestLevels.DIAMOND),
                 new HandleMaterialStats(0.9F, 50),
                 new ExtraMaterialStats(50),
                 new BowMaterialStats(0.95F, 0.6F, 0.0F));
@@ -156,7 +156,7 @@ public class TinkersCompat {
         ANCIENT_AMBER.setCraftable(true);
         ANCIENT_AMBER.setCastable(false);
         TinkerRegistry.addMaterialStats(ANCIENT_AMBER,
-                new HeadMaterialStats(550, 7.0F, 5.0F, HarvestLevels.IRON),
+                new HeadMaterialStats(550, 7.0F, 5.0F, HarvestLevels.DIAMOND),
                 new HandleMaterialStats(1.0F, 100),
                 new ExtraMaterialStats(125),
                 new BowMaterialStats(1.1F, 1.1F, 1.0F));
