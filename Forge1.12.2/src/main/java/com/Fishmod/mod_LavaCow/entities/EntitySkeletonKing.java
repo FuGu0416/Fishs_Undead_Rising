@@ -355,7 +355,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source != DamageSource.DROWN && !(source.getTrueSource() instanceof EntitySkeletonKing)) {
-            if (this.getInvulTime() > 0 && source != DamageSource.OUT_OF_WORLD || source == DamageSource.FALL || source == DamageSource.CACTUS
+            if (this.getInvulTime() > 0 && source != DamageSource.FALL || source == DamageSource.CACTUS
                     || source == DamageSource.LIGHTNING_BOLT || source == DamageSource.DROWN) {
                 return false;
             } else {
