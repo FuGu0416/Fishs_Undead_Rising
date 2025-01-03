@@ -306,8 +306,9 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
     public void onUpdate() {
         super.onUpdate();
 
-        if (this.IdleTimer > 0)
+        if (this.IdleTimer > 0) {
             this.IdleTimer--;
+        }
 
         if (!this.isAggressive && !this.isTamed() && this.ticksExisted % 100 == 0 && rand.nextInt(5) == 0)
             this.IdleTimer = 30 + rand.nextInt(30);
@@ -319,8 +320,9 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
             this.motionX = 0.0D;
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
-        } else
+        } else {
             super.travel(strafe, vertical, forward);
+        }
     }
 
     /**
@@ -374,11 +376,12 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
         if (this.getSkin() == this.getVoidSkin()) {
             this.setCanPickUpLoot(false);
 
-            for (ItemStack is : this.inventory)
+            for (ItemStack is : this.inventory) {
                 if (!is.isEmpty()) {
                     this.entityDropItem(is.copy(), 0.2F);
                     is.shrink(is.getCount());
                 }
+            }
         }
 
         this.setSitting(false);
