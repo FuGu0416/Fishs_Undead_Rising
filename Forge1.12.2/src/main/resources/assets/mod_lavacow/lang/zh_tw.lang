@@ -525,11 +525,11 @@ tootip.mod_lavacow.soulforgedarmor.l2=火焰防護能力+
 tootip.mod_lavacow.soulforgedarmor.l3=套裝(4)：完全免疫火焰與凋零傷害
 tootip.mod_lavacow.forsaken_staff=右鍵向目標發射一枚死影纏
 tootip.mod_lavacow.scarab_wand=右鍵點擊以召喚聽命於玩家的聖甲蟲群
-tootip.mod_lavacow.diseased_bread=Eating this or feeding it to Wetas might have consequences...
+tootip.mod_lavacow.diseased_bread=吃了它，或是餵給帝沙螽，結果可能不是很好...
 tootip.mod_lavacow.pheromone_gland=食用後獲得迷情費洛蒙(1:00)與噁心II(0:10)
-tootip.mod_lavacow.charming_catalyst=Gives Pheromone Charm (0:45) when consumed, or used to tame and trigger the growth of certain larva.
-tootip.mod_lavacow.basicbomb=Causes an explosion at thrown target location. Fire away!
-tootip.mod_lavacow.crabcake=Gives Resistance (0:30) when eaten.
+tootip.mod_lavacow.charming_catalyst=食用後獲得抗性迷情費洛蒙(0:45)，或是用於馴服並觸發某些幼蟲的變態
+tootip.mod_lavacow.basicbomb=投擲出去！在接觸地面後爆炸
+tootip.mod_lavacow.crabcake=食用後獲得抗性(0:30)
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
@@ -539,7 +539,7 @@ command.mod_lavacow.whistle=現在為哨子目標
 command.mod_lavacow.whistle_err=離你太遠了
 itemGroup.mod_lavacow_items=Fish的不死崛起
 key.mod_lavacow.special=座騎特殊能力
-key.mod_lavacow.down=Flying Mount Descent (Fish's Undead Rising)
+key.mod_lavacow.down=飛行座騎下降（Fish的不死崛起）
 
 ################
 # Enchantments #
