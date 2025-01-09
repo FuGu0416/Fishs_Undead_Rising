@@ -161,7 +161,7 @@ modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在�
 modifier.mod_lavacow.famine.name=飢荒
 modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
 modifier.mod_lavacow.unholytouch.name=不潔之觸
-modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
+modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予它們虛弱 
 modifier.mod_lavacow.amber_pharaoh.name=琥珀法老
 modifier.mod_lavacow.amber_pharaoh.desc=§o蟲族聽我號令！§r\n在攻擊或破壞方塊時有機會誕生出對你忠誠的琥珀聖甲蟲並賦予再生II(0:05)
 
@@ -171,9 +171,9 @@ modifier.mod_lavacow.broodmother_armor.desc=§o享受蟲滿溫暖的懷抱！§r
 modifier.mod_lavacow.feeding_frenzy_armor.name=掠食狂熱
 modifier.mod_lavacow.feeding_frenzy_armor.desc=§o貪食！§r\n賦予常駐的飢餓VX，造成傷害+25%
 modifier.mod_lavacow.unholy_aura_armor.name=Unholy Aura
-modifier.mod_lavacow.unholy_aura_armor.desc=§o對生者充滿怨恨！§r\nYour armor will provide extra protection from non-undead mobs and will weaken them when you get hurt.
-modifier.mod_lavacow.vespa_ward_armor.name=巨蜂防護
-modifier.mod_lavacow.vespa_ward_armor.desc=§o不要是巨蜂！§r\nGetting hurt deals damage and applies Poison to the attacker at the cost of durability.
+modifier.mod_lavacow.unholy_aura_armor.desc=§o對生者充滿怨恨！§r\n減少受到來自非不死族單位的傷害並賦予它們虛弱
+modifier.mod_lavacow.vespa_ward_armor.name=巨蜂守護
+modifier.mod_lavacow.vespa_ward_armor.desc=§o不要是巨蜂！§r\n受到傷害時消耗耐久度並對攻擊者造成傷害並使其中毒(0:06)
 modifier.mod_lavacow.amber_pharaoh_armor.name=琥珀法老
 modifier.mod_lavacow.amber_pharaoh_armor.desc=§o蟲族聽我號令！§r\n在受傷害時有機會誕生出對你忠誠的琥珀聖甲蟲並賦予再生II(0:05)
 
@@ -395,12 +395,12 @@ entity_avaton_death=艾薇妲死亡
 entity_avaton_hurt=艾薇妲受傷
 entity_avaton_spell=昆蟲窸窣聲
 
-entity_skeletonking_ambient=Skeleton King rattles
+entity_skeletonking_ambient=骷髏王喀啦聲
 entity_skeletonking_attack=骷髏王重擊聲
 entity_skeletonking_death=骷髏王死亡
 entity_skeletonking_hurt=骷髏王受傷
-entity_skeletonking_knockback=Skeleton King smashes 
-entity_skeletonking_spell_skeleton_army=Skeleton King casts a spell
+entity_skeletonking_knockback=骷髏王重擊聲
+entity_skeletonking_spell_skeleton_army=骷髏王施法聲
 entity_skeletonking_spell_summon=骷髏王施法聲
 entity_skeletonking_spell_teleport=骷髏王傳送聲
 entity_skeletonking_spell_toss=骷髏王施法聲
@@ -430,17 +430,17 @@ entity_enigmoth_flap=謎影蛾拍翼聲
 entity_enigmoth_death=謎影蛾死亡
 entity_enigmoth_hurt=謎影蛾受傷
 
-random_death_coil_shoot=Death Coil fired
+random_death_coil_shoot=死影纏發射
 random_piranha_shoot=群獵者發射
 random_thorn_shoot=尖刺發射
-random_spin=Spinning noise
+random_spin=旋轉噪音
 
 ############
 # Tooltips #
 ############
 
 tootip.mod_lavacow.bonesword=對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)
-tootip.mod_lavacow.bonesword.warning=Not applied on bosses.
+tootip.mod_lavacow.bonesword.warning=對於Boss無效
 tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)，也是炎熔螈的最愛
 tootip.mod_lavacow.canepork=食用後獲得再生(0:08)，也是帝沙螽的最愛
 tootip.mod_lavacow.canerottenmeat=食用後獲得再生(0:08)，也是擬箱蟹的最愛
@@ -569,10 +569,10 @@ description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡
 mob_effect.mod_lavacow:infested.4.desc=有東西在體內蠕動...伺機等待於寄主死亡時竄出。被寄生的單位移動速度每等級-10%%且每(40/lvl)秒減少1飽食度
 mob_effect.mod_lavacow:fragile=死亡之觸
 description.mob_effect.mod_lavacow:fragile=當生命低於一定程度時，立即死亡
-mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%時，立即死亡
-mob_effect.mod_lavacow:fragile_king=King's Touch
-description.mob_effect.mod_lavacow:fragile_king=Causes instant death once health becomes low enough. Decreases attack damage.
-mob_effect.mod_lavacow:fragile_king.4.desc=Instantly kills once health gets dropped under (5*lvl)% of maximum HP. -10%% Attack Damage per level.
+mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%%時，立即死亡
+mob_effect.mod_lavacow:fragile_king=冥王之觸
+description.mob_effect.mod_lavacow:fragile_king=當生命低於一定程度時，立即死亡。並降低攻擊傷害
+mob_effect.mod_lavacow:fragile_king.4.desc=當生命低於(5*lvl)%%時，立即死亡。並降低(10*lvl)%%的攻擊傷害
 mob_effect.mod_lavacow:fear=恐懼
 description.mod_lavacow:fear=賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄
 mob_effect.mod_lavacow:fear.4.desc=BoOoOoOoOo! -20%% Attack Damage and Speed per level.
