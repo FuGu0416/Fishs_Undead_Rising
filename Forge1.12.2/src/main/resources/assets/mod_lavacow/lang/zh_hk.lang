@@ -28,6 +28,7 @@ item.mod_lavacow.poisonspore.name=劇毒孢子
 item.mod_lavacow.undyingheart.name=不死之心
 item.mod_lavacow.goldenheart.name=黃金之心
 item.mod_lavacow.moltenbeef.name=熔核肉
+item.mod_lavacow.molten_alloy.name=熔核錠
 item.mod_lavacow.moltenaxe.name=熔核斧
 item.mod_lavacow.moltenhammer.name=熔核鎚
 item.mod_lavacow.mootenheart.name=熔核之心
@@ -100,28 +101,81 @@ item.mod_lavacow.beast_claw.name=蠻獸爪
 item.mod_lavacow.hatred_shard.name=追憶碎片
 item.mod_lavacow.curseweave_cloth.name=咒織布
 item.mod_lavacow.skeletonking_mace.name=『死亡』
+item.mod_lavacow.imp_horn.name=小鬼角
+item.mod_lavacow.chitinarmor_helmet.name=甲殼頭盔
+item.mod_lavacow.chitinarmor_chestplate.name=甲殼胸甲
+item.mod_lavacow.chitinarmor_leggings.name=甲殼護腿
+item.mod_lavacow.chitinarmor_boots.name=甲殼靴子
 item.mod_lavacow.cactus_thorn.name=仙人掌刺
 item.mod_lavacow.cactus_fruit.name=仙人掌果
 item.mod_lavacow.thorn_shooter.name=仙人掌槍
 item.mod_lavacow.cactoid_pot.name=幼人掌盆栽
 item.mod_lavacow.baobing.name=刨冰
+item.mod_lavacow.kung_pao_chicken.name=宮保雞丁
 item.mod_lavacow.ectoplasm_mass.name=靈質團塊
+item.mod_lavacow.ectoplasm_ingot.name=靈質錠
+item.mod_lavacow.soulforged_heart.name=魂鑄之心
+item.mod_lavacow.soulforged_hammer.name=魂鑄鎚
+item.mod_lavacow.soulforged_axe.name=魂鑄斧
+item.mod_lavacow.soulforged_pan.name=魂鑄煎鍋
+item.mod_lavacow.ghostlyarmor_helmet.name=幽魂頭盔
+item.mod_lavacow.ghostlyarmor_chestplate.name=幽魂胸甲
+item.mod_lavacow.ghostlyarmor_leggings.name=幽魂護腿
+item.mod_lavacow.ghostlyarmor_boots.name=幽魂靴子
+item.mod_lavacow.soulforgedarmor_helmet.name=魂鑄戰盔
+item.mod_lavacow.soulforgedarmor_chestplate.name=魂鑄護胸
+item.mod_lavacow.soulforgedarmor_leggings.name=魂鑄腿鎧
+item.mod_lavacow.soulforgedarmor_boots.name=魂鑄護脛
+item.mod_lavacow.ghost_swarmer_item.name=鬼靈群獵者
+item.mod_lavacow.forsaken_staff.name=被遺忘者法杖
+item.mod_lavacow.sinister_whetstone.name=怨念磨刀石
+item.mod_lavacow.ancient_amber.name=遠古琥珀
+item.mod_lavacow.scarab_wand.name=聖甲蟲權杖
+item.mod_lavacow.diseased_wheat.name=染疫小麥
+item.mod_lavacow.diseased_bread.name=染疫麵包
+item.mod_lavacow.pheromone_gland.name=費洛蒙腺體
+item.mod_lavacow.charming_catalyst.name=迷情催化藥水
 item.mod_lavacow.enigmoth_larva_item.name=生謎影蛾幼蟲
 item.mod_lavacow.enigmoth_larva_item_cooked.name=炙燒謎影蛾幼蟲
+item.mod_lavacow.holy_water.name=聖水
+item.mod_lavacow.basicbomb.name=基礎炸彈
 item.mod_lavacow.foul_hide.name=惡臭皮革
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
+material.mod_lavacow.chitin.name=幾丁質
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
 material.mod_lavacow.scythe_claw.name=鐮刀爪
 material.mod_lavacow.ectoplasm.name=靈漿
+material.mod_lavacow.holy_sludge.name=聖輝軟泥
+material.mod_lavacow.ancient_amber.name=遠古琥珀
+material.mod_lavacow.curseweave_fabric.name=咒織布
+material.mod_lavacow.hyphae.name=菌絲根
+material.mod_lavacow.mossy_stick.name=苔蘚枝節
+material.mod_lavacow.cactus_thorn.name=仙人掌刺
+material.mod_lavacow.poison_stinger.name=毒針
+material.mod_lavacow.black_feather.name=漆黑之羽
 
 modifier.mod_lavacow.broodmother.name=育母蜂
-modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會誕生出巨蜂幼蟲
+modifier.mod_lavacow.broodmother.desc=§o享受蟲滿溫暖的懷抱！§r\n在攻擊或破壞方塊時有機會孵化出對你忠誠的巨蜂幼蟲
 modifier.mod_lavacow.famine.name=飢荒
 modifier.mod_lavacow.famine.desc=§o災厄騎士§r\n賦予飢餓，對非不死族的單位造成傷害或破壞方塊時能回復 1 飽食度 
 modifier.mod_lavacow.unholytouch.name=不潔之觸
-modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予虛弱 
+modifier.mod_lavacow.unholytouch.desc=§o對生者充滿怨恨！§r\n對非不死族的單位造成大量傷害並賦予它們虛弱 
+modifier.mod_lavacow.amber_pharaoh.name=琥珀法老
+modifier.mod_lavacow.amber_pharaoh.desc=§o蟲族聽我號令！§r\n在攻擊或破壞方塊時有機會誕生出對你忠誠的琥珀聖甲蟲並賦予再生II(0:05)
+
+# Construct's Armory Integration
+modifier.mod_lavacow.broodmother_armor.name=育母蜂
+modifier.mod_lavacow.broodmother_armor.desc=§o享受蟲滿溫暖的懷抱！§r\n在受傷害時有機會孵化出對你忠誠的巨蜂幼蟲
+modifier.mod_lavacow.feeding_frenzy_armor.name=掠食狂熱
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§o貪食！§r\n賦予常駐的飢餓V，造成傷害+25%
+modifier.mod_lavacow.unholy_aura_armor.name=不潔靈氣
+modifier.mod_lavacow.unholy_aura_armor.desc=§o對生者充滿怨恨！§r\n減少受到來自非不死族單位的傷害並賦予它們虛弱
+modifier.mod_lavacow.vespa_ward_armor.name=巨蜂守護
+modifier.mod_lavacow.vespa_ward_armor.desc=§o不要是巨蜂！§r\n受到傷害時消耗耐久度並對攻擊者造成傷害並使其中毒(0:06)
+modifier.mod_lavacow.amber_pharaoh_armor.name=琥珀法老
+modifier.mod_lavacow.amber_pharaoh_armor.desc=§o蟲族聽我號令！§r\n在受傷害時有機會誕生出對你忠誠的琥珀聖甲蟲並賦予再生II(0:05)
 
 #JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=小型墓地
@@ -164,6 +218,10 @@ tile.mod_lavacow.scarecrowhead_straw.name=稻草人頭
 tile.mod_lavacow.scarecrowhead_plague.name=稻草人頭
 tile.mod_lavacow.tombstone.name=墓碑
 tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
+tile.mod_lavacow.ectoplasm_block.name=靈質磚
+tile.mod_lavacow.molten_alloy_block.name=熔核磚
+tile.mod_lavacow.scythe_claw_block.name=鐮刀爪方塊
+tile.mod_lavacow.vespa_carapace_block.name=巨蜂殼方塊
 
 ############
 # Entities #
@@ -172,13 +230,17 @@ tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
 entity.mod_lavacow.lavacow.name=熔岩牛
 entity.mod_lavacow.zombiemushroom.name=菌屍
 entity.mod_lavacow.parasite.name=屍蛆
+entity.mod_lavacow.vespa_brood.name=巨蜂幼蟲
 entity.mod_lavacow.foglet.name=霧妖
+entity.mod_lavacow.isnachi.name=伊斯那歧
+entity.mod_lavacow.imp.name=小鬼
 entity.mod_lavacow.zombiefrozen.name=凍屍
 entity.mod_lavacow.undeadswine.name=疫豬
 entity.mod_lavacow.salamander.name=炎熔螈
 entity.mod_lavacow.ithaqua.name=伊薩庫亞
 entity.mod_lavacow.mimic.name=擬箱蟹
 entity.mod_lavacow.sludgelord.name=古樹軟泥
+entity.mod_lavacow.amberlord.name=琥珀軟泥
 entity.mod_lavacow.lilsludge.name=小樹軟泥
 entity.mod_lavacow.raven.name=渡鴉
 entity.mod_lavacow.ptera.name=翼生獸
@@ -188,6 +250,7 @@ entity.mod_lavacow.vespacocoon.name=巨蜂繭
 entity.mod_lavacow.zombiepiranha.name=群獵者
 entity.mod_lavacow.piranha.name=食人魚
 entity.mod_lavacow.boneworm.name=蟄髑
+entity.mod_lavacow.soulworm.name=魑髑
 entity.mod_lavacow.raven.seagull=海鷗
 entity.mod_lavacow.pingu.name=冰葬鵝
 entity.mod_lavacow.undertaker.name=送葬者
@@ -201,8 +264,30 @@ entity.mod_lavacow.mummy.name=木乃伊
 entity.mod_lavacow.forsaken.name=被遺忘者
 entity.mod_lavacow.cactoid.name=幼人掌
 entity.mod_lavacow.cactyrant.name=暴君掌
+entity.mod_lavacow.sea_hag.name=海巫
+entity.mod_lavacow.grave_robber.name=盜墓賊
+entity.mod_lavacow.grave_robber_ghost.name=盜墓賊亡魂
+entity.mod_lavacow.wraith.name=怨靈
+entity.mod_lavacow.ghost_swarmer.name=鬼靈群獵者
+entity.mod_lavacow.amber_scarab.name=琥珀聖甲蟲
 entity.mod_lavacow.enigmoth.name=謎影蛾
 entity.mod_lavacow.enigmoth_larva.name=謎影蛾幼蟲
+
+entity.mod_lavacow.sludgejet.name=泥漿彈
+entity.mod_lavacow.warsmallfireball.name=火球
+entity.mod_lavacow.piranhalauncher.name=群獵者
+entity.mod_lavacow.acidjet.name=胃酸液
+entity.mod_lavacow.flamejet.name=炎酸液
+entity.mod_lavacow.holygrenade.name=神聖手榴彈
+entity.mod_lavacow.ghostbomb.name=鬼靈炸彈
+entity.mod_lavacow.sonicbomb.name=音爆彈
+entity.mod_lavacow.sandburst.name=砂流葬
+entity.mod_lavacow.deathcoil.name=死纏影
+entity.mod_lavacow.cactusthorn.name=仙人掌刺
+entity.mod_lavacow.sapjet.name=蝗蟲群
+entity.mod_lavacow.moth_scales.name=蛾鱗粉
+entity.mod_lavacow.basicbomb.name=炸彈
+entity.mod_lavacow.kings_wrath.name=王之怒
 
 ##########
 # Sounds #
@@ -306,38 +391,63 @@ entity_weta_death=沙螽死亡
 entity_weta_hurt=沙螽受傷
 
 entity_avaton_ambient=艾薇妲低語聲
-entity_avaton_spell=昆蟲窸窣聲
 entity_avaton_death=艾薇妲死亡
+entity_avaton_hurt=艾薇妲受傷
+entity_avaton_spell=昆蟲窸窣聲
 
+entity_skeletonking_ambient=骷髏王喀啦聲
 entity_skeletonking_attack=骷髏王重擊聲
 entity_skeletonking_death=骷髏王死亡
+entity_skeletonking_hurt=骷髏王受傷
+entity_skeletonking_knockback=骷髏王重擊聲
+entity_skeletonking_spell_skeleton_army=骷髏王施法聲
 entity_skeletonking_spell_summon=骷髏王施法聲
 entity_skeletonking_spell_teleport=骷髏王傳送聲
 entity_skeletonking_spell_toss=骷髏王施法聲
+entity_skeletonking_spawn=不詳的聲響
 
 entity_cactyrant_ambient=暴君掌沙沙聲
 entity_cactyrant_death=暴君掌死亡
 entity_cactyrant_grow=植物生長
+
+entity_sea_hag_ambient=海巫低語聲
+entity_sea_hag_screech=海巫死亡
+
+entity_wraith_ambient=怨靈低語聲
+entity_wraith_attack=怨靈尖叫
+entity_wraith_death=怨靈死亡
+
+entity_graverobberghost_ambient=盜墓賊亡魂低語聲
+entity_graverobberghost_death=盜墓賊亡魂死亡
+entity_graverobberghost_hurt=盜墓賊亡魂受傷
+
+entity_scarab_ambient=帝沙螽唧唧聲
+entity_scarab_death=帝沙螽死亡
+entity_scarab_hurt=帝沙螽受傷
 
 entity_enigmoth_ambient=謎影蛾窸窣聲
 entity_enigmoth_flap=謎影蛾拍翼聲
 entity_enigmoth_death=謎影蛾死亡
 entity_enigmoth_hurt=謎影蛾受傷
 
+random_death_coil_shoot=死影纏發射
 random_piranha_shoot=群獵者發射
 random_thorn_shoot=尖刺發射
+random_spin=旋轉噪音
 
 ############
 # Tooltips #
 ############
 
 tootip.mod_lavacow.bonesword=對目標額外造成其最大生命值 %d%% 的傷害 (最高%d)
+tootip.mod_lavacow.bonesword.warning=對於Boss無效
 tootip.mod_lavacow.canebeef=食用後獲得再生(0:08)，也是炎熔螈的最愛
 tootip.mod_lavacow.canepork=食用後獲得再生(0:08)，也是帝沙螽的最愛
 tootip.mod_lavacow.canerottenmeat=食用後獲得再生(0:08)，也是擬箱蟹的最愛
 tootip.mod_lavacow.netherstew=食用後獲得隨機效果(0:40)
-tootip.mod_lavacow.goldenheart=在裝備時賦予再生並修補(+1/秒)裝備物品
-tootip.mod_lavacow.moltenaxe=砍下原木時可直接獲得木炭
+tootip.mod_lavacow.goldenheart.regeneration=在裝備時賦予再生
+tootip.mod_lavacow.goldenheart.repair=並修補(+%d/秒)裝備物品
+tootip.mod_lavacow.moltenaxe=燒製被破壞的方塊並獲得對應的經驗值
 tootip.mod_lavacow.moltenhammer=右鍵點擊時可對玩家周遭單位造成傷害
 tootip.mod_lavacow.potion_of_mooten_lava=把這餵給有火焰抗性的牛試試看吧 >.^
 tootip.mod_lavacow.fissionpotion=將動物分裂為兩個獨立個體
@@ -350,7 +460,7 @@ tootip.mod_lavacow.war=掀起你與你那剛建好木屋的朋友之間的一場
 tootip.mod_lavacow.moltenpan=用以烹製特殊料理
 tootip.mod_lavacow.intestine=右鍵點擊以拾取腸內物品
 tootip.mod_lavacow.felarmor=對燃燒中的單位造成傷害+
-tootip.mod_lavacow.felarmor.l2=玩家所受到的火焰傷害-
+tootip.mod_lavacow.felarmor.l2=火焰防護能力+
 tootip.mod_lavacow.swinearmor=套裝(2)：使用食物物品所需時間-20%%
 tootip.mod_lavacow.swinearmor.l2=套裝(4)：使用食物物品後移除負面效果
 tootip.mod_lavacow.piranhalauncher=右鍵向目標發射一隻群獵者！ (需要群獵者作為彈藥)
@@ -376,6 +486,10 @@ tootip.mod_lavacow.weta_hoe=右鍵點擊能同時能收成 3x3 範圍內的農�
 tootip.mod_lavacow.parasite.0=普通
 tootip.mod_lavacow.parasite.1=沙地
 tootip.mod_lavacow.parasite.2=叢林
+tootip.mod_lavacow.ptera.0=叢林
+tootip.mod_lavacow.ptera.1=沙漠
+tootip.mod_lavacow.ptera.2=莽原
+tootip.mod_lavacow.ptera.3=沼澤
 tootip.mod_lavacow.bonestew=食用後獲得抗性(0:20)與吸收II(0:20)
 tootip.mod_lavacow.mootenheart=受到的火焰傷害-%d%%，且可用於釀造
 tootip.mod_lavacow.vespa_shield=格擋傷害，並對攻擊者造成2點傷害並賦予中毒(0:06)
@@ -393,9 +507,29 @@ tootip.mod_lavacow.skeletonking_crown=強迫周遭的骷髏成為你忠實的奴
 tootip.mod_lavacow.beast_claw.desc0=向前跳撲
 tootip.mod_lavacow.beast_claw.desc1=套裝(2)：跳撲同時能賦予力量(0:03)與加速(0:03)
 tootip.mod_lavacow.skeletonking_mace=攻擊同時賦予目標死亡之觸V(0:10)
+tootip.mod_lavacow.chitinarmor=套裝(2)：掉落傷害-50%%
+tootip.mod_lavacow.chitinarmor.l2=套裝(4)：跳躍時能賦予速度(0:03)
 tootip.mod_lavacow.cactus_fruit=可用於釀造荊棘藥水，或是種植於沙中
 tootip.mod_lavacow.thorn_shooter=快速將仙人掌刺射出
 tootip.mod_lavacow.baobing=食用後可熄滅身上的火焰，並獲得荊棘II(1:00)
+tootip.mod_lavacow.kung_pao_chicken=食用後獲得燒灼II(1:00)，或用於馴服炎熔螈
+tootip.mod_lavacow.soulforged_heart=受到的火焰傷害-%d%%
+tootip.mod_lavacow.soulforged_heart.l2=醫療回復量+%d%%
+tootip.mod_lavacow.soulforged_hammer=右鍵點擊時可對玩家周遭單位造成火焰與凋零傷害
+tootip.mod_lavacow.soulforged_axe=燒製被破壞的方塊並獲得對應的經驗值
+tootip.mod_lavacow.soulforged_pan=用以烹製特殊料理
+tootip.mod_lavacow.ghostlyarmor=套裝(2)：醫療所受到傷害的20%%
+tootip.mod_lavacow.ghostlyarmor.l2=套裝(4)：對生命比你高的單位傷害+20%%
+tootip.mod_lavacow.soulforgedarmor=對燃燒中的單位造成傷害+
+tootip.mod_lavacow.soulforgedarmor.l2=火焰防護能力+
+tootip.mod_lavacow.soulforgedarmor.l3=套裝(4)：完全免疫火焰與凋零傷害
+tootip.mod_lavacow.forsaken_staff=右鍵向目標發射一枚死影纏
+tootip.mod_lavacow.scarab_wand=右鍵點擊以召喚聽命於玩家的聖甲蟲群
+tootip.mod_lavacow.diseased_bread=吃了它，或是餵給帝沙螽，結果可能不是很好...
+tootip.mod_lavacow.pheromone_gland=食用後獲得迷情費洛蒙(1:00)與噁心II(0:10)
+tootip.mod_lavacow.charming_catalyst=食用後獲得抗性迷情費洛蒙(0:45)，或是用於馴服並觸發某些幼蟲的變態
+tootip.mod_lavacow.basicbomb=投擲出去！在接觸地面後爆炸
+tootip.mod_lavacow.crabcake=食用後獲得抗性(0:30)
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
@@ -405,6 +539,7 @@ command.mod_lavacow.whistle=現在為哨子目標
 command.mod_lavacow.whistle_err=離你太遠了
 itemGroup.mod_lavacow_items=Fish的不死崛起
 key.mod_lavacow.special=座騎特殊能力
+key.mod_lavacow.down=飛行座騎下降（Fish的不死崛起）
 
 ################
 # Enchantments #
@@ -416,6 +551,8 @@ enchantment.mod_lavacow.lifesteal=生命竊取
 enchantment.mod_lavacow.lifesteal.desc=對目標造成傷害時，能回復玩家的生命值
 enchantment.mod_lavacow.corrosive=酸蝕性
 enchantment.mod_lavacow.corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
+enchantment.mod_lavacow.critical_boost=弱點爆擊
+enchantment.mod_lavacow.critical_boost.desc=提高跳躍攻擊時爆擊所能造成的傷害
 
 ##############
 # MobEffects #
@@ -432,11 +569,29 @@ description.mob_effect.mod_lavacow:infested=賦予飢餓與緩慢，且於死亡
 mob_effect.mod_lavacow:infested.4.desc=有東西在體內蠕動...伺機等待於寄主死亡時竄出。被寄生的單位移動速度每等級-10%%且每(40/lvl)秒減少1飽食度
 mob_effect.mod_lavacow:fragile=死亡之觸
 description.mob_effect.mod_lavacow:fragile=當生命低於一定程度時，立即死亡
-mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%時，立即死亡
+mob_effect.mod_lavacow:fragile.4.desc=當生命低於(5*lvl)%%時，立即死亡
+mob_effect.mod_lavacow:fragile_king=冥王之觸
+description.mob_effect.mod_lavacow:fragile_king=當生命低於一定程度時，立即死亡。並降低攻擊傷害
+mob_effect.mod_lavacow:fragile_king.4.desc=當生命低於(5*lvl)%%時，立即死亡。並降低(10*lvl)%%的攻擊傷害
+mob_effect.mod_lavacow:fear=恐懼
+description.mod_lavacow:fear=賦予虛弱與緩慢，並使非玩家單位在恐懼中逃竄
+mob_effect.mod_lavacow:fear.4.desc=嗚嗚嗚！減少(20*lvl)%%的攻擊傷害與移動速度
 mob_effect.mod_lavacow:thorned=荊棘
 description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成反傷
 mob_effect.mod_lavacow:thorned.4.desc=免疫仙人掌及尖刺附魔的傷害，並對發動近戰攻擊的單位造成(1*lvl)點傷害
-mob_effect.mod_lavacow:ravens_grace=渡鴉的優雅
+mob_effect.mod_lavacow:immolation=燒灼
+description.mob_effect.mod_lavacow:immolation=獲得火焰抗性，並使附近的單位著火
+mob_effect.mod_lavacow:immolation.4.desc=獲得火焰抗性，並使附近的單位著火(2+lvl)秒
+mob_effect.mod_lavacow:charming_pheromone=迷情費洛蒙
+description.mob_effect.mod_lavacow:charming_pheromone=所有節肢動物將會對單位中立，並試圖跟隨其後，對於較強大的節肢動物或Boss無效
+mob_effect.mod_lavacow:charming_pheromone.4.desc=所有節肢動物將會對單位中立，並試圖跟隨其後，對於較強大的節肢動物或Boss無效
+mob_effect.mod_lavacow:flourished=繁茂
+description.mob_effect.mod_lavacow:flourished=提升醫療回復量
+mob_effect.mod_lavacow:flourished.4.desc=醫療回復量提升(25*lvl)%%
+mob_effect.mod_lavacow:void_dust=虛無鱗粉
+description.mob_effect.mod_lavacow:void_dust=定時隨機傳送至附近地點
+mob_effect.mod_lavacow:void_dust.4.desc=定時隨機傳送至附近地點
+mob_effect.mod_lavacow:ravens_grace=鴉之優雅
 description.mob_effect.mod_lavacow:ravens_grace=減緩玩家的掉落速度並使他們得以免疫掉落傷害
 mob_effect.mod_lavacow:ravens_grace.4.desc=減緩玩家的掉落速度並使他們得以免疫掉落傷害
 
@@ -464,6 +619,22 @@ potion.effect.mod_lavacow:thorn=荊棘藥水
 splash_potion.effect.mod_lavacow:thorned=飛濺 荊棘藥水
 lingering_potion.effect.mod_lavacow:thorned=滯留 荊棘藥水
 tipped_arrow.effect.mod_lavacow:thorned=荊棘之箭
+potion.effect.mod_lavacow:immolation=燒灼藥水
+splash_potion.effect.mod_lavacow:immolation=飛濺 燒灼藥水
+lingering_potion.effect.mod_lavacow:immolation=滯留 燒灼藥水
+tipped_arrow.effect.mod_lavacow:immolation=燒灼之箭
+potion.effect.mod_lavacow:flourished=繁茂藥水
+splash_potion.effect.mod_lavacow:flourished=飛濺 繁茂藥水
+lingering_potion.effect.mod_lavacow:flourished=滯留 繁茂藥水
+tipped_arrow.effect.mod_lavacow:flourished=繁茂之箭
+potion.effect.mod_lavacow:void_dust=虛無裂隙藥水
+splash_potion.effect.mod_lavacow:void_dust=飛濺 虛無裂隙藥水
+lingering_potion.effect.mod_lavacow:void_dust=滯留 虛無裂隙藥水
+tipped_arrow.effect.mod_lavacow:void_dust=虛無裂隙之箭
+potion.effect.mod_lavacow:ravens_grace=鴉之優雅藥水
+splash_potion.effect.mod_lavacow:ravens_grace=飛濺 鴉之優雅藥水
+lingering_potion.effect.mod_lavacow:ravens_grace=滯留 鴉之優雅藥水
+tipped_arrow.effect.mod_lavacow:ravens_grace=鴉之優雅之箭
 
 ################
 # Advancements #
@@ -485,13 +656,15 @@ advancements.mod_lavacow.kill_zombiepiranha.title=叢林巡航II：變異魚王
 advancements.mod_lavacow.kill_zombiepiranha.description=殺死一條群獵者
 advancements.mod_lavacow.kill_undertaker.title=這是我的領地
 advancements.mod_lavacow.kill_undertaker.description=K.O.送葬者
+advancements.mod_lavacow.kill_unburied.title=活死人之夜
+advancements.mod_lavacow.kill_unburied.description=殺死一頭活屍
 advancements.mod_lavacow.get_fissionpotion.title=分歧則...
 advancements.mod_lavacow.get_fissionpotion.description=獲得分裂生殖藥水
 advancements.mod_lavacow.summon_lavacow.title=呼喚偉大之主
 advancements.mod_lavacow.summon_lavacow.description=獲得哞哞熔岩藥水
 advancements.mod_lavacow.kill_zombiefrozen.title=放手而行
 advancements.mod_lavacow.kill_zombiefrozen.description=殺死一頭凍屍
-advancements.mod_lavacow.kill_foglet.title=迷霧驚魂
+advancements.mod_lavacow.kill_foglet.title=非禮勿視
 advancements.mod_lavacow.kill_foglet.description=殺死一頭霧妖
 advancements.mod_lavacow.kill_wendigo.title=迅疾如風
 advancements.mod_lavacow.kill_wendigo.description=殺死一頭伊薩庫亞
@@ -503,6 +676,8 @@ advancements.mod_lavacow.kill_mimic.title=夾人箱
 advancements.mod_lavacow.kill_mimic.description=殺死一隻擬箱蟹
 advancements.mod_lavacow.kill_sludgelord.title=植物危機
 advancements.mod_lavacow.kill_sludgelord.description=殺死一頭古樹軟泥
+advancements.mod_lavacow.kill_amberlord.title=聖甲蟲之王
+advancements.mod_lavacow.kill_amberlord.description=殺死一頭琥珀軟泥
 advancements.mod_lavacow.kill_scarecrow.title=萬聖未至
 advancements.mod_lavacow.kill_scarecrow.description=殺死一隻稻草人
 advancements.mod_lavacow.tame_raven.title=是渡鴉，不是烏鴉
@@ -515,6 +690,8 @@ advancements.mod_lavacow.kill_ptera.title=禿鷲蜥蜴
 advancements.mod_lavacow.kill_ptera.description=殺死一隻翼生獸
 advancements.mod_lavacow.kill_boneworm.title=重生骨蟲子
 advancements.mod_lavacow.kill_boneworm.description=殺死一頭蟄髑
+advancements.mod_lavacow.kill_soulworm.title=再重生骨蟲子
+advancements.mod_lavacow.kill_soulworm.description=殺死一頭魑髑
 advancements.mod_lavacow.kill_ghostray.title=魚夜
 advancements.mod_lavacow.kill_ghostray.description=殺死一頭鬼靈鱝
 advancements.mod_lavacow.kill_banshee.title=冷寂
@@ -531,6 +708,10 @@ advancements.mod_lavacow.kill_forsaken.title=但我還記得
 advancements.mod_lavacow.kill_forsaken.description=殺死一頭被遺忘者
 advancements.mod_lavacow.get_hatred_shard.title=在那記憶的深處
 advancements.mod_lavacow.get_hatred_shard.description=獲得追憶碎片
+advancements.mod_lavacow.kill_isnachi.title=非禮勿言
+advancements.mod_lavacow.kill_isnachi.description=殺死一隻伊斯那歧
+advancements.mod_lavacow.kill_imp.title=非禮勿動
+advancements.mod_lavacow.kill_imp.description=殺死一隻小鬼
 advancements.mod_lavacow.kill_cactyrant.title=仙人詐騙
 advancements.mod_lavacow.kill_cactyrant.description=殺死一棵暴君掌
 advancements.mod_lavacow.tame_cactoid.title=沙漠農業
@@ -539,9 +720,31 @@ advancements.mod_lavacow.get_thorn_shooter.title=與我的小朋友打聲招呼�
 advancements.mod_lavacow.get_thorn_shooter.description=獲得一把仙人掌槍
 advancements.mod_lavacow.get_piranha_launcher.title=槍裡面有魚
 advancements.mod_lavacow.get_piranha_launcher.description=獲得一把群獵者發射器
+advancements.mod_lavacow.kill_sea_hag.title=沉溺巫女
+advancements.mod_lavacow.kill_sea_hag.description=殺死一頭海巫
+advancements.mod_lavacow.kill_grave_robber.title=當強尼拿到鏟子
+advancements.mod_lavacow.kill_grave_robber.description=殺死一名盜墓賊
+advancements.mod_lavacow.kill_grave_robber_ghost.title=還來啊
+advancements.mod_lavacow.kill_grave_robber_ghost.description=殺死一名盜墓賊亡魂
+advancements.mod_lavacow.kill_wraith.title=魔鬼剋星
+advancements.mod_lavacow.kill_wraith.description=殺死一頭怨靈
+advancements.mod_lavacow.kill_ghost_swarmer.title=叢林巡航III：復仇亡靈
+advancements.mod_lavacow.kill_ghost_swarmer.description=殺死一隻鬼靈群獵者
+advancements.mod_lavacow.kill_enigmoth.title=終界邊際的天蛾人
+advancements.mod_lavacow.kill_enigmoth.description=殺死一隻謎影蛾
+advancements.mod_lavacow.get_molten_alloy.title=純粹的蛋白質
+advancements.mod_lavacow.get_molten_alloy.description=獲得熔核錠
+advancements.mod_lavacow.get_molten_armor.title=燃燒吧！
+advancements.mod_lavacow.get_molten_armor.description=將鑽石護甲升級為熔核套裝
+advancements.mod_lavacow.get_molten_tool.title=熔核戰士
+advancements.mod_lavacow.get_molten_tool.description=獲得熔核工具
+advancements.mod_lavacow.get_soulforged_armor.title=燒更旺吧！
+advancements.mod_lavacow.get_soulforged_armor.description=將熔核套裝升級為魂鑄套裝
+advancements.mod_lavacow.get_soulforged_tool.title=菁英熔核戰士
+advancements.mod_lavacow.get_soulforged_tool.description=獲得魂鑄工具
 advancements.mod_lavacow.tame_scarecrow.title=你想要一起堆稻草人嗎？
 advancements.mod_lavacow.tame_scarecrow.description=製造一隻稻草人
-
+	
 #################
 # Death Message #
 #################
