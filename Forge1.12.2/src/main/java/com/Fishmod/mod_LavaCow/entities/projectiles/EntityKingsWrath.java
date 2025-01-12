@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 
@@ -17,8 +18,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityKingsWrath extends EntityThrowable {
-    private float damage = 6.0F;
-
     public EntityKingsWrath(World worldIn) {
         super(worldIn);
     }
@@ -93,7 +92,7 @@ public class EntityKingsWrath extends EntityThrowable {
     }
 
     public float getDamage() {
-        return this.damage;
+        return (float) Modconfig.SkeletonKing_Kings_Wrath_Attack;
     }
 
     protected EnumParticleTypes getParticleType() {

@@ -88,13 +88,7 @@ public class EntityRideableFlyingMob extends EntityFlyingMob {
             }
             return true;
 		}
-        
-        boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
-        
-        if (actionResultType) {
-        	return actionResultType;
-        }
-        
+                
         return super.processInteract(player, hand);
     }
 

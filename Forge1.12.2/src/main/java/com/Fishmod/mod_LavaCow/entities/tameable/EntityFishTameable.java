@@ -173,6 +173,14 @@ public class EntityFishTameable extends EntityTameable {
         ItemStack itemstack = player.getHeldItem(hand);
 
         if (this.isServerWorld()) {
+        	if (!itemstack.isEmpty()) {
+	        	boolean actionresulttype = itemstack.interactWithEntity(player, this, hand);
+	
+	            if (actionresulttype) {
+	                return actionresulttype;
+	            }
+        	}  
+        	
             if (this.isBreedingItem(itemstack) && canTameCondition()) {
                 if (!player.capabilities.isCreativeMode) {
                     if (itemstack.getItem() instanceof ItemBucket) {

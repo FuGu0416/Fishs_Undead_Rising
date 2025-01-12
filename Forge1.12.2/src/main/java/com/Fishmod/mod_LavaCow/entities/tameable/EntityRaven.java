@@ -258,8 +258,6 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
         
         if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer) {
         	this.setRotation(getRidingEntity().rotationYaw, 0F);
-        	//this.getRidingEntity().fallDistance = 0.0F;
-        	//System.out.println("OAO5 " + this.getRidingEntity().fallDistance);
         }
     }
     
@@ -301,7 +299,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {      	
+        if (this.isOwner(player) && hand.equals(EnumHand.MAIN_HAND)) {         	
         	if (itemstack.isEmpty() && !this.getHeldItemMainhand().isEmpty()) {    
              	player.world.playSound(player, this.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 1.0F, 1.0F);
              	
@@ -311,15 +309,8 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
             	
             	this.getHeldItemMainhand().shrink(this.getHeldItemMainhand().getCount());
         		
-        		return true;	            
- 	        } else if (Modconfig.Raven_Perch && player.isSneaking() && player.getPassengers().isEmpty()) {
-                this.startRiding(player);
-                this.ridingCooldown = 20;
-                if(player instanceof EntityPlayerMP && ((EntityPlayerMP) player).connection != null) {
-                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player));
-                }
-                return true;
-            } else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+        		return true;	
+ 	        } else if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
 	            if (!player.isCreative()) {
 	                itemstack.shrink(1);
 	            }
@@ -346,7 +337,14 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
 	            }
 	        	
 	        	return true;
-	        }
+	        } else if (Modconfig.Raven_Perch && player.isSneaking() && player.getPassengers().isEmpty()) {
+                this.startRiding(player);
+                this.ridingCooldown = 20;
+                if(player instanceof EntityPlayerMP && ((EntityPlayerMP) player).connection != null) {
+                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player));
+                }
+                return true;
+            }
         }
         
         return super.processInteract(player, hand);       	        

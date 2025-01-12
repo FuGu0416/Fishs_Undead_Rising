@@ -213,12 +213,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
         	return true;
         }
         
-        boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
-        
-        if (actionResultType) {
-        	return actionResultType;
-        }
-        
         return super.processInteract(player, hand);
     }
     

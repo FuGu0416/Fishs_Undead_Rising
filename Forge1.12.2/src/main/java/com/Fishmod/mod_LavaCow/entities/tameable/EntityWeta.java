@@ -215,12 +215,6 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
             return true;
         }
 
-        boolean actionResultType = itemstack.interactWithEntity(player, this, hand);
-
-        if (actionResultType) {
-            return actionResultType;
-        }
-
         return super.processInteract(player, hand);
     }
 
@@ -423,6 +417,15 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
         }
 
         return entity;
+    }
+    
+    /**
+     * This is called when Entity's growing age timer reaches 0 (negative values are considered as a child, positive as
+     * an adult)
+     */
+    @Override
+    protected void onGrowingAdult() {
+    	this.dropItem(FishItems.CHITIN, this.rand.nextInt(2) + 1);
     }
 
     /**

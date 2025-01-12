@@ -181,6 +181,7 @@ public class Modconfig {
     public static boolean pSpawnRate_SkeletonKing;
     public static double SkeletonKing_Health;
     public static double SkeletonKing_Attack;
+    public static double SkeletonKing_Kings_Wrath_Attack;
     public static int SkeletonKing_Ability_Sand_Tomb_Cooldown;
     public static int SkeletonKing_Ability_Sand_Wraith_Cooldown;
     public static int SkeletonKing_Ability_Projectile_Cooldown;
@@ -530,6 +531,7 @@ public class Modconfig {
         pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
         SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 400.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(400.0D);
         SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
+        SkeletonKing_Kings_Wrath_Attack = config.get("Skeleton King", "skeleton king kings wrath attack", 6.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(6.0D);
         SkeletonKing_Ability_Sand_Tomb_Cooldown = config.get("Skeleton King", "skeleton king sand tomb cooldown", 10, "Set the cooldown of Sand Tomb [0-100]", 0, 100).getInt(10);
         SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 60, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);

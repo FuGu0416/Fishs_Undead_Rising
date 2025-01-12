@@ -62,7 +62,7 @@ public class ItemRavenWhistle extends ItemFishCustom {
         Vec3d vec3d1 = playerIn.getLook(1.0F);
         Vec3d vec3d2 = vec3d.addVector(vec3d1.x * 30.0D, vec3d1.y * 30.0D, vec3d1.z * 30.0D);
         BlockPos pos = worldIn.rayTraceBlocks(vec3d, vec3d2, false, false, true).getBlockPos();
-    	
+        
         if(this.OrderEntityID != null) { 	
         	Entity entity = SpawnUtil.getEntityByUniqueId(this.OrderEntityID, worldIn);
         	if(playerIn.getDistance(entity) < 16.0F) {
@@ -90,7 +90,7 @@ public class ItemRavenWhistle extends ItemFishCustom {
         	this.OrderEntityID = target.getUniqueID();
         	playerIn.getHeldItem(hand).getTagCompound().setString("OrderName", target.getName());
         	playerIn.getHeldItem(hand).getTagCompound().setInteger("OrderID", target.getEntityId());
-
+        	
         	if(playerIn.isServerWorld()) {
         		playerIn.sendStatusMessage(new TextComponentTranslation(target.getName()).appendSibling(new TextComponentTranslation("command.mod_lavacow.whistle")), true);
         	}

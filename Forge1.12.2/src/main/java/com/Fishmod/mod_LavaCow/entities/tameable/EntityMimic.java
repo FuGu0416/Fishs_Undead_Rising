@@ -412,12 +412,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
             }
 
             if (!itemstack.isEmpty()) {
-                boolean actionresulttype = itemstack.interactWithEntity(player, this, hand);
-
-                if (actionresulttype) {
-                    return actionresulttype;
-                }
-
                 if (item instanceof ItemFood) {
                     ItemFood itemfood = (ItemFood) item;
                     if (itemfood.isWolfsFavoriteMeat() && this.dataManager.get(DATA_HEALTH) < this.getMaxHealth()) {
@@ -697,6 +691,15 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootTableHandler.MIMIC;
+    }
+    
+    /**
+     * This is called when Entity's growing age timer reaches 0 (negative values are considered as a child, positive as
+     * an adult)
+     */
+    @Override
+    protected void onGrowingAdult() {
+    	this.dropItem(FishItems.CHITIN, this.rand.nextInt(2) + 1);
     }
 
     /**
