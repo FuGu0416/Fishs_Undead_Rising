@@ -160,7 +160,15 @@ public class FURTameableEntity extends TameableEntity {
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (!this.level.isClientSide) {  
+        
+        if (!itemstack.isEmpty()) {
+        	ActionResultType actionresulttype = itemstack.interactLivingEntity(player, this, hand);
+        	if (actionresulttype.equals(ActionResultType.SUCCESS)) {
+        		return actionresulttype;
+        	}
+        }
+        
+        if (!this.level.isClientSide) {             
 	    	if (this.isFood(itemstack) && canTameCondition()) {
 	            if (!player.abilities.instabuild) {	               
 	               if (itemstack.getItem() instanceof BucketItem) {

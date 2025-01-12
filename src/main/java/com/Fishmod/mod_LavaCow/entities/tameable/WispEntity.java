@@ -275,12 +275,6 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
             return ActionResultType.sidedSuccess(this.level.isClientSide);
         }
         
-        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
-        
-        if (actionResultType.consumesAction()) {
-        	return actionResultType;
-        }
-        
         return super.mobInteract(player, hand);
     }
        

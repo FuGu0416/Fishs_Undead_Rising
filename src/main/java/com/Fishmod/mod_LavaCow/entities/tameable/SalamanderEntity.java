@@ -242,12 +242,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     		}    	
         }
         
-        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
-        
-        if (actionResultType.consumesAction()) {
-        	return actionResultType;
-        }
-        
         return super.mobInteract(player, hand);
     }
     

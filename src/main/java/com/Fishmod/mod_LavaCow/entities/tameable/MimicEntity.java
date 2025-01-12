@@ -420,12 +420,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
                 }
         	}
 
-            if (!itemstack.isEmpty()) {
-            	ActionResultType actionresulttype = itemstack.interactLivingEntity(player, this, hand);
-            	if (actionresulttype.equals(ActionResultType.SUCCESS)) {
-            		return actionresulttype;
-            	}
-            	
+            if (!itemstack.isEmpty()) {            	
             	if (item.isEdible()) {
                     if (item.getFoodProperties().isMeat() && this.getHealth() < this.getMaxHealth()) {
                        if (!player.abilities.instabuild) {

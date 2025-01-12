@@ -82,12 +82,6 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements IEquipabl
         	   return ActionResultType.sidedSuccess(this.level.isClientSide);
     		}    	
         }
- 
-        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
-        
-        if (actionResultType.consumesAction()) {
-        	return actionResultType;
-        }
         
     	return super.mobInteract(player, hand);
     }

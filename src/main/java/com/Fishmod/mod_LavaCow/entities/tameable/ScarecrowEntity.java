@@ -275,12 +275,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
 	    		return ActionResultType.SUCCESS;
 	    	}
     	}
-    	
-        ActionResultType actionResultType = itemstack.interactLivingEntity(player, this, hand);
-        
-        if (actionResultType.consumesAction()) {
-        	return actionResultType;
-        }
 
     	return super.mobInteract(player, hand); 	
     }   

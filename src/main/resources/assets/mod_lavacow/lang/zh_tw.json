@@ -421,9 +421,9 @@
 	"entity_banshee_death": "報喪女妖死亡",
 	"entity_banshee_hurt": "怨靈受傷",
 
-	"entity_weta_ambient": "沙螽唧唧聲",
-	"entity_weta_death": "沙螽死亡",
-	"entity_weta_hurt": "沙螽受傷",
+	"entity_weta_ambient": "帝沙螽唧唧聲",
+	"entity_weta_death": "帝沙螽死亡",
+	"entity_weta_hurt": "帝沙螽受傷",
 
 	"entity_avaton_ambient": "艾薇妲低語聲",
 	"entity_avaton_spell": "昆蟲窸窣聲",
@@ -541,7 +541,7 @@
 	"tooltip.mod_lavacow:soulfirepan": "攻擊同時賦予著火(0:08)，燃燒附魔可再延長4秒著火時間，也可用以烹製特殊料理",
 	"tooltip.mod_lavacow:ghostlyarmor": "套裝(2)：醫療所受到傷害的20%%",
 	"tooltip.mod_lavacow:ghostlyarmor.l2": "套裝(4)：對生命比你高的單位傷害+20%%",
-	"tooltip.mod_lavacow:forsaken_staff": "右鍵向目標發射一枚死亡纏繞",
+	"tooltip.mod_lavacow:forsaken_staff": "右鍵向目標發射一枚死影纏",
 	"tooltip.mod_lavacow:illager_nose": "大部分窳民不再將你視為敵人",
 	"tooltip.mod_lavacow:scarab_scepter": "右鍵點擊以召喚聽命於玩家的聖甲蟲群",
 	"tooltip.mod_lavacow:diseased_bread": "將村民轉化為殭屍村民，或是直接食用",
@@ -562,6 +562,7 @@
 	"command.mod_lavacow.whistle_err": "%s離你太遠了",
 	"itemGroup.mod_lavacow_items": "Fish的不死崛起",
 	"key.mod_lavacow.special": "座騎特殊能力",
+	"key.mod_lavacow.down": "Flying Mount Descent (Fish's Undead Rising)",
 
 	"enchantment.mod_lavacow.poisonous": "劇毒",
 	"enchantment.mod_lavacow.poisonous.desc": "攻擊時能使目標中毒",
@@ -791,6 +792,8 @@
 	"advancements.mod_lavacow.kill_ghoul.description": "殺死一隻食屍鬼",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.title": "不管在哪裡，我都不想吃",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.description": "獲得綠培根蛋",	
+	"advancements.mod_lavacow.kill_enigmoth.title": "終界邊際的天蛾人",
+	"advancements.mod_lavacow.kill_enigmoth.description": "殺死一隻謎影蛾",
 					
 	"death.mod_lavacow.timeup": "%1$s的生命消逝於塵土之中"
 }
