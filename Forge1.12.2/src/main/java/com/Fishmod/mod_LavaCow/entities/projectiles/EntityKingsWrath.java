@@ -87,10 +87,6 @@ public class EntityKingsWrath extends EntityThrowable {
         }
     }
 
-    public void setDamage(float damageIn) {
-        this.damage = damageIn;
-    }
-
     public float getDamage() {
         return (float) Modconfig.SkeletonKing_Kings_Wrath_Attack;
     }
