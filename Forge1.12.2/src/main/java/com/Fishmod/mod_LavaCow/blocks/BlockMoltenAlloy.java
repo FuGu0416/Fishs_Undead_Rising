@@ -22,6 +22,7 @@ public class BlockMoltenAlloy extends Block {
 		this.setResistance(10.0F);
 		this.setCreativeTab(mod_LavaCow.TAB_ITEMS);
 		this.setSoundType(SoundType.METAL);
+		this.setLightLevel(1.0f);
 	}
 	
 	@Override

@@ -219,7 +219,7 @@ tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
 tile.mod_lavacow.cactoid_sprout.name=Cactoid Sprout
 tile.mod_lavacow.ectoplasm_block.name=Block of Ectoplasm
-tile.mod_lavacow.molten_alloy_block.name=Molten Alloy Barrel
+tile.mod_lavacow.molten_alloy_block.name=Block of Molten Alloy
 tile.mod_lavacow.scythe_claw_block.name=Scythe Claw Barrel
 tile.mod_lavacow.vespa_carapace_block.name=Vespa Carapace Barrel
 

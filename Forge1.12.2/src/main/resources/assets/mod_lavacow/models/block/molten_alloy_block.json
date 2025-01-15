@@ -1,8 +1,8 @@
 {
 	"parent": "minecraft:block/cube_bottom_top",
 	"textures": {
-		"bottom": "mod_lavacow:blocks/barrel_bottom",
-		"side": "mod_lavacow:blocks/barrel_side",
-		"top": "mod_lavacow:blocks/molten_alloy_block"
+		"bottom": "mod_lavacow:blocks/molten_alloy_block/molten_alloy_block_bottom",
+		"side": "mod_lavacow:blocks/molten_alloy_block/molten_alloy_block_side",
+		"top": "mod_lavacow:blocks/molten_alloy_block/molten_alloy_block_top"
 	}
 }
