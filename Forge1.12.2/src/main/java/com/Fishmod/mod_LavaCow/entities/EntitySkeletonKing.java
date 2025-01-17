@@ -271,7 +271,11 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         if (getInvulTime() > 0) {
             setInvulTime(getInvulTime() - 1);
             if (this.ticksExisted % 5 == 0)
-                heal(getMaxHealth() * 0.03F);
+            	this.heal(getMaxHealth() * 0.03F);
+        }
+        
+        if (this.getAttackTarget() == null && this.getHealth() < this.getMaxHealth()) {
+        	this.heal(this.getMaxHealth() * 0.05F);
         }
 
         if (this.blockBreakCounter > 0) {
