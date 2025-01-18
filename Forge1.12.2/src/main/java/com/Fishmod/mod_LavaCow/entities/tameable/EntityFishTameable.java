@@ -42,10 +42,12 @@ public class EntityFishTameable extends EntityTameable {
     protected EntityFishTameable.State state;
     protected EntityAIBase wander;
     protected EntityAIBase follow;
-
+    private	boolean canDespawn;
+    
     public EntityFishTameable(World worldIn) {
         super(worldIn);
         this.setTamed(false);
+        this.canDespawn = true;
     }
 
     protected void entityInit() {
@@ -105,7 +107,7 @@ public class EntityFishTameable extends EntityTameable {
      * Determines if an entity can be despawned, used on idle far away entities
      */
     protected boolean canDespawn() {
-        return !(this.isTamed() && this.getOwner() instanceof EntityPlayer);
+        return this.canDespawn;
     }
 
     protected boolean isCommandable() {
@@ -248,13 +250,13 @@ public class EntityFishTameable extends EntityTameable {
     public void onUpdate() {
         super.onUpdate();
 
-        if (!this.world.isRemote && !this.isTamed() && this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
-            this.setDead();
+        if (this.canDespawn && !this.world.isRemote && this.ticksExisted % 20 == 0) {
+        	if (this.isTamed()) {
+        		this.canDespawn = false;       		
+        	} else if (this.world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+    			this.setDead();
+    		}
         }
-        
-        /*if (!this.world.isRemote && Modconfig.Suicidal_Minion && (this.getOwner() != null && (!(this.getOwner() instanceof EntityPlayer) && !this.getOwner().isEntityAlive()))) {
-        	this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute().setDamageBypassesArmor() , this.getMaxHealth());
-        }*/
     }
 
     protected void updateAITasks() {
