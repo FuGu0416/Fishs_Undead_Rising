@@ -67,7 +67,8 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemBlock(Modblocks.ECTOPLASM_BLOCK), Modblocks.ECTOPLASM_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.MOLTEN_ALLOY_BLOCK), Modblocks.MOLTEN_ALLOY_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.SCYTHE_CLAW_BLOCK), Modblocks.SCYTHE_CLAW_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
-                BlockBasic.setItemName(new ItemBlock(Modblocks.VESPA_CARAPACE_BLOCK), Modblocks.VESPA_CARAPACE_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
+                BlockBasic.setItemName(new ItemBlock(Modblocks.VESPA_CARAPACE_BLOCK), Modblocks.VESPA_CARAPACE_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.MOLTEN_MEAT_BLOCK), Modblocks.MOLTEN_MEAT_BLOCK.getRegistryName().getResourcePath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
         );
     }
     

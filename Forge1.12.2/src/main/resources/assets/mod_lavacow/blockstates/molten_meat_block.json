@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": {"model": "mod_lavacow:molten_meat_block"},
+        "inventory": {"model": "mod_lavacow:molten_meat_block"}
+    }
+}

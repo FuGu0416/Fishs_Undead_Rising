@@ -222,6 +222,7 @@ tile.mod_lavacow.ectoplasm_block.name=Block of Ectoplasm
 tile.mod_lavacow.molten_alloy_block.name=Block of Molten Alloy
 tile.mod_lavacow.scythe_claw_block.name=Scythe Claw Barrel
 tile.mod_lavacow.vespa_carapace_block.name=Vespa Carapace Barrel
+tile.mod_lavacow.molten_meat_block.name=Molten Meat Barrel
 
 ############
 # Entities #

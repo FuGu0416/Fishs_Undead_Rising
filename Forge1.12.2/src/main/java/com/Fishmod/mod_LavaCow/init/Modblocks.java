@@ -56,8 +56,9 @@ public class Modblocks {
 	public static final BlockCactoidSprout CACTOID_SPROUT = new BlockCactoidSprout();
 	public static final BlockEctoplasm ECTOPLASM_BLOCK = new BlockEctoplasm();
 	public static final BlockMoltenAlloy MOLTEN_ALLOY_BLOCK = new BlockMoltenAlloy();
-	public static final BlockMaterial SCYTHE_CLAW_BLOCK = new BlockMaterial(Material.ROCK, MapColor.GRAY, SoundType.STONE);
-	public static final BlockMaterial VESPA_CARAPACE_BLOCK = new BlockMaterial(Material.ROCK, MapColor.LIME, SoundType.STONE);
+	public static final BlockMaterial SCYTHE_CLAW_BLOCK = new BlockMaterial(Material.WOOD, MapColor.GRAY, SoundType.WOOD);
+	public static final BlockMaterial VESPA_CARAPACE_BLOCK = new BlockMaterial(Material.WOOD, MapColor.LIME, SoundType.WOOD);
+	public static final BlockMaterial MOLTEN_MEAT_BLOCK = new BlockMaterial(Material.WOOD, MapColor.NETHERRACK, SoundType.WOOD);
 	
 	@ObjectHolder("glowshroom")
     public static final ItemBlock item_block_glowshroom = null;
@@ -91,6 +92,8 @@ public class Modblocks {
 	public static final ItemBlock item_block_vespa_carapace = null;
 	@ObjectHolder("scythe_claw_block")
 	public static final ItemBlock item_block_scythe_claw = null;
+	@ObjectHolder("molten_meat_block")
+	public static final ItemBlock item_block_molten_meat = null;
 	
 	@EventBusSubscriber(modid = mod_LavaCow.MODID)
     public static class RegistrationHandler
