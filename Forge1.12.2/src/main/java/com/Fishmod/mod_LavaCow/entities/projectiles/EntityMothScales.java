@@ -22,8 +22,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
 public class EntityMothScales extends EntityFireball {
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityMothScales.class, DataSerializers.VARINT);
     private static final float[][] SCALECOLOR = {{0.42F, 0.4F, 1.00F}, {1.00F, 0.59F, 0.06F}, {0.99F, 0.0F, 0.32F}};
@@ -107,7 +105,6 @@ public class EntityMothScales extends EntityFireball {
                     case 0:
                     case 2:
                         if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                            List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
                             EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 
                             entityareaeffectcloud.setOwner(owner);
@@ -122,17 +119,7 @@ public class EntityMothScales extends EntityFireball {
                             } else {
                                 entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.CORRODED, 20 * 20, 2));
                             }
-
-                            if (!list.isEmpty()) {
-                                for (EntityLivingBase entitylivingbase : list) {
-                                    double distSq = this.getDistanceSq(entitylivingbase);
-
-                                    if (distSq < 16.0D) {
-                                        entityareaeffectcloud.setPosition(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ);
-                                        break;
-                                    }
-                                }
-                            }
+                            
                             this.world.spawnEntity(entityareaeffectcloud);
                             break;
                         }
