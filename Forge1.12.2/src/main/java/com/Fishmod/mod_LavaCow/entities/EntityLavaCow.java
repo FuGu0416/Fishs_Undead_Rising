@@ -10,7 +10,9 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
@@ -31,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -172,6 +175,19 @@ public class EntityLavaCow extends EntityCow {
         } else {
             return super.processInteract(player, hand);
         }
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (!source.isMagicDamage() && source.getImmediateSource() instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) source.getImmediateSource();
+
+            if (!source.isExplosion()) {
+                entity.attackEntityFrom(DamageSource.causeIndirectDamage((Entity) this, (EntityLivingBase) this).setFireDamage(), 2.0F);
+            }
+        }
+
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override

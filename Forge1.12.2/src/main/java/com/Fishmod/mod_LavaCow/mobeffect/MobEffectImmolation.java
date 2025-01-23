@@ -16,7 +16,7 @@ public class MobEffectImmolation extends MobEffectMod {
         List<Entity> list = entity.world.getEntitiesWithinAABB(EntityLivingBase.class, entity.getEntityBoundingBox().grow(3.0D));
 
         for (Entity target : list) {
-            if (target instanceof EntityLivingBase && !target.isOnSameTeam(entity) && target != entity && !(target instanceof EntityAnimal)) {
+            if (target instanceof EntityLivingBase && !target.isImmuneToFire() && !target.isOnSameTeam(entity) && target != entity && !(target instanceof EntityAnimal)) {
                 target.setFire(3 + 3 * amplifier);
             }
         }
