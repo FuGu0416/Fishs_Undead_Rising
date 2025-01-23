@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
@@ -110,7 +112,7 @@ public class EntityMothScales extends EntityFireball {
                             entityareaeffectcloud.setOwner(owner);
                             entityareaeffectcloud.setRadius(2.0F);
                             entityareaeffectcloud.setRadiusOnUse(-0.5F);
-                            entityareaeffectcloud.setWaitTime(10);
+                            entityareaeffectcloud.setWaitTime(Modconfig.Enigmoth_Scale_Potion_Cloud_Time);
                             entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
                             entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
 
