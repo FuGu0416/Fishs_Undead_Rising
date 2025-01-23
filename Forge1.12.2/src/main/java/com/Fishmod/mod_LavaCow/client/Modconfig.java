@@ -19,6 +19,7 @@ public class Modconfig {
 
     public static Configuration config = null;
 
+    public static int pSpawnRate_Lavacow;
     public static double Lavacow_Health;
     public static boolean Lavacow_Bucket;
     public static double Lavacow_Classic_Texture_Chance;
@@ -346,9 +347,10 @@ public class Modconfig {
         pSpawnRate_Cordyceps = config.get("Shroom", "cordyceps spawn rate", 20, "Set the spawn rate of Cordyceps [0-100]", 0, 100).getInt(20);
         pSpawnRate_Veilshroom = config.get("Shroom", "veilshroom spawn rate", 20, "Set the spawn rate of Veil Shroom [0-100]", 0, 100).getInt(20);
 
-        Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
+        pSpawnRate_Lavacow = config.get("Moogma", "moogma spawn rate", 5, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(5);
+        Lavacow_Health = config.get("Moogma", "moogma health", 20.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(20.0D);
         Lavacow_Bucket = config.get("Moogma", "moogma lava source", true, "Should lava buckets be obtainable from Moogma [false/true]").getBoolean(true);
-        Lavacow_Classic_Texture_Chance = config.get("Moogma", "moogma classic texture chance", 1.0D, "Chance for Moogmas to spawn with the classic texture (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(1.0D);
+        Lavacow_Classic_Texture_Chance = config.get("Moogma", "moogma classic texture chance", 0.5D, "Chance for Moogmas to spawn with the classic texture (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(0.5D);
 
         pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
         Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);

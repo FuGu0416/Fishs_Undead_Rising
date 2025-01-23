@@ -34,6 +34,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -123,7 +124,7 @@ public class EntityLavaCow extends EntityCow {
 
     @Override
     public boolean getCanSpawnHere() {
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+        return SpawnUtil.isAllowedDimension(this.dimension) && this.world.getBlockState((new BlockPos(this)).down()).canEntitySpawn(this) && (this.world.checkNoEntityCollision(this.getEntityBoundingBox()) && !this.world.containsAnyLiquid(this.getEntityBoundingBox()));
     }
 
     private boolean isWalkingonLand() {

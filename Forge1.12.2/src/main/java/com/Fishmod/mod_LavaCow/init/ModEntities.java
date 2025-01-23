@@ -570,6 +570,7 @@ public class ModEntities {
     }
 
     public static void RegisterEntitySpawn() {
+        tweakEntitySpawn(EntityLavaCow.class, EnumCreatureType.CREATURE, Modconfig.pSpawnRate_Lavacow, 2, 4, BiomeDictionary.Type.NETHER);
         tweakEntitySpawn(EntityZombieMushroom.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.Type.WET);
         tweakEntitySpawn(EntityZombieMushroom.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_ZombieMushroom, 8, 16, BiomeDictionary.Type.RIVER);
         tweakEntitySpawn(EntityFoglet.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Foglet, 8, 16, BiomeDictionary.Type.WET);
@@ -583,7 +584,7 @@ public class ModEntities {
         for (Type C : Type.getAll()) {
             if (!C.equals(Type.NETHER) && !C.equals(Type.END)) {
                 tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
-                tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
+                if (!C.equals(Type.MUSHROOM)) tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
             }
         }
         tweakEntitySpawn(EntityUnburied.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Unburied, 8, 16, BiomeDictionary.Type.SPOOKY);
