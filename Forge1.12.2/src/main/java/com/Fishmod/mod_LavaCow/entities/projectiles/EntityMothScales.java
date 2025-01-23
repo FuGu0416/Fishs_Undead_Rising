@@ -106,7 +106,7 @@ public class EntityMothScales extends EntityFireball {
                         break;
                     case 0:
                     case 2:
-                        if (result.typeOfHit != RayTraceResult.Type.BLOCK) {
+                        if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
                             List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
                             EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 
