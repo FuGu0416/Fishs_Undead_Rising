@@ -428,13 +428,13 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
         }
 
         protected void castSpell() {
-        	for(int i = 0 ; i < 12; i++) {
+        	for(int i = 0 ; i < Modconfig.Enigmoth_Scale_Amount; i++) {
        	 		Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		Double d1 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		EntityMothScales ammo = new EntityMothScales(world, EntityEnigmoth.this, d0, - 2.4D, d1);
        	 		ammo.setPosition(EntityEnigmoth.this.posX + d0 * 0.25D, EntityEnigmoth.this.posY + (double)(EntityEnigmoth.this.height / 3.0F) + 1.5D, EntityEnigmoth.this.posZ + d1 * 0.25D);	
 	            
-       	 		if(!(EntityEnigmoth.this.world.isRemote)) {
+       	 		if (!(EntityEnigmoth.this.world.isRemote)) {
        	 		EntityEnigmoth.this.world.spawnEntity(ammo);	
 	       	 		ammo.setScaleType(EntityEnigmoth.this.getSkin());
 	       	 	}

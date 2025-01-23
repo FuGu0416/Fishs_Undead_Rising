@@ -247,6 +247,8 @@ public class Modconfig {
     public static double Enigmoth_Attack;
     public static int Enigmoth_Ability_Cooldown;
     public static int Enigmoth_Ability_Cooldown_Mount;
+    public static int Enigmoth_Scale_Amount;
+    public static int Enigmoth_Scale_Amount_Mount;
     public static int Enigmoth_FlyingHeight_limit;
     public static boolean Enigmoth_Middle_End_Island;
 
@@ -596,6 +598,8 @@ public class Modconfig {
         Enigmoth_Attack = config.get("Enigmoth", "enigmoth attack", 8.0D, "Enigmoth strength [1-1000]", 1, 1000).getDouble(8.0D);
         Enigmoth_Ability_Cooldown = config.get("Enigmoth", "enigmoth spell cooldown", 6, "Set the cooldown of spreading scales [0-100]", 0, 100).getInt(6);
         Enigmoth_Ability_Cooldown_Mount = config.get("Enigmoth", "mounted enigmoth spell cooldown", 6, "Set the cooldown of spreading scales when mounted [0-100]", 0, 100).getInt(6);
+        Enigmoth_Scale_Amount = config.get("Enigmoth", "enigmoth scale amount", 10, "Set the amount of scales spread from each attack [1-100]", 1, 100).getInt(10);
+        Enigmoth_Scale_Amount_Mount = config.get("Enigmoth", "enigmoth mount scale amount", 5, "Set the amount of scales spread from each attack when mounted [1-100]", 1, 100).getInt(5);
         Enigmoth_FlyingHeight_limit = config.get("Enigmoth", "enigmoth height limit", 16, "Set the height limit to X blocks above the ground for Enigmoths, 0 = Infinite [0-100]", 0, 100).getInt(16);
         Enigmoth_Middle_End_Island = config.get("Enigmoth", "enigmoth middle end island spawn", false, "Should Enigmoths spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
 
