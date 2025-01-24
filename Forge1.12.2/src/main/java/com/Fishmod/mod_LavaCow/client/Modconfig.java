@@ -319,6 +319,8 @@ public class Modconfig {
     public static int SpawnRate_Desert_Tomb;
     public static boolean Generate_Cemetery;
     public static boolean Generate_Desert_Tomb;
+    public static double Illager_Nose_Drop_Chance;
+    public static double Charming_Pheromone_Health_Limit;
     public static boolean Bowls_Stack;
     public static boolean Should_Villager_Fear;
     public static int pSpawnRate_Bloodtooth;
@@ -804,6 +806,10 @@ public class Modconfig {
 
         SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [0-10000]", 0, 10000).getInt(750);
         Generate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "generate desert tomb", true, "Generate Desert Tomb in the Overworld. [false/true]").getBoolean(true);
+
+        Illager_Nose_Drop_Chance = config.get(Configuration.CATEGORY_GENERAL, "illager nose drop chance", 0.02D, "Chance for the Illager Nose to drop from certain mobs (all Illagers and Witches) [0-1]", 0, 1).getDouble(0.02D);
+
+        Charming_Pheromone_Health_Limit = config.get(Configuration.CATEGORY_GENERAL, "charming pheromone health limit", 40.0D, "Arthropods are not affected by Charming Pheromone if their health is above the set amount [1-10000]", 0, 10000).getDouble(40.0D);
 
         Bowls_Stack = config.get(Configuration.CATEGORY_GENERAL, "bowls stack", true, "All bowl food items from the mod will stack up to 64. [false/true]").getBoolean(true);
 

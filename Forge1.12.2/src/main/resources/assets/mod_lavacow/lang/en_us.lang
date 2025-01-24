@@ -129,6 +129,7 @@ item.mod_lavacow.soulforgedarmor_boots.name=Soulforged Boots
 item.mod_lavacow.ghost_swarmer_item.name=Ghost Swarmer
 item.mod_lavacow.forsaken_staff.name=Forsaken Staff
 item.mod_lavacow.sinister_whetstone.name=Sinister Whetstone
+item.mod_lavacow.illager_nose.name=Illager Nose
 item.mod_lavacow.ancient_amber.name=Ancient Amber
 item.mod_lavacow.scarab_wand.name=Scarab Scepter
 item.mod_lavacow.diseased_wheat.name=Diseased Wheat
@@ -524,6 +525,7 @@ tootip.mod_lavacow.ghostlyarmor.l2=Set Bonus (4): +20%% damage to opponents with
 tootip.mod_lavacow.soulforgedarmor=Bonus Fire Damage: +
 tootip.mod_lavacow.soulforgedarmor.l2=Fire Damage Protection: +
 tootip.mod_lavacow.soulforgedarmor.l3=Set Bonus (4): Full immunity to fire and wither damage.
+tootip.mod_lavacow.illager_nose=Dress like an Illager! Illagers will become neutral when worn.
 tootip.mod_lavacow.forsaken_staff=Right-click to fire a death coil.
 tootip.mod_lavacow.scarab_wand=Right-click to summon a swarm of Amber Scarabs.
 tootip.mod_lavacow.diseased_bread=Eating this or feeding it to Wetas might have consequences...
@@ -582,7 +584,7 @@ description.mob_effect.mod_lavacow:thorned=Grants immunity to cactus and thorns 
 mob_effect.mod_lavacow:thorned.4.desc=Immune to cactus and thorns enchantment damage. Entities that deal damage will also take damage by (1*lvl).
 mob_effect.mod_lavacow:immolation=Immolation
 description.mob_effect.mod_lavacow:immolation=Grants immunity to fire and lava. Nearby entities around the player are set ablaze.
-mob_effect.mod_lavacow:immolation.4.desc=Fire Resistance. Entities around you are set ablaze for (2+lvl) seconds.
+mob_effect.mod_lavacow:immolation.4.desc=Fire Resistance. Entities around you are set ablaze for (3*lvl) seconds.
 mob_effect.mod_lavacow:charming_pheromone=Pheromone Charm
 description.mob_effect.mod_lavacow:charming_pheromone=All arthropods will be passive to the player and will try to follow instead. Doesn't affect stronger arthropods and bosses.
 mob_effect.mod_lavacow:charming_pheromone.4.desc=Arthropods will be passive to you and will try to follow instead. Doesn't affect stronger arthropods and bosses.
@@ -745,6 +747,8 @@ advancements.mod_lavacow.get_soulforged_tool.title=Elite Molten Warrior
 advancements.mod_lavacow.get_soulforged_tool.description=Obtain a soulforged tool!
 advancements.mod_lavacow.tame_scarecrow.title=Do You Wanna Build a Scarecrow?
 advancements.mod_lavacow.tame_scarecrow.description=Build a Scarecrow
+advancements.mod_lavacow.get_illager_nose.title=I Got Your Nose!
+advancements.mod_lavacow.get_illager_nose.description=Obtain an Illager's nose.
 
 #################
 # Death Message #

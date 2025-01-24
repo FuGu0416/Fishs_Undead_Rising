@@ -8,7 +8,9 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGraveRobberGhost;
+import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
+import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -67,7 +69,16 @@ public class EntityGraveRobber extends AbstractIllager {
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityGraveRobber.class}));
         if (this.getAttackTarget() == null)
-            this.targetTasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.5F, 1.0D, 1.2D));
+            this.targetTasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
+                // TODO: Baubles support
+                //boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY);
+
+                @Override
+                public boolean apply(Entity input) {
+                	EntityPlayer target = (EntityPlayer) input;
+                    return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE));
+                }
+            }, 4.5F, 1.0D, 1.2D));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
     }
