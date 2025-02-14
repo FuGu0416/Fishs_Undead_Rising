@@ -17,14 +17,14 @@ public class MobEffectImmolation extends MobEffectMod {
 
         for (Entity target : list) {
             if (target instanceof EntityLivingBase && !target.isImmuneToFire() && !target.isOnSameTeam(entity) && target != entity && !(target instanceof EntityAnimal)) {
-                target.setFire(3 + 3 * amplifier);
+                target.setFire(3 * (amplifier + 1));
             }
         }
     }
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-        int i = 10 >> amplifier;
+        int i = 20;
 
         if (i > 0) {
             return duration % i == 0;

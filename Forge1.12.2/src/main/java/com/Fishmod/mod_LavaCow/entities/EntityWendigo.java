@@ -54,6 +54,9 @@ public class EntityWendigo extends EntityMob implements IAggressive {
     private static final DataParameter<Boolean> POUNCING = EntityDataManager.<Boolean>createKey(EntityWendigo.class, DataSerializers.BOOLEAN);
     private boolean isAggressive = false;
     private int attackTimer;
+    private EntityAIAvoidEntity<EntityPlayer> avoid;
+    private boolean isAvoiding;
+    
     /**
      * set the Cooldown to pounce attack
      */
@@ -67,9 +70,17 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         super(worldIn);
         this.setSize(1.6F, 2.6F);
         this.experienceValue = 20;
+        this.isAvoiding = false;
     }
 
     protected void initEntityAI() {
+    	this.avoid = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, new Predicate<Entity>() {
+            @Override
+            public boolean apply(Entity input) {
+                return input.world.isDaytime();
+            }
+        }, 30.0F, 2.0D, 2.0D);
+    	   			
         this.tasks.addTask(0, new EntityAISwimming(this));
         if (!Modconfig.SunScreen_Mode) this.tasks.addTask(1, new EntityAIFleeSun(this, 2.0D));
         this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
@@ -84,13 +95,6 @@ public class EntityWendigo extends EntityMob implements IAggressive {
     protected void applyEntityAI() {
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.targetTasks.addTask(2, new EntityAIPickupMeat<>(this, EntityItem.class, true));
-        if (this.getAttackTarget() == null && Modconfig.Wendigo_KeepDistance)
-            this.targetTasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
-                @Override
-                public boolean apply(Entity input) {
-                    return input.world.isDaytime();
-                }
-            }, 30.0F, 2.0D, 2.0D));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, new Predicate<Entity>() {
             public boolean apply(@Nullable Entity input) {
                 return !input.world.isDaytime();
@@ -211,6 +215,18 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         } else {
             isAggressive = false;
             this.world.setEntityState(this, (byte) 34);
+        }
+        
+        if (Modconfig.Wendigo_KeepDistance) {
+	        if (this.world.isDaytime() && this.getAttackTarget() == null) {
+	        	if (!this.isAvoiding) {
+		        	this.targetTasks.addTask(2, this.avoid);
+		        	this.isAvoiding = true;
+	        	}
+	        } else if (this.isAvoiding) {
+	        	this.targetTasks.removeTask(this.avoid);
+	        	this.isAvoiding = false;
+	        }
         }
     }
 

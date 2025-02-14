@@ -50,7 +50,7 @@ public class MobEffectVoidDust extends MobEffectMod {
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-        int i = 50 >> amplifier;
+        int i = (20 * 10) >> amplifier;
 
         if (i > 0) {
             return duration % i == 0;

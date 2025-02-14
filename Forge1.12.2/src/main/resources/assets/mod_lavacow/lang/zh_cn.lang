@@ -129,6 +129,7 @@ item.mod_lavacow.soulforgedarmor_boots.name=魂铸护胫
 item.mod_lavacow.ghost_swarmer_item.name=鬼灵群猎者
 item.mod_lavacow.forsaken_staff.name=被遗忘者法杖
 item.mod_lavacow.sinister_whetstone.name=怨念磨刀石
+item.mod_lavacow.illager_nose.name=灾厄之鼻
 item.mod_lavacow.ancient_amber.name=远古琥珀
 item.mod_lavacow.scarab_wand.name=圣甲虫权杖
 item.mod_lavacow.diseased_wheat.name=染疫小麦
@@ -582,7 +583,7 @@ description.mob_effect.mod_lavacow:thorned=免疫仙人掌及尖刺附魔的伤�
 mob_effect.mod_lavacow:thorned.4.desc=免疫仙人掌及尖刺附魔的伤害，并对发动近战攻击的单位造成(1*lvl)点伤害
 mob_effect.mod_lavacow:immolation=烧灼
 description.mob_effect.mod_lavacow:immolation=获得火焰抗性，并使附近的单位着火
-mob_effect.mod_lavacow:immolation.4.desc=获得火焰抗性，并使附近的单位着火(2+lvl)秒
+mob_effect.mod_lavacow:immolation.4.desc=获得火焰抗性，并使附近的单位着火(3*lvl)秒
 mob_effect.mod_lavacow:charming_pheromone=迷情信息素
 description.mob_effect.mod_lavacow:charming_pheromone=所有节肢动物将会对单位中立，并试图跟随其后，对于较强大的节肢动物或Boss无效
 mob_effect.mod_lavacow:charming_pheromone.4.desc=所有节肢动物将会对单位中立，并试图跟随其后，对于较强大的节肢动物或Boss无效
@@ -745,6 +746,8 @@ advancements.mod_lavacow.get_soulforged_tool.title=菁英熔核战士
 advancements.mod_lavacow.get_soulforged_tool.description=获得魂铸工具
 advancements.mod_lavacow.tame_scarecrow.title=你想要一起堆稻草人吗？
 advancements.mod_lavacow.tame_scarecrow.description=制造一只稻草人
+advancements.mod_lavacow.get_illager_nose.title=哈哈！鼻子！
+advancements.mod_lavacow.get_illager_nose.description=获得灾厄之鼻
 	
 #################
 # Death Message #

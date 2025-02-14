@@ -51,15 +51,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityGraveRobber extends AbstractIllager {
     public int tradeTimer = 0;
-
+    private EntityAIAvoidEntity<EntityPlayer> avoid;
+    private boolean isAvoiding;
+    
     public EntityGraveRobber(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 1.95F);
         //this.setCanPickUpLoot(true);
+        this.isAvoiding = false;
     }
 
     @Override
     protected void initEntityAI() {
+    	this.avoid = new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
+            // TODO: Baubles support
+            //boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY);
+
+            @Override
+            public boolean apply(Entity input) {
+            	EntityPlayer target = (EntityPlayer) input;
+                return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE));
+            }
+        }, 4.5F, 1.0D, 1.2D);
+    	
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
         //this.tasks.addTask(2, new EntityAITrade(this));
@@ -68,17 +82,6 @@ public class EntityGraveRobber extends AbstractIllager {
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityGraveRobber.class}));
-        if (this.getAttackTarget() == null)
-            this.targetTasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
-                // TODO: Baubles support
-                //boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY);
-
-                @Override
-                public boolean apply(Entity input) {
-                	EntityPlayer target = (EntityPlayer) input;
-                    return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE));
-                }
-            }, 4.5F, 1.0D, 1.2D));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
     }
@@ -164,6 +167,16 @@ public class EntityGraveRobber extends AbstractIllager {
     protected void updateAITasks() {
         super.updateAITasks();
         this.setAggressive(this.getAttackTarget() != null);
+        
+        if (this.getAttackTarget() == null) {
+        	if (!this.isAvoiding) {
+	        	this.targetTasks.addTask(2, this.avoid);
+	        	this.isAvoiding = true;
+        	}
+        } else if (this.isAvoiding) {
+        	this.targetTasks.removeTask(this.avoid);
+        	this.isAvoiding = false;
+        }        
     }
 
     /**
