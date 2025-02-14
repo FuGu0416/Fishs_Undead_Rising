@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "mod_lavacow:illager_nose"
+    },
+    "title": {
+      "translate": "advancements.mod_lavacow.get_illager_nose.title"
+    },
+    "description": {
+      "translate": "advancements.mod_lavacow.get_illager_nose.description"
+    }
+  },
+  "parent": "mod_lavacow:mod_lavacow/root",
+  "criteria": {
+    "get_illager_nose": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mod_lavacow:illager_nose"
+          }
+        ]
+      }
+    }
+  }
+}

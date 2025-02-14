@@ -10,7 +10,9 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
@@ -31,9 +33,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -123,7 +127,7 @@ public class EntityLavaCow extends EntityCow {
 
     @Override
     public boolean getCanSpawnHere() {
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+        return SpawnUtil.isAllowedDimension(this.dimension) && this.world.getBlockState((new BlockPos(this)).down()).canEntitySpawn(this) && (this.world.checkNoEntityCollision(this.getEntityBoundingBox()) && !this.world.containsAnyLiquid(this.getEntityBoundingBox()));
     }
 
     private boolean isWalkingonLand() {
@@ -171,6 +175,19 @@ public class EntityLavaCow extends EntityCow {
         } else {
             return super.processInteract(player, hand);
         }
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (!source.isMagicDamage() && source.getImmediateSource() instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) source.getImmediateSource();
+
+            if (!source.isExplosion()) {
+                entity.attackEntityFrom(DamageSource.causeIndirectDamage((Entity) this, (EntityLivingBase) this).setFireDamage(), 2.0F);
+            }
+        }
+
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override

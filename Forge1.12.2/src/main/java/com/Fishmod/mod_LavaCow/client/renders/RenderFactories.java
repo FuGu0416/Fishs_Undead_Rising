@@ -58,6 +58,7 @@ import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieFrozen;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombiePiranha;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderBeastClaw;
+import com.Fishmod.mod_LavaCow.client.renders.item.RenderIllagerNose;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderSkeletonKingMace;
 import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
 import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
@@ -194,6 +195,7 @@ public class RenderFactories {
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
         FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
         FishItems.SKELETONKING_MACE.setTileEntityItemStackRenderer(new RenderSkeletonKingMace());
+        FishItems.ILLAGER_NOSE.setTileEntityItemStackRenderer(new RenderIllagerNose());
     }
 
     public static class RenderFactoryEntityLavaCow implements IRenderFactory<EntityLavaCow> {

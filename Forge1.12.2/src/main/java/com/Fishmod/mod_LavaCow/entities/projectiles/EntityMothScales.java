@@ -2,6 +2,8 @@ package com.Fishmod.mod_LavaCow.entities.projectiles;
 
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
@@ -21,8 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class EntityMothScales extends EntityFireball {
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.createKey(EntityMothScales.class, DataSerializers.VARINT);
@@ -106,33 +106,22 @@ public class EntityMothScales extends EntityFireball {
                         break;
                     case 0:
                     case 2:
-                        if (result.typeOfHit != RayTraceResult.Type.BLOCK) {
-                            List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
+                        if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
                             EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 
                             entityareaeffectcloud.setOwner(owner);
                             entityareaeffectcloud.setRadius(2.0F);
                             entityareaeffectcloud.setRadiusOnUse(-0.5F);
-                            entityareaeffectcloud.setWaitTime(10);
+                            entityareaeffectcloud.setWaitTime(Modconfig.Enigmoth_Scale_Potion_Cloud_Time);
                             entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
                             entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
 
                             if (this.getScaleType() == 0) {
-                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 4 * 20, 9));
+                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 4 * 20, 3));
                             } else {
                                 entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.CORRODED, 20 * 20, 2));
                             }
-
-                            if (!list.isEmpty()) {
-                                for (EntityLivingBase entitylivingbase : list) {
-                                    double distSq = this.getDistanceSq(entitylivingbase);
-
-                                    if (distSq < 16.0D) {
-                                        entityareaeffectcloud.setPosition(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ);
-                                        break;
-                                    }
-                                }
-                            }
+                            
                             this.world.spawnEntity(entityareaeffectcloud);
                             break;
                         }

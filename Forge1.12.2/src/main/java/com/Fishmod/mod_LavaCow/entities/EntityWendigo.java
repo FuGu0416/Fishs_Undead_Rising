@@ -85,10 +85,10 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.targetTasks.addTask(2, new EntityAIPickupMeat<>(this, EntityItem.class, true));
         if (this.getAttackTarget() == null && Modconfig.Wendigo_KeepDistance)
-            this.targetTasks.addTask(2, new EntityAIAvoidEntity<Entity>(this, Entity.class, new Predicate<Entity>() {
+            this.targetTasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
                 @Override
                 public boolean apply(Entity input) {
-                    return input instanceof EntityPlayer && input.world.isDaytime();
+                    return input.world.isDaytime();
                 }
             }, 30.0F, 2.0D, 2.0D));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, true, false, new Predicate<Entity>() {
@@ -111,7 +111,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
     }
 
     @Override

@@ -13,19 +13,15 @@ public class RenderVespaShield extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack stack) {
-    	this.renderByItem(stack, 1.0F);
+        this.renderByItem(stack, 1.0F);
     }
 
     @Override
-	public void renderByItem(ItemStack stack, float partialTicks) {
+    public void renderByItem(ItemStack stack, float partialTicks) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(SHIELD_PARTS_TEXTURE);
         GlStateManager.pushMatrix();
-        GlStateManager.scale(1.0, -1.0, -1.0);
+        GlStateManager.scale(1.0F, -1.0F, -1.0F);
         MODEL_SHIELD.render();
         GlStateManager.popMatrix();
     }
-    
-    /*private void renderItem(ItemStack stack){
-        Minecraft.getMinecraft().getRenderItem().renderItem(stack, Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, (World) null, (EntityLivingBase) null));
-    }*/
 }

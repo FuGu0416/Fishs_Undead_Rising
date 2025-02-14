@@ -158,6 +158,8 @@ public class ItemFishCustomWeapon extends ItemSword {
      */
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+    	if (attacker.world.isRemote) return false;
+    	
         float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 
         if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE) {

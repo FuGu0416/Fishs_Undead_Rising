@@ -80,6 +80,24 @@
           ]
         }
       ]
+    },
+    {
+      "name": "pheromone_gland",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "mod_lavacow:pheromone_gland",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance_with_looting",
+              "chance": 0.2,
+              "looting_multiplier": 0.025
+            }
+          ]
+        }
+      ]
     }
   ]
 }

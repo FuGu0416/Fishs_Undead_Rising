@@ -2,6 +2,7 @@ package com.Fishmod.mod_LavaCow.message;
 
 import java.util.Random;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
@@ -47,7 +48,7 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 		Vec3d lookVec = entity.getLookVec();
 		
 		if (entity instanceof EntitySalamander) {
-   	 	for(int i = 0 ; i < 8 ; i++) {
+   	 	for(int i = 0; i < 8; i++) {
 			EntitySmallFireball entityammo = new EntitySmallFireball(entity.world, (EntityLivingBase) entity, lookVec.x * (7.0D + new Random().nextGaussian() * 2.0D), lookVec.y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, lookVec.z * (7.0D + new Random().nextGaussian() * 2.0D));
 			entityammo.posX = message.posX + lookVec.x * 2.0D;
 			entityammo.posY = message.posY + (double)(entity.height / 2.0F) + 1.5D;  
@@ -60,7 +61,7 @@ public class PacketMountSpecial implements IMessage, IMessageHandler<PacketMount
 			((EntityVespa) entity).abilityCooldown = ((EntityVespa) entity).abilityCooldown();
 	   	 	entity.world.setEntityState(entity, (byte)4);
 		} else if (entity instanceof EntityEnigmoth) {
-	   	 	for (int i = 0 ; i < 5 ; i++) {
+	   	 	for (int i = 0; i < Modconfig.Enigmoth_Scale_Amount_Mount; i++) {
 	   	 		
 	   	 		EntityMothScales entityammo = new EntityMothScales(entity.world, (EntityLiving)entity, 0.0D, 0.0D, 0.0D);
 	   	 		entityammo.setPosition(message.posX - entity.width + (entity.width * player.getRNG().nextDouble()), message.posY - (double)(entity.height / 2.0F), message.posZ - entity.width + (entity.width * player.getRNG().nextDouble()));		   	 			

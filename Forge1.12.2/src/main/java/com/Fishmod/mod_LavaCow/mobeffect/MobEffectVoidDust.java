@@ -12,20 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class MobEffectVoidDust extends MobEffectMod {
-
-	public MobEffectVoidDust() {
-		super("void_dust", true, 209, 70, 255);
-	}
-	
-    @Override
-    public boolean isReady(int duration, int amplifier)
-    {
-        int i = (20 * 10) >> amplifier;
-        if (i > 0) {
-           return duration % i == 0;
-        } else {
-           return duration % 20 == 0;
-        }
+    public MobEffectVoidDust() {
+        super("void_dust", true, 209, 70, 255);
     }
 
     @Override
@@ -45,12 +33,29 @@ public class MobEffectVoidDust extends MobEffectMod {
 
             EnderTeleportEvent event = new EnderTeleportEvent(((EntityLivingBase) entity), d3, d4, d5, 0);
             if (event.isCanceled() || entity.isDead || !entity.isNonBoss() || entity instanceof EntityEnderman || entity instanceof EntityEndermite || entity instanceof EntityShulker) return;
+
             if (((EntityLivingBase) entity).attemptTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
                 entity.world.playSound(null, d0, d1, d2, SoundEvents.ENTITY_ILLAGER_MIRROR_MOVE, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 entity.playSound(SoundEvents.ENTITY_ILLAGER_MIRROR_MOVE, 1.0F, 1.0F);
-                ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30, amplifier));
+
+                // Apply Slowness X when amplifier is at IV or above
+                if (amplifier > 2) {
+                    ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10, 9));
+                }
+
                 break;
             }
+        }
+    }
+
+    @Override
+    public boolean isReady(int duration, int amplifier) {
+        int i = 50 >> amplifier;
+
+        if (i > 0) {
+            return duration % i == 0;
+        } else {
+            return true;
         }
     }
 }

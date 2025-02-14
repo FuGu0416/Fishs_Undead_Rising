@@ -19,6 +19,7 @@ public class Modconfig {
 
     public static Configuration config = null;
 
+    public static int pSpawnRate_Lavacow;
     public static double Lavacow_Health;
     public static boolean Lavacow_Bucket;
     public static double Lavacow_Classic_Texture_Chance;
@@ -247,6 +248,9 @@ public class Modconfig {
     public static double Enigmoth_Attack;
     public static int Enigmoth_Ability_Cooldown;
     public static int Enigmoth_Ability_Cooldown_Mount;
+    public static int Enigmoth_Scale_Amount;
+    public static int Enigmoth_Scale_Amount_Mount;
+    public static int Enigmoth_Scale_Potion_Cloud_Time;
     public static int Enigmoth_FlyingHeight_limit;
     public static boolean Enigmoth_Middle_End_Island;
 
@@ -315,6 +319,8 @@ public class Modconfig {
     public static int SpawnRate_Desert_Tomb;
     public static boolean Generate_Cemetery;
     public static boolean Generate_Desert_Tomb;
+    public static double Illager_Nose_Drop_Chance;
+    public static double Charming_Pheromone_Health_Limit;
     public static boolean Bowls_Stack;
     public static boolean Should_Villager_Fear;
     public static int pSpawnRate_Bloodtooth;
@@ -343,9 +349,10 @@ public class Modconfig {
         pSpawnRate_Cordyceps = config.get("Shroom", "cordyceps spawn rate", 20, "Set the spawn rate of Cordyceps [0-100]", 0, 100).getInt(20);
         pSpawnRate_Veilshroom = config.get("Shroom", "veilshroom spawn rate", 20, "Set the spawn rate of Veil Shroom [0-100]", 0, 100).getInt(20);
 
-        Lavacow_Health = config.get("Moogma", "moogma health", 10.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(10.0D);
+        pSpawnRate_Lavacow = config.get("Moogma", "moogma spawn rate", 5, "Set the spawn rate of Moogma [0-10000]", 0, 10000).getInt(5);
+        Lavacow_Health = config.get("Moogma", "moogma health", 20.0D, "Maximum Moogma health [1-1000]", 1, 1000).getDouble(20.0D);
         Lavacow_Bucket = config.get("Moogma", "moogma lava source", true, "Should lava buckets be obtainable from Moogma [false/true]").getBoolean(true);
-        Lavacow_Classic_Texture_Chance = config.get("Moogma", "moogma classic texture chance", 1.0D, "Chance for Moogmas to spawn with the classic texture (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(1.0D);
+        Lavacow_Classic_Texture_Chance = config.get("Moogma", "moogma classic texture chance", 0.5D, "Chance for Moogmas to spawn with the classic texture (setting it to 1.0 will always cause it to spawn) [0-1]", 0, 1).getDouble(0.5D);
 
         pSpawnRate_Foglet = config.get("Foglet", "foglet spawn rate", 20, "Set the spawn rate of Foglet [0-10000]", 0, 10000).getInt(20);
         Foglet_Health = config.get("Foglet", "foglet health", 16.0D, "Maximum Foglet health [1-1000]", 1, 1000).getDouble(16.0D);
@@ -596,6 +603,9 @@ public class Modconfig {
         Enigmoth_Attack = config.get("Enigmoth", "enigmoth attack", 8.0D, "Enigmoth strength [1-1000]", 1, 1000).getDouble(8.0D);
         Enigmoth_Ability_Cooldown = config.get("Enigmoth", "enigmoth spell cooldown", 6, "Set the cooldown of spreading scales [0-100]", 0, 100).getInt(6);
         Enigmoth_Ability_Cooldown_Mount = config.get("Enigmoth", "mounted enigmoth spell cooldown", 6, "Set the cooldown of spreading scales when mounted [0-100]", 0, 100).getInt(6);
+        Enigmoth_Scale_Amount = config.get("Enigmoth", "enigmoth scale amount", 10, "Set the amount of scales spread from each attack [1-100]", 1, 100).getInt(10);
+        Enigmoth_Scale_Amount_Mount = config.get("Enigmoth", "enigmoth mount scale amount", 5, "Set the amount of scales spread from each attack when mounted [1-100]", 1, 100).getInt(5);
+        Enigmoth_Scale_Potion_Cloud_Time = config.get("Enigmoth", "enigmoth scale potion cloud time", 8, "The amount of seconds before the potion cloud effects from scales despawn [1-1000]", 1, 1000).getInt(8);
         Enigmoth_FlyingHeight_limit = config.get("Enigmoth", "enigmoth height limit", 16, "Set the height limit to X blocks above the ground for Enigmoths, 0 = Infinite [0-100]", 0, 100).getInt(16);
         Enigmoth_Middle_End_Island = config.get("Enigmoth", "enigmoth middle end island spawn", false, "Should Enigmoths spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
 
@@ -796,6 +806,10 @@ public class Modconfig {
 
         SpawnRate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "desert tomb spawn rate", 750, "Spawn rate of Desert Tomb (higher number = less frequent) [0-10000]", 0, 10000).getInt(750);
         Generate_Desert_Tomb = config.get(Configuration.CATEGORY_GENERAL, "generate desert tomb", true, "Generate Desert Tomb in the Overworld. [false/true]").getBoolean(true);
+
+        Illager_Nose_Drop_Chance = config.get(Configuration.CATEGORY_GENERAL, "illager nose drop chance", 0.02D, "Chance for the Illager Nose to drop from certain mobs (all Illagers and Witches) [0-1]", 0, 1).getDouble(0.02D);
+
+        Charming_Pheromone_Health_Limit = config.get(Configuration.CATEGORY_GENERAL, "charming pheromone health limit", 40.0D, "Arthropods are not affected by Charming Pheromone if their health is above the set amount [1-10000]", 0, 10000).getDouble(40.0D);
 
         Bowls_Stack = config.get(Configuration.CATEGORY_GENERAL, "bowls stack", true, "All bowl food items from the mod will stack up to 64. [false/true]").getBoolean(true);
 
