@@ -218,8 +218,8 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         }
         
         if (Modconfig.Wendigo_KeepDistance) {
-	        if (this.world.isDaytime() && this.getAttackTarget() == null) {
-	        	if (!this.isAvoiding) {
+	        if (this.world.isDaytime()) {
+	        	if (this.getAttackTarget() == null && !this.isAvoiding) {
 		        	this.targetTasks.addTask(2, this.avoid);
 		        	this.isAvoiding = true;
 	        	}

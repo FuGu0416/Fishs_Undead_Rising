@@ -3,7 +3,6 @@ package com.Fishmod.mod_LavaCow.client.renders.item;
 import com.Fishmod.mod_LavaCow.client.model.armor.ModelIllagerNose;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,10 +20,8 @@ public class RenderIllagerNose extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack stack, float partialTicks) {
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.0F, -1.0F, -1.0F);
-        RenderHelper.enableStandardItemLighting();
         Minecraft.getMinecraft().getTextureManager().bindTexture(ILLAGER_NOSE_TEXTURE);
         MODEL_ILLAGER_NOSE.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        RenderHelper.disableStandardItemLighting();
         GlStateManager.popMatrix();
     }
 }
