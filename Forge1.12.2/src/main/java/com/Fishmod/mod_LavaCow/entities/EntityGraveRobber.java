@@ -1,5 +1,6 @@
 package com.Fishmod.mod_LavaCow.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -22,10 +23,12 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
@@ -57,7 +60,7 @@ public class EntityGraveRobber extends AbstractIllager {
     public EntityGraveRobber(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 1.95F);
-        //this.setCanPickUpLoot(true);
+        this.setCanPickUpLoot(true);
         this.isAvoiding = false;
     }
 
@@ -76,10 +79,11 @@ public class EntityGraveRobber extends AbstractIllager {
     	
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
-        //this.tasks.addTask(2, new EntityAITrade(this));
-        this.tasks.addTask(3, new EntityAIWander(this, 0.6D));
+        this.tasks.addTask(2, new EntityAITrade(this));       
+        this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 0.6D));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[]{EntityGraveRobber.class}));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, true));
@@ -121,6 +125,7 @@ public class EntityGraveRobber extends AbstractIllager {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.tradeTimer = (compound.getInteger("TradeTimer"));
+        this.setCanPickUpLoot(true);
     }
 
     /**
@@ -162,11 +167,30 @@ public class EntityGraveRobber extends AbstractIllager {
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
     }
+    
+    /**
+     * Tests if this entity should pickup a weapon or an armor. Entity drops current weapon or armor if the new one is
+     * better.
+     */
+    protected void updateEquipmentIfNeeded(EntityItem itemEntity) {
+    	super.updateEquipmentIfNeeded(itemEntity);
+    	
+    	ItemStack itemstack = itemEntity.getItem();
+    	
+    	if (itemEntity.getThrower() != null) {
+    		EntityPlayer owner = this.world.getPlayerEntityByName(itemEntity.getThrower());
+	    	if (this.canEquipItem(itemstack) && owner != null && owner.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE)) {
+	            this.onItemPickup(itemEntity, itemstack.getCount());
+	            this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, itemstack);
+	            itemEntity.setDead();
+	        }
+    	}
+    }
 
     @Override
     protected void updateAITasks() {
         super.updateAITasks();
-        this.setAggressive(this.getAttackTarget() != null);
+        this.setAggressive(this.getAttackTarget() != null);     
         
         if (this.getAttackTarget() == null) {
         	if (!this.isAvoiding) {
@@ -177,7 +201,7 @@ public class EntityGraveRobber extends AbstractIllager {
         	this.targetTasks.removeTask(this.avoid);
         	this.isAvoiding = false;
         }        
-    }
+    }   
 
     /**
      * Handler for {@link World#setEntityState}
@@ -209,7 +233,6 @@ public class EntityGraveRobber extends AbstractIllager {
         }
     }
 
-    // Unfinished bartering code, currently doesn't have a way to be activated
     static class EntityAITrade extends EntityAIBase {
         private final EntityGraveRobber mob;
 
@@ -219,9 +242,18 @@ public class EntityGraveRobber extends AbstractIllager {
         }
 
         private List<ItemStack> getItemStacks(EntityGraveRobber mob) {
-            LootTable loottable = mob.world.getLootTableManager().getLootTableFromLocation(LootTableHandler.GRAVE_ROBBER);
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder((WorldServer) this.mob.world)).withLootedEntity(this.mob);
-            return loottable.generateLootForPools(new Random(), lootcontext$builder.build());
+        	ResourceLocation resourcelocation = LootTableHandler.TRADE_LOOT;
+        	
+        	if (resourcelocation != null) {
+	            LootTable loottable = mob.world.getLootTableManager().getLootTableFromLocation(resourcelocation);
+	            LootContext.Builder lootcontext$builder = (new LootContext.Builder((WorldServer) this.mob.world)).withLootedEntity(this.mob);	 	            
+	            return loottable.generateLootForPools(new Random(), lootcontext$builder.build());
+        	} else {
+        		// Should not happened.
+        		List<ItemStack> emtpy = new ArrayList<ItemStack>();
+        		emtpy.add(new ItemStack(Items.EMERALD));       		
+        		return emtpy;
+        	}
         }
 
         /**
