@@ -1,5 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.layer;
 
+import java.util.Calendar;
+
 import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -7,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerMimicChest implements LayerRenderer<EntityMimic> {
     private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("textures/entity/chest/ender.png");
+    private static final ResourceLocation TEXTURE_XMAS = new ResourceLocation("textures/entity/chest/christmas.png");
     private final RenderMimic pigRenderer;
 
     public LayerMimicChest(RenderMimic pigRendererIn)
@@ -22,8 +25,10 @@ public class LayerMimicChest implements LayerRenderer<EntityMimic> {
     @Override
     public void doRenderLayer(EntityMimic entitylivingbaseIn, float limbSwing, float limbSwingAmount,
                               float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (entitylivingbaseIn.getSkin() == entitylivingbaseIn.getVoidSkin()) {
-            this.pigRenderer.bindTexture(TEXTURE_ENDER);
+        Calendar calendar = entitylivingbaseIn.world.getCurrentDate();
+
+        if (calendar.get(2) + 1 == 12 && calendar.get(5) == 25) {
+        	this.pigRenderer.bindTexture(TEXTURE_XMAS);
         } else {
             String chestTexture = entitylivingbaseIn.getChestTexture();
 
@@ -34,9 +39,11 @@ public class LayerMimicChest implements LayerRenderer<EntityMimic> {
 
             this.pigRenderer.bindTexture(new ResourceLocation(chestTexture));
         }
-        //this.pigRenderer.bindTexture(entitylivingbaseIn.getSkin() == entitylivingbaseIn.getVoidSkin() ? TEXTURE_ENDER : TEXTURE_NORMAL);
-        //this.pigModel.setModelAttributes(this.pigRenderer.getMainModel());
-        //this.pigModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        
+        if (entitylivingbaseIn.getSkin() == entitylivingbaseIn.getVoidSkin()) {
+            this.pigRenderer.bindTexture(TEXTURE_ENDER);
+        }
+
         this.pigRenderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 }
