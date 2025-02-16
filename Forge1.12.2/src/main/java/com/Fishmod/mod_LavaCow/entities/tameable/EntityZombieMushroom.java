@@ -1,4 +1,4 @@
-package com.Fishmod.mod_LavaCow.entities;
+package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import java.util.List;
 import java.util.Random;
@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
@@ -56,11 +56,6 @@ public class EntityZombieMushroom extends EntitySummonedZombie implements IAggre
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieMushroom_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieMushroom_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 
     /**

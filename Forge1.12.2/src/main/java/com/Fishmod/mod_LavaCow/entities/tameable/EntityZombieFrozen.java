@@ -1,10 +1,10 @@
-package com.Fishmod.mod_LavaCow.entities;
+package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
+import com.Fishmod.mod_LavaCow.entities.IAggressive;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -35,11 +35,6 @@ public class EntityZombieFrozen extends EntitySummonedZombie implements IAggress
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombieFrozen_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombieFrozen_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 
     @Override

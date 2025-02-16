@@ -98,8 +98,7 @@ public class EntityCactoid extends EntityFishTameable {
     public boolean getCanSpawnHere() {
     	BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
         	       
-        return SpawnUtil.isAllowedDimension(this.dimension)
-        		&& this.world.canSeeSky(pos) 
+        return this.world.canSeeSky(pos) 
         		&& super.getCanSpawnHere();
     }
     

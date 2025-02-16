@@ -110,10 +110,10 @@ public class EntityScarecrow extends EntityFishTameable {
     @Override
     public boolean getCanSpawnHere() {
         if (!Modconfig.Scarecrow_Spawn_Underground) {
-            return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
+            return super.getCanSpawnHere() && this.world.canSeeSky(new BlockPos(this));
         }
 
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+        return super.getCanSpawnHere();
     }
 
     /**

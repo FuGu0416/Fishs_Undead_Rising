@@ -3,9 +3,9 @@ package com.Fishmod.mod_LavaCow.structure;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
-import com.Fishmod.mod_LavaCow.entities.EntityMummy;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityAvaton;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 

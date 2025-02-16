@@ -98,6 +98,7 @@ public class EntityFishTameable extends EntityTameable {
     public boolean getCanSpawnHere() {
         IBlockState iblockstate = this.world.getBlockState((new BlockPos(this)).down());
         return this.isValidLightLevel()
+        		&& SpawnUtil.isAllowedDimension(this.dimension)
                 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL
                 && this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F
                 && iblockstate.canEntitySpawn(this);

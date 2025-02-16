@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelParasite;
-import com.Fishmod.mod_LavaCow.entities.EntityParasite;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityParasite;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

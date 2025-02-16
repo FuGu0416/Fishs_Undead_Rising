@@ -369,8 +369,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
         int k = MathHelper.floor(this.posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
         Block block = this.world.getBlockState(blockpos.down()).getBlock();
-        return SpawnUtil.isAllowedDimension(this.dimension) 
-        		&& block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR 
+        return block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR 
         		&& this.world.getLight(blockpos) > 8 
         		&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
             	&& this.world.getBlockState((new BlockPos(this)).down()).canEntitySpawn(this);

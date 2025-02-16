@@ -151,7 +151,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
             return false;
         }
 
-        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+        return super.getCanSpawnHere();
     }
 
     /**

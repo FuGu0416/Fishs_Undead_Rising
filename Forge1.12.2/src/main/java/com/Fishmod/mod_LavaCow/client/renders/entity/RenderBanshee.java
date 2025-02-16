@@ -1,7 +1,7 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelBanshee;
-import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityBanshee;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

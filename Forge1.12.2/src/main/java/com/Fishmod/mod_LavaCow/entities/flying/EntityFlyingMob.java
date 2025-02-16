@@ -73,8 +73,7 @@ public class EntityFlyingMob extends EntityFishTameable {
 
     @Override
     public boolean getCanSpawnHere() {
-        return SpawnUtil.isAllowedDimension(this.dimension)
-                && this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
+        return this.world.canSeeSky(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ))
                 && super.getCanSpawnHere();
     }
 

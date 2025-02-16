@@ -7,12 +7,12 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.EntityMummy;
-import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
-import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityMummy;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieFrozen;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;

@@ -1,7 +1,8 @@
 package com.Fishmod.mod_LavaCow.client.renders.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelAvaton;
-import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityAvaton;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

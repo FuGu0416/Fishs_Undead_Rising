@@ -6,10 +6,10 @@ import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
 import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
-import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGhostSwarmer;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityEnigmoth;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 
