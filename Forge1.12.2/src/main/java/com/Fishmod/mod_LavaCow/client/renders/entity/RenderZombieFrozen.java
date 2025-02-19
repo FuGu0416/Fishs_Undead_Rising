@@ -4,7 +4,7 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerGenericGlowing;
 import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelUnburied;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieFrozen;
+import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

@@ -121,6 +121,11 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
         }
     }
 
+    @Override
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.

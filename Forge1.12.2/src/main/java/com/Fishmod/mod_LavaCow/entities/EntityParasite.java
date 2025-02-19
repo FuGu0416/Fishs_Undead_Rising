@@ -1,10 +1,10 @@
-package com.Fishmod.mod_LavaCow.entities.tameable;
+package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntityFishTameable;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;

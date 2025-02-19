@@ -1,10 +1,10 @@
-package com.Fishmod.mod_LavaCow.entities.floating;
+package com.Fishmod.mod_LavaCow.entities;
 
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityFloatingMob;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;

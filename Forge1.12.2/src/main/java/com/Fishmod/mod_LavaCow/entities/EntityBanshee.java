@@ -1,11 +1,11 @@
-package com.Fishmod.mod_LavaCow.entities.floating;
+package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
-import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.floating.EntityFloatingMob;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
@@ -56,6 +56,10 @@ public class EntityBanshee extends EntityFloatingMob implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Banshee_Health);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Banshee_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+    }
+
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 
     /**

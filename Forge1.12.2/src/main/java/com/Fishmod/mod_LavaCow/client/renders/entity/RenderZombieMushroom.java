@@ -5,8 +5,7 @@ import com.Fishmod.mod_LavaCow.client.layer.LayerGenericHeldItem;
 import com.Fishmod.mod_LavaCow.client.layer.LayerUnburiedArmor;
 import com.Fishmod.mod_LavaCow.client.layer.LayerZombieMushroom;
 import com.Fishmod.mod_LavaCow.client.model.entity.ModelUnburied;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieMushroom;
-
+import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

@@ -1,4 +1,4 @@
-package com.Fishmod.mod_LavaCow.entities.tameable;
+package com.Fishmod.mod_LavaCow.entities;
 
 import java.util.Random;
 
@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.entities.IAggressive;
+import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 

@@ -48,6 +48,11 @@ public class EntityVespaCocoon extends EntityFishTameable {
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
     }
 
+    @Override
+    public boolean getCanSpawnHere() {
+        return super.getCanSpawnHere();
+    }
+
     /**
      * Called to update the entity's position/logic.
      */

@@ -5,10 +5,14 @@ import java.util.Set;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
+import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
+import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
 import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
 import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
 import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
+import com.Fishmod.mod_LavaCow.entities.EntityMummy;
+import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityPingu;
 import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
 import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
@@ -21,10 +25,10 @@ import com.Fishmod.mod_LavaCow.entities.EntityImp;
 import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
 import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
+import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
+import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
-import com.Fishmod.mod_LavaCow.entities.floating.EntityAvaton;
-import com.Fishmod.mod_LavaCow.entities.floating.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGhostSwarmer;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGraveRobberGhost;
 import com.Fishmod.mod_LavaCow.entities.floating.EntitySeaHag;
@@ -53,16 +57,12 @@ import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityMummy;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieFrozen;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityZombieMushroom;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.EntityLiving;
@@ -584,7 +584,7 @@ public class ModEntities {
         for (Type C : Type.getAll()) {
             if (!C.equals(Type.NETHER) && !C.equals(Type.END)) {
                 tweakEntitySpawn(EntityMimic.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Mimic, 1, 1, C);
-                tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
+                if (!C.equals(Type.MUSHROOM)) tweakEntitySpawn(EntityUndertaker.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Undertaker, 1, 1, C);
             }
         }
         tweakEntitySpawn(EntityUnburied.class, EnumCreatureType.MONSTER, Modconfig.pSpawnRate_Unburied, 8, 16, BiomeDictionary.Type.SPOOKY);
@@ -698,4 +698,5 @@ public class ModEntities {
             }
         }
     }
+
 }

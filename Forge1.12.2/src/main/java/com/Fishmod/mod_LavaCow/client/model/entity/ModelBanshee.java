@@ -1,8 +1,8 @@
 package com.Fishmod.mod_LavaCow.client.model.entity;
 
 import com.Fishmod.mod_LavaCow.client.model.FishModelBase;
+import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
 import com.Fishmod.mod_LavaCow.entities.IAggressive;
-import com.Fishmod.mod_LavaCow.entities.floating.EntityBanshee;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;

@@ -102,9 +102,9 @@ public class EntityEnigmothLarva extends EntityFishTameable {
         if (this.world.provider.getDimension() == 1) {
             // Only spawn above Y of 50 to prevent spawning in end caves added by other mods
             if (!Modconfig.Enigmoth_Larva_Middle_End_Island) {
-                return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
+                return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this)) && (this.posX > 500.0D || this.posX < -500.0D || this.posZ > 500.0D || this.posZ < -500.0D);
             } else {
-                return super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
+                return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere() && (this.posY > 50.0D) && this.world.canSeeSky(new BlockPos(this));
             }
         }
 

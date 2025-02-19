@@ -239,6 +239,11 @@ public class EntityScarab extends EntityFishTameable implements IAggressive {
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
+    @Override
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
     protected void updateAITasks() {
         super.updateAITasks();
 

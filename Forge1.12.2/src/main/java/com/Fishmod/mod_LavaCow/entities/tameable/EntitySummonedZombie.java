@@ -119,6 +119,11 @@ public class EntitySummonedZombie extends EntityFishTameable implements IAggress
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
+    @Override
+    public boolean getCanSpawnHere() {
+        return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
     public void setLimitedLife(int limitedLifeTicksIn) {
         if (limitedLifeTicksIn != 0) {
             this.limitedLifeTicks = limitedLifeTicksIn;

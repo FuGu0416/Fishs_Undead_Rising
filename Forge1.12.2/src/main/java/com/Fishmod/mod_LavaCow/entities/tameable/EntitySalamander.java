@@ -143,7 +143,12 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
      */
     public float getBrightness() {
        return 1.0F;
-    }       
+    }
+        
+    @Override
+	public boolean getCanSpawnHere() {
+		return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+	}
     
     /**
      * Will return how many at most can spawn in a chunk at once.
