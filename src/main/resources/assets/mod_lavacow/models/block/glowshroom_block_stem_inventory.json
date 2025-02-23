@@ -1,7 +1,0 @@
-{
-    "parent": "minecraft:block/cube_column",
-    "textures": {
-        "side": "mod_lavacow:block/glowshroom_block_stem",
-        "end": "block/mushroom_block_inside"
-    }
-}

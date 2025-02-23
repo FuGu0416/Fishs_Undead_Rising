@@ -1,7 +1,0 @@
-
-{
-    "parent": "minecraft:block/cross",
-    "textures": {
-        "cross": "mod_lavacow:block/veil_shroom_s"
-    }
-}

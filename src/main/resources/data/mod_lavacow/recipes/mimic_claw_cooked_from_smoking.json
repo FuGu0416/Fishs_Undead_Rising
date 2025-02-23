@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smoking",
-  "ingredient": {
-	"item": "mod_lavacow:mimic_claw"
-  },
-  "result": "mod_lavacow:mimic_claw_cooked",
-  "experience": 0.35,
-  "cookingtime": 100
-}
