@@ -29,7 +29,8 @@ public class mod_LavaCow {
 	public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     
     public mod_LavaCow() {   
-    	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    	@SuppressWarnings("removal")
+		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	//FURWorldRegistry.register(eventBus);
     	
         // Register the setup method for modloading
@@ -45,7 +46,7 @@ public class mod_LavaCow {
                 (final RegistryEvent.Register<Feature<?>> event) -> FURWorldRegistry.register());*/
         
         // Register ourselves for server and other game events we are interested in
-        PROXY.init();
+    	
         MinecraftForge.EVENT_BUS.register(this);           
         //MinecraftForge.EVENT_BUS.register(new EventHandler());                   
         //ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
@@ -55,7 +56,8 @@ public class mod_LavaCow {
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
         		() -> (mc, screen) -> new ConfigScreen()
-		); */       
+		); */  
+        PROXY.commonInit();
     }
     
    /* @SubscribeEvent
@@ -86,7 +88,7 @@ public class mod_LavaCow {
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
         //LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
-        PROXY.clientInit();
+    	event.enqueueWork(() -> PROXY.clientInit());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

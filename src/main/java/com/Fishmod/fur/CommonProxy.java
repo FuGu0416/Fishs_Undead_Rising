@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class CommonProxy {
 	
-    public void init() {
+    public void commonInit() {
     }
 
     public void clientInit() {

@@ -20,6 +20,8 @@ public class FURItemGroup {
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((params, output) -> {
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
+            	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
+            	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
             })
             .build());
 }

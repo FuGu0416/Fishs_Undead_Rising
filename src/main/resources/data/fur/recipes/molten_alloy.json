@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+	    {
+	      	"item": "fur:molten_meat"
+	    },
+	    {
+	    	"item": "fur:molten_meat"
+	    },
+	    {
+			"item": "minecraft:fire_charge"
+	    },
+	    {
+			"tag": "forge:gems/diamond"
+	    }
+    ],
+
+    "result": {
+        "item": "fur:molten_alloy"
+    }
+}
