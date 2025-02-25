@@ -2,6 +2,7 @@ package com.Fishmod.fur;
 
 import org.slf4j.Logger;
 
+import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
 import com.mojang.logging.LogUtils;
@@ -50,6 +51,7 @@ public class mod_LavaCow {
         MinecraftForge.EVENT_BUS.register(this);           
         //MinecraftForge.EVENT_BUS.register(new EventHandler());                   
         //ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
+        FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);
         FURItemRegistry.DEF_REG.register(eventBus);
 	    // Register the configuration GUI factory

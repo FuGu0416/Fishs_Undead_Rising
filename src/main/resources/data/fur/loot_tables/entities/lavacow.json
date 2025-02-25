@@ -1,0 +1,32 @@
+{
+    "type":"minecraft:entity",
+    "pools":[
+        {
+            "name":"fur:lavacow",
+            "rolls":2,
+            "entries":[
+                {
+                    "type":"item",
+                    "name":"fur:molten_meat",
+                    "weight":1,
+                    "functions":[
+                        {
+                            "function":"minecraft:set_count",
+                            "count":{
+                                "min":0,
+                                "max":1
+                            }
+                        },
+                        {
+                            "function":"minecraft:looting_enchant",
+                            "count":{
+                                "min":0,
+                                "max":1
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

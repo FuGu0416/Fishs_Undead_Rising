@@ -22,6 +22,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
+            	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());
 }
