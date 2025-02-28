@@ -19,9 +19,14 @@ public class FURItemGroup {
             .icon(() -> new ItemStack(FURItemRegistry.UNDYINGHEART.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((params, output) -> {
-            	output.accept(FURItemRegistry.UNDYINGHEART.get());
+            	output.accept(FURItemRegistry.SHARP_FANG.get());
+            	output.accept(FURItemRegistry.CHITIN.get());
+            	output.accept(FURItemRegistry.ECTOPLASM.get());
+            	output.accept(FURItemRegistry.ECTOPLASM_MASS.get());
+            	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
+            	output.accept(FURItemRegistry.UNDYINGHEART.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

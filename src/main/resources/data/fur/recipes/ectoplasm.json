@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "fur:ectoplasm_mass"
+    }
+  ],
+  
+  "result": {
+    "item": "fur:ectoplasm",
+    "count": 4
+  }
+}

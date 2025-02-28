@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "fur:chitin"
+        }
+    ],
+    "result": {
+        "item": "minecraft:bone_meal"
+    }
+}
