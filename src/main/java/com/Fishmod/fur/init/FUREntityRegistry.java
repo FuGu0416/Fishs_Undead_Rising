@@ -1,6 +1,7 @@
 package com.Fishmod.fur.init;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.entities.FogletEntity;
 import com.Fishmod.fur.entities.LavaCowEntity;
 
 import net.minecraft.world.entity.EntityType;
@@ -20,10 +21,10 @@ public class FUREntityRegistry {
 	public static final DeferredRegister<EntityType<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<EntityType<LavaCowEntity>> LAVACOW = DEF_REG.register("lavacow", () -> (EntityType<LavaCowEntity>) EntityType.Builder.of(LavaCowEntity::new, MobCategory.CREATURE).sized(0.8F, 1.5F).setTrackingRange(8).build("lavacow"));
-
+	public static final RegistryObject<EntityType<FogletEntity>> FOGLET = DEF_REG.register("foglet", () -> (EntityType<FogletEntity>) EntityType.Builder.of(FogletEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("foglet"));
+	
 	/*public static final EntityType<MycosisEntity> MYCOSIS = registerEntity(EntityType.Builder.of(MycosisEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mycosis");
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
-	public static final EntityType<FogletEntity> FOGLET = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.2F), "foglet");
 	public static final EntityType<FogletEntity> IMP = registerEntity(EntityType.Builder.of(FogletEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.5F).fireImmune(), "imp");
 	public static final EntityType<FrigidEntity> FRIGID = registerEntity(EntityType.Builder.of(FrigidEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "frigid");
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
@@ -90,9 +91,9 @@ public class FUREntityRegistry {
     @SubscribeEvent
     public static void spawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(LAVACOW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaCowEntity::checkLavaCowSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(FOGLET.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, FogletEntity::checkFogletSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         /*EntitySpawnPlacementRegistry.register(MYCOSIS, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, MycosisEntity::checkMycosisSpawnRules);
         EntitySpawnPlacementRegistry.register(PARASITE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules);
-        EntitySpawnPlacementRegistry.register(FOGLET, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FogletEntity::checkFogletSpawnRules);
         EntitySpawnPlacementRegistry.register(IMP, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FogletEntity::checkFogletSpawnRules);
         EntitySpawnPlacementRegistry.register(FRIGID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FrigidEntity::checkFrigidSpawnRules);
         EntitySpawnPlacementRegistry.register(UNDEADSWINE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
@@ -138,9 +139,9 @@ public class FUREntityRegistry {
     @SubscribeEvent
     public static void initializeAttributes(EntityAttributeCreationEvent event) {
         event.put(LAVACOW.get(), LavaCowEntity.createAttributes().build());
+        event.put(FOGLET.get(), FogletEntity.createAttributesFoglet().build());
         /*event.put(MYCOSIS, MycosisEntity.createAttributes().build());
         event.put(PARASITE, ParasiteEntity.createAttributes().build());
-        event.put(FOGLET, FogletEntity.createAttributesFoglet().build());
         event.put(IMP, FogletEntity.createAttributesImp().build());
         event.put(FRIGID, FrigidEntity.createAttributes().build());
         event.put(UNDEADSWINE, UndeadSwineEntity.createAttributes().build());

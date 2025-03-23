@@ -36,7 +36,6 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class LavaCowEntity extends Cow {	
@@ -61,7 +60,7 @@ public class LavaCowEntity extends Cow {
 		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D/*FURConfig.Lavacow_Health.get()*/).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
 	}	
 		
-    public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> p_223316_0_, LevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
+    public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
         return true;
     }
 	

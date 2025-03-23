@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
 import com.mojang.logging.LogUtils;
 
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.simple.SimpleChannel;
+import software.bernie.geckolib.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(mod_LavaCow.MODID)
@@ -54,12 +56,15 @@ public class mod_LavaCow {
         FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);
         FURItemRegistry.DEF_REG.register(eventBus);
+        FURSoundRegistry.DEF_REG.register(eventBus);
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
         		() -> (mc, screen) -> new ConfigScreen()
 		); */  
         PROXY.commonInit();
+        
+        GeckoLib.initialize();
     }
     
    /* @SubscribeEvent

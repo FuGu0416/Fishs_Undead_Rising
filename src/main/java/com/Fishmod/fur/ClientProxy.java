@@ -1,5 +1,6 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
@@ -13,10 +14,10 @@ public class ClientProxy extends CommonProxy {
     
     public void clientInit() {
     	EntityRenderers.register(FUREntityRegistry.LAVACOW.get(), LavaCowRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.FOGLET.get(), FogletRenderer::new);
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FOGLET, manager -> new FogletRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.IMP, manager -> new FogletRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FRIGID, manager -> new FrigidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));

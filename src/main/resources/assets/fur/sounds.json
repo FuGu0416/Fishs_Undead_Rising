@@ -1,0 +1,770 @@
+{
+	"parasite_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_parasite_ambient",
+		"sounds": [{"name": "fur:entity/parasite/ambient","stream": true}]
+	},
+	
+	"parasite_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_parasite_hurt",
+		"sounds": [{"name": "fur:entity/parasite/hurt","stream": true}]
+	},
+	
+	"parasite_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_parasite_death",
+		"sounds": [{"name": "fur:entity/parasite/death","stream": true}]
+	},
+	
+	"parasite_weave":
+	{
+		"category": "hostile",
+		"subtitle": "entity_parasite_weave",
+		"sounds": [{"name": "fur:entity/parasite/weave","stream": true}]
+	},
+	
+	"foglet_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_foglet_ambient",
+		"sounds": [{"name": "fur:entity/foglet/ambient","stream": true}]
+	},
+	
+	"foglet_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_foglet_hurt",
+		"sounds": [{"name": "fur:entity/foglet/hurt","stream": true}]
+	},
+	
+	"foglet_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_foglet_death",
+		"sounds": [{"name": "fur:entity/foglet/death","stream": true}]
+	},
+	
+	"undeadswine_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undeadswine_attack",
+		"sounds": [{"name": "fur:entity/undeadswine/attack","stream": true}]
+	},
+	
+	"undeadswine_charge":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undeadswine_charge",
+		"sounds": [{"name": "fur:entity/undeadswine/charge","stream": true}]
+	},
+	
+	"undeadswine_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undeadswine_hurt",
+		"sounds": [{"name": "fur:entity/undeadswine/hurt","stream": true}]
+	},
+	
+	"undeadswine_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undeadswine_death",
+		"sounds": [{"name": "fur:entity/undeadswine/death","stream": true}]
+	},
+	
+	"salamander_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_salamander_ambient",
+		"sounds": ["fur:entity/salamander/ambient0","fur:entity/salamander/ambient1","fur:entity/salamander/ambient2"]
+	},
+	
+	"salamander_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_salamander_hurt",
+		"sounds": [{"name": "fur:entity/salamander/hurt","stream": true}]
+	},
+	
+	"salamander_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_salamander_death",
+		"sounds": ["fur:entity/salamander/death0","fur:entity/salamander/death1","fur:entity/salamander/death2"]
+	},
+	
+	"swarmer_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_swarmer_ambient",
+		"sounds": ["fur:entity/swarmer/ambient0","fur:entity/swarmer/ambient1","fur:entity/swarmer/ambient2","fur:entity/swarmer/ambient3"]
+	},
+	
+	"swarmer_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_swarmer_attack",
+		"sounds": [{"name": "fur:entity/swarmer/attack","stream": true}]
+	},
+	
+	"swarmer_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_swarmer_hurt",
+		"sounds": ["fur:entity/swarmer/hurt0","fur:entity/swarmer/hurt1","fur:entity/swarmer/hurt2","fur:entity/swarmer/hurt3"]
+	},
+	
+	"swarmer_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_swarmer_death",
+		"sounds": ["fur:entity/swarmer/death0","fur:entity/swarmer/death1","fur:entity/swarmer/death2"]
+	},
+	
+	"wendigo_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wendigo_ambient",
+		"sounds": ["fur:entity/wendigo/ambient","fur:entity/wendigo/ambient0","fur:entity/wendigo/ambient1","fur:entity/wendigo/ambient2"]
+	},
+	
+	"wendigo_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wendigo_attack",
+		"sounds": [{"name": "fur:entity/wendigo/attack","stream": true}]
+	},
+	
+	"wendigo_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wendigo_hurt",
+		"sounds": [{"name": "fur:entity/wendigo/hurt","stream": true}]
+	},
+	
+	"wendigo_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wendigo_death",
+		"sounds": [{"name": "fur:entity/wendigo/death","stream": true}]
+	},
+	
+	"ptera_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ptera_ambient",
+		"sounds": ["fur:entity/ptera/ambient0","fur:entity/ptera/ambient1","fur:entity/ptera/ambient2"]
+	},
+	
+	"ptera_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ptera_hurt",
+		"sounds": ["fur:entity/ptera/hurt0","fur:entity/ptera/hurt1","fur:entity/ptera/hurt2","fur:entity/ptera/hurt3"]
+	},
+	
+	"ptera_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ptera_death",
+		"sounds": [{"name": "fur:entity/ptera/death","stream": true}]
+	},
+	
+	"mimic_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mimic_ambient",
+		"sounds": [{"name": "fur:entity/mimic/ambient","stream": true}]
+	},
+	
+	"mimic_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mimic_hurt",
+		"sounds": [{"name": "fur:entity/mimic/hurt","stream": true}]
+	},
+	
+	"mimic_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mimic_death",
+		"sounds": [{"name": "fur:entity/mimic/death","stream": true}]
+	},
+	
+	"sludgelord_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_sludgelord_ambient",
+		"sounds": ["fur:entity/sludgelord/ambient0","fur:entity/sludgelord/ambient1"]
+	},
+	
+	"sludgelord_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_sludgelord_attack",
+		"sounds": [{"name": "fur:entity/sludgelord/attack","stream": true}]
+	},
+	
+	"sludgelord_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_sludgelord_hurt",
+		"sounds": ["fur:entity/sludgelord/hurt0","fur:entity/sludgelord/hurt1"]
+	},
+	
+	"sludgelord_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_sludgelord_death",
+		"sounds": ["fur:entity/sludgelord/death0","fur:entity/sludgelord/death1","fur:entity/sludgelord/death2"]
+	},
+	
+	"lilsludge_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lilsludge_ambient",
+		"sounds": [{"name": "fur:entity/lilsludge/ambient","stream": true}]
+	},
+	
+	"lilsludge_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lilsludge_hurt",
+		"sounds": [{"name": "fur:entity/lilsludge/hurt","stream": true}]
+	},
+	
+	"lilsludge_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lilsludge_death",
+		"sounds": [{"name": "fur:entity/lilsludge/death","stream": true}]
+	},
+	
+	"raven_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_raven_ambient",
+		"sounds": [{"name": "fur:entity/raven/ambient","stream": true}]
+	},
+	
+	"raven_call":
+	{
+		"category": "neutral",
+		"subtitle": "entity_raven_call",
+		"sounds": [{"name": "fur:entity/raven/call","stream": true}]
+	},
+	
+	"raven_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_raven_hurt",
+		"sounds": [{"name": "fur:entity/raven/hurt","stream": true}]
+	},
+	
+	"raven_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_raven_death",
+		"sounds": [{"name": "fur:entity/raven/death","stream": true}]
+	},
+	
+	"vespa_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_vespa_ambient",
+		"sounds": [{"name": "fur:entity/vespa/ambient1","stream": true}]
+	},
+	
+	"vespa_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_vespa_hurt",
+		"sounds": [{"name": "fur:entity/vespa/hurt","stream": true}]
+	},
+	
+	"vespa_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_vespa_death",
+		"sounds": [{"name": "fur:entity/vespa/death","stream": true}]
+	},
+
+	"vespa_flying":
+	{
+		"category": "hostile",
+		"sounds": [{"name": "fur:entity/vespa/ambient0","stream": true}]
+	},
+		
+	"scarecrow_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_scarecrow_ambient",
+		"sounds": ["fur:entity/scarecrow/ambient0","fur:entity/scarecrow/ambient1","fur:entity/scarecrow/ambient2"]
+	},
+	
+	"scarecrow_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_scarecrow_hurt",
+		"sounds": [{"name": "fur:entity/scarecrow/hurt","stream": true}]
+	},
+	
+	"scarecrow_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_scarecrow_death",
+		"sounds": ["fur:entity/scarecrow/death0","fur:entity/scarecrow/death1"]
+	},
+	
+	"unburied_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_unburied_ambient",
+		"sounds": [{"name": "fur:entity/unburied/ambient","stream": true}]
+	},
+	
+	"unburied_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_unburied_hurt",
+		"sounds": [{"name": "fur:entity/unburied/hurt","stream": true}]
+	},
+	
+	"unburied_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_unburied_death",
+		"sounds": [{"name": "fur:entity/unburied/death","stream": true}]
+	},
+	
+	"boneworm_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_boneworm_ambient",
+		"sounds": [{"name": "fur:entity/boneworm/ambient","stream": true}]
+	},
+	
+	"boneworm_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_boneworm_attack",
+		"sounds": [{"name": "fur:entity/boneworm/attack","stream": true}]
+	},
+	
+	"boneworm_burrow":
+	{
+		"category": "hostile",
+		"subtitle": "entity_boneworm_burrow",
+		"sounds": [{"name": "fur:entity/boneworm/burrow","stream": true}]
+	},
+	
+	"boneworm_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_boneworm_hurt",
+		"sounds": [{"name": "fur:entity/boneworm/hurt","stream": true}]
+	},
+	
+	"boneworm_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_boneworm_death",
+		"sounds": [{"name": "fur:entity/boneworm/death","stream": true}]
+	},
+	
+	"seagull_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_seagull_ambient",
+		"sounds": ["fur:entity/seagull/ambient0","fur:entity/seagull/ambient1","fur:entity/seagull/ambient2"]
+	},
+	
+	"seagull_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_seagull_hurt",
+		"sounds": [{"name": "fur:entity/seagull/hurt","stream": true}]
+	},
+	
+	"seagull_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_seagull_death",
+		"sounds": [{"name": "fur:entity/seagull/death","stream": true}]
+	},
+	
+	"pingu_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_pingu_ambient",
+		"sounds": ["fur:entity/pingu/ambient0","fur:entity/pingu/ambient1"]
+	},
+	
+	"pingu_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_pingu_hurt",
+		"sounds": [{"name": "fur:entity/pingu/hurt","stream": true}]
+	},
+	
+	"pingu_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_pingu_death",
+		"sounds": [{"name": "fur:entity/pingu/death","stream": true}]
+	},
+	
+	"undertaker_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undertaker_ambient",
+		"sounds": ["fur:entity/undertaker/ambient0","fur:entity/undertaker/ambient1","fur:entity/undertaker/ambient2"]
+	},
+	
+	"undertaker_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undertaker_hurt",
+		"sounds": ["fur:entity/undertaker/hurt0","fur:entity/undertaker/hurt1"]
+	},
+	
+	"undertaker_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_undertaker_death",
+		"sounds": [{"name": "fur:entity/undertaker/death","stream": true}]
+	},
+	
+	"ghostray_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_ghostray_ambient",
+		"sounds": ["fur:entity/ghostray/ambient"]
+	},
+	
+	"ghostray_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_ghostray_hurt",
+		"sounds": ["fur:entity/ghostray/hurt0","fur:entity/ghostray/hurt1"]
+	},
+	
+	"ghostray_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_ghostray_death",
+		"sounds": [{"name": "fur:entity/ghostray/death","stream": true}]
+	},
+	
+	"banshee_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_banshee_ambient",
+		"sounds": [{"name": "fur:entity/banshee/ambient","stream": true}]
+	},
+	
+	"banshee_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_banshee_attack",
+		"sounds": [{"name": "fur:entity/banshee/attack","stream": true}]
+	},
+	
+	"banshee_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_banshee_hurt",
+		"sounds": [{"name": "fur:entity/banshee/hurt","stream": true}]
+	},
+	
+	"banshee_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_banshee_death",
+		"sounds": [{"name": "fur:entity/banshee/death","stream": true}]
+	},
+	
+	"weta_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_weta_ambient",
+		"sounds": ["fur:entity/weta/ambient"]
+	},
+	
+	"weta_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_weta_hurt",
+		"sounds": ["fur:entity/weta/hurt"]
+	},
+	
+	"weta_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_weta_death",
+		"sounds": [{"name": "fur:entity/weta/death","stream": true}]
+	},
+	
+	"avaton_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_avaton_ambient",
+		"sounds": [{"name": "fur:entity/avaton/ambient","stream": true}]
+	},
+	
+	"avaton_spell":
+	{
+		"category": "hostile",
+		"subtitle": "entity_avaton_spell",
+		"sounds": [{"name": "fur:entity/avaton/spell","stream": true}]
+	},
+	
+	"avaton_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_avaton_death",
+		"sounds": [{"name": "fur:entity/avaton/death","stream": true}]
+	},
+	
+	"skeletonking_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_attack",
+		"sounds": [{"name": "fur:entity/skeletonking/attack","stream": true}]
+	},
+
+	"skeletonking_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_hurt",
+		"sounds": [{"name": "fur:entity/skeletonking/hurt","stream": true}]
+	},
+		
+	"skeletonking_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_death",
+		"sounds": [{"name": "fur:entity/skeletonking/death","stream": true}]
+	},
+
+	"skeletonking_spell_summon":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_spell_summon",
+		"sounds": [{"name": "fur:entity/skeletonking/spell_summon","stream": true}]
+	},
+	
+	"skeletonking_spell_teleport":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_spell_teleport",
+		"sounds": ["fur:entity/skeletonking/spell_teleport0","fur:entity/skeletonking/spell_teleport1"]
+	},
+	
+	"skeletonking_spell_toss":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_spell_toss",
+		"sounds": [{"name": "fur:entity/skeletonking/spell_toss","stream": true}]
+	},
+	
+	"skeletonking_spawn":
+	{
+		"category": "hostile",
+		"subtitle": "entity_skeletonking_spawn",
+		"sounds": [{"name": "fur:entity/skeletonking/spawn","stream": true}]
+	},
+	
+	"cactyrant_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_cactyrant_ambient",
+		"sounds": ["fur:entity/cactyrant/ambient0","fur:entity/cactyrant/ambient1"]
+	},
+	
+	"cactyrant_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_cactyrant_death",
+		"sounds": [{"name": "fur:entity/cactyrant/death","stream": true}]
+	},
+	
+	"seahag_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_seahag_ambient",
+		"sounds": ["fur:entity/seahag/ambient0","fur:entity/seahag/ambient1"]
+	},
+	
+	"seahag_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_seahag_death",
+		"sounds": ["fur:entity/seahag/death0","fur:entity/seahag/death1"]
+	},
+	
+	"wraith_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_ambient",
+		"sounds": ["fur:entity/wraith/ambient","fur:entity/wraith/ambient0","fur:entity/wraith/ambient1"]
+	},
+	
+	"wraith_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_attack",
+		"sounds": [{"name": "fur:entity/wraith/attack","stream": true}]
+	},
+	
+	"wraith_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_death",
+		"sounds": [{"name": "fur:entity/wraith/death","stream": true}]
+	},
+	
+	"scarab_ambient":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_ambient",
+		"sounds": ["fur:entity/scarab/ambient0", "fur:entity/scarab/ambient1", "fur:entity/scarab/ambient2"]
+	},
+	
+	"scarab_hurt":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_hurt",
+		"sounds": ["fur:entity/scarab/hurt"]
+	},
+	
+	"scarab_death":
+	{
+		"category": "neutral",
+		"subtitle": "entity_scarab_death",
+		"sounds": [{"name": "fur:entity/scarab/death","stream": true}]
+	},
+	
+	"beelzebub_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_ambient",
+		"sounds": ["fur:entity/beelzebub/ambient0", "fur:entity/beelzebub/ambient1"]
+	},
+
+	"beelzebub_spell":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_spell",
+		"sounds": ["fur:entity/beelzebub/spell"]
+	},
+		
+	"beelzebub_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_hurt",
+		"sounds": ["fur:entity/beelzebub/hurt"]
+	},
+	
+	"beelzebub_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_beelzebub_death",
+		"sounds": [{"name": "fur:entity/beelzebub/death","stream": true}]
+	},
+	
+	"enigmoth_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_ambient",
+		"sounds": ["fur:entity/enigmoth/ambient0", "fur:entity/enigmoth/ambient1"]
+	},
+
+	"enigmoth_flap":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_flap",
+		"sounds": ["fur:entity/enigmoth/flap"]
+	},
+		
+	"enigmoth_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_hurt",
+		"sounds": ["fur:entity/enigmoth/hurt"]
+	},
+	
+	"enigmoth_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_enigmoth_death",
+		"sounds": [{"name": "fur:entity/enigmoth/death","stream": true}]
+	},
+
+	"random_fruit_plant":
+	{
+		"category": "neutral",
+		"subtitle": "subtitles.block.generic.place",
+		"sounds": [{"name": "fur:random/fruit_plant","stream": true}]
+	},
+	
+	"random_piranha_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_piranha_shoot",
+		"sounds": [{"name": "fur:random/piranha_shoot","stream": true}]
+	},
+	
+	"random_thorn_shoot":
+	{
+		"category": "neutral",
+		"subtitle": "random_thorn_shoot",
+		"sounds": [{"name": "fur:random/thorn_shoot","stream": true}]
+	},
+	
+	"lamprey_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_ambient",
+		"sounds": ["fur:entity/lamprey/ambient0", "fur:entity/lamprey/ambient1"]
+	},
+	
+	"lamprey_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_hurt",
+		"sounds": ["fur:entity/lamprey/hurt"]
+	},
+	
+	"lamprey_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_lamprey_death",
+		"sounds": [{"name": "fur:entity/lamprey/death","stream": true}]
+	},
+	
+	"ghoul_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_ambient",
+		"sounds": ["fur:entity/ghoul/ambient"]
+	},
+	
+	"ghoul_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_hurt",
+		"sounds": ["fur:entity/ghoul/hurt0", "fur:entity/ghoul/hurt1", "fur:entity/ghoul/hurt2"]
+	},
+	
+	"ghoul_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_ghoul_death",
+		"sounds": [{"name": "fur:entity/ghoul/death","stream": true}]
+	}
+}
