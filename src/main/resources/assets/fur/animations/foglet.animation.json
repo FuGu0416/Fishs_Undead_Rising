@@ -579,7 +579,7 @@
 							"vector": [-15, 0, 0],
 							"easing": "linear"
 						},
-						"0.75": {
+						"0.6667": {
 							"vector": [21.25, 0, 0],
 							"easing": "easeInQuint"
 						},
@@ -728,13 +728,27 @@
 					}
 				},
 				"torso": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"0.6667": {
+							"vector": [5, 0, 0],
+							"easing": "linear"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						}
+					},
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0],
 							"easing": "linear"
 						},
 						"0.75": {
-							"vector": [0, -1, 0],
+							"vector": [0, -2, 0],
 							"easing": "easeInQuint"
 						},
 						"1.0": {

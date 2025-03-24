@@ -78,6 +78,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> CASTING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	public static final int ATTACK_TIMER = 30;
+	public static final int SPELL_TIMER = 20;
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
@@ -304,7 +305,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 				this.setAttackTimer(ATTACK_TIMER);
 				break;
 			case 10:
-				this.spellTicks = 60;
+				this.spellTicks = SPELL_TIMER;
 				break;			
 			default:
 				this.spellTicks = 0;
@@ -582,7 +583,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
                 this.castSpell();
                 FogletEntity.this.playSound(FogletEntity.this.getSpellSound(), 1.0F, 1.0F);
                 if(FogletEntity.this.getSkin() == 0)
-                	FogletEntity.this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 3 * 20));
+                	FogletEntity.this.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 6 * 20));
             }
         }
 
@@ -808,7 +809,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     }    
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= 55) {
+    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
     		state.getController().setAnimation(CAST);
     	} else if (this.getAttackTimer() == ATTACK_TIMER) {
     		state.getController().setAnimation(ATTACK);
