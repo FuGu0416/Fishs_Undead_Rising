@@ -1,7 +1,6 @@
 package com.Fishmod.fur.entities;
 
 import java.util.EnumSet;
-import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
@@ -14,7 +13,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +23,6 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -47,11 +44,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -74,8 +68,8 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("foglet.model.casting");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(IsnachiEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(IsnachiEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> CASTING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 20;
@@ -88,11 +82,9 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 	
 	@Override
     protected void registerGoals() {
-		this.goalSelector.addGoal(1, new AIClimbimgTree());
         this.goalSelector.addGoal(2, new AICastingApell());
-        this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new FogletEntity.AISelfImmolation());     
-        /*if(!FURConfig.SunScreen_Mode.get())*/ {
+        this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());    
+        if(/*!FURConfig.SunScreen_Mode.get() && */!this.fireImmune()) {
             this.goalSelector.addGoal(2, new RestrictSunGoal(this));
             this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
         }
@@ -112,14 +104,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     }
     
     public static AttributeSupplier.Builder createAttributesFoglet() {    	
-        return Monster.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.25D)
-        		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 16.0D/*FURConfig.Foglet_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 2.0D/*FURConfig.Foglet_Attack.get()*/);
-    }
-    
-    public static AttributeSupplier.Builder createAttributesImp() {    	
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
@@ -159,43 +143,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     }
 	
     /**
-     * Called to update the entity's position/logic.
-     */
-	@Override
-    public void aiStep() {
-        super.aiStep();
-        
-        if (this.getIsHanging()) {
-        	this.setDeltaMovement(Vec3.ZERO);
-
-	        if(!this.isPassenger()) {
-		        if(this.level().canSeeSky(this.blockPosition())) {
-		        	this.setIsHanging(false);
-		        }
-		        
-		        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().expandTowards(2.0D, 35.0D, 2.0D));
-		        
-	        	for (Entity entity1 : list) {
-	        		if (entity1.getY() < this.getY() && ((entity1 instanceof Player && !((Player)entity1).isCreative()) || entity1 instanceof AbstractVillager)) {
-	        			this.setTarget((LivingEntity) entity1);
-	        			this.setIsHanging(false);
-	        			break;
-	        		}
-	        	}  
-	        }
-    	}      
-    }
-	
-	@Override
-    public boolean causeFallDamage(float p_150093_, float p_150094_, DamageSource p_150095_) {
-    	if(this.getTarget() != null) {
-    		return false;
-    	}  	
-    	
-    	return super.causeFallDamage(p_150093_, p_150094_, p_150095_);
-    }
-    
-    /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
@@ -209,33 +156,11 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     		--this.attackTimer;
     	}
     	
-    	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick()) {
+    	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick() && !this.fireImmune()) {
     		this.setSecondsOnFire(8);
         }
     	
         super.tick();
-    }
-    
-    /**
-     * Called when the entity is attacked.
-     */
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-    	if (super.hurt(source, amount)) {
-            LivingEntity LivingEntity = this.getTarget();
-        	
-            if (LivingEntity == null && source.getDirectEntity() instanceof LivingEntity) {
-                LivingEntity = (LivingEntity)source.getDirectEntity();
-            }
-            
-            if(this.getIsClimbing()) {
-            	this.setIsClimbing(false);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
@@ -256,22 +181,12 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
-    @SuppressWarnings("deprecation")
 	@Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
         //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
         //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
-    	/*if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.JUNGLE)) {
- 		   	this.setSkin(1);		   	
-    	} else if (this.getType().equals(FUREntityRegistry.IMP)) {
-    		this.setSkin(2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
-        	this.setHealth(this.getMaxHealth());
-    	}*/
  	   	   
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
@@ -316,19 +231,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     
 	@Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        if(getIsHanging())
-        	return this.getBbHeight() * 0.0F;
-        else
-        	return this.getBbHeight() * 0.8F;
-    }
-		
-	@Override
-    public float getWalkTargetValue(BlockPos p_205022_1_, LevelReader p_205022_2_) {
-    	if (p_205022_2_.getBlockState(p_205022_1_).is(BlockTags.LOGS)) {
-    		return 10.0F;
-    	} else {
-    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
-    	}
+    	return this.getBbHeight() * 0.8F;
     }
     
     /**
@@ -354,7 +257,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         compound.putByte("Hanging", ((Byte)this.getEntityData().get(HANGING)).byteValue());
         compound.putByte("Climbing", ((Byte)this.getEntityData().get(CLIMBING)).byteValue());
     }
-    
+	
     public boolean getIsHanging() {
         return (((Byte)this.getEntityData().get(HANGING)).byteValue() & 1) != 0;
     }
@@ -382,7 +285,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
             this.getEntityData().set(HANGING, Byte.valueOf((byte)(b0 & -2)));
         }
     }
-    
+       
     public void setIsCasting(boolean isHanging) {
         byte b0 = ((Byte)this.getEntityData().get(CASTING)).byteValue();
 
@@ -390,91 +293,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 | 1)));
         } else {
             this.getEntityData().set(CASTING, Byte.valueOf((byte)(b0 & -2)));
-        }
-    }
-    
-    public class AIClimbimgTree extends Goal {
-        private BlockPos TreePos;
-    	
-    	public AIClimbimgTree() {
-        }
-    	
-    	private boolean canClimb() {
-    		return !FogletEntity.this.level().getBlockState(FogletEntity.this.blockPosition().above()).canOcclude() && FogletEntity.this.level().getBlockState(FogletEntity.this.blockPosition().above()).is(BlockTags.LEAVES);
-    	}
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-    	@Override
-        public boolean canUse() {
-    		
-    		if (FogletEntity.this.getSkin() != 1) {
-    			return false;
-    		}
-    		
-            int i = (int) Math.floor(FogletEntity.this.getX());
-            int j = (int) Math.floor(FogletEntity.this.getY());
-            int k = (int) Math.floor(FogletEntity.this.getZ());
-            BlockPos blockpos = new BlockPos(i, j, k);
-            
-            TreePos = null;
-            
-            for(int x = -1 ; x <= 1 ; x++)
-            	for(int z = -1 ; z <= 1 ; z++) {
-            		if(FogletEntity.this.level().getBlockState(blockpos.offset(x, 0, z)).is(BlockTags.LOGS)) {
-            			TreePos = new BlockPos(x, 0, z);
-            			break;
-            		}
-            	}
-            
-            return !FogletEntity.this.isOnFire() 
-            		&& !FogletEntity.this.isAggressive() 
-            		&& !FogletEntity.this.level().canSeeSky(blockpos) 
-            		&& TreePos != null 
-            		&& this.canClimb();
-        }
-    	
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        @Override
-        public boolean canContinueToUse() {
-            return this.canClimb();
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-    	@Override
-        public void start() {
-            super.start();
-            FogletEntity.this.setIsClimbing(true);
-            FogletEntity.this.getNavigation().stop();
-        }
-
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
-    	@Override
-        public void stop() {
-        	super.stop();
-            FogletEntity.this.setIsClimbing(false);
-            FogletEntity.this.setIsHanging(true);
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-    	@Override
-        public void tick() {		
-        	if (FogletEntity.this.getDeltaMovement().y < 0.0D) {
-        		FogletEntity.this.setPosRaw(FogletEntity.this.getX(), FogletEntity.this.getY() + 0.2D, FogletEntity.this.getZ());
-        	}
-        	
-        	if (TreePos != null) {
-            	FogletEntity.this.yBodyRot = (TreePos.getX() * 270.0F + (float) Math.toDegrees(Math.atan(TreePos.getZ() / (TreePos.getX() + 0.0000001D)))) % 360.0F;
-        	}
         }
     }
     
@@ -638,109 +456,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         }
     }
 
-    public class AISelfImmolation extends Goal {
-        protected int spellWarmup;
-        protected int spellCooldown;
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        @Override
-        public boolean canUse() {
-            if (FogletEntity.this.getTarget() == null || FogletEntity.this.getSkin() != 2) {
-                return false;
-            } else if (FogletEntity.this.isSpellcasting()) {
-                return false;
-            } else {
-            	return FogletEntity.this.tickCount >= this.spellCooldown && FogletEntity.this.distanceTo(FogletEntity.this.getTarget()) < 3.0F;
-            }
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        @Override
-        public boolean canContinueToUse() {
-            return FogletEntity.this.getTarget() != null && this.spellWarmup > 0;
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        @Override
-        public void start() {
-            this.spellWarmup = this.getCastWarmupTime();
-            FogletEntity.this.spellTicks = this.getCastingTime();
-            FogletEntity.this.level().broadcastEntityEvent(FogletEntity.this, (byte)10);
-            this.spellCooldown = FogletEntity.this.tickCount + this.getCastingInterval();
-            SoundEvent soundevent = this.getSpellPrepareSound();
-
-            if (soundevent != null) {
-                FogletEntity.this.playSound(soundevent, 1.0F, 1.0F);
-            }
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        @Override
-        public void tick() {
-            --this.spellWarmup;
-
-            if (this.spellWarmup == 0) {
-                this.castSpell();
-                FogletEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
-                FogletEntity.this.addEffect(new MobEffectInstance(MobEffects.WEAKNESS/*FUREffectRegistry.IMMOLATION*/, 8 * 20));
-            }
-        }
-        
-        protected void castSpell() {
-        	List<Entity> list = FogletEntity.this.level().getEntities(FogletEntity.this, FogletEntity.this.getBoundingBox().inflate(3.0D));
-        	
-        	FogletEntity.this.level().addParticle(ParticleTypes.EXPLOSION, FogletEntity.this.getX(), FogletEntity.this.getY() + FogletEntity.this.getBbHeight(), FogletEntity.this.getZ(), 0.0D, 0.0D, 0.0D);
-        	
-			if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(FogletEntity.this.level(), FogletEntity.this)) {
-				BlockPos blockpos = FogletEntity.this.blockPosition();
-				for(int i = -3 ; i < 3 ; i++) {
-					for(int j = -3 ; j < 3 ; j++) {
-						for(int k = -3 ; k < 3 ; k++) {					
-				            if (FogletEntity.this.random.nextFloat() < 0.3F && FogletEntity.this.level().isEmptyBlock(blockpos.offset(i, j, k))) {
-				            	FogletEntity.this.level().setBlockAndUpdate(blockpos.offset(i, j, k), BaseFireBlock.getState(FogletEntity.this.level(), blockpos.offset(i, j, k)));
-				            }
-						}
-					}
-				}
-			}
-			
-        	for (Entity entity1 : list) {
-        		if (entity1 instanceof LivingEntity) {                 
-        			if (!((LivingEntity)entity1).fireImmune()) {        				
-        				if (((LivingEntity)entity1).hurt(FogletEntity.this.damageSources().mobAttack(FogletEntity.this), (float) FogletEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
-        					((LivingEntity)entity1).setRemainingFireTicks(4);
-        				}       							
-        			}
-        		}
-        	}
-        }
-
-        protected int getCastWarmupTime() {
-            return 20;
-        }
-
-        protected int getCastingTime() {
-            return 100;
-        }
-
-        protected int getCastingInterval() {
-            return 200;
-        }
-
-        @Nullable
-        protected SoundEvent getSpellPrepareSound() {
-            return SoundEvents.FURNACE_FIRE_CRACKLE;
-        }
-    }
-    
     static class AttackGoal extends FURMeleeAttackGoal {
         public AttackGoal(PathfinderMob p_i46676_1_) {
            super(p_i46676_1_, 1.0D, true);
