@@ -15,6 +15,8 @@ public class ClientProxy extends CommonProxy {
     public void clientInit() {
     	EntityRenderers.register(FUREntityRegistry.LAVACOW.get(), LavaCowRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FOGLET.get(), FogletRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.ISNACHI.get(), FogletRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.IMP.get(), FogletRenderer::new);
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));

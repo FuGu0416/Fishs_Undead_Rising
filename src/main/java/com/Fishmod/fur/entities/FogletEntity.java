@@ -68,8 +68,8 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("foglet.model.casting");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(IsnachiEntity.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(IsnachiEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> CASTING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 20;

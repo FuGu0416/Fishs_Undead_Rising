@@ -120,6 +120,7 @@ public class IsnachiEntity extends FogletEntity {
         //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
         //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
+    	this.setSkin(1);
     	
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}
