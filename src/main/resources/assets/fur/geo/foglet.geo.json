@@ -46,7 +46,10 @@
 					"rotation": [0, 5.73, -5.73],
 					"cubes": [
 						{"origin": [3, 3, -4], "size": [2, 8, 2], "uv": [0, 0]}
-					]
+					],
+					"locators": {
+						"locator_r": [4, 3, -3]
+					}
 				},
 				{
 					"name": "arm_l",
@@ -55,7 +58,10 @@
 					"rotation": [0, -5.73, 5.73],
 					"cubes": [
 						{"origin": [-5, 3, -4], "size": [2, 8, 2], "uv": [0, 0], "mirror": true}
-					]
+					],
+					"locators": {
+						"locator_l": [-4, 3, -3]
+					}
 				},
 				{
 					"name": "head",

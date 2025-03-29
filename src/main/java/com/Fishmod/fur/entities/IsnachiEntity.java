@@ -62,7 +62,7 @@ public class IsnachiEntity extends FogletEntity {
         	this.setDeltaMovement(Vec3.ZERO);
 
 	        if(!this.isPassenger()) {
-		        if(this.level().canSeeSky(this.blockPosition())) {
+		        if (this.level().canSeeSky(this.blockPosition())) {
 		        	this.setIsHanging(false);
 		        }
 		        
@@ -142,46 +142,24 @@ public class IsnachiEntity extends FogletEntity {
     	}
     }
     
-    public class AIClimbimgTree extends Goal {
-        private BlockPos TreePos;
-    	
+    public class AIClimbimgTree extends Goal {    	
     	public AIClimbimgTree() {
         }
     	
     	private boolean canClimb() {
-    		return !IsnachiEntity.this.level().getBlockState(IsnachiEntity.this.blockPosition().above()).canOcclude() && IsnachiEntity.this.level().getBlockState(IsnachiEntity.this.blockPosition().above()).is(BlockTags.LEAVES);
+    		return IsnachiEntity.this.level().getBlockState(IsnachiEntity.this.blockPosition().above()).isAir() 
+    				&& !IsnachiEntity.this.level().canSeeSky(IsnachiEntity.this.blockPosition()) 
+    				&& !IsnachiEntity.this.isAggressive()
+    				&& IsnachiEntity.this.getTarget() == null
+    				&& !IsnachiEntity.this.isOnFire() ;
     	}
 
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
     	@Override
-        public boolean canUse() {
-    		
-    		if (IsnachiEntity.this.getSkin() != 1) {
-    			return false;
-    		}
-    		
-            int i = (int) Math.floor(IsnachiEntity.this.getX());
-            int j = (int) Math.floor(IsnachiEntity.this.getY());
-            int k = (int) Math.floor(IsnachiEntity.this.getZ());
-            BlockPos blockpos = new BlockPos(i, j, k);
-            
-            TreePos = null;
-            
-            for(int x = -1 ; x <= 1 ; x++)
-            	for(int z = -1 ; z <= 1 ; z++) {
-            		if(IsnachiEntity.this.level().getBlockState(blockpos.offset(x, 0, z)).is(BlockTags.LOGS)) {
-            			TreePos = new BlockPos(x, 0, z);
-            			break;
-            		}
-            	}
-            
-            return !IsnachiEntity.this.isOnFire() 
-            		&& !IsnachiEntity.this.isAggressive() 
-            		&& !IsnachiEntity.this.level().canSeeSky(blockpos) 
-            		&& TreePos != null 
-            		&& this.canClimb();
+        public boolean canUse() {          
+            return IsnachiEntity.this.onGround() && this.canClimb();
         }
     	
         /**
@@ -218,11 +196,7 @@ public class IsnachiEntity extends FogletEntity {
     	@Override
         public void tick() {		
         	if (IsnachiEntity.this.getDeltaMovement().y < 0.0D) {
-        		IsnachiEntity.this.setPosRaw(IsnachiEntity.this.getX(), IsnachiEntity.this.getY() + 0.2D, IsnachiEntity.this.getZ());
-        	}
-        	
-        	if (TreePos != null) {
-            	IsnachiEntity.this.yBodyRot = (TreePos.getX() * 270.0F + (float) Math.toDegrees(Math.atan(TreePos.getZ() / (TreePos.getX() + 0.0000001D)))) % 360.0F;
+        		IsnachiEntity.this.setPosRaw(IsnachiEntity.this.getX(), IsnachiEntity.this.getY() + 1.0D, IsnachiEntity.this.getZ());
         	}
         }
     }

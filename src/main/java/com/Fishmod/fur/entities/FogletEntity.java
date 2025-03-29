@@ -66,6 +66,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     private static final RawAnimation RUN = RawAnimation.begin().thenPlay("foglet.model.running");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("foglet.model.attacking");
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("foglet.model.casting");
+    private static final RawAnimation HANG = RawAnimation.begin().thenPlay("foglet.model.hanging");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
@@ -530,6 +531,8 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     		state.getController().setAnimation(ATTACK);
     	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
     		return PlayState.CONTINUE;
+    	} else if (this.getIsHanging()) {
+    		state.getController().setAnimation(HANG);
     	} else if (state.isMoving() && !this.isInWater()) {
             state.getController().setAnimation(this.getWalkAnimation());
         } else {
