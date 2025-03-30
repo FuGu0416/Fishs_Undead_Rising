@@ -29,6 +29,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> UNDYINGHEART = DEF_REG.register("undyingheart", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FOUL_BRISTLE = DEF_REG.register("foul_bristle", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> IMP_HORN = DEF_REG.register("imp_horn", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
 	
     static {
         spawnEgg("lavacow", FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00);
