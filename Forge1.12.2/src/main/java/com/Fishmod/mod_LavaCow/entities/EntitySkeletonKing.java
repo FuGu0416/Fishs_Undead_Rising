@@ -220,7 +220,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
             for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(d0, d1, d2, d0, d1, d2).grow(1.5D))) {
                 if (!this.isEntityEqual(entitylivingbase) && !this.isOnSameTeam(entitylivingbase)) {
                     entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                    if(!(this.world.isRemote)) {
+                    if (!(this.world.isRemote)) {
                         entitylivingbase.addPotionEffect(new PotionEffect(ModMobEffects.FRAGILE_KING, 20 * 20, 3));
                         entitylivingbase.addPotionEffect(new PotionEffect(MobEffects.WITHER, 15 * 20, 2));
                     }
@@ -273,15 +273,15 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         if (getInvulTime() > 0) {
             setInvulTime(getInvulTime() - 1);
             if (this.ticksExisted % 5 == 0)
-            	this.heal(getMaxHealth() * 0.03F);
+                this.heal(getMaxHealth() * 0.03F);
         }
-        
+
         if (this.getAttackTarget() == null && this.getHealth() < this.getMaxHealth()) {
-        	if (this.attackingPlayer != null && this.attackingPlayer.isCreative()) {
-        		// creative mode won't trigger quick regeneration
-        	} else if (this.ticksExisted % 20 == 0) {
-        		this.heal(this.getMaxHealth() * 0.1F);
-        	}
+            if (this.attackingPlayer != null && this.attackingPlayer.isCreative()) {
+                // creative mode won't trigger quick regeneration
+            } else if (this.ticksExisted % 20 == 0) {
+                this.heal(this.getMaxHealth() * 0.1F);
+            }
         }
 
         if (this.blockBreakCounter > 0) {
@@ -438,7 +438,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
     public boolean isPotionApplicable(PotionEffect effect) {
         return false;
     }
-    
+
     @Override
     public void travel(float strafe, float vertical, float forward) {
         if (this.getInvulTime() > 0) {

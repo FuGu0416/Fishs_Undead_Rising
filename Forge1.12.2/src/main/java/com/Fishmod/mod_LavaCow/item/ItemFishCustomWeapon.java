@@ -160,12 +160,12 @@ public class ItemFishCustomWeapon extends ItemSword {
      */
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-    	if (attacker.world.isRemote) return false;
-    	
+        if (attacker.world.isRemote) return false;
+
         float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 
         if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE
-            && !(CompatUtilBridge.isRLCombatLoaded())) { //Handle RLCombat separately using Sweep event
+                && !(CompatUtilBridge.isRLCombatLoaded())) { //Handle RLCombat separately using Sweep event
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
             for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
@@ -247,12 +247,11 @@ public class ItemFishCustomWeapon extends ItemSword {
         int sharpness;
         int bane_of_arthropods;
         int smite;
-        if(CompatUtilBridge.isSMELoaded()) { // Scale with Lesser, Advanced, and Supreme Sharpness
+        if (CompatUtilBridge.isSMELoaded()) { // Scale with Lesser, Advanced, and Supreme Sharpness
             sharpness = (int) ((EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.UNDEFINED) - 0.5) / 0.5);
             bane_of_arthropods = (int) (EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.ARTHROPOD) / 2.5);
             smite = (int) (EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.UNDEAD) / 2.5);
-        }
-        else{ // Only checks vanilla Sharpness
+        } else { // Only checks vanilla Sharpness
             sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getHeldItem(handIn));
             bane_of_arthropods = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getHeldItem(handIn));
             smite = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, playerIn.getHeldItem(handIn));
@@ -447,13 +446,13 @@ public class ItemFishCustomWeapon extends ItemSword {
             for (int i = 0; i < 4; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
-                if ((i==0) || worldIn.rand.nextFloat() < 0.15F) {
+                if ((i == 0) || worldIn.rand.nextFloat() < 0.15F) {
                     EntitySummonedZombie entity = new EntityUnburied(worldIn);
-                    if(BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.DRY))
+                    if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.DRY))
                         entity = new EntityMummy(worldIn);
-                    else if(BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.COLD))
+                    else if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.COLD))
                         entity = new EntityZombieFrozen(worldIn);
-                    else if(BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.WET))
+                    else if (BiomeDictionary.hasType(playerIn.getEntityWorld().getBiome(playerIn.getPosition()), Type.WET))
                         entity = new EntityZombieMushroom(worldIn);
                     entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                     entity.onInitialSpawn(worldIn.getDifficultyForLocation(blockpos), (IEntityLivingData) null);

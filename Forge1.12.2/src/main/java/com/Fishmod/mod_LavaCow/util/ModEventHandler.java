@@ -1027,24 +1027,24 @@ public class ModEventHandler {
 
     private void MendingBaubles(Item item, EntityXPOrb xpOrb, EntityPlayer player, PlayerPickupXpEvent event) {
         int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
-        if(Heart_Slot == -1) return;
+        if (Heart_Slot == -1) return;
 
         ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot);
         boolean hasMending = (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, itemStack) > 0);
         boolean hasAdvancedMending = false;
         // check for SME Advanced Mending
-        if(CompatUtilBridge.isSMELoaded() && !hasMending) hasAdvancedMending = (SoManyEnchantmentsCompat.getAdvancedMendingLevel(itemStack) > 0);
+        if (CompatUtilBridge.isSMELoaded() && !hasMending)
+            hasAdvancedMending = (SoManyEnchantmentsCompat.getAdvancedMendingLevel(itemStack) > 0);
 
         if (hasMending || hasAdvancedMending && itemStack.isItemDamaged()) {
-            if(CompatUtilBridge.isSMELoaded()) { // Handling if SME
+            if (CompatUtilBridge.isSMELoaded()) { // Handling if SME
                 float mendingModifier = hasAdvancedMending ? 1.5F : 1.0F;
                 float ratio = itemStack.getItem().getXpRepairRatio(itemStack);
                 int value = Math.min(SoManyEnchantmentsCompat.roundAverage(xpOrb.xpValue * ratio * mendingModifier), itemStack.getItemDamage());
                 xpOrb.xpValue -= SoManyEnchantmentsCompat.roundAverage(value / ratio);
                 itemStack.setItemDamage(itemStack.getItemDamage() - value);
                 if (xpOrb.xpValue < 0) xpOrb.xpValue = 0;
-            }
-            else { // Original Handling
+            } else { // Original Handling
                 event.setCanceled(true);
                 if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
 
@@ -1172,7 +1172,7 @@ public class ModEventHandler {
     @SubscribeEvent
     public void onPCritical(CriticalHitEvent event) {
         //Handle RLCombat separately using Crit event
-        if(CompatUtilBridge.isRLCombatLoaded()) return;
+        if (CompatUtilBridge.isRLCombatLoaded()) return;
 
         int CriticalBoostlvl = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CRITICAL_BOOST, event.getEntityPlayer().getHeldItemMainhand());
 

@@ -16,41 +16,41 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(Side.CLIENT)
 public class ModelRegistryHandler {
-	
+
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         for (Field field : FishItems.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof Item) {
-                	Item item = (Item) obj;
-                	registerModel(item);
+                    Item item = (Item) obj;
+                    registerModel(item);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
 
-		if(CompatUtilBridge.isTinkersConstructLoaded()) TinkersCompatClient.registerModels(event);
+        if (CompatUtilBridge.isTinkersConstructLoaded()) TinkersCompatClient.registerModels(event);
     }
- 
+
     private static void registerModel(Item item) {
-    	if(item.equals(FishItems.PARASITE_ITEM)) {
-    		for(Integer i = 0; i < 3 ; i++)
-    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	} else if(item.equals(FishItems.PTERA_WING)) {
-    		for(Integer i = 0; i < 4 ; i++)
-    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	} else if(item.equals(FishItems.KINGS_CROWN)) {
-    		for(Integer i = 0; i < 2 ; i++)
-    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	} else if(item.equals(FishItems.CURSED_BANDAGE)) {
-    		for(Integer i = 0; i < 4 ; i++)
-    			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));  
-    	} else
-    		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));  
+        if (item.equals(FishItems.PARASITE_ITEM)) {
+            for (Integer i = 0; i < 3; i++)
+                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));
+        } else if (item.equals(FishItems.PTERA_WING)) {
+            for (Integer i = 0; i < 4; i++)
+                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));
+        } else if (item.equals(FishItems.KINGS_CROWN)) {
+            for (Integer i = 0; i < 2; i++)
+                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));
+        } else if (item.equals(FishItems.CURSED_BANDAGE)) {
+            for (Integer i = 0; i < 4; i++)
+                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName() + i.toString()));
+        } else
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 }
