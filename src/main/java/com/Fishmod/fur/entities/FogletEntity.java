@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -396,7 +397,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 	                break;
 	            case 1:
 	            default:
-	            	effect = MobEffects.WEAKNESS/*FUREffectRegistry.SOILED*/;
+	            	effect = FUREffectRegistry.SOILED.get();
 	                break;
             }
             
@@ -410,7 +411,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
             if (FogletEntity.this.getSkin() == 0) {
             	entityareaeffectcloud.setParticle(ParticleTypes.CLOUD);
             } else if (FogletEntity.this.getSkin() == 1) {
-            	//entityareaeffectcloud.setPotion(FUREffectRegistry.FOULODOR_POTION);
+            	entityareaeffectcloud.setPotion(FUREffectRegistry.FOULODOR_POTION.get());
             }
             
             entityareaeffectcloud.addEffect(new MobEffectInstance(effect, 4 * 20, 1));

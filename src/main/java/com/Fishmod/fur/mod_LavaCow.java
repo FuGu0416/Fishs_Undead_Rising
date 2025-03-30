@@ -2,6 +2,7 @@ package com.Fishmod.fur;
 
 import org.slf4j.Logger;
 
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -28,12 +29,10 @@ public class mod_LavaCow {
     public static final String MODID = "fur";
     public static final String NAME = "Fish's Undead Rising";
     public static SimpleChannel NETWORK;
-    @SuppressWarnings("deprecation")
-	public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     
     public mod_LavaCow() {   
-    	@SuppressWarnings("removal")
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	//FURWorldRegistry.register(eventBus);
     	
         // Register the setup method for modloading
@@ -57,11 +56,13 @@ public class mod_LavaCow {
         FURItemGroup.DEF_REG.register(eventBus);
         FURItemRegistry.DEF_REG.register(eventBus);
         FURSoundRegistry.DEF_REG.register(eventBus);
+        FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
+        FUREffectRegistry.POTION_DEF_REG.register(eventBus);
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,
         		() -> (mc, screen) -> new ConfigScreen()
-		); */  
+		); */          
         PROXY.commonInit();
         
         GeckoLib.initialize();
@@ -81,8 +82,7 @@ public class mod_LavaCow {
         PROXY.setupParticles();
     }*/
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
+    private void setup(final FMLCommonSetupEvent event) {
     	/*event.enqueueWork(() -> {
     		FURWorldRegistry.setupStructures();
     		FURProcessors.registerProcessors();
@@ -90,6 +90,7 @@ public class mod_LavaCow {
             LootTableHandler.addLootTable();
         });*/
         //PROXY.initNetwork();
+    	FUREffectRegistry.onInitItems();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
