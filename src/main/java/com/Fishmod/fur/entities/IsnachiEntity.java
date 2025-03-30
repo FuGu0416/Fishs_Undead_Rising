@@ -1,6 +1,5 @@
 package com.Fishmod.fur.entities;
 
-import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -9,10 +8,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
@@ -20,12 +19,16 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class IsnachiEntity extends FogletEntity {	
@@ -38,6 +41,14 @@ public class IsnachiEntity extends FogletEntity {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new AIClimbimgTree());
     }
+	
+	@Override
+    protected void applyEntityAI() {
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new IsnachiEntity.DropGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(4, new IsnachiEntity.DropGoal<>(this, AbstractVillager.class, false));
+        this.targetSelector.addGoal(4, new IsnachiEntity.DropGoal<>(this, IronGolem.class, true));
+    }
     
     public static AttributeSupplier.Builder createAttributesIsnachi() {    	
         return Monster.createMobAttributes()
@@ -49,34 +60,18 @@ public class IsnachiEntity extends FogletEntity {
     
     public static boolean checkIsnachiSpawnRules(EntityType<? extends IsnachiEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
         return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
-    }
-    
+    }    
+	
     /**
-     * Called to update the entity's position/logic.
+     * Keep ticking a continuous task that has already been started
      */
-	@Override
-    public void aiStep() {
-        super.aiStep();
-        
+    @Override
+    public void tick() {
+    	super.tick();
+    	
         if (this.getIsHanging()) {
         	this.setDeltaMovement(Vec3.ZERO);
-
-	        if(!this.isPassenger()) {
-		        if (this.level().canSeeSky(this.blockPosition())) {
-		        	this.setIsHanging(false);
-		        }
-		        
-		        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().expandTowards(2.0D, 35.0D, 2.0D));
-		        
-	        	for (Entity entity1 : list) {
-	        		if (entity1.getY() < this.getY() && ((entity1 instanceof Player && !((Player)entity1).isCreative()) || entity1 instanceof AbstractVillager)) {
-	        			this.setTarget((LivingEntity) entity1);
-	        			this.setIsHanging(false);
-	        			break;
-	        		}
-	        	}  
-	        }
-    	}      
+    	}   	
     }
 	
 	@Override
@@ -100,8 +95,9 @@ public class IsnachiEntity extends FogletEntity {
                 LivingEntity = (LivingEntity)source.getDirectEntity();
             }
             
-            if(this.getIsClimbing()) {
-            	this.setIsClimbing(false);
+            if(this.getIsHanging()) {
+            	this.setIsHanging(false);
+            	this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(16.0D);
             }
 
             return true;
@@ -148,10 +144,7 @@ public class IsnachiEntity extends FogletEntity {
     	
     	private boolean canClimb() {
     		return IsnachiEntity.this.level().getBlockState(IsnachiEntity.this.blockPosition().above()).isAir() 
-    				&& !IsnachiEntity.this.level().canSeeSky(IsnachiEntity.this.blockPosition()) 
-    				&& !IsnachiEntity.this.isAggressive()
-    				&& IsnachiEntity.this.getTarget() == null
-    				&& !IsnachiEntity.this.isOnFire() ;
+    				&& !IsnachiEntity.this.level().canSeeSky(IsnachiEntity.this.blockPosition());
     	}
 
         /**
@@ -159,7 +152,10 @@ public class IsnachiEntity extends FogletEntity {
          */
     	@Override
         public boolean canUse() {          
-            return IsnachiEntity.this.onGround() && this.canClimb();
+            return IsnachiEntity.this.onGround() 
+    				&& !IsnachiEntity.this.isAggressive()
+    				&& IsnachiEntity.this.getTarget() == null
+    				&& this.canClimb();
         }
     	
         /**
@@ -167,7 +163,9 @@ public class IsnachiEntity extends FogletEntity {
          */
         @Override
         public boolean canContinueToUse() {
-            return this.canClimb();
+            return !IsnachiEntity.this.isAggressive()
+    				&& IsnachiEntity.this.getTarget() == null
+    				&& this.canClimb();
         }
 
         /**
@@ -176,7 +174,6 @@ public class IsnachiEntity extends FogletEntity {
     	@Override
         public void start() {
             super.start();
-            IsnachiEntity.this.setIsClimbing(true);
             IsnachiEntity.this.getNavigation().stop();
         }
 
@@ -186,8 +183,10 @@ public class IsnachiEntity extends FogletEntity {
     	@Override
         public void stop() {
         	super.stop();
-            IsnachiEntity.this.setIsClimbing(false);
-            IsnachiEntity.this.setIsHanging(true);
+        	if (!IsnachiEntity.this.isAggressive()) {
+	            IsnachiEntity.this.setIsHanging(true);
+	            IsnachiEntity.this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(4.0D);
+        	}
         }
 
         /**
@@ -199,6 +198,25 @@ public class IsnachiEntity extends FogletEntity {
         		IsnachiEntity.this.setPosRaw(IsnachiEntity.this.getX(), IsnachiEntity.this.getY() + 1.0D, IsnachiEntity.this.getZ());
         	}
         }
+    }
+    
+    public class DropGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
+		public DropGoal(Mob p_26064_, Class<T> p_26065_, boolean p_26066_) {
+			super(p_26064_, p_26065_, p_26066_);
+		}
+		
+		protected AABB getTargetSearchArea(double p_26069_) {
+			return this.mob.getBoundingBox().inflate(p_26069_, 64.0D, p_26069_);
+		}   	
+		
+		public void start() {
+        	if (((FogletEntity) this.mob).getIsHanging()) {
+        		((FogletEntity) this.mob).setIsHanging(false);
+        		this.mob.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(16.0D);
+        	}
+        	
+			super.start();
+		}
     }
     
     /**

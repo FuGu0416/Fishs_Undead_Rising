@@ -188,7 +188,6 @@ public class FURMeleeAttackGoal extends Goal {
 	}
 	
 	protected void dmgEvent(LivingEntity target) {
-		System.out.println("OAO?");
 		this.mob.swing(InteractionHand.MAIN_HAND);
 		this.mob.doHurtTarget(target);
 	}

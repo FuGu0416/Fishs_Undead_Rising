@@ -39,7 +39,6 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +68,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     private static final RawAnimation HANG = RawAnimation.begin().thenPlay("foglet.model.hanging");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> CASTING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	public static final int ATTACK_TIMER = 30;
@@ -101,7 +99,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
     }
     
     public static AttributeSupplier.Builder createAttributesFoglet() {    	
@@ -120,7 +117,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
         this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
-        this.getEntityData().define(CLIMBING, Byte.valueOf((byte)0));
         this.getEntityData().define(HANGING, Byte.valueOf((byte)0));
         this.getEntityData().define(CASTING, Byte.valueOf((byte)0));
     }
@@ -244,7 +240,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         this.spellTicks = compound.getInt("SpellTicks");
         this.setSkin(compound.getInt("Variant"));
         this.getEntityData().set(HANGING, Byte.valueOf(compound.getByte("Hanging")));
-        this.getEntityData().set(CLIMBING, Byte.valueOf(compound.getByte("Climbing")));
     }
 
     /**
@@ -256,26 +251,11 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         compound.putInt("SpellTicks", this.spellTicks);
         compound.putInt("Variant", getSkin());
         compound.putByte("Hanging", ((Byte)this.getEntityData().get(HANGING)).byteValue());
-        compound.putByte("Climbing", ((Byte)this.getEntityData().get(CLIMBING)).byteValue());
     }
 	
     public boolean getIsHanging() {
         return (((Byte)this.getEntityData().get(HANGING)).byteValue() & 1) != 0;
-    }
-    
-    public boolean getIsClimbing() {
-        return (((Byte)this.getEntityData().get(CLIMBING)).byteValue() & 1) != 0;
-    }
-    
-    public void setIsClimbing(boolean isClimbing) {
-        byte b0 = ((Byte)this.getEntityData().get(CLIMBING)).byteValue();
-
-        if (isClimbing) {
-            this.getEntityData().set(CLIMBING, Byte.valueOf((byte)(b0 | 1)));
-        } else {
-            this.getEntityData().set(CLIMBING, Byte.valueOf((byte)(b0 & -2)));
-        }
-    }
+    } 
     
     public void setIsHanging(boolean isHanging) {
         byte b0 = ((Byte)this.getEntityData().get(HANGING)).byteValue();
@@ -460,7 +440,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     static class AttackGoal extends FURMeleeAttackGoal {
         public AttackGoal(PathfinderMob p_i46676_1_) {
            super(p_i46676_1_, 1.0D, true);
-        }
+        }       
 
     	protected int atkTimerMax() {
     		return ATTACK_TIMER;
