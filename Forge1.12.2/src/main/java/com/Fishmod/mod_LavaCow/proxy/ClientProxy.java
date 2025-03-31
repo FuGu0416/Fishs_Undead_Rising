@@ -1,9 +1,12 @@
 package com.Fishmod.mod_LavaCow.proxy;
 
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.client.particle.ParticalLocustSwarm;
 import com.Fishmod.mod_LavaCow.client.particle.ParticleWitherFlame;
 import com.Fishmod.mod_LavaCow.client.renders.RenderFactories;
 import com.Fishmod.mod_LavaCow.client.renders.tileentity.TileEntityScarecrowHeadRenderer;
+import com.Fishmod.mod_LavaCow.compat.CompatUtilBridge;
+import com.Fishmod.mod_LavaCow.compat.tinkers.TinkersCompatClient;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.init.Modkeys;
@@ -20,6 +23,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -83,6 +87,9 @@ public class ClientProxy implements IProxy {
     @SideOnly(Side.CLIENT)
     @Override
     public void preRender() {
+        if (Loader.isModLoaded(CompatUtilBridge.TINKERS_CONSTRUCT_MODID) && Modconfig.Tinkers_Compat) {
+            TinkersCompatClient.preInit();
+        }
     }
 
     @Override

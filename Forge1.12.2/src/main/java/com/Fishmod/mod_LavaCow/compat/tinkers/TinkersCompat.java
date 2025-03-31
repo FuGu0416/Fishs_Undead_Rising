@@ -50,7 +50,7 @@ public class TinkersCompat {
     public static final AbstractTrait UNHOLYTOUCH = new TraitUnholyTouch();
     public static final AbstractTrait AMBER_PHARAOH = new TraitAmberPharaoh();
 
-    public static void init() {
+    public static void preInit() {
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TinkerMaterials.materials.add(MOLTEN_MEAT);
         TinkerRegistry.integrate(MOLTEN_MEAT).preInit();
@@ -218,7 +218,7 @@ public class TinkersCompat {
         return TConstruct.pulseManager.isPulseLoaded(TinkerSmeltery.PulseId);
     }
 
-    public static void post() {
+    public static void postInit() {
         /*if (TinkerModifiers.modNecrotic != null) {
             TinkerModifiers.modNecrotic.addItem(FishItems.UNDYINGHEART);
             TinkerModifiers.modSmite.addItem(FishItems.HOLY_SLUDGE);

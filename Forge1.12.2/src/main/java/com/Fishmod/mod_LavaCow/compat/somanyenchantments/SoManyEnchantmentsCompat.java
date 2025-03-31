@@ -7,7 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class SoManyEnchantmentsCompat {
 
-    public static void init() {
+    public static void preInit() {
         MinecraftForge.EVENT_BUS.register(new LauncherAmmoHandler());
         MinecraftForge.EVENT_BUS.register(new EnchantmentSplitshotHandler());
     }

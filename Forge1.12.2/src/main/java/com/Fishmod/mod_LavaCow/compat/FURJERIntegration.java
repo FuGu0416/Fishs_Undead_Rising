@@ -54,7 +54,7 @@ public class FURJERIntegration {
     public static IJERAPI jerAPI;
     public static World world;
 
-    public static void init() {
+    public static void postInit() {
         world = jerAPI.getWorld();
         // Loot table mob loot
         jerAPI.getMobRegistry().register(new EntityLavaCow(world), LootTableHandler.LAVACOW);

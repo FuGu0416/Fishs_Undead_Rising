@@ -61,6 +61,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -165,7 +166,7 @@ public class ItemFishCustomWeapon extends ItemSword {
         float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 
         if (attacker instanceof EntityPlayer && stack.getItem() == FishItems.REAPERS_SCYTHE
-                && !(CompatUtilBridge.isRLCombatLoaded())) { //Handle RLCombat separately using Sweep event
+                && !(Loader.isModLoaded(CompatUtilBridge.BETTER_COMBAT_MODID) && Loader.instance().getIndexedModList().get(CompatUtilBridge.BETTER_COMBAT_MODID).getName().equals(CompatUtilBridge.RLCOMBAT_MODNAME) && Modconfig.RLCombat_Compat)) { // Don't implement and handle separate Sweep event when RLCombat is detected and compat is enabled
             float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
 
             for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(2.0D, 0.25D, 2.0D))) {
@@ -247,15 +248,17 @@ public class ItemFishCustomWeapon extends ItemSword {
         int sharpness;
         int bane_of_arthropods;
         int smite;
-        if (CompatUtilBridge.isSMELoaded()) { // Scale with Lesser, Advanced, and Supreme Sharpness
+        
+        if (Loader.isModLoaded(CompatUtilBridge.SME_MODID) && Modconfig.SME_Compat) { // If So Many Enchantments compat is enabled, scale with Lesser, Advanced, and Supreme enchantments added by that mod instead
             sharpness = (int) ((EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.UNDEFINED) - 0.5) / 0.5);
             bane_of_arthropods = (int) (EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.ARTHROPOD) / 2.5);
             smite = (int) (EnchantmentHelper.getModifierForCreature(playerIn.getHeldItem(handIn), EnumCreatureAttribute.UNDEAD) / 2.5);
-        } else { // Only checks vanilla Sharpness
+        } else {
             sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, playerIn.getHeldItem(handIn));
             bane_of_arthropods = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, playerIn.getHeldItem(handIn));
             smite = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, playerIn.getHeldItem(handIn));
         }
+        
         int lifesteal = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL, playerIn.getHeldItem(handIn));
         int poisonous = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, playerIn.getHeldItem(handIn));
         int corrosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CORROSIVE, playerIn.getHeldItem(handIn));

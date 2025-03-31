@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.mod_LavaCow.compat.CompatUtilBridge;
 import com.Fishmod.mod_LavaCow.compat.somanyenchantments.SoManyEnchantmentsCompat;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
+import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityEnchantableFireBall;
@@ -34,6 +35,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -124,19 +126,15 @@ public class ItemPiranhaLauncher extends ItemBow {
         if (!worldIn.isRemote) {
             Vec3d lookVec = playerIn.getLookVec();
 
-            /*
-             * SME Compat Info
-             * SME auto does handling on EntityJoinWorldEvent only on instances of EntityArrow
-             * Compat handling has to be done after this original handling
-             */
-
+            // So Many Enchantments compat has to be done after the original handling here
             int power_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
             int punch_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
             int flame_lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack);
 
-            // SME Lesser and Advanced Power here to simplify things
+            // So Many Enchantments automatically does handling on EntityJoinWorldEvent on instances of EntityArrow only
+            // So Many Enchantments' Powerless and Advanced Power enchantments are here to simplify things
             // Allow "creative" stacking, will truncate
-            if (CompatUtilBridge.isSMELoaded()) {
+            if (Loader.isModLoaded(CompatUtilBridge.SME_MODID) && Modconfig.SME_Compat) {
                 power_lvl -= SoManyEnchantmentsCompat.getPowerlessLevel(stack);
                 power_lvl += 5 * SoManyEnchantmentsCompat.getAdvancedPowerLevel(stack) / 3;
             }
