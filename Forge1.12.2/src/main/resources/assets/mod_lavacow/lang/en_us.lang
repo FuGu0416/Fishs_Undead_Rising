@@ -557,6 +557,8 @@ enchantment.mod_lavacow.corrosive=Corrosive
 enchantment.mod_lavacow.corrosive.desc=Weakens the target and will make it receive more damage from any source.
 enchantment.mod_lavacow.critical_boost=Critical Boost
 enchantment.mod_lavacow.critical_boost.desc=Deals more damage when a critical hit occurs.
+enchantment.mod_lavacow.dominion=Dominion
+enchantment.mod_lavacow.dominion.desc=Increases the quantity of minions from Fish's Undead Rising summoning items.
 
 ##############
 # MobEffects #

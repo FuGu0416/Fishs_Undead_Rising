@@ -261,10 +261,11 @@ public class ItemFishCustomWeapon extends ItemSword {
         int lifesteal = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL, playerIn.getHeldItem(handIn));
         int poisonous = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.POISONOUS, playerIn.getHeldItem(handIn));
         int corrosive = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CORROSIVE, playerIn.getHeldItem(handIn));
+        int dominion = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DOMINION, playerIn.getHeldItem(handIn));
         int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, playerIn.getHeldItem(handIn));
 
         if (playerIn.getHeldItem(handIn).getItem() == FishItems.SLUDGE_WAND) {
-            for (int i = 0; i < 2; ++i) {
+            for (int i = 0; i < 2 + dominion; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
                 EntityLilSludge entity = new EntityLilSludge(worldIn);
@@ -302,7 +303,7 @@ public class ItemFishCustomWeapon extends ItemSword {
             }
 
             // Damages 1 per mob summoned
-            playerIn.getHeldItem(handIn).damageItem(2, playerIn);
+            playerIn.getHeldItem(handIn).damageItem(2 + dominion, playerIn);
             playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.SludgeWand_Cooldown * 20);
@@ -312,7 +313,7 @@ public class ItemFishCustomWeapon extends ItemSword {
         }
 
         if (playerIn.getHeldItem(handIn).getItem() == FishItems.SCARAB_WAND && worldIn instanceof World) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + dominion; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
                 EntityScarab entity = new EntityScarab(worldIn);
@@ -349,7 +350,7 @@ public class ItemFishCustomWeapon extends ItemSword {
             }
 
             // Damages 1 per mob summoned
-            playerIn.getHeldItem(handIn).damageItem(4, playerIn);
+            playerIn.getHeldItem(handIn).damageItem(4 + dominion, playerIn);
             playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.ScarabWand_Cooldown * 20);
@@ -449,7 +450,7 @@ public class ItemFishCustomWeapon extends ItemSword {
         }
 
         if (playerIn.getHeldItem(handIn).getItem() == FishItems.UNDERTAKER_SHOVEL) {
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4 + dominion; ++i) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 BlockPos blockpos = (new BlockPos(playerIn)).add(-4 + Item.itemRand.nextInt(8), 0, -4 + Item.itemRand.nextInt(8));
                 EntitySummonedZombie entity = new EntityUnburied(worldIn);
@@ -497,7 +498,7 @@ public class ItemFishCustomWeapon extends ItemSword {
             }
 
             // Damages 1 per mob summoned
-            playerIn.getHeldItem(handIn).damageItem(4, playerIn);
+            playerIn.getHeldItem(handIn).damageItem(4 + dominion, playerIn);
             playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.Undertaker_Shovel_Cooldown * 20);
