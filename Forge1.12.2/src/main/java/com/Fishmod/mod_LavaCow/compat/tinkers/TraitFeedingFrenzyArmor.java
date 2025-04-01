@@ -29,7 +29,7 @@ public class TraitFeedingFrenzyArmor extends AbstractArmorTrait {
             UUID.fromString("6a57f600-b3bd-4a61-8c36-29b37dd0c26e"),
             UUID.fromString("4d40b226-9371-4582-807a-f62de451f4e4"),
             UUID.fromString("23de01b5-894a-463b-b033-38c4d46e37d9")};
-    private static final double DAMAGE_PER_LEVEL = 0.25D;
+    private static final double DAMAGE_PER_LEVEL = 0.4D;
 
     public TraitFeedingFrenzyArmor() {
         super("mod_lavacow.feeding_frenzy", TextFormatting.DARK_RED);
