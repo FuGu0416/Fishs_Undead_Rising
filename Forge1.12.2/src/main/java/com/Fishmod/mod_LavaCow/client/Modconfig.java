@@ -547,7 +547,7 @@ public class Modconfig {
         pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
         SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 400.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(400.0D);
         SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
-        SkeletonKing_Kings_Wrath_Attack = config.get("Skeleton King", "skeleton king kings wrath attack", 6.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(6.0D);
+        SkeletonKing_Kings_Wrath_Attack = config.get("Skeleton King", "skeleton king kings wrath projectile strength", 6.0D, "Skeleton King kings wrath projectile strength [1-1000]", 1, 1000).getDouble(6.0D);
         SkeletonKing_Ability_Sand_Tomb_Cooldown = config.get("Skeleton King", "skeleton king sand tomb cooldown", 10, "Set the cooldown of Sand Tomb [0-100]", 0, 100).getInt(10);
         SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 60, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);
@@ -587,7 +587,7 @@ public class Modconfig {
         Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "sea hag summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
 
         pSpawnRate_Grave_Robber = config.get("Grave Robber", "grave robber spawn rate", 15, "Set the spawn rate of Grave Robber [0-100]", 0, 100).getInt(15);
-        Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-100]", 0, 100).getDouble(0.5D);
+        Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-1]", 0, 1).getDouble(0.5D);
         Grave_Robber_Health = config.get("Grave Robber", "grave robber health", 34.0D, "Maximum Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
         Grave_Robber_Attack = config.get("Grave Robber", "grave robber attack", 6.0D, "Grave Robber strength [1-1000]", 1, 1000).getDouble(6.0D);
         Grave_Robber_Spawn_Underground = config.get("Grave Robber", "grave robber underground spawn", false, "Should Grave Robbers spawn underground").getBoolean(false);
