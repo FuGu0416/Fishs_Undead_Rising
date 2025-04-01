@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "axis=x": { "model": "mod_lavacow:diseased_hay_block", "x": 90, "y": 90 },
+        "axis=y": { "model": "mod_lavacow:diseased_hay_block" },
+        "axis=z": { "model": "mod_lavacow:diseased_hay_block", "x": 90 },
+        "inventory": { "model": "mod_lavacow:diseased_hay_block" }
+    }
+}

@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.util;
 
 import java.lang.reflect.Field;
+
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.blocks.BlockBasic;
 import com.Fishmod.mod_LavaCow.init.FishItems;
@@ -26,32 +27,32 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber
 public class RegistryHandler {
-	public static final IRecipe POISON_ARROW = new RecipePoisonArrow().setRegistryName(mod_LavaCow.MODID, "poison_arrow");
-	public static final IRecipe SINISTER_WHETSTONE = new RecipeSinisterWhetstone().setRegistryName(mod_LavaCow.MODID, "sinister_whetstone");
-	  
+    public static final IRecipe POISON_ARROW = new RecipePoisonArrow().setRegistryName(mod_LavaCow.MODID, "poison_arrow");
+    public static final IRecipe SINISTER_WHETSTONE = new RecipeSinisterWhetstone().setRegistryName(mod_LavaCow.MODID, "sinister_whetstone");
+
     /**
      * Register this mod's {@link Item}s and {@link ItemBlock}s.
      *
      * @param event The event
      */
-	@SubscribeEvent
+    @SubscribeEvent
     public static void registerItems(Register<Item> event) {
         for (Field field : FishItems.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof Item) {
-                	Item item = (Item) obj;
-                	event.getRegistry().register(item);
+                    Item item = (Item) obj;
+                    event.getRegistry().register(item);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
-    	
-    	event.getRegistry().registerAll(               
+
+        event.getRegistry().registerAll(
                 BlockBasic.setItemName(new ItemBlock(Modblocks.GLOWSHROOM), Modblocks.GLOWSHROOM.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.PILEOFSLUDGE), Modblocks.PILEOFSLUDGE.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.GLOWSHROOM_BLOCK_STEM), Modblocks.GLOWSHROOM_BLOCK_STEM.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
@@ -64,6 +65,7 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemScarecrowHead(Modblocks.SCARECROWHEAD_PLAGUE), Modblocks.SCARECROWHEAD_PLAGUE.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.TOMBSTONE), Modblocks.TOMBSTONE.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.CACTOID_SPROUT), Modblocks.CACTOID_SPROUT.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
+                BlockBasic.setItemName(new ItemBlock(Modblocks.DISEASED_HAY_BLOCK), Modblocks.DISEASED_HAY_BLOCK.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.ECTOPLASM_BLOCK), Modblocks.ECTOPLASM_BLOCK.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.MOLTEN_ALLOY_BLOCK), Modblocks.MOLTEN_ALLOY_BLOCK.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
                 BlockBasic.setItemName(new ItemBlock(Modblocks.SCYTHE_CLAW_BLOCK), Modblocks.SCYTHE_CLAW_BLOCK.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS),
@@ -71,82 +73,82 @@ public class RegistryHandler {
                 BlockBasic.setItemName(new ItemBlock(Modblocks.MOLTEN_MEAT_BLOCK), Modblocks.MOLTEN_MEAT_BLOCK.getRegistryName().getPath()).setCreativeTab(mod_LavaCow.TAB_ITEMS)
         );
     }
-    
+
     @SubscribeEvent
-	public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {	
+    public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
         for (Field field : FishItems.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof SoundEvent) {
-                	SoundEvent sound = (SoundEvent) obj;
-                	event.getRegistry().register(sound);
+                    SoundEvent sound = (SoundEvent) obj;
+                    event.getRegistry().register(sound);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
-	}
-    
-	@SubscribeEvent
-	public static void registerEnchantments(Register<Enchantment> event) {
+    }
+
+    @SubscribeEvent
+    public static void registerEnchantments(Register<Enchantment> event) {
         for (Field field : ModEnchantments.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof Enchantment) {
-                	Enchantment enchantment = (Enchantment) obj;
-                	event.getRegistry().register(enchantment);
+                    Enchantment enchantment = (Enchantment) obj;
+                    event.getRegistry().register(enchantment);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
-	}  
-		
-	@SubscribeEvent
-	public static void registerRecipes(final RegistryEvent.Register<IRecipe> event) {
-		event.getRegistry().register(POISON_ARROW);
-		event.getRegistry().register(SINISTER_WHETSTONE);
-	}
-	
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(final RegistryEvent.Register<IRecipe> event) {
+        event.getRegistry().register(POISON_ARROW);
+        event.getRegistry().register(SINISTER_WHETSTONE);
+    }
+
     @SubscribeEvent
     public static void onRegisterPotion(RegistryEvent.Register<Potion> event) {
         for (Field field : ModMobEffects.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof Potion) {
-                	Potion potion = (Potion) obj;
-                	event.getRegistry().register(potion);
+                    Potion potion = (Potion) obj;
+                    event.getRegistry().register(potion);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
-    
+
     @SubscribeEvent
     public static void onRegisterPotionTypes(RegistryEvent.Register<PotionType> event) {
         for (Field field : ModPotions.class.getDeclaredFields()) {
             Object obj;
-			try {
-				obj = field.get(null);
+            try {
+                obj = field.get(null);
                 if (obj instanceof PotionType) {
-                	PotionType potiontype = (PotionType) obj;
-                	event.getRegistry().register(potiontype);
+                    PotionType potiontype = (PotionType) obj;
+                    event.getRegistry().register(potiontype);
                 }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
