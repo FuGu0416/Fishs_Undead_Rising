@@ -66,7 +66,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFishCustomWeapon extends ItemSword {
-
     private Item repair_material;
     private float Damage;
     private float AttackSpeed;
@@ -304,6 +303,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(2, playerIn);
+            playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.SludgeWand_Cooldown * 20);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);
@@ -350,6 +350,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(4, playerIn);
+            playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.ScarabWand_Cooldown * 20);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);
@@ -385,6 +386,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 
             LavaBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, EnumParticleTypes.FLAME);
             playerIn.getHeldItem(handIn).damageItem(8, playerIn);
+            playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
             playerIn.getCooldownTracker().setCooldown(this, 80);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);
@@ -421,6 +423,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 
             WitherBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, "wither_flame");
             playerIn.getHeldItem(handIn).damageItem(6, playerIn);
+            playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
             playerIn.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.5F, 0.75F);
             playerIn.getCooldownTracker().setCooldown(this, 80);
@@ -495,6 +498,7 @@ public class ItemFishCustomWeapon extends ItemSword {
 
             // Damages 1 per mob summoned
             playerIn.getHeldItem(handIn).damageItem(4, playerIn);
+            playerIn.swingArm(handIn);
             playerIn.playSound(FishItems.ENTITY_SKELETONKING_SPELL_SUMMON, 1.0F, 2.0F);
             playerIn.getCooldownTracker().setCooldown(this, Modconfig.Undertaker_Shovel_Cooldown * 20);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);

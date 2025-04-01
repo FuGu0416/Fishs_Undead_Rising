@@ -442,7 +442,7 @@ public class Modconfig {
 
         LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 16.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
         LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 3.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.5D);
-        LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 60, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(60);
+        LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 120, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Raven = config.get("Raven", "raven spawn rate", 8, "Set the spawn rate of Raven [0-10000]", 0, 10000).getInt(8);
         Raven_Health = config.get("Raven", "raven health", 6.0D, "Maximum Raven health [1-1000]", 1, 1000).getDouble(6.0D);
@@ -512,7 +512,7 @@ public class Modconfig {
         pSpawnRate_Unburied = config.get("Unburied", "unburied spawn rate", 20, "Set the spawn rate of Unburied [0-10000]", 0, 10000).getInt(20);
         Unburied_Health = config.get("Unburied", "unburied health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
         Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
-        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 60, "Summoned Unburied (and variants) lifespan [1-10000]", 1, 10000).getInt(60);
+        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 120, "Summoned Unburied (and variants) lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
         pSpawnRate_GhostRay_End = config.get("Ghost Ray", "ghost ray end dimension spawn rate", 3, "Set the spawn rate of Ghost Ray in the End dimension [0-100]", 0, 100).getInt(3);
@@ -530,7 +530,7 @@ public class Modconfig {
         pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
         Weta_Health = config.get("Weta", "weta health", 12.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
         Weta_Attack = config.get("Weta", "weta attack", 3.0D, "Weta strength [1-1000]", 1, 1000).getDouble(3.0D);
-        Weta_Lifespan = config.get("Weta", "weta lifespan", 60, "Summoned Weta lifespan [1-10000]", 1, 10000).getInt(60);
+        Weta_Lifespan = config.get("Weta", "weta lifespan", 120, "Summoned Weta lifespan [1-10000]", 1, 10000).getInt(120);
         Weta_Harvest_Diseased_Wheat = config.get("Weta", "weta diseased wheat drop rate", 0.15D, "Chance for diseased Weta to drop diseased wheat when breaking crops [0-1]", 0, 1).getDouble(0.15D);
 
         pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
@@ -554,7 +554,7 @@ public class Modconfig {
         SkeletonKing_Ability_Summon_Cooldown = config.get("Skeleton King", "skeleton king summon cooldown", 16, "Set the cooldown of summoning Unburied [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Summon_Num = config.get("Skeleton King", "skeleton king summon number", 6, "Set the number of Forsaken summoned per cast [0-100]", 0, 100).getInt(6);
         SkeletonKing_Ability_Summon_Max = config.get("Skeleton King", "skeleton king summon max", 24, "Set the max number of Forsaken summoned [0-100]", 0, 100).getInt(24);
-        SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 120, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(120);
+        SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 300, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(300);
         SkeletonKing_Loot_Option = config.get("Skeleton King", "skeleton king loot in chest", true, "Should Skeleton King drop its loot inside a chest [false/true]").getBoolean(true);
         SkeletonKing_Biome_Need_All = config.get("Skeleton King", "cursed crown need all tags", true, "Should King's Crown require all (or just one) valid biome tag [false/true]").getBoolean(true);
         SkeletonKing_Biome_Allowlist = config.getStringList("Cursed Crown Biomes List", "Skeleton King",
@@ -598,7 +598,7 @@ public class Modconfig {
         Grave_Robber_Ghost_Ability_Num = config.get("Ghost of Grave Robber", "grave robber ghost summon number", 2, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(2);
         Grave_Robber_Ghost_Ability_Max = config.get("Ghost of Grave Robber", "grave robber ghost summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
         Grave_Robber_Ghost_Ability_Cooldown = config.get("Ghost of Grave Robber", "grave robber ghost summon cooldown", 20, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(20);
-        Grave_Robber_Ghost_Minion_Lifespan = config.get("Ghost of Grave Robber", "grave robber ghost minion lifespan", 60, "Summoned Vex lifespan [1-10000]", 1, 10000).getInt(60);
+        Grave_Robber_Ghost_Minion_Lifespan = config.get("Ghost of Grave Robber", "grave robber ghost minion lifespan", 120, "Summoned Vex lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Wraith = config.get("Revenant", "revenant spawn rate", 20, "Set the spawn rate of Revenant [0-10000]", 0, 10000).getInt(20);
         Wraith_Health = config.get("Revenant", "revenant health", 25.0D, "Maximum Revenant health [1-1000]", 1, 1000).getDouble(25.0D);
@@ -608,12 +608,12 @@ public class Modconfig {
         pSpawnRate_Ghost_Swarmer = config.get("Ghost Swarmer", "ghost swarmer spawn rate", 10, "Set the spawn rate of Ghost Swarmer [0-100]", 0, 100).getInt(0);
         Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 12.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(12.0D);
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
-        Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 60, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(60);
+        Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 120, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(120);
         Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghots Swarmers spawn underground").getBoolean(false);
 
         Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 14.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(14.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);
-        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 60, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(60);
+        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 120, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Enigmoth = config.get("Enigmoth", "enigmoth spawn rate", 1, "Set the spawn rate of Enigmoth [0-10000]", 0, 10000).getInt(1);
         Enigmoth_Health = config.get("Enigmoth", "enigmoth health", 60.0D, "Maximum Enigmoth health [1-1000]", 1, 1000).getDouble(60.0D);
@@ -801,7 +801,7 @@ public class Modconfig {
         Enchantment_Anvil_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable anvil enchantment", true, "Should certain items apply enchantments on the anvil (e.g. Poisonous Spore applies the Poisonous II enchant on swords). [false/true]").getBoolean(true);
         Soulforged_Anvil_Recipes = config.get(Configuration.CATEGORY_GENERAL, "enable soulforged anvil recipes", true, "Should soulforged armor/tools be created when combining a soulforged heart with any molten armor piece/tool on the anvil (e.g. Molten Warhammer + Soulforged Heart = Soulforged Warhammer). [false/true]").getBoolean(true);
 
-        SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
+        SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 30, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(30);
         ScarabWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "scarab scepter cooldown", 60, "Ability cooldown of Scarab Scepter [1-10000]", 1, 10000).getInt(60);
         Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
 

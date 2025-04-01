@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SS",
+    " BS",
+    "B  "
+  ],
+  "key": {
+    "S": {
+      "item": "mod_lavacow:hatred_shard"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "bone"
+    }
+  },
+  "result": {
+    "item": "mod_lavacow:undertaker_shovel"
+  }
+}
