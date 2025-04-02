@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SE",
+    " BS",
+    "B  "
+  ],
+  "key": {
+    "E": {
+      "item": "mod_lavacow:emblem_of_king"
+    },
+    "S": {
+      "item": "mod_lavacow:hatred_shard"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "bone"
+    }
+  },
+  "result": {
+    "item": "mod_lavacow:forsaken_staff"
+  }
+}

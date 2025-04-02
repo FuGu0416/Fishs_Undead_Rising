@@ -8,7 +8,7 @@
   "key": {
     "#": {
       "type": "forge:ore_dict",
-      "ore": "blockGlass"
+      "ore": "dustPrismarine"
     },
     "H": {
       "item": "mod_lavacow:zombiepiranha_item"
@@ -18,12 +18,11 @@
       "ore": "dyeGray"
     },
     "D": {
-      "item": "mod_lavacow:war",
-      "data": 32767
+      "item": "minecraft:dispenser"
     },
     "/": {
       "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "ore": "gemPrismarine"
     }
   },
   "result": {

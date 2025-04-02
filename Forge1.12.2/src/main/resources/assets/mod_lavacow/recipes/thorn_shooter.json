@@ -14,8 +14,7 @@
       "ore": "blockCactus"
     },
     "D": {
-      "item": "mod_lavacow:war",
-      "data": 32767
+      "item": "minecraft:dispenser"
     }
   },
   "result": {
