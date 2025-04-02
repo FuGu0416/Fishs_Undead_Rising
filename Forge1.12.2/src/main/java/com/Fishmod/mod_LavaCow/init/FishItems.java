@@ -374,6 +374,10 @@ public class FishItems {
     public static final SoundEvent ENTITY_ENIGMOTH_FLYING = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.flying")).setRegistryName("entity_enigmoth_flying");
     public static final SoundEvent ENTITY_ENIGMOTH_SCALES = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.enigmoth.scales")).setRegistryName("entity_enigmoth_scales");
 
+    public static final SoundEvent ENTITY_GHOUL_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghoul.ambient")).setRegistryName("entity_ghoul_ambient");
+    public static final SoundEvent ENTITY_GHOUL_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghoul.hurt")).setRegistryName("entity_ghoul_hurt");
+    public static final SoundEvent ENTITY_GHOUL_DEATH = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.ghoul.death")).setRegistryName("entity_ghoul_death");
+
     public static final SoundEvent RANDOM_DEATH_COIL_SHOOT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.death_coil_shoot")).setRegistryName("random_death_coil_shoot");
     public static final SoundEvent RANDOM_FRUIT_PLANT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.fruit_plant")).setRegistryName("random_fruit_plant");
     public static final SoundEvent RANDOM_HOLY_GRENADE = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "random.holy_grenade")).setRegistryName("random_holy_grenade");

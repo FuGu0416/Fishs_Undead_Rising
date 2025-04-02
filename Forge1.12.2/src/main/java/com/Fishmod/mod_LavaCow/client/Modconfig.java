@@ -267,6 +267,11 @@ public class Modconfig {
     public static boolean Enigmoth_Larva_Middle_End_Island;
     public static boolean Enigmoth_Larva_Pickup;
 
+    public static int pSpawnRate_Ghoul;
+    public static double Ghoul_Health;
+    public static double Ghoul_Attack;
+    public static double Ghoul_Target_Health_Threshold;
+
     public static boolean pFoglet_SpawnAlly;
     public static boolean MoltenHammer_PVP;
     public static int Cocoon_Lifespan;
@@ -344,7 +349,7 @@ public class Modconfig {
 
     public final String[] usedCategories = {Configuration.CATEGORY_GENERAL, "Mod Integration", "Mod Integration Toggles", "Amber Lord", "Amber Scarab", "Avaton", "Banshee", "Cactoid", "Cactyrant", "Enigmoth", "Enigmoth Caterpillar", "Foglet", "Slothoman",
             "Imp", "Forsaken", "Frigid", "Ghost Ray", "Ghost Swarmer", "Ithaqua", "Lil' Sludge", "Mimicrab", "Moogma", "Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Warmander",
-            "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", "Vespa", "Weta", "Sea Hag", "Grave Robber", "Ghost of Grave Robber", "Revenant", "Shroom"};
+            "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", "Vespa", "Weta", "Sea Hag", "Grave Robber", "Ghost of Grave Robber", "Revenant", "Ghoul", "Shroom"};
 
     public void loadConfig(FMLPreInitializationEvent event) {
         File configFile = new File(Loader.instance().getConfigDir(), "Fishs_Undead_Rising.cfg");
@@ -619,7 +624,7 @@ public class Modconfig {
         Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 12.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(12.0D);
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
         Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 120, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(120);
-        Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghots Swarmers spawn underground").getBoolean(false);
+        Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghost Swarmers spawn underground").getBoolean(false);
 
         Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 14.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(14.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);
@@ -642,6 +647,11 @@ public class Modconfig {
         Enigmoth_Larva_Ability_Cooldown = config.get("Enigmoth Caterpillar", "enigmoth caterpillar spell cooldown", 6, "Set the cooldown of vanishing [0-100]", 0, 100).getInt(6);
         Enigmoth_Larva_Middle_End_Island = config.get("Enigmoth Caterpillar", "enigmoth caterpillar middle end island spawn", false, "Should Enigmoth Caterpillars spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
         Enigmoth_Larva_Pickup = config.get("Enigmoth Caterpillar", "enigmoth caterpillar pickup", false, "You can pick up Enigmoth Caterpillars by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(false);
+
+        pSpawnRate_Ghoul = config.get("Ghoul", "ghoul spawn rate", 20, "Set the spawn rate of Ghoul [0-10000]", 0, 10000).getInt(20);
+        Ghoul_Health = config.get("Ghoul", "ghoul health", 20.0D, "Maximum Ghoul health [1-1000]", 1, 1000).getDouble(20.0D);
+        Ghoul_Attack = config.get("Ghoul", "ghoul attack", 5.0D, "Ghoul strength [1-1000]", 1, 1000).getDouble(5.0D);
+        Ghoul_Target_Health_Threshold = config.get("Ghoul", "ghoul target health threshold", 50.0D, "Percentage of wounded health needed to be targeted by a Ghoul [0-100]", 0, 100).getDouble(50.0D);
 
         MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
         Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "Global Potion of Fission", false, "Allows the Potion of Fission to be used on any mob regardless of the list [false/true]").getBoolean(false);

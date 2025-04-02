@@ -279,6 +279,7 @@ entity.mod_lavacow.ghost_swarmer.name=Ghost Swarmer
 entity.mod_lavacow.amber_scarab.name=Amber Scarab
 entity.mod_lavacow.enigmoth.name=Enigmoth
 entity.mod_lavacow.enigmoth_larva.name=Enigmoth Caterpillar
+entity.mod_lavacow.ghoul.name=Ghoul
 
 entity.mod_lavacow.sludgejet.name=Sludge Jet
 entity.mod_lavacow.warsmallfireball.name=Fireball
@@ -436,6 +437,10 @@ entity_enigmoth_ambient=Enigmoth chirps
 entity_enigmoth_flap=Enigmoth flaps
 entity_enigmoth_death=Enigmoth dies
 entity_enigmoth_hurt=Enigmoth hurts
+
+entity_ghoul_ambient=Ghoul groans
+entity_ghoul_death=Ghoul dies
+entity_ghoul_hurt=Ghoul hurts
 
 random_death_coil_shoot=Death Coil fired
 random_piranha_shoot=Piranha fired
