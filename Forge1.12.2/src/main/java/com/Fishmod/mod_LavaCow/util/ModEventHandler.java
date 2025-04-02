@@ -15,6 +15,7 @@ import com.Fishmod.mod_LavaCow.entities.tameable.*;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.EntityGhoul;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
@@ -106,6 +107,7 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -1077,6 +1079,17 @@ public class ModEventHandler {
 
                     xpOrb.setDead();
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onELootingLevelEvent(LootingLevelEvent event) {
+        DamageSource Attacker = event.getDamageSource();
+
+        if (Attacker != null) {
+            if (Attacker.getTrueSource() instanceof EntityGhoul) {
+                event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().world.rand.nextInt(2)));
             }
         }
     }
