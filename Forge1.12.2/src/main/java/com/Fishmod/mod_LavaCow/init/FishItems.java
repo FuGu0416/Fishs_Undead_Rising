@@ -161,7 +161,6 @@ public class FishItems {
     public static final Item FAMINEARMOR_BOOTS = new ItemFamineArmor("faminearmor_boots", 2, EntityEquipmentSlot.FEET);
     public static final Item FOUL_BRISTLE = new ItemFishCustom("foul_bristle", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item CRABCAKE = new ItemFishCustomFood("crabcake", 8, 0.9F, true, 24, true).setPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 30 * 20, 0), 1.0F);
-    ;
     public static final Item ECTOPLASM = new ItemFishCustom("ectoplasm", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item GHOSTJELLY = new ItemNetherStew("ghostjelly", 9, 1.2F);
     public static final Item BANSHEE_VOCAL_CORD = new ItemRareLoot("banshee_vocal_cord", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
@@ -221,6 +220,7 @@ public class FishItems {
     public static final Item HOLY_WATER = new ItemFishCustom("holy_water", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item BASICBOMB = new ItemHolyGrenade("basicbomb");
     public static final Item FOUL_HIDE = new ItemFishCustom("foul_hide", null, mod_LavaCow.TAB_ITEMS, false);
+    public static final Item USHABTI = new ItemRareLoot("ushabti", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, false);
     public static final Item ANKH_WAND = new ItemFishCustomWeapon("ankh_wand", TOOL_SCEPTER_MUMMY, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item FUNGAL_ROD = new ItemFishCustomWeapon("fungal_rod", TOOL_SCEPTER_MYCOSIS, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item FROZEN_GRIP = new ItemFishCustomWeapon("frozen_grip", TOOL_SCEPTER_FRIGID, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);

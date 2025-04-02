@@ -22,7 +22,7 @@ public class FURJEIIntegration implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        // Only enable JEI support when anvil recipes are enabled for Soulforged items
+        // Only enable JEI support when anvil recipes are enabled for the specific items
         if (Modconfig.Soulforged_Anvil_Recipes) {
             registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.MOLTENAXE)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HEART)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_AXE)))), VanillaRecipeCategoryUid.ANVIL);
             registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.MOLTENHAMMER)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HEART)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HAMMER)))), VanillaRecipeCategoryUid.ANVIL);
@@ -31,6 +31,12 @@ public class FURJEIIntegration implements IModPlugin {
             registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.FELARMOR_CHESTPLATE)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HEART)), Collections.singletonList(new ItemStack(FishItems.SOULFORGEDARMOR_CHESTPLATE)))), VanillaRecipeCategoryUid.ANVIL);
             registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.FELARMOR_LEGGINGS)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HEART)), Collections.singletonList(new ItemStack(FishItems.SOULFORGEDARMOR_LEGGINGS)))), VanillaRecipeCategoryUid.ANVIL);
             registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.FELARMOR_BOOTS)), Collections.singletonList(new ItemStack(FishItems.SOULFORGED_HEART)), Collections.singletonList(new ItemStack(FishItems.SOULFORGEDARMOR_BOOTS)))), VanillaRecipeCategoryUid.ANVIL);
+        }
+
+        if (Modconfig.Undertaker_Shovel_Anvil_Recipes) {
+            registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.UNDERTAKER_SHOVEL)), Collections.singletonList(new ItemStack(FishItems.USHABTI)), Collections.singletonList(new ItemStack(FishItems.ANKH_WAND)))), VanillaRecipeCategoryUid.ANVIL);
+            registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.UNDERTAKER_SHOVEL)), Collections.singletonList(new ItemStack(FishItems.POISONSPORE)), Collections.singletonList(new ItemStack(FishItems.FUNGAL_ROD)))), VanillaRecipeCategoryUid.ANVIL);
+            registry.addRecipes(Collections.singletonList(new AnvilRecipeWrapper(Collections.singletonList(new ItemStack(FishItems.UNDERTAKER_SHOVEL)), Collections.singletonList(new ItemStack(FishItems.FROZENTHIGH)), Collections.singletonList(new ItemStack(FishItems.FROZEN_GRIP)))), VanillaRecipeCategoryUid.ANVIL);
         }
     }
 }

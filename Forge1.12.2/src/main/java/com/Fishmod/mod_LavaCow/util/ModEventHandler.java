@@ -216,8 +216,8 @@ public class ModEventHandler {
     }
 
     /**
-     * Custom anvil event, using for making items into enchantment for weapons and tools
-     * Example: Make glow shroom and parasite a good lure
+     * Custom anvil event, used for making items into enchantment for weapons and tools
+     * Example: Make glow shroom and raw parasite a good lure
      */
     @SubscribeEvent
     public void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -241,8 +241,8 @@ public class ModEventHandler {
             event.setOutput(event.getLeft().copy());
             event.getOutput().addEnchantment(Enchantments.LURE, ench_lvl);
             event.setMaterialCost(1);
-        } else if (ModEnchantments.POISONOUS.canApply(tool) && Modconfig.Enchantment_Enable && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.POISONSPORE && !currentEnchantments.containsKey(ModEnchantments.POISONOUS)) {
-            ench_lvl = 1;
+        } else if (ModEnchantments.POISONOUS.canApply(tool) && tool.getItem() != FishItems.UNDERTAKER_SHOVEL && Modconfig.Enchantment_Enable && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.POISONSPORE && !currentEnchantments.containsKey(ModEnchantments.POISONOUS)) {
+            ench_lvl = 2;
             event.setOutput(outputStack);
             event.setCost(4);
             event.setOutput(event.getLeft().copy());
@@ -313,6 +313,21 @@ public class ModEventHandler {
         } else if (tool.getItem() == FishItems.FELARMOR_BOOTS && Modconfig.Soulforged_Anvil_Recipes && ench.getItem() == FishItems.SOULFORGED_HEART) {
             event.setCost(4);
             event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_BOOTS).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.USHABTI) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.ANKH_WAND).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.POISONSPORE) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.FUNGAL_ROD).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.FROZENTHIGH) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.FROZEN_GRIP).copy());
             event.getOutput().setTagCompound(outputStack.getTagCompound());
             event.setMaterialCost(1);
         }
@@ -1216,8 +1231,8 @@ public class ModEventHandler {
     }
 
     /**
-     * Young Simba:Everything the light touches... But what about that dark greeny place?
-     * Mufasa:That's beyond our borders. You must never go there Simba.
+     * Young Simba: Everything the light touches... But what about that dark greeny place?
+     * Mufasa: That's beyond our borders. You must never go there Simba.
      */
       
     /*@SubscribeEvent
