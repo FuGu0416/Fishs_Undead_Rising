@@ -72,6 +72,9 @@ public class FishItems {
     public static ToolMaterial TOOL_FAMINE = EnumHelper.addToolMaterial("fur_tool_famine", 3, 1561, 8.0F, 3.0F, 10);
     public static ToolMaterial TOOL_FROZEN = EnumHelper.addToolMaterial("fur_tool_frozen", 0, 59, 2.0F, 0.0F, 15);
     public static ToolMaterial TOOL_MOLTEN = EnumHelper.addToolMaterial("fur_tool_molten", 4, 1872, 8.5F, 3.0F, 14);
+    public static ToolMaterial TOOL_SCEPTER_FRIGID = EnumHelper.addToolMaterial("fur_tool_scepter_frigid", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SCEPTER_MUMMY = EnumHelper.addToolMaterial("fur_tool_scepter_mummy", 0, 400, 12.0F, 0.0F, 18);
+    public static ToolMaterial TOOL_SCEPTER_MYCOSIS = EnumHelper.addToolMaterial("fur_tool_scepter_mycosis", 0, 400, 12.0F, 0.0F, 18);
     public static ToolMaterial TOOL_SCEPTER_SCARAB = EnumHelper.addToolMaterial("fur_tool_scepter_scarab", 0, 400, 12.0F, 0.0F, 18);
     public static ToolMaterial TOOL_SCEPTER_SLUDGE = EnumHelper.addToolMaterial("fur_tool_scepter_sludge", 0, 400, 12.0F, 0.0F, 18);
     public static ToolMaterial TOOL_SCEPTER_UNBURIED = EnumHelper.addToolMaterial("fur_tool_scepter_unburied", 0, 400, 12.0F, 0.0F, 18);
@@ -177,7 +180,7 @@ public class FishItems {
     public static final Item EMBLEM_OF_KING = new ItemRareLoot("emblem_of_king", mod_LavaCow.TAB_ITEMS, EnumRarity.UNCOMMON, false);
     public static final Item BEAST_CLAW = new ItemFishCustomWeapon("beast_claw", TOOL_FAMINE, 3.0F, -2.0F, FishItems.SCYTHE_CLAW, EnumRarity.EPIC);
     public static final Item CURSEWEAVE_CLOTH = new ItemFishCustom("curseweave_cloth", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", TOOL_SCEPTER_UNBURIED, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE).setMaxDamage(200);
+    public static final Item UNDERTAKER_SHOVEL = new ItemFishCustomWeapon("undertaker_shovel", TOOL_SCEPTER_UNBURIED, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.RARE);
     public static final Item SKELETONKING_MACE = new ItemFishCustomWeapon("skeletonking_mace", TOOL_SKELETON_KING, 12.0F, -3.2F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item IMP_HORN = new ItemFishCustom("imp_horn", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item CHITIN_HELMET = new ItemChitinArmor("chitinarmor_helmet", 2, EntityEquipmentSlot.HEAD);
@@ -208,7 +211,7 @@ public class FishItems {
     public static final Item SINISTER_WHETSTONE = new ItemSinisterWhetstone("sinister_whetstone");
     public static final Item ILLAGER_NOSE = new ItemIllagerNose("illager_nose", 4, EntityEquipmentSlot.HEAD).setCreativeTab(mod_LavaCow.TAB_ITEMS);
     public static final Item ANCIENT_AMBER = new ItemFishCustom("ancient_amber", null, mod_LavaCow.TAB_ITEMS, false);
-    public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER_SCARAB, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE).setMaxDamage(500);
+    public static final Item SCARAB_WAND = new ItemFishCustomWeapon("scarab_wand", TOOL_SCEPTER_SCARAB, -2.0F, -3.3F, FishItems.ANCIENT_AMBER, EnumRarity.RARE);
     public static final Item DISEASED_WHEAT = new ItemFishCustom("diseased_wheat", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item DISEASED_BREAD = new ItemFishCustomFood("diseased_bread", 7, 0.6F, false, 32, true).setRandPotionEffect(ItemFishCustomFood.Effect_diseasedbread).setAlwaysEdible();
     public static final Item PHEROMONE_GLAND = new ItemFishCustomFood("pheromone_gland", 1, 0.1F, false, 32, true);
@@ -218,6 +221,9 @@ public class FishItems {
     public static final Item HOLY_WATER = new ItemFishCustom("holy_water", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item BASICBOMB = new ItemHolyGrenade("basicbomb");
     public static final Item FOUL_HIDE = new ItemFishCustom("foul_hide", null, mod_LavaCow.TAB_ITEMS, false);
+    public static final Item ANKH_WAND = new ItemFishCustomWeapon("ankh_wand", TOOL_SCEPTER_MUMMY, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
+    public static final Item FUNGAL_ROD = new ItemFishCustomWeapon("fungal_rod", TOOL_SCEPTER_MYCOSIS, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
+    public static final Item FROZEN_GRIP = new ItemFishCustomWeapon("frozen_grip", TOOL_SCEPTER_FRIGID, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
 
     public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
     public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");

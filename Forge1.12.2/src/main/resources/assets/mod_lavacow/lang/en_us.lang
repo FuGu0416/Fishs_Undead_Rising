@@ -141,6 +141,9 @@ item.mod_lavacow.enigmoth_larva_item_cooked.name=Cooked Enigmoth Caterpillar
 item.mod_lavacow.holy_water.name=Holy Water
 item.mod_lavacow.basicbomb.name=Basic Grenade
 item.mod_lavacow.foul_hide.name=Foul Hide
+item.mod_lavacow.ankh_wand.name=Ankh Scepter
+item.mod_lavacow.fungal_rod.name=Fungal Rod
+item.mod_lavacow.frozen_grip.name=Frozen Grip
 
 # Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
@@ -534,6 +537,9 @@ tootip.mod_lavacow.pheromone_gland=Gives Pheromone Charm (0:30) and Nausea II (0
 tootip.mod_lavacow.charming_catalyst=Gives Pheromone Charm (0:45) when consumed, or used to tame and trigger the growth of certain larva.
 tootip.mod_lavacow.basicbomb=Causes an explosion at thrown target location. Fire away!
 tootip.mod_lavacow.crabcake=Gives Resistance (0:30) when eaten.
+tootip.mod_lavacow.ankh_wand=Right-click to summon an army of Mummies.
+tootip.mod_lavacow.fungal_rod=Right-click to summon an army of Mycoses.
+tootip.mod_lavacow.frozen_grip=Right-click to summon an army of Frigids.
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting.

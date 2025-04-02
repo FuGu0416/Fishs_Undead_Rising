@@ -53,10 +53,12 @@ public class Modconfig {
     public static int pSpawnRate_ZombieMushroom;
     public static double ZombieMushroom_Health;
     public static double ZombieMushroom_Attack;
+    public static int ZombieMushroom_Lifespan;
 
     public static int pSpawnRate_ZombieFrozen;
     public static double ZombieFrozen_Health;
     public static double ZombieFrozen_Attack;
+    public static int ZombieFrozen_Lifespan;
 
     public static int pSpawnRate_Salamander;
     public static double Salamander_Health;
@@ -198,6 +200,7 @@ public class Modconfig {
     public static int pSpawnRate_Mummy;
     public static double Mummy_Health;
     public static double Mummy_Attack;
+    public static int Mummy_Lifespan;
 
     public static int pSpawnRate_Cactyrant;
     public static int pSpawnRate_Cactyrant_Nether;
@@ -300,6 +303,9 @@ public class Modconfig {
     public static int SludgeWand_Cooldown;
     public static int ScarabWand_Cooldown;
     public static int Undertaker_Shovel_Cooldown;
+    public static int Ankh_Scepter_Cooldown;
+    public static int Fungal_Staff_Cooldown;
+    public static int Frozen_Grip_Cooldown;
     public static boolean Tinkers_Compat;
     public static boolean Tinkers_Armor_Compat;
     public static boolean Quark_Compat;
@@ -403,11 +409,13 @@ public class Modconfig {
         pSpawnRate_ZombieMushroom = config.get("Mycosis", "mycosis spawn rate", 40, "Set the spawn rate of Mycosis [0-10000]", 0, 10000).getInt(40);
         ZombieMushroom_Health = config.get("Mycosis", "mycosis health", 20.0D, "Maximum Mycosis health [1-1000]", 1, 1000).getDouble(20.0D);
         ZombieMushroom_Attack = config.get("Mycosis", "mycosis attack", 3.0D, "Mycosis strength [1-1000]", 1, 1000).getDouble(3.0D);
+        ZombieMushroom_Lifespan = config.get("Mycosis", "mycosis lifespan", 120, "Summoned Mycosis lifespan [1-10000]", 1, 10000).getInt(120);
         ZombieMushroom_DropSpore = config.get(Configuration.CATEGORY_GENERAL, "drop poisonous spore", 2, "Set the drop rate of Poisonous Spore [0-100]", 0, 100).getInt(2);
 
         pSpawnRate_ZombieFrozen = config.get("Frigid", "frigid spawn rate", 20, "Set the spawn rate of Frigid [0-10000]", 0, 10000).getInt(20);
         ZombieFrozen_Health = config.get("Frigid", "frigid health", 20.0D, "Maximum Frigid health [1-1000]", 1, 1000).getDouble(30.0D);
         ZombieFrozen_Attack = config.get("Frigid", "frigid attack", 3.0D, "Frigid strength [1-1000]", 1, 1000).getDouble(3.0D);
+        ZombieFrozen_Lifespan = config.get("Frigid", "frigid lifespan", 120, "Summoned Frigid lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Salamander = config.get("Warmander", "warmander spawn rate", 30, "Set the spawn rate of Warmander [0-10000]", 0, 10000).getInt(30);
         Salamander_Health = config.get("Warmander", "warmander health", 60.0D, "Maximum Warmander health [1-1000]", 1, 1000).getDouble(60.0D);
@@ -512,7 +520,7 @@ public class Modconfig {
         pSpawnRate_Unburied = config.get("Unburied", "unburied spawn rate", 20, "Set the spawn rate of Unburied [0-10000]", 0, 10000).getInt(20);
         Unburied_Health = config.get("Unburied", "unburied health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
         Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
-        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 120, "Summoned Unburied (and variants) lifespan [1-10000]", 1, 10000).getInt(120);
+        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 120, "Summoned Unburied lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
         pSpawnRate_GhostRay_End = config.get("Ghost Ray", "ghost ray end dimension spawn rate", 3, "Set the spawn rate of Ghost Ray in the End dimension [0-100]", 0, 100).getInt(3);
@@ -568,6 +576,7 @@ public class Modconfig {
         pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 20, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(20);
         Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
         Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
+        Mummy_Lifespan = config.get("Mummy", "mummy lifespan", 120, "Summoned Mummy lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 10, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(10);
         pSpawnRate_Cactyrant_Nether = config.get("Cactyrant", "cactyrant nether dimension spawn rate", 3, "Set the spawn rate of Cactyrant in the Nether dimension [0-10000]", 0, 10000).getInt(3);
@@ -804,6 +813,9 @@ public class Modconfig {
         SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 30, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(30);
         ScarabWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "scarab scepter cooldown", 60, "Ability cooldown of Scarab Scepter [1-10000]", 1, 10000).getInt(60);
         Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
+        Ankh_Scepter_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "ankh scepter cooldown", 60, "Ability cooldown of Ankh Scepter [1-10000]", 1, 10000).getInt(60);
+        Fungal_Staff_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "fungal staff cooldown", 60, "Ability cooldown of Fungal Staff [1-10000]", 1, 10000).getInt(60);
+        Frozen_Grip_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "frozen grip cooldown", 60, "Ability cooldown of Frozen Grip [1-10000]", 1, 10000).getInt(60);
 
         // Restart Required, loaded during init
         Tinkers_Compat = config.get("Mod Integration", "tinkers' construct integration", true, "Should new tool materials be added to Tinkers' Construct when installed? [false/true]").getBoolean(true);

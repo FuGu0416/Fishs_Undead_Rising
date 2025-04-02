@@ -77,7 +77,7 @@ public class EntityZombieMushroom extends EntitySummonedZombie implements IAggre
                     
                     if (!list.isEmpty()) {
                         for (Entity entity1 : list) {
-                            if (entity1 instanceof EntityLivingBase) {
+                            if (entity1 instanceof EntityLivingBase && !this.isOnSameTeam(entity1)) {
                                 float local_difficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
                                 ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.POISON, 2 * 20 * (int) local_difficulty, 0));
                             }
