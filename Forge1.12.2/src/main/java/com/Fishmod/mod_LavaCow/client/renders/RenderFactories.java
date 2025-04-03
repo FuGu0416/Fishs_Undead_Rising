@@ -26,7 +26,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class RenderFactories {
-
     public static void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityLavaCow.class, RenderFactoryEntityLavaCow.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieMushroom.class, RenderFactoryEntityZombieMushroom.INSTANCE);
@@ -88,6 +87,7 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityBomb.class, RenderFactoryEntityBasicBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityKingsWrath.class, RenderFactoryEntityKingsWrath.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhoul.class, RenderFactoryEntityGhoul.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityFishCustomArrow.class, RenderFactoryEntityFishCustomArrow.INSTANCE);
 
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
         FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
@@ -802,7 +802,7 @@ public class RenderFactories {
             return new RenderKingsWrath(manager, FishItems.EMBLEM_OF_KING);
         }
     }
-    
+
     public static class RenderFactoryEntityGhoul implements IRenderFactory<EntityGhoul> {
         public final static RenderFactoryEntityGhoul INSTANCE = new RenderFactoryEntityGhoul();
 
@@ -812,6 +812,18 @@ public class RenderFactories {
         @Override
         public RenderGhoul createRenderFor(RenderManager manager) {
             return new RenderGhoul(manager);
+        }
+    }
+
+    public static class RenderFactoryEntityFishCustomArrow implements IRenderFactory<EntityFishCustomArrow> {
+        public final static RenderFactoryEntityFishCustomArrow INSTANCE = new RenderFactoryEntityFishCustomArrow();
+
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityFishCustomArrow> createRenderFor(RenderManager manager) {
+            return new RenderFishCustomArrow(manager);
         }
     }
 }

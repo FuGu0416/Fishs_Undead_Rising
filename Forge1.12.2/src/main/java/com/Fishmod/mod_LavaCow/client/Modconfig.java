@@ -772,9 +772,9 @@ public class Modconfig {
 
         BeastClaw_Needs_Sneak = config.get(Configuration.CATEGORY_GENERAL, "beast claw needs sneak", false, "Does Beast Claw right click ability require player to be sneaking?. [false/true]").getBoolean(false);
 
-        BoneSword_Boss_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword boss damage", false, "Allow the Bone Sword to deal extra damage to bosses. [false/true]").getBoolean(false);
-        BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
-        BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bone sword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
+        BoneSword_Boss_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow boss damage", false, "Allow the Bone Sword/Fang Arrow to deal extra damage to bosses. [false/true]").getBoolean(false);
+        BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow bonus damage", 5, "Set the bonus damage of Bone Sword/Fang Arrow to X% [0-100]", 0, 100).getInt(5);
+        BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword/Fang Arrow [0-10000]", 0, 10000).getInt(10000);
 
         HaloNecklace_Damage = config.get(Configuration.CATEGORY_GENERAL, "halo necklace bonus damage", 10, "Set the bonus damage of Halo Necklace to X% [0-10000]", 0, 10000).getInt(10);
 

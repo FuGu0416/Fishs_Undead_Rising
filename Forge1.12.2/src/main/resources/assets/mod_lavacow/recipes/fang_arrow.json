@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T",
+    "S",
+    "F"
+  ],
+  "key": {
+    "T": {
+      "item": "mod_lavacow:sharptooth"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "F": {
+      "item": "mod_lavacow:feather_black"
+    }
+  },
+  "result": {
+    "item": "mod_lavacow:fang_arrow",
+    "count": 4
+  }
+}

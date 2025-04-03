@@ -505,6 +505,13 @@ public class ModEntities {
                     .name(mod_LavaCow.MODID + "." + "ghoul")
                     .tracker(64, 1, false)
                     .egg(0xA69087, 0xF7EDD9)
+                    .build(),
+
+            EntityEntryBuilder.create()
+                    .entity(EntityFishCustomArrow.class)
+                    .id(new ResourceLocation(mod_LavaCow.MODID, "fish_custom_arrow"), id++)
+                    .name(mod_LavaCow.MODID + "." + "fish_custom_arrow")
+                    .tracker(64, 1, true)
                     .build()
     );
 

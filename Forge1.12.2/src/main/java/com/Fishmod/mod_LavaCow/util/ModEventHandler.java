@@ -22,6 +22,7 @@ import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFishCustomArrow;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
@@ -755,9 +756,23 @@ public class ModEventHandler {
             Item heldItem = ((EntityLivingBase) Attacker).getHeldItemMainhand().getItem();
             if (heldItem.equals(FishItems.BONESWORD)) {
                 if (!event.getEntityLiving().isNonBoss() && !Modconfig.BoneSword_Boss_Damage) return;
-                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
+                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, Attacked.getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
             } else if (heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD)) {
                 event.setAmount(event.getAmount() + 2.0F);
+            }
+        }
+
+        Entity Projectile = source.getImmediateSource();
+        EntityFishCustomArrow arrow = new EntityFishCustomArrow(Attacker.getEntityWorld());
+
+        if (Projectile instanceof EntityFishCustomArrow) {
+        	// Ghoulish Arrow
+            if (arrow.getArrowType() == 0 && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float) Modconfig.Ghoul_Target_Health_Threshold / 100.0F))) {
+                event.setAmount(event.getAmount() + 4.0F);
+                // Fang Arrow
+            } else if (arrow.getArrowType() == 1) {
+                if (!event.getEntityLiving().isNonBoss() && !Modconfig.BoneSword_Boss_Damage) return;
+                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, Attacked.getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
             }
         }
     }
@@ -1089,7 +1104,18 @@ public class ModEventHandler {
 
         if (Attacker != null) {
             if (Attacker.getTrueSource() instanceof EntityGhoul) {
-                event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().world.rand.nextInt(2)));
+                event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().getEntityWorld().rand.nextInt(2)));
+            }
+
+            Entity Projectile = Attacker.getImmediateSource();
+
+            if (Projectile instanceof EntityFishCustomArrow && Attacker.getTrueSource() != null) {
+                EntityFishCustomArrow arrow = new EntityFishCustomArrow(Attacker.getTrueSource().getEntityWorld());
+
+                // Ghoulish Arrow
+                if (arrow.getArrowType() == 0) {
+                    event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().getEntityWorld().rand.nextInt(2)));
+                }
             }
         }
     }

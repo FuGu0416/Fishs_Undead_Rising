@@ -299,6 +299,7 @@ entity.mod_lavacow.sapjet.name=Locust Swarm
 entity.mod_lavacow.moth_scales.name=Enigmoth Scales
 entity.mod_lavacow.basicbomb.name=Basic Grenade
 entity.mod_lavacow.kings_wrath.name=King's Wrath
+entity.mod_lavacow.fish_custom_arrow.name=Undead Arrow
 
 ##########
 # Sounds #
