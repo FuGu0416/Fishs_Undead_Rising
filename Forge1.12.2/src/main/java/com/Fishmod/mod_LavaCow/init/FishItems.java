@@ -224,6 +224,7 @@ public class FishItems {
     public static final Item ANKH_WAND = new ItemFishCustomWeapon("ankh_wand", TOOL_SCEPTER_MUMMY, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item FUNGAL_ROD = new ItemFishCustomWeapon("fungal_rod", TOOL_SCEPTER_MYCOSIS, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
     public static final Item FROZEN_GRIP = new ItemFishCustomWeapon("frozen_grip", TOOL_SCEPTER_FRIGID, 2.0F, -3.0F, FishItems.HATRED_SHARD, EnumRarity.EPIC);
+    public static final Item GHOUL_CLAW = new ItemFishCustom("ghoul_claw", null, mod_LavaCow.TAB_ITEMS, false);
 
     public static final SoundEvent ENTITY_PARASITE_AMBIENT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.ambient")).setRegistryName("entity_parasite_ambient");
     public static final SoundEvent ENTITY_PARASITE_HURT = new SoundEvent(new ResourceLocation(mod_LavaCow.MODID, "entity.parasite.hurt")).setRegistryName("entity_parasite_hurt");

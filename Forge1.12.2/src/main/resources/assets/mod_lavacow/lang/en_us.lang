@@ -145,6 +145,9 @@ item.mod_lavacow.ushabti.name=Ushabti
 item.mod_lavacow.ankh_wand.name=Ankh Scepter
 item.mod_lavacow.fungal_rod.name=Fungal Rod
 item.mod_lavacow.frozen_grip.name=Frozen Grip
+item.mod_lavacow.ghoul_claw.name=Ghoul Claw
+item.mod_lavacow.ghoul_arrow.name=Ghoulish Arrow
+item.mod_lavacow.fang_arrow.name=Fang Arrow
 
 # Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
