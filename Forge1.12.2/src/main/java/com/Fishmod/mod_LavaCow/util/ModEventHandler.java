@@ -348,10 +348,31 @@ public class ModEventHandler {
      */
     @SubscribeEvent
     public static void addLoot(LootTableLoadEvent event) {
+        if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_FISH)) {
+            LootPool pool = event.getTable().getPool("main");
+
+            if (pool != null) {
+                addLoot(pool, FishItems.ZOMBIEPIRANHA_ITEM, 13);
+                addLoot(pool, FishItems.PIRANHA, 13);
+                addLoot(pool, FishItems.CHEIROLEPIS, 13);
+                addLoot(pool, FishItems.GHOST_SWARMER_ITEM, 6);
+                addLoot(pool, FishItems.MUMMIFIED_COD, 13);
+                addLoot(pool, FishItems.BONE_TROUT, 13);
+                addLoot(pool, FishItems.LAMPREY, 13);
+            }
+        }
+
         if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_JUNK)) {
             LootPool pool = event.getTable().getPool("main");
-            if (pool != null) for (Map.Entry<Item, Integer> entry : LootTableHandler.FISHABLE.entrySet())
-                addLoot(pool, entry.getKey(), entry.getValue());
+
+            if (pool != null) {
+                addLoot(pool, Modblocks.item_block_glowshroom, 5);
+                addLoot(pool, FishItems.HYPHAE, 5);
+                addLoot(pool, FishItems.FOUL_BRISTLE, 5);
+                addLoot(pool, FishItems.SHATTERED_ICE, 5);
+                addLoot(pool, FishItems.MIMIC_CLAW, 5);
+                addLoot(pool, FishItems.SHARPTOOTH, 10);
+            }
         }
 
         // Polar Bear
