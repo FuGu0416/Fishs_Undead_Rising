@@ -86,11 +86,16 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
+import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.conditions.KilledByPlayer;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.functions.LootingEnchantBonus;
+import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.BiomeDictionary;
@@ -190,13 +195,6 @@ public class ModEventHandler {
 
     @SubscribeEvent
     public void onEntityDrop(LivingDropsEvent event) {
-        /**
-         * Wolf's loot table seems broken, so this method is implemented instead. 
-         **/
-        if (event.getEntityLiving() instanceof EntityWolf && event.getEntityLiving().getRNG().nextInt(5) == 1) {
-            event.getEntityLiving().dropItem(FishItems.SHARPTOOTH, 1);
-        }
-
         /**
          * Add nose drop to Illagers. Due to their rarity, Witches also drop them.
          */
@@ -337,7 +335,7 @@ public class ModEventHandler {
     }
 
     /**
-     * Add custom loot to general fishing pool.
+     * Add custom loot to general fishing pool. Mainly for items that don't have a set quantity.
      * The list were setup in LootTableHandler.java
      */
     private static void addLoot(LootPool pool, Item item, int weight) {
@@ -345,8 +343,8 @@ public class ModEventHandler {
     }
 
     /**
-     * Apply custom loot to vanilla loot tables.
-     * Example: Custom items loot in jungle temple/polar bear
+     * Applies custom loot to vanilla loot tables.
+     * Example: Custom items loot in jungle temples or polar bears
      */
     @SubscribeEvent
     public static void addLoot(LootTableLoadEvent event) {
@@ -356,31 +354,88 @@ public class ModEventHandler {
                 addLoot(pool, entry.getKey(), entry.getValue());
         }
 
+        // Polar Bear
         if (event.getName().equals(LootTableList.ENTITIES_POLAR_BEAR)) {
-            LootPool pool = event.getTable().getPool("main");
-            if (pool != null) addLoot(pool, FishItems.SHARPTOOTH, 1);
-        }
+            LootPool pool = event.getTable().getPool("sharp_fang");
 
-        if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
-            LootPool pool = event.getTable().getPool("main");
+            // New pool and drop
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "sharp_fang");
+                event.getTable().addPool(pool);
+            }
+
             if (pool != null) {
-                addLoot(pool, FishItems.HYPHAE, 6);
-                addLoot(pool, FishItems.PIRANHA, 6);
-                addLoot(pool, FishItems.SHARPTOOTH, 6);
+                pool.addEntry(new LootEntryItem(FishItems.SHARPTOOTH, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.SHARPTOOTH.getTranslationKey()));
             }
         }
 
+        // Wolf
+        if (event.getName().equals(LootTableList.ENTITIES_WOLF)) {
+            LootPool pool = event.getTable().getPool("sharp_fang");
 
+            // New pool and drop
+            // Wolves have no loot pools, we must add a new one in order to get our drop to work
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "sharp_fang");
+                event.getTable().addPool(pool);
+            }
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(FishItems.SHARPTOOTH, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.SHARPTOOTH.getTranslationKey()));
+            }
+        }
+
+        // Husk
+        if (event.getName().equals(LootTableList.ENTITIES_HUSK)) {
+            LootPool pool = event.getTable().getPool("fabric");
+
+            // New pool and drop
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "fabric");
+                event.getTable().addPool(pool);
+            }
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(FishItems.CURSED_FABRIC, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.CURSED_FABRIC.getTranslationKey()));
+            }
+        }
+
+        // Desert Pyramid Structure
+        if (event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
+            LootPool pool = event.getTable().getPool("main");
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.CURSEWEAVE_CLOTH).getItem(), 20, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.CURSEWEAVE_CLOTH.getTranslationKey()));
+                addLoot(pool, FishItems.INTESTINE, 20);
+                addLoot(pool, FishItems.USHABTI, 5);
+            }
+        }
+
+        // Jungle Temple Structure
+        if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
+            LootPool pool = event.getTable().getPool("main");
+
+            if (pool != null) {
+                addLoot(pool, FishItems.HYPHAE, 6);
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.PIRANHA).getItem(), 6, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.PIRANHA.getTranslationKey()));
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.SHARPTOOTH).getItem(), 6, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.SHARPTOOTH.getTranslationKey()));
+                addLoot(pool, FishItems.POISONSPORE, 1);
+            }
+        }
+
+        // Igloo Structure
         if (event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
             LootPool pool = event.getTable().getPool("main");
+
             if (pool != null) {
                 addLoot(pool, FishItems.FROZENTHIGH, 1);
             }
-        }
-
-        if (event.getName().equals(LootTableList.ENTITIES_HUSK)) {
-            LootPool pool = event.getTable().getPool("main");
-            if (pool != null) addLoot(pool, FishItems.CURSED_FABRIC, 1);
         }
     }
 
@@ -766,7 +821,7 @@ public class ModEventHandler {
         EntityFishCustomArrow arrow = new EntityFishCustomArrow(Attacker.getEntityWorld());
 
         if (Projectile instanceof EntityFishCustomArrow) {
-        	// Ghoulish Arrow
+            // Ghoulish Arrow
             if (arrow.getArrowType() == 0 && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float) Modconfig.Ghoul_Target_Health_Threshold / 100.0F))) {
                 event.setAmount(event.getAmount() + 4.0F);
                 // Fang Arrow
