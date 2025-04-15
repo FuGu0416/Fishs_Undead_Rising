@@ -17,12 +17,10 @@ import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
-import slimeknights.tconstruct.tools.TinkerMaterials;
 
 import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
 
 import slimeknights.tconstruct.tools.TinkerTraits;
-//import slimeknights.tconstruct.tools.TinkerModifiers;
 
 public class TinkersCompat {
     private static final TinkersCompat INSTANCE = new TinkersCompat();
@@ -52,8 +50,7 @@ public class TinkersCompat {
 
     public static void preInit() {
         MinecraftForge.EVENT_BUS.register(INSTANCE);
-        TinkerMaterials.materials.add(MOLTEN_MEAT);
-        TinkerRegistry.integrate(MOLTEN_MEAT).preInit();
+
         MOLTEN_MEAT.addItem(FishItems.MOLTENBEEF, 1, Material.VALUE_Ingot);
         MOLTEN_MEAT.setRepresentativeItem(FishItems.MOLTENBEEF);
         MOLTEN_MEAT.setCraftable(true);
@@ -66,9 +63,8 @@ public class TinkersCompat {
         MOLTEN_MEAT.addTrait(TinkerTraits.autosmelt, HEAD);
         MOLTEN_MEAT.addTrait(TinkerTraits.superheat, HEAD);
         MOLTEN_MEAT.addTrait(TinkerTraits.superheat);
+        TinkerRegistry.integrate(MOLTEN_MEAT).preInit();
 
-        TinkerMaterials.materials.add(CHITIN);
-        TinkerRegistry.integrate(CHITIN).preInit();
         CHITIN.addItem(FishItems.CHITIN, 1, Material.VALUE_Ingot);
         CHITIN.setRepresentativeItem(FishItems.CHITIN);
         CHITIN.setCraftable(true);
@@ -80,9 +76,8 @@ public class TinkersCompat {
                 new BowMaterialStats(0.95F, 0.6F, 0.0F));
         CHITIN.addTrait(TinkerTraits.sharp, HEAD);
         CHITIN.addTrait(TinkerTraits.fractured);
+        TinkerRegistry.integrate(CHITIN).preInit();
 
-        TinkerMaterials.materials.add(VESPA_CARAPACE);
-        TinkerRegistry.integrate(VESPA_CARAPACE).preInit();
         VESPA_CARAPACE.addItem(FishItems.VESPA_CARAPACE, 1, Material.VALUE_Ingot);
         VESPA_CARAPACE.addItem(Modblocks.item_block_vespa_carapace, 1, Material.VALUE_Block);
         VESPA_CARAPACE.setRepresentativeItem(FishItems.VESPA_CARAPACE);
@@ -96,9 +91,8 @@ public class TinkersCompat {
         VESPA_CARAPACE.addTrait(BROODMOTHER, HEAD);
         VESPA_CARAPACE.addTrait(TinkerTraits.poisonous, HEAD);
         VESPA_CARAPACE.addTrait(TinkerTraits.poisonous);
+        TinkerRegistry.integrate(VESPA_CARAPACE).preInit();
 
-        TinkerMaterials.materials.add(SCYTHE_CLAW);
-        TinkerRegistry.integrate(SCYTHE_CLAW).preInit();
         SCYTHE_CLAW.addItem(FishItems.SCYTHE_CLAW, 1, Material.VALUE_Shard);
         SCYTHE_CLAW.addItem(Modblocks.item_block_scythe_claw, 1, Material.VALUE_Block);
         SCYTHE_CLAW.setRepresentativeItem(FishItems.SCYTHE_CLAW);
@@ -111,9 +105,8 @@ public class TinkersCompat {
                 new BowMaterialStats(1.05F, 1.2F, 0.0F));
         SCYTHE_CLAW.addTrait(FAMINE, HEAD);
         SCYTHE_CLAW.addTrait(TinkerTraits.coldblooded);
+        TinkerRegistry.integrate(SCYTHE_CLAW).preInit();
 
-        TinkerMaterials.materials.add(ECTOPLASM);
-        TinkerRegistry.integrate(ECTOPLASM).preInit();
         ECTOPLASM.addItem(FishItems.ECTOPLASM_INGOT, 1, Material.VALUE_Ingot);
         ECTOPLASM.addItem(Modblocks.item_block_ectoplasm, 1, Material.VALUE_Block);
         ECTOPLASM.setRepresentativeItem(FishItems.ECTOPLASM_INGOT);
@@ -125,9 +118,8 @@ public class TinkersCompat {
                 new ExtraMaterialStats(220),
                 new BowMaterialStats(3.0F, 1.0F, -1.0F));
         ECTOPLASM.addTrait(UNHOLYTOUCH);
+        TinkerRegistry.integrate(ECTOPLASM).preInit();
 
-        TinkerMaterials.materials.add(HOLY_SLUDGE);
-        TinkerRegistry.integrate(HOLY_SLUDGE).preInit();
         HOLY_SLUDGE.addItem(FishItems.HOLY_SLUDGE, 1, Material.VALUE_Ingot);
         HOLY_SLUDGE.setRepresentativeItem(FishItems.HOLY_SLUDGE);
         HOLY_SLUDGE.setCraftable(true);
@@ -138,9 +130,8 @@ public class TinkersCompat {
                 new ExtraMaterialStats(175),
                 new BowMaterialStats(1.0F, 1.0F, 1.0F));
         HOLY_SLUDGE.addTrait(TinkerTraits.holy);
+        TinkerRegistry.integrate(HOLY_SLUDGE).preInit();
 
-        TinkerMaterials.materials.add(ANCIENT_AMBER);
-        TinkerRegistry.integrate(ANCIENT_AMBER).preInit();
         ANCIENT_AMBER.addItem(FishItems.ANCIENT_AMBER, 1, Material.VALUE_Ingot);
         ANCIENT_AMBER.setRepresentativeItem(FishItems.ANCIENT_AMBER);
         ANCIENT_AMBER.setCraftable(true);
@@ -153,28 +144,25 @@ public class TinkersCompat {
         ANCIENT_AMBER.addTrait(AMBER_PHARAOH, HEAD);
         ANCIENT_AMBER.addTrait(TinkerTraits.aridiculous, HEAD);
         ANCIENT_AMBER.addTrait(TinkerTraits.aridiculous);
+        TinkerRegistry.integrate(ANCIENT_AMBER).preInit();
 
         /* Bow Materials */
-        TinkerMaterials.materials.add(CURSEWEAVE_FABRIC);
-        TinkerRegistry.integrate(CURSEWEAVE_FABRIC).preInit();
         CURSEWEAVE_FABRIC.addItem(FishItems.CURSED_FABRIC, 1, Material.VALUE_Ingot);
         CURSEWEAVE_FABRIC.setRepresentativeItem(FishItems.CURSED_FABRIC);
         CURSEWEAVE_FABRIC.setCraftable(true);
         CURSEWEAVE_FABRIC.setCastable(false);
         TinkerRegistry.addMaterialStats(CURSEWEAVE_FABRIC,
                 new BowStringMaterialStats(1.3F));
+        TinkerRegistry.integrate(CURSEWEAVE_FABRIC).preInit();
 
-        TinkerMaterials.materials.add(HYPHAE);
-        TinkerRegistry.integrate(HYPHAE).preInit();
         HYPHAE.addItem(FishItems.HYPHAE, 1, Material.VALUE_Ingot);
         HYPHAE.setRepresentativeItem(FishItems.HYPHAE);
         HYPHAE.setCraftable(true);
         HYPHAE.setCastable(false);
         TinkerRegistry.addMaterialStats(HYPHAE,
                 new BowStringMaterialStats(2.0F));
+        TinkerRegistry.integrate(HYPHAE).preInit();
 
-        TinkerMaterials.materials.add(MOSSY_STICK);
-        TinkerRegistry.integrate(MOSSY_STICK).preInit();
         MOSSY_STICK.addItem(FishItems.MOSSY_STICK, 1, Material.VALUE_Ingot);
         MOSSY_STICK.setRepresentativeItem(FishItems.MOSSY_STICK);
         MOSSY_STICK.setCraftable(true);
@@ -182,9 +170,8 @@ public class TinkersCompat {
         TinkerRegistry.addMaterialStats(MOSSY_STICK,
                 new ArrowShaftMaterialStats(1.4F, 10));
         MOSSY_STICK.addTrait(TinkerTraits.ecological);
+        TinkerRegistry.integrate(MOSSY_STICK).preInit();
 
-        TinkerMaterials.materials.add(CACTUS_THORN);
-        TinkerRegistry.integrate(CACTUS_THORN).preInit();
         CACTUS_THORN.addItem(FishItems.CACTUS_THORN, 1, Material.VALUE_Ingot);
         CACTUS_THORN.setRepresentativeItem(FishItems.CACTUS_THORN);
         CACTUS_THORN.setCraftable(true);
@@ -192,9 +179,8 @@ public class TinkersCompat {
         TinkerRegistry.addMaterialStats(CACTUS_THORN,
                 new ArrowShaftMaterialStats(0.75F, 10));
         CACTUS_THORN.addTrait(TinkerTraits.splitting);
+        TinkerRegistry.integrate(CACTUS_THORN).preInit();
 
-        TinkerMaterials.materials.add(POISON_STINGER);
-        TinkerRegistry.integrate(POISON_STINGER).preInit();
         POISON_STINGER.addItem(FishItems.POISONSTINGER, 1, Material.VALUE_Ingot);
         POISON_STINGER.setRepresentativeItem(FishItems.POISONSTINGER);
         POISON_STINGER.setCraftable(true);
@@ -203,15 +189,15 @@ public class TinkersCompat {
                 new ArrowShaftMaterialStats(1.5F, 40));
         POISON_STINGER.addTrait(TinkerTraits.splitting);
         POISON_STINGER.addTrait(TinkerTraits.poisonous);
+        TinkerRegistry.integrate(POISON_STINGER).preInit();
 
-        TinkerMaterials.materials.add(BLACK_FEATHER);
-        TinkerRegistry.integrate(BLACK_FEATHER).preInit();
         BLACK_FEATHER.addItem(FishItems.FEATHER_BLACK, 1, Material.VALUE_Ingot);
         BLACK_FEATHER.setRepresentativeItem(FishItems.FEATHER_BLACK);
         BLACK_FEATHER.setCraftable(true);
         BLACK_FEATHER.setCastable(false);
         TinkerRegistry.addMaterialStats(BLACK_FEATHER,
                 new FletchingMaterialStats(1.0F, 1.2F));
+        TinkerRegistry.integrate(BLACK_FEATHER).preInit();
     }
 
     protected static boolean isSmelteryLoaded() {
