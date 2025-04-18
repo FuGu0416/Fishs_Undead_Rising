@@ -1,9 +1,12 @@
 package com.Fishmod.mod_LavaCow.mobeffect;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
 public class MobEffectFragile extends MobEffectMod {
+    // TODO: Use custom damage type (for death message)
+    public static final DamageSource FRAGILE_DAMAGE = new DamageSource("wither").setDamageIsAbsolute().setDamageBypassesArmor();
 
 	public MobEffectFragile() {
 		super("fragile", true, 53, 39, 42);
@@ -17,11 +20,14 @@ public class MobEffectFragile extends MobEffectMod {
     
     @Override
     public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
-        if (entityLivingBaseIn.isNonBoss() && (entityLivingBaseIn.getHealth() / entityLivingBaseIn.getMaxHealth()) < (0.05f * (amplifier + 1))) {
-        	entityLivingBaseIn.attackEntityFrom(DamageSource.WITHER.setDamageIsAbsolute().setDamageBypassesArmor(), entityLivingBaseIn.getMaxHealth());
-        	
-        	// Safety measure in case the above doesn't function correctly
-        	entityLivingBaseIn.setHealth(0.0F);
+        float maxHealth = entityLivingBaseIn.getMaxHealth();
+        if (entityLivingBaseIn.isNonBoss() && (entityLivingBaseIn.getHealth() / maxHealth) < (0.05f * (amplifier + 1))) {
+            if (entityLivingBaseIn instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entityLivingBaseIn;
+                if (player.isSpectator() || player.isCreative())
+                    return;
+            }
+        	entityLivingBaseIn.attackEntityFrom(FRAGILE_DAMAGE, maxHealth);
         }
     }
 
