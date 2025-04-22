@@ -110,15 +110,25 @@ public class AddRecipes {
     public static void addTrading() {
         // Add trading recipes
         /** "minecraft:farmer" "minecraft:librarian" "minecraft:priest" "minecraft:smith" "minecraft:butcher" "minecraft:nitwit"*/
+        VillagerRegistry.VillagerProfession butcher = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:butcher"));
         VillagerRegistry.VillagerProfession cleric = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:priest"));
         VillagerRegistry.VillagerProfession farmer = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:farmer"));
-        VillagerRegistry.VillagerProfession butcher = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:butcher"));
-        cleric.getCareer(1).addTrade(1, new TradeHandler.TradeClericLv1());
-        cleric.getCareer(1).addTrade(3, new TradeHandler.TradeClericLv3());
-        cleric.getCareer(1).addTrade(4, new TradeHandler.TradeClericLv4());
-        //farmer.getCareer(1).addTrade(1,new TradeHandler.TradeFishermanLv1());
-        farmer.getCareer(1).addTrade(2, new TradeHandler.TradeFishermanLv2());
+        VillagerRegistry.VillagerProfession smith = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:smith"));
         butcher.getCareer(0).addTrade(2, new TradeHandler.TradeButcherLv2());
+        butcher.getCareer(1).addTrade(1, new TradeHandler.LeatherworkerLv1());
+        butcher.getCareer(1).addTrade(2, new TradeHandler.LeatherworkerLv2());
+        butcher.getCareer(1).addTrade(3, new TradeHandler.LeatherworkerLv3());
+        cleric.getCareer(0).addTrade(1, new TradeHandler.TradeClericLv1());
+        cleric.getCareer(0).addTrade(3, new TradeHandler.TradeClericLv3());
+        cleric.getCareer(0).addTrade(4, new TradeHandler.TradeClericLv4());
+        farmer.getCareer(0).addTrade(2, new TradeHandler.TradeFarmerLv2());
+        farmer.getCareer(0).addTrade(3, new TradeHandler.TradeFarmerLv3());
+        farmer.getCareer(1).addTrade(1, new TradeHandler.TradeFishermanLv1());
+        farmer.getCareer(3).addTrade(1, new TradeHandler.TradeFletcherLv1());
+        farmer.getCareer(3).addTrade(2, new TradeHandler.TradeFletcherLv2());
+        smith.getCareer(0).addTrade(4, new TradeHandler.TradeArmorerLv4());
+        smith.getCareer(1).addTrade(3, new TradeHandler.TradeWeaponSmithLv3());
+        smith.getCareer(2).addTrade(3, new TradeHandler.TradeToolSmithLv3());
     }
 
     public static void addOreDictionary() {
@@ -131,6 +141,8 @@ public class AddRecipes {
         OreDictionary.registerOre("listAllfishcooked", FishItems.PIRANHA_COOKED);
         OreDictionary.registerOre("listAllfishraw", FishItems.CHEIROLEPIS);
         OreDictionary.registerOre("listAllfishcooked", FishItems.CHEIROLEPIS_COOKED);
+        OreDictionary.registerOre("listAllfishraw", FishItems.LAMPREY);
+        OreDictionary.registerOre("listAllfishcooked", FishItems.LAMPREY_COOKED);
         OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_glowshroom);
         OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_bloodtooth_shroom);
         OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_cordy_shroom);
