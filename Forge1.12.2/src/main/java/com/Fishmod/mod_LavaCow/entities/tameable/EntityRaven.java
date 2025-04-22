@@ -15,6 +15,7 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
@@ -370,7 +371,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
         BlockPos blockpos = new BlockPos(i, j, k);
         Block block = this.world.getBlockState(blockpos.down()).getBlock();
         return SpawnUtil.isAllowedDimension(this.dimension) 
-        		&& block instanceof BlockLeaves || block == Blocks.GRASS || block instanceof BlockLog || block == Blocks.AIR 
+        		&& (block instanceof BlockLeaves || block instanceof BlockGrass || block instanceof BlockLog || block == Blocks.AIR)
         		&& this.world.getLight(blockpos) > 8 
         		&& this.getBlockPathWeight(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) >= 0.0F 
             	&& this.world.getBlockState((new BlockPos(this)).down()).canEntitySpawn(this);
