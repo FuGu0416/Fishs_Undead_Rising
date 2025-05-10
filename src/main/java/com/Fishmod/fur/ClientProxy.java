@@ -2,6 +2,7 @@ package com.Fishmod.fur;
 
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
+import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -17,6 +18,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.FOGLET.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.ISNACHI.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.IMP.get(), FogletRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SEAHAG.get(), SeaHagRenderer::new);
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));
@@ -50,7 +52,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTYRANT, manager -> new CactyrantRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAHAG, manager -> new SeaHagRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WISP, manager -> new WispRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  

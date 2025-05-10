@@ -37,6 +37,7 @@ public class FURItemRegistry {
         spawnEgg("foglet", FUREntityRegistry.FOGLET, 0xCBD3B9, 0x41352F);
         spawnEgg("isnachi", FUREntityRegistry.ISNACHI, 0xB4A27E, 0x190508);
         spawnEgg("imp", FUREntityRegistry.IMP, 0xD03336, 0xFFD6A0);
+        spawnEgg("seahag", FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00);
     }
     
     private static void spawnEgg(String entityName, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2) {
