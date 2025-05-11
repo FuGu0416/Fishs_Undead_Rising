@@ -23,7 +23,8 @@ public class DataGenerators {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-		gen.addProvider(event.includeServer(), new ModBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		gen.addProvider(event.includeServer(), new FURStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new ModDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
 	}
 }

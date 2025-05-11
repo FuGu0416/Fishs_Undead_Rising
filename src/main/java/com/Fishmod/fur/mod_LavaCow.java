@@ -7,9 +7,12 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
+import com.Fishmod.fur.worldgen.FURStructureModifier;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +21,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -58,6 +63,12 @@ public class mod_LavaCow {
         FURSoundRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
+                
+        final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, mod_LavaCow.MODID);
+        structureModifiers.register(eventBus);
+        structureModifiers.register("structure_spawns", FURStructureModifier.Modifier::makeCodec);
+        eventBus.addListener(FURStructureModifier::generateStructureModifiers);                    
+        
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(
         		ExtensionPoint.CONFIGGUIFACTORY,

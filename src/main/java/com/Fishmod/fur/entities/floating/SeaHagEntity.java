@@ -7,7 +7,6 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -38,7 +36,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -102,14 +99,9 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     }
     
 	public static boolean checkSeaHagSpawnRules(EntityType<SeaHagEntity> p_223332_0_, ServerLevelAccessor p_223332_1_, MobSpawnType p_223332_2_, BlockPos p_223332_3_, RandomSource p_223332_4_) {
-		Holder<Biome> holder = p_223332_1_.getBiome(p_223332_3_);
         boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == MobSpawnType.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).is(FluidTags.WATER));
 
-        if (!holder.is(BiomeTags.IS_RIVER)) {
-        	return p_223332_4_.nextInt(40) == 0 && flag;
-        } else {
-        	return p_223332_4_.nextInt(15) == 0 && flag;
-        }
+    	return p_223332_4_.nextInt(5) == 0 && flag;
 	}
     
     @Override

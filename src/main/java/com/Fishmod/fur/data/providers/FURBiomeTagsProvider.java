@@ -14,13 +14,13 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class ModBiomeTagsProvider extends BiomeTagsProvider {
-    public ModBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+public class FURBiomeTagsProvider extends BiomeTagsProvider {
+    public FURBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
     }
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-        this.tag(ModBiomeTags.HAS_FOGLET).addTag(Tags.Biomes.IS_SWAMP);
-        this.tag(ModBiomeTags.HAS_ISNACHI).addTag(Tags.Biomes.IS_LUSH).add(Biomes.JUNGLE).add(Biomes.SPARSE_JUNGLE);
+        this.tag(FURTags.HAS_FOGLET).addTag(Tags.Biomes.IS_SWAMP);
+        this.tag(FURTags.HAS_ISNACHI).addTag(Tags.Biomes.IS_LUSH).add(Biomes.JUNGLE).add(Biomes.SPARSE_JUNGLE);
     }
 }
