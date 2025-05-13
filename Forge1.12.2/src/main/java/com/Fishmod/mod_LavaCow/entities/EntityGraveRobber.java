@@ -145,6 +145,11 @@ public class EntityGraveRobber extends AbstractIllager {
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData ientitylivingdata = super.onInitialSpawn(difficulty, livingdata);
+        
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Grave_Robber_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Grave_Robber_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
         this.setEquipmentBasedOnDifficulty(difficulty);
         this.setEnchantmentBasedOnDifficulty(difficulty);

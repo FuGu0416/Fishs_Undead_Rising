@@ -109,7 +109,11 @@ public class EntityPtera extends EntityFlyingMob {
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
-	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SAVANNA))
+       this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Ptera_Health);
+       this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Ptera_Attack);
+       this.setHealth(this.getMaxHealth());
+       
+	   if (BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SAVANNA))
 		   this.setSkin(2);
 	   else if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SWAMP))
 		   this.setSkin(3);

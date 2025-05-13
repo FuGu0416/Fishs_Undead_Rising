@@ -110,6 +110,10 @@ public class EntityParasite extends EntityFishTameable {
     @Override
     @Nullable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Parasite_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Parasite_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         return livingdata;
     }
 

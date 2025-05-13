@@ -228,8 +228,11 @@ public class EntityZombiePiranha extends EntityAquaMob {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
-    {
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.ZombiePiranha_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.ZombiePiranha_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.SWAMP) && !this.getIsAmmo()) {
      	   this.setSkin(2);
         }

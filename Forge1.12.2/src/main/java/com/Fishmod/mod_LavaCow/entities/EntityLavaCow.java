@@ -95,6 +95,9 @@ public class EntityLavaCow extends EntityCow {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Lavacow_Health);
+        this.setHealth(this.getMaxHealth());
+        
         // Variants - Classic (0) and Modern (1)
         if (this.world.rand.nextDouble() <= Modconfig.Lavacow_Classic_Texture_Chance) {
             this.setSkin(0);

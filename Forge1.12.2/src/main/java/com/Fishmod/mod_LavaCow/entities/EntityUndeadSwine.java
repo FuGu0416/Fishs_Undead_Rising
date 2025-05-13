@@ -26,6 +26,8 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -109,7 +111,7 @@ public class EntityUndeadSwine extends EntityMob {
         super.applyEntityCollision(entityIn);
 
         if (entityIn instanceof EntityLivingBase) {
-            if (this.entityAICharge != null && this.entityAICharge.isCharging() && !((EntityLivingBase) entityIn).isOnSameTeam(this)) {
+            if (this.entityAICharge != null && this.entityAICharge.isCharging() && !((EntityLivingBase) entityIn).isOnSameTeam(this) && entityIn.isRidingOrBeingRiddenBy(this)) {
                 this.attackEntityAsMob(entityIn);
 
                 ((EntityLivingBase) entityIn).knockBack(entityIn, 2.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180.0F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180.0F))));
@@ -198,8 +200,12 @@ public class EntityUndeadSwine extends EntityMob {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
 
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.UndeadSwine_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.UndeadSwine_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         // Rider gets damaged during charge attack
-        /*if (this.world.rand.nextInt(100) == 0) {
+        if (this.world.rand.nextInt(100) == 0) {
             EntitySkeleton entityRider = new EntitySkeleton(this.world);
             entityRider.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityRider.onInitialSpawn(difficulty, (IEntityLivingData) null);
@@ -211,7 +217,7 @@ public class EntityUndeadSwine extends EntityMob {
             entityRider.onInitialSpawn(difficulty, (IEntityLivingData) null);
             this.world.spawnEntity(entityRider);
             entityRider.startRiding(this, true);
-        }*/
+        }
 
         return livingdata;
     }

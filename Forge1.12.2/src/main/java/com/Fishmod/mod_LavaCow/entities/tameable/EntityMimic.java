@@ -491,6 +491,17 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+        if (this.isTamed()) {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health * 2.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack * 0.5D);
+        } else {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health);
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack);
+        }
+        this.setHealth(this.getMaxHealth());
+        
         if (BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.NETHER)) {
             this.setSkin(6);
             this.isImmuneToFire = true;

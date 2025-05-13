@@ -634,6 +634,10 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
        entityLivingData = super.onInitialSpawn(difficulty, entityLivingData);
        float chance_to_spawn_as_child = 0.0F;
        
+       this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
+       this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack);
+       this.setHealth(this.getMaxHealth());       
+       
        switch(this.world.getDifficulty()) {
 	       case PEACEFUL:
 	    	   chance_to_spawn_as_child = 0.85F;

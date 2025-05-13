@@ -53,6 +53,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -448,6 +449,21 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         } else
             super.travel(strafe, vertical, forward);
     }
+    
+    /**
+     * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
+     */
+    @Nullable
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.SkeletonKing_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.SkeletonKing_Attack);
+        this.setHealth(this.getMaxHealth());
+        
+        return livingdata;
+    }    
 
     public class AICastingApell extends EntityAIBase {
         public AICastingApell() {

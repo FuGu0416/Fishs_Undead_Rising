@@ -579,10 +579,14 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
     }
     
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
- 	   if(BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.BEACH)) {
- 		   this.setSkin(2);
- 	   }
- 	   return super.onInitialSpawn(difficulty, entityLivingData);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Raven_Health);
+        this.setHealth(this.getMaxHealth());
+        
+ 	   	if (BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.BEACH)) {
+ 	   		this.setSkin(2);
+ 	   	}
+ 	   	
+ 	   	return super.onInitialSpawn(difficulty, entityLivingData);
  	}
     
     public int getSkin()

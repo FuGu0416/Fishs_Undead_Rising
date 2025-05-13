@@ -426,6 +426,10 @@ public class EntityForsaken extends AbstractSkeleton implements IEntityOwnable {
         patternsList.appendTag(createPatternTag(AddRecipes.PATTERN_SKELETONKING, EnumDyeColor.WHITE));
         shield.getOrCreateSubCompound("BlockEntityTag").setInteger("Base", EnumDyeColor.BLACK.getDyeDamage());
 
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Forsaken_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Forsaken_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         switch (this.getSkin()) {
             case 0:
                 this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, shield);

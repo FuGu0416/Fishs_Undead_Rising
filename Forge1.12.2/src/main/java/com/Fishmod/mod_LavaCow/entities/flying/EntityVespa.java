@@ -189,6 +189,10 @@ public class EntityVespa extends EntityRideableFlyingMob {
 
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Vespa_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Vespa_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         if (this.world.rand.nextDouble() <= Modconfig.Vespa_Hornet_Variant) {
             this.setSkin(1);
         }

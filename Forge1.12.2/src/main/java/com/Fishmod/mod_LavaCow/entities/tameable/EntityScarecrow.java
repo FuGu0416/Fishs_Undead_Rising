@@ -326,6 +326,10 @@ public class EntityScarecrow extends EntityFishTameable {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         this.setEquipmentBasedOnDifficulty(difficulty);
 
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Scarecrow_Health);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Scarecrow_Attack);
+        this.setHealth(this.getMaxHealth());
+        
         if (this.rand.nextFloat() < 0.00625F * Modconfig.pSpawnRate_Raven && !this.world.isRemote) {
             EntityRaven crowpet = new EntityRaven(this.world);
             crowpet.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
