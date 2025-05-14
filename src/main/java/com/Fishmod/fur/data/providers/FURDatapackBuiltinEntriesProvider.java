@@ -11,11 +11,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ModDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesProvider {
+public class FURDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, FURBiomeModifier::bootstrap);
 
-    public ModDatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public FURDatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(mod_LavaCow.MODID));
     }
 }

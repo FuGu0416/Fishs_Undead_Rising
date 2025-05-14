@@ -395,7 +395,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
            Vec3 vector3d;
            vector3d = FloatingMobEntity.this.getViewVector(0.0F);
            Vec3 vector3d2 = HoverRandomPos.getPos(FloatingMobEntity.this, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
-           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(FloatingMobEntity.this, 8, 4, -2, vector3d.x, vector3d.z, (double)((float)Math.PI / 2F));
+           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(FloatingMobEntity.this, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
         }
     }
 
