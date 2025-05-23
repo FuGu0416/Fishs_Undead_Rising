@@ -311,6 +311,7 @@ public class Modconfig {
     public static int Ankh_Scepter_Cooldown;
     public static int Fungal_Staff_Cooldown;
     public static int Frozen_Grip_Cooldown;
+    public static int Skeleton_King_Mace_Damage;
     public static boolean Tinkers_Compat;
     public static boolean Tinkers_Armor_Compat;
     public static boolean Quark_Compat;
@@ -347,7 +348,7 @@ public class Modconfig {
     public static int pSpawnRate_Veilshroom;
     public static boolean MonsterSpawner_Mobs;
 
-    public final String[] usedCategories = {Configuration.CATEGORY_GENERAL, "Mod Integration", "Mod Integration Toggles", "Amber Lord", "Amber Scarab", "Avaton", "Banshee", "Cactoid", "Cactyrant", "Enigmoth", "Enigmoth Caterpillar", "Foglet", "Slothoman",
+    public final String[] usedCategories = {Configuration.CATEGORY_GENERAL, "Mod Integration", "Mod Integration Toggles", "Amber Lord", "Amber Scarab", "Avaton", "Banshee", "Cactoid", "Cactyrant", "Enigmoth", "Enigmoth Caterpillar", "Foglet", "Isnachi",
             "Imp", "Forsaken", "Frigid", "Ghost Ray", "Ghost Swarmer", "Ithaqua", "Lil' Sludge", "Mimicrab", "Moogma", "Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Warmander",
             "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", "Vespa", "Weta", "Sea Hag", "Grave Robber", "Ghost of Grave Robber", "Revenant", "Ghoul", "Shroom"};
 
@@ -789,7 +790,7 @@ public class Modconfig {
                         "minecraft:silverfish,40,1,2",
                         "minecraft:bat,40,4,8",
                         "mod_lavacow:foglet,40,1,2",
-                        "mod_lavacow:slothoman,40,1,2",
+                        "mod_lavacow:isnachi,40,1,2",
                         "mod_lavacow:unburied,40,1,2",
                         "mod_lavacow:ptera,40,1,2",
                         "mod_lavacow:lilsludge,40,1,2",
@@ -828,6 +829,8 @@ public class Modconfig {
         Ankh_Scepter_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "ankh scepter cooldown", 60, "Ability cooldown of Ankh Scepter [1-10000]", 1, 10000).getInt(60);
         Fungal_Staff_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "fungal staff cooldown", 60, "Ability cooldown of Fungal Staff [1-10000]", 1, 10000).getInt(60);
         Frozen_Grip_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "frozen grip cooldown", 60, "Ability cooldown of Frozen Grip [1-10000]", 1, 10000).getInt(60);
+
+        Skeleton_King_Mace_Damage = config.get(Configuration.CATEGORY_GENERAL, "death damage", 60, "Attack damage of \"Death\" [1-10000]", 1, 10000).getInt(16);
 
         // Restart Required, loaded during init
         Tinkers_Compat = config.get("Mod Integration", "tinkers' construct integration", true, "Should new tool materials be added to Tinkers' Construct when installed? [false/true]").getBoolean(true);
