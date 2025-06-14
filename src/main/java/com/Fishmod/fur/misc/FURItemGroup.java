@@ -31,6 +31,9 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
+            	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
+            	output.accept(FURItemRegistry.SWARMER_RAW.get());
+            	output.accept(FURItemRegistry.SWARMER_COOKED.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

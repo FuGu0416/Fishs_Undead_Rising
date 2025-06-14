@@ -3,6 +3,7 @@ package com.Fishmod.fur;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
+import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -19,6 +20,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.ISNACHI.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.IMP.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SEAHAG.get(), SeaHagRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SWARMER.get(), SwarmerRenderer::new);
+    	
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));
@@ -37,7 +40,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SCARECROW, manager -> new ScarecrowRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.VESPACOCOON, manager -> new VespaCocoonRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA, manager -> new SwarmerRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SWARMER, manager -> new SwarmerRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNDERTAKER, manager -> new UndertakerRenderer(manager));

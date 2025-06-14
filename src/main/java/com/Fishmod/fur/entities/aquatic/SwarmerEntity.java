@@ -3,6 +3,9 @@ package com.Fishmod.fur.entities.aquatic;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.IAggressive;
+import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -41,11 +44,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SwarmerEntity extends AbstractSchoolingFish {
+public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, IAggressive {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private int attackTimer = 0;
+	
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(SwarmerEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(SwarmerEntity.class, EntityDataSerializers.INT);
-	
+
+    private static final RawAnimation SWIM = RawAnimation.begin().thenPlay("swarmer.model.swimming");
+    private static final RawAnimation LAND = RawAnimation.begin().thenPlay("swarmer.model.onland");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("swarmer.model.attacking");
+    public static final int ATTACK_TIMER = 17;
+    
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);   
     }
@@ -54,7 +76,7 @@ public class SwarmerEntity extends AbstractSchoolingFish {
     protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(DATA_FLAGS_ID, (byte)0);
-		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(1));
     }
     
     @Override
@@ -115,15 +137,19 @@ public class SwarmerEntity extends AbstractSchoolingFish {
     }
     
     protected void handleAirSupply(int p_209207_1_) {   
-    	//if (!this.getType().equals(FUREntityRegistry.SWARMER)) {
+    	if (!this.getType().equals(FUREntityRegistry.SWARMER.get())) {
     		super.handleAirSupply(p_209207_1_);
-    	//}
+    	}
     }
     
     @Override
     public void tick() {
     	super.tick();
-    	
+ 
+        if (this.attackTimer > 0) {
+        	--this.attackTimer;
+        }
+        
     	if (this.tickCount >= 8 * 20 && this.getIsAmmo()) {
     		this.hurt(this.damageSources().genericKill(), this.getMaxHealth());
     	}
@@ -133,6 +159,8 @@ public class SwarmerEntity extends AbstractSchoolingFish {
         boolean flag = p_70652_1_.hurt(this.damageSources().mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
            this.doEnchantDamageEffects(this, p_70652_1_);
+           this.setAttackTimer(ATTACK_TIMER);
+           this.level().broadcastEntityEvent(this, (byte)4);
            /*if (!this.getType().equals(FUREntityRegistry.LAMPREY)) {
         	   this.playSound(FURSoundRegistry.SWARMER_ATTACK.get(), 1.0F, 1.0F);
            }*/
@@ -159,6 +187,28 @@ public class SwarmerEntity extends AbstractSchoolingFish {
     	}*/
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    }
+
+	@Override
+	public int getAttackTimer() {
+		return this.attackTimer;
+	}
+
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;		
+	}
+	
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+        if (id == 4) {
+            this.setAttackTimer(ATTACK_TIMER);
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
     
     static class AIPiranhaLeapAtTarget extends Goal {
@@ -214,7 +264,7 @@ public class SwarmerEntity extends AbstractSchoolingFish {
     
     @Override
     public ItemStack getBucketItemStack() {
-    	return null;//new ItemStack(FURItemRegistry.SWARMER_BUCKET);
+    	return new ItemStack(FURItemRegistry.SWARMER_BUCKET.get());
 	}
  
     @Override
@@ -321,4 +371,28 @@ public class SwarmerEntity extends AbstractSchoolingFish {
     protected boolean shouldDropLoot() {   	
     	return !this.getIsInfinite();
     }
+
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.getAttackTimer() == ATTACK_TIMER) {
+    		state.getController().setAnimation(ATTACK);
+    	} else if (this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (!this.isInWaterOrBubble() && !this.isAggressive()) {
+    		state.getController().setAnimation(LAND);
+        } else {
+            state.getController().setAnimation(SWIM);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+    
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
+	}
 }

@@ -6,10 +6,14 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.item.MoltenMeatItem;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,6 +35,9 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> IMP_HORN = DEF_REG.register("imp_horn", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1)));
+	public static final RegistryObject<Item> SWARMER_RAW = DEF_REG.register("swarmer_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
+	public static final RegistryObject<Item> SWARMER_COOKED = DEF_REG.register("swarmer_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	
     static {
         spawnEgg("lavacow", FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00);
@@ -38,6 +45,7 @@ public class FURItemRegistry {
         spawnEgg("isnachi", FUREntityRegistry.ISNACHI, 0xB4A27E, 0x190508);
         spawnEgg("imp", FUREntityRegistry.IMP, 0xD03336, 0xFFD6A0);
         spawnEgg("seahag", FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00);
+        spawnEgg("swarmer", FUREntityRegistry.SWARMER, 0x5D5D5D, 0x880909);
     }
     
     private static void spawnEgg(String entityName, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2) {
