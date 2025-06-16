@@ -22,5 +22,6 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
         this.tag(FURTags.HAS_FOGLET).addTag(Tags.Biomes.IS_SWAMP);
         this.tag(FURTags.HAS_ISNACHI).addTag(Tags.Biomes.IS_LUSH).add(Biomes.JUNGLE).add(Biomes.SPARSE_JUNGLE);
+        this.tag(FURTags.HAS_SWARMER).addTag(Tags.Biomes.IS_SWAMP).add(Biomes.JUNGLE).add(Biomes.SPARSE_JUNGLE).add(Biomes.LUKEWARM_OCEAN).add(Biomes.DEEP_LUKEWARM_OCEAN).add(Biomes.DEEP_DARK);                     
     }
 }

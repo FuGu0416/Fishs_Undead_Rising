@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#forge:is_swamp",
+    "minecraft:jungle",
+    "minecraft:sparse_jungle",
+    "minecraft:lukewarm_ocean",
+    "minecraft:deep_lukewarm_ocean",
+    "minecraft:deep_dark"
+  ]
+}

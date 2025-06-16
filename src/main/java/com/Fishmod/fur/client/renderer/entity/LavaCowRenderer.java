@@ -13,9 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LavaCowRenderer extends MobRenderer<LavaCowEntity, CowModel<LavaCowEntity>>  {
-	@SuppressWarnings("removal")
 	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("fur:textures/mobs/moogma/moogma_glowmask.png");
-	@SuppressWarnings("removal")
 	private static final ResourceLocation TEXTURES = new ResourceLocation("fur:textures/mobs/moogma/moogma.png");
 	
 	static{

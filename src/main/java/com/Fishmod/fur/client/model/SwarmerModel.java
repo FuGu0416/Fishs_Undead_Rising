@@ -1,10 +1,12 @@
 package com.Fishmod.fur.client.model;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+
+import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
-
 import software.bernie.geckolib.model.GeoModel;
 
 /**
@@ -40,4 +42,10 @@ public class SwarmerModel extends GeoModel<SwarmerEntity> {
 	public ResourceLocation getModelResource(SwarmerEntity animatable) {
 		return MODEL;
 	}
+	
+    @Nullable
+    @Override
+	public RenderType getRenderType(SwarmerEntity p_230496_1_, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+    }
 }

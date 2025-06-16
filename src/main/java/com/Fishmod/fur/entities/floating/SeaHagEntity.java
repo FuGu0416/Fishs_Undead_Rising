@@ -4,7 +4,9 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,6 +24,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -200,8 +203,19 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
             for (int i = 0; i < 4/*FURConfig.SeaHag_Ability_Num.get()*/; ++i) {
             	if (SeaHagEntity.this.level() instanceof ServerLevel) {
 	                BlockPos blockpos = SeaHagEntity.this.blockPosition().offset(-2 + SeaHagEntity.this.getRandom().nextInt(3), 1, -2 + SeaHagEntity.this.getRandom().nextInt(3));
-	                Pufferfish entity = SpawnUtil.trySpawnEntity(EntityType.PUFFERFISH, ((ServerLevel) SeaHagEntity.this.level()), blockpos);
-	          
+	                Mob entity;
+	                
+	                if (SeaHagEntity.this.isInWaterOrBubble()) {
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER.get(), ((ServerLevel) SeaHagEntity.this.level()), blockpos);
+	                	
+	                	if (entity != null) {
+	                		((SwarmerEntity) entity).setSkin(5);
+	                		entity.setTarget(SeaHagEntity.this.getTarget());
+	                	}
+	                } else {
+	                	entity = SpawnUtil.trySpawnEntity(EntityType.PUFFERFISH, ((ServerLevel) SeaHagEntity.this.level()), blockpos);
+	                }
+	                
 	                if (entity != null) {
 	                	entity.setAirSupply(80);
 	                	entity.addTag("FUR_noLoot");	
@@ -210,10 +224,10 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
 		                	double d0 = entity.getX() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
 		                	double d1 = entity.getY() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbHeight());
 		                	double d2 = entity.getZ() + (double)(SeaHagEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-		                	((ServerLevel) SeaHagEntity.this.level()).sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-		                	
+		                	((ServerLevel) SeaHagEntity.this.level()).sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);	                	
 		                }
 	                }
+	                
                 }
             }
         }

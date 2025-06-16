@@ -36,16 +36,18 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -93,11 +95,11 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, true, false, (p_210136_0_) -> {
             return !this.requiresCustomPersistence();
     	}));
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		/*ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.SWARMER_TARGETS);
-    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();*/
+    	/*this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
+    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.SWARMER_TARGETS);
+    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
     		return true;
-    	}));	
+    	}));*/	
     	//this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
 
@@ -129,7 +131,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
 	}
     
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return p_223316_4_.nextInt(15) == 0 && isDarkEnoughToSpawn(p_223316_1_, p_223316_3_, p_223316_4_) && AbstractFish.checkMobSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
+        return isDarkEnoughToSpawn(p_223316_1_, p_223316_3_, p_223316_4_) && WaterAnimal.checkSurfaceWaterAnimalSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
     }
     
     public int getMaxSchoolSize() {
@@ -180,11 +182,22 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
 	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Swarmer_Health.get());
 	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Swarmer_Attack.get());
 	    	this.setHealth(this.getMaxHealth());
-    	}*/
+    	}*/    	
     	
-    	/*if(BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(p_213386_1_.getBiome(this.blockPosition()))).contains(Type.SWAMP) && !this.getIsAmmo()) {
-    		this.setSkin(2);
-    	}*/
+    	if (!this.getIsAmmo()) {
+    		if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
+    			this.setSkin(p_213386_5_.getInt("BucketVariantTag"));
+    			return livingdata;
+    	    } else if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_SWAMP)) {
+	    		this.setSkin(2);
+	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.DEEP_LUKEWARM_OCEAN)) {
+	    		this.setSkin(3);
+	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.LUKEWARM_OCEAN)) {
+	    		this.setSkin(4);
+	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.DEEP_DARK)) {
+	    		this.setSkin(6);
+	    	}
+    	}
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -261,6 +274,13 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
      	      }
     	   }  	   
     }
+    
+    @Override
+    public void saveToBucketTag(ItemStack p_30049_) {
+        super.saveToBucketTag(p_30049_);
+        CompoundTag compoundtag = p_30049_.getOrCreateTag();
+        compoundtag.putInt("BucketVariantTag", this.getSkin());
+	}
     
     @Override
     public ItemStack getBucketItemStack() {
