@@ -20,6 +20,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.ISNACHI.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.IMP.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SEAHAG.get(), SeaHagRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.PIRANHA.get(), SwarmerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SWARMER.get(), SwarmerRenderer::new);
     	
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();

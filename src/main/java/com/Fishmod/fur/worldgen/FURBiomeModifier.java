@@ -24,6 +24,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_ISNACHI = registerKey("add_isnachi");
 	public static final ResourceKey<BiomeModifier> ADD_IMP = registerKey("add_imp");
 	public static final ResourceKey<BiomeModifier> ADD_SEAHAG = registerKey("add_seahag");
+	public static final ResourceKey<BiomeModifier> ADD_PIRANHA = registerKey("add_piranha");
 	public static final ResourceKey<BiomeModifier> ADD_SWARMER = registerKey("add_swarmer");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
@@ -41,6 +42,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.IMP.get(), 3, 8, 16));
         addSpawn(context, ADD_SEAHAG, biomes.getOrThrow(BiomeTags.IS_BEACH),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2));
+        addSpawn(context, ADD_PIRANHA, biomes.getOrThrow(FURTags.HAS_PIRANHA),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.PIRANHA.get(), 15, 4, 8));        
         addSpawn(context, ADD_SWARMER, biomes.getOrThrow(FURTags.HAS_SWARMER),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SWARMER.get(), 15, 4, 8));
     }

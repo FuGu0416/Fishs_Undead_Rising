@@ -7,6 +7,7 @@ import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.init.FURTagRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -95,11 +96,9 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
     	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, true, false, (p_210136_0_) -> {
             return !this.requiresCustomPersistence();
     	}));
-    	/*this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.SWARMER_TARGETS);
-    		return tag != null && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(tag) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
-    		return true;
-    	}));*/	
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
+    		return p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.SWARMER_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    	}));
     	//this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
 
@@ -185,7 +184,9 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
     	}*/    	
     	
     	if (!this.getIsAmmo()) {
-    		if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
+    		if (this.getType().equals(FUREntityRegistry.PIRANHA.get())) {
+    			this.setSkin(0);
+    		} else if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
     			this.setSkin(p_213386_5_.getInt("BucketVariantTag"));
     			return livingdata;
     	    } else if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_SWAMP)) {
