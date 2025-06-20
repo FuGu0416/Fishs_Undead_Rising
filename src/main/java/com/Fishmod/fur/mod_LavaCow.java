@@ -2,6 +2,7 @@ package com.Fishmod.fur;
 
 import org.slf4j.Logger;
 
+import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -27,7 +28,7 @@ import software.bernie.geckolib.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(mod_LavaCow.MODID)
-@Mod.EventBusSubscriber(modid = mod_LavaCow.MODID)
+@Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class mod_LavaCow {
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -63,7 +64,8 @@ public class mod_LavaCow {
         FURSoundRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
-                
+        EventBusHandler.create(eventBus);       
+        
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, mod_LavaCow.MODID);
         structureModifiers.register(eventBus);
         structureModifiers.register("structure_spawns", FURStructureModifier.Modifier::makeCodec);

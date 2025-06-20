@@ -39,7 +39,7 @@ public class MoltenAxeItem extends AxeItem {
 	    */
 	@Override
 	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {	
-		if(worldIn.getBlockState(pos).is(BlockTags.MINEABLE_WITH_AXE)) {
+		if (worldIn.getBlockState(pos).is(BlockTags.MINEABLE_WITH_AXE)) {
 			worldIn.playSound((Player)null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.FIRE_AMBIENT, entityLiving.getSoundSource(), 1.0F, 1.0F);
 			double j = 1.2D;
 			for(int i = 0; i < 16; i++) {

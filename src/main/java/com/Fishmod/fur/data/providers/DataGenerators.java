@@ -26,5 +26,6 @@ public class DataGenerators {
 		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
+		gen.addProvider(event.includeServer(), new FURGlobalLootModifiersProvider(packOutput));
 	}
 }
