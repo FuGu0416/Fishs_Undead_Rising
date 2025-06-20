@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "#X",
+        " Y"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:molten_alloy"
+        },
+        "X": {
+			"tag": "forge:gunpowder"
+        },
+        "Y": {
+			"tag": "forge:rods/blaze"
+        }
+    },
+    "result": {
+        "item": "fur:molten_axe"
+    }
+}
