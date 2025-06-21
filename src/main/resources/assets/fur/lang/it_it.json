@@ -11,7 +11,7 @@
 	"item.fur.mousse": "Carne macinate",
 	"item.fur.meatball": "Polpetta di carne",
 	"item.fur.sharp_fang": "Zanna",
-	"item.fur.bonesword": "Spada d'Osso",
+	"item.fur.bone_sword": "Spada d'Osso",
 	"item.fur.intestine": "Intestino",
 	"item.fur.frozenthigh": "Coscia congelata",
 	"item.fur.poisonspore": "Spore velenose",
@@ -298,7 +298,7 @@
 	"entity_skeletonking_spell_teleport": "Skeleton King teleports",
 	"entity_skeletonking_spell_toss": "Skeleton King casts a spell",
 	
-	"item.fur.bonesword.desc": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
+	"item.fur.bone_sword.desc": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
 	"item.fur.netherstew.desc": "Gives random effects(0:40) when eaten.",
 	"item.fur.goldenheart.desc": "Gives Regeneration and repairs(+1/sec) all equipments when equipped.",
 	"item.fur.molten_axe.desc": "Get charcoal when chopping down logs.",

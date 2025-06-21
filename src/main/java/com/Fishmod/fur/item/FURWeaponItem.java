@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
@@ -46,21 +47,21 @@ public class FURWeaponItem extends SwordItem {
 	private Item repair_material;
 	private float Damage;
 	protected float efficiency;
-	private String Tooltip = null;
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+	boolean hasDesc;
 	
-	public FURWeaponItem(Properties PropertiesIn, String registryName, Tier materialIn, int damageIn, float attackspeedIn, Item repair) {
+	public FURWeaponItem(Properties PropertiesIn, Tier materialIn, int damageIn, float attackspeedIn, Item repair, Boolean hasDescIn) {
 		super(materialIn, damageIn, attackspeedIn, PropertiesIn);
         this.Damage = (float)damageIn + 3.0F;
         this.repair_material = repair;
         this.efficiency = materialIn.getSpeed();
-        this.Tooltip = "tooltip." + registryName;
+        this.hasDesc = hasDescIn;
         Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.Damage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackspeedIn, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();   
+        this.defaultModifiers = builder.build();  
 	}
-	
+
 	@Override
 	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {				
 		/*if (entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && worldIn.random.nextInt(50) < 2) {
@@ -454,21 +455,16 @@ public class FURWeaponItem extends SwordItem {
 		return par2ItemStack.getItem().equals(this.repair_material);
 	}
 	
-	public FURWeaponItem setNoDescription() {
-		this.Tooltip = null;
-		return this;
-	}
-	
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		/*if (stack.getItem().equals(FURItemRegistry.BONESWORD)) {
-			tooltip.add(new TranslationTextComponent(this.Tooltip, FURConfig.BoneSword_Damage.get(), FURConfig.BoneSword_DamageCap.get()).withStyle(TextFormatting.YELLOW));
-		} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW)) {
+		if (stack.getItem().equals(FURItemRegistry.BONE_SWORD.get())) {
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 5/*FURConfig.BoneSword_Damage.get()*/, 2/*FURConfig.BoneSword_DamageCap.get()*/).withStyle(ChatFormatting.YELLOW));
+		/*} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW)) {
 			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc0").withStyle(TextFormatting.YELLOW));
-			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc1").withStyle(TextFormatting.YELLOW));
-		} else */if (this.Tooltip != null)
-			tooltip.add(Component.translatable(this.Tooltip).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc1").withStyle(TextFormatting.YELLOW));*/
+		} else if (this.hasDesc)
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 	}
 	
     /**

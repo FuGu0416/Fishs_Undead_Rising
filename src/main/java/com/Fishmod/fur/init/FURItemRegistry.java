@@ -6,15 +6,16 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.item.FURItem;
+import com.Fishmod.fur.item.FURWeaponItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tiers;
@@ -29,6 +30,7 @@ public class FURItemRegistry {
 	public static final DeferredRegister<Item> DEF_REG = DeferredRegister.create(ForgeRegistries.ITEMS, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<Item> SHARP_FANG = DEF_REG.register("sharp_fang", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> BONE_SWORD = DEF_REG.register("bone_sword", () -> new FURWeaponItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, Items.BONE_BLOCK, true));
 	public static final RegistryObject<Item> CHITIN = DEF_REG.register("chitin", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM = DEF_REG.register("ectoplasm", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM_MASS = DEF_REG.register("ectoplasm_mass", () -> new Item(new Item.Properties()));

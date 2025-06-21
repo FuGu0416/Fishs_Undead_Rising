@@ -20,6 +20,7 @@ public class FURItemGroup {
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((params, output) -> {
             	output.accept(FURItemRegistry.SHARP_FANG.get());
+            	output.accept(FURItemRegistry.BONE_SWORD.get());
             	output.accept(FURItemRegistry.CHITIN.get());
             	output.accept(FURItemRegistry.FOUL_BRISTLE.get());
             	output.accept(FURItemRegistry.IMP_HORN.get());
@@ -30,6 +31,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
+            	output.accept(FURItemRegistry.MOLTEN_AXE.get());
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());

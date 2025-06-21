@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#X#",
+        "#X#",
+        " D "
+    ],
+    "key": {
+        "#": {
+            "item": "fur:sharp_fang"
+        },
+        "X": {
+            "item": "minecraft:bone_block"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:bone_sword"
+    }
+}

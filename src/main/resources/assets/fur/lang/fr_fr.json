@@ -11,7 +11,7 @@
 	"item.fur.mousse": "Viande hachée",
 	"item.fur.meatball": "Boulette de viande",
 	"item.fur.sharp_fang": "Croc",
-	"item.fur.bonesword": "Épée en Os",
+	"item.fur.bone_sword": "Épée en Os",
 	"item.fur.intestine": "Intestins",
 	"item.fur.frozenthigh": "Cuisse gelée",
 	"item.fur.poisonspore": "Spore toxique",
@@ -298,7 +298,7 @@
 	"entity_skeletonking_spell_teleport": "Skeleton King teleports",
 	"entity_skeletonking_spell_toss": "Skeleton King casts a spell",
 	
-	"item.fur.bonesword.desc": "Fais subir %d%% de vie maximale en dégats supplémentaires à la cible",
+	"item.fur.bone_sword.desc": "Fais subir %d%% de vie maximale en dégats supplémentaires à la cible",
 	"item.fur.netherstew.desc": "Donne des effets aléatoires(0:40) quand mangé.",
 	"item.fur.goldenheart.desc": "Donne Régénération and repairs(+1/sec) all equipments when equipped.",
 	"item.fur.molten_axe.desc": "Brûle le bois coupé.",

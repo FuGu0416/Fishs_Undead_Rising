@@ -11,7 +11,7 @@
 	"item.fur.mousse": "Carne picada",
 	"item.fur.meatball": "Bola de carne",
 	"item.fur.sharp_fang": "Colmillo",
-	"item.fur.bonesword": "Espada dentada",
+	"item.fur.bone_sword": "Espada dentada",
 	"item.fur.intestine": "Intestino",
 	"item.fur.frozenthigh": "Muslo congelado",
 	"item.fur.poisonspore": "Espora venenosa",
@@ -298,7 +298,7 @@
 	"entity_skeletonking_spell_teleport": "Skeleton King teleports",
 	"entity_skeletonking_spell_toss": "Skeleton King casts a spell",
 	
-	"item.fur.bonesword.desc": "Hace un daño extra igual al %d%% de la vida del objetivo. (Max %d)",
+	"item.fur.bone_sword.desc": "Hace un daño extra igual al %d%% de la vida del objetivo. (Max %d)",
 	"item.fur.netherstew.desc": "Da efectos al azar (0:40) al comerlo.",
 	"item.fur.goldenheart.desc": "Da regeneración y repara (+1/sec) todo el equipo al comerlo.",
 	"item.fur.molten_axe.desc": "Da carbón al cortar troncos.",
