@@ -16,8 +16,8 @@ public class ModelCrown extends ModelBiped {
         this.textureWidth = 128;
         this.textureHeight = 64;
         this.Crown = new ModelRenderer(this, 92, 23);
-        this.Crown.setRotationPoint(0.0F, -6.0F, 0.0F);
-        this.Crown.addBox(-4.5F, -4.0F, -4.5F, 9, 5, 9, 0.0F);
+        this.Crown.setRotationPoint(0.0F, -6.0F, 0.1F);
+        this.Crown.addBox(-4.5F, -4.0F, -4.5F, 9, 5, 9, modelSize);
         this.bipedHeadwear.addChild(this.Crown);
 	}
 	
