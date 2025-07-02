@@ -1,5 +1,6 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.SEAHAG.get(), SeaHagRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.PIRANHA.get(), SwarmerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SWARMER.get(), SwarmerRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.CACTYRANT.get(), CactyrantRenderer::new);
     	
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
@@ -51,8 +53,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.AVATON, manager -> new AvatonRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MUMMY, manager -> new MummyRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTYRANT, manager -> new CactyrantRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MUMMY, manager -> new MummyRenderer(manager));        
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WISP, manager -> new WispRenderer(manager));  
