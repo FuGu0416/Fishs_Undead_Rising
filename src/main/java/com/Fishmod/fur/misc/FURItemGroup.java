@@ -39,6 +39,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.PIRANHA_COOKED.get());           	
             	output.accept(FURItemRegistry.SWARMER_RAW.get());
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
+            	output.accept(FURItemRegistry.CACTUS_THORN.get());
+            	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

@@ -24,6 +24,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.effect.MobEffectInstance;
 
 public class FURItemRegistry {
 	public static List<RegistryObject<Item>> creativeTabSpawnEggMap = new ArrayList<RegistryObject<Item>>();
@@ -49,6 +50,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1)));
 	public static final RegistryObject<Item> SWARMER_RAW = DEF_REG.register("swarmer_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
 	public static final RegistryObject<Item> SWARMER_COOKED = DEF_REG.register("swarmer_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
+	public static final RegistryObject<Item> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build())));
 	
     static {
         spawnEgg("lavacow", FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00);

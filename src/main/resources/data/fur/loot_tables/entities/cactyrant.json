@@ -1,12 +1,12 @@
 {
 	"pools": [
 		{
-			"name": "mod_lavacow:cactyrant",
+			"name": "fur:cactyrant",
 			"rolls": 3,
 			"entries": [
 				{
 					"type": "item",
-					"name": "mod_lavacow:cactus_thorn",
+					"name": "fur:cactus_thorn",
 					"weight": 2,
 					"functions": [
 						{

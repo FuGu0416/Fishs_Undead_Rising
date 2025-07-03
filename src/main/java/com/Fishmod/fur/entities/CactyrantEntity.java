@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -38,11 +39,13 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -121,7 +124,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     }
     
     public static boolean checkCactyrantSpawnRules(EntityType<? extends CactyrantEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.canSeeSky(p_223316_3_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());
     }
  
     @Override
@@ -279,6 +282,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.spellTicks = compound.getInt("SpellTicks");
+        this.setSkin(compound.getInt("Variant"));
         this.setGrowingStage(compound.getInt("GrowingStage"));
     }
 
@@ -289,6 +293,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpellTicks", this.spellTicks);
+        compound.putInt("Variant", getSkin());
         compound.putInt("GrowingStage", this.getGrowingStage());
     }
     
@@ -302,6 +307,10 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
     	this.setHealth(this.getMaxHealth());*/
         
+		if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
+    		this.setSkin(1);
+    	}
+		
         return livingdata;
     }
 
@@ -491,13 +500,13 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     public void die(DamageSource cause) {
        super.die(cause);
        
-       /*int looting = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getDirectEntity(), cause);
+       int looting = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getDirectEntity(), cause);
        int chance = this.random.nextInt(5) + this.random.nextInt(1 + looting);
        if (!this.level().isClientSide() && this.getGrowingStage() == 2) {			
 			for (int amount = 0; amount <= chance; ++amount) {
-				this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT), 0.0F);
+				this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get()), 0.0F);
 			}
-       }*/
+       }
     }
     
     /**
