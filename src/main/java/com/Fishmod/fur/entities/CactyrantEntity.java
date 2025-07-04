@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
+import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -21,6 +22,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -260,10 +262,14 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 	*/
     @Override
 	public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.THORNS)) {
+        	return false;
+        }
+        
         if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && !source.is(DamageTypeTags.IS_EXPLOSION) && source.getDirectEntity() instanceof LivingEntity) {
             source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
         }
-        
+               
     	if(source.is(DamageTypeTags.IS_FIRE))
     		return super.hurt(source, 2.0F * amount);
 
@@ -437,7 +443,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
         }
 
         protected void castSpell() {
-        	/*double d0, d1, d2, d3, f;
+        	double d0, d1, d2, d3, f;
         	for(int i = 0 ; i < 6 ; i++) {
 	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(CactyrantEntity.this.level(), CactyrantEntity.this);
 	            LivingEntity target = CactyrantEntity.this.getTarget();
@@ -448,7 +454,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 	            f = i == 3 ? 0 : Math.sqrt(Math.sqrt(d3)) * 2.0D;
 	            abstractarrowentity.shoot(d0 + CactyrantEntity.this.getRandom().nextGaussian() * f, d1 + d3 * 0.2D, d2 + CactyrantEntity.this.getRandom().nextGaussian() * f, 1.6F, (float)(14 - CactyrantEntity.this.level().getDifficulty().getId() * 4));            
 	            CactyrantEntity.this.level().addFreshEntity(abstractarrowentity);
-        	}*/
+        	}
         	CactyrantEntity.this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (CactyrantEntity.this.getRandom().nextFloat() * 0.4F + 0.8F));
         }
 
