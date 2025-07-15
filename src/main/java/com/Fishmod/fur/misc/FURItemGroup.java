@@ -32,6 +32,10 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
+            	output.accept(FURItemRegistry.MOLTEN_ARMOR_HELMET.get());
+            	output.accept(FURItemRegistry.MOLTEN_ARMOR_CHESTPLATE.get());
+            	output.accept(FURItemRegistry.MOLTEN_ARMOR_LEGGINGS.get());
+            	output.accept(FURItemRegistry.MOLTEN_ARMOR_BOOTS.get());
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());

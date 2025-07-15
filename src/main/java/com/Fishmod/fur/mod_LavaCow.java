@@ -2,6 +2,7 @@ package com.Fishmod.fur;
 
 import org.slf4j.Logger;
 
+import com.Fishmod.fur.client.model.layered.FURModelLayers;
 import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -12,6 +13,7 @@ import com.Fishmod.fur.worldgen.FURStructureModifier;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -52,7 +54,7 @@ public class mod_LavaCow {
     	//eventBus.addListener(this::setupParticleEvent);
         /*eventBus.addGenericListener(Feature.class, EventPriority.LOW,
                 (final RegistryEvent.Register<Feature<?>> event) -> FURWorldRegistry.register());*/
-        
+    	eventBus.addListener(this::registerLayerDefinitions);
         // Register ourselves for server and other game events we are interested in
     	
         MinecraftForge.EVENT_BUS.register(this);           
@@ -110,6 +112,10 @@ public class mod_LavaCow {
         // do something that can only be done on the client
         //LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
     	event.enqueueWork(() -> PROXY.clientInit());
+    }
+    
+    private void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        FURModelLayers.register(event);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

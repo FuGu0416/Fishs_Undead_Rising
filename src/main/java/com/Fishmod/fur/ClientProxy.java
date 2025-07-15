@@ -6,6 +6,7 @@ import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
+import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -108,6 +109,11 @@ public class ClientProxy extends CommonProxy {
         ItemModelsProperties.register(FURItemRegistry.VESPA_SHIELD, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
             return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
         });*/
+    }
+    
+    @Override
+    public Object getArmorProperties() {
+        return new FURArmorRenderProperties();
     }
     
     /*public Item.Properties setupISTER(Item.Properties group) {

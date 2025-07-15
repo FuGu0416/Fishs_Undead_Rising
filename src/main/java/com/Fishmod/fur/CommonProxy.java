@@ -24,9 +24,9 @@ public class CommonProxy {
     /*public void openBookGUI(ItemStack itemStackIn, String page) {
     }*/
 
-    /*public Object getArmorModel(int armorId, LivingEntity entity) {
+    public Object getArmorProperties() {
         return null;
-    }*/
+    }
 
     /*public void onEntityStatus(Entity entity, byte updateKind) {
     }*/
