@@ -32,14 +32,13 @@ public class MoltenArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         
 		head.addOrReplaceChild("helmet", CubeListBuilder.create()
 				.texOffs(49, 35).addBox(-5.0F, -6.0F, -2.0F, 1.0F, 2.0F, 2.0F, deformation)
-				.texOffs(41, 32).mirror().addBox(6.0F, -9.0F, -2.0F, 2.0F, 5.0F, 2.0F, deformation).mirror(false)
+				.texOffs(41, 32).mirror().addBox(6.5F, -9.0F, -2.0F, 2.0F, 5.0F, 2.0F, deformation).mirror(false)
 				.texOffs(49, 35).mirror().addBox(4.0F, -6.0F, -2.0F, 1.0F, 2.0F, 2.0F, deformation).mirror(false)
-				.texOffs(41, 32).addBox(-8.0F, -9.0F, -2.0F, 2.0F, 5.0F, 2.0F, deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+				.texOffs(41, 32).addBox(-8.5F, -9.0F, -2.0F, 2.0F, 5.0F, 2.0F, deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		leftArm.addOrReplaceChild("shoulder_l", CubeListBuilder.create().texOffs(41, 39).mirror().addBox(-3.0F, -3.0F, -3.0F, 4.0F, 5.0F, 5.0F, deformation).mirror(false), PartPose.offsetAndRotation(3.0F, 0.0F, 0.5F, 0.0F, 0.0F, -0.2618F));
-
-		rightArm.addOrReplaceChild("shoulder_r", CubeListBuilder.create().texOffs(41, 39).addBox(-1.0F, -3.0F, -3.0F, 4.0F, 5.0F, 5.0F, deformation), PartPose.offsetAndRotation(-3.0F, 0.0F, 0.5F, 0.0F, 0.0F, 0.2618F));
-
+		leftArm.addOrReplaceChild("shoulder_l", CubeListBuilder.create().texOffs(41, 39).mirror().addBox(-3.0F, -3.0F, -3.0F, 4.0F, 5.0F, 5.0F, deformation).mirror(false), PartPose.offsetAndRotation(3.0F, 0.0F, 0.5F, 0.0F, 0.0F, -0.2618F));		
+		rightArm.addOrReplaceChild("shoulder_r", CubeListBuilder.create().texOffs(41, 39).addBox(-1.0F, -3.0F, -3.0F, 4.0F, 5.0F, 5.0F, deformation), PartPose.offsetAndRotation(-3.0F, 0.0F, 0.5F, 0.0F, 0.0F, 0.2618F));	
+		
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 

@@ -12,7 +12,7 @@ public class FURModelLayers {
 	public static final ModelLayerLocation MOLTEN_ARMOR = createLocation("molten_armor", "main");
 	
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(MOLTEN_ARMOR, () -> MoltenArmorModel.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(MOLTEN_ARMOR, () -> MoltenArmorModel.createArmorLayer(new CubeDeformation(0.75F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {
