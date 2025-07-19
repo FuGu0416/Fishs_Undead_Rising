@@ -31,6 +31,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
+            	output.accept(FURItemRegistry.MOOTENHEART.get());
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_HELMET.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_CHESTPLATE.get());

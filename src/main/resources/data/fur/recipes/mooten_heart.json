@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DYD",
+        "#X#",
+        "D#D"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:molten_alloy"
+        },
+        "X": {
+            "item": "fur:undyingheart"
+        },
+        "Y": {
+            "item": "minecraft:lava_bucket"
+        },
+        "D": {
+            "item": "minecraft:blaze_powder"
+        }
+    },
+    "result": {
+        "item": "fur:mooten_heart"
+    }
+}

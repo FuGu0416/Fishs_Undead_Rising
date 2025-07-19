@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "/ /",
+        "###",
+        "# #"
+    ],
+    "key": {
+        "/": {
+            "item": "fur:imp_horn"
+        },
+        "#": {
+            "item": "fur:molten_alloy"
+        }
+    },
+    "result": {
+        "item": "fur:molten_armor_helmet"
+    }
+}

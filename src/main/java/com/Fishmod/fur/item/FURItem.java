@@ -124,9 +124,9 @@ public class FURItem extends Item {
 		/*if(stack.getItem().equals(FURItemRegistry.SOULFIREHEART)) {
 			tooltip.add(Component.translatable("tooltip." + this.getName(stack), FURConfig.MootenHeart_Damage.get()).withStyle(ChatFormatting.YELLOW));
 			tooltip.add(Component.translatable("tooltip." + this.getName(stack) + ".l2", 25).withStyle(ChatFormatting.GREEN));
-		} else if(stack.getItem().equals(FURItemRegistry.MOOTENHEART))
-			tooltip.add(Component.translatable("tooltip." + this.getName(stack), FURConfig.MootenHeart_Damage.get()).withStyle(ChatFormatting.YELLOW).append(Component.translatable("item.mod_lavacow.potion_of_mooten_lava").withStyle(ChatFormatting.YELLOW)));
-		else */if (this.Tooltip == 2)
+		} else */if(stack.getItem().equals(FURItemRegistry.MOOTENHEART.get()))
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW).append(Component.translatable("item.fur.potion_of_mooten_lava").withStyle(ChatFormatting.YELLOW)));
+		else if (this.Tooltip == 2)
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc"));
 		else if (this.Tooltip == 1)
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
