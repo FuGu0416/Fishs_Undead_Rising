@@ -23,6 +23,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BONE_SWORD.get());
             	output.accept(FURItemRegistry.CHITIN.get());
             	output.accept(FURItemRegistry.FOUL_BRISTLE.get());
+            	output.accept(FURItemRegistry.FOUL_HIDE.get());
+            	output.accept(FURItemRegistry.SCYTHE_CLAW.get());
             	output.accept(FURItemRegistry.IMP_HORN.get());
             	output.accept(FURItemRegistry.CURSED_FABRIC.get());
             	output.accept(FURItemRegistry.CURSEWEAVE_CLOTH.get());
