@@ -144,4 +144,12 @@ public class SpawnUtil {
 
 		return null;
 	}
+	
+	public static double clamp(double input, double min, double max) {
+		if (input < min) {
+			return min;
+		} else {
+			return input > max ? max : input;
+		}
+	}
 }
