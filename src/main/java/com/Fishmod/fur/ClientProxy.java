@@ -6,6 +6,7 @@ import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
+import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
@@ -26,6 +27,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.PIRANHA.get(), SwarmerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SWARMER.get(), SwarmerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTYRANT.get(), CactyrantRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.WENDIGO.get(), WendigoRenderer::new);
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	
@@ -35,8 +37,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.IMP, manager -> new FogletRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FRIGID, manager -> new FrigidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SALAMANDER, manager -> new SalamanderRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WENDIGO, manager -> new WendigoRenderer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SALAMANDER, manager -> new SalamanderRenderer(manager));        
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MIMIC, manager -> new MimicRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SLUDGELORD, manager -> new SludgeLordRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
