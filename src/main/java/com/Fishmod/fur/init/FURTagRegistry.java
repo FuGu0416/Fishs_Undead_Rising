@@ -16,7 +16,7 @@ public class FURTagRegistry {
     //public static final ResourceLocation PTERA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "ptera_targets");
     public static final TagKey<EntityType<?>> SWARMER_TARGETS = create(new ResourceLocation(mod_LavaCow.MODID, "swarmer_targets"));
     //public static final ResourceLocation VESPA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "vespa_targets");
-    //public static final ResourceLocation WENDIGO_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "wendigo_targets");
+    public static final TagKey<EntityType<?>> WENDIGO_TARGETS = create(new ResourceLocation(mod_LavaCow.MODID, "wendigo_targets"));
     //public static final ResourceLocation LAMPREY_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "lamprey_targets");
     
     private static TagKey<EntityType<?>> create(ResourceLocation resource) {

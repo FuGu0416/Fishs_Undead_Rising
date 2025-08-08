@@ -34,7 +34,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -50,12 +49,30 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("wendigo.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("wendigo.model.walking");
+    private static final RawAnimation ATTACK_L = RawAnimation.begin().thenPlay("wendigo.model.attack_l_blend");
+    private static final RawAnimation ATTACK_R = RawAnimation.begin().thenPlay("wendigo.model.attack_r_blend");
+    private static final RawAnimation ATTACK_SMASH = RawAnimation.begin().thenPlay("wendigo.model.slam");
+    //private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("wendigo.model.roaring");
+    private static final RawAnimation LEAP_START = RawAnimation.begin().thenPlay("wendigo.model.leap_start");
+    private static final RawAnimation LEAP = RawAnimation.begin().thenPlay("wendigo.model.leap");
+    private static final RawAnimation LEAP_END = RawAnimation.begin().thenPlay("wendigo.model.leap_end");
+    
 	private static final EntityDataAccessor<Boolean> POUNCING = SynchedEntityData.defineId(WendigoEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final int ATTACK_TIMER = 20;
+	public static final int ATTACK_TIMER = 40;
 	
 	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
@@ -77,7 +94,6 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     @Override
     protected void registerGoals() {
         /*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
-    	this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.goalSelector.addGoal(3, new AttackGoal(this)); 
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -91,7 +107,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	this.targetSelector.addGoal(2, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
     	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (p_210136_0_) -> {
-    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.SWARMER_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.WENDIGO_TARGETS);
     	}));	 	
     }
     
@@ -132,6 +148,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;
+            this.setDeltaMovement(Vec3.ZERO);
         }
         
         if (this.jumpTimer > 0) {
@@ -180,12 +197,10 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
 		this.attackTimer = i;
 	}
     
-    @OnlyIn(Dist.CLIENT)
     public void setAttackStance(byte byteIn) {
     	this.AttackStance = byteIn;
     }
     
-    @OnlyIn(Dist.CLIENT)
     public byte getAttackStance() {
     	return this.AttackStance;
     }
@@ -244,7 +259,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
  	   public boolean canContinueToUse() {
- 		   return this.leaper.onGround() && this.leaper.jumpTimer >= 235;
+ 		   return this.leaper.onGround() && this.leaper.jumpTimer >= 234;
  	   }
  	   
  	   /**
@@ -254,7 +269,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
  		   Vec3 vector3d1 = new Vec3(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
  		   float d0 = this.leaper.distanceTo(this.leapTarget);	
 
- 		   if (this.leaper.jumpTimer == 235) {
+ 		   if (this.leaper.jumpTimer == 234) {
  	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
  	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
  	 		   }
@@ -333,7 +348,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     
     static class AttackGoal extends FURMeleeAttackGoal {
         public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.25D, false);
+           super(p_i46676_1_, 1.25D, false, ATTACK_TIMER);
         }
 
     	protected int atkTimerMax() {
@@ -341,7 +356,11 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	}
     	
     	protected int atkTimerHit() {
-    		return 10;
+    		if (((WendigoEntity) this.mob).getAttackStance() == (byte)4) { 
+    			return 6;
+    		} else {
+    			return 10;
+    		}
     	}
     	
     	protected byte atkTimerEvent() {
@@ -383,15 +402,41 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	}
 	}
 
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
+    		if (this.getAttackStance() == (byte)6) {
+    			state.getController().setAnimation(ATTACK_L);
+    		} else if (this.getAttackStance() == (byte)5) { 
+    			state.getController().setAnimation(ATTACK_R);
+    		} else if (this.getAttackStance() == (byte)4) { 
+    			state.getController().setAnimation(ATTACK_SMASH);
+    		}   		
+    	} else if (this.isPouncing()) {
+    		if (this.jumpTimer == 240) {
+    			state.getController().setAnimation(LEAP_START);
+    		} else if (state.getController().hasAnimationFinished()) {
+    			state.getController().setAnimation(LEAP);
+    		} else if (this.onGround()) {
+    			state.getController().setAnimation(LEAP_END);
+    		}
+    	} else if (this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (state.isMoving()) {
+            state.getController().setAnimation(WALK);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+
 	@Override
-	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub
-		
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
 	}
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.cache;
 	}
 }
