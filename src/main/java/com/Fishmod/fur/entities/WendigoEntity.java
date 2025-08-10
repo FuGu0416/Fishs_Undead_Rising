@@ -73,6 +73,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     
 	private static final EntityDataAccessor<Boolean> POUNCING = SynchedEntityData.defineId(WendigoEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final int ATTACK_TIMER = 40;
+	public static final int JUMP_TIMER = 240;
 	
 	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
@@ -222,6 +223,8 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	if (id == 4 || id == 5 || id == 6) {
     		this.attackTimer = ATTACK_TIMER;
     		this.AttackStance = id;
+    	} else if (id == 7) {	
+    		this.jumpTimer = JUMP_TIMER;
     	} else {
             super.handleEntityEvent(id);
         }
@@ -259,7 +262,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
  	   public boolean canContinueToUse() {
- 		   return this.leaper.onGround() && this.leaper.jumpTimer >= 234;
+ 		   return this.leaper.onGround() && this.leaper.jumpTimer >= (JUMP_TIMER - 6);
  	   }
  	   
  	   /**
@@ -269,7 +272,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
  		   Vec3 vector3d1 = new Vec3(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
  		   float d0 = this.leaper.distanceTo(this.leapTarget);	
 
- 		   if (this.leaper.jumpTimer == 234) {
+ 		   if (this.leaper.jumpTimer == (JUMP_TIMER - 6)) {
  	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
  	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
  	 		   }
@@ -290,7 +293,8 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
            this.leaper.yBodyRot = this.leaper.getYHeadRot(); 
  		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK.get(), 0.75F, 0.8F);
  		   
- 		   this.leaper.jumpTimer = 240;
+ 		   this.leaper.jumpTimer = JUMP_TIMER;
+ 		   this.leaper.level().broadcastEntityEvent(this.leaper, (byte)7);
  	   }  	
  	   
        /**
@@ -412,9 +416,8 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     			state.getController().setAnimation(ATTACK_SMASH);
     		}   		
     	} else if (this.isPouncing()) {
-    		if (this.jumpTimer == 240) {
+    		if (this.jumpTimer >= (JUMP_TIMER - 8)) {
     			state.getController().setAnimation(LEAP_START);
-    		} else if (state.getController().hasAnimationFinished()) {
     			state.getController().setAnimation(LEAP);
     		} else if (this.onGround()) {
     			state.getController().setAnimation(LEAP_END);
