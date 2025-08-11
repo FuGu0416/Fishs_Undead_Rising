@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "#",
+        "Y"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:scythe_claw"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:famine"
+    }
+}

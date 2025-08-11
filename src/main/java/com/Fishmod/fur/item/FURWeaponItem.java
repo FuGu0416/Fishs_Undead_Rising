@@ -3,6 +3,8 @@ package com.Fishmod.fur.item;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -19,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -39,6 +42,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -138,29 +142,25 @@ public class FURWeaponItem extends SwordItem {
 		return super.useOn(p_195939_1_);
 	}
 	
+    @NotNull
+    @Override
+    public AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player, @NotNull Entity target) {
+    	if (stack.getItem() == FURItemRegistry.REAPERS_SCYTHE.get()) {
+    		return target.getBoundingBox().inflate(2.0D, 0.25D, 2.0D);
+    	} else {
+    		return super.getSweepHitBox(stack, player, target);
+    	}
+    }
+	
     /**
      * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
      * the damage on the stack.
      */
 	@Override
-	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		/*float f = (float) attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-		
-		if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE) {
-            float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
-
-            for (LivingEntity LivingEntity : attacker.level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2.0D, 0.25D, 2.0D))) {
-                if (LivingEntity != attacker && LivingEntity != target && !attacker.isAlliedTo(LivingEntity) && attacker.distanceToSqr(LivingEntity) < 16.0D) {
-                    LivingEntity.knockback(0.4F, (double)MathHelper.sin(attacker.yRot * 0.017453292F), (double)(-MathHelper.cos(attacker.yRot * 0.017453292F)));
-                    LivingEntity.hurt(DamageSource.playerAttack((PlayerEntity) attacker), f3);
-                }
-            }
-
-            attacker.level.playSound((PlayerEntity)null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 1.0F, 1.0F);
-            ((PlayerEntity) attacker).sweepAttack();
-		} else if (attacker instanceof PlayerEntity && stack.getItem() == FURItemRegistry.FAMINE) {
-			((PlayerEntity)attacker).getFoodData().eat(attacker.hasEffect(Effects.HUNGER) ? 2 : 1, 0.0F);
-		} else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {	
+		if (attacker instanceof Player && stack.getItem() == FURItemRegistry.FAMINE.get()) {
+			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
+		}/* else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
 		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));

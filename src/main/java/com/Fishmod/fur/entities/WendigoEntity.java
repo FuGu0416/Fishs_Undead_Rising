@@ -30,6 +30,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
@@ -271,7 +272,8 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
  	   public void tick() {
  		   Vec3 vector3d1 = new Vec3(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
  		   float d0 = this.leaper.distanceTo(this.leapTarget);	
-
+ 		   this.leaper.getLookControl().setLookAt(this.leapTarget, 30.0F, 30.0F);
+ 		  
  		   if (this.leaper.jumpTimer == (JUMP_TIMER - 6)) {
  	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
  	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
@@ -380,29 +382,39 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     		
     		if (((WendigoEntity)this.mob).AttackStance == (byte)4) {
     			f *= 1.5F;
-    			if (target instanceof Player) {
-    				((Player) target).disableShield(true);
-    			}
     		}
-        	
-    		boolean flag = target.hurt(this.mob.damageSources().mobAttack(this.mob), f);
-    		if (flag) {
-    			if (f1 > 0.0F && target instanceof LivingEntity) {
-    				((LivingEntity)target).knockback(f1 * 0.5F, (double)Math.sin(this.mob.getYRot() * ((float)Math.PI / 180F)), (double)(-Math.cos(this.mob.getYRot() * ((float)Math.PI / 180F))));
-    				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-    			}
+    		
+			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(1.5D))) {
+                if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
+                	if (!(entitylivingbase instanceof TamableAnimal && ((TamableAnimal) entitylivingbase).isOwnedBy(this.mob))) {
+                		boolean flag = entitylivingbase.hurt(this.mob.damageSources().mobAttack(this.mob), f);
+                		            			            			
+                		if (flag) {
+                			if (entitylivingbase instanceof Player) {
+                				((Player) entitylivingbase).disableShield(true);
+                			}
+                			
+                			if (f1 > 0.0F && entitylivingbase instanceof LivingEntity) {
+                				((LivingEntity)entitylivingbase).knockback(f1 * 0.5F, (double)Math.sin(this.mob.getYRot() * ((float)Math.PI / 180F)), (double)(-Math.cos(this.mob.getYRot() * ((float)Math.PI / 180F))));
+                				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+                			}
 
-    			this.mob.doEnchantDamageEffects(this.mob, target);
-    			this.mob.setLastHurtMob(target);
-    			
-                if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
-                	target.setSecondsOnFire(2 * (int)f2);
+                			this.mob.doEnchantDamageEffects(this.mob, entitylivingbase);
+                			this.mob.setLastHurtMob(entitylivingbase);
+                			
+                            if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
+                            	entitylivingbase.setSecondsOnFire(2 * (int)f2);
+                            }
+                            
+                            if (entitylivingbase instanceof LivingEntity) {
+                                ((LivingEntity)entitylivingbase).addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20 * (int)f2, 4));
+                            }
+                		}   		         
+                	}
                 }
-                
-                if (target instanceof LivingEntity) {
-                    ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20 * (int)f2, 4));
-                }
-    		}   		         
+            }    		
+
+			this.mob.level().playSound((Player)null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, this.mob.getSoundSource(), 1.0F, 1.0F);           		
     	}
 	}
 

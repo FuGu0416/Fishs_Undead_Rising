@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##X",
+        "# Y",
+        "  Y"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:scythe_claw"
+        },
+        "X": {
+            "item": "fur:hatred_shard"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:reapers_scythe"
+    }
+}
