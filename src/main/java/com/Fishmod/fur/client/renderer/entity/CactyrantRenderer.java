@@ -4,7 +4,6 @@ import com.Fishmod.fur.entities.CactyrantEntity;
 import com.Fishmod.fur.client.model.CactyrantModel;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,8 +21,4 @@ public class CactyrantRenderer extends GeoEntityRenderer<CactyrantEntity> {
     public ResourceLocation getTextureLocation(CactyrantEntity entity) {
     	return super.getTextureLocation(entity);
     }    
-    
-    protected int getBlockLightLevel(CactyrantEntity p_225624_1_, BlockPos p_225624_2_) {
-        return 8;
-    }
 }
