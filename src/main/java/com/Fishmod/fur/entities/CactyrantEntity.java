@@ -317,6 +317,13 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     		this.setSkin(1);
     	}
 		
+		// grow fruit(10%) & flowing(40%) when spawned
+		if (this.random.nextDouble() < 0.1D) {
+			this.setGrowingStage(2);
+		} else if (this.random.nextDouble() < 0.5D) {
+			this.setGrowingStage(1);
+		}
+		
         return livingdata;
     }
 
