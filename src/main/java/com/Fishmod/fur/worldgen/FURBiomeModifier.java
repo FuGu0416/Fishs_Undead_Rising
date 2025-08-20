@@ -28,6 +28,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_SWARMER = registerKey("add_swarmer");
 	public static final ResourceKey<BiomeModifier> ADD_CACTYRANT = registerKey("add_cactyrant");
 	public static final ResourceKey<BiomeModifier> ADD_WENDIGO = registerKey("add_wendigo");
+	public static final ResourceKey<BiomeModifier> ADD_SCARECROW = registerKey("add_scarecrow");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -51,7 +52,9 @@ public class FURBiomeModifier {
         addSpawn(context, ADD_CACTYRANT, biomes.getOrThrow(FURTags.HAS_CACTYRANT),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTYRANT.get(), 8, 1, 2));    
         addSpawn(context, ADD_WENDIGO, biomes.getOrThrow(BiomeTags.IS_TAIGA),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));               
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));     
+        addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));   
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

@@ -1,7 +1,7 @@
 package com.Fishmod.fur.client.renderer.item;
 
 import com.Fishmod.fur.client.model.armor.MoltenArmorModel;
-import com.Fishmod.fur.client.model.layered.FURModelLayers;
+import com.Fishmod.fur.client.model.layer.FURModelLayers;
 import com.Fishmod.fur.item.MoltenArmorItem;
 
 import net.minecraft.client.Minecraft;

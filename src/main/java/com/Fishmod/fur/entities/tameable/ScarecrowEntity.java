@@ -51,7 +51,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -66,16 +66,28 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ScarecrowEntity extends FURTameableEntity implements IAggressive, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	
+
+    public static final RawAnimation IDLE = RawAnimation.begin().thenPlay("scarecrow.model.idle");
+    private static final RawAnimation SIT = RawAnimation.begin().thenPlay("scarecrow.model.sit");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("scarecrow.model.walking");
+    private static final RawAnimation ATTACK_0 = RawAnimation.begin().thenPlay("scarecrow.model.attack_0");
+    private static final RawAnimation ATTACK_1 = RawAnimation.begin().thenPlay("scarecrow.model.attack_1");
+    private static final RawAnimation ATTACK_SWIPE = RawAnimation.begin().thenPlay("scarecrow.model.attack_swipe");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE =  SynchedEntityData.defineId(ScarecrowEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_COLLAR_COLOR = SynchedEntityData.defineId(ScarecrowEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 15;
+	public static final int ATTACK_TIMER = 25;
 	private static final int RANGE = 5;
 	
 	private int attackTimer;
@@ -87,13 +99,13 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 	private RandomLookAroundGoal look;
 	
 	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+        super(p_i48549_1_, worldIn);        
     }
 	
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-        this.entityData.define(SKIN_TYPE, Integer.valueOf(this.random.nextInt(2)));
+        this.entityData.define(SKIN_TYPE, 0);
         this.entityData.define(DATA_COLLAR_COLOR, DyeColor.BROWN.getId());
 	}
 	
@@ -127,7 +139,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     }
     
     public static boolean checkScarecrowSpawnRules(EntityType<? extends ScarecrowEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());
     }
     
     @Override
@@ -158,6 +170,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     public void tick() {
     	if (this.attackTimer > 0) {
     		--this.attackTimer;
+    		this.setDeltaMovement(Vec3.ZERO);
     	}
 
     	if (this.cleaveTimer > 0) {
@@ -229,7 +242,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
-
+    	
     	if (this.isTame() && this.isOwnedBy(player)) {
 	    	if (item instanceof DyeItem) {          
 	            DyeColor dyecolor = ((DyeItem)item).getDyeColor();
@@ -243,7 +256,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 	            	return InteractionResult.CONSUME;
 	            }
 	            
-	    	} else if (item instanceof SwordItem) {
+	    	} else if (item instanceof TieredItem) {
 	    		if (!this.getMainHandItem().isEmpty()) {
 	    			this.spawnAtLocation(this.getMainHandItem());
 	    		}
@@ -351,6 +364,9 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     		this.level.addFreshEntity(crowpet);
     	}*/
         
+        this.setSkin(Integer.valueOf(this.random.nextInt(2)));
+        this.setLeftHanded(true);
+        
         return livingdata;
     }
     
@@ -389,7 +405,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4 || id == 5) {
+    	if (id == 4 || id == 5 || id == 6) {
             this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
         } else {
@@ -523,13 +539,19 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     	}
     	
     	protected int atkTimerHit() {
-    		return 5;
+    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4) {
+    			return 12;
+    		} else {
+    			return 5;
+    		}  		
     	}
     	
     	protected byte atkTimerEvent() {
 	        if(((ScarecrowEntity)this.mob).cleaveTimer == 0) {
-	        	((ScarecrowEntity)this.mob).AttackStance = (byte)5;
+	        	((ScarecrowEntity)this.mob).AttackStance = (byte)6;
 	        	((ScarecrowEntity)this.mob).cleaveTimer = 140;
+	        } else if (this.mob.getRandom().nextBoolean()) {
+	        	((ScarecrowEntity)this.mob).AttackStance = (byte)5;
 	        } else {
 	        	((ScarecrowEntity)this.mob).AttackStance = (byte)4;
 	        }
@@ -540,7 +562,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     	protected void dmgEvent(LivingEntity target) {  		
     		this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
     		
-    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4) {
+    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4 || ((ScarecrowEntity)this.mob).AttackStance == (byte)5) {
     			super.dmgEvent(target);
     		} else {               
     			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {
@@ -557,11 +579,32 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
             return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + p_179512_1_.getBbWidth());
         }
 	}
+    
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
+    		if (this.AttackStance == (byte)4) {
+				state.getController().setAnimation(ATTACK_0);			
+    		} else if (this.AttackStance == (byte)5) { 
+    			state.getController().setAnimation(ATTACK_1);
+    		} else if (this.AttackStance == (byte)6) { 
+    			state.getController().setAnimation(ATTACK_SWIPE);
+    		}   		
+    	} else if (this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (state.isMoving()) {
+            state.getController().setAnimation(WALK);
+    	} else if (this.isInSittingPose()) {
+    		state.getController().setAnimation(SIT);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub
-		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
 	}
 
 	@Override

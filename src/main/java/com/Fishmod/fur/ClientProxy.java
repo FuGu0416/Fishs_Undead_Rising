@@ -4,6 +4,7 @@ import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
+import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
@@ -28,7 +29,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.SWARMER.get(), SwarmerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTYRANT.get(), CactyrantRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.WENDIGO.get(), WendigoRenderer::new);
-    	
+    	EntityRenderers.register(FUREntityRegistry.SCARECROW.get(), ScarecrowRenderer::new);
+        
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
@@ -45,7 +47,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SEAGULL, manager -> new RavenRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PTERA, manager -> new PteraRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.VESPA, manager -> new VespaRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SCARECROW, manager -> new ScarecrowRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.VESPACOCOON, manager -> new VespaCocoonRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA, manager -> new SwarmerRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));

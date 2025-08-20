@@ -1,4 +1,4 @@
-package com.Fishmod.fur.client.model.layered;
+package com.Fishmod.fur.client.model.layer;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.client.model.armor.MoltenArmorModel;
