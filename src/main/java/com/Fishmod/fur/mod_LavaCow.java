@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.Fishmod.fur.client.model.layer.FURModelLayers;
 import com.Fishmod.fur.events.EventBusHandler;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -62,7 +63,8 @@ public class mod_LavaCow {
         //ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
         FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);
-        FURItemRegistry.DEF_REG.register(eventBus);
+        FURBlockRegistry.DEF_REG.register(eventBus);
+        FURItemRegistry.DEF_REG.register(eventBus);       
         FURSoundRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);

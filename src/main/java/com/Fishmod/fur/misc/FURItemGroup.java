@@ -2,6 +2,7 @@ package com.Fishmod.fur.misc;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURBlockRegistry;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -33,6 +34,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM.get());
             	output.accept(FURItemRegistry.ECTOPLASM_MASS.get());
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
+            	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
             	output.accept(FURItemRegistry.MOOTENHEART.get());

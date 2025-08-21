@@ -46,6 +46,11 @@
 					]
 				},
 				{
+					"name": "handle_r",
+					"parent": "arm_r_1",
+					"pivot": [-8, 14.6, 0.3]
+				},
+				{
 					"name": "shoulder_r",
 					"parent": "arm_r_0",
 					"pivot": [-7, 34.1, 0.3],
@@ -71,8 +76,13 @@
 					]
 				},
 				{
-					"name": "scepter_base",
+					"name": "handle_l",
 					"parent": "arm_l_1",
+					"pivot": [7.5, 14.6, 0.3]
+				},
+				{
+					"name": "scepter_base",
+					"parent": "handle_l",
 					"pivot": [7.5, 14.6, 0.3],
 					"cubes": [
 						{"origin": [7, 14.1, -17.7], "size": [1, 1, 30], "uv": [0, 33]}

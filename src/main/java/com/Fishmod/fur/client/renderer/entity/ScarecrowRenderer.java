@@ -27,8 +27,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 @OnlyIn(Dist.CLIENT)
 public class ScarecrowRenderer extends GeoEntityRenderer<ScarecrowEntity> {
 	// Pre-define our bone names for easy and consistent reference later
-	private static final String LEFT_HAND = "arm_l_1";
-	private static final String RIGHT_HAND = "arm_r_1";
+	private static final String LEFT_HAND = "handle_l";
+	private static final String RIGHT_HAND = "handle_r";
 	
 	protected ItemStack mainHandItem;
 	protected ItemStack offhandItem;
@@ -69,16 +69,16 @@ public class ScarecrowRenderer extends GeoEntityRenderer<ScarecrowEntity> {
  			protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, ScarecrowEntity animatable,
  											  MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
  				if (stack == ScarecrowRenderer.this.mainHandItem) {
- 					poseStack.mulPose(Axis.XP.rotationDegrees(-100f));
+ 					poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
 
  					if (stack.getItem() instanceof ShieldItem)
  						poseStack.translate(0, 0.125, -0.25);
  					
  					poseStack.scale(1.33F, 1.33F, 1.33F);
- 					poseStack.translate(0.0F, 0.15F, -0.5F);
+ 					poseStack.translate(0.0F, 0.15F, 0.0F);
  					
  				} else if (stack == ScarecrowRenderer.this.offhandItem) {
- 					poseStack.mulPose(Axis.XP.rotationDegrees(-100f));
+ 					poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
 
  					if (stack.getItem() instanceof ShieldItem) {
  						poseStack.translate(0, 0.125, 0.25);
@@ -86,7 +86,7 @@ public class ScarecrowRenderer extends GeoEntityRenderer<ScarecrowEntity> {
  					}
  					
  					poseStack.scale(1.33F, 1.33F, 1.33F);
- 					poseStack.translate(0.0F, 0.15F, -0.5F);
+ 					poseStack.translate(0.0F, 0.15F, 0.0F);
  				}
 
  				super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
