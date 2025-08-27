@@ -3,6 +3,8 @@ package com.Fishmod.fur.init;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.block.ScarecrowHeadBlock;
+import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -18,6 +20,10 @@ public class FURBlockRegistry {
 	public static final DeferredRegister<Block> DEF_REG = DeferredRegister.create(ForgeRegistries.BLOCKS, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<Block> ECTOPLASM_BLOCK = registerBlocks("ectoplasm_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).speedFactor(0.4F).noOcclusion().sound(SoundType.NETHER_BRICKS)));
+	public static final RegistryObject<Block> SCARECROWHEAD_COMMON = registerBlocks("scarecrowhead_common", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_COMMON, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
+	public static final RegistryObject<Block> SCARECROWHEAD_STRAW = registerBlocks("scarecrowhead_straw", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_STRAW, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
+	public static final RegistryObject<Block> SCARECROWHEAD_PLAGUE = registerBlocks("scarecrowhead_plague", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_PLAGUE, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
+	
 	/*public static final Block GLOWSHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 15;
 	   }), "mod_lavacow:glowshroom");
@@ -36,9 +42,6 @@ public class FURBlockRegistry {
 	      return 1;
 	   }), "mod_lavacow:veil_shroom");	
 	public static final Block TOMBSTONE = new TombStoneBlock(AbstractBlock.Properties.of(Material.STONE).randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion()).setRegistryName("mod_lavacow:tombstone");
-	public static final Block SCARECROWHEAD_COMMON = new ScarecrowHeadBlock(0, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_common");
-	public static final Block SCARECROWHEAD_STRAW = new ScarecrowHeadBlock(1, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_straw");
-	public static final Block SCARECROWHEAD_PLAGUE = new ScarecrowHeadBlock(2, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_plague");
 	public static final Block CACTOID_SPROUT = new CactoidSproutBlock(AbstractBlock.Properties.of(Material.PLANT).randomTicks().strength(0.4F).sound(SoundType.WOOL).noOcclusion()).setRegistryName("mod_lavacow:cactoid_sprout");
 	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
 	      return 15;
@@ -47,7 +50,11 @@ public class FURBlockRegistry {
 	
 	private static RegistryObject<Block> registerBlocks(String name, Supplier<Block> block) {
         RegistryObject<Block> blockObj = DEF_REG.register(name, block);
-        FURItemRegistry.DEF_REG.register(name, () -> new BlockItem(blockObj.get(), new Item.Properties()));
+        if (name.contains("scarecrowhead_")) {
+        	FURItemRegistry.DEF_REG.register(name, () -> new ScarecrowHeadItem(blockObj.get(), new Item.Properties()));
+        } else {
+        	FURItemRegistry.DEF_REG.register(name, () -> new BlockItem(blockObj.get(), new Item.Properties()));
+        }
         return blockObj;		
 	}
 }

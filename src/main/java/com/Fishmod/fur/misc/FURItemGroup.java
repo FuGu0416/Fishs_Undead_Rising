@@ -53,6 +53,9 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
+            	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
+            	output.accept(FURBlockRegistry.SCARECROWHEAD_STRAW.get());
+            	output.accept(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

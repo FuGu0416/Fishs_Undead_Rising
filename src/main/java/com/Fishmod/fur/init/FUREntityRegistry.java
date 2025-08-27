@@ -20,10 +20,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+@Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FUREntityRegistry {
 	public static final DeferredRegister<EntityType<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, mod_LavaCow.MODID);
 	
@@ -38,6 +40,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<WendigoEntity>> WENDIGO = DEF_REG.register("wendigo", () -> (EntityType<WendigoEntity>) EntityType.Builder.of(WendigoEntity::new, MobCategory.MONSTER).sized(1.6F, 2.6F).setTrackingRange(8).build("wendigo"));
 	public static final RegistryObject<EntityType<ScarecrowEntity>> SCARECROW = DEF_REG.register("scarecrow", () -> (EntityType<ScarecrowEntity>) EntityType.Builder.of(ScarecrowEntity::new, MobCategory.MONSTER).sized(0.8F, 3.0F).setTrackingRange(8).build("scarecrow"));
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	
 	/*public static final EntityType<MycosisEntity> MYCOSIS = registerEntity(EntityType.Builder.of(MycosisEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mycosis");

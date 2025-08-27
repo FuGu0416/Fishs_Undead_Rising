@@ -10,10 +10,6 @@ public class CommonProxy {
     public void clientInit() {
     }
     
-    /*public Item.Properties setupISTER(Item.Properties group) {
-        return group;
-    }*/
-
     public Player getClientSidePlayer() {
         return null;
     }
@@ -25,6 +21,10 @@ public class CommonProxy {
     }*/
 
     public Object getArmorProperties() {
+        return null;
+    }
+    
+    public Object getISTERProperties() {
         return null;
     }
 

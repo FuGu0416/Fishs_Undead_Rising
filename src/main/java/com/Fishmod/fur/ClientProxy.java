@@ -1,5 +1,7 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.client.renderer.FURItemRenderProperties;
+import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
@@ -9,8 +11,10 @@ import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
+import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 
 public class ClientProxy extends CommonProxy {
@@ -32,7 +36,15 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.SCARECROW.get(), ScarecrowRenderer::new);
         
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
+
+    	/*BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), ScarecrowHeadTileEntityRenderer::new);
+    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), ScarecrowHeadTileEntityRenderer::new);
+    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_PLAGUE.get(), ScarecrowHeadTileEntityRenderer::new);*/
     	
+    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
+    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
+    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_PLAGUE.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(2, manager));
+        
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MYCOSIS, manager -> new MycosisRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));
@@ -103,11 +115,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK, RenderType.translucent());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK, RenderType.solid());
-        
-        ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_COMMON, manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
-        ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_STRAW, manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
-        ClientRegistry.bindTileEntityRenderer(FURTileEntityRegistry.SCARECROWHEAD_PLAGUE, manager -> new ScarecrowHeadTileEntityRenderer<>(2, manager));
-        
+                
         ItemModelsProperties.register(FURItemRegistry.VESPA_SHIELD, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
             return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
         });*/
@@ -118,14 +126,10 @@ public class ClientProxy extends CommonProxy {
         return new FURArmorRenderProperties();
     }
     
-    /*public Item.Properties setupISTER(Item.Properties group) {
-        return group.setISTER(ClientProxy::getTEISR);
-    }*/
-
-    /*@OnlyIn(Dist.CLIENT)
-    public static Callable<ItemStackTileEntityRenderer> getTEISR() {
-        return FURItemstackRenderer::new;
-    }*/
+    @Override
+    public Object getISTERProperties() {
+        return new FURItemRenderProperties();
+    }
     
     /*public void setupParticles() {
     	Minecraft instance = Minecraft.getInstance();

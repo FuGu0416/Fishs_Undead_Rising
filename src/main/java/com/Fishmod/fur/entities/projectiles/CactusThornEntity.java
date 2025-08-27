@@ -17,6 +17,7 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
 public class CactusThornEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
+	@SuppressWarnings("unchecked")
 	public CactusThornEntity(EntityType<?> p_i50158_1_, Level worldIn) {
 		super((EntityType<? extends CactusThornEntity>) p_i50158_1_, worldIn);
 	}
