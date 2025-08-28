@@ -78,7 +78,7 @@ public class ScarecrowModel extends GeoModel<ScarecrowEntity> {
 
         if (animationState.isCurrentAnimation(ScarecrowEntity.IDLE)) {
 	        if (head != null) {
-	            head.setRotX(-24.56F + entityData.headPitch() * Mth.DEG_TO_RAD);
+	            head.setRotX(-24.56F + (entityData.headPitch() * Mth.DEG_TO_RAD));
 	            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
 	        }
 	        
@@ -88,7 +88,7 @@ public class ScarecrowModel extends GeoModel<ScarecrowEntity> {
 	        }
 	        
 	        if (head2 != null) {
-	            head2.setRotX(-61.08F + entityData.headPitch() * Mth.DEG_TO_RAD);
+	            head2.setRotX(-62.0F + (entityData.headPitch() * Mth.DEG_TO_RAD));
 	            head2.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
 	        }
         }

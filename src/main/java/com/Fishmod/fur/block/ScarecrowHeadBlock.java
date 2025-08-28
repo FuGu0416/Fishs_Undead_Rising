@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ScarecrowHeadBlock extends BaseEntityBlock implements Equipable {
-	private final ScarecrowHeadBlock.Types type;
+	public final ScarecrowHeadBlock.Types type;
 	public static final int MAX = RotationSegment.getMaxSegmentIndex();
 	private static final int ROTATIONS = MAX + 1;
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;

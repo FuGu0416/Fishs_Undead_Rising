@@ -56,6 +56,8 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_STRAW.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get());
+            	output.accept(FURItemRegistry.DISEASED_WHEAT.get());
+            	output.accept(FURItemRegistry.FEATHER_BLACK.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -499,9 +500,9 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     protected ResourceLocation getDefaultLootTable() {
     	switch(this.getSkin()) {
     		case 1:
-    			return new ResourceLocation("mod_lavacow", "entities/scarecrow1");
+    			return new ResourceLocation(mod_LavaCow.MODID, "entities/scarecrow1");
     		case 2:
-    			return new ResourceLocation("mod_lavacow", "entities/scarecrow2");
+    			return new ResourceLocation(mod_LavaCow.MODID, "entities/scarecrow2");
     		case 0:
     		default:
     			return super.getDefaultLootTable();

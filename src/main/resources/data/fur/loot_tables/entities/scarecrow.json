@@ -1,0 +1,110 @@
+{
+    "pools": [
+        {
+            "name": "fur:scarecrow",
+            "rolls": 4,
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:stick",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:wheat",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "fur:cursed_fabric",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:scarecrow",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "fur:scarecrowhead_common",
+					"conditions":[
+                        {
+
+                            "condition": "minecraft:random_chance_with_looting",
+                            "chance": 0.1,
+                            "looting_multiplier": 0.05
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "conditions":[
+                {
+                    "condition":"random_chance_with_looting",
+                    "chance":0.05,
+                    "looting_multiplier":0.02
+                }
+            ],
+            "name":"fur:scarecrow",
+            "rolls":1,
+            "entries":[
+                {
+                    "type":"item",
+                    "name":"fur:undyingheart",
+                    "weight":1
+                }
+            ]
+        }
+    ]
+}

@@ -121,7 +121,7 @@ public class FURTameableEntity extends TamableAnimal {
 		this.state = FURTameableEntity.State.SITTING;		
 		this.setInSittingPose(true);
 		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.mod_lavacow.sitting", this.getName()), true);
+			playerIn.displayClientMessage(Component.translatable("command.fur.sitting", this.getName()), true);
     }
     
     public void doFollowCommand(Player playerIn) {
@@ -132,7 +132,7 @@ public class FURTameableEntity extends TamableAnimal {
 		this.state = FURTameableEntity.State.FOLLOWING;
 		this.setInSittingPose(false);
 		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.mod_lavacow.following", this.getName()), true);
+			playerIn.displayClientMessage(Component.translatable("command.fur.following", this.getName()), true);
     }
     
     public void doWanderCommand(Player playerIn) {
@@ -143,7 +143,7 @@ public class FURTameableEntity extends TamableAnimal {
 		this.state = FURTameableEntity.State.WANDERING;
 		this.setInSittingPose(false);
 		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.mod_lavacow.wandering", this.getName()), true);
+			playerIn.displayClientMessage(Component.translatable("command.fur.wandering", this.getName()), true);
     }
     
     protected Goal wanderGoal() {
