@@ -9,6 +9,7 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
 import com.Fishmod.fur.worldgen.FURStructureModifier;
@@ -68,6 +69,7 @@ public class mod_LavaCow {
         FURBlockEntityRegistry.DEF_REG.register(eventBus);
         FURItemRegistry.DEF_REG.register(eventBus);       
         FURSoundRegistry.DEF_REG.register(eventBus);
+        FURParticleRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
         EventBusHandler.create(eventBus);       
@@ -95,11 +97,7 @@ public class mod_LavaCow {
     /*@SubscribeEvent
     public void onStructuresLoadFromJSON(StructureSpawnListGatherEvent event) {
         //FURWorldRegistry.onStructuresLoad(event);
-    }*/
-    
-    /*private void setupParticleEvent(ParticleFactoryRegisterEvent event) {
-        PROXY.setupParticles();
-    }*/
+    }*/   
 
     private void setup(final FMLCommonSetupEvent event) {
     	/*event.enqueueWork(() -> {

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "fur:diseased_hay_block"
+    }
+  ],
+  
+  "result": {
+    "item": "fur:diseased_wheat",
+    "count": 9
+  }
+}

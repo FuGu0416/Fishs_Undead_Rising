@@ -32,7 +32,9 @@ public class UndyingHeartItem extends FURItem {
 		Player player = p_195939_1_.getPlayer();
 		ItemStack itemstack = p_195939_1_.getItemInHand();
 		
-		if((worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_COMMON.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_STRAW.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get())) && worldIn.getBlockState(pos.below()).getBlock().equals(Blocks.HAY_BLOCK) && worldIn.getBlockState(pos).getBlock().equals(Blocks.HAY_BLOCK)) {
+		if((worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_COMMON.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_STRAW.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get())) 
+				&& (worldIn.getBlockState(pos.below()).getBlock().equals(Blocks.HAY_BLOCK) || worldIn.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get())) 
+				&& (worldIn.getBlockState(pos).getBlock().equals(Blocks.HAY_BLOCK) || worldIn.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get()))) {
 			Types type = ((ScarecrowHeadBlock)worldIn.getBlockState(pos.above()).getBlock()).type;
 			
 	        if (!player.isCreative()) {

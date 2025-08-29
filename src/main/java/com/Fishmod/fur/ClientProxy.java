@@ -1,5 +1,8 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.client.particle.FearParticle;
+import com.Fishmod.fur.client.particle.GastroAcidParticle;
+import com.Fishmod.fur.client.particle.LocustSwarmParticle;
 import com.Fishmod.fur.client.renderer.FURItemRenderProperties;
 import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
@@ -12,15 +15,29 @@ import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURParticleRegistry;
 
+import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
     public void commonInit(){
-    	//IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     	//FURKeybindRegistry.init();
+    	bus.addListener(ClientProxy::setupParticles);
     }
     
     public void clientInit() {
@@ -36,10 +53,6 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.SCARECROW.get(), ScarecrowRenderer::new);
         
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
-
-    	/*BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), ScarecrowHeadTileEntityRenderer::new);
-    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), ScarecrowHeadTileEntityRenderer::new);
-    	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_PLAGUE.get(), ScarecrowHeadTileEntityRenderer::new);*/
     	
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
@@ -103,20 +116,20 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BASIC_BOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL_ARROW, manager -> new FURArrowRenderer(manager, 0));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FANG_ARROW, manager -> new FURArrowRenderer(manager, 1));
+        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FANG_ARROW, manager -> new FURArrowRenderer(manager, 1));*/
         
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
+        /*RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM, RenderType.solid());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP, RenderType.translucent());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.BLOODTOOTH_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.CORDY_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.VEIL_SHROOM, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK, RenderType.translucent());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK, RenderType.solid());
+        RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());*/
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());
                 
-        ItemModelsProperties.register(FURItemRegistry.VESPA_SHIELD, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
+        /*ItemModelsProperties.register(FURItemRegistry.VESPA_SHIELD, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
             return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
         });*/
     }
@@ -131,14 +144,13 @@ public class ClientProxy extends CommonProxy {
         return new FURItemRenderProperties();
     }
     
-    /*public void setupParticles() {
-    	Minecraft instance = Minecraft.getInstance();
-		instance.particleEngine.register(FURParticleRegistry.GASTRO_ACID, GastroAcidParticle.GastroAcidFactory::new);
-		instance.particleEngine.register(FURParticleRegistry.LOCUST_SWARM, LocustSwarmParticle.Factory::new);
-		instance.particleEngine.register(FURParticleRegistry.SLUDGE_JET, GastroAcidParticle.SludgeJetFactory::new);
-		instance.particleEngine.register(FURParticleRegistry.GHOST_FLAME, FlameParticle.Factory::new);
-		instance.particleEngine.register(FURParticleRegistry.WITHER_FLAME, FlameParticle.Factory::new);
-		instance.particleEngine.register(FURParticleRegistry.SAP_JET, GastroAcidParticle.SapJetFactory::new);
-		instance.particleEngine.register(FURParticleRegistry.FEAR, FearParticle.Factory::new);
-    }*/
+    public static void setupParticles(RegisterParticleProvidersEvent registry) {
+		registry.registerSpriteSet(FURParticleRegistry.GASTRO_ACID.get(), GastroAcidParticle.GastroAcidFactory::new);
+		registry.registerSpriteSet(FURParticleRegistry.LOCUST_SWARM.get(), LocustSwarmParticle.Factory::new);
+		registry.registerSpriteSet(FURParticleRegistry.SLUDGE_JET.get(), GastroAcidParticle.SludgeJetFactory::new);
+		registry.registerSpriteSet(FURParticleRegistry.GHOST_FLAME.get(), FlameParticle.Provider::new);
+		registry.registerSpriteSet(FURParticleRegistry.WITHER_FLAME.get(), FlameParticle.Provider::new);
+		registry.registerSpriteSet(FURParticleRegistry.SAP_JET.get(), GastroAcidParticle.SapJetFactory::new);
+		registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
+    }
 }

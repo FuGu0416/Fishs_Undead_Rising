@@ -1,6 +1,7 @@
 package com.Fishmod.fur;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 
 public class CommonProxy {
 	
@@ -34,7 +35,7 @@ public class CommonProxy {
     public void updateBiomeVisuals(int x, int z) {
     }
 
-    public void setupParticles() {
+    public static void setupParticles(RegisterParticleProvidersEvent registry) {
     }
     
     /*public void initNetwork() {
