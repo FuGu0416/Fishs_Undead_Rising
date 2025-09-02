@@ -52,9 +52,9 @@ public class MoltenArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		if (slot == EquipmentSlot.LEGS) {
-			return mod_LavaCow.MODID + ":textures/armors/molten/armor_molten_legs.png";
+			return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_2.png";
 		} else {
-			return mod_LavaCow.MODID + ":textures/armors/molten/armor_molten.png";
+			return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_1.png";
 		}
 	}
 

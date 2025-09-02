@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,8 +22,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ChitinArmorItem extends ArmorItem {	
 	public ChitinArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_) {
 		super(FURArmorMaterial.CHITIN, slot, p_i48534_3_);
-
-
+	}
+	
+	@Override
+	public boolean isValidRepairItem(ItemStack armour, ItemStack material) {
+		return material.getItem() == FURItemRegistry.CHITIN.get();
 	}
 	
 	@Override
@@ -37,7 +41,7 @@ public class ChitinArmorItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(Component.translatable("item.fur.chitinarmor.desc0").withStyle(ChatFormatting.YELLOW));
-		tooltip.add(Component.translatable("item.fur.chitinarmor.desc1").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.chitin_armor.desc0").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.chitin_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}
 }

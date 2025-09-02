@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:ectoplasm_ingot"
+        },
+        "X": {
+            "item": "fur:soulfireheart"
+        }
+    },
+    "result": {
+        "item": "fur:ghostly_armor_chestplate"
+    }
+}

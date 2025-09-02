@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:chitin"
+        }
+    },
+    "result": {
+        "item": "fur:chitin_armor_helmet"
+    }
+}

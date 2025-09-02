@@ -65,7 +65,7 @@ public class GhostlyArmorItem extends ArmorItem {
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(Component.translatable("item.fur.ghostlyarmor.desc0").withStyle(ChatFormatting.YELLOW));
-		tooltip.add(Component.translatable("item.fur.ghostlyarmor.desc1").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.ghostly_armor.desc0").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.ghostly_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}
 }

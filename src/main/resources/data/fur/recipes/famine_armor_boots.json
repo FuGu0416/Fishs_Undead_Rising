@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "J J"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:foul_hide"
+        },
+        "J": {
+            "item": "fur:scythe_claw"
+        }
+    },
+    "result": {
+        "item": "fur:famine_armor_boots"
+    }
+}

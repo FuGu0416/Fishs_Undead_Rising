@@ -1,6 +1,7 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class FamineArmorItem extends ArmorItem {	
 	public FamineArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_) {
@@ -29,20 +31,25 @@ public class FamineArmorItem extends ArmorItem {
 	public boolean isValidRepairItem(ItemStack armour, ItemStack material) {
 		return material.getItem() == FURItemRegistry.FOUL_HIDE.get();
 	}
+	
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) mod_LavaCow.PROXY.getArmorProperties());
+    }
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		if (slot == EquipmentSlot.LEGS) {
-			return mod_LavaCow.MODID + ":textures/armors/famine/armor_famine_legs.png";
+			return mod_LavaCow.MODID + ":textures/armors/famine/famine_layer_2.png";
 		} else {
-			return mod_LavaCow.MODID + ":textures/armors/famine/armor_famine.png";
+			return mod_LavaCow.MODID + ":textures/armors/famine/famine_layer_1.png";
 		}
 	}
 	
 	@Override
     @OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(Component.translatable("item.fur.faminearmor.desc0").withStyle(ChatFormatting.YELLOW));
-		tooltip.add(Component.translatable("item.fur.faminearmor.desc1").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.famine_armor.desc0").withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("item.fur.famine_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}
 }

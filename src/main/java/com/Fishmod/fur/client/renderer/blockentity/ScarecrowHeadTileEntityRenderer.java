@@ -21,9 +21,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ScarecrowHeadTileEntityRenderer<T extends ScarecrowHeadTileEntity> implements BlockEntityRenderer<T> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/scarecrow/scarecrow.png"),
-			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/scarecrow/scarecrow1.png"),
-			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/scarecrow/scarecrow2.png")
+			new ResourceLocation(mod_LavaCow.MODID, "textures/armors/scarecrow/scarecrow.png"),
+			new ResourceLocation(mod_LavaCow.MODID, "textures/armors/scarecrow/scarecrow1.png"),
+			new ResourceLocation(mod_LavaCow.MODID, "textures/armors/scarecrow/scarecrow2.png")
 	};
 	private EntityModel<Entity> modelbase;
 	private ResourceLocation texture;

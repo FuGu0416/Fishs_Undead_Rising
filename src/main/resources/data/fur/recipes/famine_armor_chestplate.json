@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "J J",
+        "#X#",
+        "#D#"
+    ],
+    "key": {
+		"J": {
+            "item": "fur:scythe_claw"
+        },
+        "#": {
+            "item": "fur:foul_hide"
+        },
+        "X": {
+            "item": "fur:acidicheart"
+        },
+        "D": {
+            "item": "fur:intestine"
+        }
+    },
+    "result": {
+        "item": "fur:famine_armor_chestplate"
+    }
+}

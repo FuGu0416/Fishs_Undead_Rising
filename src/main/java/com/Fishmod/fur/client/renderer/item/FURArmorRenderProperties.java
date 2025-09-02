@@ -1,7 +1,11 @@
 package com.Fishmod.fur.client.renderer.item;
 
+import com.Fishmod.fur.client.model.armor.FamineArmorModel;
 import com.Fishmod.fur.client.model.armor.MoltenArmorModel;
 import com.Fishmod.fur.client.model.layer.FURModelLayers;
+import com.Fishmod.fur.item.ChitinArmorItem;
+import com.Fishmod.fur.item.FamineArmorItem;
+import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 
 import net.minecraft.client.Minecraft;
@@ -15,12 +19,16 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 public class FURArmorRenderProperties implements IClientItemExtensions {
 	private static boolean init;
 	public static MoltenArmorModel<LivingEntity> MOLTEN_ARMOR_MODEL;
-	protected static HumanoidModel<LivingEntity> INNER_ARMOR_MODEL;
+	public static FamineArmorModel<LivingEntity> FAMINE_ARMOR_MODEL;
+	protected static HumanoidModel<LivingEntity> OUTER_ARMOR_MODEL;
+	protected static HumanoidModel<LivingEntity> INNER_ARMOR_MODEL;	
 	
     public static void initializeModels() {
         init = true;
-        INNER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
         MOLTEN_ARMOR_MODEL = new MoltenArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(FURModelLayers.MOLTEN_ARMOR));
+        FAMINE_ARMOR_MODEL = new FamineArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(FURModelLayers.FAMINE_ARMOR));
+        OUTER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
+        INNER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));        
     }
     
     @Override
@@ -34,6 +42,24 @@ public class FURArmorRenderProperties implements IClientItemExtensions {
         		return INNER_ARMOR_MODEL;
         	} else {
         		return MOLTEN_ARMOR_MODEL;
+        	}
+        } else if (itemStack.getItem() instanceof ChitinArmorItem) {
+        	if (armorSlot == EquipmentSlot.LEGS) {
+        		return INNER_ARMOR_MODEL;
+        	} else {
+        		return OUTER_ARMOR_MODEL;
+        	}
+        } else if (itemStack.getItem() instanceof FamineArmorItem) {
+        	if (armorSlot == EquipmentSlot.LEGS) {
+        		return INNER_ARMOR_MODEL;
+        	} else {
+        		return FAMINE_ARMOR_MODEL;
+        	}
+        } else if (itemStack.getItem() instanceof GhostlyArmorItem) {
+        	if (armorSlot == EquipmentSlot.LEGS) {
+        		return INNER_ARMOR_MODEL;
+        	} else {
+        		return OUTER_ARMOR_MODEL;
         	}
         }
 

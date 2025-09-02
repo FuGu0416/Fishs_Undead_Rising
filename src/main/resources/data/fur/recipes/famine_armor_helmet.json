@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+		"/ /",
+        "/#/",
+        "#D#"
+    ],
+    "key": {
+		"/": {
+            "item": "fur:sharp_fang"
+        },
+        "#": {
+            "item": "fur:foul_hide"
+        },
+		"D": {
+            "item": "minecraft:skeleton_skull"
+        }
+    },
+    "result": {
+        "item": "fur:famine_armor_helmet"
+    }
+}
