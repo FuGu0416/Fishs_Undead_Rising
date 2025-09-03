@@ -31,7 +31,7 @@ public class SwarmerRenderer extends GeoEntityRenderer<SwarmerEntity> {
         float f = (float) (4.3F * Math.sin(0.6F * ageInTicks));
         p_225621_2_.mulPose(Axis.YP.rotationDegrees(f));
         
-        if(entityLiving instanceof PiranhaEntity) {
+        if (entityLiving instanceof PiranhaEntity) {
         	p_225621_2_.scale(0.8F, 0.8F, 0.8F);
         }
 	}

@@ -13,6 +13,7 @@ import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
+import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
@@ -51,7 +52,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.CACTYRANT.get(), CactyrantRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.WENDIGO.get(), WendigoRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SCARECROW.get(), ScarecrowRenderer::new);
-        
+    	EntityRenderers.register(FUREntityRegistry.WETA.get(), WetaRenderer::new);  
+    	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
@@ -80,7 +82,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNBURIED, manager -> new UnburiedRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BANSHEE, manager -> new BansheeRenderer(manager));      
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WETA, manager -> new WetaRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.AVATON, manager -> new AvatonRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
