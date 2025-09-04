@@ -27,6 +27,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.CHITIN_ARMOR_CHESTPLATE.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_BOOTS.get());
+            	output.accept(FURItemRegistry.WETA_JAW.get());
             	output.accept(FURItemRegistry.FOUL_BRISTLE.get());
             	output.accept(FURItemRegistry.FOUL_HIDE.get());
             	output.accept(FURItemRegistry.FAMINE_ARMOR_HELMET.get());

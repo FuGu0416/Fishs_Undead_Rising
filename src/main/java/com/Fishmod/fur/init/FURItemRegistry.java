@@ -44,6 +44,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CHITIN_ARMOR_CHESTPLATE = DEF_REG.register("chitin_armor_chestplate", () -> new ChitinArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_LEGGINGS = DEF_REG.register("chitin_armor_leggings", () -> new ChitinArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_BOOTS = DEF_REG.register("chitin_armor_boots", () -> new ChitinArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+	public static final RegistryObject<Item> WETA_JAW = DEF_REG.register("weta_jaw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM = DEF_REG.register("ectoplasm", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM_MASS = DEF_REG.register("ectoplasm_mass", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM_INGOT = DEF_REG.register("ectoplasm_ingot", () -> new Item(new Item.Properties()));
@@ -188,7 +189,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FROZEN_GRIP = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);	
-	public static final RegistryObject<Item> WETA_JAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:weta_jaw");
 	public static final RegistryObject<Item> WETA_HOE = new WetaHoeItem(new Item.Properties().tab(mod_LavaCow.TAB), "mod_lavacow:weta_hoe", ItemTier.IRON, -2, -1.0F, CHITIN);
 	public static final RegistryObject<Item> GHOUL_CLAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghoul_claw");
 	public static final RegistryObject<Item> GHOUL_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:ghoul_arrow");
@@ -206,6 +206,47 @@ public class FURItemRegistry {
         spawnEgg("cactyrant", FUREntityRegistry.CACTYRANT, 0x649832, 0x426520);
         spawnEgg("wendigo", FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC);
         spawnEgg("scarecrow", FUREntityRegistry.SCARECROW, 0x5A4F3B, 0xE9CD84);
+        spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
+        
+        /*
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MYCOSIS, 0xBCE0AC, 0x83631D, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mycosis"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_parasite"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.FRIGID, 0xAFE0E2, 0x59484F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_frigid"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_undeadswine"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_salamander"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wendigo"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MIMIC, 0xE168FF, 0x070000, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mimic"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_sludgelord"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_raven"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SEAGULL, 0xEEEEEE, 0x121212, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seagull"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.PTERA, 0x208938, 0xD61717, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ptera"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.VESPA, 0x85E214, 0xDA3119, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_vespa"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_boneworm"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_pingu"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_undertaker"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNBURIED, 0xD4D9BA, 0x292C32, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_unburied"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostray"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_banshee"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.AVATON, 0xAAA48E, 0x222829, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_avaton"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_forsaken"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SKELETONKING, 0x2F2A2A, 0xA2A1A1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_skeletonking"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MUMMY, 0xE9DAAE, 0x9A8157, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mummy"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactoid"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_warpedfirefly"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seahag"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wisp"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobber"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobberghost"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wraith"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOSTSWARMER, 0xA4F3F3, 0xC31919, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostswarmer"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SCARAB, 0x282219, 0xFFCD55, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_scarab"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_beelzebub"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.ENIGMOTH, 0x0D0B11, 0xA675E9, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_enigmoth"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MUMMIFIEDCOD, 0xDDC88D, 0xAF905B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mummified_cod"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BONETROUT, 0xDFDDCB, 0xBBB8A0, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_bone_trout"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.LAMPREY, 0x70ACAE, 0xDCF2F3, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_lamprey"));
+    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghoul"));
+    	*/
     }
     
     private static void spawnEgg(String entityName, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2) {

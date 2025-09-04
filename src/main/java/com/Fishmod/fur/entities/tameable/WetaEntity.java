@@ -41,21 +41,36 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	
+	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("weta.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("weta.model.walking");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("weta.model.attacking");
+    private static final RawAnimation NIBBLE = RawAnimation.begin().thenPlay("weta.model.nibbling");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(WetaEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> DATA_IS_NIBBLING = SynchedEntityData.defineId(WetaEntity.class, EntityDataSerializers.BOOLEAN);
 	private int attackTimer = 0;
 	private EntityAIDestroyCrops DestroyCrops;
+	public static final int ATTACK_TIMER = 20;
 	
 	public WetaEntity(EntityType<? extends WetaEntity> p_i48549_1_, Level worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -89,6 +104,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextFloat() < 0.05F ? 2 : 0));
+		this.getEntityData().define(DATA_IS_NIBBLING, false);
 	}
     
     public static AttributeSupplier.Builder createAttributes() {
@@ -108,7 +124,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
     	if (this.attackTimer > 0) {
             --this.attackTimer;
         }
-    	
+
     	super.tick();
     }
     
@@ -189,10 +205,10 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
      */
-    /*@Override
+    @Override
     public boolean isFood(ItemStack stack) {
-       return stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP) || stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS);
-    }*/
+       return stack.getItem().equals(Items.ROTTEN_FLESH);//stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP) || stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS);
+    }
 
     @Override
     protected boolean canTameCondition() {
@@ -234,6 +250,14 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
 		this.attackTimer = i;
 	}
 	
+	public boolean isNibbling() {
+		return this.entityData.get(DATA_IS_NIBBLING);
+	}
+    
+	public void setNibbling(boolean i) {
+		this.entityData.set(DATA_IS_NIBBLING, i);
+	}
+	
     public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
     }
@@ -248,7 +272,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
 	@OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = 5;
+            this.attackTimer = ATTACK_TIMER;
         } else {
             super.handleEntityEvent(id);
         }
@@ -321,10 +345,25 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
         }
     }
 
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
+    		state.getController().setAnimation(ATTACK);	 		
+    	} else if (this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (state.isMoving()) {
+            state.getController().setAnimation(WALK);
+    	} else if (this.isNibbling()) {
+    		state.getController().setAnimation(NIBBLE);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+    
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub
-		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
 	}
 
 	@Override

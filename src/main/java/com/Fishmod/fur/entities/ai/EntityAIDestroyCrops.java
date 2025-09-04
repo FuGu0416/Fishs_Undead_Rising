@@ -1,5 +1,8 @@
 package com.Fishmod.fur.entities.ai;
 
+import com.Fishmod.fur.entities.tameable.WetaEntity;
+import com.Fishmod.fur.init.FUREntityRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -62,6 +65,9 @@ public class EntityAIDestroyCrops extends Goal {
         this.entity.getNavigation().moveTo((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
         this.timeoutCounter = 0;
         this.maxStayTicks = this.entity.getRandom().nextInt(this.entity.getRandom().nextInt(1200) + 1200) + 1200;
+        if (this.entity.getType().equals(FUREntityRegistry.WETA.get())) {
+        	((WetaEntity)this.entity).setNibbling(true);
+        }
     }
 
     /**
@@ -103,9 +109,19 @@ public class EntityAIDestroyCrops extends Goal {
             		world.setBlock(blockpos, block.defaultBlockState(), 3);
             		world.destroyBlockProgress(entity.getId(), blockpos, 0);
             	}
+            	
+                if (this.entity.getType().equals(FUREntityRegistry.WETA.get())) {
+                	((WetaEntity)this.entity).setNibbling(false);
+                }
             } else if (this.destroyTicks % 10 == 0) {
             	world.destroyBlockProgress(entity.getId(), blockpos, this.destroyTicks / 10);	
             }
+        }
+    }
+    
+    public void stop() {
+        if (this.entity.getType().equals(FUREntityRegistry.WETA.get())) {
+        	((WetaEntity)this.entity).setNibbling(false);
         }
     }
     

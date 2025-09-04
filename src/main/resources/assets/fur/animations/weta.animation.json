@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.weta.idle": {
+		"weta.model.idle": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -47,7 +47,7 @@
 				}
 			}
 		},
-		"animation.weta.walking": {
+		"weta.model.walking": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -129,7 +129,7 @@
 				}
 			}
 		},
-		"animation.weta.attacking": {
+		"weta.model.attacking": {
 			"animation_length": 1,
 			"bones": {
 				"Body_base": {
@@ -1217,7 +1217,7 @@
 				}
 			}
 		},
-		"animation.weta.nibbling": {
+		"weta.model.nibbling": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {

@@ -15,6 +15,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers.AddSpawnsBiomeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,6 +30,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_CACTYRANT = registerKey("add_cactyrant");
 	public static final ResourceKey<BiomeModifier> ADD_WENDIGO = registerKey("add_wendigo");
 	public static final ResourceKey<BiomeModifier> ADD_SCARECROW = registerKey("add_scarecrow");
+	public static final ResourceKey<BiomeModifier> ADD_WETA = registerKey("add_weta");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -53,8 +55,10 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTYRANT.get(), 8, 1, 2));    
         addSpawn(context, ADD_WENDIGO, biomes.getOrThrow(BiomeTags.IS_TAIGA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));     
-        addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
+        addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(Tags.Biomes.IS_PLAINS),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));   
+        addSpawn(context, ADD_WETA, biomes.getOrThrow(FURTags.HAS_WETA),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
