@@ -1,10 +1,13 @@
 package com.Fishmod.fur.entities.tameable;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.EntityAIDestroyCrops;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -12,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -20,6 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -103,7 +108,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextFloat() < 0.05F ? 2 : 0));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 		this.getEntityData().define(DATA_IS_NIBBLING, false);
 	}
     
@@ -237,6 +242,8 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Weta_Attack.get());
     	this.setHealth(this.getMaxHealth());*/
     	
+    	this.setSkin(this.getRandom().nextFloat() < 0.05F ? 2 : 0);
+    	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 
@@ -321,7 +328,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
     	this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
 	}
     
-	/*public WetaEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {
+	public WetaEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {
 		WetaEntity entity = FUREntityRegistry.WETA.get().create(worldIn);
 		UUID uuid = this.getOwnerUUID();
 		if (uuid != null) {
@@ -331,7 +338,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
 		}
 
 		return entity;
-	}*/
+	}
 	
     /**
      * Get this Entity's EnumCreatureAttribute

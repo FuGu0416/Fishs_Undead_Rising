@@ -31,7 +31,7 @@ public class WetaModel extends GeoModel<WetaEntity> {
     
     @Override
     public ResourceLocation getTextureResource(WetaEntity object) {
-        return TEXTURES[object.getSkin()];
+        return TEXTURES[object.isBaby()? 1 : object.getSkin()];
     }
 
     @Override
