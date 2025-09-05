@@ -148,11 +148,11 @@ public class FURMeleeAttackGoal extends Goal {
 	protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(p_190102_1_);
 
-		if (p_190102_2_ <= d0 && this.ticksUntilNextAttack <= 0) {	
-			if (!(this.mob instanceof IAggressive) || ((IAggressive)this.mob).getAttackTimer() == this.atkTimerHit()) {
+		if (this.ticksUntilNextAttack <= 0) {	
+			if (!(this.mob instanceof IAggressive) || ((IAggressive)this.mob).getAttackTimer() == this.atkTimerHit() && p_190102_2_ <= (d0 * 1.2D)) {
 				this.resetAttackCooldown();
 				this.dmgEvent(p_190102_1_);
-			} else if (this.mob instanceof IAggressive && ((IAggressive)this.mob).getAttackTimer() == 0) {	
+			} else if (this.mob instanceof IAggressive && ((IAggressive)this.mob).getAttackTimer() == 0 && p_190102_2_ <= d0) {	
 				this.mob.level().broadcastEntityEvent(this.mob, this.atkTimerEvent());
 				((IAggressive) this.mob).setAttackTimer(this.atkTimerMax());
 			}

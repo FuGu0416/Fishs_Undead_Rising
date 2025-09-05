@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D",
+        " Y",
+        " Y"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:weta_jaw"
+        },
+        "D": {
+            "item": "fur:chitin"
+        },
+        "Y": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:weta_hoe"
+    }
+}

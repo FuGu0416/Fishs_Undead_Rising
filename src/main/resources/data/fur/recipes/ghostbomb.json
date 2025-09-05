@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " X ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "fur:ectoplasm_mass"
+        },
+        "X": {
+            "item": "fur:basic_bomb"
+        }
+    },
+    "result": {
+        "item": "fur:ghostbomb",
+        "count": 4
+    }
+}

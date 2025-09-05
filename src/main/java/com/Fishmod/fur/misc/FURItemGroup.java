@@ -27,7 +27,10 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.CHITIN_ARMOR_CHESTPLATE.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_BOOTS.get());
+            	output.accept(FURItemRegistry.BASIC_BOMB.get());
+            	output.accept(FURItemRegistry.GHOSTBOMB.get());
             	output.accept(FURItemRegistry.WETA_JAW.get());
+            	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.FOUL_BRISTLE.get());
             	output.accept(FURItemRegistry.FOUL_HIDE.get());
             	output.accept(FURItemRegistry.FAMINE_ARMOR_HELMET.get());
@@ -71,6 +74,7 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.SCARECROWHEAD_STRAW.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get());
             	output.accept(FURItemRegistry.DISEASED_WHEAT.get());
+            	output.accept(FURItemRegistry.DISEASED_BREAD.get());
             	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURItemRegistry.FEATHER_BLACK.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));

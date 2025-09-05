@@ -6,7 +6,9 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.item.ChitinArmorItem;
+import com.Fishmod.fur.item.DiseasedBreadItem;
 import com.Fishmod.fur.item.FURItem;
+import com.Fishmod.fur.item.FURThrowableItem;
 import com.Fishmod.fur.item.FURWeaponItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
@@ -14,8 +16,11 @@ import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
+import com.Fishmod.fur.item.WetaHoeItem;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
@@ -44,7 +49,12 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CHITIN_ARMOR_CHESTPLATE = DEF_REG.register("chitin_armor_chestplate", () -> new ChitinArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_LEGGINGS = DEF_REG.register("chitin_armor_leggings", () -> new ChitinArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_BOOTS = DEF_REG.register("chitin_armor_boots", () -> new ChitinArmorItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+	public static final RegistryObject<Item> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> new FURThrowableItem(new Item.Properties()));
+	public static final RegistryObject<Item> GHOSTBOMB = DEF_REG.register("ghostbomb", () -> new FURThrowableItem(new Item.Properties()));
+	public static final RegistryObject<Item> HOLY_GRENADE = DEF_REG.register("holy_grenade", () -> new FURThrowableItem(new Item.Properties()));
+	public static final RegistryObject<Item> SONICBOMB = DEF_REG.register("sonicbomb", () -> new FURThrowableItem(new Item.Properties()));
 	public static final RegistryObject<Item> WETA_JAW = DEF_REG.register("weta_jaw", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> WETA_HOE = DEF_REG.register("weta_hoe", () -> new WetaHoeItem(new Item.Properties(), Tiers.IRON, -2, -1.0F, CHITIN.get()));
 	public static final RegistryObject<Item> ECTOPLASM = DEF_REG.register("ectoplasm", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM_MASS = DEF_REG.register("ectoplasm_mass", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ECTOPLASM_INGOT = DEF_REG.register("ectoplasm_ingot", () -> new Item(new Item.Properties()));
@@ -84,6 +94,12 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build())));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DISEASED_WHEAT = DEF_REG.register("diseased_wheat", () -> new Item(new Item.Properties())); 
+	public static final RegistryObject<Item> DISEASED_BREAD = DEF_REG.register("diseased_bread", () -> new DiseasedBreadItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).
+			effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 8*20, 0), 1.0F)
+			.effect(() -> new MobEffectInstance(MobEffects.POISON, 8*20, 1), 0.3F)
+			.effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 30*20, 1), 0.3F)
+			.effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 16*20, 1), 0.3F)
+			.effect(() -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 16*20, 2), 0.3F).build()), 1)); 
 	public static final RegistryObject<Item> FEATHER_BLACK = DEF_REG.register("feather_black", () -> new Item(new Item.Properties())); 
 	
 	/*
@@ -131,16 +147,12 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CURSED_BANDAGE_HEAL = new CursedBandageItem(new Item.Properties().tab(mod_LavaCow.TAB), 2).setRegistryName("cursed_bandage_heal");
 	public static final RegistryObject<Item> CURSED_BANDAGE_RES = new CursedBandageItem(new Item.Properties().tab(mod_LavaCow.TAB), 3).setRegistryName("cursed_bandage_res");
 	public static final RegistryObject<Item> HOLY_SLUDGE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:holy_sludge");
-	public static final RegistryObject<Item> HOLY_GRENADE = new FURThrowableItem("mod_lavacow:holy_grenade");
-	public static final RegistryObject<Item> FEATHER_BLACK = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:feather_black");
 	public static final RegistryObject<Item> SHATTERED_ICE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(1.8F).build()), 32, UseAction.DRINK, 0).setRegistryName("mod_lavacow:shattered_ice");
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().tab(mod_LavaCow.TAB).stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");
 	public static final RegistryObject<Item> ACIDICHEART = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:acidicheart");
 	public static final RegistryObject<Item> GHOSTJELLY = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().build()), 1).setRegistryName("mod_lavacow:ghostjelly");
 	public static final RegistryObject<Item> SHRIEK_CORD = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:shriek_cord");
-	public static final RegistryObject<Item> GHOSTBOMB = new FURThrowableItem("mod_lavacow:ghostbomb");
-	public static final RegistryObject<Item> SONICBOMB = new FURThrowableItem("mod_lavacow:sonicbomb");
 	public static final RegistryObject<Item> BONE_STEW = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(Effects.ABSORPTION, 20*20, 1), 1.0F).effect(() -> new EffectInstance(Effects.DAMAGE_RESISTANCE, 20*20, 0), 1.0F).build()), 1).setRegistryName("mod_lavacow:bonestew");
 	public static final RegistryObject<Item> VESPA_SHIELD = new VespaShieldItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties()).durability(504).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:vespa_shield");
 	public static final RegistryObject<Item> FROZEN_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:frozen_dagger", ItemTier.WOOD, 2, -2.4F, FURItemRegistry.SHATTERED_ICE);
@@ -169,13 +181,11 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB))).setRegistryName("mod_lavacow:illager_nose");
 	public static final RegistryObject<Item> ANCIENT_AMBER = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ancient_amber");
 	public static final RegistryObject<Item> SCARAB_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:scarab_scepter", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.ANCIENT_AMBER);	
-	public static final RegistryObject<Item> DISEASED_BREAD = new FURItem((new Item.Properties()).tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(5).saturationMod(0.6F).effect(() -> new EffectInstance(Effects.CONFUSION, 8*20, 0), 1.0F).effect(() -> new EffectInstance(Effects.POISON, 8*20, 1), 0.3F).effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 1), 0.3F).effect(() -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 16*20, 1), 0.3F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 16*20, 2), 0.3F).build()), 1).setRegistryName("mod_lavacow:diseased_bread");
 	public static final RegistryObject<Item> PHEROMONE_GLAND = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("mod_lavacow:pheromone_gland");
 	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("mod_lavacow:charming_catalyst");
 	public static final RegistryObject<Item> ENIGMOTH_LARVA = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(FUREffectRegistry.VOID_DUST, 20*20, 3), 0.3F).build())).setRegistryName("mod_lavacow:enigmoth_larva");
 	public static final RegistryObject<Item> ENIGMOTH_LARVA_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:enigmoth_larva_cooked");
 	public static final RegistryObject<Item> HOLY_WATER = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:holy_water");
-	public static final RegistryObject<Item> BASIC_BOMB = new FURThrowableItem("mod_lavacow:basic_bomb");
 	public static final RegistryObject<Item> MUMMIFIED_COD = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CORRODED, 16*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:mummified_cod");
 	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = new FishBucketItem(() -> FUREntityRegistry.MUMMIFIEDCOD, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:mummified_cod_bucket");
 	public static final RegistryObject<Item> BONE_TROUT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:bone_trout");
@@ -189,7 +199,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FROZEN_GRIP = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC), "mod_lavacow:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);	
-	public static final RegistryObject<Item> WETA_HOE = new WetaHoeItem(new Item.Properties().tab(mod_LavaCow.TAB), "mod_lavacow:weta_hoe", ItemTier.IRON, -2, -1.0F, CHITIN);
 	public static final RegistryObject<Item> GHOUL_CLAW = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghoul_claw");
 	public static final RegistryObject<Item> GHOUL_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:ghoul_arrow");
 	public static final RegistryObject<Item> FANG_ARROW = new FURArrowItem(new Item.Properties().tab(mod_LavaCow.TAB), 1).setRegistryName("mod_lavacow:fang_arrow");

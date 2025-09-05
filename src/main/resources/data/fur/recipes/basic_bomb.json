@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        "X#X",
+        "XXX"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:gunpowder"
+        },
+        "X": {
+            "item": "fur:chitin"
+        },
+        "D": {
+			"tag": "forge:string"
+        }
+    },
+    "result": {
+        "item": "fur:basic_bomb",
+        "count": 4
+    }
+}

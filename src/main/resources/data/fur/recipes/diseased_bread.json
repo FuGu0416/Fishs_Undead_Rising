@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "YYY"
+    ],
+    "key": {
+        "Y": {
+            "item": "fur:diseased_wheat"
+        }
+    },
+    "result": {
+        "item": "fur:diseased_bread",
+        "count": 1
+    }
+}

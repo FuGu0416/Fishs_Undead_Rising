@@ -8,10 +8,7 @@ import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -80,32 +77,6 @@ public class FURItem extends Item {
     public boolean isFoil(ItemStack stack) {
     	return super.isFoil(stack)/* || stack.getItem().equals(FURItemRegistry.HOLY_WATER)*/;
     }
-    
-    @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity entityIn, InteractionHand handIn) {
-    	/*if (playerIn.level instanceof ServerWorld && playerIn.getItemInHand(handIn).getItem().equals(FURItemRegistry.DISEASED_BREAD) && entityIn instanceof VillagerEntity && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(entityIn, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
-    		VillagerEntity villagerentity = (VillagerEntity)entityIn;
-            ZombieVillagerEntity zombievillagerentity = villagerentity.convertTo(EntityType.ZOMBIE_VILLAGER, false);
-            zombievillagerentity.finalizeSpawn((ServerWorld)playerIn.level, playerIn.level.getCurrentDifficultyAt(zombievillagerentity.blockPosition()), SpawnReason.CONVERSION, new ZombieEntity.GroupData(false, true), (CompoundNBT)null);
-            zombievillagerentity.setVillagerData(villagerentity.getVillagerData());
-            zombievillagerentity.setGossips(villagerentity.getGossips().store(NBTDynamicOps.INSTANCE).getValue());
-            zombievillagerentity.setTradeOffers(villagerentity.getOffers().createTag());
-            zombievillagerentity.setVillagerXp(villagerentity.getVillagerXp());
-            net.minecraftforge.event.ForgeEventFactory.onLivingConvert(entityIn, zombievillagerentity);
-            if (!playerIn.isSilent()) {
-            	playerIn.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
-            	playerIn.level.levelEvent((PlayerEntity)null, 1026, playerIn.blockPosition(), 0);
-            }  
-            
-    		if(!playerIn.isCreative()) {		
-    			this.finishUsingItem(stack, playerIn.level, playerIn);
-    		}
-    		
-    		return ActionResultType.SUCCESS;
-    	}*/
-    	
-        return InteractionResult.PASS;
-	}
     
     @Override
     public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
