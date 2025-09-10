@@ -549,6 +549,7 @@
 	"item.fur.diseased_bread.desc": "Transform villager into zombie villager, or just eat it.",
 	"item.fur.pheromone_gland.desc": "Gives Charming Pheromone(1:00) and NauseaII(0:10) when eaten.",
 	"item.fur.charming_catalyst.desc": "Gives Charming Pheromone(0:30) when consuming, or uses to trigger some larvae's growth.",
+	"item.fur.basic_bomb.desc": "Throw at target location and cause explosion.",
 	"item.fur.ankh_scepter.desc": "Right click to summon an army of Mummy.",
 	"item.fur.fungal_staff.desc": "Right click to summon an army of Mycosis.",
 	"item.fur.frozen_grip.desc": "Right click to summon an army of Frigid.",

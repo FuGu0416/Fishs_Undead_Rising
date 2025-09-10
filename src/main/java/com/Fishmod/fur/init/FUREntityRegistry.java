@@ -10,6 +10,7 @@ import com.Fishmod.fur.entities.WendigoEntity;
 import com.Fishmod.fur.entities.aquatic.PiranhaEntity;
 import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
 import com.Fishmod.fur.entities.floating.SeaHagEntity;
+import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
@@ -45,6 +46,14 @@ public class FUREntityRegistry {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final RegistryObject<EntityType<BasicBombEntity>> HOLY_GRENADE = DEF_REG.register("holygrenade", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("holygrenade"));
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final RegistryObject<EntityType<BasicBombEntity>> GHOSTBOMB = DEF_REG.register("ghostbomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("ghostbomb"));
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final RegistryObject<EntityType<BasicBombEntity>> SONICBOMB = DEF_REG.register("sonicbomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("sonicbomb"));
 	
 	/*public static final EntityType<MycosisEntity> MYCOSIS = registerEntity(EntityType.Builder.of(MycosisEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mycosis");
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
@@ -89,16 +98,12 @@ public class FUREntityRegistry {
 	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
 	public static final EntityType<AcidJetEntity> ACIDJET = registerEntity(EntityType.Builder.<AcidJetEntity>of(AcidJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "acidjet");
-	public static final EntityType<BasicBombEntity> HOLY_GRENADE = registerEntity(EntityType.Builder.<BasicBombEntity>of(BasicBombEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "holygrenade");
-	public static final EntityType<BasicBombEntity> GHOSTBOMB = registerEntity(EntityType.Builder.<BasicBombEntity>of(BasicBombEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "ghostbomb");
-	public static final EntityType<BasicBombEntity> SONICBOMB = registerEntity(EntityType.Builder.<BasicBombEntity>of(BasicBombEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "sonicbomb");
 	public static final EntityType<SludgeJetEntity> SLUDGEJET = registerEntity(EntityType.Builder.<SludgeJetEntity>of(SludgeJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sludgejet");
 	public static final EntityType<SandBurstEntity> SANDBURST = registerEntity(EntityType.Builder.<SandBurstEntity>of(SandBurstEntity::new, EntityClassification.MISC).sized(0.5F, 0.8F).clientTrackingRange(6).updateInterval(2), "sandburst");
 	public static final EntityType<DeathCoilEntity> DEATHCOIL = registerEntity(EntityType.Builder.<DeathCoilEntity>of(DeathCoilEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "deathcoil");
 	public static final EntityType<FlameJetEntity> FLAMEJET = registerEntity(EntityType.Builder.<FlameJetEntity>of(FlameJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "flamejet");	
 	public static final EntityType<SapJetEntity> SAPJET = registerEntity(EntityType.Builder.<SapJetEntity>of(SapJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sapjet");
 	public static final EntityType<MothScalesEntity> MOTH_SCALES = registerEntity(EntityType.Builder.<MothScalesEntity>of(MothScalesEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "moth_scales");
-	public static final EntityType<BasicBombEntity> BASIC_BOMB = registerEntity(EntityType.Builder.<BasicBombEntity>of(BasicBombEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "basic_bomb");
 	public static final EntityType<FURArrowEntity> GHOUL_ARROW = registerEntity(EntityType.Builder.<FURArrowEntity>of(FURArrowEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "ghoul_arrow");
 	public static final EntityType<FURArrowEntity> FANG_ARROW = registerEntity(EntityType.Builder.<FURArrowEntity>of(FURArrowEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "fang_arrow");*/
 	

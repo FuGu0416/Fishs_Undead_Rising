@@ -4,6 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
+import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURSoundRegistry;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -39,23 +44,23 @@ public class FURThrowableItem extends Item {
 
         worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
         
-    	/*if (itemstack.getItem().equals(FURItemRegistry.HOLY_GRENADE)) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE, playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+    	if (itemstack.getItem().equals(FURItemRegistry.HOLY_GRENADE.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE.get(), playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
             worldIn.addFreshEntity(entitysnowball);
-    	} else if(itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB)) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB, playerIn, worldIn, FURSoundRegistry.BANSHEE_HURT, 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+    	} else if (itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB.get(), playerIn, worldIn, FURSoundRegistry.BANSHEE_HURT.get(), 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
             worldIn.addFreshEntity(entitysnowball);
-    	} else if(itemstack.getItem().equals(FURItemRegistry.SONICBOMB)) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB, playerIn, worldIn, FURSoundRegistry.BANSHEE_ATTACK, 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+    	} else if (itemstack.getItem().equals(FURItemRegistry.SONICBOMB.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB.get(), playerIn, worldIn, FURSoundRegistry.BANSHEE_ATTACK.get(), 4.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
             worldIn.addFreshEntity(entitysnowball);
-    	} else if(itemstack.getItem().equals(FURItemRegistry.BASIC_BOMB)) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.BASIC_BOMB, playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 2.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, -20.0F, 0.75F, 1.0F);
+    	} else if (itemstack.getItem().equals(FURItemRegistry.BASIC_BOMB.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.BASIC_BOMB.get(), playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 2.0F);
+            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
             worldIn.addFreshEntity(entitysnowball);
-    	}*/
+    	}
 
         playerIn.awardStat(Stats.ITEM_USED.get(this));
         

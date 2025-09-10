@@ -550,6 +550,7 @@
 	"item.fur.diseased_bread.desc": "将村民转化为僵尸村民，或是直接食用",
 	"item.fur.pheromone_gland.desc": "食用后获得迷情信息素(1:00)与反胃II(0:10)",
 	"item.fur.charming_catalyst.desc": "食用后获得迷情信息素(0:30)，或用于刺激某些幼虫的成长",
+	"item.fur.basic_bomb.desc": "投向目标地点，造成范围伤害",
 	"item.fur.ankh_scepter.desc": "右键点击以召唤听命于玩家的木乃伊军团",
 	"item.fur.fungal_staff.desc": "右键点击以召唤听命于玩家的菌尸军团",
 	"item.fur.frozen_grip.desc": "右键点击以召唤听命于玩家的冻尸军团",

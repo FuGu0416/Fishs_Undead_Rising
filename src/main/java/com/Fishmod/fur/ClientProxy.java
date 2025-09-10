@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -55,7 +56,11 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WETA.get(), WetaRenderer::new);  
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
-    	
+    	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.GHOSTBOMB.get(), ThrownItemRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SONICBOMB.get(), ThrownItemRenderer::new);
+        
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_PLAGUE.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(2, manager));
@@ -106,16 +111,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.ACIDJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.HOLY_GRENADE, manager -> new SpriteRenderer<>(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTBOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SONICBOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));        
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BASIC_BOMB, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOUL_ARROW, manager -> new FURArrowRenderer(manager, 0));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FANG_ARROW, manager -> new FURArrowRenderer(manager, 1));*/
         

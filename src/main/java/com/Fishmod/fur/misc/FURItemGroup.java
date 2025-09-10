@@ -29,6 +29,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.CHITIN_ARMOR_BOOTS.get());
             	output.accept(FURItemRegistry.BASIC_BOMB.get());
             	output.accept(FURItemRegistry.GHOSTBOMB.get());
+            	output.accept(FURItemRegistry.HOLY_GRENADE.get());
+            	output.accept(FURItemRegistry.SONICBOMB.get());
             	output.accept(FURItemRegistry.WETA_JAW.get());
             	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.FOUL_BRISTLE.get());
