@@ -216,6 +216,7 @@ public class FURItemRegistry {
         spawnEgg("wendigo", FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC);
         spawnEgg("scarecrow", FUREntityRegistry.SCARECROW, 0x5A4F3B, 0xE9CD84);
         spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
+        spawnEgg("avaton", FUREntityRegistry.AVATON, 0xAAA48E, 0x222829);
         
         /*
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MYCOSIS, 0xBCE0AC, 0x83631D, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mycosis"));
@@ -236,7 +237,6 @@ public class FURItemRegistry {
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNBURIED, 0xD4D9BA, 0x292C32, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_unburied"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostray"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_banshee"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.AVATON, 0xAAA48E, 0x222829, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_avaton"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_forsaken"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SKELETONKING, 0x2F2A2A, 0xA2A1A1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_skeletonking"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MUMMY, 0xE9DAAE, 0x9A8157, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mummy"));

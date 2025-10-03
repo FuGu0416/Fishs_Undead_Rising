@@ -9,6 +9,7 @@ import com.Fishmod.fur.entities.LavaCowEntity;
 import com.Fishmod.fur.entities.WendigoEntity;
 import com.Fishmod.fur.entities.aquatic.PiranhaEntity;
 import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
+import com.Fishmod.fur.entities.floating.AvatonEntity;
 import com.Fishmod.fur.entities.floating.SeaHagEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
@@ -43,6 +44,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<WendigoEntity>> WENDIGO = DEF_REG.register("wendigo", () -> (EntityType<WendigoEntity>) EntityType.Builder.of(WendigoEntity::new, MobCategory.MONSTER).sized(1.6F, 2.6F).setTrackingRange(8).build("wendigo"));
 	public static final RegistryObject<EntityType<ScarecrowEntity>> SCARECROW = DEF_REG.register("scarecrow", () -> (EntityType<ScarecrowEntity>) EntityType.Builder.of(ScarecrowEntity::new, MobCategory.MONSTER).sized(0.8F, 3.0F).setTrackingRange(8).build("scarecrow"));
 	public static final RegistryObject<EntityType<WetaEntity>> WETA = DEF_REG.register("weta", () -> (EntityType<WetaEntity>) EntityType.Builder.of(WetaEntity::new, MobCategory.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS).setTrackingRange(8).build("scarecrow"));
+	public static final RegistryObject<EntityType<AvatonEntity>> AVATON = DEF_REG.register("avaton", () -> (EntityType<AvatonEntity>) EntityType.Builder.of(AvatonEntity::new, MobCategory.MONSTER).sized(1.25F, 1.5F).setTrackingRange(8).build("avaton"));
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
@@ -74,7 +76,6 @@ public class FUREntityRegistry {
 	public static final EntityType<UnburiedEntity> UNBURIED = registerEntity(EntityType.Builder.of(UnburiedEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "unburied");
 	public static final EntityType<GhostRayEntity> GHOSTRAY = registerEntity(EntityType.Builder.of(GhostRayEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.25F), "ghostray");
 	public static final EntityType<BansheeEntity> BANSHEE = registerEntity(EntityType.Builder.of(BansheeEntity::new, EntityClassification.MONSTER).sized(0.75F, 1.75F), "banshee");	
-	public static final EntityType<AvatonEntity> AVATON = registerEntity(EntityType.Builder.of(AvatonEntity::new, EntityClassification.MONSTER).sized(1.25F, 1.5F), "avaton");
 	public static final EntityType<ForsakenEntity> FORSAKEN = registerEntity(EntityType.Builder.of(ForsakenEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).fireImmune(), "forsaken");
 	public static final EntityType<SkeletonKingEntity> SKELETONKING = registerEntity(EntityType.Builder.of(SkeletonKingEntity::new, EntityClassification.MONSTER).sized(1.25F, 3.1F).fireImmune(), "skeletonking");
 	public static final EntityType<MummyEntity> MUMMY = registerEntity(EntityType.Builder.of(MummyEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mummy");	
@@ -120,6 +121,7 @@ public class FUREntityRegistry {
         event.register(WENDIGO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WendigoEntity::checkWendigoSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(SCARECROW.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ScarecrowEntity::checkScarecrowSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);       
         event.register(WETA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(AVATON.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AvatonEntity::checkAvatonSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         
         /*EntitySpawnPlacementRegistry.register(MYCOSIS, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, MycosisEntity::checkMycosisSpawnRules);
         EntitySpawnPlacementRegistry.register(PARASITE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules);
@@ -138,7 +140,6 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(UNDERTAKER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, UndertakerEntity::checkUndertakerSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTRAY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GhostRayEntity::checkGhostRaySpawnRules);
         EntitySpawnPlacementRegistry.register(BANSHEE, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
-        EntitySpawnPlacementRegistry.register(AVATON, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(FORSAKEN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ForsakenEntity::checkForsakenSpawnRules);
         EntitySpawnPlacementRegistry.register(SKELETONKING, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(MUMMY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MummyEntity::checkMummySpawnRules);        
@@ -171,6 +172,7 @@ public class FUREntityRegistry {
         event.put(WENDIGO.get(), WendigoEntity.createAttributes().build());
         event.put(SCARECROW.get(), ScarecrowEntity.createAttributes().build());
         event.put(WETA.get(), WetaEntity.createAttributes().build());
+        event.put(AVATON.get(), AvatonEntity.createAttributes().build());
         
         /*event.put(MYCOSIS, MycosisEntity.createAttributes().build());
         event.put(PARASITE, ParasiteEntity.createAttributes().build());
@@ -193,7 +195,6 @@ public class FUREntityRegistry {
         event.put(UNBURIED, UnburiedEntity.createAttributes().build());
         event.put(GHOSTRAY, GhostRayEntity.createAttributes().build());
         event.put(BANSHEE, BansheeEntity.createAttributes().build());       
-        event.put(AVATON, AvatonEntity.createAttributes().build());
         event.put(FORSAKEN, ForsakenEntity.createAttributes().build());
         event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());
         event.put(MUMMY, MummyEntity.createAttributes().build());       

@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -78,6 +79,10 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, 30.0D/*FURConfig.Avaton_Health.get()*/)
         		.add(Attributes.ATTACK_DAMAGE, 5.0D/*FURConfig.Avaton_Attack.get()*/);
+    }
+    
+    public static boolean checkAvatonSpawnRules(EntityType<? extends AvatonEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
+        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
         
     @Override

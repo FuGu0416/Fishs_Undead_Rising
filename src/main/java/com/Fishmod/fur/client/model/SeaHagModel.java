@@ -18,7 +18,7 @@ import software.bernie.geckolib.model.data.EntityModelData;
  * ModelZombie - Either Mojang or a mod author
  * Created using Tabula 7.0.1
  */
-public class WraithModel extends GeoModel<SeaHagEntity> {
+public class SeaHagModel extends GeoModel<SeaHagEntity> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/avaton.png"),
 			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/seahag.png")
