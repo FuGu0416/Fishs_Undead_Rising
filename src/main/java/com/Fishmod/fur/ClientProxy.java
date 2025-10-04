@@ -5,6 +5,7 @@ import com.Fishmod.fur.client.particle.GastroAcidParticle;
 import com.Fishmod.fur.client.particle.LocustSwarmParticle;
 import com.Fishmod.fur.client.renderer.FURItemRenderProperties;
 import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRenderer;
+import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
@@ -54,6 +55,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WENDIGO.get(), WendigoRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SCARECROW.get(), ScarecrowRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.WETA.get(), WetaRenderer::new);  
+    	EntityRenderers.register(FUREntityRegistry.AVATON.get(), AvatonRenderer::new);  
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -87,7 +89,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNBURIED, manager -> new UnburiedRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BANSHEE, manager -> new BansheeRenderer(manager));      
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.AVATON, manager -> new AvatonRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MUMMY, manager -> new MummyRenderer(manager));        

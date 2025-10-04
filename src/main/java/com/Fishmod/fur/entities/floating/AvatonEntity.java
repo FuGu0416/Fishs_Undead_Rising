@@ -47,10 +47,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("wraith.model.idle");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("wraith.model.idle_avaton");
     private static final RawAnimation FLOAT = RawAnimation.begin().thenPlay("wraith.model.floating");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("wraith.model.attacking");
-    private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wraith.model.casting");
+    private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wraith.model.casting_avaton");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(AvatonEntity.class, EntityDataSerializers.INT);
 	public static final int ATTACK_TIMER = 30;
