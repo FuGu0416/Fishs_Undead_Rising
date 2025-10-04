@@ -202,7 +202,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         }
         
         protected int getCastWarmupTime() {
-            return 20;
+            return 40;
         }
 
         protected int getCastingTime() {
