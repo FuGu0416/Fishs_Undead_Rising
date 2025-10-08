@@ -32,6 +32,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_SCARECROW = registerKey("add_scarecrow");
 	public static final ResourceKey<BiomeModifier> ADD_WETA = registerKey("add_weta");
 	public static final ResourceKey<BiomeModifier> ADD_AVATON = registerKey("add_avaton");
+	public static final ResourceKey<BiomeModifier> ADD_WRAITH = registerKey("add_wraith");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -62,6 +63,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.AVATON.get(), 20, 1, 2));   
+        addSpawn(context, ADD_WRAITH, HolderSet.direct(biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 5, 1, 2));
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
