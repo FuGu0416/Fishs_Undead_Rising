@@ -54,6 +54,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_CHESTPLATE.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_BOOTS.get());
+            	output.accept(FURItemRegistry.WISP_ASHES.get());
+            	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
             	output.accept(FURItemRegistry.MOOTENHEART.get());

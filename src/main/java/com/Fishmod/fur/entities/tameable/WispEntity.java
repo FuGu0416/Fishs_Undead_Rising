@@ -34,6 +34,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
@@ -53,9 +54,16 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
@@ -63,6 +71,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.entities.ai.WispSwellGoal;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 
 /**
@@ -72,13 +81,19 @@ Updated for Minecraft Forge 1.20.1 using Mojang mappings.
 public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
+    private static final RawAnimation FLOAT = RawAnimation.begin().thenPlay("wisp.model.floating");
+    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.spinning");
+    private static final RawAnimation CHARGE = RawAnimation.begin().thenPlay("wisp.model.charging");
+    private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wisp.model.casting");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.INT);
 
 	private int oldSwell;
 	private int swell;
 	private int maxSwell = 30;
-
+	private boolean isCharging = false;
+	
 	public WispEntity(EntityType<? extends WispEntity> type, Level level) {
 		super(type, level);
 		this.moveControl = new FlyingMoveControl(this, 20, true);
@@ -103,10 +118,11 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new WispSwellGoal(this));
 		//this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
-		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
-		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-		this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+		this.goalSelector.addGoal(3, new WispEntity.AIChargeAttack());
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));  
+        this.goalSelector.addGoal(8, new WispEntity.AIMoveRandom());
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.applyEntityAI();
 	}
 
     protected void applyEntityAI() {
@@ -139,7 +155,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 	}
 
     public static boolean checkWispSpawnRules(EntityType<? extends WispEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
 
 	@Override
@@ -166,7 +182,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 	
 	@Override
 	public void tick() {
-        if (this.isAlive() && (!this.isTame()/* || (this.isTame() && FURConfig.Wisp_Tamed_Explosion.get())*/)) {
+        if (this.isAlive() && (!this.isTame() || (this.isTame()/* && FURConfig.Wisp_Tamed_Explosion.get()*/))) {
             this.oldSwell = this.swell;
 
             int i = this.getSwellDir();
@@ -175,12 +191,15 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
             }
 
             this.swell += i;
+            this.level().broadcastEntityEvent(this, (byte) 4);
             if (this.swell < 0) {
                this.swell = 0;
             }
 
             if (this.swell >= this.maxSwell) {
                this.swell = this.maxSwell;
+               this.isCharging = false;
+               this.level().broadcastEntityEvent(this, (byte) 5);
                this.explodeWisp();
             }
          }
@@ -226,8 +245,8 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
     }
 
     protected ItemStack getAshes() {
-    	/*ItemStack stack = new ItemStack(FURItemRegistry.WISP_ASHES);
-        CompoundNBT compoundnbt = new CompoundNBT();
+    	ItemStack stack = new ItemStack(FURItemRegistry.WISP_ASHES.get());
+    	CompoundTag compoundnbt = new CompoundTag();
         this.addAdditionalSaveData(compoundnbt);
         stack.getOrCreateTag().put("WispData", compoundnbt);
         
@@ -235,13 +254,12 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
             stack.setHoverName(this.getCustomName());
         }
         
-        return stack;*/
-    	return null;
+        return stack;
     }
     
     protected ItemStack getFishBucket() {
-    	/*ItemStack stack = new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE);
-        CompoundNBT compoundnbt = new CompoundNBT();
+    	ItemStack stack = new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE.get());
+    	CompoundTag compoundnbt = new CompoundTag();
         this.addAdditionalSaveData(compoundnbt);
         stack.getOrCreateTag().put("WispData", compoundnbt);
         
@@ -249,8 +267,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
             stack.setHoverName(this.getCustomName());
         }
         
-        return stack;*/
-    	return null;
+        return stack;
     }
 
     @Override
@@ -285,17 +302,19 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
         /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wisp_Health.get());
     	this.setHealth(this.getMaxHealth());*/
 		
-		this.entityData.set(SKIN_TYPE, this.random.nextInt(3));
-		
-		if (world.getBiome(this.blockPosition()).is(Biomes.NETHER_WASTES)) {
-		   this.setSkin(1);
-    	} else if (world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
- 		   this.setSkin(0);
-     	} else if (world.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
-  		   this.setSkin(2);
-      	}
-    			
-		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));
+		if (reason != MobSpawnType.BUCKET) {
+			this.entityData.set(SKIN_TYPE, this.random.nextInt(3));
+			
+			if (world.getBiome(this.blockPosition()).is(Biomes.NETHER_WASTES)) {
+			   this.setSkin(1);
+	    	} else if (world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
+	 		   this.setSkin(0);
+	     	} else if (world.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
+	  		   this.setSkin(2);
+	      	}
+	    			
+			this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.2D, 0.0D));
+		}
 		
 		return super.finalizeSpawn(world, difficulty, reason, data, tag);
 	}
@@ -418,6 +437,24 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
         return MobType.UNDEAD;
     }
     
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+    	if (id == 4) {
+    		this.swell += this.getSwellDir();
+    	} else if (id == 5) {
+    		this.swell = this.maxSwell;
+    		this.isCharging = false;
+		} else if (id == 6) {	
+    		this.isCharging = true;
+    	} else {
+            super.handleEntityEvent(id);
+        }
+    }
+    
     class AIChargeAttack extends Goal {
     	
         public AIChargeAttack() {
@@ -449,6 +486,8 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
             LivingEntity LivingEntity = WispEntity.this.getTarget();
             Vec3 vec3d = LivingEntity.getEyePosition(1.0F);
             WispEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
+            WispEntity.this.isCharging = true;
+            WispEntity.this.level().broadcastEntityEvent(WispEntity.this, (byte) 6);
         }
 
         /**
@@ -514,10 +553,24 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 		
 		super.dropAllDeathLoot(cause);
 	}
+	
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.isCharging) {
+		state.getController().setAnimation(CHARGE);
+    	} else if (this.swell > 0 && this.swell <= this.maxSwell) {
+    		state.getController().setAnimation(CAST);
+    	//} else if (state.isMoving() && this.random.nextFloat() < 0.05F) {
+			//state.getController().setAnimation(SPIN);
+        } else {
+            state.getController().setAnimation(FLOAT);
+        }
+        
+        return PlayState.CONTINUE;
+    }
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
 	}
 
 	@Override

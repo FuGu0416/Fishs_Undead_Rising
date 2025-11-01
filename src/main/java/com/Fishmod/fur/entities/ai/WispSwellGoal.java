@@ -25,7 +25,7 @@ public class WispSwellGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		LivingEntity livingTarget = this.wisp.getTarget();
-		boolean tamedExplosionAllowed = !this.wisp.isTame()/* || (this.wisp.isTame() && FURConfig.Wisp_Tamed_Explosion.get())*/;
+		boolean tamedExplosionAllowed = !this.wisp.isTame() || (this.wisp.isTame()/* && FURConfig.Wisp_Tamed_Explosion.get()*/);
 		return (this.wisp.getSwellDir() > 0 || (livingTarget != null && this.wisp.distanceToSqr(livingTarget) < 4.0D))
 				&& tamedExplosionAllowed;
 	}

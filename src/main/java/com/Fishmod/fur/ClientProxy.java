@@ -15,6 +15,7 @@ import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
+import com.Fishmod.fur.client.renderer.entity.WispRenderer;
 import com.Fishmod.fur.client.renderer.entity.WraithRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
@@ -58,6 +59,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WETA.get(), WetaRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.AVATON.get(), AvatonRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.WRAITH.get(), WraithRenderer::new); 
+    	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);  
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -96,7 +98,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.MUMMY, manager -> new MummyRenderer(manager));        
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.WISP, manager -> new WispRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTSWARMER, manager -> new GhostSwarmerRenderer(manager)); 

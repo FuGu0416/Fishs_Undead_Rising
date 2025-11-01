@@ -296,7 +296,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity, I
 	}
     
 	protected SoundEvent getAmbientSound() {
-		return FURSoundRegistry.SWARMER_AMBIENT.get();
+		return null;
 	}
 
 	protected SoundEvent getDeathSound() {

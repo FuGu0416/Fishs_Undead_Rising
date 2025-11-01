@@ -17,6 +17,7 @@ import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
+import com.Fishmod.fur.entities.tameable.WispEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -48,6 +49,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<WetaEntity>> WETA = DEF_REG.register("weta", () -> (EntityType<WetaEntity>) EntityType.Builder.of(WetaEntity::new, MobCategory.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS).setTrackingRange(8).build("scarecrow"));
 	public static final RegistryObject<EntityType<AvatonEntity>> AVATON = DEF_REG.register("avaton", () -> (EntityType<AvatonEntity>) EntityType.Builder.of(AvatonEntity::new, MobCategory.MONSTER).sized(1.25F, 1.5F).setTrackingRange(8).build("avaton"));
 	public static final RegistryObject<EntityType<WraithEntity>> WRAITH = DEF_REG.register("wraith", () -> (EntityType<WraithEntity>) EntityType.Builder.of(WraithEntity::new, MobCategory.MONSTER).sized(0.75F, 1.75F).setTrackingRange(8).build("wraith"));
+	public static final RegistryObject<EntityType<WispEntity>> WISP = DEF_REG.register("wisp", () -> (EntityType<WispEntity>) EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER).sized(0.525F, 0.525F).setTrackingRange(8).fireImmune().build("wisp"));
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
@@ -84,7 +86,6 @@ public class FUREntityRegistry {
 	public static final EntityType<MummyEntity> MUMMY = registerEntity(EntityType.Builder.of(MummyEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "mummy");	
 	public static final EntityType<CactoidEntity> CACTOID = registerEntity(EntityType.Builder.of(CactoidEntity::new, EntityClassification.MONSTER).sized(0.5F, 1.1F), "cactoid");
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
-	public static final EntityType<WispEntity> WISP = registerEntity(EntityType.Builder.of(WispEntity::new, EntityClassification.MONSTER).sized(0.525F, 0.525F).clientTrackingRange(8).fireImmune(), "wisp");
 	public static final EntityType<GraveRobberEntity> GRAVEROBBER = registerEntity(EntityType.Builder.of(GraveRobberEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobber");
 	public static final EntityType<GraveRobberGhostEntity> GRAVEROBBERGHOST = registerEntity(EntityType.Builder.of(GraveRobberGhostEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobberghost");
 	public static final EntityType<ScarabEntity> SCARAB = registerEntity(EntityType.Builder.of(ScarabEntity::new, EntityClassification.MONSTER).sized(1.0F, 0.6F).clientTrackingRange(8), "scarab");
@@ -124,6 +125,7 @@ public class FUREntityRegistry {
         event.register(WETA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(AVATON.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AvatonEntity::checkAvatonSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WRAITH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(WISP.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WispEntity::checkWispSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         
         /*EntitySpawnPlacementRegistry.register(MYCOSIS, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, MycosisEntity::checkMycosisSpawnRules);
         EntitySpawnPlacementRegistry.register(PARASITE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules);
@@ -147,7 +149,6 @@ public class FUREntityRegistry {
         EntitySpawnPlacementRegistry.register(MUMMY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MummyEntity::checkMummySpawnRules);        
         EntitySpawnPlacementRegistry.register(CACTOID, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules);
         EntitySpawnPlacementRegistry.register(WARPEDFIREFLY, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules);
-        EntitySpawnPlacementRegistry.register(WISP, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WispEntity::checkWispSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         EntitySpawnPlacementRegistry.register(GRAVEROBBERGHOST, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         EntitySpawnPlacementRegistry.register(GHOSTSWARMER, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, GhostSwarmerEntity::checkWispSpawnRules);
@@ -164,8 +165,8 @@ public class FUREntityRegistry {
     public static void initializeAttributes(EntityAttributeCreationEvent event) {
         event.put(LAVACOW.get(), LavaCowEntity.createAttributes().build());
         event.put(FOGLET.get(), FogletEntity.createAttributesFoglet().build());
-        event.put(ISNACHI.get(), IsnachiEntity.createAttributesFoglet().build());
-        event.put(IMP.get(), ImpEntity.createAttributesFoglet().build());
+        event.put(ISNACHI.get(), IsnachiEntity.createAttributesIsnachi().build());
+        event.put(IMP.get(), ImpEntity.createAttributesImp().build());
         event.put(SEAHAG.get(), SeaHagEntity.createAttributes().build());
         event.put(PIRANHA.get(), PiranhaEntity.createAttributes().build());
         event.put(SWARMER.get(), SwarmerEntity.createAttributes().build());
@@ -175,6 +176,7 @@ public class FUREntityRegistry {
         event.put(WETA.get(), WetaEntity.createAttributes().build());
         event.put(AVATON.get(), AvatonEntity.createAttributes().build());
         event.put(WRAITH.get(), SeaHagEntity.createAttributes().build());
+        event.put(WISP.get(), WispEntity.createAttributes().build());
         
         /*event.put(MYCOSIS, MycosisEntity.createAttributes().build());
         event.put(PARASITE, ParasiteEntity.createAttributes().build());
@@ -202,7 +204,6 @@ public class FUREntityRegistry {
         event.put(MUMMY, MummyEntity.createAttributes().build());       
         event.put(CACTOID, CactyrantEntity.createAttributes().build());
         event.put(WARPEDFIREFLY, WarpedFireflyEntity.createAttributes().build());
-        event.put(WISP, WispEntity.createAttributes().build());
         event.put(GRAVEROBBER, GraveRobberEntity.createAttributes().build());
         event.put(GRAVEROBBERGHOST, GraveRobberGhostEntity.createAttributes().build());
         event.put(GHOSTSWARMER, GhostSwarmerEntity.createAttributes().build());

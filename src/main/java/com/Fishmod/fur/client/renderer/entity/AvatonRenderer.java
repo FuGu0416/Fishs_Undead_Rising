@@ -23,6 +23,7 @@ public class AvatonRenderer extends GeoEntityRenderer<AvatonEntity> {
     	return super.getTextureLocation(entity);
     }    
     
+    @Override
     protected int getBlockLightLevel(AvatonEntity p_225624_1_, BlockPos p_225624_2_) {
         return 8;
     }

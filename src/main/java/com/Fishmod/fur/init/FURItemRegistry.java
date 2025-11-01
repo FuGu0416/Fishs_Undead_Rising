@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.DiseasedBreadItem;
+import com.Fishmod.fur.item.EntityBucketItem;
 import com.Fishmod.fur.item.FURItem;
 import com.Fishmod.fur.item.FURThrowableItem;
 import com.Fishmod.fur.item.FURWeaponItem;
@@ -63,6 +64,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_CHESTPLATE = DEF_REG.register("ghostly_armor_chestplate", () -> new GhostlyArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_LEGGINGS = DEF_REG.register("ghostly_armor_leggings", () -> new GhostlyArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_BOOTS = DEF_REG.register("ghostly_armor_boots", () -> new GhostlyArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<Item> WISP_ASHES = DEF_REG.register("wisp_ashes", () -> new Item(new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new EntityBucketItem(FUREntityRegistry.WISP::get, Items.GLASS_BOTTLE, new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> MOLTEN_MEAT = DEF_REG.register("molten_meat", () -> new MoltenMeatItem(new Item.Properties().durability(0).stacksTo(64).fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_ALLOY = DEF_REG.register("molten_alloy", () -> new Item(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> MOOTENHEART = DEF_REG.register("mooten_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
@@ -164,13 +167,9 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CACTOID_POT = new EntityBucketItem(FUREntityRegistry.CACTOID, Items.FLOWER_POT, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
 	public static final RegistryObject<Item> BOABING = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:baobing");
 	public static final RegistryObject<Item> KUNG_PAO_CHICKEN = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new EffectInstance(FUREffectRegistry.IMMOLATION, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:kung_pao_chicken");
-	public static final RegistryObject<Item> WISP_ASHES = new Item(new Item.Properties().tab(mod_LavaCow.TAB).fireResistant()).setRegistryName("mod_lavacow:wisp_ashes");
-	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = new EntityBucketItem(FUREntityRegistry.WISP, Items.GLASS_BOTTLE, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:wisp_in_a_bottle");	
 	public static final RegistryObject<Item> SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
 	public static final RegistryObject<Item> SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);
-	public static final RegistryObject<Item> GHOSTSWARMER = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.LEVITATION, 3*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:ghostswarmer_item");
-	public static final RegistryObject<Item> GHOSTSWARMER_BUCKET = new EntityBucketItem(FUREntityRegistry.GHOSTSWARMER, Items.BUCKET, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:ghostswarmer_bucket");
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("mod_lavacow:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().tab(mod_LavaCow.TAB).durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:sinister_whetstone");
 	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB))).setRegistryName("mod_lavacow:illager_nose");
@@ -213,6 +212,7 @@ public class FURItemRegistry {
         spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
         spawnEgg("avaton", FUREntityRegistry.AVATON, 0xAAA48E, 0x222829);
         spawnEgg("wraith", FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B);
+        spawnEgg("wisp", FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1);
         
         /*
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MYCOSIS, 0xBCE0AC, 0x83631D, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mycosis"));
@@ -220,7 +220,6 @@ public class FURItemRegistry {
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.FRIGID, 0xAFE0E2, 0x59484F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_frigid"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_undeadswine"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_salamander"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wendigo"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MIMIC, 0xE168FF, 0x070000, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mimic"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_sludgelord"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_raven"));
@@ -238,11 +237,8 @@ public class FURItemRegistry {
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.MUMMY, 0xE9DAAE, 0x9A8157, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mummy"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactoid"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_warpedfirefly"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SEAHAG, 0x44AD9A, 0x4ADC00, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seahag"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_wisp"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobber"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_graverobberghost"));
-    	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.GHOSTSWARMER, 0xA4F3F3, 0xC31919, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostswarmer"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.SCARAB, 0x282219, 0xFFCD55, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_scarab"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_beelzebub"));
     	event.getRegistry().register(new SpawnEggItem(FUREntityRegistry.ENIGMOTH, 0x0D0B11, 0xA675E9, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_enigmoth"));
