@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+	"item": "fur:frozenthigh"
+  },
+  "result": {
+    "item": "minecraft:rotten_flesh",
+    "count": 4
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

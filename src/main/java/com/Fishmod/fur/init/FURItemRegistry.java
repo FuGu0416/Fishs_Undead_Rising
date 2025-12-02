@@ -9,9 +9,11 @@ import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.DiseasedBreadItem;
 import com.Fishmod.fur.item.EntityBucketItem;
 import com.Fishmod.fur.item.FURItem;
+import com.Fishmod.fur.item.FURStewItem;
 import com.Fishmod.fur.item.FURThrowableItem;
 import com.Fishmod.fur.item.FURWeaponItem;
 import com.Fishmod.fur.item.FamineArmorItem;
+import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
@@ -105,25 +107,26 @@ public class FURItemRegistry {
 			.effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 16*20, 1), 0.3F)
 			.effect(() -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 16*20, 2), 0.3F).build()), 1)); 
 	public static final RegistryObject<Item> FEATHER_BLACK = DEF_REG.register("feather_black", () -> new Item(new Item.Properties())); 
+	public static final RegistryObject<Item> HYPHAE = DEF_REG.register("hyphae", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> FROZENTHIGH = DEF_REG.register("frozenthigh", () -> new FrozenThighItem(new Item.Properties().stacksTo(1).durability(64).food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4*20, 4), 0.6F).build())));
+	public static final RegistryObject<Item> POISONSPORE = DEF_REG.register("poisonspore", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MIMIC_CLAW = DEF_REG.register("mimic_claw", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 60*20, 0), 0.3F).build()), 64, UseAnim.EAT, 0));
+	public static final RegistryObject<Item> MIMIC_CLAW_COOKED = DEF_REG.register("mimic_claw_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> KUNG_PAO_CHICKEN = DEF_REG.register("kung_pao_chicken", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new MobEffectInstance(FUREffectRegistry.IMMOLATION.get(), 60*20, 1), 1.0F).build()), UseAnim.EAT, 1));
+	public static final RegistryObject<Item> BOABING = DEF_REG.register("baobing", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60*20, 1), 1.0F).build()), UseAnim.EAT, 1));
 	
 	/*
-	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");
-	public static final RegistryObject<Item> HYPHAE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:hyphae");
+	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
 	public static final RegistryObject<Item> PARASITE_COMMON = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_common");
 	public static final RegistryObject<Item> PARASITE_DESERT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_desert");
 	public static final RegistryObject<Item> PARASITE_JUNGLE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.POISON, 4*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_jungle");
 	public static final RegistryObject<Item> PARASITE_MAGGOT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_maggot");
 	public static final RegistryObject<Item> PARASITE_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:parasite_item_cooked");
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("mod_lavacow:intestine");
-	public static final RegistryObject<Item> FROZENTHIGH = new FrozenThighItem(new Item.Properties().stacksTo(1).durability(64).tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(10).saturationMod(1.2F).alwaysEat().effect(() -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 4*20, 4), 0.6F).build())).setRegistryName("mod_lavacow:frozenthigh");
-	public static final RegistryObject<Item> POISONSPORE = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:poisonspore");
-	public static final RegistryObject<Item> GOLDENHEART = new GoldenHeartItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(250)).setRegistryName("mod_lavacow:goldenheart");
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA).setRegistryName("mod_lavacow:potion_of_mooten_lava");
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("mod_lavacow:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:green_bacon_and_eggs");
 	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:pigboarhide");
-	public static final RegistryObject<Item> MIMIC_CLAW = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.CONFUSION, 60*20, 0), 0.3F).build()), 64, UseAction.EAT, 0).setRegistryName("mod_lavacow:mimic_claw");
-	public static final RegistryObject<Item> MIMIC_CLAW_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:mimic_claw_cooked");
 	public static final RegistryObject<Item> SILKY_SLUDGE = new Item(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:silky_sludge");
 	public static final RegistryObject<Item> SLUDGE_WAND = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE), "mod_lavacow:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
 	public static final RegistryObject<Item> BURNTOVIPOSITOR = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).fireResistant()).setRegistryName("mod_lavacow:burntovipositor");
@@ -165,8 +168,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> THORN_SHOOTER = new FURRangedItem("mod_lavacow:thorn_shooter", CACTUS_THORN, FUREntityRegistry.CACTUS_THORN, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(768));
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:salamander_bucket");
 	public static final RegistryObject<Item> CACTOID_POT = new EntityBucketItem(FUREntityRegistry.CACTOID, Items.FLOWER_POT, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:cactoid_pot");
-	public static final RegistryObject<Item> BOABING = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(FUREffectRegistry.THORNED, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:baobing");
-	public static final RegistryObject<Item> KUNG_PAO_CHICKEN = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new EffectInstance(FUREffectRegistry.IMMOLATION, 60*20, 1), 1.0F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:kung_pao_chicken");
 	public static final RegistryObject<Item> SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
 	public static final RegistryObject<Item> SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);

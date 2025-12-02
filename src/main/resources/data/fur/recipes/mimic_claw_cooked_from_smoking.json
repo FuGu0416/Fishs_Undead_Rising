@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+	"item": "fur:mimic_claw"
+  },
+  "result": "fur:mimic_claw_cooked",
+  "experience": 0.35,
+  "cookingtime": 100
+}

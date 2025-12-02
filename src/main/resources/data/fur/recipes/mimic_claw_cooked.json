@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+	"item": "fur:mimic_claw"
+  },
+  "result": "fur:mimic_claw_cooked",
+  "experience": 0.35,
+  "cookingtime": 200
+}

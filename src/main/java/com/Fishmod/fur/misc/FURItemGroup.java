@@ -43,6 +43,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
             	output.accept(FURItemRegistry.FAMINE.get());
             	output.accept(FURItemRegistry.IMP_HORN.get());
+            	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
             	output.accept(FURItemRegistry.CURSED_FABRIC.get());
             	output.accept(FURItemRegistry.CURSEWEAVE_CLOTH.get());
             	output.accept(FURItemRegistry.ECTOPLASM.get());
@@ -74,6 +75,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
+            	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_STRAW.get());
@@ -82,6 +84,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.DISEASED_BREAD.get());
             	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURItemRegistry.FEATHER_BLACK.get());
+            	output.accept(FURItemRegistry.HYPHAE.get());
+            	output.accept(FURItemRegistry.POISONSPORE.get());
+            	output.accept(FURItemRegistry.FROZENTHIGH.get());            	
+            	output.accept(FURItemRegistry.MIMIC_CLAW.get());
+            	output.accept(FURItemRegistry.MIMIC_CLAW_COOKED.get());            	
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());
