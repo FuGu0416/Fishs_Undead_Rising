@@ -5,6 +5,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.item.FURStewItem;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -180,13 +182,13 @@ public class FURTameableEntity extends TamableAnimal {
 	               if (itemstack.getItem() instanceof BucketItem) {
 	            	   itemstack.shrink(1);
 	            	   player.setItemInHand(hand, new ItemStack(Items.BUCKET));
-	               /*} else if (itemstack.getItem() instanceof NetherStewItem) {
+	               } else if (itemstack.getItem() instanceof FURStewItem) {
 	            	   itemstack.shrink(1);
 	            	   if (itemstack.isEmpty()) {
 	            		   player.setItemInHand(hand, new ItemStack(Items.BOWL));
-	            	   } else if (!player.inventory.add(new ItemStack(Items.BOWL))) {
+	            	   } else if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
 	            		   player.spawnAtLocation(new ItemStack(Items.BOWL));
-	                   }*/
+	                   }
 	               } else {
 	            	   itemstack.shrink(1);
 	               }

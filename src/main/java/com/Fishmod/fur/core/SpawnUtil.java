@@ -4,7 +4,10 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.mod_LavaCow;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -103,13 +106,13 @@ public class SpawnUtil {
 		}
 		
 		return null;
-	}
+	}*/
     
-    public static TranslationTextComponent TimeupDeathMessage(Entity entityIn) {
-    	return new TranslationTextComponent("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});
+    public static Component TimeupDeathMessage(Entity entityIn) {
+    	return Component.translatable("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});
     }
     
-	public static RegistryKey<Biome> getRegistryKey(Biome BiomeIn) {
+	/*public static RegistryKey<Biome> getRegistryKey(Biome BiomeIn) {
 		return RegistryKey.create(Registry.BIOME_REGISTRY, BiomeIn.getRegistryName());
 	}*/
 	
