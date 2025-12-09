@@ -53,8 +53,27 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class UnburiedEntity extends FURTameableEntity implements IAggressive {
+public class UnburiedEntity extends FURTameableEntity implements IAggressive, GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("unburied.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("unburied.model.walking");
+    private static final RawAnimation RUN = RawAnimation.begin().thenPlay("unburied.model.running");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("unburied.model.attacking");
+    private static final RawAnimation BIRTH = RawAnimation.begin().thenPlay("unburied.model.birth");
+    
+	public static final int ATTACK_TIMER = 22;
+	public static final int SPELL_TIMER = 70;
+	
 	private int attackTimer;
 	protected int spellTicks;
 	private int limitedLifeTicks;
@@ -249,7 +268,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	@Override
     public boolean doHurtTarget(Entity entityIn) {
         if (super.doHurtTarget(entityIn)) {
-        	this.attackTimer = 5;
+        	this.attackTimer = ATTACK_TIMER;
 	        this.level().broadcastEntityEvent(this, (byte)4);
 
             if(entityIn instanceof LivingEntity) {
@@ -308,9 +327,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
 	@OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 32) {
-        	this.spellTicks = 20;
+        	this.spellTicks = SPELL_TIMER;
         } else if (id == 4) {
-            this.attackTimer = 5;
+            this.attackTimer = ATTACK_TIMER;
         } else if (id == 11) {
             this.isSmoking = true;
         } else {
@@ -409,4 +428,38 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive {
     public boolean shouldDropLoot() {
     	return !this.isTame() || (this.isTame() && !(this.getOwner() instanceof Player));
     }
+    
+    private RawAnimation getWalkAnimation() {
+        if (this.isAggressive()) {
+        	return RUN;
+        } else {
+        	return WALK;
+        }
+    }
+    
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
+    		state.getController().setAnimation(BIRTH);
+    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
+    		state.getController().setAnimation(ATTACK);
+    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (state.isMoving() && !this.isInWater()) {
+            state.getController().setAnimation(this.getWalkAnimation());
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
+	}
 }

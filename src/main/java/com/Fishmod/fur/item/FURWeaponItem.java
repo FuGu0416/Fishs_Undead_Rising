@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
+import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
@@ -217,9 +218,9 @@ public class FURWeaponItem extends SwordItem {
 		        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
 		        entity.setHealth(entity.getMaxHealth());
 		        		        
-		        /*if (entity instanceof UnburiedEntity) {
-		        	entity.level.broadcastEntityEvent(entity, (byte)32);
-		        }*/
+		        if (entity instanceof UnburiedEntity) {
+		        	entity.level().broadcastEntityEvent(entity, (byte)32);
+		        }
 			}
 		}
 	}
