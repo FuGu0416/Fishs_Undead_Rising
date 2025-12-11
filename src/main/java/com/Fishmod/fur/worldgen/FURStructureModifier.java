@@ -32,6 +32,7 @@ public class FURStructureModifier {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder().add(ForgeRegistries.Keys.STRUCTURE_MODIFIERS, context ->
     {
         context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 1000, 1, 2), FURTags.HAS_SEAHAG));
+        context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 1000, 1, 2), FURTags.HAS_MUMMY));
     });
 
     public static void generateStructureModifiers(GatherDataEvent event)

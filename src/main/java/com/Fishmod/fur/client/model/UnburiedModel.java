@@ -1,8 +1,11 @@
 package com.Fishmod.fur.client.model;
 
+import javax.annotation.Nullable;
+
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;
@@ -52,5 +55,11 @@ public class UnburiedModel extends GeoModel<UnburiedEntity> {
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
             head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }
+    }
+    
+    @Nullable
+    @Override
+	public RenderType getRenderType(UnburiedEntity p_230496_1_, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
     }
 }

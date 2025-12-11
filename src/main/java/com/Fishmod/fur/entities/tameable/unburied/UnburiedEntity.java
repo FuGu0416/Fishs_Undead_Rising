@@ -12,6 +12,9 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -71,6 +74,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("unburied.model.attacking");
     private static final RawAnimation BIRTH = RawAnimation.begin().thenPlay("unburied.model.birth");
     
+    private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(UnburiedEntity.class, EntityDataSerializers.INT);
 	public static final int ATTACK_TIMER = 22;
 	public static final int SPELL_TIMER = 70;
 	
@@ -92,6 +96,12 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         super(p_i48549_1_, worldIn);
         this.limitedLifeTicks = -1;
     }
+	
+    @Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+	}
 	
     protected void registerGoals() {
     	super.registerGoals();
@@ -306,7 +316,8 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
     	this.setHealth(this.getMaxHealth());*/
-        
+        this.setSkin(0);
+        this.setLeftHanded(true);
         this.populateDefaultEquipmentSlots(this.random, difficulty);        
         return livingdata;
     }    
@@ -376,6 +387,14 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         return FURSoundRegistry.UNBURIED_DEATH.get();
     }
     
+    public int getSkin() {
+        return this.entityData.get(SKIN_TYPE).intValue();
+    }
+
+    public void setSkin(int skinType) {
+    	this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+    
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
@@ -391,7 +410,8 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     	this.lifesteal = compound.getInt("lifesteal");
     	this.poisonous = compound.getInt("poisonous");
     	this.corrosive = compound.getInt("corrosive");
-    	this.unbreaking = compound.getInt("unbreaking");   
+    	this.unbreaking = compound.getInt("unbreaking");  
+    	this.setSkin(compound.getInt("Variant"));
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D/*Modconfig.Unburied_Health*/ + ((float)this.unbreaking * 2.0F));
     }
 
@@ -411,6 +431,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         compound.putInt("poisonous", this.poisonous);
         compound.putInt("corrosive", this.corrosive);
         compound.putInt("unbreaking", this.unbreaking);     
+        compound.putInt("Variant", this.getSkin());
     }
 
     /**

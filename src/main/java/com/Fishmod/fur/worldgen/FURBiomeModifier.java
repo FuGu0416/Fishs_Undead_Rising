@@ -34,6 +34,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_AVATON = registerKey("add_avaton");
 	public static final ResourceKey<BiomeModifier> ADD_WRAITH = registerKey("add_wraith");
 	public static final ResourceKey<BiomeModifier> ADD_WISP = registerKey("add_wisp");
+	public static final ResourceKey<BiomeModifier> ADD_MYCOSIS = registerKey("add_mycosis");
+	public static final ResourceKey<BiomeModifier> ADD_FRIGID = registerKey("add_frigid");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -68,6 +70,10 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 5, 1, 2));
         addSpawn(context, ADD_WISP, HolderSet.direct(biomes.getOrThrow(Biomes.NETHER_WASTES), biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY), biomes.getOrThrow(Biomes.BASALT_DELTAS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WISP.get(), 10, 4, 8));
+        addSpawn(context, ADD_MYCOSIS, biomes.getOrThrow(FURTags.HAS_MYCOSIS),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.MYCOSIS.get(), 40, 8, 16)); 
+        addSpawn(context, ADD_FRIGID, biomes.getOrThrow(BiomeTags.SPAWNS_SNOW_FOXES),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.FRIGID.get(), 20, 8, 16)); 
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

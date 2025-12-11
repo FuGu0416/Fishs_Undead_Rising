@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.StructureTagsProvider;
 import net.minecraft.tags.StructureTags;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class FURStructureTagsProvider extends StructureTagsProvider {
@@ -20,5 +21,6 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
         this.tag(FURTags.HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
+        this.tag(FURTags.HAS_MUMMY).add(BuiltinStructures.DESERT_PYRAMID);
     }
 }

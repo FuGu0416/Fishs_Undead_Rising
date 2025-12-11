@@ -62,6 +62,9 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WRAITH.get(), WraithRenderer::new); 
     	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.UNBURIED.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), UnburiedRenderer::new);
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);

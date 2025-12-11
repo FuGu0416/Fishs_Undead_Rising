@@ -49,7 +49,6 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM.get());
             	output.accept(FURItemRegistry.ECTOPLASM_MASS.get());
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
-            	output.accept(FURItemRegistry.SOULFIREHEART.get());
             	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_HELMET.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_CHESTPLATE.get());
@@ -58,8 +57,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.WISP_ASHES.get());
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
-            	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());
-            	output.accept(FURItemRegistry.MOOTENHEART.get());
+            	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());            	
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
             	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_HELMET.get());
@@ -67,6 +65,9 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_BOOTS.get());
             	output.accept(FURItemRegistry.UNDYINGHEART.get());
+            	output.accept(FURItemRegistry.MOOTENHEART.get());
+            	output.accept(FURItemRegistry.SOULFIREHEART.get());
+            	output.accept(FURItemRegistry.ACIDICHEART.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
             	output.accept(FURItemRegistry.PIRANHA_RAW.get());

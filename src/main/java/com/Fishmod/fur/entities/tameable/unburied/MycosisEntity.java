@@ -12,9 +12,6 @@ import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -36,18 +33,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class MycosisEntity extends UnburiedEntity {	
-	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(MycosisEntity.class, EntityDataSerializers.INT);
+	
 	private Vector3f[] spore_color = {new Vector3f(0.83F, 0.73F, 0.5F), new Vector3f(0.0F, 0.98F, 0.93F)};
 		
     public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
     }
-    
-    @Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
-	}
     
     @Override
     protected void registerGoals() {
@@ -102,13 +93,14 @@ public class MycosisEntity extends UnburiedEntity {
         }
         
         if(this.tickCount % 10 == 0 && this.level().isClientSide);
-        	this.level().addParticle(new DustParticleOptions(this.spore_color[this.getSkin()], 0.6F), 
+        	this.level().addParticle(new DustParticleOptions(this.spore_color[this.getSkin() - 1], 0.6F), 
         			this.getX() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 
         			this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), 
         			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);
     }
     
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {         
+    	entityLivingData = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     	/*boolean is_near_shroom = false;
         int dx = MathHelper.floor(this.getX());
         int dy = MathHelper.floor(this.getBoundingBox().minY);
@@ -128,8 +120,8 @@ public class MycosisEntity extends UnburiedEntity {
     	
     	if(is_near_shroom || (this.getY() < 50.0D && !this.level.canSeeSky(new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ()))))
         	this.setSkin(1);*/
-    	               
-        return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
+    	this.setSkin(1);               
+        return entityLivingData;
     }
          
     /**
@@ -158,33 +150,13 @@ public class MycosisEntity extends UnburiedEntity {
         EntityIn.level().addFreshEntity(entityareaeffectcloud);
     }
     
-    public int getSkin() {
-        return this.entityData.get(SKIN_TYPE).intValue();
-    }
-
-    public void setSkin(int skinType) {
-    	this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
-    }
-	
-    @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putInt("Variant", this.getSkin());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        this.setSkin(nbt.getInt("Variant"));
-    }
-    
     @Nullable
     @Override
     protected ResourceLocation getDefaultLootTable() {
     	switch(this.getSkin()) {
-    		case 1:
+    		case 2:
     			return new ResourceLocation(mod_LavaCow.MODID, "entities/mycosis1");
-    		case 0:
+    		case 1:
     		default:
     			return super.getDefaultLootTable();
     	}

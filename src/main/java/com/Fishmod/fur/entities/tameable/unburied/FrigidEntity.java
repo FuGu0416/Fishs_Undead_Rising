@@ -70,16 +70,20 @@ public class FrigidEntity extends UnburiedEntity {
     
 	@Override
     public boolean doHurtTarget(Entity par1Entity) {
-        if (super.doHurtTarget(par1Entity)) {        	            
+        if (super.doHurtTarget(par1Entity)) {   
+        	int frozen_ticks = this.getTicksFrozen();
+        	
         	if (this.isTame()) {
+        		((LivingEntity)par1Entity).setTicksFrozen(Math.min(this.getTicksRequiredToFreeze(), frozen_ticks + 80));
         		if (this.bane_of_arthropods > 0 && (((LivingEntity) par1Entity).getMobType().equals(MobType.ARTHROPOD))) {
         			int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
 	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 4));
-	            } else {
+	            } else {	            	
 	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20, 4));
 	            }
         	} else {
         		float local_difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+                ((LivingEntity)par1Entity).setTicksFrozen(Math.min(this.getTicksRequiredToFreeze(), frozen_ticks + 80 * (int)local_difficulty));
         		((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20 * (int)local_difficulty, 4));
         	}
         	
@@ -115,10 +119,11 @@ public class FrigidEntity extends UnburiedEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.ZombieFrozen_Health.get());
+    	livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.ZombieFrozen_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.ZombieFrozen_Attack.get());
     	this.setHealth(this.getMaxHealth());*/
-    	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	this.setSkin(3);
+    	return livingdata;
     }    
 }
