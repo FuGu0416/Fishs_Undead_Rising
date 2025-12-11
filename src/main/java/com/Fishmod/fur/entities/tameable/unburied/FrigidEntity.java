@@ -71,7 +71,7 @@ public class FrigidEntity extends UnburiedEntity {
 	@Override
     public boolean doHurtTarget(Entity par1Entity) {
         if (super.doHurtTarget(par1Entity)) {   
-        	int frozen_ticks = this.getTicksFrozen();
+        	int frozen_ticks = par1Entity.getTicksFrozen();
         	
         	if (this.isTame()) {
         		((LivingEntity)par1Entity).setTicksFrozen(Math.min(this.getTicksRequiredToFreeze(), frozen_ticks + 80));
@@ -79,12 +79,12 @@ public class FrigidEntity extends UnburiedEntity {
         			int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
 	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 4));
 	            } else {	            	
-	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20, 4));
+	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20, 2));
 	            }
         	} else {
         		float local_difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-                ((LivingEntity)par1Entity).setTicksFrozen(Math.min(this.getTicksRequiredToFreeze(), frozen_ticks + 80 * (int)local_difficulty));
-        		((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20 * (int)local_difficulty, 4));
+                ((LivingEntity)par1Entity).setTicksFrozen(Math.min(par1Entity.getTicksRequiredToFreeze(), frozen_ticks + 80 * (int)local_difficulty));
+        		((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20 * (int)local_difficulty, 2));
         	}
         	
             return true;

@@ -12,6 +12,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -35,6 +36,20 @@ public class FamineArmorItem extends ArmorItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept((IClientItemExtensions) mod_LavaCow.PROXY.getArmorProperties());
+    }
+    
+    /**
+     * Called by the powdered snow block to check if a living entity wearing this can walk on the snow, granting the same behavior as leather boots.
+     * Only affects items worn in the boots slot.
+     *
+     * @param stack  Stack instance
+     * @param wearer The entity wearing this ItemStack
+     *
+     * @return True if the entity can walk on powdered snow
+     */
+    @Override
+    public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+        return stack.is(FURItemRegistry.FAMINE_ARMOR_BOOTS.get());
     }
 
 	@Override

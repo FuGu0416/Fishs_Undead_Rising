@@ -37,7 +37,9 @@ public class FrozenThighItem extends FURItem {
      */
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4*20, 4));
+		int frozen_ticks = target.getTicksFrozen();
+		target.setTicksFrozen(Math.min(target.getTicksRequiredToFreeze(), frozen_ticks + 80));
+		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4 * 20, 2));
 		stack.hurtAndBreak(1, attacker, (p_220045_0_) -> {
 			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
