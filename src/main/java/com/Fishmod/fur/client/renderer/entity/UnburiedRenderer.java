@@ -23,13 +23,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import software.bernie.geckolib.renderer.layer.ItemArmorGeoLayer;
 
 @OnlyIn(Dist.CLIENT)
-public class UnburiedRenderer extends DynamicGeoEntityRenderer<UnburiedEntity> {
+public class UnburiedRenderer extends GeoEntityRenderer<UnburiedEntity> {
 	// Pre-define our bone names for easy and consistent reference later
 	private static final String LEFT_HAND = "handle_r";
 	private static final String RIGHT_HAND = "handle_l";

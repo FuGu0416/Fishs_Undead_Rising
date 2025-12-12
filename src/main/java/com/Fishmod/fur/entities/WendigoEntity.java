@@ -144,9 +144,7 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
      */
 	@Override
     public void tick() {
-    	this.noPhysics = (this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D);
     	super.tick();
-        this.noPhysics = false;
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;

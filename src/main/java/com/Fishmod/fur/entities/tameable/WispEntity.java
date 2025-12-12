@@ -182,8 +182,8 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 	
 	@Override
 	public void tick() {
-        if (this.isAlive() && (!this.isTame() || (this.isTame()/* && FURConfig.Wisp_Tamed_Explosion.get()*/))) {
-            this.oldSwell = this.swell;
+		if (this.isAlive() && (!this.isTame() || (this.isTame()/* && FURConfig.Wisp_Tamed_Explosion.get()*/))) {
+			this.oldSwell = this.swell;
 
             int i = this.getSwellDir();
             if (i > 0 && this.swell == 0) {
@@ -202,13 +202,13 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
                this.level().broadcastEntityEvent(this, (byte) 5);
                this.explodeWisp();
             }
-         }
+		}
          
-         if (this.isGastly() && this.getSkin() != 3) {
-         	this.setSkin(3);
-         }      
+		if (this.isGastly() && this.getSkin() != 3) {
+			this.setSkin(3);
+		}      
 
-     	this.noPhysics = true;
+        if (this.isAggressive()) this.noPhysics = true;
      	super.tick();
      	this.noPhysics = false;
      	this.setNoGravity(true);

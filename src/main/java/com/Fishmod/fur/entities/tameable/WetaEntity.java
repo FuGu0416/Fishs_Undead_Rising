@@ -8,9 +8,11 @@ import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.EntityAIDestroyCrops;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -170,25 +172,25 @@ public class WetaEntity extends FURTameableEntity implements IAggressive, GeoEnt
     
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-    	/*ItemStack itemstack = player.getItemInHand(hand);
+    	ItemStack itemstack = player.getItemInHand(hand);
            	
-    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD && this.getSkin() == 0) {
+    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD.get() && this.getSkin() == 0) {
     		if (!player.isCreative()) {
     			itemstack.shrink(1);
     		}
             
         	this.setSkin(2);
         	
-        	this.playSound(SoundEvents.AMBIENT_CAVE, 1.0F, 1.0F);
+        	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
         	for (int i = 0; i < 16; ++i) {
-                double d0 = new Random().nextGaussian() * 0.02D;
-                double d1 = new Random().nextGaussian() * 0.02D;
-                double d2 = new Random().nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(this.random.nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(this.random.nextFloat() * this.getBbHeight()), this.getZ() + (double)(this.random.nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
             }
         	
         	return InteractionResult.CONSUME;
-        }*/
+        }
     
         return super.mobInteract(player, hand);
     }
