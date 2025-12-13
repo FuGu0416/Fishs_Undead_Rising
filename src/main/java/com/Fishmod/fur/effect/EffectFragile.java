@@ -3,6 +3,7 @@ package com.Fishmod.fur.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class EffectFragile extends MobEffect {
 
@@ -12,8 +13,14 @@ public class EffectFragile extends MobEffect {
     
     @Override
     public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
-        if ((entityLivingBaseIn.getHealth() / entityLivingBaseIn.getMaxHealth()) < (0.05f * (amplifier + 1))) {
-        	entityLivingBaseIn.hurt(entityLivingBaseIn.damageSources().wither(), 1005.0F);
+    	float maxHealth = entityLivingBaseIn.getMaxHealth();
+        if ((entityLivingBaseIn.getHealth() / maxHealth) < (0.05f * (amplifier + 1))) {
+            if (entityLivingBaseIn instanceof Player) {
+            	Player player = (Player) entityLivingBaseIn;
+                if (player.isSpectator() || player.isCreative())
+                    return;
+            }
+        	entityLivingBaseIn.hurt(entityLivingBaseIn.damageSources().wither(), maxHealth);
         }
     }
     

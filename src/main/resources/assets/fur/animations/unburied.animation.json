@@ -111,7 +111,7 @@
 						"vector": ["5 + math.sin((query.anim_time- 0.4) * 180) * -5", 0, "math.sin(query.anim_time * 180) * 5"]
 					},
 					"position": {
-						"vector": [0, -1.5, 0]
+						"vector": [0, 0, 0]
 					}
 				},
 				"Arm_r": {
@@ -341,31 +341,31 @@
 					"position": {
 						"0.0": {
 							"post": {
-								"vector": [0, -1.5, 0]
+								"vector": [0, 0, 0]
 							},
 							"lerp_mode": "catmullrom"
 						},
 						"0.5": {
 							"post": {
-								"vector": [0, -1.5, 0]
+								"vector": [0, 0, 0]
 							},
 							"lerp_mode": "catmullrom"
 						},
 						"0.6667": {
 							"post": {
-								"vector": [0, 0.5, 0]
+								"vector": [0, 2, 0]
 							},
 							"lerp_mode": "catmullrom"
 						},
 						"0.8333": {
 							"post": {
-								"vector": [0, -1.5, 0]
+								"vector": [0, 0, 0]
 							},
 							"lerp_mode": "catmullrom"
 						},
 						"1.0833": {
 							"post": {
-								"vector": [0, -1.5, 0]
+								"vector": [0, 0, 0]
 							},
 							"lerp_mode": "catmullrom"
 						}
@@ -669,7 +669,7 @@
 							"lerp_mode": "catmullrom"
 						},
 						"3.5": {
-							"vector": [0, -1.5, 0]
+							"vector": [0, 0, 0]
 						}
 					}
 				},

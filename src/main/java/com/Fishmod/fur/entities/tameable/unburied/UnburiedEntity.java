@@ -76,7 +76,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     
     private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(UnburiedEntity.class, EntityDataSerializers.INT);
 	public static final int ATTACK_TIMER = 22;
-	public static final int SPELL_TIMER = 70;
+	public static final int SPELL_TIMER = 75;
 	
 	private int attackTimer;
 	protected int spellTicks;
@@ -152,6 +152,11 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     	return this.lifesteal;
     }
     
+    public void setSpellcasting() {
+    	this.spellTicks = SPELL_TIMER;
+    	this.level().broadcastEntityEvent(this, (byte)32);
+    }
+    
     public boolean isSpellcasting() {
     	return this.spellTicks > 0;
     }
@@ -178,8 +183,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     public void aiStep() {
         BlockState state = this.level().getBlockState(this.getOnPos().below());
         
-        if (this.isSpellcasting()) {
-            
+        super.aiStep();
+        
+        if (this.isSpellcasting()) {         
 	        if (state.isSolidRender(this.level(), this.getOnPos().below())) {
 	            if (this.level().isClientSide()) {
 	            	for(int i = 0; i < 4; i++)
@@ -189,9 +195,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	        
 	        if (this.tickCount % 10 == 0) {
 	            this.playSound(SoundEvents.SAND_BREAK, 1, 0.5F);
-	        }
-	        
-	        this.setDeltaMovement(Vec3.ZERO);
+	        }      
         }
         
         if(this.isSmoking) {
@@ -207,8 +211,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	            world.addParticle(enumparticletypes, d0, this.getBoundingBox().minY + (double)f1, d1, 0.0D, 0.05D, 0.0D);
 	        }
         }
-		
-		super.aiStep();
     }
     
     /**
@@ -216,7 +218,9 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick() {           	   	
+    public void tick() {        
+    	super.tick();
+
     	if (this.attackTimer > 0) {
             --this.attackTimer;
         }
@@ -255,9 +259,16 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
                }
             }
         }
-          	
-    	super.tick();
     }
+    
+    @Override
+    public void travel(Vec3 p_213352_1_) {
+		if (this.isSpellcasting()) {	
+			this.setDeltaMovement(0.0D, -2.0D, 0.0D);
+		} else {
+			super.travel(p_213352_1_);
+		}
+	}
     
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
@@ -316,6 +327,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
     	this.setHealth(this.getMaxHealth());*/
+        
         this.setSkin(0);
         this.setLeftHanded(true);
         this.populateDefaultEquipmentSlots(this.random, difficulty);        

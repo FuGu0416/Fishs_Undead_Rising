@@ -61,6 +61,14 @@
 					]
 				},
 				{
+					"name": "handle_l",
+					"parent": "Arm_l_Seg1",
+					"pivot": [-11, 6.6, 0.3],
+					"cubes": [
+						{"origin": [-12, 6.6, -0.7], "size": [2, 2, 2], "uv": [0, 4]}
+					]
+				},
+				{
 					"name": "Arm_r_Seg0",
 					"parent": "Body_chest",
 					"pivot": [8, 26, 1.3],
@@ -75,6 +83,14 @@
 					"pivot": [11, 23.5, 1.3],
 					"cubes": [
 						{"origin": [8.5, 5.5, -1.2], "size": [5, 18, 5], "uv": [49, 24], "mirror": true}
+					]
+				},
+				{
+					"name": "handle_r",
+					"parent": "Arm_r_Seg1",
+					"pivot": [11, 6.6, 0.3],
+					"cubes": [
+						{"origin": [10, 6.6, -0.7], "size": [2, 2, 2], "uv": [0, 4]}
 					]
 				},
 				{

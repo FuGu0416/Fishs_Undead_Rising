@@ -16,6 +16,7 @@ public class FURTags {
     public static final TagKey<Biome> HAS_CACTYRANT = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_cactyrant"));
     public static final TagKey<Biome> HAS_WETA = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_weta"));
     public static final TagKey<Biome> HAS_MYCOSIS = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_mycosis"));
+    public static final TagKey<Biome> IS_OVERWORLD_HOSTILE = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "is_overworld_hostile"));
     
     public static final TagKey<Structure> HAS_SEAHAG = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_seahag"));   
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));

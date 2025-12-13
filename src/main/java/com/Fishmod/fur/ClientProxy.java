@@ -14,6 +14,7 @@ import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.UnburiedRenderer;
+import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
 import com.Fishmod.fur.client.renderer.entity.WispRenderer;
@@ -65,6 +66,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -94,7 +96,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PIRANHA, manager -> new SwarmerRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.UNDERTAKER, manager -> new UndertakerRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.BANSHEE, manager -> new BansheeRenderer(manager));      
         RenderingRegistry.registerEntityRenderingHandler(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   

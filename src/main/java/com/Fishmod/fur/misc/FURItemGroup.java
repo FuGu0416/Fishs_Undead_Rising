@@ -89,7 +89,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.POISONSPORE.get());
             	output.accept(FURItemRegistry.FROZENTHIGH.get());            	
             	output.accept(FURItemRegistry.MIMIC_CLAW.get());
-            	output.accept(FURItemRegistry.MIMIC_CLAW_COOKED.get());            	
+            	output.accept(FURItemRegistry.MIMIC_CLAW_COOKED.get());
+            	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

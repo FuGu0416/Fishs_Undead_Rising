@@ -123,7 +123,7 @@ public class SpawnUtil {
     		int d1 = (i == 0) ? 0 : (worldIn.random.nextInt(4) - 2);
     		BlockPos blockpos1 = findSpawnPositionInColumn(worldIn, blockpos, d0, d1);
     		if (blockpos1 != null) {
-    			return entityIn.spawn(worldIn, blockpos1, MobSpawnType.MOB_SUMMONED);
+    			return entityIn.spawn(worldIn, blockpos1.below(), MobSpawnType.MOB_SUMMONED);
     		}
     	}
     	

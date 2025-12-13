@@ -9,6 +9,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
@@ -168,12 +169,15 @@ public class FURWeaponItem extends SwordItem {
 		if (attacker instanceof Player && stack.getItem() == FURItemRegistry.FAMINE.get()) {
 			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
 		}/* else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
+			int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			
+			target.setSecondsOnFire((i + 2) * 4);
 			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
 		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
-		}*/ else if (stack.getItem() == FURItemRegistry.MOLTEN_HAMMER.get()/* || stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREHAMMER || stack.getItem() == FURItemRegistry.SOULFIREPAN*/) {
+		}*/ else if (stack.getItem() == FURItemRegistry.MOLTEN_HAMMER.get()/* stack.getItem() == FURItemRegistry.SOULFIREHAMMER*/) {
 			int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			
 			target.setSecondsOnFire((i + 2) * 4);
+			target.playSound(SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
 		}/* else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
 			int i = playerIn.getItemInHand(handIn).getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, stack);			
 			target.addEffect(new EffectInstance(Effects.POISON, 8 * 20, i + 1));
@@ -219,7 +223,7 @@ public class FURWeaponItem extends SwordItem {
 		        entity.setHealth(entity.getMaxHealth());
 		        		        
 		        if (entity instanceof UnburiedEntity) {
-		        	entity.level().broadcastEntityEvent(entity, (byte)32);
+		        	((UnburiedEntity)entity).setSpellcasting();
 		        }
 			}
 		}
@@ -256,7 +260,7 @@ public class FURWeaponItem extends SwordItem {
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
@@ -265,7 +269,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
             
-			return ActionResult.pass(playerIn.getItemInHand(handIn));
+			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
         }*/
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTEN_HAMMER.get()) {
@@ -332,12 +336,12 @@ public class FURWeaponItem extends SwordItem {
 			}
 			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.SOUL_FIRE_FLAME);
             playerIn.getItemInHand(handIn).hurtAndBreak(16, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
 			playerIn.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.0F);
 			playerIn.getCooldowns().addCooldown(this, 80);
 			
-			return ActionResult.pass(playerIn.getItemInHand(handIn));
+			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.BEAST_CLAW && playerIn.isOnGround()) {
@@ -350,33 +354,33 @@ public class FURWeaponItem extends SwordItem {
         	
         	playerIn.setDeltaMovement(playerIn.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D));
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
 			playerIn.getCooldowns().addCooldown(this, 120);
 			
-			return ActionResult.pass(playerIn.getItemInHand(handIn));
-		}
+			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
+		}*/
         
-        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL && worldIn instanceof ServerWorld) {
+        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && worldIn instanceof ServerLevel) {
             for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
-                BlockPos blockpos = playerIn.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.UNBURIED, FURConfig.Unburied_Lifespan.get() * 20, 0);
+                BlockPos blockpos = playerIn.blockPosition().offset(-6 + playerIn.getRandom().nextInt(12), 0, -6 + playerIn.getRandom().nextInt(12));
+                FURWeaponItem.SummonMinion(playerIn, enchantment_list, worldIn, blockpos, FUREntityRegistry.UNBURIED.get(), 20/*FURConfig.Unburied_Lifespan.get()*/ * 20, 0);
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
+            //playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
+            //playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
+            playerIn.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), 60/*FURConfig.Undertaker_Shovel_Cooldown.get()*/ * 20);
+            //playerIn.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
+            //playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
+            //playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
 			
-        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+        	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 		}
         
-        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SCARAB_SCEPTER && worldIn instanceof ServerWorld) {       
+        /*if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SCARAB_SCEPTER && worldIn instanceof ServerWorld) {       
         	Vector3d lookVec = playerIn.getLookAngle();
         	
             for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
@@ -385,7 +389,7 @@ public class FURWeaponItem extends SwordItem {
             }
 			
             playerIn.getItemInHand(handIn).hurtAndBreak(8, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
@@ -394,7 +398,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
             
-			return ActionResult.pass(playerIn.getItemInHand(handIn));
+			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
         }
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.ANKH_SCEPTER && worldIn instanceof ServerWorld) {
@@ -404,7 +408,7 @@ public class FURWeaponItem extends SwordItem {
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
@@ -413,7 +417,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
 			
-        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+        	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FUNGAL_STAFF && worldIn instanceof ServerWorld) {
@@ -423,7 +427,7 @@ public class FURWeaponItem extends SwordItem {
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
@@ -432,7 +436,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
 			
-        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+        	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 		}
         
         if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.FROZEN_GRIP && worldIn instanceof ServerWorld) {
@@ -442,7 +446,7 @@ public class FURWeaponItem extends SwordItem {
             }
             
             playerIn.getItemInHand(handIn).hurtAndBreak(63, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
@@ -451,7 +455,7 @@ public class FURWeaponItem extends SwordItem {
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             playerIn.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
 			
-        	return ActionResult.pass(playerIn.getItemInHand(handIn));
+        	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 		}*/        
 
     	return super.use(worldIn, playerIn, handIn);
