@@ -238,8 +238,9 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
             source.getDirectEntity().hurt(DamageSource.thorns(this), 2.0F);
         }
         
-    	if(source.isFire())
+    	if (source.isFire()) {
     		return super.hurt(source, 2.0F * amount);
+    	}
 
     	return super.hurt(source, amount);
     }

@@ -547,6 +547,7 @@
 	"tooltip.mod_lavacow:diseased_bread": "将村民转化为僵尸村民，或是直接食用",
 	"tooltip.mod_lavacow:pheromone_gland": "食用后获得迷情信息素(1:00)与反胃II(0:10)",
 	"tooltip.mod_lavacow:charming_catalyst": "食用后获得迷情信息素(0:30)，或用于刺激某些幼虫的成长",
+	"tooltip.mod_lavacow:basic_bomb": "投向目标地点，造成范围伤害",
 	"tooltip.mod_lavacow:ankh_scepter": "右键点击以召唤听命于玩家的木乃伊军团",
 	"tooltip.mod_lavacow:fungal_staff": "右键点击以召唤听命于玩家的菌尸军团",
 	"tooltip.mod_lavacow:frozen_grip": "右键点击以召唤听命于玩家的冻尸军团",

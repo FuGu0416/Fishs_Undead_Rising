@@ -25,6 +25,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Attach;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Pickup;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_InfestedAmpSpawns;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_UndeadSwine;
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Health;
@@ -232,6 +233,10 @@ public final class FURConfig {
 	//public static final ForgeConfigSpec.ConfigValue<Double> Living_Armor_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
+	public static final ForgeConfigSpec.ConfigValue<Double> MoltenHammer_Damage;
+	public static final ForgeConfigSpec.ConfigValue<Integer> MoltenHammer_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Double> SoulFireHammer_Damage;
+	public static final ForgeConfigSpec.ConfigValue<Integer> SoulFireHammer_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
 	public static final ForgeConfigSpec.ConfigValue<Integer> General_Intestine;
 	public static final ForgeConfigSpec.ConfigValue<Integer> GoldenHeart_dur;
@@ -307,6 +312,7 @@ public final class FURConfig {
 		Parasite_Attach = BUILDER.comment("Parasite will attack their target by attaching on them [false/true]").define("parasite attacks by attaching onto target", true);
 		Parasite_Lifespan = BUILDER.comment("The amount of seconds before parasites naturally die or form into cocoons").defineInRange("parasite lifespan", 16, 0, 10000);
 		Parasite_Pickup = BUILDER.comment("You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").define("parasite pickup", true);
+		Parasite_InfestedAmpSpawns = BUILDER.comment("The maximum amplifier of the Infested potion effect that scales additional parasite spawns").define("parasite infested amplifier spawns", 4);
 		BUILDER.pop();
 		
 		BUILDER.push("Undead Swine");
@@ -623,6 +629,10 @@ public final class FURConfig {
 		
 		BUILDER.push("Item");
 		MoltenHammer_PVP = BUILDER.comment("Allow Molten Hammer active effect to hit players [false/true]").define("allow molten hammer pvp", false);
+		MoltenHammer_Damage = BUILDER.comment("Area Damage of Molten Hammer [1-1000]").defineInRange("molten hammer attack", 8.0D, 1.0D, 1000.0D);
+		MoltenHammer_Cooldown = BUILDER.comment("Ability cooldown of Molten Hammer [1-10000]").defineInRange("molten hammer cooldown", 4, 0, 10000);
+		SoulFireHammer_Damage = BUILDER.comment("Area Damage of Soulforged Hammer [1-1000]").defineInRange("soulforged hammer attack", 10.0D, 1.0D, 1000.0D);
+		SoulFireHammer_Cooldown = BUILDER.comment("Ability cooldown of Soulforged Hammer [1-10000]").defineInRange("soulforged hammer cooldown", 4, 0, 10000);
 		Fission_ModEntity = BUILDER.comment("Allow Potion of Fission to be used on entites from other mods [false/true]").define("fission potion works on entities from other mods", false);
 		General_Intestine = BUILDER.comment("Set the drop rate of Intestine [0-100]").defineInRange("entity drop intestine", 4, 0, 100);
 		Intestine_lt = BUILDER.comment("Customize Items and their drop rates for the Intestine. Ex. \\\"minecraft:slime_ball,0.4\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for intestine", 

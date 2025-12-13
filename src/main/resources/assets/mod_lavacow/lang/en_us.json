@@ -546,6 +546,7 @@
 	"tooltip.mod_lavacow:diseased_bread": "Transform villager into zombie villager, or just eat it.",
 	"tooltip.mod_lavacow:pheromone_gland": "Gives Charming Pheromone(1:00) and NauseaII(0:10) when eaten.",
 	"tooltip.mod_lavacow:charming_catalyst": "Gives Charming Pheromone(0:30) when consuming, or uses to trigger some larvae's growth.",
+	"tooltip.mod_lavacow:basic_bomb": "Throw at target location and cause explosion.",
 	"tooltip.mod_lavacow:ankh_scepter": "Right click to summon an army of Mummy.",
 	"tooltip.mod_lavacow:fungal_staff": "Right click to summon an army of Mycosis.",
 	"tooltip.mod_lavacow:frozen_grip": "Right click to summon an army of Frigid.",

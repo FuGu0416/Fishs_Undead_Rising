@@ -138,7 +138,7 @@ public class EventHandler {
     		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE);
     		
     		if (event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED)) {
-    			var6 = event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier();
+    			var6 = Math.min(FURConfig.Parasite_InfestedAmpSpawns.get(), event.getEntityLiving().getEffect(FUREffectRegistry.INFESTED).getAmplifier());
     		}
     		
     		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
@@ -402,25 +402,27 @@ public class EventHandler {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
 		
-		if (Attacker != null && Attacker instanceof LilSludgeEntity) {
-			LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();					
-			if(Owner != null)
-				Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
-		} else if (Attacker != null && Attacker instanceof UnburiedEntity) {
-			LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();				
-			if(Owner != null)
-				Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
-		} else if (Attacker != null && Attacker instanceof ScarabEntity) {
-			LivingEntity Owner = ((ScarabEntity)Attacker).getOwner();				
-			if(Owner != null)
-				Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
+		if (Attacker != null) {		
+			if (Attacker instanceof LilSludgeEntity) {
+				LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();					
+				if(Owner != null)
+					Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
+			} else if (Attacker instanceof UnburiedEntity) {
+				LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();				
+				if(Owner != null)
+					Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
+			} else if (Attacker instanceof ScarabEntity) {
+				LivingEntity Owner = ((ScarabEntity)Attacker).getOwner();				
+				if(Owner != null)
+					Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
+			}
+	    	
+	    	if (Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
+	    		for (ItemStack S : Attacker.getArmorSlots()) {
+	    			if (S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
+	    		}
+	    	}
 		}
-    	
-    	if (Attacker != null && Attacked.isOnFire() && Attacker instanceof PlayerEntity) {   		
-    		for (ItemStack S : Attacker.getArmorSlots()) {
-    			if (S.getItem() instanceof FelArmorItem)effectlevel += ((FelArmorItem)S.getItem()).effectlevel;
-    		}
-    	}
     	
     	if (Attacked instanceof PlayerEntity && !Attacked.fireImmune() && source.isFire()) {    		
     		for (ItemStack S : Attacked.getArmorSlots()) {

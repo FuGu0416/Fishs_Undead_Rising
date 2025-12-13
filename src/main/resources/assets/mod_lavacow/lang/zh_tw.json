@@ -547,6 +547,7 @@
 	"tooltip.mod_lavacow:diseased_bread": "將村民轉化為殭屍村民，或是直接食用",
 	"tooltip.mod_lavacow:pheromone_gland": "食用後獲得迷情費洛蒙(1:00)與噁心II(0:10)",
 	"tooltip.mod_lavacow:charming_catalyst": "食用後獲得迷情費洛蒙(0:30)，或用於刺激某些幼蟲的成長",
+	"tooltip.mod_lavacow:basic_bomb": "投向目標地點，造成範圍傷害",
 	"tooltip.mod_lavacow:ankh_scepter": "右鍵點擊以召喚聽命於玩家的木乃伊軍團",
 	"tooltip.mod_lavacow:fungal_staff": "右鍵點擊以召喚聽命於玩家的菌屍軍團",
 	"tooltip.mod_lavacow:frozen_grip": "右鍵點擊以召喚聽命於玩家的凍屍軍團",

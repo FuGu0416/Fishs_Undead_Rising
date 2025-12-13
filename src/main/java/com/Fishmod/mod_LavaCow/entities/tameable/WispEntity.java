@@ -190,7 +190,7 @@ public class WispEntity extends FURTameableEntity implements IFlyingAnimal {
         	this.setSkin(3);
         }      
 
-    	this.noPhysics = true;
+        if (this.isAggressive()) this.noPhysics = true;
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
