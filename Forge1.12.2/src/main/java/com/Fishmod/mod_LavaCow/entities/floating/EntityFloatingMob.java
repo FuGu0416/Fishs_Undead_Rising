@@ -163,7 +163,7 @@ public class EntityFloatingMob extends EntityMob implements IAggressive {
     		if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))this.setFire(8);
     	}
     	
-    	this.noClip = true;
+    	if (this.isAggressive()) this.noClip = true;
     	super.onUpdate();
     	this.noClip = false;
     	this.setNoGravity(true);

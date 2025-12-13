@@ -266,6 +266,10 @@ public class Modconfig {
 
     public static boolean pFoglet_SpawnAlly;
     public static boolean MoltenHammer_PVP;
+	public static double MoltenHammer_Damage;
+	public static int MoltenHammer_Cooldown;
+	public static double SoulFireHammer_Damage;
+	public static int SoulFireHammer_Cooldown;
     public static int Cocoon_Lifespan;
     public static int Parasite_SandSpawn;
     public static boolean Parasite_Plague;
@@ -634,7 +638,11 @@ public class Modconfig {
         Enigmoth_Larva_Middle_End_Island = config.get("Enigmoth Caterpillar", "enigmoth caterpillar middle end island spawn", false, "Should Enigmoth Caterpillars spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
         Enigmoth_Larva_Pickup = config.get("Enigmoth Caterpillar", "enigmoth caterpillar pickup", false, "You can pick up Enigmoth Caterpillars by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(false);
 
-        MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
+        MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Warhammer active effect to hit players [false/true]").getBoolean(false);
+		MoltenHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten hammer attack", 8.0D, "Area Damage of Molten Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(8.0D);
+		MoltenHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Molten Warhammer [1-1000]", 1, 1000).getInt(4);
+		SoulFireHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer attack", 10.0D, "Area Damage of Soulforged Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(10.0D);
+		SoulFireHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Soulforged Warhammer [1-1000]", 1, 1000).getInt(4);
         Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "Global Potion of Fission", false, "Allows the Potion of Fission to be used on any mob regardless of the list [false/true]").getBoolean(false);
         Fission_Allowlist = config.getStringList("Potion of Fission List", Configuration.CATEGORY_GENERAL,
                 new String[]{

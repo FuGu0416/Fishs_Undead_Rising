@@ -362,9 +362,9 @@ public class ItemFishCustomWeapon extends ItemSword {
             for (Entity entity1 : list) {
                 if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable) entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP)) {
                     entity1.setFire(4 + 4 * fire_aspect);
-                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), 8.0F + (float) sharpness
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods : 0)
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite : 0));
+                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), (float) (Modconfig.MoltenHammer_Damage + sharpness
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? bane_of_arthropods : 0)
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? smite : 0)));
 
                     ((EntityLivingBase) entity1).knockBack(playerIn, (float) knockback * 0.5F, (playerIn.posX - entity1.posX) / playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ) / playerIn.getDistance(entity1));
 
@@ -384,7 +384,7 @@ public class ItemFishCustomWeapon extends ItemSword {
             LavaBurst(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, radius, EnumParticleTypes.FLAME);
             playerIn.getHeldItem(handIn).damageItem(8, playerIn);
             playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
-            playerIn.getCooldownTracker().setCooldown(this, 80);
+            playerIn.getCooldownTracker().setCooldown(this, Modconfig.MoltenHammer_Cooldown * 20);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);
 
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
@@ -398,9 +398,9 @@ public class ItemFishCustomWeapon extends ItemSword {
                 if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable) entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP)) {
                     entity1.setFire(5 + 5 * fire_aspect);
                     ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(MobEffects.WITHER, 100 + 100 * fire_aspect, 2));
-                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), 10.0F + (float) sharpness
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods : 0)
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite : 0));
+                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), (float) (Modconfig.SoulFireHammer_Damage + sharpness
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? bane_of_arthropods : 0)
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? smite : 0)));
 
                     ((EntityLivingBase) entity1).knockBack(playerIn, (float) knockback * 0.5F, (playerIn.posX - entity1.posX) / playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ) / playerIn.getDistance(entity1));
 
@@ -421,7 +421,7 @@ public class ItemFishCustomWeapon extends ItemSword {
             playerIn.getHeldItem(handIn).damageItem(6, playerIn);
             playerIn.playSound(FishItems.ENTITY_SALAMANDER_SHOOT, 1.5F, 0.75F);
             playerIn.playSound(FishItems.ENTITY_BANSHEE_HURT, 1.5F, 0.75F);
-            playerIn.getCooldownTracker().setCooldown(this, 80);
+            playerIn.getCooldownTracker().setCooldown(this, Modconfig.SoulFireHammer_Cooldown * 20);
             playerIn.getHeldItem(handIn).setAnimationsToGo(5);
 
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
