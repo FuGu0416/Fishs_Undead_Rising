@@ -15,7 +15,9 @@ public class TinkersCompatClient {
         TinkersCompat.VESPA_CARAPACE.setRenderInfo(VespaCarapaceInfo);
         MaterialRenderInfo ScytheClawInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("mod_lavacow:tinkers/scythe_claw"));
         TinkersCompat.SCYTHE_CLAW.setRenderInfo(ScytheClawInfo);
-        MaterialRenderInfo HolySludgeInfo = new MaterialRenderInfo.MultiColor(16776949, 16765440, 15986627);
+        MaterialRenderInfo EctoplasmInfo = new MaterialRenderInfo.Default(8057599).setTextureSuffix("bone");
+        TinkersCompat.ECTOPLASM.setRenderInfo(EctoplasmInfo);
+        MaterialRenderInfo HolySludgeInfo = new MaterialRenderInfo.MultiColor(16776949, 16765440, 15986627).setTextureSuffix("slime");
         TinkersCompat.HOLY_SLUDGE.setRenderInfo(HolySludgeInfo);
         MaterialRenderInfo AncientAmberInfo = new MaterialRenderInfo.MultiColor(9125644, 16690740, 16769920);
         TinkersCompat.ANCIENT_AMBER.setRenderInfo(AncientAmberInfo);
