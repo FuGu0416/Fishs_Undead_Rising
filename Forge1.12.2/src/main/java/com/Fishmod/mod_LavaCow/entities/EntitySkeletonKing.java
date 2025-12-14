@@ -281,7 +281,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
             if (this.attackingPlayer != null && this.attackingPlayer.isCreative()) {
                 // creative mode won't trigger quick regeneration
             } else if (this.ticksExisted % 20 == 0) {
-                this.heal(this.getMaxHealth() * 0.1F);
+                this.heal(this.getMaxHealth() * 0.2F);
             }
         }
 
@@ -372,8 +372,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
             } else {
                 Entity entity = source.getTrueSource();
 
-                if (entity != null && !(entity instanceof EntityPlayer) && entity instanceof EntityLivingBase && ((EntityLivingBase) entity).getCreatureAttribute() == this.getCreatureAttribute() ||
-                        entity != null && entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isOnSameTeam(this)) {
+                if (entity != null && !(entity instanceof EntityPlayer) && entity instanceof EntityLivingBase && (entity != null && entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isOnSameTeam(this))) {
                     return false;
                 } else {
                     if (this.blockBreakCounter <= 0) {
