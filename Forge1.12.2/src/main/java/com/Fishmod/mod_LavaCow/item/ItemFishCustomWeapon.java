@@ -363,9 +363,9 @@ public class ItemFishCustomWeapon extends ItemSword {
             for (Entity entity1 : list) {
                 if ((entity1 instanceof EntityLiving && !(entity1 instanceof EntityTameable)) || (entity1 instanceof EntityTameable && !((EntityTameable) entity1).isOwner(playerIn)) || (entity1 instanceof EntityPlayer && Modconfig.MoltenHammer_PVP)) {
                     entity1.setFire(4 + 4 * fire_aspect);
-                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), 8.0F + (float) sharpness
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods : 0)
-                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite : 0));
+                    entity1.attackEntityFrom(DamageSource.causeMobDamage(playerIn), (float) (Modconfig.MoltenHammer_Damage + sharpness
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? bane_of_arthropods : 0)
+                            + (((EntityLivingBase) entity1).getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? smite : 0)));
 
                     ((EntityLivingBase) entity1).knockBack(playerIn, (float) knockback * 0.5F, (playerIn.posX - entity1.posX) / playerIn.getDistance(entity1), (playerIn.posZ - entity1.posZ) / playerIn.getDistance(entity1));
 
