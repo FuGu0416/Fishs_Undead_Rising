@@ -4,7 +4,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.monster.EntityShulker;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
@@ -38,11 +37,6 @@ public class MobEffectVoidDust extends MobEffectMod {
                 entity.world.playSound(null, d0, d1, d2, SoundEvents.ENTITY_ILLAGER_MIRROR_MOVE, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 entity.playSound(SoundEvents.ENTITY_ILLAGER_MIRROR_MOVE, 1.0F, 1.0F);
 
-                // Apply Slowness X when amplifier is at IV or above
-                if (amplifier > 2) {
-                    ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10, 9));
-                }
-
                 break;
             }
         }
@@ -50,7 +44,7 @@ public class MobEffectVoidDust extends MobEffectMod {
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-        int i = (20 * 10) >> amplifier;
+        int i = (10 * 10) >> amplifier;
 
         if (i > 0) {
             return duration % i == 0;
