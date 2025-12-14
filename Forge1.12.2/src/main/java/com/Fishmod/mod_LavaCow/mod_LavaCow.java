@@ -6,7 +6,6 @@ import com.Fishmod.mod_LavaCow.compat.rlcombat.RLCombatCompat;
 import com.Fishmod.mod_LavaCow.compat.somanyenchantments.SoManyEnchantmentsCompat;
 import com.Fishmod.mod_LavaCow.compat.tinkers.ConstructsArmoryCompat;
 import com.Fishmod.mod_LavaCow.compat.tinkers.TinkersCompat;
-import com.Fishmod.mod_LavaCow.compat.tinkers.TinkersCompatClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +16,6 @@ import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
 import com.Fishmod.mod_LavaCow.proxy.IProxy;
 import com.Fishmod.mod_LavaCow.util.CreativeTab;
-//import com.Fishmod.mod_LavaCow.proxy.ServerProxy;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.Fishmod.mod_LavaCow.util.ModEventHandler;
 import com.Fishmod.mod_LavaCow.util.RegistryHandler;
@@ -44,7 +42,7 @@ public class mod_LavaCow {
 
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
-    public static final String VERSION = "1.5.3";
+    public static final String VERSION = "1.5.4";
     public static final String MC_VERSION = "[1.12.2]";
     public static final String DEPENDENCIES = "after:tconstruct;after:conarm";
 
@@ -73,7 +71,6 @@ public class mod_LavaCow {
         PROXY.registerItemAndBlockRenderers();
 
         if(CompatUtilBridge.isTinkersConstructLoaded()){
-            TinkersCompatClient.preInit();
             TinkersCompat.init();
         }
         if(CompatUtilBridge.isConstructsArmoryLoaded()) ConstructsArmoryCompat.init();
