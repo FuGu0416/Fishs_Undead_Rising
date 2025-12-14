@@ -7,7 +7,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.IAggressive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -92,7 +92,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
     }
        
     @Nullable
-    protected SimpleParticleType ParticleType() {
+    protected ParticleOptions ParticleType() {
     	return null;
     }
 

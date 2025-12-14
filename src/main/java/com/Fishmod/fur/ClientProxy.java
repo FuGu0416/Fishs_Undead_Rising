@@ -1,5 +1,6 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.client.particle.BansheeShriekParticle;
 import com.Fishmod.fur.client.particle.FearParticle;
 import com.Fishmod.fur.client.particle.GastroAcidParticle;
 import com.Fishmod.fur.client.particle.LocustSwarmParticle;
@@ -162,5 +163,6 @@ public class ClientProxy extends CommonProxy {
 		registry.registerSpriteSet(FURParticleRegistry.WITHER_FLAME.get(), FlameParticle.Provider::new);
 		registry.registerSpriteSet(FURParticleRegistry.SAP_JET.get(), GastroAcidParticle.SapJetFactory::new);
 		registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
+		registry.registerSpriteSet(FURParticleRegistry.BANSHEE_SHRIEK.get(), BansheeShriekParticle.Provider::new);
     }
 }

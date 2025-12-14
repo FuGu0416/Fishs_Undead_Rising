@@ -582,7 +582,9 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 	}
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
+    	if (this.isInSittingPose()) {
+    		state.getController().setAnimation(SIT);
+    	} else if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
     		if (this.AttackStance == (byte)4) {
 				state.getController().setAnimation(ATTACK_0);			
     		} else if (this.AttackStance == (byte)5) { 
@@ -594,8 +596,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     		return PlayState.CONTINUE;
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
-    	} else if (this.isInSittingPose()) {
-    		state.getController().setAnimation(SIT);
         } else {
             state.getController().setAnimation(IDLE);
         }
