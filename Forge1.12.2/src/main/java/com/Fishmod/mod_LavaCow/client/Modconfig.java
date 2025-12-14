@@ -838,7 +838,7 @@ public class Modconfig {
         Fungal_Staff_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "fungal staff cooldown", 60, "Ability cooldown of Fungal Staff [1-10000]", 1, 10000).getInt(60);
         Frozen_Grip_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "frozen grip cooldown", 60, "Ability cooldown of Frozen Grip [1-10000]", 1, 10000).getInt(60);
 
-        Skeleton_King_Mace_Damage = config.get(Configuration.CATEGORY_GENERAL, "death damage", 60, "Attack damage of \"Death\" [1-10000]", 1, 10000).getInt(16);
+        Skeleton_King_Mace_Damage = config.get(Configuration.CATEGORY_GENERAL, "death damage", 16, "Attack damage of \"Death\" [1-10000]", 1, 10000).getInt(16);
 
         // Restart Required, loaded during init
         Tinkers_Compat = config.get("Mod Integration", "tinkers' construct integration", true, "Should new tool materials be added to Tinkers' Construct when installed? [false/true]").getBoolean(true);
