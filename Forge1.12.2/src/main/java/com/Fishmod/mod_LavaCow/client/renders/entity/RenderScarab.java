@@ -14,11 +14,6 @@ public class RenderScarab extends RenderLiving<EntityScarab> {
 			new ResourceLocation("mod_lavacow:textures/mobs/scarab/scarab.png")
 	};
 	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/scarab/scarab_glow.png");
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderScarab(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelScarab(), 0.5F);

@@ -16,10 +16,6 @@ public class RenderVespaCocoon extends RenderLiving<EntityVespaCocoon>  {
 			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa_cocoon.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_cocoon.png"),
 	};
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 	
     public RenderVespaCocoon(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelVespaCocoon(), 0.2F);

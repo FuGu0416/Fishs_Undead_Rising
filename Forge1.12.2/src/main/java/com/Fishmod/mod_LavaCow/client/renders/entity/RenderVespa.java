@@ -14,11 +14,6 @@ public class RenderVespa extends RenderLiving<EntityVespa>{
 			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa1.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderVespa(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelVespa(), 0.5F);

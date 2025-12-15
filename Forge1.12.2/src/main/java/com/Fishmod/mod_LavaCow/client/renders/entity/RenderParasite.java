@@ -22,11 +22,6 @@ public class RenderParasite extends RenderLiving<EntityParasite>{
 			new ResourceLocation("mod_lavacow:textures/mobs/parasite/parasite2.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public RenderParasite(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelParasite(), 0.3F);
     }

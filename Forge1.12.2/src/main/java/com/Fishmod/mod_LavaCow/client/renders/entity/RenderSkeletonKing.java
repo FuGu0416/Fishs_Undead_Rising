@@ -13,12 +13,6 @@ public class RenderSkeletonKing extends RenderLiving<EntitySkeletonKing> {
 			new ResourceLocation("mod_lavacow:textures/mobs/skeletonking/skeletonking.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/skeletonking/skeletonking_angry.png"),
 	};
-	
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
 	public RenderSkeletonKing(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelSkeletonKing(), 0.5F);

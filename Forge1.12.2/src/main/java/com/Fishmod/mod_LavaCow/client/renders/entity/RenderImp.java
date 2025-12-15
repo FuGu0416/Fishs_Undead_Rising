@@ -16,11 +16,6 @@ public class RenderImp extends RenderLiving<EntityImp> {
 			new ResourceLocation("mod_lavacow:textures/mobs/imp/imp.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public RenderImp(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelFoglet(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));

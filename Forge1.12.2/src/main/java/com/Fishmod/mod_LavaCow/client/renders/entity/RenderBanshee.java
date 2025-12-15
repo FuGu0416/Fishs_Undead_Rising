@@ -13,11 +13,6 @@ public class RenderBanshee extends RenderLiving<EntityBanshee>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/banshee.png"),
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderBanshee(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelBanshee(), 0.0F);

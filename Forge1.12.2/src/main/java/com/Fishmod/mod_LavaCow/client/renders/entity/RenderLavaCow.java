@@ -18,11 +18,6 @@ public class RenderLavaCow extends RenderLiving<EntityLavaCow> {
             new ResourceLocation("mod_lavacow:textures/mobs/moogma/moogma1.png")
     };
 
-    static {
-        for (ResourceLocation texture : TEXTURES)
-            System.out.println(texture.getPath());
-    }
-
     public RenderLavaCow(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelCow(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));

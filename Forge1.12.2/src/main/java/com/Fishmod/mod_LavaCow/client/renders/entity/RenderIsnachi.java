@@ -17,11 +17,6 @@ public class RenderIsnachi extends RenderLiving<EntityIsnachi> {
 			new ResourceLocation("mod_lavacow:textures/mobs/isnachi/isnachi.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public RenderIsnachi(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelFoglet(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));

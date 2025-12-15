@@ -11,9 +11,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderPingu extends RenderLiving<EntityPingu>{
 	
 	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/pingu.png");
-	static{
-        System.out.println(TEXTURES.getPath());
-    }
 
     public RenderPingu(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelPingu(), 0.3F);

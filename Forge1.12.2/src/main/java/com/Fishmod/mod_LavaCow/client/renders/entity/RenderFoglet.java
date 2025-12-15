@@ -16,11 +16,6 @@ public class RenderFoglet extends RenderLiving<EntityFoglet> {
 			new ResourceLocation("mod_lavacow:textures/mobs/foglet/foglet.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public RenderFoglet(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelFoglet(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));

@@ -15,11 +15,6 @@ public class RenderGhostRay extends RenderLiving<EntityGhostRay>{
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray3.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostray/ghostray4.png")
 	};
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderGhostRay(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelGhostRay(), 0.5F);

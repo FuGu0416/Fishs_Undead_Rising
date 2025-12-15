@@ -17,9 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUnburied extends RenderLiving<EntityUnburied> {
 	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied_eyes.png");
 	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied.png");
-	static{
-        System.out.println(TEXTURES.getPath());
-    }
 
     public RenderUnburied(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUnburied(), 0.5F);

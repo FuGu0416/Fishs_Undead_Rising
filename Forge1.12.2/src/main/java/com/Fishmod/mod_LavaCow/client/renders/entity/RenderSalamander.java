@@ -21,11 +21,6 @@ public class RenderSalamander extends RenderLiving<EntitySalamander>{
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/salamander/salamanderlesser1.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderSalamander(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelSalamander(), 1.0F);

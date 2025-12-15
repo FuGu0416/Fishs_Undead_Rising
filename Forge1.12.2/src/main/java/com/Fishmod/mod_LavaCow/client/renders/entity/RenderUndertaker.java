@@ -13,9 +13,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderUndertaker extends RenderLiving<EntityUndertaker> {
 	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/undertaker/undertaker_eyes.png");
 	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/undertaker/undertaker.png");
-	static{
-        System.out.println(TEXTURES.getPath());
-    }
 
 	public RenderUndertaker(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelUndertaker(), 0.5F);

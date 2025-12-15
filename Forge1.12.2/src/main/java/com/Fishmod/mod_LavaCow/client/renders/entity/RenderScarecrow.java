@@ -16,10 +16,6 @@ public class RenderScarecrow extends RenderLiving<EntityScarecrow>{
 			new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow1.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/scarecrow/scarecrow2.png")
 	};
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
 	public RenderScarecrow(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelScarecrow(), 0.5F);
