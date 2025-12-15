@@ -29,5 +29,6 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(FURTags.HAS_WETA).addTag(BiomeTags.IS_SAVANNA).add(Biomes.LUSH_CAVES).add(Biomes.DRIPSTONE_CAVES);
         this.tag(FURTags.HAS_MYCOSIS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE);
         this.tag(FURTags.IS_OVERWORLD_HOSTILE).addTag(BiomeTags.IS_OVERWORLD).remove(Tags.Biomes.IS_MUSHROOM);
+        this.tag(FURTags.HAS_BANSHEE).addTag(BiomeTags.IS_HILL).addTag(BiomeTags.IS_MOUNTAIN);
     }
 }

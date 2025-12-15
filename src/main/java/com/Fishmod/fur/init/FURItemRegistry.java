@@ -116,6 +116,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> KUNG_PAO_CHICKEN = DEF_REG.register("kung_pao_chicken", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).alwaysEat().meat().effect(() -> new MobEffectInstance(FUREffectRegistry.IMMOLATION.get(), 60*20, 1), 1.0F).build()), UseAnim.EAT, 1));
 	public static final RegistryObject<Item> BOABING = DEF_REG.register("baobing", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60*20, 1), 1.0F).build()), UseAnim.EAT, 1));	
 	public static final RegistryObject<Item> UNDERTAKER_SHOVEL = DEF_REG.register("undertaker_shovel", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD.get(), true));
+	public static final RegistryObject<Item> SHRIEK_CORD = DEF_REG.register("shriek_cord", () -> new Item(new Item.Properties()));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
@@ -154,7 +155,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().tab(mod_LavaCow.TAB).stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");
 	public static final RegistryObject<Item> GHOSTJELLY = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().build()), 1).setRegistryName("mod_lavacow:ghostjelly");
-	public static final RegistryObject<Item> SHRIEK_CORD = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE)).setRegistryName("mod_lavacow:shriek_cord");
 	public static final RegistryObject<Item> BONE_STEW = new NetherStewItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new EffectInstance(Effects.ABSORPTION, 20*20, 1), 1.0F).effect(() -> new EffectInstance(Effects.DAMAGE_RESISTANCE, 20*20, 0), 1.0F).build()), 1).setRegistryName("mod_lavacow:bonestew");
 	public static final RegistryObject<Item> VESPA_SHIELD = new VespaShieldItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties()).durability(504).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:vespa_shield");
 	public static final RegistryObject<Item> FROZEN_DAGGER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.COMMON), "mod_lavacow:frozen_dagger", ItemTier.WOOD, 2, -2.4F, FURItemRegistry.SHATTERED_ICE);
@@ -219,6 +219,7 @@ public class FURItemRegistry {
         spawnEgg("frigid", FUREntityRegistry.FRIGID, 0xAFE0E2, 0x59484F);
         spawnEgg("mummy", FUREntityRegistry.MUMMY, 0xE9DAAE, 0x9A8157);
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
+        spawnEgg("banshee", FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A);
         
         /*
     	spawnEgg(FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_parasite"));
@@ -233,7 +234,6 @@ public class FURItemRegistry {
     	spawnEgg(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_boneworm"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_pingu"));
     	spawnEgg(FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghostray"));
-    	spawnEgg(FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_banshee"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_forsaken"));
     	spawnEgg(FUREntityRegistry.SKELETONKING, 0x2F2A2A, 0xA2A1A1, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_skeletonking"));
     	spawnEgg(FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_cactoid"));

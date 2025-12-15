@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " X ",
+        "X#X",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "fur:shriek_cord"
+        },
+        "X": {
+            "item": "fur:basic_bomb"
+        }
+    },
+    "result": {
+        "item": "fur:sonicbomb",
+        "count": 4
+    }
+}

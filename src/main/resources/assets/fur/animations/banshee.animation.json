@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"wraith.model.idle": {
+		"banshee.model.idle": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -83,7 +83,7 @@
 				}
 			}
 		},
-		"wraith.model.floating": {
+		"banshee.model.floating": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -170,7 +170,7 @@
 				}
 			}
 		},
-		"wraith.model.attacking": {
+		"banshee.model.attacking": {
 			"animation_length": 1.5,
 			"bones": {
 				"Body_waist": {
@@ -507,7 +507,7 @@
 				}
 			}
 		},
-		"wraith.model.casting": {
+		"banshee.model.casting": {
 			"animation_length": 2.25,
 			"bones": {
 				"Body_base": {

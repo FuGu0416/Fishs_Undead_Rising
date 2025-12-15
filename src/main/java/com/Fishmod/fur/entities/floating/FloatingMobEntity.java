@@ -82,7 +82,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
     }
     
     public static boolean checkBansheeSpawnRules(EntityType<? extends FloatingMobEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
     
     @Override
@@ -170,7 +170,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
     		this.setSecondsOnFire(8);
         }
     	
-    	if (this.isAggressive()) this.noPhysics = true;
+    	if (this.getTarget() != null) this.noPhysics = true;
     	super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);

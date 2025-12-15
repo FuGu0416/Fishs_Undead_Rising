@@ -1,7 +1,7 @@
 package com.Fishmod.fur.client.renderer.entity;
 
-import com.Fishmod.fur.client.model.AvatonModel;
-import com.Fishmod.fur.entities.floating.AvatonEntity;
+import com.Fishmod.fur.client.model.BansheeModel;
+import com.Fishmod.fur.entities.floating.BansheeEntity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -10,15 +10,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class AvatonRenderer extends GeoEntityRenderer<AvatonEntity> {
+public class BansheeRenderer extends GeoEntityRenderer<BansheeEntity> {
 	
-    public AvatonRenderer(EntityRendererProvider.Context rendermanagerIn) {
-    	super(rendermanagerIn, new AvatonModel());
+    public BansheeRenderer(EntityRendererProvider.Context rendermanagerIn) {
+    	super(rendermanagerIn, new BansheeModel());
         this.shadowRadius = 0.0F;
     }
     
     @Override
-    public ResourceLocation getTextureLocation(AvatonEntity entity) {
+    public ResourceLocation getTextureLocation(BansheeEntity entity) {
     	return super.getTextureLocation(entity);
     }    
 }
