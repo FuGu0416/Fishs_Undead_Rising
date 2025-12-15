@@ -8,7 +8,7 @@
   "key": {
     "#": {
       "type": "forge:ore_dict",
-      "ore": "dustPrismarine"
+      "ore": "blockGlass"
     },
     "H": {
       "item": "mod_lavacow:zombiepiranha_item"
@@ -22,7 +22,7 @@
     },
     "/": {
       "type": "forge:ore_dict",
-      "ore": "gemPrismarine"
+      "ore": "ingotIron"
     }
   },
   "result": {
