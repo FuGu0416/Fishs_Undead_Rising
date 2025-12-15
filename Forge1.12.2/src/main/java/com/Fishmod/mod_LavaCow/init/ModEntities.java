@@ -525,13 +525,13 @@ public class ModEntities {
         @SubscribeEvent
         public static void onEvent(final RegistryEvent.Register<EntityEntry> event) {
             // DEBUG
-            /*System.out.println("Registering entities");
+            //System.out.println("Registering entities");
             for (final EntityEntry entityEntry : SET_ENTITIES) {
                 // DEBUG
-                System.out.println("Registering entity = " + entityEntry.getEntityClass());
+                //System.out.println("Registering entity = " + entityEntry.getEntityClass());
                 IForgeRegistry<EntityEntry> registry = event.getRegistry();
                 registry.register(entityEntry);
-            }*/
+            }
 
             RegisterEntitySpawn();
         }
