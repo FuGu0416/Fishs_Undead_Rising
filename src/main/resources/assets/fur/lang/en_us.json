@@ -508,7 +508,7 @@
 	"item.fur.famine_armor.desc1": "Set Bonus (4): +2 damage vs entity, but afflicted with permanent Hunger X.",
 	"item.fur.ghostjelly.desc": "Soaring up! Or feed it to your Raven to transform it into Ghost Raven.",
 	"item.fur.ghostbomb.desc": "Throw at target location and cause explosion. Entities within also receive Levitate(0:01)",
-	"item.fur.sonicbomb.desc": "Throw at target location and cause explosion. Entities within also receive WeaknessIII(0:04)",
+	"item.fur.sonicbomb.desc": "Throw at target location and cause explosion. Entities within also receive FearIII(0:04)",
 	"item.fur.parasite_item_common.desc": "Common",
 	"item.fur.parasite_item_desert.desc": "Desert",
 	"item.fur.parasite_item_jungle.desc": "Jungle",

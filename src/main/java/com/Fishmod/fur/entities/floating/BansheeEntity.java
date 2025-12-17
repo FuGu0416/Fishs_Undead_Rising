@@ -92,7 +92,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     public void aiStep() {
         super.aiStep();
         
-        if(this.getSpellTicks() > 8 && this.getSpellTicks() < 13) {
+        if (this.getSpellTicks() > 5 && this.getSpellTicks() < 12) {
         	this.level().addParticle(FURParticleRegistry.BANSHEE_SHRIEK.get(), this.getX(), this.getY() + this.getBbHeight(), this.getZ(), 0.0D, 1.0D, 0.0D);
         }
     }
