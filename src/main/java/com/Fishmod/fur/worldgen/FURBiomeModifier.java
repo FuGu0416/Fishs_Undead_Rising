@@ -38,6 +38,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_FRIGID = registerKey("add_frigid");
 	public static final ResourceKey<BiomeModifier> ADD_UNDERTAKER = registerKey("add_undertaker");
 	public static final ResourceKey<BiomeModifier> ADD_BANSHEE = registerKey("add_banshee");
+	public static final ResourceKey<BiomeModifier> ADD_CACTOID = registerKey("add_cactoid");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -80,6 +81,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.UNDERTAKER.get(), 8, 1, 1)); 
         addSpawn(context, ADD_BANSHEE, biomes.getOrThrow(FURTags.HAS_BANSHEE), 
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BANSHEE.get(), 20, 1, 2)); 
+        addSpawn(context, ADD_CACTOID, biomes.getOrThrow(FURTags.HAS_CACTOID),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTOID.get(), 10, 4, 8));  
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

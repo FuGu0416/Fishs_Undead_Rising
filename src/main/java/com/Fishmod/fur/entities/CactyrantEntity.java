@@ -266,7 +266,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
         	return false;
         }
         
-        if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && !source.is(DamageTypeTags.IS_EXPLOSION) && source.getDirectEntity() instanceof LivingEntity) {
+        if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !source.is(DamageTypes.THORNS) && source.getDirectEntity() instanceof LivingEntity) {
             source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
         }
                

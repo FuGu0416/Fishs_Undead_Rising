@@ -8,6 +8,7 @@ import com.Fishmod.fur.client.renderer.FURItemRenderProperties;
 import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRenderer;
 import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
+import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
@@ -70,6 +71,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BANSHEE.get(), BansheeRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -103,7 +105,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.MUMMY, manager -> new MummyRenderer(manager));        
-        EntityRenderers.register(FUREntityRegistry.CACTOID, manager -> new CactoidRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  

@@ -273,6 +273,10 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	*/
     @Override
 	public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.THORNS)) {
+        	return false;
+        }
+        
         if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !source.is(DamageTypes.THORNS) && source.getDirectEntity() instanceof LivingEntity) {
             source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
         }
