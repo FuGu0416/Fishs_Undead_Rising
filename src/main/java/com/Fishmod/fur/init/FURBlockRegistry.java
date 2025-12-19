@@ -3,6 +3,7 @@ package com.Fishmod.fur.init;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
 import com.Fishmod.fur.item.ScarecrowHeadItem;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,6 +28,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> SCARECROWHEAD_STRAW = registerBlocks("scarecrowhead_straw", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_STRAW, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
 	public static final RegistryObject<Block> SCARECROWHEAD_PLAGUE = registerBlocks("scarecrowhead_plague", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_PLAGUE, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
 	public static final RegistryObject<Block> DISEASED_HAY_BLOCK = registerBlocks("diseased_hay_block", () -> new DiseasedHayBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BANJO).strength(0.5F).sound(SoundType.GRASS)));
+	public static final RegistryObject<Block> CACTOID_SPROUT = registerBlocks("cactoid_sprout", () -> new CactoidSproutBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.4F).sound(SoundType.WOOL).noOcclusion().randomTicks().forceSolidOn().dynamicShape().pushReaction(PushReaction.DESTROY).offsetType(BlockBehaviour.OffsetType.XZ)));
 	
 	/*public static final Block GLOWSHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 15;
@@ -45,7 +48,6 @@ public class FURBlockRegistry {
 	      return 1;
 	   }), "mod_lavacow:veil_shroom");	
 	public static final Block TOMBSTONE = new TombStoneBlock(AbstractBlock.Properties.of(Material.STONE).randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion()).setRegistryName("mod_lavacow:tombstone");
-	public static final Block CACTOID_SPROUT = new CactoidSproutBlock(AbstractBlock.Properties.of(Material.PLANT).randomTicks().strength(0.4F).sound(SoundType.WOOL).noOcclusion()).setRegistryName("mod_lavacow:cactoid_sprout");
 	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
 	      return 15;
 	   })).setRegistryName("mod_lavacow:glowing_air");*/	

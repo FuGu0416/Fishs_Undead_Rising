@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.item.CactusFruitItem;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.DiseasedBreadItem;
 import com.Fishmod.fur.item.EntityBucketItem;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -98,7 +100,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWARMER_RAW = DEF_REG.register("swarmer_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
 	public static final RegistryObject<Item> SWARMER_COOKED = DEF_REG.register("swarmer_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build())));
+	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new CactusFruitItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build()), 1));
+	public static final RegistryObject<Item> CACTOID_POT = DEF_REG.register("cactoid_pot", () -> new EntityBucketItem(() -> FUREntityRegistry.CACTOID.get(), Items.FLOWER_POT, (new Item.Properties()).stacksTo(1)));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DISEASED_WHEAT = DEF_REG.register("diseased_wheat", () -> new Item(new Item.Properties())); 
 	public static final RegistryObject<Item> DISEASED_BREAD = DEF_REG.register("diseased_bread", () -> new DiseasedBreadItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).
@@ -117,7 +120,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> BOABING = DEF_REG.register("baobing", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60*20, 1), 1.0F).build()), UseAnim.EAT, 1));	
 	public static final RegistryObject<Item> UNDERTAKER_SHOVEL = DEF_REG.register("undertaker_shovel", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD.get(), true));
 	public static final RegistryObject<Item> SHRIEK_CORD = DEF_REG.register("shriek_cord", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> CACTOID_POT = DEF_REG.register("cactoid_pot", () -> new EntityBucketItem(() -> FUREntityRegistry.CACTOID.get(), Items.FLOWER_POT, (new Item.Properties()).stacksTo(1)));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
@@ -248,10 +250,19 @@ public class FURItemRegistry {
     	spawnEgg(FUREntityRegistry.LAMPREY, 0x70ACAE, 0xDCF2F3, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_lamprey"));
     	spawnEgg(FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_ghoul"));
     	*/
+        
+
     }
     
     private static void spawnEgg(String entityName, Supplier<? extends EntityType<? extends Mob>> type, int color1, int color2) {
         RegistryObject<Item> item = DEF_REG.register("spawn_egg_" + entityName, () -> new ForgeSpawnEggItem(type, color1, color2, new Item.Properties()));
         creativeTabSpawnEggMap.add(item);
+    }
+    
+    public static void SetCompostables() {
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.HYPHAE.get(), 0.50F);
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_FRUIT.get(), 0.85F);
+        ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_THORN.get(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CACTOID_SPROUT.get(), 0.85F);
     }
 }

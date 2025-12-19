@@ -365,7 +365,12 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     		this.level.addFreshEntity(crowpet);
     	}*/
         
-        this.setSkin(Integer.valueOf(this.random.nextInt(2)));
+        if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+        	this.setSkin(Integer.valueOf(this.random.nextInt(3)));
+        } else {       
+        	this.setSkin(Integer.valueOf(this.random.nextInt(2)));
+        }
+        
         this.setLeftHanded(true);
         
         return livingdata;

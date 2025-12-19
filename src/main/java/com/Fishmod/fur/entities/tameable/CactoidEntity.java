@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -51,17 +52,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class CactoidEntity extends FURTameableEntity implements GeoEntity {
+public class CactoidEntity extends FURTameableEntity implements IAggressive, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	
+
+	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("cactoid.model.idle");
+    private static final RawAnimation IDLE_SLEEP = RawAnimation.begin().thenPlay("cactoid.model.idle_sleep");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("cactoid.model.walking");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("cactoid.model.attacking");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
+	public static final int ATTACK_TIMER = 20;
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
+	private int attackTimer;
 	
 	public CactoidEntity(EntityType<? extends CactoidEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
@@ -70,7 +83,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.random.nextInt(3)));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 		this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
     }
 	
@@ -113,6 +126,16 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
         }
 
         super.onSyncedDataUpdated(p_184206_1_);
+	}
+    
+    @Override
+    public int getAttackTimer() {
+       return this.attackTimer;
+    }
+    
+	@Override
+	public void setAttackTimer(int i) {
+		this.attackTimer = i;
 	}
     
     /**
@@ -166,7 +189,11 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
      */
     @SuppressWarnings("resource")
 	@Override
-    public void tick() {   	
+    public void tick() {   
+    	if (this.attackTimer > 0) {
+    		--this.attackTimer;
+    	}
+    	
     	if (!this.level().isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick() && !this.isAggressive() && this.getLastHurtByMob() == null) {
     			this.doSitCommand(null);
@@ -204,6 +231,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
         CompoundTag CompoundTag = new CompoundTag();
         this.addAdditionalSaveData(CompoundTag);
         stack.getOrCreateTag().put("CactoidData", CompoundTag);
+        stack.getOrCreateTag().putInt("BucketVariantTag", this.getSkin());
         
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -235,7 +263,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         } if (this.isTame() && this.getGrowingStage() == 2) {
     		this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
-    		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get()), 0.0F);
+    		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get(), (this.getSkin() == 3) ? 2 : 1), 0.0F);    	    		
     		this.setGrowingStage(0);
     		this.setAge(-24000);
     		
@@ -264,7 +292,11 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     public boolean doHurtTarget(Entity entityIn) {
         boolean flag = super.doHurtTarget(entityIn);
-
+        
+        if (flag) {
+        	this.level().broadcastEntityEvent(this, (byte)4);
+        }
+        
         return flag;
     }    
 	
@@ -299,10 +331,16 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     	this.setHealth(this.getMaxHealth());*/
     	this.setAge(-24000);
     	
-    	if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
-     	   this.setSkin(3);
+    	if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
+			this.setSkin(p_213386_5_.getInt("BucketVariantTag"));
+    	} else if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+        	this.setSkin(Integer.valueOf(this.random.nextInt(4)));
+        } else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
+        	this.setSkin(3);
+        } else {       
+        	this.setSkin(Integer.valueOf(this.random.nextInt(3)));
         }
-        
+    	        
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }	
     
@@ -351,7 +389,9 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	@OnlyIn(Dist.CLIENT)
 	@Override
     public void handleEntityEvent(byte id) {
-		if (id == 14) {
+    	if (id == 4) {
+            this.attackTimer = ATTACK_TIMER;
+        } else if (id == 14) {
             this.addParticlesAroundSelf(ParticleTypes.FALLING_NECTAR);
         } else {
             super.handleEntityEvent(id);
@@ -425,9 +465,25 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     	return this.isTame() || !(this.getOwner() instanceof Player);
     }
 
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.isSilent()) {
+    		state.getController().setAnimation(IDLE_SLEEP);
+    	} else if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
+			state.getController().setAnimation(ATTACK);			 		
+    	} else if (this.getAttackTimer() > 0) {
+    		return PlayState.CONTINUE;
+    	} else if (state.isMoving()) {
+            state.getController().setAnimation(WALK);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
 	}
 
 	@Override

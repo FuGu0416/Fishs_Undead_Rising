@@ -102,12 +102,13 @@ public class mod_LavaCow {
     }*/   
 
     private void setup(final FMLCommonSetupEvent event) {
-    	/*event.enqueueWork(() -> {
-    		FURWorldRegistry.setupStructures();
-    		FURProcessors.registerProcessors();
+    	event.enqueueWork(() -> {
+    		//FURWorldRegistry.setupStructures();
+    		//FURProcessors.registerProcessors();
             //FURWorldRegistry.register();
-            LootTableHandler.addLootTable();
-        });*/
+            //LootTableHandler.addLootTable();
+    		FURItemRegistry.SetCompostables();
+        });
         //PROXY.initNetwork();
     	FUREffectRegistry.onInitItems();
     }

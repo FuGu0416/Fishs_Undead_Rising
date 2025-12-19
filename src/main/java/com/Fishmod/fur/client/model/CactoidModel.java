@@ -52,10 +52,23 @@ public class CactoidModel extends GeoModel<CactoidEntity> {
     @Override
     public void setCustomAnimations(CactoidEntity animatable, long instanceId, AnimationState<CactoidEntity> animationState) {
         CoreGeoBone skin0 = getAnimationProcessor().getBone("skin0");
+        CoreGeoBone flower = getAnimationProcessor().getBone("flower");
+        CoreGeoBone fruit = getAnimationProcessor().getBone("fruit");
+        
         CoreGeoBone skin1 = getAnimationProcessor().getBone("skin1");
+        CoreGeoBone flower0 = getAnimationProcessor().getBone("flower0");
+        CoreGeoBone fruit2 = getAnimationProcessor().getBone("fruit2");
+        
         CoreGeoBone skin2 = getAnimationProcessor().getBone("skin2");
+        CoreGeoBone flower2 = getAnimationProcessor().getBone("flower2");
+        CoreGeoBone fruit3 = getAnimationProcessor().getBone("fruit3");
+        
         CoreGeoBone skin3 = getAnimationProcessor().getBone("skin3");
-     
+        CoreGeoBone flower3 = getAnimationProcessor().getBone("flower3");
+        CoreGeoBone flower4 = getAnimationProcessor().getBone("flower4");
+        CoreGeoBone fruit4 = getAnimationProcessor().getBone("fruit4");
+        CoreGeoBone fruit5 = getAnimationProcessor().getBone("fruit5");
+        
         int variant = animatable.getSkin();
         
         switch (variant) {
@@ -64,24 +77,102 @@ public class CactoidModel extends GeoModel<CactoidEntity> {
         		skin1.setHidden(true);
         		skin2.setHidden(true);
         		skin3.setHidden(true);
+        		
+        		switch (animatable.getGrowingStage()) {
+        			case 0:
+        				flower.setHidden(true);
+        				fruit.setHidden(true);
+        				break;
+        			case 1:
+        				flower.setHidden(false);
+        				fruit.setHidden(true);
+        				break;
+        			case 2:
+        				flower.setHidden(true);
+        				fruit.setHidden(false);
+        				break;
+        			default:
+        				break;
+        		}
+        		
     			break;
         	case 1 :
         		skin0.setHidden(true);
         		skin1.setHidden(false);
         		skin2.setHidden(true);
         		skin3.setHidden(true);
+        		
+        		switch (animatable.getGrowingStage()) {
+	    			case 0:
+	    				flower0.setHidden(true);
+	    				fruit2.setHidden(true);
+	    				break;
+	    			case 1:
+	    				flower0.setHidden(false);
+	    				fruit2.setHidden(true);
+	    				break;
+	    			case 2:
+	    				flower0.setHidden(true);
+	    				fruit2.setHidden(false);
+	    				break;
+	    			default:
+	    				break;
+	    		}
+        		
         		break;
         	case 2 :
         		skin0.setHidden(true);
         		skin1.setHidden(true);
         		skin2.setHidden(false);
         		skin3.setHidden(true);
+        		
+        		switch (animatable.getGrowingStage()) {
+	    			case 0:
+	    				flower2.setHidden(true);
+	    				fruit3.setHidden(true);
+	    				break;
+	    			case 1:
+	    				flower2.setHidden(false);
+	    				fruit3.setHidden(true);
+	    				break;
+	    			case 2:
+	    				flower2.setHidden(true);
+	    				fruit3.setHidden(false);
+	    				break;
+	    			default:
+	    				break;
+	    		}
+        		
          		break;  
         	case 3 :
         		skin0.setHidden(true);
         		skin1.setHidden(true);
         		skin2.setHidden(true);
         		skin3.setHidden(false);
+        		
+        		switch (animatable.getGrowingStage()) {
+	    			case 0:
+	    				flower3.setHidden(true);
+	    				flower4.setHidden(true);
+	    				fruit4.setHidden(true);
+	    				fruit5.setHidden(true);
+	    				break;
+	    			case 1:
+	    				flower3.setHidden(false);
+	    				flower4.setHidden(false);
+	    				fruit4.setHidden(true);
+	    				fruit5.setHidden(true);
+	    				break;
+	    			case 2:
+	    				flower3.setHidden(true);
+	    				flower4.setHidden(true);
+	    				fruit4.setHidden(false);
+	    				fruit5.setHidden(false);
+	    				break;
+	    			default:
+	    				break;
+	    		}
+        		
         		break;
         	default :
         		break;

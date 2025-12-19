@@ -70,12 +70,14 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ACIDICHEART.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
+            	output.accept(FURItemRegistry.CACTOID_POT.get());
             	output.accept(FURItemRegistry.PIRANHA_RAW.get());
             	output.accept(FURItemRegistry.PIRANHA_COOKED.get());           	
             	output.accept(FURItemRegistry.SWARMER_RAW.get());
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
+            	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
             	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
