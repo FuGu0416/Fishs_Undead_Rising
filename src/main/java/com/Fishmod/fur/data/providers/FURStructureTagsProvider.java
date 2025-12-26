@@ -21,6 +21,14 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
         this.tag(FURTags.HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
-        this.tag(FURTags.HAS_MUMMY).add(BuiltinStructures.DESERT_PYRAMID);
+        this.tag(FURTags.HAS_MUMMY).add(BuiltinStructures.BASTION_REMNANT);
+        this.tag(FURTags.HAS_MIMIC).add(BuiltinStructures.JUNGLE_TEMPLE)
+        						   .add(BuiltinStructures.MINESHAFT)
+        						   .add(BuiltinStructures.FORTRESS)
+        						   .add(BuiltinStructures.STRONGHOLD)
+        						   .addTag(StructureTags.VILLAGE)
+        						   .add(BuiltinStructures.WOODLAND_MANSION)
+        						   .add(BuiltinStructures.SHIPWRECK)
+        						   .addTag(StructureTags.OCEAN_RUIN);
     }
 }

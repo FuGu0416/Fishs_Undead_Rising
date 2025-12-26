@@ -31,8 +31,9 @@ public class FURStructureModifier {
     private static final Codec<TagKey<Structure>> STRUCTURE_LIST_CODEC = TagKey.hashedCodec(Registries.STRUCTURE);
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder().add(ForgeRegistries.Keys.STRUCTURE_MODIFIERS, context ->
     {
-        context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 1000, 1, 2), FURTags.HAS_SEAHAG));
-        context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 1000, 1, 2), FURTags.HAS_MUMMY));
+        context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2), FURTags.HAS_SEAHAG));
+        context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 40, 4, 8), FURTags.HAS_MUMMY));
+        context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 10, 1, 1), FURTags.HAS_MIMIC));
     });
 
     public static void generateStructureModifiers(GatherDataEvent event)

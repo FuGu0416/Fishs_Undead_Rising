@@ -22,4 +22,5 @@ public class FURTags {
     
     public static final TagKey<Structure> HAS_SEAHAG = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_seahag"));   
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));
+    public static final TagKey<Structure> HAS_MIMIC = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mimic"));
 }

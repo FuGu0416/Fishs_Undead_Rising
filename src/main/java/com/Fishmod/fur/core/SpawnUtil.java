@@ -14,6 +14,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
@@ -83,10 +85,10 @@ public class SpawnUtil {
         return null;
     }
     
-    /*public static BlockPos isNearBlock(IWorld p_223316_1_, Block BlockIn, BlockPos pos, int r) {
-        int dx = MathHelper.floor(pos.getX());
-        int dy = MathHelper.floor(pos.getY());
-        int dz = MathHelper.floor(pos.getZ());
+    public static BlockPos isNearBlock(ServerLevelAccessor p_223316_1_, Block BlockIn, BlockPos pos, int r) {
+        int dx = (int) Math.floor(pos.getX());
+        int dy = (int) Math.floor(pos.getY());
+        int dz = (int) Math.floor(pos.getZ());
         
         for(int i = dx - r; i < dx + r; i++)
         	for(int j = dy - r; j < dy + r; j++)
@@ -98,7 +100,7 @@ public class SpawnUtil {
     	return null;
     }
     
-	public static Entity gotRiderEntity(List<Entity> listIn, EntityType<? extends Entity> typeIn) {
+	/*public static Entity gotRiderEntity(List<Entity> listIn, EntityType<? extends Entity> typeIn) {
 		for(Entity C : listIn) {
 			if (C.getType().equals(typeIn)) {
 				return C;	

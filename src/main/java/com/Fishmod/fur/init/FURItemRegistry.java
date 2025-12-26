@@ -223,12 +223,12 @@ public class FURItemRegistry {
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
         spawnEgg("banshee", FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A);
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
+        spawnEgg("mimic", FUREntityRegistry.MIMIC, 0xE168FF, 0x070000);
         
         /*
     	spawnEgg(FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_parasite"));
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_undeadswine"));
     	spawnEgg(FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_salamander"));
-    	spawnEgg(FUREntityRegistry.MIMIC, 0xE168FF, 0x070000, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_mimic"));
     	spawnEgg(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_sludgelord"));
     	spawnEgg(FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_raven"));
     	spawnEgg(FUREntityRegistry.SEAGULL, 0xEEEEEE, 0x121212, new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:spawn_egg_seagull"));
