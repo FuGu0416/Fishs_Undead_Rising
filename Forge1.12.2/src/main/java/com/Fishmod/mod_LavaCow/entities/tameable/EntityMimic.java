@@ -242,7 +242,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
         if (!getEntityWorld().isRemote) {
             if (!isAggressive && !this.isTamed()) {
-                if (!this.isSilent()) {
+            	if (!this.isSilent() || !this.isSitting()) {
                     this.setSitting(true);
                     this.world.setEntityState(this, (byte) (41 + this.rand.nextInt(4)));
                 }
