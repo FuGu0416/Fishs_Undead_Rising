@@ -119,14 +119,12 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     private int AttackTimer, AggressiveTimer = 40;
     public float rotationAngle = 0.0F;
     private int IdleTimer, SitTimer;
-    private boolean SitFlag;
 	public SimpleContainer inventory;
     private EntityAITargetItem<ItemEntity> AITargetItem;
 	
 	public MimicEntity(EntityType<? extends MimicEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
         this.inventory = new SimpleContainer(27);
-        this.SitFlag = false;
         this.setCanPickUpLoot(true);
     }
 	
@@ -245,8 +243,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     }
     
     private void EmergencyFood() {
-    	if (!this.level().isClientSide())
-			for (int i = 0; i < this.inventory.getContainerSize();i++)
+    	if (!this.level().isClientSide()) {
+			for (int i = 0; i < this.inventory.getContainerSize();i++) {
 				if (this.isFood(this.inventory.getItem(i))) {
 					Item item = this.inventory.getItem(i).getItem();
 					this.playSound(SoundEvents.GENERIC_EAT, 0.4F, 1.0F);
@@ -254,7 +252,21 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
                     this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 8*20, 0));
                     this.inventory.setItem(i, new ItemStack(this.inventory.getItem(i).getItem(), this.inventory.getItem(i).getCount() - 1));
 				}
+    		}
+		}
     }
+    
+	public void setInSittingPose(boolean p_21838_) {
+		super.setInSittingPose(p_21838_);
+
+		if (p_21838_) {
+			this.SitTimer = HIDE_IN_TIMER;
+			this.level().broadcastEntityEvent(this, (byte)5);
+		} else {
+			this.SitTimer = HIDE_OUT_TIMER;
+			this.level().broadcastEntityEvent(this, (byte)6);
+		}
+	}
 	
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
@@ -282,7 +294,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     	
 		if (!this.level().isClientSide()) {
 			if (!this.isAggressive() && !this.isTame()) {
-				if (!this.isSilent()) {
+				if (!this.isSilent() || !this.isInSittingPose()) {
 					this.setInSittingPose(true);
 					this.level().broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
 				}
@@ -292,15 +304,16 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 				this.yRotO = this.rotationAngle;
 				this.yBodyRot = this.yBodyRotO = 0F;	
 				
-				if (this.level().getBlockState(this.blockPosition().below()).isAir())
+				if (this.level().getBlockState(this.blockPosition().below()).isAir()) {
 					this.setPos(this.getX(), this.getY() - 1, this.getZ());
+				}
 	
 				this.setSilent(true);
 				this.setSpeed(0.0F);
 			} else if (this.getTarget() != null) {
 				this.AggressiveTimer = 200;
 				this.setSilent(false);
-				this.setSpeed(0.19F);
+				this.setSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue());
 			}
 		}
 		
@@ -328,16 +341,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
             }
 		}
 		
-    	if (this.isInSittingPose() && !this.SitFlag) {
-    		this.SitFlag = true;
-    		this.SitTimer = HIDE_IN_TIMER;
-    		this.level().broadcastEntityEvent(this, (byte)5);
-    	} else if (!this.isInSittingPose() && this.SitFlag) {
-    		this.SitFlag = false;
-    		this.SitTimer = HIDE_OUT_TIMER;
-    		this.level().broadcastEntityEvent(this, (byte)6);
-    	}
-    	
 		if (!this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
 			this.IdleTimer = IDLE_TIMER;
 			this.level().broadcastEntityEvent(this, (byte)7);

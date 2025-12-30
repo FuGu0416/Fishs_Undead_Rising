@@ -21,4 +21,9 @@ public class CactyrantRenderer extends GeoEntityRenderer<CactyrantEntity> {
     public ResourceLocation getTextureLocation(CactyrantEntity entity) {
     	return super.getTextureLocation(entity);
     }    
+    
+    @Override
+	public boolean isShaking(CactyrantEntity p_116561_) {
+    	return super.isShaking(p_116561_) || p_116561_.isShaking();
+	}
 }

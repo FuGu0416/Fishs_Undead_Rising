@@ -21,4 +21,9 @@ public class CactoidRenderer extends GeoEntityRenderer<CactoidEntity> {
     public ResourceLocation getTextureLocation(CactoidEntity entity) {
     	return super.getTextureLocation(entity);
     }    
+    
+    @Override
+	public boolean isShaking(CactoidEntity p_116561_) {
+    	return super.isShaking(p_116561_) || p_116561_.isShaking();
+	}
 }

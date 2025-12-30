@@ -31,5 +31,11 @@ public class MimicRenderer extends GeoEntityRenderer<MimicEntity> {
     	if (entity.isBaby()) {
         	p_225621_2_.scale(0.5F, 0.5F, 0.5F);
         }    	
+    	
+    	if (entity.isInSittingPose()) {
+    		this.shadowRadius = 0.0F;
+    	} else {
+    		this.shadowRadius = 0.5F;
+    	}
 	}
 }

@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.IAggressive;
+import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -40,6 +41,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -69,6 +71,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("cactoid.model.walking");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("cactoid.model.attacking");
     
+    private static final EntityDataAccessor<Boolean> DATA_IS_SHAKING = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
 	public static final int ATTACK_TIMER = 20;
@@ -83,8 +86,9 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
-		this.entityData.define(GROWING_STAGE, Integer.valueOf(0));
+		this.getEntityData().define(DATA_IS_SHAKING, false);
+		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+		this.getEntityData().define(GROWING_STAGE, Integer.valueOf(0));
     }
 	
     @Override
@@ -94,6 +98,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
         
     	super.registerGoals();
     	this.goalSelector.addGoal(1, new FloatGoal(this));
+    	this.goalSelector.addGoal(3, new AvoidOrFrightEntityGoal<>(this, Camel.class, 6.0F, 1.0D, 1.6D));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, true));
         this.goalSelector.addGoal(10, this.watch);
@@ -136,6 +141,14 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
 	@Override
 	public void setAttackTimer(int i) {
 		this.attackTimer = i;
+	}
+	
+    public boolean isShaking() {
+    	return this.entityData.get(DATA_IS_SHAKING);
+	}
+
+	public void setShaking(boolean p_175454_1_) {
+		this.entityData.set(DATA_IS_SHAKING, p_175454_1_);
 	}
     
     /**

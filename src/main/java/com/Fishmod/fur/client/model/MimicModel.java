@@ -31,15 +31,15 @@ public class MimicModel extends GeoModel<MimicEntity> {
     private static final ResourceLocation MODEL = new ResourceLocation(mod_LavaCow.MODID, "geo/mimic.geo.json");	
 
 	public static int getTombSkin() {
-		return 5;
+		return TEXTURES.length - 3;
 	}
 	
 	public static int getVoidSkin() {
-		return 6;
+		return getTombSkin() + 1;
 	}
     
 	public static int getNetherSkin() {
-		return 7;
+		return getTombSkin() + 2;
 	}
 	   
     @Override

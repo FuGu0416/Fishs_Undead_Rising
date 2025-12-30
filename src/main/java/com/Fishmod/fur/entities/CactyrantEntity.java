@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -39,6 +40,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -69,6 +71,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     private static final RawAnimation ATTACKING_VOLLEY = RawAnimation.begin().thenPlay("cactyrant.model.attacking_volley");
     
 	private static final EntityDataAccessor<Boolean> DATA_IS_CAMOUFLAGING = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_IS_SHAKING = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> HUGGING_CD = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.INT);
@@ -94,6 +97,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new CactyrantEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new AttackGoal(this));  
+        this.goalSelector.addGoal(3, new AvoidOrFrightEntityGoal<>(this, Camel.class, 6.0F, 1.0D, 1.6D));
         this.goalSelector.addGoal(6, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
@@ -111,6 +115,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(DATA_IS_CAMOUFLAGING, false);
+        this.getEntityData().define(DATA_IS_SHAKING, false);
         this.getEntityData().define(GROWING_STAGE, Integer.valueOf(0));
         this.getEntityData().define(HUGGING_CD, Integer.valueOf(0));
         this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
@@ -153,6 +158,14 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     public void setCamouflaging(boolean p_175454_1_) {
        this.entityData.set(DATA_IS_CAMOUFLAGING, p_175454_1_);
     }
+    
+    public boolean isShaking() {
+    	return this.entityData.get(DATA_IS_SHAKING);
+	}
+
+	public void setShaking(boolean p_175454_1_) {
+		this.entityData.set(DATA_IS_SHAKING, p_175454_1_);
+	}
     
     /**
      * Growing Stage: Normal -> Flowering-> Fruited
