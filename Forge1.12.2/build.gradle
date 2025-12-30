@@ -53,8 +53,8 @@ dependencies {
 
     implementation fg.deobf( "curse.maven:baubles-${baubles_version}")
     implementation fg.deobf( "curse.maven:mantle-${mantle_version}")
-    implementation fg.deobf( "curse.maven:tinkers-construct-${tinkers_construct_version}")
-    implementation fg.deobf( "curse.maven:constructs-armory-${constructs_armory_version}")
+    implementation fg.deobf( "curse.maven:tinkers-antique-${tinkers_antique_version}")
+    implementation fg.deobf( "curse.maven:antique-armory-${antique_armory_version}")
     implementation fg.deobf( "curse.maven:jer-${jer_version}")
     implementation fg.deobf( "curse.maven:jei-${jei_version}")
 

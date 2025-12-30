@@ -17,11 +17,6 @@ public class RenderMummy extends RenderLiving<EntityMummy> {
 			new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied4.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public ModelUnburied getMainModel()
     {
         return (ModelUnburied)super.getMainModel();

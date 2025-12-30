@@ -9,8 +9,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.google.common.collect.Lists;
 
 import net.minecraft.enchantment.Enchantment;
@@ -82,8 +80,8 @@ public class LootTableHandler {
     public static ResourceLocation UNBURIED = null;
     public static ResourceLocation UNDERTAKER = null;
     public static ResourceLocation LIL_SLUDGE = null;
+    public static ResourceLocation GHOUL = null;
     public static ResourceLocation TRADE_LOOT = null;
-    public static Map<Item, Integer> FISHABLE = new HashMap<Item, Integer>();
     public static Map<ItemStack, Float> LOOT_INTESTINE = new HashMap<ItemStack, Float>();
     public static Map<ItemStack, Float> LOOT_RAVEN = new HashMap<ItemStack, Float>();
     public static Map<ItemStack, Float> LOOT_SEAGULL = new HashMap<ItemStack, Float>();
@@ -176,13 +174,11 @@ public class LootTableHandler {
         ENIGMOTH_LARVA = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/enigmoth_larva"));
         UNBURIED = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/unburied"));
         UNDERTAKER = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/undertaker"));
+        GHOUL = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/ghoul"));
 
         CEMETERY_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/cemetery_chest"));
         DESERT_TOMB_CHEST = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "chests/desert_tomb_chest"));
         TRADE_LOOT = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "gameplay/graverobber_bartering"));
-        
-        FISHABLE.put(Modblocks.item_block_glowshroom, 10);
-        FISHABLE.put(FishItems.HYPHAE, 10);
 
         for (String S : Modconfig.Intestine_lt) {
             String[] S_splt = S.split(",");

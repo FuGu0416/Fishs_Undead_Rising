@@ -15,12 +15,14 @@ import com.Fishmod.mod_LavaCow.entities.tameable.*;
 import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
+import com.Fishmod.mod_LavaCow.entities.EntityGhoul;
 import com.Fishmod.mod_LavaCow.entities.EntityParasite;
 import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityFlyingMob;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
+import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFishCustomArrow;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
@@ -84,11 +86,16 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
+import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.conditions.KilledByPlayer;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.functions.LootingEnchantBonus;
+import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.BiomeDictionary;
@@ -106,6 +113,7 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.SaveToFile;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -188,13 +196,6 @@ public class ModEventHandler {
     @SubscribeEvent
     public void onEntityDrop(LivingDropsEvent event) {
         /**
-         * Wolf's loot table seems broken, so this method is implemented instead. 
-         **/
-        if (event.getEntityLiving() instanceof EntityWolf && event.getEntityLiving().getRNG().nextInt(5) == 1) {
-            event.getEntityLiving().dropItem(FishItems.SHARPTOOTH, 1);
-        }
-
-        /**
          * Add nose drop to Illagers. Due to their rarity, Witches also drop them.
          */
         if (event.isRecentlyHit() && (event.getEntityLiving() instanceof AbstractIllager || event.getEntityLiving() instanceof EntityWitch || event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.ILLAGER))
@@ -216,8 +217,8 @@ public class ModEventHandler {
     }
 
     /**
-     * Custom anvil event, using for making items into enchantment for weapons and tools
-     * Example: Make glow shroom and parasite a good lure
+     * Custom anvil event, used for making items into enchantment for weapons and tools
+     * Example: Make glow shroom and raw parasite a good lure
      */
     @SubscribeEvent
     public void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -241,8 +242,8 @@ public class ModEventHandler {
             event.setOutput(event.getLeft().copy());
             event.getOutput().addEnchantment(Enchantments.LURE, ench_lvl);
             event.setMaterialCost(1);
-        } else if (ModEnchantments.POISONOUS.canApply(tool) && Modconfig.Enchantment_Enable && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.POISONSPORE && !currentEnchantments.containsKey(ModEnchantments.POISONOUS)) {
-            ench_lvl = 1;
+        } else if (ModEnchantments.POISONOUS.canApply(tool) && tool.getItem() != FishItems.UNDERTAKER_SHOVEL && Modconfig.Enchantment_Enable && Modconfig.Enchantment_Anvil_Enable && ench.getItem() == FishItems.POISONSPORE && !currentEnchantments.containsKey(ModEnchantments.POISONOUS)) {
+            ench_lvl = 2;
             event.setOutput(outputStack);
             event.setCost(4);
             event.setOutput(event.getLeft().copy());
@@ -315,11 +316,26 @@ public class ModEventHandler {
             event.setOutput(new ItemStack(FishItems.SOULFORGEDARMOR_BOOTS).copy());
             event.getOutput().setTagCompound(outputStack.getTagCompound());
             event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.USHABTI) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.ANKH_WAND).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.POISONSPORE) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.FUNGAL_ROD).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
+        } else if (tool.getItem() == FishItems.UNDERTAKER_SHOVEL && Modconfig.Undertaker_Shovel_Anvil_Recipes && ench.getItem() == FishItems.FROZENTHIGH) {
+            event.setCost(1);
+            event.setOutput(new ItemStack(FishItems.FROZEN_GRIP).copy());
+            event.getOutput().setTagCompound(outputStack.getTagCompound());
+            event.setMaterialCost(1);
         }
     }
 
     /**
-     * Add custom loot to general fishing pool.
+     * Add custom loot to general fishing pool. Mainly for items that don't have a set quantity.
      * The list were setup in LootTableHandler.java
      */
     private static void addLoot(LootPool pool, Item item, int weight) {
@@ -327,42 +343,120 @@ public class ModEventHandler {
     }
 
     /**
-     * Apply custom loot to vanilla loot tables.
-     * Example: Custom items loot in jungle temple/polar bear
+     * Applies custom loot to vanilla loot tables.
+     * Example: Custom items loot in jungle temples or polar bears
      */
     @SubscribeEvent
     public static void addLoot(LootTableLoadEvent event) {
-        if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_JUNK)) {
+        if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_FISH)) {
             LootPool pool = event.getTable().getPool("main");
-            if (pool != null) for (Map.Entry<Item, Integer> entry : LootTableHandler.FISHABLE.entrySet())
-                addLoot(pool, entry.getKey(), entry.getValue());
-        }
 
-        if (event.getName().equals(LootTableList.ENTITIES_POLAR_BEAR)) {
-            LootPool pool = event.getTable().getPool("main");
-            if (pool != null) addLoot(pool, FishItems.SHARPTOOTH, 1);
-        }
-
-        if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
-            LootPool pool = event.getTable().getPool("main");
             if (pool != null) {
-                addLoot(pool, FishItems.HYPHAE, 6);
-                addLoot(pool, FishItems.PIRANHA, 6);
-                addLoot(pool, FishItems.SHARPTOOTH, 6);
+                addLoot(pool, FishItems.ZOMBIEPIRANHA_ITEM, 13);
+                addLoot(pool, FishItems.PIRANHA, 13);
+                addLoot(pool, FishItems.CHEIROLEPIS, 13);
+                addLoot(pool, FishItems.GHOST_SWARMER_ITEM, 6);
+                addLoot(pool, FishItems.MUMMIFIED_COD, 13);
+                addLoot(pool, FishItems.BONE_TROUT, 13);
+                addLoot(pool, FishItems.LAMPREY, 13);
             }
         }
 
+        if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_JUNK)) {
+            LootPool pool = event.getTable().getPool("main");
 
+            if (pool != null) {
+                addLoot(pool, Modblocks.item_block_glowshroom, 5);
+                addLoot(pool, FishItems.HYPHAE, 5);
+                addLoot(pool, FishItems.FOUL_BRISTLE, 5);
+                addLoot(pool, FishItems.SHATTERED_ICE, 5);
+                addLoot(pool, FishItems.MIMIC_CLAW, 5);
+                addLoot(pool, FishItems.SHARPTOOTH, 10);
+            }
+        }
+
+        // Polar Bear
+        if (event.getName().equals(LootTableList.ENTITIES_POLAR_BEAR)) {
+            LootPool pool = event.getTable().getPool("sharp_fang");
+
+            // New pool and drop
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "sharp_fang");
+                event.getTable().addPool(pool);
+            }
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(FishItems.SHARPTOOTH, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.SHARPTOOTH.getTranslationKey()));
+            }
+        }
+
+        // Wolf
+        if (event.getName().equals(LootTableList.ENTITIES_WOLF)) {
+            LootPool pool = event.getTable().getPool("sharp_fang");
+
+            // New pool and drop
+            // Wolves have no loot pools, we must add a new one in order to get our drop to work
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "sharp_fang");
+                event.getTable().addPool(pool);
+            }
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(FishItems.SHARPTOOTH, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.SHARPTOOTH.getTranslationKey()));
+            }
+        }
+
+        // Husk
+        if (event.getName().equals(LootTableList.ENTITIES_HUSK)) {
+            LootPool pool = event.getTable().getPool("fabric");
+
+            // New pool and drop
+            if (pool == null) {
+                pool = new LootPool(new LootEntry[0], new LootCondition[0], new RandomValueRange(1, 1), new RandomValueRange(1, 1), "fabric");
+                event.getTable().addPool(pool);
+            }
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(FishItems.CURSED_FABRIC, 1, 0, new LootFunction[]{new SetCount(new LootCondition[]{new KilledByPlayer(false)}, new RandomValueRange(0, 2)),
+                        new LootingEnchantBonus(new LootCondition[0], new RandomValueRange(0, 1), 0)}, new LootCondition[0], mod_LavaCow.MODID + FishItems.CURSED_FABRIC.getTranslationKey()));
+            }
+        }
+
+        // Desert Pyramid Structure
+        if (event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
+            LootPool pool = event.getTable().getPool("main");
+
+            if (pool != null) {
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.CURSEWEAVE_CLOTH).getItem(), 20, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.CURSEWEAVE_CLOTH.getTranslationKey()));
+                addLoot(pool, FishItems.INTESTINE, 20);
+                addLoot(pool, FishItems.USHABTI, 5);
+            }
+        }
+
+        // Jungle Temple Structure
+        if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
+            LootPool pool = event.getTable().getPool("main");
+
+            if (pool != null) {
+                addLoot(pool, FishItems.HYPHAE, 6);
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.PIRANHA).getItem(), 6, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.PIRANHA.getTranslationKey()));
+                pool.addEntry(new LootEntryItem(new ItemStack(FishItems.SHARPTOOTH).getItem(), 6, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1, 3))},
+                        new LootCondition[0], FishItems.SHARPTOOTH.getTranslationKey()));
+                addLoot(pool, FishItems.POISONSPORE, 1);
+            }
+        }
+
+        // Igloo Structure
         if (event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
             LootPool pool = event.getTable().getPool("main");
+
             if (pool != null) {
                 addLoot(pool, FishItems.FROZENTHIGH, 1);
             }
-        }
-
-        if (event.getName().equals(LootTableList.ENTITIES_HUSK)) {
-            LootPool pool = event.getTable().getPool("main");
-            if (pool != null) addLoot(pool, FishItems.CURSED_FABRIC, 1);
         }
     }
 
@@ -738,9 +832,23 @@ public class ModEventHandler {
             Item heldItem = ((EntityLivingBase) Attacker).getHeldItemMainhand().getItem();
             if (heldItem.equals(FishItems.BONESWORD)) {
                 if (!event.getEntityLiving().isNonBoss() && !Modconfig.BoneSword_Boss_Damage) return;
-                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, event.getEntityLiving().getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
+                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, Attacked.getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
             } else if (heldItem.equals(FishItems.SPECTRAL_DAGGER) && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD)) {
                 event.setAmount(event.getAmount() + 2.0F);
+            }
+        }
+
+        Entity Projectile = source.getImmediateSource();
+        EntityFishCustomArrow arrow = new EntityFishCustomArrow(Attacker.getEntityWorld());
+
+        if (Projectile instanceof EntityFishCustomArrow) {
+            // Ghoulish Arrow
+            if (arrow.getArrowType() == 0 && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float) Modconfig.Ghoul_Target_Health_Threshold / 100.0F))) {
+                event.setAmount(event.getAmount() + 4.0F);
+                // Fang Arrow
+            } else if (arrow.getArrowType() == 1) {
+                if (!event.getEntityLiving().isNonBoss() && !Modconfig.BoneSword_Boss_Damage) return;
+                event.setAmount(event.getAmount() + Math.min((float) Modconfig.BoneSword_DamageCap, Attacked.getMaxHealth() * ((float) Modconfig.BoneSword_Damage * 0.01F)));
             }
         }
     }
@@ -1027,27 +1135,28 @@ public class ModEventHandler {
 
     private void MendingBaubles(Item item, EntityXPOrb xpOrb, EntityPlayer player, PlayerPickupXpEvent event) {
         int Heart_Slot = baubles.api.BaublesApi.isBaubleEquipped(player, item);
-        if(Heart_Slot == -1) return;
+        if (Heart_Slot == -1) return;
 
         ItemStack itemStack = baubles.api.BaublesApi.getBaublesHandler(event.getEntityPlayer()).getStackInSlot(Heart_Slot);
         boolean hasMending = (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, itemStack) > 0);
+
+        // Check for Advanced Mending when So Many Enchantments is detected
         boolean hasAdvancedMending = false;
-        // check for SME Advanced Mending
-        if(CompatUtilBridge.isSMELoaded() && !hasMending) hasAdvancedMending = (SoManyEnchantmentsCompat.getAdvancedMendingLevel(itemStack) > 0);
+        if (Loader.isModLoaded(CompatUtilBridge.SME_MODID) && Modconfig.SME_Compat && !hasMending)
+            hasAdvancedMending = (SoManyEnchantmentsCompat.getAdvancedMendingLevel(itemStack) > 0);
 
         if (hasMending || hasAdvancedMending && itemStack.isItemDamaged()) {
-            if(CompatUtilBridge.isSMELoaded()) { // Handling if SME
+            if (Loader.isModLoaded(CompatUtilBridge.SME_MODID) && Modconfig.SME_Compat) { // Use a different method if So Many Enchantments compat is enabled
                 float mendingModifier = hasAdvancedMending ? 1.5F : 1.0F;
                 float ratio = itemStack.getItem().getXpRepairRatio(itemStack);
                 int value = Math.min(SoManyEnchantmentsCompat.roundAverage(xpOrb.xpValue * ratio * mendingModifier), itemStack.getItemDamage());
                 xpOrb.xpValue -= SoManyEnchantmentsCompat.roundAverage(value / ratio);
                 itemStack.setItemDamage(itemStack.getItemDamage() - value);
                 if (xpOrb.xpValue < 0) xpOrb.xpValue = 0;
-            }
-            else { // Original Handling
+            } else { // Use normal method otherwise
                 event.setCanceled(true);
-                if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
 
+                if (xpOrb.delayBeforeCanPickup == 0 && player.xpCooldown == 0) {
                     player.xpCooldown = 2;
                     player.onItemPickup(xpOrb, 1);
                     int i = Math.min(xpOrb.xpValue * 2, itemStack.getItemDamage());
@@ -1060,6 +1169,28 @@ public class ModEventHandler {
                     }
 
                     xpOrb.setDead();
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onELootingLevelEvent(LootingLevelEvent event) {
+        DamageSource Attacker = event.getDamageSource();
+
+        if (Attacker != null) {
+            if (Attacker.getTrueSource() instanceof EntityGhoul) {
+                event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().getEntityWorld().rand.nextInt(2)));
+            }
+
+            Entity Projectile = Attacker.getImmediateSource();
+
+            if (Projectile instanceof EntityFishCustomArrow && Attacker.getTrueSource() != null) {
+                EntityFishCustomArrow arrow = new EntityFishCustomArrow(Attacker.getTrueSource().getEntityWorld());
+
+                // Ghoulish Arrow
+                if (arrow.getArrowType() == 0) {
+                    event.setLootingLevel(event.getLootingLevel() + (1 + Attacker.getTrueSource().getEntityWorld().rand.nextInt(2)));
                 }
             }
         }
@@ -1171,13 +1302,14 @@ public class ModEventHandler {
 
     @SubscribeEvent
     public void onPCritical(CriticalHitEvent event) {
-        //Handle RLCombat separately using Crit event
-        if(CompatUtilBridge.isRLCombatLoaded()) return;
+        // If RLCombat is detected and compat is enabled, handle this event separately
+        if (Loader.isModLoaded(CompatUtilBridge.BETTER_COMBAT_MODID) && Loader.instance().getIndexedModList().get(CompatUtilBridge.BETTER_COMBAT_MODID).getName().equals(CompatUtilBridge.RLCOMBAT_MODNAME) && Modconfig.RLCombat_Compat)
+            return;
 
-        int CriticalBoostlvl = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CRITICAL_BOOST, event.getEntityPlayer().getHeldItemMainhand());
+        int criticalBoostLvl = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CRITICAL_BOOST, event.getEntityPlayer().getHeldItemMainhand());
 
-        if (CriticalBoostlvl != 0 && event.getDamageModifier() > 1.0F) {
-            event.setDamageModifier(event.getDamageModifier() + (CriticalBoostlvl * 0.15F));
+        if (criticalBoostLvl != 0 && event.getDamageModifier() > 1.0F) {
+            event.setDamageModifier(event.getDamageModifier() + (criticalBoostLvl * 0.15F));
         }
     }
 
@@ -1214,8 +1346,8 @@ public class ModEventHandler {
     }
 
     /**
-     * Young Simba:Everything the light touches... But what about that dark greeny place?
-     * Mufasa:That's beyond our borders. You must never go there Simba.
+     * Young Simba: Everything the light touches... But what about that dark greeny place?
+     * Mufasa: That's beyond our borders. You must never go there Simba.
      */
       
     /*@SubscribeEvent

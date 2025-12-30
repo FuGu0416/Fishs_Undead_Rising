@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "side": "mod_lavacow:blocks/diseased_hay_block_side",
+        "end": "mod_lavacow:blocks/diseased_hay_block_top"
+    }
+}

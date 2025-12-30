@@ -16,11 +16,6 @@ public class RenderSoulWorm extends RenderLiving<EntitySoulWorm> {
             new ResourceLocation("mod_lavacow:textures/mobs/soulworm/soulworm1.png")
     };
 
-    static {
-        for (ResourceLocation texture : TEXTURES)
-            System.out.println(texture.getPath());
-    }
-
     public RenderSoulWorm(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelBoneWorm(), 0.5F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURES_EYE));

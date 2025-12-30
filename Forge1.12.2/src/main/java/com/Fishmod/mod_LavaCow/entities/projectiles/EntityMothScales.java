@@ -117,7 +117,7 @@ public class EntityMothScales extends EntityFireball {
                             entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
 
                             if (this.getScaleType() == 0) {
-                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 4 * 20, 3));
+                                entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.VOID_DUST, 5 * 20, 4));
                             } else {
                                 entityareaeffectcloud.addEffect(new PotionEffect(ModMobEffects.CORRODED, 20 * 20, 2));
                             }

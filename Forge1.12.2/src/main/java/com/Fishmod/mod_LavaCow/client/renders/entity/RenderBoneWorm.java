@@ -13,11 +13,6 @@ public class RenderBoneWorm extends RenderLiving<EntityBoneWorm> {
             new ResourceLocation("mod_lavacow:textures/mobs/boneworm/boneworm.png")
     };
 
-    static {
-        for (ResourceLocation texture : TEXTURES)
-            System.out.println(texture.getPath());
-    }
-
     public RenderBoneWorm(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelBoneWorm(), 0.5F);
     }

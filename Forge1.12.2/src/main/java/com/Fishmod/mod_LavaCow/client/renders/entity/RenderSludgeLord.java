@@ -13,11 +13,6 @@ public class RenderSludgeLord extends RenderLiving<EntitySludgeLord> {
 			new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord.png")
 	};
 	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/sludgelord/sludgelord_glow.png");
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderSludgeLord(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelSludgeLord(), 1.0F);

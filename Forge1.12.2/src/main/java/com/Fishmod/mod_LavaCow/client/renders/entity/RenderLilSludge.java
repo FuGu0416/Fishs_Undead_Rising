@@ -13,11 +13,6 @@ public class RenderLilSludge extends RenderLiving<EntityLilSludge>{
 			new ResourceLocation("mod_lavacow:textures/mobs/lilsludge/lilsludge2.png")
 	};
 
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-
     public RenderLilSludge(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelLilSludge(), 0.5F);
     }

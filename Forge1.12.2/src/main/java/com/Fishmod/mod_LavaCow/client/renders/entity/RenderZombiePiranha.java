@@ -17,11 +17,6 @@ public class RenderZombiePiranha extends RenderLiving<EntityZombiePiranha>{
 			new ResourceLocation("mod_lavacow:textures/mobs/piranha.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/swarmer/swarmer2.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderZombiePiranha(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelZombiePiranha(), 0.3F);

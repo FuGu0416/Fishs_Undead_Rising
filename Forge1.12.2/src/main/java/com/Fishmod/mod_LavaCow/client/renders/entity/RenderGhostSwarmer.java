@@ -15,11 +15,6 @@ public class RenderGhostSwarmer extends RenderLiving<EntityGhostSwarmer> {
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostswarmer/ghostswarmer.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ghostswarmer/ghostswarmer1.png"),
 	};
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderGhostSwarmer(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelZombiePiranha(), 0.3F);

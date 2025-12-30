@@ -19,11 +19,6 @@ public class RenderRaven extends RenderLiving<EntityRaven>{
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven2.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/raven/raven3.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderRaven(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelRaven(), 0.3F);

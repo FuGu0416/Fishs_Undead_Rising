@@ -21,7 +21,7 @@ public class ConstructsArmoryCompat {
     public static final AbstractArmorTrait AMBER_PHARAOH_ARMOR = new TraitAmberPharaohArmor();
 
     // Materials are already registered in TinkersCompat.class, this only adds support for Construct's Armory armor
-    public static void init() {
+    public static void preInit() {
         MinecraftForge.EVENT_BUS.register(INSTANCE);
         TinkerRegistry.addMaterialStats(TinkersCompat.MOLTEN_MEAT,
                 new CoreMaterialStats(10.0F, 14.0F),

@@ -53,10 +53,12 @@ public class Modconfig {
     public static int pSpawnRate_ZombieMushroom;
     public static double ZombieMushroom_Health;
     public static double ZombieMushroom_Attack;
+    public static int ZombieMushroom_Lifespan;
 
     public static int pSpawnRate_ZombieFrozen;
     public static double ZombieFrozen_Health;
     public static double ZombieFrozen_Attack;
+    public static int ZombieFrozen_Lifespan;
 
     public static int pSpawnRate_Salamander;
     public static double Salamander_Health;
@@ -198,6 +200,7 @@ public class Modconfig {
     public static int pSpawnRate_Mummy;
     public static double Mummy_Health;
     public static double Mummy_Attack;
+    public static int Mummy_Lifespan;
 
     public static int pSpawnRate_Cactyrant;
     public static int pSpawnRate_Cactyrant_Nether;
@@ -264,12 +267,17 @@ public class Modconfig {
     public static boolean Enigmoth_Larva_Middle_End_Island;
     public static boolean Enigmoth_Larva_Pickup;
 
+    public static int pSpawnRate_Ghoul;
+    public static double Ghoul_Health;
+    public static double Ghoul_Attack;
+    public static double Ghoul_Target_Health_Threshold;
+
     public static boolean pFoglet_SpawnAlly;
     public static boolean MoltenHammer_PVP;
-	public static double MoltenHammer_Damage;
-	public static int MoltenHammer_Cooldown;
-	public static double SoulFireHammer_Damage;
-	public static int SoulFireHammer_Cooldown;
+    public static double MoltenHammer_Damage;
+    public static int MoltenHammer_Cooldown;
+    public static double SoulFireHammer_Damage;
+    public static int SoulFireHammer_Cooldown;
     public static int Cocoon_Lifespan;
     public static int Parasite_SandSpawn;
     public static boolean Parasite_Plague;
@@ -304,6 +312,9 @@ public class Modconfig {
     public static int SludgeWand_Cooldown;
     public static int ScarabWand_Cooldown;
     public static int Undertaker_Shovel_Cooldown;
+    public static int Ankh_Scepter_Cooldown;
+    public static int Fungal_Staff_Cooldown;
+    public static int Frozen_Grip_Cooldown;
     public static int Skeleton_King_Mace_Damage;
     public static boolean Tinkers_Compat;
     public static boolean Tinkers_Armor_Compat;
@@ -324,6 +335,7 @@ public class Modconfig {
     public static boolean Enchantment_Enable;
     public static boolean Enchantment_Anvil_Enable;
     public static boolean Soulforged_Anvil_Recipes;
+    public static boolean Undertaker_Shovel_Anvil_Recipes;
     public static int MootenHeart_Damage;
     public static int SoulforgedHeart_Healing;
     public static int[] Spawn_Cemetery_AllowList = new int[0];
@@ -342,7 +354,7 @@ public class Modconfig {
 
     public final String[] usedCategories = {Configuration.CATEGORY_GENERAL, "Mod Integration", "Mod Integration Toggles", "Amber Lord", "Amber Scarab", "Avaton", "Banshee", "Cactoid", "Cactyrant", "Enigmoth", "Enigmoth Caterpillar", "Foglet", "Isnachi",
             "Imp", "Forsaken", "Frigid", "Ghost Ray", "Ghost Swarmer", "Ithaqua", "Lil' Sludge", "Mimicrab", "Moogma", "Mummy", "Mycosis", "Osvermis", "Parasite", "Penghoul", "Piranha", "Ptera", "Raven", "Warmander",
-            "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", "Vespa", "Weta", "Sea Hag", "Grave Robber", "Ghost of Grave Robber", "Revenant", "Shroom"};
+            "Scarecrow", "Skeleton King", "Sludge Lord", "Swarmer", "Unburied", "Undead Swine", "Undertaker", "Vespa", "Weta", "Sea Hag", "Grave Robber", "Ghost of Grave Robber", "Revenant", "Ghoul", "Shroom"};
 
     public void loadConfig(FMLPreInitializationEvent event) {
         File configFile = new File(Loader.instance().getConfigDir(), "Fishs_Undead_Rising.cfg");
@@ -408,11 +420,13 @@ public class Modconfig {
         pSpawnRate_ZombieMushroom = config.get("Mycosis", "mycosis spawn rate", 40, "Set the spawn rate of Mycosis [0-10000]", 0, 10000).getInt(40);
         ZombieMushroom_Health = config.get("Mycosis", "mycosis health", 20.0D, "Maximum Mycosis health [1-1000]", 1, 1000).getDouble(20.0D);
         ZombieMushroom_Attack = config.get("Mycosis", "mycosis attack", 3.0D, "Mycosis strength [1-1000]", 1, 1000).getDouble(3.0D);
+        ZombieMushroom_Lifespan = config.get("Mycosis", "mycosis lifespan", 120, "Summoned Mycosis lifespan [1-10000]", 1, 10000).getInt(120);
         ZombieMushroom_DropSpore = config.get(Configuration.CATEGORY_GENERAL, "drop poisonous spore", 2, "Set the drop rate of Poisonous Spore [0-100]", 0, 100).getInt(2);
 
         pSpawnRate_ZombieFrozen = config.get("Frigid", "frigid spawn rate", 20, "Set the spawn rate of Frigid [0-10000]", 0, 10000).getInt(20);
         ZombieFrozen_Health = config.get("Frigid", "frigid health", 20.0D, "Maximum Frigid health [1-1000]", 1, 1000).getDouble(30.0D);
         ZombieFrozen_Attack = config.get("Frigid", "frigid attack", 3.0D, "Frigid strength [1-1000]", 1, 1000).getDouble(3.0D);
+        ZombieFrozen_Lifespan = config.get("Frigid", "frigid lifespan", 120, "Summoned Frigid lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Salamander = config.get("Warmander", "warmander spawn rate", 30, "Set the spawn rate of Warmander [0-10000]", 0, 10000).getInt(30);
         Salamander_Health = config.get("Warmander", "warmander health", 60.0D, "Maximum Warmander health [1-1000]", 1, 1000).getDouble(60.0D);
@@ -447,7 +461,7 @@ public class Modconfig {
 
         LilSludge_Health = config.get("Lil' Sludge", "lil'sludge health", 16.0D, "Maximum Lil' Sludge health [1-1000]", 1, 1000).getDouble(16.0D);
         LilSludge_Attack = config.get("Lil' Sludge", "lil'sludge attack", 3.5D, "Lil' Sludge strength [1-1000]", 1, 1000).getDouble(3.5D);
-        LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 60, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(60);
+        LilSludge_Lifespan = config.get("Lil' Sludge", "lil'sludge lifespan", 120, "Summoned Lil' Sludge lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Raven = config.get("Raven", "raven spawn rate", 8, "Set the spawn rate of Raven [0-10000]", 0, 10000).getInt(8);
         Raven_Health = config.get("Raven", "raven health", 6.0D, "Maximum Raven health [1-1000]", 1, 1000).getDouble(6.0D);
@@ -461,7 +475,7 @@ public class Modconfig {
         Ptera_FlyingHeight_limit = config.get("Ptera", "ptera height limit", 16, "Set the height limit to X blocks above the ground for Pteras, 0 = Infinite [0-100]", 0, 100).getInt(16);
         Ptera_Ability_Spawn = config.getStringList("passenger list for ptera", "Ptera",
                 new String[]{
-                        "mod_lavacow:isnachi,40",
+                        "mod_lavacow:slothoman,40",
                         "mod_lavacow:mummy,40",
                         "minecraft:husk,40",
                         "minecraft:creeper,20",
@@ -517,7 +531,7 @@ public class Modconfig {
         pSpawnRate_Unburied = config.get("Unburied", "unburied spawn rate", 20, "Set the spawn rate of Unburied [0-10000]", 0, 10000).getInt(20);
         Unburied_Health = config.get("Unburied", "unburied health", 20.0D, "Maximum Unburied health [1-1000]", 1, 1000).getDouble(20.0D);
         Unburied_Attack = config.get("Unburied", "unburied attack", 3.0D, "Unburied strength [1-1000]", 1, 1000).getDouble(3.0D);
-        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 60, "Summoned Unburied (and variants) lifespan [1-10000]", 1, 10000).getInt(60);
+        Unburied_Lifespan = config.get("Unburied", "unburied lifespan", 120, "Summoned Unburied lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_GhostRay = config.get("Ghost Ray", "ghost ray spawn rate", 10, "Set the spawn rate of Ghost Ray [0-100]", 0, 100).getInt(10);
         pSpawnRate_GhostRay_End = config.get("Ghost Ray", "ghost ray end dimension spawn rate", 3, "Set the spawn rate of Ghost Ray in the End dimension [0-100]", 0, 100).getInt(3);
@@ -535,7 +549,7 @@ public class Modconfig {
         pSpawnRate_Weta = config.get("Weta", "weta spawn rate", 30, "Set the spawn rate of Weta [0-100]", 0, 100).getInt(30);
         Weta_Health = config.get("Weta", "weta health", 12.0D, "Maximum Weta health [1-1000]", 1, 1000).getDouble(12.0D);
         Weta_Attack = config.get("Weta", "weta attack", 3.0D, "Weta strength [1-1000]", 1, 1000).getDouble(3.0D);
-        Weta_Lifespan = config.get("Weta", "weta lifespan", 60, "Summoned Weta lifespan [1-10000]", 1, 10000).getInt(60);
+        Weta_Lifespan = config.get("Weta", "weta lifespan", 120, "Summoned Weta lifespan [1-10000]", 1, 10000).getInt(120);
         Weta_Harvest_Diseased_Wheat = config.get("Weta", "weta diseased wheat drop rate", 0.15D, "Chance for diseased Weta to drop diseased wheat when breaking crops [0-1]", 0, 1).getDouble(0.15D);
 
         pSpawnRate_Avaton = config.get("Avaton", "avaton spawn rate", 20, "Set the spawn rate of Avaton [0-100]", 0, 100).getInt(20);
@@ -552,14 +566,14 @@ public class Modconfig {
         pSpawnRate_SkeletonKing = config.get("Skeleton King", "skeleton king summon", true, "Should Skeleton King be summoned with the crown [false/true]").getBoolean(true);
         SkeletonKing_Health = config.get("Skeleton King", "skeleton king health", 400.0D, "Maximum Skeleton King health [1-1000]", 1, 1000).getDouble(400.0D);
         SkeletonKing_Attack = config.get("Skeleton King", "skeleton king attack", 16.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(16.0D);
-        SkeletonKing_Kings_Wrath_Attack = config.get("Skeleton King", "skeleton king kings wrath attack", 6.0D, "Skeleton King strength [1-1000]", 1, 1000).getDouble(6.0D);
+        SkeletonKing_Kings_Wrath_Attack = config.get("Skeleton King", "skeleton king kings wrath projectile strength", 6.0D, "Skeleton King kings wrath projectile strength [1-1000]", 1, 1000).getDouble(6.0D);
         SkeletonKing_Ability_Sand_Tomb_Cooldown = config.get("Skeleton King", "skeleton king sand tomb cooldown", 10, "Set the cooldown of Sand Tomb [0-100]", 0, 100).getInt(10);
         SkeletonKing_Ability_Sand_Wraith_Cooldown = config.get("Skeleton King", "skeleton king sand wraith cooldown", 16, "Set the cooldown of Sand Wraith [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Projectile_Cooldown = config.get("Skeleton King", "skeleton king projectile cooldown", 60, "Set the cooldown of fired projectiles [0-100]", 0, 100).getInt(80);
         SkeletonKing_Ability_Summon_Cooldown = config.get("Skeleton King", "skeleton king summon cooldown", 16, "Set the cooldown of summoning Unburied [0-100]", 0, 100).getInt(16);
         SkeletonKing_Ability_Summon_Num = config.get("Skeleton King", "skeleton king summon number", 6, "Set the number of Forsaken summoned per cast [0-100]", 0, 100).getInt(6);
         SkeletonKing_Ability_Summon_Max = config.get("Skeleton King", "skeleton king summon max", 24, "Set the max number of Forsaken summoned [0-100]", 0, 100).getInt(24);
-        SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 120, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(120);
+        SkeletonKing_Minion_Lifespan = config.get("Skeleton King", "skeleton king minion lifespan", 300, "Summoned Forsaken lifespan [1-10000]", 1, 10000).getInt(300);
         SkeletonKing_Loot_Option = config.get("Skeleton King", "skeleton king loot in chest", true, "Should Skeleton King drop its loot inside a chest [false/true]").getBoolean(true);
         SkeletonKing_Biome_Need_All = config.get("Skeleton King", "cursed crown need all tags", true, "Should King's Crown require all (or just one) valid biome tag [false/true]").getBoolean(true);
         SkeletonKing_Biome_Allowlist = config.getStringList("Cursed Crown Biomes List", "Skeleton King",
@@ -573,6 +587,7 @@ public class Modconfig {
         pSpawnRate_Mummy = config.get("Mummy", "mummy spawn rate", 20, "Set the spawn rate of Mummy [0-10000]", 0, 10000).getInt(20);
         Mummy_Health = config.get("Mummy", "mummy health", 24.0D, "Maximum Mummy health [1-1000]", 1, 1000).getDouble(24.0D);
         Mummy_Attack = config.get("Mummy", "mummy attack", 4.0D, "Mummy strength [1-1000]", 1, 1000).getDouble(4.0D);
+        Mummy_Lifespan = config.get("Mummy", "mummy lifespan", 120, "Summoned Mummy lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Cactyrant = config.get("Cactyrant", "cactyrant spawn rate", 10, "Set the spawn rate of Cactyrant [0-10000]", 0, 10000).getInt(10);
         pSpawnRate_Cactyrant_Nether = config.get("Cactyrant", "cactyrant nether dimension spawn rate", 3, "Set the spawn rate of Cactyrant in the Nether dimension [0-10000]", 0, 10000).getInt(3);
@@ -592,7 +607,7 @@ public class Modconfig {
         Sea_Hag_Ability_Cooldown = config.get("Sea Hag", "sea hag summon cooldown", 12, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(12);
 
         pSpawnRate_Grave_Robber = config.get("Grave Robber", "grave robber spawn rate", 15, "Set the spawn rate of Grave Robber [0-100]", 0, 100).getInt(15);
-        Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-100]", 0, 100).getDouble(0.5D);
+        Grave_Robber_Ghost_Chance = config.get("Grave Robber", "grave robber ghost chance", 0.5D, "The chance for a Ghost of Grave Robber to appear after a Grave Robber dies [0-1]", 0, 1).getDouble(0.5D);
         Grave_Robber_Health = config.get("Grave Robber", "grave robber health", 34.0D, "Maximum Grave Robber health [1-1000]", 1, 1000).getDouble(34.0D);
         Grave_Robber_Attack = config.get("Grave Robber", "grave robber attack", 6.0D, "Grave Robber strength [1-1000]", 1, 1000).getDouble(6.0D);
         Grave_Robber_Spawn_Underground = config.get("Grave Robber", "grave robber underground spawn", false, "Should Grave Robbers spawn underground").getBoolean(false);
@@ -603,7 +618,7 @@ public class Modconfig {
         Grave_Robber_Ghost_Ability_Num = config.get("Ghost of Grave Robber", "grave robber ghost summon number", 2, "Set the number of Ghost Swarmers summoned per cast [0-100]", 0, 100).getInt(2);
         Grave_Robber_Ghost_Ability_Max = config.get("Ghost of Grave Robber", "grave robber ghost summon max", 8, "Set the max number of Ghost Swarmers summoned [0-100]", 0, 100).getInt(8);
         Grave_Robber_Ghost_Ability_Cooldown = config.get("Ghost of Grave Robber", "grave robber ghost summon cooldown", 20, "Set the cooldown of summoning Ghost Swarmers [0-100]", 0, 100).getInt(20);
-        Grave_Robber_Ghost_Minion_Lifespan = config.get("Ghost of Grave Robber", "grave robber ghost minion lifespan", 60, "Summoned Vex lifespan [1-10000]", 1, 10000).getInt(60);
+        Grave_Robber_Ghost_Minion_Lifespan = config.get("Ghost of Grave Robber", "grave robber ghost minion lifespan", 120, "Summoned Vex lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Wraith = config.get("Revenant", "revenant spawn rate", 20, "Set the spawn rate of Revenant [0-10000]", 0, 10000).getInt(20);
         Wraith_Health = config.get("Revenant", "revenant health", 25.0D, "Maximum Revenant health [1-1000]", 1, 1000).getDouble(25.0D);
@@ -613,12 +628,12 @@ public class Modconfig {
         pSpawnRate_Ghost_Swarmer = config.get("Ghost Swarmer", "ghost swarmer spawn rate", 10, "Set the spawn rate of Ghost Swarmer [0-100]", 0, 100).getInt(0);
         Ghost_Swarmer_Health = config.get("Ghost Swarmer", "ghost swarmer health", 12.0D, "Maximum Ghost Swarmer health [1-1000]", 1, 1000).getDouble(12.0D);
         Ghost_Swarmer_Attack = config.get("Ghost Swarmer", "ghost swarmer attack", 3.5D, "Ghost Swarmer strength [1-1000]", 1, 1000).getDouble(3.5D);
-        Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 60, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(60);
-        Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghots Swarmers spawn underground").getBoolean(false);
+        Ghost_Swarmer_Lifespan = config.get("Ghost Swarmer", "ghost swarmer lifespan", 120, "Summoned Ghost Swarmer lifespan [1-10000]", 1, 10000).getInt(120);
+        Ghost_Swarmer_Spawn_Underground = config.get("Ghost Swarmer", "ghost swarmer underground spawn", false, "Should Ghost Swarmers spawn underground").getBoolean(false);
 
         Amber_Scarab_Health = config.get("Amber Scarab", "amber scarab health", 14.0D, "Maximum Amber Scarab health [1-1000]", 1, 1000).getDouble(14.0D);
         Amber_Scarab_Attack = config.get("Amber Scarab", "amber scarab attack", 3.5D, "Amber Scarab strength [1-1000]", 1, 1000).getDouble(3.5D);
-        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 60, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(60);
+        Amber_Scarab_Lifespan = config.get("Amber Scarab", "amber scarab lifespan", 120, "Summoned Amber Scarab lifespan [1-10000]", 1, 10000).getInt(120);
 
         pSpawnRate_Enigmoth = config.get("Enigmoth", "enigmoth spawn rate", 1, "Set the spawn rate of Enigmoth [0-10000]", 0, 10000).getInt(1);
         Enigmoth_Health = config.get("Enigmoth", "enigmoth health", 60.0D, "Maximum Enigmoth health [1-1000]", 1, 1000).getDouble(60.0D);
@@ -638,11 +653,16 @@ public class Modconfig {
         Enigmoth_Larva_Middle_End_Island = config.get("Enigmoth Caterpillar", "enigmoth caterpillar middle end island spawn", false, "Should Enigmoth Caterpillars spawn at the middle end island where the dragon is located [false/true]").getBoolean(false);
         Enigmoth_Larva_Pickup = config.get("Enigmoth Caterpillar", "enigmoth caterpillar pickup", false, "You can pick up Enigmoth Caterpillars by right clicking them with an empty main hand while sneaking [false/true]").getBoolean(false);
 
-        MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Warhammer active effect to hit players [false/true]").getBoolean(false);
-		MoltenHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten hammer attack", 8.0D, "Area Damage of Molten Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(8.0D);
-		MoltenHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Molten Warhammer [1-1000]", 1, 1000).getInt(4);
-		SoulFireHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer attack", 10.0D, "Area Damage of Soulforged Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(10.0D);
-		SoulFireHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Soulforged Warhammer [1-1000]", 1, 1000).getInt(4);
+        pSpawnRate_Ghoul = config.get("Ghoul", "ghoul spawn rate", 20, "Set the spawn rate of Ghoul [0-10000]", 0, 10000).getInt(20);
+        Ghoul_Health = config.get("Ghoul", "ghoul health", 20.0D, "Maximum Ghoul health [1-1000]", 1, 1000).getDouble(20.0D);
+        Ghoul_Attack = config.get("Ghoul", "ghoul attack", 5.0D, "Ghoul strength [1-1000]", 1, 1000).getDouble(5.0D);
+        Ghoul_Target_Health_Threshold = config.get("Ghoul", "ghoul target health threshold", 50.0D, "Percentage of wounded health needed to be targeted by a Ghoul [0-100]", 0, 100).getDouble(50.0D);
+
+        MoltenHammer_PVP = config.get(Configuration.CATEGORY_GENERAL, "allow molten hammer pvp", false, "Allow Molten Hammer active effect to hit players [false/true]").getBoolean(false);
+        MoltenHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "molten hammer attack", 8.0D, "Area Damage of Molten Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(8.0D);
+        MoltenHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Molten Warhammer [1-1000]", 1, 1000).getInt(4);
+        SoulFireHammer_Damage = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer attack", 10.0D, "Area Damage of Soulforged Warhammer [1-1000]", 1.0D, 1000.0D).getDouble(10.0D);
+        SoulFireHammer_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "soulforged hammer cooldown", 4, "Ability cooldown of Soulforged Warhammer [1-1000]", 1, 1000).getInt(4);
         Fission_ModEntity = config.get(Configuration.CATEGORY_GENERAL, "Global Potion of Fission", false, "Allows the Potion of Fission to be used on any mob regardless of the list [false/true]").getBoolean(false);
         Fission_Allowlist = config.getStringList("Potion of Fission List", Configuration.CATEGORY_GENERAL,
                 new String[]{
@@ -761,9 +781,9 @@ public class Modconfig {
 
         BeastClaw_Needs_Sneak = config.get(Configuration.CATEGORY_GENERAL, "beast claw needs sneak", false, "Does Beast Claw right click ability require player to be sneaking?. [false/true]").getBoolean(false);
 
-        BoneSword_Boss_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword boss damage", false, "Allow the Bone Sword to deal extra damage to bosses. [false/true]").getBoolean(false);
-        BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword bonus damage", 5, "Set the bonus damage of Bone Sword to X% [0-100]", 0, 100).getInt(5);
-        BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bone sword bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword [0-10000]", 0, 10000).getInt(10000);
+        BoneSword_Boss_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow boss damage", false, "Allow the Bone Sword/Fang Arrow to deal extra damage to bosses. [false/true]").getBoolean(false);
+        BoneSword_Damage = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow bonus damage", 5, "Set the bonus damage of Bone Sword/Fang Arrow to X% [0-100]", 0, 100).getInt(5);
+        BoneSword_DamageCap = config.get(Configuration.CATEGORY_GENERAL, "bone sword/fang arrow bonus damage cap", 10000, "Set the bonus damage cap of Bone Sword/Fang Arrow [0-10000]", 0, 10000).getInt(10000);
 
         HaloNecklace_Damage = config.get(Configuration.CATEGORY_GENERAL, "halo necklace bonus damage", 10, "Set the bonus damage of Halo Necklace to X% [0-10000]", 0, 10000).getInt(10);
 
@@ -808,13 +828,17 @@ public class Modconfig {
         Potion_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable brewing recipe", true, "Should new brewing recipes be added (existing properties will be preserved). [false/true]").getBoolean(true);
         Enchantment_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable enchantment", true, "Should new enchantments be added (existing properties will be preserved). [false/true]").getBoolean(true);
         Enchantment_Anvil_Enable = config.get(Configuration.CATEGORY_GENERAL, "enable anvil enchantment", true, "Should certain items apply enchantments on the anvil (e.g. Poisonous Spore applies the Poisonous II enchant on swords). [false/true]").getBoolean(true);
-        Soulforged_Anvil_Recipes = config.get(Configuration.CATEGORY_GENERAL, "enable soulforged anvil recipes", true, "Should soulforged armor/tools be created when combining a soulforged heart with any molten armor piece/tool on the anvil (e.g. Molten Warhammer + Soulforged Heart = Soulforged Warhammer). [false/true]").getBoolean(true);
+        Soulforged_Anvil_Recipes = config.get(Configuration.CATEGORY_GENERAL, "enable soulforged anvil recipes", true, "Should soulforged armor/tools be created when combining a Soulforged Heart with any molten armor piece/tool on the anvil (e.g. Molten Warhammer + Soulforged Heart = Soulforged Warhammer). [false/true]").getBoolean(true);
+        Undertaker_Shovel_Anvil_Recipes = config.get(Configuration.CATEGORY_GENERAL, "enable midnight mourne anvil recipes", true, "Should the Ankh Scepter/Frozen Grip/Fungal Rod be created when combining a Midnight Mourne with a(n) Ushabti/Frozen Thigh/Poisonous Spore on the anvil. [false/true]").getBoolean(true);
 
-        SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 60, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(60);
+        SludgeWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "pestilence cooldown", 30, "Ability cooldown of \"Pestilence\" [1-10000]", 1, 10000).getInt(30);
         ScarabWand_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "scarab scepter cooldown", 60, "Ability cooldown of Scarab Scepter [1-10000]", 1, 10000).getInt(60);
         Undertaker_Shovel_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "midnight mourne cooldown", 60, "Ability cooldown of Midnight Mourne [1-10000]", 1, 10000).getInt(60);
-        
-        Skeleton_King_Mace_Damage = config.get(Configuration.CATEGORY_GENERAL, "death damage", 60, "Attack damage of \"Death\" [1-10000]", 1, 10000).getInt(16);
+        Ankh_Scepter_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "ankh scepter cooldown", 60, "Ability cooldown of Ankh Scepter [1-10000]", 1, 10000).getInt(60);
+        Fungal_Staff_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "fungal staff cooldown", 60, "Ability cooldown of Fungal Staff [1-10000]", 1, 10000).getInt(60);
+        Frozen_Grip_Cooldown = config.get(Configuration.CATEGORY_GENERAL, "frozen grip cooldown", 60, "Ability cooldown of Frozen Grip [1-10000]", 1, 10000).getInt(60);
+
+        Skeleton_King_Mace_Damage = config.get(Configuration.CATEGORY_GENERAL, "death damage", 16, "Attack damage of \"Death\" [1-10000]", 1, 10000).getInt(16);
 
         // Restart Required, loaded during init
         Tinkers_Compat = config.get("Mod Integration", "tinkers' construct integration", true, "Should new tool materials be added to Tinkers' Construct when installed? [false/true]").getBoolean(true);

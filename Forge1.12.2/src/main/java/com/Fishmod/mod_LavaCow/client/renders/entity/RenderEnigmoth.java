@@ -12,10 +12,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderEnigmoth extends RenderLiving<EntityEnigmoth> {
 	private static final ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth.png");
 	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/enigmoth/enigmoth_eyes.png");
-	
-	static {
-		System.out.println(TEXTURES.getPath());
-    }
 
     public RenderEnigmoth(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelEnigmoth(), 0.5F);

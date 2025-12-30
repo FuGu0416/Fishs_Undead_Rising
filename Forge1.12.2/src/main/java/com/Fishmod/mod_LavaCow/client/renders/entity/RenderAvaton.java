@@ -12,11 +12,6 @@ public class RenderAvaton extends RenderLiving<EntityAvaton>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/avaton.png"),
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderAvaton(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelAvaton(), 0.0F);

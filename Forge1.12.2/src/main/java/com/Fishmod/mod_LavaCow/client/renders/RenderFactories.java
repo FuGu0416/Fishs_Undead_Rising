@@ -1,89 +1,8 @@
 package com.Fishmod.mod_LavaCow.client.renders;
 
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAcidJet;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAmberLord;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderAvaton;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBanshee;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBomb;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderBoneWorm;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactoid;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactusThorn;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderCactyrant;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderDeathCoil;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderEnigmoth;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderEnigmothLarva;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFlameJet;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderFoglet;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderForsaken;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostBomb;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostRay;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGhostSwarmer;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGraveRobber;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderGraveRobberGhost;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderHolyGrenade;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderImp;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderKingsWrath;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLavaCow;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderLilSludge;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMimic;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMothScales;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderMummy;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderParasite;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPingu;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPiranhaLauncher;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderPtera;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderRaven;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSalamander;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSandBurst;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSapJet;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarab;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderScarecrow;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSeaHag;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSkeletonKing;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderIsnachi;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeJet;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSludgeLord;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSonicBomb;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderSoulWorm;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUnburied;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndeadSwine;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderUndertaker;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespa;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaBrood;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderVespaCocoon;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWendigo;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWeta;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderWraith;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieFrozen;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombieMushroom;
-import com.Fishmod.mod_LavaCow.client.renders.entity.RenderZombiePiranha;
-import com.Fishmod.mod_LavaCow.client.renders.item.RenderBeastClaw;
-import com.Fishmod.mod_LavaCow.client.renders.item.RenderIllagerNose;
-import com.Fishmod.mod_LavaCow.client.renders.item.RenderSkeletonKingMace;
-import com.Fishmod.mod_LavaCow.client.renders.item.RenderVespaShield;
-import com.Fishmod.mod_LavaCow.entities.EntityAmberLord;
-import com.Fishmod.mod_LavaCow.entities.EntityAvaton;
-import com.Fishmod.mod_LavaCow.entities.EntityBanshee;
-import com.Fishmod.mod_LavaCow.entities.EntityBoneWorm;
-import com.Fishmod.mod_LavaCow.entities.EntityCactyrant;
-import com.Fishmod.mod_LavaCow.entities.EntityFoglet;
-import com.Fishmod.mod_LavaCow.entities.EntityLavaCow;
-import com.Fishmod.mod_LavaCow.entities.EntityMummy;
-import com.Fishmod.mod_LavaCow.entities.EntityParasite;
-import com.Fishmod.mod_LavaCow.entities.EntityPingu;
-import com.Fishmod.mod_LavaCow.entities.EntitySkeletonKing;
-import com.Fishmod.mod_LavaCow.entities.EntityIsnachi;
-import com.Fishmod.mod_LavaCow.entities.EntitySludgeLord;
-import com.Fishmod.mod_LavaCow.entities.EntitySoulWorm;
-import com.Fishmod.mod_LavaCow.entities.EntityUndeadSwine;
-import com.Fishmod.mod_LavaCow.entities.EntityForsaken;
-import com.Fishmod.mod_LavaCow.entities.EntityGraveRobber;
-import com.Fishmod.mod_LavaCow.entities.EntityImp;
-import com.Fishmod.mod_LavaCow.entities.EntityUndertaker;
-import com.Fishmod.mod_LavaCow.entities.EntityVespaCocoon;
-import com.Fishmod.mod_LavaCow.entities.EntityWendigo;
-import com.Fishmod.mod_LavaCow.entities.EntityZombieFrozen;
-import com.Fishmod.mod_LavaCow.entities.EntityZombieMushroom;
+import com.Fishmod.mod_LavaCow.client.renders.entity.*;
+import com.Fishmod.mod_LavaCow.client.renders.item.*;
+import com.Fishmod.mod_LavaCow.entities.*;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityPiranha;
 import com.Fishmod.mod_LavaCow.entities.aquatic.EntityZombiePiranha;
 import com.Fishmod.mod_LavaCow.entities.floating.EntityGhostSwarmer;
@@ -95,31 +14,8 @@ import com.Fishmod.mod_LavaCow.entities.flying.EntityGhostRay;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityPtera;
 import com.Fishmod.mod_LavaCow.entities.flying.EntityVespa;
 import com.Fishmod.mod_LavaCow.entities.misc.EntityVespaBrood;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityAcidJet;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityBomb;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityGhostBomb;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityHolyGrenade;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityKingsWrath;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityMothScales;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySandBurst;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySapJet;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySludgeJet;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntitySonicBomb;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityWarSmallFireball;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityCactoid;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityEnigmothLarva;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityLilSludge;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityMimic;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityRaven;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntitySalamander;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarab;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityScarecrow;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityUnburied;
-import com.Fishmod.mod_LavaCow.entities.tameable.EntityWeta;
+import com.Fishmod.mod_LavaCow.entities.projectiles.*;
+import com.Fishmod.mod_LavaCow.entities.tameable.*;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 
 import net.minecraft.client.renderer.entity.Render;
@@ -130,7 +26,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class RenderFactories {
-
     public static void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityLavaCow.class, RenderFactoryEntityLavaCow.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityZombieMushroom.class, RenderFactoryEntityZombieMushroom.INSTANCE);
@@ -191,6 +86,8 @@ public class RenderFactories {
         RenderingRegistry.registerEntityRenderingHandler(EntityMothScales.class, RenderFactoryEntityMothScales.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityBomb.class, RenderFactoryEntityBasicBomb.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityKingsWrath.class, RenderFactoryEntityKingsWrath.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhoul.class, RenderFactoryEntityGhoul.INSTANCE);
+        RenderingRegistry.registerEntityRenderingHandler(EntityFishCustomArrow.class, RenderFactoryEntityFishCustomArrow.INSTANCE);
 
         FishItems.VESPA_SHIELD.setTileEntityItemStackRenderer(new RenderVespaShield());
         FishItems.BEAST_CLAW.setTileEntityItemStackRenderer(new RenderBeastClaw());
@@ -903,6 +800,30 @@ public class RenderFactories {
         @Override
         public RenderKingsWrath createRenderFor(RenderManager manager) {
             return new RenderKingsWrath(manager, FishItems.EMBLEM_OF_KING);
+        }
+    }
+
+    public static class RenderFactoryEntityGhoul implements IRenderFactory<EntityGhoul> {
+        public final static RenderFactoryEntityGhoul INSTANCE = new RenderFactoryEntityGhoul();
+
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public RenderGhoul createRenderFor(RenderManager manager) {
+            return new RenderGhoul(manager);
+        }
+    }
+
+    public static class RenderFactoryEntityFishCustomArrow implements IRenderFactory<EntityFishCustomArrow> {
+        public final static RenderFactoryEntityFishCustomArrow INSTANCE = new RenderFactoryEntityFishCustomArrow();
+
+        /* (non-Javadoc)
+         * @see net.minecraftforge.fml.client.registry.IRenderFactory#createRenderFor(net.minecraft.client.renderer.entity.RenderManager)
+         */
+        @Override
+        public Render<EntityFishCustomArrow> createRenderFor(RenderManager manager) {
+            return new RenderFishCustomArrow(manager);
         }
     }
 }

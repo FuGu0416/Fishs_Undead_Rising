@@ -1130,6 +1130,35 @@
       }
     ]
   },
+  "entity.ghoul.ambient": {
+    "category": "entity",
+    "subtitle": "entity_ghoul_ambient",
+    "sounds": [
+      {
+        "name": "mod_lavacow:entity/ghoul/ambient",
+        "stream": true
+      }
+    ]
+  },
+  "entity.ghoul.hurt": {
+    "category": "entity",
+    "subtitle": "entity_ghoul_hurt",
+    "sounds": [
+      "mod_lavacow:entity/ghoul/hurt0",
+      "mod_lavacow:entity/ghoul/hurt1",
+      "mod_lavacow:entity/ghoul/hurt2"
+    ]
+  },
+  "entity.ghoul.death": {
+    "category": "entity",
+    "subtitle": "entity_ghoul_death",
+    "sounds": [
+      {
+        "name": "mod_lavacow:entity/ghoul/death",
+        "stream": true
+      }
+    ]
+  },
   "random.death_coil_shoot": {
     "category": "neutral",
     "subtitle": "random_death_coil_shoot",

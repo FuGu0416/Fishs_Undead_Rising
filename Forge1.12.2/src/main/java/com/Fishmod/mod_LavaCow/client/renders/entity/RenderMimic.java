@@ -25,11 +25,6 @@ public class RenderMimic extends RenderLiving<EntityMimic> {
         return 3;
     }
 
-    static {
-        for (ResourceLocation texture : TEXTURES)
-            System.out.println(texture.getPath());
-    }
-
     public RenderMimic(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelMimic(), 0.4F);
         this.addLayer(new LayerMimicChest(this));

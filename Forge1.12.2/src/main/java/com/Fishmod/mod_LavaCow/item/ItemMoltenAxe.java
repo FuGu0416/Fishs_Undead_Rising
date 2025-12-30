@@ -12,7 +12,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
@@ -27,52 +26,51 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMoltenAxe extends ItemAxe {
-
-	public ItemMoltenAxe(String registryName) {
-		super(FishItems.TOOL_MOLTEN, 9.0F, -3.0F);
+    public ItemMoltenAxe(String registryName) {
+        super(FishItems.TOOL_MOLTEN, 9.0F, -3.0F);
         setTranslationKey(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
         this.setCreativeTab(mod_LavaCow.TAB_ITEMS);
-	}
-	
-	@Override
+    }
+
+    @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-		super.hitEntity(stack, target, attacker);
-		
-		// Stacks with Fire Aspect
-		target.setFire(8 + 4 * EnchantmentHelper.getFireAspectModifier(attacker));
+        super.hitEntity(stack, target, attacker);
+
+        // Stacks with Fire Aspect
+        target.setFire(8 + 4 * EnchantmentHelper.getFireAspectModifier(attacker));
         return true;
     }
-	
-	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
-		if(state.getBlock().canHarvestBlock(worldIn, pos, (EntityPlayer)entityLiving)) {
-			entityLiving.playSound(SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, 1.0F, 1.0F);
-			double j = 1.2D;
-			
-			for(int i = 0; i < 16; i++) {
-				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j/2, 0.0D, 0.0D, 0.0D);
-				worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j/2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j/2, 0.0D, 0.0D, 0.0D);	
-			}
-		}
-				
-		return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
-	}
-	
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if (state.getBlock().canHarvestBlock(worldIn, pos, (EntityPlayer) entityLiving)) {
+            entityLiving.playSound(SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, 1.0F, 1.0F);
+            double j = 1.2D;
+
+            for (int i = 0; i < 16; i++) {
+                worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, 0.0D, 0.0D, 0.0D);
+                worldIn.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, pos.getY() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, pos.getZ() + 0.5D + Item.itemRand.nextDouble() * j - j / 2, 0.0D, 0.0D, 0.0D);
+            }
+        }
+
+        return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+    }
+
     /**
      * Return an item rarity from EnumRarity
      */
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
-	
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return (par2ItemStack.getItem() == FishItems.MOLTENBEEF && par2ItemStack.getItem() != Items.DIAMOND) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
-			list.add(TextFormatting.YELLOW + I18n.format("tootip.mod_lavacow.moltenaxe"));
-	}
+
+    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+        return (par2ItemStack.getItem() == FishItems.MOLTENBEEF && par2ItemStack.getItem() != Items.DIAMOND) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+        list.add(TextFormatting.YELLOW + I18n.format("tootip.mod_lavacow.moltenaxe"));
+    }
 }

@@ -335,7 +335,6 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
         this.AggressiveTimer = 200;
         this.setSilent(false);
         this.setAIMoveSpeed(0.19F);
-        this.playSound(SoundEvents.ENTITY_SHULKER_HURT_CLOSED, 1.0F, 1.0F);
 
         if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
             amount = (amount + 1.0F) / 2.0F;

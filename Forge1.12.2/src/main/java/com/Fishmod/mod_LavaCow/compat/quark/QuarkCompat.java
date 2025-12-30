@@ -14,7 +14,7 @@ public class QuarkCompat {
             "quark:textures/blocks/chests/spruce.png"
     };
 
-    public static void init() {
+    public static void preInit() {
         addQuarkMimics();
     }
 

@@ -34,6 +34,4 @@ public class RenderEnigmothLarva extends RenderLiving<EntityEnigmothLarva> {
 	protected void preRenderCallback(EntityEnigmothLarva entity, float partialTickTime) {
     	
 	}
-    
-    
 }

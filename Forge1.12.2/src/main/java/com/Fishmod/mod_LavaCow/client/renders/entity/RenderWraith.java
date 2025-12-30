@@ -14,11 +14,6 @@ public class RenderWraith extends RenderLiving<EntityWraith>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/wraith/wraith.png"),
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderWraith(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelAvaton(), 0.0F);

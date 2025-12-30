@@ -21,11 +21,6 @@ public class RenderZombieMushroom extends RenderLiving<EntityZombieMushroom> {
 			new ResourceLocation("mod_lavacow:textures/mobs/unburied/unburied3.png")
 	};
 	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
-	
     public ModelUnburied getMainModel()
     {
         return (ModelUnburied)super.getMainModel();

@@ -12,9 +12,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderWendigo extends RenderLiving<EntityWendigo>{
 	private static ResourceLocation TEXTURES_EYE = new ResourceLocation("mod_lavacow:textures/mobs/wendigo_eyes.png");
 	private static ResourceLocation TEXTURES = new ResourceLocation("mod_lavacow:textures/mobs/wendigo.png");
-	static{
-        System.out.println(TEXTURES.getPath());
-    }
 
 	public RenderWendigo(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelWendigo(), 0.5F);

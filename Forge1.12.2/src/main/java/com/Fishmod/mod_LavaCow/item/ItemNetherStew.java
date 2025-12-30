@@ -85,7 +85,7 @@ public class ItemNetherStew extends ItemFishCustomFood {
                 entity.setVelocity(0.0D, 2.0D, 0.0D);
             }
 
-            entity.addPotionEffect(new PotionEffect(ModMobEffects.RAVENS_GRACE, 6 * 20, 0));
+            entity.addPotionEffect(new PotionEffect(ModMobEffects.RAVENS_GRACE, 60 * 20, 0));
             entity.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
         }
 

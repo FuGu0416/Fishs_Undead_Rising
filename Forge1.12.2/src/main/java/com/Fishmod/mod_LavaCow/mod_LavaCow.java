@@ -1,16 +1,7 @@
 package com.Fishmod.mod_LavaCow;
 
-import com.Fishmod.mod_LavaCow.compat.CompatUtilBridge;
-import com.Fishmod.mod_LavaCow.compat.quark.QuarkCompat;
-import com.Fishmod.mod_LavaCow.compat.rlcombat.RLCombatCompat;
-import com.Fishmod.mod_LavaCow.compat.somanyenchantments.SoManyEnchantmentsCompat;
-import com.Fishmod.mod_LavaCow.compat.tinkers.ConstructsArmoryCompat;
-import com.Fishmod.mod_LavaCow.compat.tinkers.TinkersCompat;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.Fishmod.mod_LavaCow.client.Modconfig;
-import com.Fishmod.mod_LavaCow.compat.FURJERIntegration;
+import com.Fishmod.mod_LavaCow.compat.CompatUtilBridge;
 import com.Fishmod.mod_LavaCow.init.AddRecipes;
 import com.Fishmod.mod_LavaCow.message.PacketMountSpecial;
 import com.Fishmod.mod_LavaCow.message.PacketParticle;
@@ -20,7 +11,6 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.Fishmod.mod_LavaCow.util.ModEventHandler;
 import com.Fishmod.mod_LavaCow.util.RegistryHandler;
 import com.Fishmod.mod_LavaCow.worldgen.StructureGenerator;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DungeonHooks;
@@ -36,15 +26,16 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid = mod_LavaCow.MODID, name = mod_LavaCow.NAME, version = mod_LavaCow.VERSION, acceptedMinecraftVersions = mod_LavaCow.MC_VERSION, dependencies = mod_LavaCow.DEPENDENCIES, guiFactory = "com.Fishmod.mod_LavaCow.client.gui.FishGuiFactory")
 public class mod_LavaCow {
-
     public static final String MODID = "mod_lavacow";
     public static final String NAME = "Fish's Undead Rising";
-    public static final String VERSION = "1.5.4";
+    public static final String VERSION = "1.6.0";
     public static final String MC_VERSION = "[1.12.2]";
-    public static final String DEPENDENCIES = "after:tconstruct;after:conarm";
+    public static final String DEPENDENCIES = "after:tconstruct;after:conarm;after:bettercombatmod;after:quark;after:somanyenchantments;after:jeresources";
 
     public static final String CLIENT = "com.Fishmod.mod_LavaCow.proxy.ClientProxy";
     public static final String SERVER = "com.Fishmod.mod_LavaCow.proxy.ServerProxy";
@@ -66,18 +57,10 @@ public class mod_LavaCow {
         TAB_ITEMS = new CreativeTab(MODID + "_items");
         Modconfig.INSTANCE.loadConfig(event);
         MinecraftForge.EVENT_BUS.register(new RegistryHandler());
+        CompatUtilBridge.preInit();
 
         PROXY.preRender();
         PROXY.registerItemAndBlockRenderers();
-
-        if(CompatUtilBridge.isTinkersConstructLoaded()){
-            TinkersCompat.init();
-        }
-        if(CompatUtilBridge.isConstructsArmoryLoaded()) ConstructsArmoryCompat.init();
-        if(CompatUtilBridge.isQuarkLoaded()) QuarkCompat.init();
-        if(CompatUtilBridge.isRLCombatLoaded()) MinecraftForge.EVENT_BUS.register(RLCombatCompat.class);
-        if(CompatUtilBridge.isSMELoaded()) SoManyEnchantmentsCompat.init();
-
         PROXY.preInit(event);
 
         NETWORK_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(mod_LavaCow.MODID);
@@ -93,6 +76,7 @@ public class mod_LavaCow {
         GameRegistry.registerWorldGenerator(new StructureGenerator(), 0);
         AddRecipes.addRecipies();
         LootTableHandler.addLootTable();
+        CompatUtilBridge.init();
 
         // Implements mobs to the monster spawner list
         if (Modconfig.MonsterSpawner_Mobs) {
@@ -105,10 +89,7 @@ public class mod_LavaCow {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        CompatUtilBridge.postInit();
         PROXY.postInit(event);
-
-        if(CompatUtilBridge.isTinkersConstructLoaded()) TinkersCompat.post();
-        if(CompatUtilBridge.isJERLoaded()) FURJERIntegration.init();
     }
-
 }

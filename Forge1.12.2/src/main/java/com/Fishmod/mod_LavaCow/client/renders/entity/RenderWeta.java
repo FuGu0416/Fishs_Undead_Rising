@@ -19,11 +19,6 @@ public class RenderWeta extends RenderLiving<EntityWeta>{
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/wetalesser.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/weta/weta1.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderWeta(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelWeta(), 0.5F);

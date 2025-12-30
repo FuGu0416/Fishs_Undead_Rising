@@ -141,6 +141,18 @@ item.mod_lavacow.enigmoth_larva_item_cooked.name=Cooked Enigmoth Caterpillar
 item.mod_lavacow.holy_water.name=Holy Water
 item.mod_lavacow.basicbomb.name=Basic Grenade
 item.mod_lavacow.foul_hide.name=Foul Hide
+item.mod_lavacow.mummified_cod.name=Mummified Cod
+item.mod_lavacow.bone_trout.name=Bone Trout
+item.mod_lavacow.lamprey.name=Raw Lamprey
+item.mod_lavacow.lamprey_cooked.name=Cooked Lamprey
+item.mod_lavacow.lamprey_kabayaki.name=Lamprey Kabayaki
+item.mod_lavacow.ushabti.name=Ushabti
+item.mod_lavacow.ankh_wand.name=Ankh Scepter
+item.mod_lavacow.fungal_rod.name=Fungal Rod
+item.mod_lavacow.frozen_grip.name=Frozen Grip
+item.mod_lavacow.ghoul_claw.name=Ghoul Claw
+item.mod_lavacow.ghoul_arrow.name=Ghoulish Arrow
+item.mod_lavacow.fang_arrow.name=Fang Arrow
 
 # Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Molten Meat
@@ -170,7 +182,7 @@ modifier.mod_lavacow.amber_pharaoh.desc=§oStrike through the sands!§r\nYour to
 modifier.mod_lavacow.broodmother_armor.name=Broodmother
 modifier.mod_lavacow.broodmother_armor.desc=§oEnjoy a Wormy Cuddle!§r\nYour armor has a chance to spawn a loyal Vespa Brood when you get hurt.
 modifier.mod_lavacow.feeding_frenzy_armor.name=Feeding Frenzy
-modifier.mod_lavacow.feeding_frenzy_armor.desc=§oVoracious!§r\nDamage dealt to mobs is increased by an additional 25% for each armor piece worn, but Hunger V is active at all times.
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§oVoracious!§r\nDamage dealt to mobs is increased by an additional 40% for each armor piece worn, but Hunger V is active at all times.
 modifier.mod_lavacow.unholy_aura_armor.name=Unholy Aura
 modifier.mod_lavacow.unholy_aura_armor.desc=§oDamn to the livings!§r\nYour armor will provide extra protection from non-undead mobs and will weaken them when you get hurt.
 modifier.mod_lavacow.vespa_ward_armor.name=Vespa's Ward
@@ -219,6 +231,7 @@ tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
 tile.mod_lavacow.cactoid_sprout.name=Cactoid Sprout
+tile.mod_lavacow.diseased_hay_block.name=Diseased Hay Block
 tile.mod_lavacow.ectoplasm_block.name=Block of Ectoplasm
 tile.mod_lavacow.molten_alloy_block.name=Block of Molten Alloy
 tile.mod_lavacow.scythe_claw_block.name=Scythe Claw Barrel
@@ -274,6 +287,7 @@ entity.mod_lavacow.ghost_swarmer.name=Ghost Swarmer
 entity.mod_lavacow.amber_scarab.name=Amber Scarab
 entity.mod_lavacow.enigmoth.name=Enigmoth
 entity.mod_lavacow.enigmoth_larva.name=Enigmoth Caterpillar
+entity.mod_lavacow.ghoul.name=Ghoul
 
 entity.mod_lavacow.sludgejet.name=Sludge Jet
 entity.mod_lavacow.warsmallfireball.name=Fireball
@@ -290,6 +304,7 @@ entity.mod_lavacow.sapjet.name=Locust Swarm
 entity.mod_lavacow.moth_scales.name=Enigmoth Scales
 entity.mod_lavacow.basicbomb.name=Basic Grenade
 entity.mod_lavacow.kings_wrath.name=King's Wrath
+entity.mod_lavacow.fish_custom_arrow.name=Undead Arrow
 
 ##########
 # Sounds #
@@ -432,6 +447,10 @@ entity_enigmoth_flap=Enigmoth flaps
 entity_enigmoth_death=Enigmoth dies
 entity_enigmoth_hurt=Enigmoth hurts
 
+entity_ghoul_ambient=Ghoul groans
+entity_ghoul_death=Ghoul dies
+entity_ghoul_hurt=Ghoul hurts
+
 random_death_coil_shoot=Death Coil fired
 random_piranha_shoot=Piranha fired
 random_thorn_shoot=Thorn fired
@@ -533,6 +552,9 @@ tootip.mod_lavacow.pheromone_gland=Gives Pheromone Charm (0:30) and Nausea II (0
 tootip.mod_lavacow.charming_catalyst=Gives Pheromone Charm (0:45) when consumed, or used to tame and trigger the growth of certain larva.
 tootip.mod_lavacow.basicbomb=Causes an explosion at thrown target location. Fire away!
 tootip.mod_lavacow.crabcake=Gives Resistance (0:30) when eaten.
+tootip.mod_lavacow.ankh_wand=Right-click to summon an army of Mummies.
+tootip.mod_lavacow.fungal_rod=Right-click to summon an army of Mycoses.
+tootip.mod_lavacow.frozen_grip=Right-click to summon an army of Frigids.
 
 message.mod_lavacow.metamorphosis= is evolving!
 command.mod_lavacow.sitting= is waiting.
@@ -556,6 +578,8 @@ enchantment.mod_lavacow.corrosive=Corrosive
 enchantment.mod_lavacow.corrosive.desc=Weakens the target and will make it receive more damage from any source.
 enchantment.mod_lavacow.critical_boost=Critical Boost
 enchantment.mod_lavacow.critical_boost.desc=Deals more damage when a critical hit occurs.
+enchantment.mod_lavacow.dominion=Dominion
+enchantment.mod_lavacow.dominion.desc=Increases the quantity of minions from Fish's Undead Rising summoning items.
 
 ##############
 # MobEffects #

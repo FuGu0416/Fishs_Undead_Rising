@@ -12,11 +12,6 @@ public class RenderAmberLord extends RenderLiving<EntityAmberLord> {
 			new ResourceLocation("mod_lavacow:textures/mobs/amberlord/amberlord.png")
 	};
 	private static final ResourceLocation TEXTURES_EYES = new ResourceLocation("mod_lavacow:textures/mobs/amberlord/amberlord_glow.png");
-	
-	static {
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderAmberLord(RenderManager rendermanagerIn) {
     	super(rendermanagerIn, new ModelSludgeLord(), 1.0F);

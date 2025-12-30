@@ -19,35 +19,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFishCustom extends Item {
-	
-	private Item return_item = null;
-	protected String Tooltip = null;
-	
-	public ItemFishCustom(String registryName, Item afteruse, CreativeTabs tab, boolean hasTooltip) {
-    	super();
+    private Item return_item = null;
+    protected String Tooltip = null;
+
+    public ItemFishCustom(String registryName, Item afteruse, CreativeTabs tab, boolean hasTooltip) {
+        super();
         setTranslationKey(mod_LavaCow.MODID + "." + registryName);
         setRegistryName(registryName);
         setCreativeTab(tab);
         return_item = afteruse;
-        if(hasTooltip)this.Tooltip = "tootip." + mod_LavaCow.MODID + "." + registryName;
+        if (hasTooltip) this.Tooltip = "tootip." + mod_LavaCow.MODID + "." + registryName;
     }
-	
+
     /**
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
      * the Item before the action is complete.
      */
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
-        if(!worldIn.isRemote && entityLiving instanceof EntityPlayer)
-        	((EntityPlayer)entityLiving).inventory.addItemStackToInventory(new ItemStack(this.return_item));
-    	return super.onItemUseFinish(stack, worldIn, entityLiving);
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+        if (!worldIn.isRemote && entityLiving instanceof EntityPlayer)
+            ((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(this.return_item));
+        return super.onItemUseFinish(stack, worldIn, entityLiving);
     }
-    
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
-		if(Tooltip != null)
-			list.add(TextFormatting.YELLOW + I18n.format(Tooltip));
-	}
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
+        if (Tooltip != null)
+            list.add(TextFormatting.YELLOW + I18n.format(Tooltip));
+    }
 }

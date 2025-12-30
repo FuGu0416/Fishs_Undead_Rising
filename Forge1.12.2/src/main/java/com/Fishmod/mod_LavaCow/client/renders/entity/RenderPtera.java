@@ -15,11 +15,6 @@ public class RenderPtera extends RenderLiving<EntityPtera>{
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera2.png"),
 			new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera3.png")
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderPtera(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelPtera(), 0.5F);

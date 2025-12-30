@@ -115,7 +115,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Wendigo_Attack);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.25D);
     }
 
     @Override

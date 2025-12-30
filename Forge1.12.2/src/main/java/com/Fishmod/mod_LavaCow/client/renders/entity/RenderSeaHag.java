@@ -13,11 +13,6 @@ public class RenderSeaHag extends RenderLiving<EntitySeaHag>{
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
 			new ResourceLocation("mod_lavacow:textures/mobs/sea_hag.png"),
 	};
-	
-	static{
-		for(ResourceLocation texture: TEXTURES)
-			System.out.println(texture.getPath());
-    }
 
     public RenderSeaHag(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelAvaton(), 0.0F);
