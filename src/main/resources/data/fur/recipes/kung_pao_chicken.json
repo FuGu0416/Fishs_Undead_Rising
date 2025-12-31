@@ -1,0 +1,16 @@
+{
+  "type": "fur:cooking",
+  "ingredients": [
+    {
+		"tag": "forge:raw_chicken"
+    },
+    {
+		"item": "fur:imp_horn"
+    }
+  ],
+  "container": { "item": "minecraft:bowl" },
+  "result": {
+    "item": "fur:kung_pao_chicken"
+  },
+  "time": 200
+}

@@ -6,6 +6,7 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
+import com.Fishmod.fur.block.SoulFurnaceBlock;
 import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
@@ -29,6 +30,9 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> SCARECROWHEAD_PLAGUE = registerBlocks("scarecrowhead_plague", () -> new ScarecrowHeadBlock(ScarecrowHeadBlock.Types.SCARECROW_PLAGUE, BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion().instabreak()));
 	public static final RegistryObject<Block> DISEASED_HAY_BLOCK = registerBlocks("diseased_hay_block", () -> new DiseasedHayBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BANJO).strength(0.5F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> CACTOID_SPROUT = registerBlocks("cactoid_sprout", () -> new CactoidSproutBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.4F).sound(SoundType.WOOL).noOcclusion().randomTicks().forceSolidOn().dynamicShape().pushReaction(PushReaction.DESTROY).offsetType(BlockBehaviour.OffsetType.XZ)));
+	public static final RegistryObject<Block> SOUL_FURNACE = registerBlocks("soul_furnace", () -> new SoulFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel((p_50884_) -> {
+	      return 10;
+	   })));
 	
 	/*public static final Block GLOWSHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 15;

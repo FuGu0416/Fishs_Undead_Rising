@@ -96,8 +96,8 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
         
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new CactyrantEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new AttackGoal(this));  
         this.goalSelector.addGoal(3, new AvoidOrFrightEntityGoal<>(this, Camel.class, 6.0F, 1.0D, 1.6D));
+        this.goalSelector.addGoal(4, new AttackGoal(this));  
         this.goalSelector.addGoal(6, this.move);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);

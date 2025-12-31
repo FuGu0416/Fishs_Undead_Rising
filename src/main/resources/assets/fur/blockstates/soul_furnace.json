@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "fur:block/soul_furnace",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "fur:block/soul_furnace"
+    },
+    "facing=south": {
+      "model": "fur:block/soul_furnace",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fur:block/soul_furnace",
+      "y": 270
+    }
+  }
+}

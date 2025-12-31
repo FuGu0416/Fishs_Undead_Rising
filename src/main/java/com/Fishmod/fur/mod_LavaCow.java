@@ -9,6 +9,7 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURMenuTypesRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURRecipeRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -74,6 +75,7 @@ public class mod_LavaCow {
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
         FURRecipeRegistry.DEF_REG.register(eventBus);
+        FURMenuTypesRegistry.DEF_REG.register(eventBus);
         EventBusHandler.create(eventBus);       
         
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, mod_LavaCow.MODID);

@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#D#",
+        "#M#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:polished_blackstone_bricks"
+        },
+        "D": {
+            "item": "minecraft:furnace"
+        },
+        "M": {
+            "item": "fur:wisp_in_a_bottle"
+        }
+    },
+    "result": {
+        "item": "fur:soul_furnace"
+    }
+}
