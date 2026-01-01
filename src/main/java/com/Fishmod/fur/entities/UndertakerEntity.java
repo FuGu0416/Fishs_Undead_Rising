@@ -4,12 +4,12 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.data.providers.FURTags;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.init.FURTagRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -348,7 +348,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
 	                } else if (Biome.containsTag(BiomeTags.SPAWNS_SNOW_FOXES)) {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FRIGID.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
-	                } else if (Biome.containsTag(FURTags.HAS_MYCOSIS)) {
+	                } else if (Biome.containsTag(FURTagRegistry.HAS_MYCOSIS)) {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MYCOSIS.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
 	                } else {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.UNBURIED.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);

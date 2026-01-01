@@ -6,9 +6,12 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -42,12 +45,12 @@ public class CactoidSproutBlock extends Block {
 			} else {
 	            worldIn.removeBlock(pos, false);
             	worldIn.levelEvent(2001, pos, Block.getId(blockstate));
-                CactoidEntity cactoidentity = FUREntityRegistry.CACTOID.get().create(worldIn);
+                CactoidEntity cactoidentity = FUREntityRegistry.CACTOID.get().spawn(worldIn, (ItemStack)null, null, pos, MobSpawnType.BREEDING, false, false);
                 cactoidentity.setAge(-24000);
                 cactoidentity.moveTo((double)pos.getX() + 0.3D, (double)pos.getY(), (double)pos.getZ() + 0.3D, 0.0F, 0.0F);
                 cactoidentity.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
-                if(worldIn.dimensionType().ultraWarm() || blockstate.getBlock().equals(Blocks.SOUL_SAND)) {
+                if(worldIn.getBiome(pos).containsTag(BiomeTags.IS_NETHER) || worldIn.getBlockState(pos.below()).getBlock().equals(Blocks.SOUL_SAND)) {
                 	cactoidentity.setSkin(3);
                 }
                 

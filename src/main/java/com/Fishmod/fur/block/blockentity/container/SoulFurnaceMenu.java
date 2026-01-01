@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.block.blockentity.SoulFurnaceBlockEntity;
 import com.Fishmod.fur.init.FURMenuTypesRegistry;
+import com.Fishmod.fur.init.FURTagRegistry;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -86,27 +87,31 @@ public class SoulFurnaceMenu extends AbstractContainerMenu {
 
 	@Override
 	public ItemStack quickMoveStack(Player playerIn, int index) {
-        int indexMealDisplay = 6;
-        int indexContainerInput = 7;
-        int startPlayerInv = indexContainerInput + 1;
+        int indexContainerInput = 6;
+        int indexOutput = 7;
+        int startPlayerInv = indexOutput + 1;
         int endPlayerInv = startPlayerInv + 36;
         ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
             ItemStack slotStack = slot.getItem();
             slotStackCopy = slotStack.copy();
-            if (index > indexContainerInput) {
-                boolean isValidContainer = slotStack.is(this.blockEntity.getContainer().getItem());
-                if (isValidContainer && !this.moveItemStackTo(slotStack, indexContainerInput, indexContainerInput + 1, false)) {
-                    return ItemStack.EMPTY;
-                } else if (!this.moveItemStackTo(slotStack, 0, indexMealDisplay, false)) {
-                    return ItemStack.EMPTY;
-                } else if (!this.moveItemStackTo(slotStack, indexContainerInput, indexContainerInput, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.moveItemStackTo(slotStack, startPlayerInv, endPlayerInv, false)) {
-                return ItemStack.EMPTY;
-            }
+            if (index == indexOutput) {
+				if (!this.moveItemStackTo(slotStack, startPlayerInv, endPlayerInv, true)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (index > indexOutput) {
+				boolean isValidContainer = slotStack.is(FURTagRegistry.SERVING_CONTAINERS) || slotStack.is(blockEntity.getContainer().getItem());
+				if (isValidContainer && !this.moveItemStackTo(slotStack, indexContainerInput, indexContainerInput + 1, false)) {
+					return ItemStack.EMPTY;
+				} else if (!this.moveItemStackTo(slotStack, 0, indexContainerInput, false)) {
+					return ItemStack.EMPTY;
+				} else if (!this.moveItemStackTo(slotStack, indexContainerInput, indexOutput, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!this.moveItemStackTo(slotStack, startPlayerInv, endPlayerInv, false)) {
+				return ItemStack.EMPTY;
+			}
 
             if (slotStack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);

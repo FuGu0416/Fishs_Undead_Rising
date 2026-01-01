@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.init.FURTagRegistry;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -20,9 +21,9 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
     }
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-        this.tag(FURTags.HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
-        this.tag(FURTags.HAS_MUMMY).add(BuiltinStructures.BASTION_REMNANT);
-        this.tag(FURTags.HAS_MIMIC).add(BuiltinStructures.JUNGLE_TEMPLE)
+        this.tag(FURTagRegistry.HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
+        this.tag(FURTagRegistry.HAS_MUMMY).add(BuiltinStructures.BASTION_REMNANT);
+        this.tag(FURTagRegistry.HAS_MIMIC).add(BuiltinStructures.JUNGLE_TEMPLE)
         						   .add(BuiltinStructures.MINESHAFT)
         						   .add(BuiltinStructures.FORTRESS)
         						   .add(BuiltinStructures.STRONGHOLD)

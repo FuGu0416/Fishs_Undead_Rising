@@ -3,8 +3,8 @@ package com.Fishmod.fur.worldgen;
 import java.util.List;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.data.providers.FURTags;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURTagRegistry;
 
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -47,25 +47,25 @@ public class FURBiomeModifier {
     public static void bootstrap (BootstapContext<BiomeModifier> context) {
         var biomes = context.lookup(Registries.BIOME);
         
-        addSpawn(context, ADD_FOGLET, biomes.getOrThrow(FURTags.HAS_FOGLET),
+        addSpawn(context, ADD_FOGLET, biomes.getOrThrow(FURTagRegistry.HAS_FOGLET),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.FOGLET.get(), 20, 8, 16));
-        addSpawn(context, ADD_ISNACHI, biomes.getOrThrow(FURTags.HAS_ISNACHI),
+        addSpawn(context, ADD_ISNACHI, biomes.getOrThrow(FURTagRegistry.HAS_ISNACHI),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.ISNACHI.get(), 20, 8, 16));
         addSpawn(context, ADD_IMP, HolderSet.direct(biomes.getOrThrow(Biomes.CRIMSON_FOREST)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.IMP.get(), 3, 8, 16));
         addSpawn(context, ADD_SEAHAG, biomes.getOrThrow(BiomeTags.IS_BEACH),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2));
-        addSpawn(context, ADD_PIRANHA, biomes.getOrThrow(FURTags.HAS_PIRANHA),
+        addSpawn(context, ADD_PIRANHA, biomes.getOrThrow(FURTagRegistry.HAS_PIRANHA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.PIRANHA.get(), 15, 4, 8));        
-        addSpawn(context, ADD_SWARMER, biomes.getOrThrow(FURTags.HAS_SWARMER),
+        addSpawn(context, ADD_SWARMER, biomes.getOrThrow(FURTagRegistry.HAS_SWARMER),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SWARMER.get(), 15, 4, 8));
-        addSpawn(context, ADD_CACTYRANT, biomes.getOrThrow(FURTags.HAS_CACTYRANT),
+        addSpawn(context, ADD_CACTYRANT, biomes.getOrThrow(FURTagRegistry.HAS_CACTYRANT),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTYRANT.get(), 8, 1, 2));    
         addSpawn(context, ADD_WENDIGO, biomes.getOrThrow(BiomeTags.IS_TAIGA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));     
         addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(Tags.Biomes.IS_PLAINS),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));   
-        addSpawn(context, ADD_WETA, biomes.getOrThrow(FURTags.HAS_WETA),
+        addSpawn(context, ADD_WETA, biomes.getOrThrow(FURTagRegistry.HAS_WETA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.AVATON.get(), 20, 1, 2));   
@@ -73,15 +73,15 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 5, 1, 2));
         addSpawn(context, ADD_WISP, HolderSet.direct(biomes.getOrThrow(Biomes.NETHER_WASTES), biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY), biomes.getOrThrow(Biomes.BASALT_DELTAS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WISP.get(), 10, 4, 8));
-        addSpawn(context, ADD_MYCOSIS, biomes.getOrThrow(FURTags.HAS_MYCOSIS),
+        addSpawn(context, ADD_MYCOSIS, biomes.getOrThrow(FURTagRegistry.HAS_MYCOSIS),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.MYCOSIS.get(), 40, 8, 16)); 
         addSpawn(context, ADD_FRIGID, biomes.getOrThrow(BiomeTags.SPAWNS_SNOW_FOXES),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.FRIGID.get(), 20, 8, 16)); 
-        addSpawn(context, ADD_UNDERTAKER, biomes.getOrThrow(FURTags.IS_OVERWORLD_HOSTILE),
+        addSpawn(context, ADD_UNDERTAKER, biomes.getOrThrow(FURTagRegistry.IS_OVERWORLD_HOSTILE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.UNDERTAKER.get(), 8, 1, 1)); 
-        addSpawn(context, ADD_BANSHEE, biomes.getOrThrow(FURTags.HAS_BANSHEE), 
+        addSpawn(context, ADD_BANSHEE, biomes.getOrThrow(FURTagRegistry.HAS_BANSHEE), 
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BANSHEE.get(), 20, 1, 2)); 
-        addSpawn(context, ADD_CACTOID, biomes.getOrThrow(FURTags.HAS_CACTOID),
+        addSpawn(context, ADD_CACTOID, biomes.getOrThrow(FURTagRegistry.HAS_CACTOID),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTOID.get(), 10, 4, 8));  
     }
     

@@ -9,13 +9,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
-	@SubscribeEvent(priority = EventPriority.LOWEST)
+	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event)
 	{
 		DataGenerator gen = event.getGenerator();
@@ -23,9 +22,11 @@ public class DataGenerators {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+		FURBlockTagsProvider blockTags = new FURBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
 		gen.addProvider(event.includeServer(), new FURGlobalLootModifiersProvider(packOutput));
+		gen.addProvider(event.includeServer(), new FURItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
 	}
 }

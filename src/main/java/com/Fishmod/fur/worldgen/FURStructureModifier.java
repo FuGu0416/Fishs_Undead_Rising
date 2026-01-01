@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.data.providers.FURTags;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURTagRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -31,9 +31,9 @@ public class FURStructureModifier {
     private static final Codec<TagKey<Structure>> STRUCTURE_LIST_CODEC = TagKey.hashedCodec(Registries.STRUCTURE);
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder().add(ForgeRegistries.Keys.STRUCTURE_MODIFIERS, context ->
     {
-        context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2), FURTags.HAS_SEAHAG));
-        context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 40, 4, 8), FURTags.HAS_MUMMY));
-        context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 10, 1, 1), FURTags.HAS_MIMIC));
+        context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2), FURTagRegistry.HAS_SEAHAG));
+        context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 40, 4, 8), FURTagRegistry.HAS_MUMMY));
+        context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 5, 1, 1), FURTagRegistry.HAS_MIMIC));
     });
 
     public static void generateStructureModifiers(GatherDataEvent event)

@@ -1,10 +1,12 @@
 package com.Fishmod.fur.block.blockentity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.block.SoulFurnaceBlock;
 import com.Fishmod.fur.block.blockentity.container.SoulFurnaceMenu;
 import com.Fishmod.fur.block.blockentity.container.SoulFurnaceRecipe;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
@@ -27,11 +29,14 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
@@ -39,11 +44,30 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import static java.util.Map.entry;
 
 public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider, WorldlyContainer {
-    public static final int CONTAINER_SLOT = 7;
-    public static final int RESULT_SLOT = 8;
+	public static final int INGREDIENT_SLOT = 5;
+    public static final int CONTAINER_SLOT = 6;
+    public static final int RESULT_SLOT = 7;
     
+	public static final Map<Item, Item> INGREDIENT_REMAINDER_OVERRIDES = Map.ofEntries(
+			entry(Items.POWDER_SNOW_BUCKET, Items.BUCKET),
+			entry(Items.AXOLOTL_BUCKET, Items.BUCKET),
+			entry(Items.COD_BUCKET, Items.BUCKET),
+			entry(Items.PUFFERFISH_BUCKET, Items.BUCKET),
+			entry(Items.SALMON_BUCKET, Items.BUCKET),
+			entry(Items.TROPICAL_FISH_BUCKET, Items.BUCKET),
+			entry(Items.SUSPICIOUS_STEW, Items.BOWL),
+			entry(Items.MUSHROOM_STEW, Items.BOWL),
+			entry(Items.RABBIT_STEW, Items.BOWL),
+			entry(Items.BEETROOT_SOUP, Items.BOWL),
+			entry(Items.POTION, Items.GLASS_BOTTLE),
+			entry(Items.SPLASH_POTION, Items.GLASS_BOTTLE),
+			entry(Items.LINGERING_POTION, Items.GLASS_BOTTLE),
+			entry(Items.EXPERIENCE_BOTTLE, Items.GLASS_BOTTLE)
+	);
+	
     private NonNullList<ItemStack> items = NonNullList.withSize(8, ItemStack.EMPTY);
     private int progress;
     private int maxProgress = 200;
@@ -78,8 +102,8 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
     }
     
     private Optional<SoulFurnaceRecipe> getCurrentRecipe() {
-        SimpleContainer inv = new SimpleContainer(6);
-        for (int i = 0; i < 6; i++) {
+        SimpleContainer inv = new SimpleContainer(CONTAINER_SLOT);
+        for (int i = 0; i < CONTAINER_SLOT; i++) {
             inv.setItem(i, this.items.get(i));
         }
 
@@ -91,10 +115,10 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
         Optional<SoulFurnaceRecipe> recipe = getCurrentRecipe();
         
         if (recipe.isEmpty()) return false;
-        if (!recipe.get().getContainer().test(this.items.get(6))) return false;
+        if (!recipe.get().getContainer().test(this.items.get(CONTAINER_SLOT))) return false;
         
         ItemStack result = recipe.get().getResultItem(this.level.registryAccess());
-        ItemStack output = this.items.get(7);
+        ItemStack output = this.items.get(RESULT_SLOT);
         
         if (output.isEmpty()) return true;
         if (!ItemStack.isSameItemSameTags(output, result)) return false;        
@@ -106,23 +130,42 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
         Optional<SoulFurnaceRecipe> recipe = getCurrentRecipe();
         if (recipe.isEmpty()) return;
 
-        ItemStack result = recipe.get().getResultItem(this.level.registryAccess()).copy();
-        
-        for (int i = 0; i < 6; i++) {
-        	this.items.get(i).shrink(1);
-        }
+        ItemStack result = recipe.get().getResultItem(this.level.registryAccess()).copy();        
 
-        if (this.items.get(7).isEmpty()) {
-        	this.items.set(7, result);
+        if (this.items.get(RESULT_SLOT).isEmpty()) {
+        	this.items.set(RESULT_SLOT, result);
         } else {
-        	this.items.get(7).grow(result.getCount());
+        	this.items.get(RESULT_SLOT).grow(result.getCount());
         }
         
-        this.items.get(6).shrink(1);
+        this.items.get(CONTAINER_SLOT).shrink(1);
 
         this.progress = 0;
+        
+		for (int i = 0; i < CONTAINER_SLOT; ++i) {
+			ItemStack slotStack = this.items.get(i);
+			if (slotStack.hasCraftingRemainingItem()) {
+				this.ejectIngredientRemainder(slotStack.getCraftingRemainingItem());
+			} else if (INGREDIENT_REMAINDER_OVERRIDES.containsKey(slotStack.getItem())) {
+				this.ejectIngredientRemainder(INGREDIENT_REMAINDER_OVERRIDES.get(slotStack.getItem()).getDefaultInstance());
+			}
+			if (!slotStack.isEmpty())
+				slotStack.shrink(1);
+		}
+		
         setChanged();
     }
+    
+	protected void ejectIngredientRemainder(ItemStack remainderStack) {
+		Direction direction = getBlockState().getValue(SoulFurnaceBlock.FACING).getCounterClockWise();
+		double x = this.worldPosition.getX() + 0.5 + (direction.getStepX() * 0.25);
+		double y = this.worldPosition.getY() + 0.7;
+		double z = this.worldPosition.getZ() + 0.5 + (direction.getStepZ() * 0.25);
+		
+		ItemEntity entity = new ItemEntity(this.level, x, y, z, remainderStack);
+		entity.setDeltaMovement(direction.getStepX() * 0.08F, 0.25F, direction.getStepZ() * 0.08F);
+		level.addFreshEntity(entity);
+	}
     
     @Override
     public void load(CompoundTag compound) {
@@ -157,7 +200,7 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
 	}
 	
 	public ItemStack getContainer() {
-		return this.items.get(7);
+		return this.items.get(CONTAINER_SLOT);
 	}
 
 	@Override
@@ -216,9 +259,9 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
 		this.items.clear();		
 	}
 	
-	public void setRecipeUsed(@Nullable Recipe<?> p_58345_) {
-		if (p_58345_ != null) {
-			ResourceLocation resourcelocation = p_58345_.getId();
+	public void setRecipeUsed(@Nullable Recipe<?> recipe) {
+		if (recipe != null) {
+			ResourceLocation resourcelocation = recipe.getId();
 			this.recipesUsed.addTo(resourcelocation, 1);
 		}
 	}
@@ -228,40 +271,40 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
 		return null;
 	}
 	
-	public void awardUsedRecipesAndPopExperience(ServerPlayer p_155004_) {
-		List<Recipe<?>> list = this.getRecipesToAwardAndPopExperience(p_155004_.serverLevel(), p_155004_.position());
-		p_155004_.awardRecipes(list);
+	public void awardUsedRecipesAndPopExperience(ServerPlayer player) {
+		List<Recipe<?>> list = this.getRecipesToAwardAndPopExperience(player.serverLevel(), player.position());
+		player.awardRecipes(list);
 
 		for(Recipe<?> recipe : list) {
 			if (recipe != null) {
-				p_155004_.triggerRecipeCrafted(recipe, this.items);
+				player.triggerRecipeCrafted(recipe, this.items);
 			}
 		}
 
 		this.recipesUsed.clear();
 	}
 
-	public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel p_154996_, Vec3 p_154997_) {
+	public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 vec3) {
 		List<Recipe<?>> list = Lists.newArrayList();
 
 		for(Object2IntMap.Entry<ResourceLocation> entry : this.recipesUsed.object2IntEntrySet()) {
-			p_154996_.getRecipeManager().byKey(entry.getKey()).ifPresent((p_155023_) -> {
+			level.getRecipeManager().byKey(entry.getKey()).ifPresent((p_155023_) -> {
 				list.add(p_155023_);
-				createExperience(p_154996_, p_154997_, entry.getIntValue(), ((AbstractCookingRecipe)p_155023_).getExperience());
+				createExperience(level, vec3, entry.getIntValue(), ((AbstractCookingRecipe)p_155023_).getExperience());
 			});
 		}
 
 		return list;
 	}
 
-	private static void createExperience(ServerLevel p_154999_, Vec3 p_155000_, int p_155001_, float p_155002_) {
+	private static void createExperience(ServerLevel level, Vec3 vec3, int p_155001_, float p_155002_) {
 		int i = Mth.floor((float)p_155001_ * p_155002_);
 		float f = Mth.frac((float)p_155001_ * p_155002_);
 		if (f != 0.0F && Math.random() < (double)f) {
 			++i;
 		}
 
-		ExperienceOrb.award(p_154999_, p_155000_, i);
+		ExperienceOrb.award(level, vec3, i);
 	}
 
 	@Override
@@ -271,12 +314,12 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
 
 	@Override
 	public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
-	    return slot < 7;
+	    return slot < RESULT_SLOT;
 	}
 
 	@Override
 	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-	    return slot == 7;
+	    return slot == RESULT_SLOT;
 	}
 	
     public NonNullList<ItemStack> getDroppableInventory() {
