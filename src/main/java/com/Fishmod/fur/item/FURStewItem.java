@@ -63,9 +63,9 @@ public class FURStewItem extends FURItem {
     		entityLiving.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
     	}*/
     	
-        if (!worldIn.isClientSide && entityLiving instanceof Player && !((Player)entityLiving).isCreative() && !itemstack.isEmpty()) {
-        	if (!((Player)entityLiving).getInventory().add(new ItemStack(Items.BOWL))) {
-        		((Player)entityLiving).spawnAtLocation(new ItemStack(Items.BOWL));
+        if (!worldIn.isClientSide && entityLiving instanceof Player player && !player.isCreative() && !itemstack.isEmpty()) {
+        	if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
+        		player.spawnAtLocation(new ItemStack(Items.BOWL));
             }
         }
         

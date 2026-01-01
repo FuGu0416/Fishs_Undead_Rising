@@ -167,10 +167,10 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
         	BansheeEntity.this.level().broadcastEntityEvent(BansheeEntity.this, (byte)11);
         	
         	for (Entity entity1 : list) {
-        		if (entity1 instanceof LivingEntity) {     
-    				if (((LivingEntity)entity1).hurt(BansheeEntity.this.damageSources().sonicBoom(BansheeEntity.this), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
+        		if (entity1 instanceof LivingEntity livingentity) {     
+    				if (livingentity.hurt(BansheeEntity.this.damageSources().sonicBoom(BansheeEntity.this), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
     					float local_difficulty = BansheeEntity.this.level().getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
-    					((LivingEntity)entity1).addEffect(new MobEffectInstance(FUREffectRegistry.FEAR.get(), 2 * 20 * (int)local_difficulty, 2));       	
+    					livingentity.addEffect(new MobEffectInstance(FUREffectRegistry.FEAR.get(), 2 * 20 * (int)local_difficulty, 2));       	
     				}       							
         		}
         	} 

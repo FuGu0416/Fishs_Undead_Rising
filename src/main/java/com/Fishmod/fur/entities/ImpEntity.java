@@ -141,10 +141,10 @@ public class ImpEntity extends FogletEntity {
 			}
 			
         	for (Entity entity1 : list) {
-        		if (entity1 instanceof LivingEntity) {                 
-        			if (!((LivingEntity)entity1).fireImmune()) {        				
-        				if (((LivingEntity)entity1).hurt(ImpEntity.this.damageSources().mobAttack(ImpEntity.this), (float) ImpEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
-        					((LivingEntity)entity1).setRemainingFireTicks(4);
+        		if (entity1 instanceof LivingEntity livingentity) {                 
+        			if (!livingentity.fireImmune()) {        				
+        				if (livingentity.hurt(ImpEntity.this.damageSources().mobAttack(ImpEntity.this), (float) ImpEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
+        					livingentity.setRemainingFireTicks(4);
         				}       							
         			}
         		}

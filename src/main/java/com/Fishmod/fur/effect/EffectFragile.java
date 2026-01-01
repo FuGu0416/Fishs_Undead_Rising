@@ -15,8 +15,7 @@ public class EffectFragile extends MobEffect {
     public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
     	float maxHealth = entityLivingBaseIn.getMaxHealth();
         if ((entityLivingBaseIn.getHealth() / maxHealth) < (0.05f * (amplifier + 1))) {
-            if (entityLivingBaseIn instanceof Player) {
-            	Player player = (Player) entityLivingBaseIn;
+            if (entityLivingBaseIn instanceof Player player) {
                 if (player.isSpectator() || player.isCreative())
                     return;
             }

@@ -68,7 +68,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_LEGGINGS = DEF_REG.register("ghostly_armor_leggings", () -> new GhostlyArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_BOOTS = DEF_REG.register("ghostly_armor_boots", () -> new GhostlyArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> WISP_ASHES = DEF_REG.register("wisp_ashes", () -> new Item(new Item.Properties().fireResistant()));
-	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new EntityBucketItem(FUREntityRegistry.WISP::get, Items.GLASS_BOTTLE, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new EntityBucketItem(FUREntityRegistry.WISP::get, Items.GLASS_BOTTLE, new Item.Properties().stacksTo(1).craftRemainder(Items.GLASS_BOTTLE)));
 	public static final RegistryObject<Item> MOLTEN_MEAT = DEF_REG.register("molten_meat", () -> new MoltenMeatItem(new Item.Properties().durability(0).stacksTo(64).fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_ALLOY = DEF_REG.register("molten_alloy", () -> new Item(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_AXE = DEF_REG.register("molten_axe", () -> new MoltenAxeItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 5.0F, -3.0F, MOLTEN_ALLOY.get(), ParticleTypes.FLAME));
@@ -93,15 +93,15 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> IMP_HORN = DEF_REG.register("imp_horn", () -> new FURItem(new Item.Properties()));
 	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> PIRANHA_BUCKET = DEF_REG.register("piranha_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.PIRANHA.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1)));
+	public static final RegistryObject<Item> PIRANHA_BUCKET = DEF_REG.register("piranha_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.PIRANHA.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> PIRANHA_RAW = DEF_REG.register("piranha_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
 	public static final RegistryObject<Item> PIRANHA_COOKED = DEF_REG.register("piranha_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
-	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1)));
+	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> SWARMER_RAW = DEF_REG.register("swarmer_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
 	public static final RegistryObject<Item> SWARMER_COOKED = DEF_REG.register("swarmer_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new CactusFruitItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build()), 1));
-	public static final RegistryObject<Item> CACTOID_POT = DEF_REG.register("cactoid_pot", () -> new EntityBucketItem(() -> FUREntityRegistry.CACTOID.get(), Items.FLOWER_POT, (new Item.Properties()).stacksTo(1)));
+	public static final RegistryObject<Item> CACTOID_POT = DEF_REG.register("cactoid_pot", () -> new EntityBucketItem(() -> FUREntityRegistry.CACTOID.get(), Items.FLOWER_POT, (new Item.Properties()).stacksTo(1).craftRemainder(Items.FLOWER_POT)));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DISEASED_WHEAT = DEF_REG.register("diseased_wheat", () -> new Item(new Item.Properties())); 
 	public static final RegistryObject<Item> DISEASED_BREAD = DEF_REG.register("diseased_bread", () -> new DiseasedBreadItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).

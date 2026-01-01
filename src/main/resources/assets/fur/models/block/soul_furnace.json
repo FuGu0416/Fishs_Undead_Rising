@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
+    "bottom": "fur:block/soul_furnace_bottom",
     "front": "fur:block/soul_furnace_front",
     "side": "fur:block/soul_furnace_side",
     "top": "fur:block/soul_furnace_top"

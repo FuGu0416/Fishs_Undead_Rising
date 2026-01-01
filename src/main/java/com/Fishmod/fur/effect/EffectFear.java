@@ -15,8 +15,7 @@ public class EffectFear extends MobEffect {
     
     @Override
     public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {       
-        if(entityLivingBaseIn instanceof PathfinderMob) {
-        	PathfinderMob mob = ((PathfinderMob) entityLivingBaseIn);
+        if(entityLivingBaseIn instanceof PathfinderMob mob) {
         	Vec3 vec = LandRandomPos.getPos(mob, 20, 5);
         	mob.setTarget(null);
         	mob.setLastHurtByMob(null);

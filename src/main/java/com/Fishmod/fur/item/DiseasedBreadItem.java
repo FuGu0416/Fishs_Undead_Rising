@@ -25,8 +25,7 @@ public class DiseasedBreadItem extends FURItem {
     
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity entityIn, InteractionHand handIn) {
-    	if (playerIn.level() instanceof ServerLevel && playerIn.getItemInHand(handIn).getItem().equals(FURItemRegistry.DISEASED_BREAD.get()) && entityIn instanceof Villager && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(entityIn, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
-    		Villager Villager = (Villager)entityIn;
+    	if (playerIn.level() instanceof ServerLevel && playerIn.getItemInHand(handIn).getItem().equals(FURItemRegistry.DISEASED_BREAD.get()) && entityIn instanceof Villager Villager && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(entityIn, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
             ZombieVillager zombievillager = Villager.convertTo(EntityType.ZOMBIE_VILLAGER, false);
             zombievillager.finalizeSpawn((ServerLevel)playerIn.level(), playerIn.level().getCurrentDifficultyAt(zombievillager.blockPosition()), MobSpawnType.CONVERSION, new Zombie.ZombieGroupData(false, true), (CompoundTag)null);
             zombievillager.setVillagerData(Villager.getVillagerData());

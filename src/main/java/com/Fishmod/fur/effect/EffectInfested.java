@@ -13,8 +13,8 @@ public class EffectInfested extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
-        if (entityLivingBaseIn instanceof Player) {
-            ((Player)entityLivingBaseIn).causeFoodExhaustion(0.005F * (float)(amplifier + 1));
+        if (entityLivingBaseIn instanceof Player player) {
+        	player.causeFoodExhaustion(0.005F * (float)(amplifier + 1));
         }
     }
 

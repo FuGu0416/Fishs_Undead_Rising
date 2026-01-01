@@ -1,8 +1,10 @@
 package com.Fishmod.fur.block.blockentity.container;
 
 import com.Fishmod.fur.init.FURRecipeRegistry;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,14 +20,15 @@ import net.minecraft.world.level.Level;
 
 public class SoulFurnaceRecipe implements Recipe<Container> {
 	public static final RecipeType<SoulFurnaceRecipe> TYPE = new RecipeType<>(){};
+	public static final int INPUT_SLOTS = 6;
 	
     private final ResourceLocation id;
-    private final Ingredient[] ingredients;
+    private final NonNullList<Ingredient> ingredients;
     private final Ingredient container;
     private final ItemStack result;
     private final int time;
 
-    public SoulFurnaceRecipe(ResourceLocation id, Ingredient[] ingredients, Ingredient container,ItemStack result, int time) {
+    public SoulFurnaceRecipe(ResourceLocation id, NonNullList<Ingredient> ingredients, Ingredient container, ItemStack result, float experience, int time) {
     	this.id = id;
     	this.ingredients = ingredients;
     	this.container = container;
@@ -35,12 +38,18 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
     
     @Override
     public boolean matches(Container inv, Level level) {
-        for (int i = 0; i < 5; i++) {
-            if (!ingredients[i].test(inv.getItem(i))) {
-                return false;
-            }
-        }
-        return true;
+		java.util.List<ItemStack> inputs = new java.util.ArrayList<>();
+		int i = 0;
+
+		for (int j = 0; j < INPUT_SLOTS; ++j) {
+			ItemStack itemstack = inv.getItem(j);
+			if (!itemstack.isEmpty()) {
+				++i;
+				inputs.add(itemstack);
+			}
+		}
+		
+		return i == this.ingredients.size() && net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.ingredients) != null;
     }
 
     @Override
@@ -87,35 +96,42 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 		
 	    @Override
 	    public SoulFurnaceRecipe fromJson(ResourceLocation id, JsonObject json) {
-	        var ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-
-	        Ingredient[] input = new Ingredient[5];
-	        for (int i = 0; i < 5; i++) {
-	            input[i] = i < ingredients.size()
-	                ? Ingredient.fromJson(ingredients.get(i))
-	                : Ingredient.EMPTY;
-	        }
-
+	        NonNullList<Ingredient> input = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
 	        Ingredient container = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "container"));
-
 	        ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+	        float experience  = GsonHelper.getAsFloat(json, "experience", 0.0F);
 	        int time = GsonHelper.getAsInt(json, "time", 200);
 
-	        return new SoulFurnaceRecipe(id, input, container, result, time);
+	        return new SoulFurnaceRecipe(id, input, container, result, experience, time);
 	    }
+	    
+		private static NonNullList<Ingredient> readIngredients(JsonArray ingredientArray) {
+			NonNullList<Ingredient> nonnulllist = NonNullList.create();
+
+			for (int i = 0; i < ingredientArray.size(); ++i) {
+				Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
+				if (!ingredient.isEmpty()) {
+					nonnulllist.add(ingredient);
+				}
+			}
+
+			return nonnulllist;
+		}
 
 	    @Override
 	    public SoulFurnaceRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-	        Ingredient[] input = new Ingredient[5];
-	        for (int i = 0; i < 5; i++) {
-	            input[i] = Ingredient.fromNetwork(buf);
+	    	NonNullList<Ingredient> input = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
+	    	
+	        for (int i = 0; i < input.size(); i++) {
+	            input.set(i, Ingredient.fromNetwork(buf));
 	        }
 
 	        Ingredient container = Ingredient.fromNetwork(buf);
 	        ItemStack result = buf.readItem();
+	        float experience = buf.readFloat();
 	        int time = buf.readVarInt();
 
-	        return new SoulFurnaceRecipe(id, input, container, result, time);
+	        return new SoulFurnaceRecipe(id, input, container, result, experience, time);
 	    }
 
 	    @Override

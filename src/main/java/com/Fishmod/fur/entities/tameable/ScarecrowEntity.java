@@ -205,8 +205,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 				}
 	               
 				if (blockstate.is(BlockTags.BEE_GROWABLES)) {
-					if (block instanceof CropBlock) {
-						CropBlock cropblock = (CropBlock)block;
+					if (block instanceof CropBlock cropblock) {
 						if (!cropblock.isMaxAge(blockstate)) {
 							flag = true;
 							blockstate1 = cropblock.getStateForAge(cropblock.getAge(blockstate) + 1);
@@ -573,7 +572,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     		} else {               
     			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {
                     if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
-                    	if (!(entitylivingbase instanceof TamableAnimal && (((TamableAnimal) entitylivingbase).isOwnedBy(this.mob) || ((TamableAnimal) entitylivingbase).isOwnedBy(((TamableAnimal)this.mob).getOwner())))) {
+                    	if (!(entitylivingbase instanceof TamableAnimal tamable && (tamable.isOwnedBy(this.mob) || tamable.isOwnedBy(tamable.getOwner())))) {
                     		super.dmgEvent(entitylivingbase);
                     	}
                     }
