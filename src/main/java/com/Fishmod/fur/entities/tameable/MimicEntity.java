@@ -442,19 +442,18 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
             return super.mobInteract(player, hand);
         } else if (this.isTame() && this.getOwner().equals(player)) {
         	if (player.isCrouching()) {
-        		if (!this.level().isClientSide()) {
-        			if (this.getSkin() == MimicModel.getVoidSkin()) {	
-        				PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
-    					player.openMenu(new SimpleMenuProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
-    						return ChestMenu.threeRows(p_226928_1_, p_226928_2_, enderchestinventory);
-        	            }, CONTAINER_TITLE));
-        				this.playSound(SoundEvents.ENDER_CHEST_OPEN, 1.0F, 1.0F);
-        			} else {
-        				this.openGUI(player, this.getName());
-        				this.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
-                	}
-                    return InteractionResult.sidedSuccess(this.level().isClientSide);
-                }
+        		if (this.getSkin() == MimicModel.getVoidSkin()) {	
+        			PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
+					player.openMenu(new SimpleMenuProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
+						return ChestMenu.threeRows(p_226928_1_, p_226928_2_, enderchestinventory);
+    	            }, CONTAINER_TITLE));
+    				this.playSound(SoundEvents.ENDER_CHEST_OPEN, 1.0F, 1.0F);
+    			} else {
+    				this.openGUI(player, this.getName());
+    				this.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
+            	}
+        		
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
         	}
 
             if (!itemstack.isEmpty()) {            	

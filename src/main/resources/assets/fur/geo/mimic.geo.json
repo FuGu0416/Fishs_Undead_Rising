@@ -21,18 +21,18 @@
 				{
 					"name": "Chest_top",
 					"parent": "Chest_Base",
-					"pivot": [0, 11, 8],
+					"pivot": [0, 10, 8],
 					"rotation": [-7.83, 0, 0],
 					"cubes": [
-						{"origin": [-7, 11, -6], "size": [14, 5, 14], "pivot": [0, 13.5, 1], "rotation": [0, 180, -180], "uv": [0, 0]}
+						{"origin": [-7, 10, -6], "size": [14, 5, 14], "pivot": [0, 12.5, 1], "rotation": [0, 180, -180], "uv": [0, 0]}
 					]
 				},
 				{
 					"name": "Chest_lock",
 					"parent": "Chest_top",
-					"pivot": [0, 11, -6],
+					"pivot": [0, 10, -6],
 					"cubes": [
-						{"origin": [-1, 9, -7], "size": [2, 4, 1], "uv": [0, 0]}
+						{"origin": [-1, 8, -7], "size": [2, 4, 1], "uv": [0, 0]}
 					]
 				},
 				{

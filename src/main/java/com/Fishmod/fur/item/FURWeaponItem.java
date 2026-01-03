@@ -1,6 +1,8 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,24 +55,26 @@ import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 
 public class FURWeaponItem extends SwordItem {
-
+    private static final UUID REACH_UUID = UUID.fromString("d4b8d5f2-9d6b-4a36-8c70-9f1db2b7e801");
 	private Item repair_material;
 	private float Damage;
 	protected float efficiency;
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 	boolean hasDesc;
 	
-	public FURWeaponItem(Properties PropertiesIn, Tier materialIn, int damageIn, float attackspeedIn, Item repair, Boolean hasDescIn) {
+	public FURWeaponItem(Properties PropertiesIn, Tier materialIn, int damageIn, float attackspeedIn, double reachIn, Item repair, Boolean hasDescIn) {
 		super(materialIn, damageIn, attackspeedIn, PropertiesIn);
         this.Damage = (float)damageIn + 3.0F;
         this.repair_material = repair;
         this.efficiency = materialIn.getSpeed();
         this.hasDesc = hasDescIn;
         Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        if (reachIn != 0.0D) builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(REACH_UUID, "Weapon modifier", reachIn, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.Damage, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackspeedIn, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackspeedIn, AttributeModifier.Operation.ADDITION));        
         this.defaultModifiers = builder.build();  
 	}
 

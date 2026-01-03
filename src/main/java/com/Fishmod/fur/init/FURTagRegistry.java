@@ -37,5 +37,5 @@ public class FURTagRegistry {
     //public static final ResourceLocation VESPA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "vespa_targets");
     //public static final ResourceLocation LAMPREY_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "lamprey_targets");
     
-    public static final TagKey<Item> SERVING_CONTAINERS = TagKey.create(Registries.ITEM, new ResourceLocation(/*mod_LavaCow.MODID*/"farmersdelight", "serving_containers"));
+    public static final TagKey<Item> SERVING_CONTAINERS = TagKey.create(Registries.ITEM, new ResourceLocation("farmersdelight", "serving_containers"));
 }

@@ -1,0 +1,20 @@
+{
+  "type": "fur:cooking",
+  "ingredients": [
+    {
+		"item": "fur:ectoplasm"
+    },
+	{
+		"item": "fur:ectoplasm"
+    },
+    {
+		"tag": "forge:slimeballs"
+    }
+  ],
+  "container": { "item": "minecraft:bowl" },
+  "result": {
+    "item": "fur:ghostjelly"
+  },
+  "experience": 0.35,
+  "time": 200
+}

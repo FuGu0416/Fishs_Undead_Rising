@@ -1,5 +1,8 @@
 package com.Fishmod.fur.item;
 
+import com.Fishmod.fur.init.FURItemRegistry;
+
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,11 +60,10 @@ public class FURStewItem extends FURItem {
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
     	ItemStack itemstack = super.finishUsingItem(stack, worldIn, entityLiving);
     	
-    	/*if (this.equals(FURItemRegistry.GHOSTJELLY)) {
+    	if (this.equals(FURItemRegistry.GHOSTJELLY.get())) {
     		entityLiving.setDeltaMovement(0.0D, 2.0D, 0.0D);
-    		entityLiving.addEffect(new EffectInstance(Effects.SLOW_FALLING, 6 * 20, 2));
     		entityLiving.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
-    	}*/
+    	}
     	
         if (!worldIn.isClientSide && entityLiving instanceof Player player && !player.isCreative() && !itemstack.isEmpty()) {
         	if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
