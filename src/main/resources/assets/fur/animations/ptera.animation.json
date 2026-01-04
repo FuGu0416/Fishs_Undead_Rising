@@ -1,0 +1,15 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"ptera.model.idle": {
+			"loop": true
+		},
+		"ptera.model.flying": {
+			"loop": true
+		},
+		"ptera.model.attacking": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
+}
