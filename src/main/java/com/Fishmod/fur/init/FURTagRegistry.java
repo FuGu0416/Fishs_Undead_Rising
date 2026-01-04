@@ -21,6 +21,7 @@ public class FURTagRegistry {
     public static final TagKey<Biome> IS_OVERWORLD_HOSTILE = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "is_overworld_hostile"));
     public static final TagKey<Biome> HAS_BANSHEE = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_banshee"));
     public static final TagKey<Biome> HAS_CACTOID = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_cactoid"));
+    public static final TagKey<Biome> HAS_PTERA = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_ptera"));
     
     public static final TagKey<Structure> HAS_SEAHAG = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_seahag"));   
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));
@@ -33,7 +34,7 @@ public class FURTagRegistry {
     //public static final ResourceLocation BEELZEBUB_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "beelzebub_targets");
     //public static final ResourceLocation ENIGMOTH_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "enigmoth_targets");
     //public static final ResourceLocation PARASITE_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "parasite_targets");
-    //public static final ResourceLocation PTERA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "ptera_targets");
+    public static final TagKey<EntityType<?>> PTERA_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "ptera_targets"));
     //public static final ResourceLocation VESPA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "vespa_targets");
     //public static final ResourceLocation LAMPREY_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "lamprey_targets");
     

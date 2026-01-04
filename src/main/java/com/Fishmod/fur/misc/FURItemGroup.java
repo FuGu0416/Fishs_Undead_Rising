@@ -57,6 +57,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOSTJELLY.get());
             	output.accept(FURItemRegistry.WISP_ASHES.get());
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
+            	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());            	
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
@@ -94,7 +95,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MIMIC_CLAW.get());
             	output.accept(FURItemRegistry.MIMIC_CLAW_COOKED.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
-            	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
+            	output.accept(FURItemRegistry.PTERA_WING.get());
+            	output.accept(FURItemRegistry.PTERA_WING_COOKED.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

@@ -18,7 +18,7 @@ public class FURStewItem extends FURItem {
     }
 
 	public FURStewItem(Properties PropertiesIn, UseAnim UseActionIn, int TooltipIn) {
-    	super(PropertiesIn, 32, UseActionIn, TooltipIn);
+    	super(PropertiesIn.craftRemainder(Items.BOWL), 32, UseActionIn, TooltipIn);
     }
 	
 	@Override

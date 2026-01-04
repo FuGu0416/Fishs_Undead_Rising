@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+  	"fur:piranha_raw",
+  	"fur:piranha_cooked",
+  	"fur:swarmer_raw",
+  	"fur:swarmer_cooked"
+  	//"fur:mummified_cod"
+  	//"fur:lamprey"
+  ]
+}

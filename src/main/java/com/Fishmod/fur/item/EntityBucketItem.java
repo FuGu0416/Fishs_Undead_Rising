@@ -31,7 +31,7 @@ public class EntityBucketItem extends Item {
     private final Item returnItem;
 
     public EntityBucketItem(Supplier<EntityType<?>> typeSupplier, Item returnItem, Item.Properties properties) {
-        super(properties);
+        super(properties.craftRemainder(returnItem));
         this.typeSupplier = typeSupplier;
         this.returnItem = returnItem;
     }

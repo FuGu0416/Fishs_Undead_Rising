@@ -564,7 +564,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
      */
     @Override
     public boolean isFood(ItemStack stack) {
-    	return stack.getItem().equals(Items.ROTTEN_FLESH);//stack.getItem().equals(FURItemRegistry.PTERA_WING) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED);
+    	return stack.getItem().equals(FURItemRegistry.PTERA_WING.get()) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED.get());
     }
     
     @Override

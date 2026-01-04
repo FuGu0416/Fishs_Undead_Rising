@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": [
+	{
+		"item": "fur:ptera_wing"
+	}
+  ],
+  "result": "fur:ptera_wing_cooked",
+  "experience": 0.35,
+  "cookingtime": 100
+}

@@ -32,5 +32,6 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(FURTagRegistry.IS_OVERWORLD_HOSTILE).addTag(BiomeTags.IS_OVERWORLD).remove(Tags.Biomes.IS_MUSHROOM);
         this.tag(FURTagRegistry.HAS_BANSHEE).addTag(BiomeTags.IS_HILL).addTag(BiomeTags.IS_MOUNTAIN);
         this.tag(FURTagRegistry.HAS_CACTOID).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).add(Biomes.BASALT_DELTAS);
+        this.tag(FURTagRegistry.HAS_PTERA).addTag(BiomeTags.IS_JUNGLE).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_SAVANNA).addTag(Tags.Biomes.IS_LUSH);
     }
 }
