@@ -21,6 +21,7 @@ public class FURItemGroup {
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((params, output) -> {
             	output.accept(FURItemRegistry.SHARP_FANG.get());
+            	output.accept(FURItemRegistry.FANG_DAGGER.get());
             	output.accept(FURItemRegistry.BONE_SWORD.get());
             	output.accept(FURItemRegistry.CHITIN.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_HELMET.get());
@@ -98,6 +99,9 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOSTJELLY.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
+            	output.accept(FURItemRegistry.GHOUL_CLAW.get());
+            	output.accept(FURItemRegistry.GHOUL_ARROW.get());
+            	output.accept(FURItemRegistry.FANG_ARROW.get());
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

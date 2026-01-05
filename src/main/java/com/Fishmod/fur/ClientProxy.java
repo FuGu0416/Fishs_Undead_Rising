@@ -11,6 +11,7 @@ import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
+import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
@@ -82,6 +83,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.GHOSTBOMB.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SONICBOMB.get(), ThrownItemRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.GHOUL_ARROW.get(), manager -> new FURArrowRenderer(manager, 0));
+        EntityRenderers.register(FUREntityRegistry.FANG_ARROW.get(), manager -> new FURArrowRenderer(manager, 1));
         
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
@@ -124,8 +127,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));        
         EntityRenderers.register(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         EntityRenderers.register(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
-        EntityRenderers.register(FUREntityRegistry.GHOUL_ARROW, manager -> new FURArrowRenderer(manager, 0));
-        EntityRenderers.register(FUREntityRegistry.FANG_ARROW, manager -> new FURArrowRenderer(manager, 1));*/
+        */
         
         /*RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "A",
+        "/",
+        "Y"
+    ],
+    "key": {
+        "A": {
+            "item": "fur:ghoul_claw"
+        },    
+    	"/": {
+			"tag": "forge:rods/wooden"
+        },
+        "Y": {
+            "item": "fur:feather_black"
+        }
+    },
+    "result": {
+        "item": "fur:ghoul_arrow",
+        "count": 4
+    }
+}

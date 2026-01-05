@@ -62,9 +62,9 @@ public class FURItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
     	
-		/*if((stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || stack.getItem().equals(FURItemRegistry.BOABING)) && entityLiving.isOnFire()) {
+		if ((/*stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || */stack.getItem().equals(FURItemRegistry.BOABING.get())) && entityLiving.isOnFire()) {
 			entityLiving.clearFire();
-		}*/
+		}
 		
         /*if (!worldIn.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI) && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
         	if (!((PlayerEntity)entityLiving).inventory.add(new ItemStack(Items.STICK, 2))) {
@@ -101,8 +101,8 @@ public class FURItem extends Item {
 		}
 
 		if (stack.getItem().equals(FURItemRegistry.SOULFIREHEART.get())) {
-			tooltip.add(Component.translatable("tooltip." + this.getName(stack), 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW));
-			tooltip.add(Component.translatable("tooltip." + this.getName(stack) + ".l2", 25).withStyle(ChatFormatting.GREEN));
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc0", 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc1", 25).withStyle(ChatFormatting.GREEN));
 		} else if(stack.getItem().equals(FURItemRegistry.MOOTENHEART.get())) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW).append(Component.translatable("item.fur.potion_of_mooten_lava").withStyle(ChatFormatting.YELLOW)));
 		} else if (this.Tooltip == 2) {

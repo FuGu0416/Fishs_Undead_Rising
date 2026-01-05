@@ -23,6 +23,7 @@ public class DataGenerators {
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
 		FURBlockTagsProvider blockTags = new FURBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
+		gen.addProvider(event.includeServer(), blockTags);
 		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider));

@@ -1,5 +1,6 @@
 package com.Fishmod.fur.client.renderer.entity;
 
+import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.client.layer.LayerGenericGlowing;
 import com.Fishmod.fur.entities.LavaCowEntity;
 
@@ -13,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LavaCowRenderer extends MobRenderer<LavaCowEntity, CowModel<LavaCowEntity>>  {
-	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation("fur:textures/mobs/moogma/moogma_glowmask.png");
-	private static final ResourceLocation TEXTURES = new ResourceLocation("fur:textures/mobs/moogma/moogma.png");
+	private static final ResourceLocation TEXTURES_EYE = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/moogma/moogma_glowmask.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/moogma/moogma.png");
 	
 	static{
         System.out.println(TEXTURES.getPath());

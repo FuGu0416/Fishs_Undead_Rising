@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:sharp_fang"
+        },
+        "D": {
+			"tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:fang_dagger"
+    }
+}

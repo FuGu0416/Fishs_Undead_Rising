@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "A",
+        "/",
+        "Y"
+    ],
+    "key": {
+        "A": {
+            "item": "fur:sharp_fang"
+        },    
+    	"/": {
+			"tag": "forge:rods/wooden"
+        },
+        "Y": {
+            "item": "fur:feather_black"
+        }
+    },
+    "result": {
+        "item": "fur:fang_arrow",
+        "count": 4
+    }
+}

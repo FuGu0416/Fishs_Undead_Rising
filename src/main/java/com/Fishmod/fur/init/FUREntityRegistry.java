@@ -18,6 +18,7 @@ import com.Fishmod.fur.entities.floating.WraithEntity;
 import com.Fishmod.fur.entities.flying.PteraEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
+import com.Fishmod.fur.entities.projectiles.FURArrowEntity;
 import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
@@ -42,6 +43,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = mod_LavaCow.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class FUREntityRegistry {
 	public static final DeferredRegister<EntityType<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, mod_LavaCow.MODID);
 	
@@ -69,16 +71,13 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<MimicEntity>> MIMIC = DEF_REG.register("mimic", () -> (EntityType<MimicEntity>) EntityType.Builder.of(MimicEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F).setTrackingRange(8).build("mimic"));
 	public static final RegistryObject<EntityType<PteraEntity>> PTERA = DEF_REG.register("ptera", () -> (EntityType<PteraEntity>) EntityType.Builder.of(PteraEntity::new, MobCategory.MONSTER).sized(1.6F, 0.8F).setTrackingRange(8).build("ptera"));
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<BasicBombEntity>> HOLY_GRENADE = DEF_REG.register("holygrenade", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("holygrenade"));
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<BasicBombEntity>> GHOSTBOMB = DEF_REG.register("ghostbomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("ghostbomb"));
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final RegistryObject<EntityType<BasicBombEntity>> SONICBOMB = DEF_REG.register("sonicbomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("sonicbomb"));
+	public static final RegistryObject<EntityType<FURArrowEntity>> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("ghoul_arrow"));
+	public static final RegistryObject<EntityType<FURArrowEntity>> FANG_ARROW = DEF_REG.register("fang_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_arrow"));
 	
 	/*
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
@@ -117,8 +116,7 @@ public class FUREntityRegistry {
 	public static final EntityType<FlameJetEntity> FLAMEJET = registerEntity(EntityType.Builder.<FlameJetEntity>of(FlameJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "flamejet");	
 	public static final EntityType<SapJetEntity> SAPJET = registerEntity(EntityType.Builder.<SapJetEntity>of(SapJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sapjet");
 	public static final EntityType<MothScalesEntity> MOTH_SCALES = registerEntity(EntityType.Builder.<MothScalesEntity>of(MothScalesEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "moth_scales");
-	public static final EntityType<FURArrowEntity> GHOUL_ARROW = registerEntity(EntityType.Builder.<FURArrowEntity>of(FURArrowEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "ghoul_arrow");
-	public static final EntityType<FURArrowEntity> FANG_ARROW = registerEntity(EntityType.Builder.<FURArrowEntity>of(FURArrowEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20), "fang_arrow");*/
+	*/
 	
     @SubscribeEvent
     public static void spawnPlacements(SpawnPlacementRegisterEvent event) {
