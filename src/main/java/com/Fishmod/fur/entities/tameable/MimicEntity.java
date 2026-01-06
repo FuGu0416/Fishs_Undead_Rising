@@ -196,19 +196,20 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     @Override
     public void setTame(boolean tamed) {
     	super.setTame(tamed);
+        float maxHealthO = this.getMaxHealth();
         
         if (tamed) {
         	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D/*FURConfig.Mimic_Health.get()*/ * 3.0D);
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D/*FURConfig.Mimic_Attack.get()*/ * 0.5D);
         	this.setSilent(false);
-        	this.setHealth(this.getHealth() * 3.0F);
         } else {
         	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D/*FURConfig.Mimic_Health.get()*/);
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22D);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D/*FURConfig.Mimic_Attack.get()*/);
-        	this.setHealth(this.getHealth() * 0.334F);
         }
+        
+        this.setHealth(this.getHealth() * (this.getMaxHealth() / maxHealthO));
 	}
 
     private boolean canPickupItems() {
@@ -432,8 +433,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     	this.level().broadcastEntityEvent(this, (byte)(41 + facing.get2DDataValue()));
     }
     
-    @SuppressWarnings("resource")
-	@Override
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);   	
         Item item = itemstack.getItem();
@@ -585,8 +585,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
         }
     }
 
-    @SuppressWarnings("resource")
-	public void openGUI(Player playerIn, Component NameIn) {
+    public void openGUI(Player playerIn, Component NameIn) {
         if (!this.level().isClientSide && (!this.hasPassenger(playerIn))) {
             NetworkHooks.openScreen((ServerPlayer) playerIn, new MenuProvider() {
 				@Override
@@ -751,8 +750,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 	/**
 	* Called when the mob's health reaches 0.
 	*/
-    @SuppressWarnings("resource")
-	@Override
+    @Override
     protected void dropEquipment() {
     	ItemStack is;
     	super.dropEquipment();	

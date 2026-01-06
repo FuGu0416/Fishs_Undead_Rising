@@ -20,12 +20,12 @@ import software.bernie.geckolib.model.data.EntityModelData;
  */
 public class PteraModel extends GeoModel<PteraEntity> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera.png"),
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera1.png"),
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera2.png"),
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera3.png"),
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera4.png"),
-		new ResourceLocation("mod_lavacow:textures/mobs/ptera/ptera5.png")
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera.png"),
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera1.png"),
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera2.png"),
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera3.png"),
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera4.png"),
+		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/ptera/ptera5.png")
 	};	
 	
     private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/ptera.animation.json");

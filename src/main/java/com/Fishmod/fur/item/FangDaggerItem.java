@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -25,11 +26,12 @@ public class FangDaggerItem extends FURWeaponItem {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int remainingticks) {
     	if (!(living instanceof Player player) || (this.getUseDuration(stack) - remainingticks) < 6) return;
-
+    	
     	if (!level.isClientSide) {
     		FangDaggerEntity abstractarrowentity = new FangDaggerEntity(level, player);
-        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 2.0F); 
-        	
+    		float f = BowItem.getPowerForTime((this.getUseDuration(stack) - remainingticks));
+    		
+        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 2.0F, 2.0F); 
         	abstractarrowentity.fire_aspect = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
         	abstractarrowentity.sharpness = stack.getEnchantmentLevel(Enchantments.SHARPNESS);
         	abstractarrowentity.knockback = stack.getEnchantmentLevel(Enchantments.KNOCKBACK);
@@ -39,7 +41,8 @@ public class FangDaggerItem extends FURWeaponItem {
         	abstractarrowentity.poisonous = 0;//stack.getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS);
         	abstractarrowentity.corrosive = 0;//stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
         	abstractarrowentity.baseDamage = (int) this.getDamage();
-        	
+        	abstractarrowentity.setRenderItem(stack.copy());
+        			
         	abstractarrowentity.pickup = AbstractArrow.Pickup.DISALLOWED;
         	level.addFreshEntity(abstractarrowentity);
     		stack.hurtAndBreak(1, player, (p_289501_) -> {

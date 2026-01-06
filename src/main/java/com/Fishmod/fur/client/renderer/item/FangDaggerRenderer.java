@@ -1,7 +1,6 @@
 package com.Fishmod.fur.client.renderer.item;
 
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
-import com.Fishmod.fur.init.FURItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -15,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 
 public class FangDaggerRenderer extends EntityRenderer<FangDaggerEntity> {
     private final ItemRenderer itemRenderer;
@@ -62,8 +60,8 @@ public class FangDaggerRenderer extends EntityRenderer<FangDaggerEntity> {
             }
         }
 
-        itemRenderer.render(new ItemStack(FURItemRegistry.FANG_DAGGER.get()), ItemDisplayContext.FIXED, false, stack, bufferSource, i, OverlayTexture.NO_OVERLAY,
-                itemRenderer.getModel(new ItemStack(FURItemRegistry.FANG_DAGGER.get()), entity.level(), null, entity.getId()));
+        itemRenderer.render(entity.getRenderItem(), ItemDisplayContext.FIXED, false, stack, bufferSource, i, OverlayTexture.NO_OVERLAY,
+                itemRenderer.getModel(entity.getRenderItem(), entity.level(), null, entity.getId()));
 
         stack.popPose();
     }

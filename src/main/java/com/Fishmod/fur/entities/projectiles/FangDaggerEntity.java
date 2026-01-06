@@ -10,6 +10,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -33,6 +36,7 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
 public class FangDaggerEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
+	public static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(FangDaggerEntity.class, EntityDataSerializers.ITEM_STACK);
 	public Direction blockSide = null;
 	public int fire_aspect = 0;
 	public int sharpness = 0;
@@ -56,6 +60,12 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	public FangDaggerEntity(Level worldIn, double posX, double posY, double posZ) {
 		super(FUREntityRegistry.FANG_DAGGER.get(), posX, posY, posZ, worldIn);
 	}	
+	
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(DATA_ITEM_STACK, ItemStack.EMPTY);
+    }
 
 	@Override
 	public void tick() {
@@ -76,7 +86,7 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
     
     public float getBonusDamage(Entity entity) {
     	if (!(entity instanceof LivingEntity livingentity)) return 0;
-    	return (0.5f * this.sharpness + 0.5f)
+    	return (this.sharpness > 0 ? (0.5f * this.sharpness + 0.5f) : 0.0f)
 				+ (livingentity.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
 				+ (livingentity.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
     }
@@ -84,7 +94,7 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	protected void onHitEntity(EntityHitResult p_36757_) {
 		super.onHitEntity(p_36757_);
         Entity entity = p_36757_.getEntity();
-        float f = (float)this.getDeltaMovement().length();
+        float f = (float)this.getDeltaMovement().length() * 0.67F;
         int i = Mth.ceil(Mth.clamp((double)f * (this.baseDamage + this.getBonusDamage(entity)), 0.0D, (double)Integer.MAX_VALUE));
 
         Entity entity1 = this.getOwner();
@@ -180,6 +190,14 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	protected ItemStack getPickupItem() {
 		return ItemStack.EMPTY;
 	}
+	
+    public void setRenderItem(ItemStack stack) {
+        this.getEntityData().set(DATA_ITEM_STACK, stack.copyWithCount(1));
+    }
+
+    public ItemStack getRenderItem() {
+        return this.getEntityData().get(DATA_ITEM_STACK);
+    }
 	
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
