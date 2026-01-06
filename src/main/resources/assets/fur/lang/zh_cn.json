@@ -328,6 +328,7 @@
 	"entity.fur.basic_bomb": "炸弹",
 	"entity.fur.ghoul_arrow": "尸鬼之箭",
  	"entity.fur.fang_arrow": "利牙之箭",
+ 	"entity.fur.fang_dagger": "利牙匕首",
  		
 	"entity_parasite_ambient": "尸蛆：骚动",
 	"entity_parasite_death": "尸蛆：死亡",
@@ -457,8 +458,11 @@
 	"entity_enigmoth_death": "谜影蛾：死亡",
 	"entity_enigmoth_hurt": "谜影蛾：受伤",
 	
-	"random_piranha_shoot": "群獵者：發射",
-	"random_thorn_shoot": "尖刺：發射",
+	"random_fruit_plant": "仙人掌：种植",
+	"random_piranha_shoot": "群猎者：发射",
+	"random_thorn_shoot": "尖刺：发射",
+	"random_fang_dagger_hit": "利牙匕首：命中",
+	"random_fang_dagger_throw": "利牙匕首：投掷",
 	
 	"entity_lamprey_ambient": "七鳃鳗：窸窣",
 	"entity_lamprey_death": "七鳃鳗：死亡",
@@ -552,6 +556,7 @@
 	"item.fur.weta_hoe.desc": "右键点击能同时能收成 3x3 范围内的农作物，并重新种植",
 	"item.fur.ghoul arrow.desc": "对最大生命值低于%d%%的目标伤害+2,且击杀时能提高目标的掉落物数量",
 	"item.fur.fang_arrow.desc": "对目标额外造成其最大生命值 %d%% 的伤害 (最高%d)",
+	"item.fur.fang_dagger.desc": "右键以投掷匕首",
 			
 	"command.fur.sitting": "%s现在于原地待命",
 	"command.fur.following": "%s正在跟随",

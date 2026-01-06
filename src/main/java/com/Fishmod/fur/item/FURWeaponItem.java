@@ -93,22 +93,6 @@ public class FURWeaponItem extends SwordItem {
         return this.Damage;
     }
 	   
-	/*@Override
-    public boolean hasContainerItem(ItemStack stack) {
-        return (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) && stack.getDamageValue() < stack.getMaxDamage();
-    }
-    
-	@Override
-    public ItemStack getContainerItem(ItemStack itemStack) {
-		if (this.hasContainerItem(itemStack)) {
-			ItemStack result = itemStack.copy();
-			result.setDamageValue(itemStack.getDamageValue() + 8);
-			return result;
-		} 
-		
-		return ItemStack.EMPTY;
-    }*/
-	
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		/*if (stack.getItem() == FURItemRegistry.SPECTRAL_DAGGER) {
@@ -172,11 +156,7 @@ public class FURWeaponItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {	
 		if (attacker instanceof Player && stack.getItem() == FURItemRegistry.FAMINE.get()) {
 			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
-		}/* else if (stack.getItem() == FURItemRegistry.MOLTENPAN || stack.getItem() == FURItemRegistry.SOULFIREPAN) {
-			int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			
-			target.setSecondsOnFire((i + 2) * 4);
-			target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 1.0F);
-		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
+		}/* else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
 		}*/ else if (stack.getItem() == FURItemRegistry.MOLTEN_HAMMER.get()/* stack.getItem() == FURItemRegistry.SOULFIREHAMMER*/) {
 			int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			

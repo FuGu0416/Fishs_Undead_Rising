@@ -144,7 +144,9 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> RANDOM_FRUIT_PLANT = addSoundEvent("random_fruit_plant");
 	public static final RegistryObject<SoundEvent> RANDOM_PIRANHA_SHOOT = addSoundEvent("random_piranha_shoot");
 	public static final RegistryObject<SoundEvent> RANDOM_THORN_SHOOT = addSoundEvent("random_thorn_shoot");
-
+	public static final RegistryObject<SoundEvent> RANDOM_FANG_DAGGER_HIT = addSoundEvent("random_fang_dagger_hit");
+	public static final RegistryObject<SoundEvent> RANDOM_FANG_DAGGER_THROW = addSoundEvent("random_fang_dagger_throw");
+	
 	public static final RegistryObject<SoundEvent> LAMPREY_AMBIENT = addSoundEvent("lamprey_ambient");
 	public static final RegistryObject<SoundEvent> LAMPREY_HURT = addSoundEvent("lamprey_hurt");
 	public static final RegistryObject<SoundEvent> LAMPREY_DEATH = addSoundEvent("lamprey_death");

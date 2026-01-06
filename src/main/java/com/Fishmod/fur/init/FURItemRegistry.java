@@ -15,6 +15,7 @@ import com.Fishmod.fur.item.FURStewItem;
 import com.Fishmod.fur.item.FURThrowableItem;
 import com.Fishmod.fur.item.FURWeaponItem;
 import com.Fishmod.fur.item.FamineArmorItem;
+import com.Fishmod.fur.item.FangDaggerItem;
 import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
@@ -49,7 +50,7 @@ public class FURItemRegistry {
 	public static final DeferredRegister<Item> DEF_REG = DeferredRegister.create(ForgeRegistries.ITEMS, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<Item> SHARP_FANG = DEF_REG.register("sharp_fang", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> new FURWeaponItem(new Item.Properties(), Tiers.STONE, 1, -2.0F, -1.0D, FURItemRegistry.SHARP_FANG.get(), true));
+	public static final RegistryObject<Item> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> new FangDaggerItem(new Item.Properties(), Tiers.STONE, 1, -2.0F, -1.0D, FURItemRegistry.SHARP_FANG.get(), true));
 	public static final RegistryObject<Item> BONE_SWORD = DEF_REG.register("bone_sword", () -> new FURWeaponItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, 0.0D, Items.BONE_BLOCK, true));
 	public static final RegistryObject<Item> CHITIN = DEF_REG.register("chitin", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_HELMET = DEF_REG.register("chitin_armor_helmet", () -> new ChitinArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));

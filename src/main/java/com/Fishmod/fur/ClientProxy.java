@@ -26,6 +26,7 @@ import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
 import com.Fishmod.fur.client.renderer.entity.WispRenderer;
 import com.Fishmod.fur.client.renderer.entity.WraithRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
+import com.Fishmod.fur.client.renderer.item.FangDaggerRenderer;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -85,6 +86,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.SONICBOMB.get(), ThrownItemRenderer::new);
         EntityRenderers.register(FUREntityRegistry.GHOUL_ARROW.get(), manager -> new FURArrowRenderer(manager, 0));
         EntityRenderers.register(FUREntityRegistry.FANG_ARROW.get(), manager -> new FURArrowRenderer(manager, 1));
+        EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);
         
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));

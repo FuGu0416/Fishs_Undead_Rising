@@ -62,7 +62,7 @@ public class FURItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
     	
-		if ((/*stack.getItem().equals(FURItemRegistry.SHATTERED_ICE) || */stack.getItem().equals(FURItemRegistry.BOABING.get())) && entityLiving.isOnFire()) {
+		if (stack.getItem().equals(FURItemRegistry.BOABING.get()) && entityLiving.isOnFire()) {
 			entityLiving.clearFire();
 		}
 		

@@ -327,6 +327,7 @@
 	"entity.fur.moth_scales": "Moth Scales",
 	"entity.fur.ghoul_arrow": "Ghoulish Arrow",
 	"entity.fur.fang_arrow": "Fang Arrow",
+	"entity.fur.fang_dagger": "Fang Dagger",
 			
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
@@ -456,8 +457,11 @@
 	"entity_enigmoth_death": "Enigmoth dies",
 	"entity_enigmoth_hurt": "Enigmoth hurts",
 
-	"random_piranha_shoot": "swarm shot",
-	"random_thorn_shoot": "thorn shot",
+	"random_fruit_plant": "Cactus planted",
+	"random_piranha_shoot": "Swarmer shot",
+	"random_thorn_shoot": "Thorn shot",
+	"random_fang_dagger_hit": "Fang Dagger hit",
+	"random_fang_dagger_throw": "Fang Dagger shot",
 
 	"entity_lamprey_ambient": "Lamprey chirps",
 	"entity_lamprey_death": "Lamprey dies",
@@ -551,6 +555,7 @@
 	"item.fur.weta_hoe.desc": "Right-click to harvest nearby crops or grass in a 3x3 area and replant them.",
 	"item.fur.ghoul_arrow.desc": "+2 damage to entities below %d%% health, also drop more loots if managed to kill one.",
 	"item.fur.fang_arrow.desc": "Deals additional %d%% of target's maximum HP as damage (Max %d).",
+	"item.fur.fang_dagger.desc": "Right click to throw the dagger.",
 				
 	"command.fur.sitting": "%s is waiting",
 	"command.fur.following": "%s is following",

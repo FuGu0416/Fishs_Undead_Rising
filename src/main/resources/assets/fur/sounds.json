@@ -725,7 +725,21 @@
 		"subtitle": "random_thorn_shoot",
 		"sounds": [{"name": "fur:random/thorn_shoot","stream": true}]
 	},
+
+	"random_fang_dagger_hit":
+	{
+		"category": "neutral",
+		"subtitle": "random_fang_dagger_hit",
+		"sounds": [{"name": "fur:random/fang_dagger_hit","stream": true}]
+	},
 	
+	"random_fang_dagger_throw":
+	{
+		"category": "neutral",
+		"subtitle": "random_fang_dagger_throw",
+		"sounds": [{"name": "fur:random/fang_dagger_throw","stream": true}]
+	},
+			
 	"lamprey_ambient":
 	{
 		"category": "hostile",
