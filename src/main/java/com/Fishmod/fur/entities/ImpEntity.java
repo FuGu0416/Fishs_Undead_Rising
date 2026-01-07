@@ -3,6 +3,9 @@ package com.Fishmod.fur.entities;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.init.FUREffectRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +14,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ImpEntity extends FogletEntity {	
 	public ImpEntity(EntityType<? extends ImpEntity> p_i48549_1_, Level worldIn) {
@@ -49,6 +53,24 @@ public class ImpEntity extends FogletEntity {
     
     public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
         return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    }
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+	@Override
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+		switch(id) {
+			case 6:
+	        	this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY() + this.getBbHeight(), this.getZ(), 0.0D, 0.0D, 0.0D);
+	    		SpawnUtil.LavaBurst(this.level(), this.getX(), this.getY(), this.getZ(), 3.0D, ParticleTypes.FLAME);
+	    		SpawnUtil.LavaBurst(this.level(), this.getX(), this.getY(), this.getZ(), 1.5D, ParticleTypes.CAMPFIRE_COSY_SMOKE);
+				break;		
+			default:
+				super.handleEntityEvent(id);
+				break;
+		}
     }
     
     /**
@@ -117,22 +139,23 @@ public class ImpEntity extends FogletEntity {
 
             if (this.spellWarmup == 0) {
                 this.castSpell();
-                ImpEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
-                ImpEntity.this.addEffect(new MobEffectInstance(MobEffects.WEAKNESS/*FUREffectRegistry.IMMOLATION*/, 8 * 20));
+                ImpEntity.this.addEffect(new MobEffectInstance(FUREffectRegistry.IMMOLATION.get(), 8 * 20));
             }
         }
         
         protected void castSpell() {
-        	List<Entity> list = ImpEntity.this.level().getEntities(ImpEntity.this, ImpEntity.this.getBoundingBox().inflate(3.0D));
+        	double radius = 3.0D;
+        	List<Entity> list = ImpEntity.this.level().getEntities(ImpEntity.this, ImpEntity.this.getBoundingBox().inflate(radius));
         	
-        	ImpEntity.this.level().addParticle(ParticleTypes.EXPLOSION, ImpEntity.this.getX(), ImpEntity.this.getY() + ImpEntity.this.getBbHeight(), ImpEntity.this.getZ(), 0.0D, 0.0D, 0.0D);
+        	ImpEntity.this.level().broadcastEntityEvent(ImpEntity.this, (byte)6);
+        	ImpEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
         	
 			if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ImpEntity.this.level(), ImpEntity.this)) {
 				BlockPos blockpos = ImpEntity.this.blockPosition();
 				for(int i = -3 ; i < 3 ; i++) {
 					for(int j = -3 ; j < 3 ; j++) {
 						for(int k = -3 ; k < 3 ; k++) {					
-				            if (ImpEntity.this.random.nextFloat() < 0.3F && ImpEntity.this.level().isEmptyBlock(blockpos.offset(i, j, k))) {
+				            if (ImpEntity.this.random.nextFloat() < 0.1F && ImpEntity.this.level().isEmptyBlock(blockpos.offset(i, j, k))) {
 				            	ImpEntity.this.level().setBlockAndUpdate(blockpos.offset(i, j, k), BaseFireBlock.getState(ImpEntity.this.level(), blockpos.offset(i, j, k)));
 				            }
 						}

@@ -20,6 +20,7 @@ import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
+import com.Fishmod.fur.item.MoltenHammerItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
 import com.Fishmod.fur.item.WetaHoeItem;
@@ -75,7 +76,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> MOLTEN_MEAT = DEF_REG.register("molten_meat", () -> new MoltenMeatItem(new Item.Properties().durability(0).stacksTo(64).fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_ALLOY = DEF_REG.register("molten_alloy", () -> new Item(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_AXE = DEF_REG.register("molten_axe", () -> new MoltenAxeItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 5.0F, -3.0F, MOLTEN_ALLOY.get(), ParticleTypes.FLAME));
-	public static final RegistryObject<Item> MOLTEN_HAMMER = DEF_REG.register("molten_hammer", () -> new FURWeaponItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 3, -2.4F, 0.0D, Items.GUNPOWDER, true));
+	public static final RegistryObject<Item> MOLTEN_HAMMER = DEF_REG.register("molten_hammer", () -> new MoltenHammerItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 3, -2.4F, 0.0D, Items.GUNPOWDER, true));
 	public static final RegistryObject<Item> MOLTEN_ARMOR_HELMET = DEF_REG.register("molten_armor_helmet", () -> new MoltenArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.RARE).fireResistant(), 0.2F));
 	public static final RegistryObject<Item> MOLTEN_ARMOR_CHESTPLATE = DEF_REG.register("molten_armor_chestplate", () -> new MoltenArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.RARE).fireResistant(), 0.5F));
 	public static final RegistryObject<Item> MOLTEN_ARMOR_LEGGINGS = DEF_REG.register("molten_armor_leggings", () -> new MoltenArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE).fireResistant(), 0.2F));

@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
-import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
@@ -19,8 +18,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -28,15 +25,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -170,18 +164,6 @@ public class FURWeaponItem extends SwordItem {
         return super.hurtEnemy(stack, target, attacker);
     }
 	
-	public static void LavaBurst(Level worldIn, double x, double y, double z, double radius, SimpleParticleType particleIn) {		
-		double NumberofParticles = radius * 8.0D;
-		
-		for(double i = 0.0D; i < NumberofParticles; i++) {
-			double d0 = x + radius * Math.sin((float) (i / NumberofParticles * 360.0f));
-            double d1 = (double)(y + 1);
-            double d2 = z + radius * Math.cos((float) (i / NumberofParticles * 360.0f));
-            
-            worldIn.addParticle(particleIn, d0, d1, d2, 0.0D, 0.0D, 0.0D); 
-		}
-	}
-	
 	public static <T extends FURTameableEntity> void SummonMinion(Player playerIn, int[] enchantmentIn, Level worldIn, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
 		if (worldIn instanceof ServerLevel) {
 			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) worldIn), blockpos);  
@@ -255,42 +237,6 @@ public class FURWeaponItem extends SwordItem {
             
 			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
         }*/
-        
-        if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.MOLTEN_HAMMER.get()) {
-			double radius = 4.0D;
-
-			List<Entity> list = worldIn.getEntities(playerIn, playerIn.getBoundingBox().inflate(radius));
-			for (Entity entity1 : list) {
-				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(playerIn))/* || (entity1 instanceof Player && FURConfig.MoltenHammer_PVP.get())*/) {
-					entity1.setSecondsOnFire(2 * enchantment_list[0]);
-					entity1.hurt(entity1.damageSources().playerAttack(playerIn) , 8.0F + (float)enchantment_list[1]
-							+ (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD) ? (float)enchantment_list[3] : 0)
-							+ (((LivingEntity) entity1).getMobType().equals(MobType.UNDEAD) ? (float)enchantment_list[4] : 0));
-					
-					if (enchantment_list[2] > 0)
-						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)enchantment_list[2] * 0.5F, (playerIn.getX() - entity1.getX())/playerIn.distanceTo(entity1), (playerIn.getZ() - entity1.getZ())/playerIn.distanceTo(entity1)));
-					
-		            if (enchantment_list[3] > 0 && (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD))) {
-		                int i = 20 + worldIn.random.nextInt(10 * enchantment_list[3]);
-		                ((LivingEntity)entity1).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
-		            }
-		            
-		            if (enchantment_list[6] > 0)
-		    			((LivingEntity)entity1).addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, enchantment_list[6] - 1));
-		            
-		            if (enchantment_list[7] > 0)
-		            	((LivingEntity)entity1).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, enchantment_list[7] - 1));
-				}
-			}
-			LavaBurst(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), radius, ParticleTypes.FLAME);
-            playerIn.getItemInHand(handIn).hurtAndBreak(16, playerIn, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-			playerIn.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.0F);
-			playerIn.getCooldowns().addCooldown(this, 80);
-			
-			return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
-		}
         
        /* if (playerIn.getItemInHand(handIn).getItem() == FURItemRegistry.SOULFIREHAMMER) {
 			double radius = 4.0D;

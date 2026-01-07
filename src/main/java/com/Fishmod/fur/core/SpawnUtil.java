@@ -12,6 +12,7 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -226,6 +227,18 @@ public class SpawnUtil {
 					}
 				}
 			}
+		}
+	}
+	
+	public static void LavaBurst(Level worldIn, double x, double y, double z, double radius, SimpleParticleType particleIn) {		
+		double NumberofParticles = radius * 8.0D;
+		double speed = 0.06D;
+		
+		for(double i = 0.0D; i < NumberofParticles; i++) {
+			double vx = radius * Math.sin((float) (i / NumberofParticles * 360.0f)) * speed;
+            double vz = radius * Math.cos((float) (i / NumberofParticles * 360.0f)) * speed;
+            
+            worldIn.addParticle(particleIn, x, y, z, vx, 0.0D, vz); 
 		}
 	}
 }
