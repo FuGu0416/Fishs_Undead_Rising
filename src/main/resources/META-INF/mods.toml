@@ -65,6 +65,13 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+	
+[[dependencies.fur]]
+	modId="jei"
+	mandatory=false
+	versionRange="[15.0,)"
+	ordering="NONE"
+	side="CLIENT"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

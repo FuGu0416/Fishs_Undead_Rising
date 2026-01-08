@@ -27,13 +27,15 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
     private final Ingredient container;
     private final ItemStack result;
     private final int time;
-
+    private final float exp;
+    
     public SoulFurnaceRecipe(ResourceLocation id, NonNullList<Ingredient> ingredients, Ingredient container, ItemStack result, float experience, int time) {
     	this.id = id;
     	this.ingredients = ingredients;
     	this.container = container;
     	this.result = result;
     	this.time = time;
+    	this.exp = experience;
     }
     
     @Override
@@ -61,6 +63,11 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
+    
+    @Override
+	public NonNullList<Ingredient> getIngredients() {
+        return this.ingredients;
+	}
 
     @Override
     public ItemStack getResultItem(RegistryAccess access) {
@@ -83,12 +90,16 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 	}
 
 	public Ingredient getContainer() {
-		return container;
+		return this.container;
 	}
 	
     public int getTime() {
-        return time;
+        return this.time;
     }
+    
+	public float getExperience() {
+		return this.exp;
+	}
     
 	public static class Serializer implements RecipeSerializer<SoulFurnaceRecipe> {
 		public Serializer() {

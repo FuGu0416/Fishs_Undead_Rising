@@ -134,6 +134,10 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        name = "JEI"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 dependencies {
@@ -157,6 +161,10 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    
+    //JEI COMPAT
+    compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
+	runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

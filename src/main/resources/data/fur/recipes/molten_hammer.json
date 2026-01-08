@@ -10,7 +10,7 @@
             "item": "fur:molten_alloy"
         },
         "X": {
-			"tag": "forge:gunpowder"
+			"item": "fur:imp_horn"
         },
         "Y": {
 			"tag": "forge:rods/blaze"

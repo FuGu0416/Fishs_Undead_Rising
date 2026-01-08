@@ -241,4 +241,8 @@ public class SpawnUtil {
             worldIn.addParticle(particleIn, x, y, z, vx, 0.0D, vz); 
 		}
 	}
+	
+	public static boolean isCursorInsideBounds(int iconX, int iconY, int iconWidth, int iconHeight, double cursorX, double cursorY) {
+		return iconX <= cursorX && cursorX < iconX + iconWidth && iconY <= cursorY && cursorY < iconY + iconHeight;
+	}
 }
