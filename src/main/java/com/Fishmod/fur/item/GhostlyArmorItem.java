@@ -38,8 +38,8 @@ public class GhostlyArmorItem extends ArmorItem {
 	private static final double[] HEALTH_ADDITION = new double[]{-2.0D, -3.0D, -3.0D, -2.0D};
 	private Multimap<Attribute, AttributeModifier> attributeMap;
 	
-	public GhostlyArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_) {
-		super(ArmorMaterials.NETHERITE, slot, p_i48534_3_);
+	public GhostlyArmorItem(ArmorItem.Type slot, Item.Properties properties) {
+		super(ArmorMaterials.NETHERITE, slot, properties);
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT.get(slot);
 		builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", ArmorMaterials.NETHERITE.getDefenseForType(slot), AttributeModifier.Operation.ADDITION));
@@ -64,7 +64,7 @@ public class GhostlyArmorItem extends ArmorItem {
 	
 	@Override
     @OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.fur.ghostly_armor.desc0").withStyle(ChatFormatting.YELLOW));
 		tooltip.add(Component.translatable("item.fur.ghostly_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}

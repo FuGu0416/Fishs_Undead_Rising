@@ -172,8 +172,8 @@ public class SpawnUtil {
 		}
 	}
 	
-	public static void addFoodEffectTooltip(ItemStack itemIn, List<Component> lores, float durationFactor) {
-		FoodProperties foodStats = itemIn.getItem().getFoodProperties();
+	public static void addFoodEffectTooltip(ItemStack stack, List<Component> tooltip, float durationFactor) {
+		FoodProperties foodStats = stack.getItem().getFoodProperties(stack, null);
 		if (foodStats == null) {
 			return;
 		}
@@ -202,12 +202,12 @@ public class SpawnUtil {
 					iformattabletextcomponent = Component.translatable("potion.withDuration", iformattabletextcomponent, MobEffectUtil.formatDuration(instance, durationFactor));
 				}
 
-				lores.add(iformattabletextcomponent.withStyle(effect.getCategory().getTooltipFormatting()));
+				tooltip.add(iformattabletextcomponent.withStyle(effect.getCategory().getTooltipFormatting()));
 			}
 			
 			if (!attributeList.isEmpty()) {
-				lores.add(CommonComponents.EMPTY);
-				lores.add((Component.translatable("potion.whenDrank")).withStyle(ChatFormatting.DARK_PURPLE));
+				tooltip.add(CommonComponents.EMPTY);
+				tooltip.add((Component.translatable("potion.whenDrank")).withStyle(ChatFormatting.DARK_PURPLE));
 
 				for (Pair<Attribute, AttributeModifier> pair : attributeList) {
 					AttributeModifier modifier = pair.getSecond();
@@ -220,10 +220,10 @@ public class SpawnUtil {
 					}
 
 					if (amount > 0.0D) {
-						lores.add((Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.BLUE));
+						tooltip.add((Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.BLUE));
 					} else if (amount < 0.0D) {
 						formattedAmount = formattedAmount * -1.0D;
-						lores.add((Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.RED));
+						tooltip.add((Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.RED));
 					}
 				}
 			}

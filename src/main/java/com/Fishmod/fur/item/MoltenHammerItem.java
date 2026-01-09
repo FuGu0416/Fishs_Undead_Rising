@@ -26,8 +26,8 @@ import net.minecraft.world.level.Level;
 
 public class MoltenHammerItem extends FURWeaponItem {
 
-	public MoltenHammerItem(Properties PropertiesIn, Tier materialIn, int damageIn, float attackspeedIn, double reachIn, Item repair, Boolean hasDescIn) {
-		super(PropertiesIn, materialIn, damageIn, attackspeedIn, reachIn, repair, hasDescIn);
+	public MoltenHammerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
+		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
 
     @Override

@@ -35,31 +35,31 @@ public class FURRangedItem extends BowItem {
 	private Item ammo = null;
 	private final EntityType <? extends Entity > shot;
 	
-	public FURRangedItem(Item AmmoIn, EntityType <? extends Entity > shotIn, Item.Properties p_i48522_1_) {
-		super(p_i48522_1_);
-        this.ammo = AmmoIn;
-        this.shot = shotIn;
+	public FURRangedItem(Item ammo, EntityType <? extends Entity > shot, Item.Properties properties) {
+		super(properties);
+        this.ammo = ammo;
+        this.shot = shot;
 	}
 
-	public ItemStack getProjectile(ItemStack stack, Player playerIn) {
+	public ItemStack getProjectile(ItemStack stack, Player player) {
 	   if (!(stack.getItem() instanceof ProjectileWeaponItem) || this.ammo == null) {
 		   return ItemStack.EMPTY;
        } else {
     	   Predicate<ItemStack> predicate = ((ProjectileWeaponItem)stack.getItem()).getSupportedHeldProjectiles();
-    	   ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(playerIn, predicate);
+    	   ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(player, predicate);
     	   if (!itemstack.isEmpty()) {
     		   return itemstack;
     	   } else {
     		   predicate = ((ProjectileWeaponItem)stack.getItem()).getAllSupportedProjectiles();
 
-    		   for(int i = 0; i < playerIn.getInventory().getContainerSize(); ++i) {
-    			   ItemStack itemstack1 = playerIn.getInventory().getItem(i);
+    		   for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+    			   ItemStack itemstack1 = player.getInventory().getItem(i);
 	               if (predicate.test(itemstack1)) {
 	            	   return itemstack1;
 	               }
 	            }
 
-	            return playerIn.getAbilities().instabuild ? new ItemStack(this.ammo) : ItemStack.EMPTY;
+	            return player.getAbilities().instabuild ? new ItemStack(this.ammo) : ItemStack.EMPTY;
     	   }
        }
 	}
@@ -72,7 +72,7 @@ public class FURRangedItem extends BowItem {
 	}
 		
 	@Override
-	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
 
 	}
 		
@@ -80,26 +80,26 @@ public class FURRangedItem extends BowItem {
 	* Called when the player stops using an Item (stops holding the right mouse button).
 	*/
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		ItemStack stack = playerIn.getItemInHand(handIn);
-		boolean flag = playerIn.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
-        ItemStack itemstack = this.getProjectile(stack, playerIn);
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+        ItemStack itemstack = this.getProjectile(stack, player);
         
      	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
      		if (itemstack.isEmpty()) {
      			itemstack = new ItemStack(this.ammo);
  			}
-	    } else return InteractionResultHolder.fail(playerIn.getItemInHand(handIn));
+	    } else return InteractionResultHolder.fail(player.getItemInHand(hand));
 	         
-        if (!worldIn.isClientSide) {
-        	//Vec3 lookVec = playerIn.getLookAngle();
+        if (!level.isClientSide) {
+        	//Vec3 lookVec = player.getLookAngle();
 			int power_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
 			int punch_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
 			int flame_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack);
 			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN.get())) {
-	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(worldIn, playerIn);
-	        	abstractarrowentity.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 2.0F, 2.0F);                       
-	        	worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(level, player);
+	        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 2.0F);                       
+	        	level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 	        	
                 if (power_lvl > 0) {
                    abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
@@ -113,9 +113,9 @@ public class FURRangedItem extends BowItem {
                    abstractarrowentity.setSecondsOnFire(100);
                 }
                 
-                if (playerIn.getRandom().nextFloat() < 0.25F) {
-	                stack.hurtAndBreak(1, playerIn, (p_220009_1_) -> {
-	                    p_220009_1_.broadcastBreakEvent(playerIn.getUsedItemHand());
+                if (player.getRandom().nextFloat() < 0.25F) {
+	                stack.hurtAndBreak(1, player, (p_220009_1_) -> {
+	                    p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
 	                });
                 }
                 
@@ -123,18 +123,18 @@ public class FURRangedItem extends BowItem {
                     abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
                 
-                worldIn.addFreshEntity(abstractarrowentity);
-				if (!flag && !playerIn.isCreative()) {
+                level.addFreshEntity(abstractarrowentity);
+				if (!flag && !player.isCreative()) {
 					itemstack.shrink(1);
 					if (itemstack.isEmpty()) {
-						playerIn.getInventory().removeItem(itemstack);
+						player.getInventory().removeItem(itemstack);
 					}
 				}
 			}/* else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
-				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(worldIn);
-        		entitysnowball.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()),playerIn.getZ() + lookVec.z * 1.0D);
-	            entitysnowball.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 0.75F, 1.0F);
-	            entitysnowball.setOwner(playerIn);
+				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(level);
+        		entitysnowball.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()),player.getZ() + lookVec.z * 1.0D);
+	            entitysnowball.shootFromRotation(player, player.xRot, player.yRot, 0.0F, 0.75F, 1.0F);
+	            entitysnowball.setOwner(player);
 	            
 				if (power_lvl > 0) {
 					((DeathCoilEntity) entitysnowball).setDamage(((DeathCoilEntity) entitysnowball).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
@@ -148,25 +148,25 @@ public class FURRangedItem extends BowItem {
 					((DeathCoilEntity) entitysnowball).setSecondsOnFire(100);
 				}
 				
-	            worldIn.addFreshEntity(entitysnowball);
-	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
+	            level.addFreshEntity(entitysnowball);
+	            player.getItemInHand(hand).hurtAndBreak(1, player, (p_220045_0_) -> {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
-				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
-				playerIn.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+				player.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));
         	} else {			 
-				Entity entityammo = this.shot.create(worldIn);
-				((AbstractFireballEntity)entityammo).setOwner(playerIn);
+				Entity entityammo = this.shot.create(level);
+				((AbstractFireballEntity)entityammo).setOwner(player);
 				
 				if(this.shot.equals(FUREntityRegistry.WAR_SMALL_FIREBALL)) {
 					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D)));
-					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()), playerIn.getZ() + lookVec.z * 1.0D);
-					worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+					entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()), player.getZ() + lookVec.z * 1.0D);
+					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 				}
 				if(this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
 					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
-					entityammo.moveTo(playerIn.getX() + lookVec.x * 1.0D, playerIn.getY() + (double)(playerIn.getBbHeight()) - 0.5D, playerIn.getZ() + lookVec.z * 1.0D);
-					worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (playerIn.getRandom().nextFloat() * 0.4F + 1.2F));
+					entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()) - 0.5D, player.getZ() + lookVec.z * 1.0D);
+					level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 				}
 				 
 				if (power_lvl > 0) {
@@ -181,24 +181,24 @@ public class FURRangedItem extends BowItem {
 					((EnchantableFireBallEntity) entityammo).setFlame(true);
 				}
 				 				 
-				worldIn.addFreshEntity(entityammo);
-	            playerIn.getItemInHand(handIn).hurtAndBreak(1, playerIn, (p_220045_0_) -> {
+				level.addFreshEntity(entityammo);
+	            player.getItemInHand(hand).hurtAndBreak(1, player, (p_220045_0_) -> {
 	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
 				
-				if (!flag && !playerIn.isCreative()) {
+				if (!flag && !player.isCreative()) {
 					itemstack.shrink(1);
 					if (itemstack.isEmpty()) {
-						playerIn.inventory.removeItem(itemstack);
+						player.inventory.removeItem(itemstack);
 					}
 				}
-				playerIn.getCooldowns().addCooldown(this, 20 - (power_lvl * 2));
+				player.getCooldowns().addCooldown(this, 20 - (power_lvl * 2));
 			}*/
 			
-			return InteractionResultHolder.consume(playerIn.getItemInHand(handIn));
+			return InteractionResultHolder.consume(player.getItemInHand(hand));
         }
 		
-		return InteractionResultHolder.consume(playerIn.getItemInHand(handIn));
+		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
     /**
@@ -211,7 +211,7 @@ public class FURRangedItem extends BowItem {
    
 	@Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 	}
 }

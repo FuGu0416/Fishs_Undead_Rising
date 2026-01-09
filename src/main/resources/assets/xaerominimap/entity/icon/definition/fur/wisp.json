@@ -1,0 +1,9 @@
+{
+    "variants": {
+    	"fur:textures/mobs/wisp/wisp.png": "outlined_sprite:fur/wisp.png",
+        "fur:textures/mobs/wisp/wisp1.png": "outlined_sprite:fur/wisp1.png",
+        "fur:textures/mobs/wisp/wisp2.png": "outlined_sprite:fur/wisp2.png",
+        "fur:textures/mobs/wisp/wisp3.png": "outlined_sprite:fur/wisp3.png",
+        "default": "outlined_sprite:fur/wisp.png"
+    }
+}

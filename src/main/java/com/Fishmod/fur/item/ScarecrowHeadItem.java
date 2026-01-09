@@ -16,12 +16,12 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ScarecrowHeadItem extends BlockItem implements Equipable {
 
-	public ScarecrowHeadItem(Block block, Item.Properties p_i48527_2_) {
-		super(block, p_i48527_2_);
+	public ScarecrowHeadItem(Block block, Item.Properties properties) {
+		super(block, properties);
 	}
 	
-	public InteractionResultHolder<ItemStack> use(Level p_40395_, Player p_40396_, InteractionHand p_40397_) {
-		return this.swapWithEquipmentSlot(this, p_40395_, p_40396_, p_40397_);
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		return this.swapWithEquipmentSlot(this, level, player, hand);
 	}    
     
     @Override

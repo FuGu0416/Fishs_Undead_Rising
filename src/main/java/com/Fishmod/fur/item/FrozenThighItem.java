@@ -23,8 +23,8 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 public class FrozenThighItem extends FURItem {		
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     
-	public FrozenThighItem(Properties PropertiesIn) {
-    	super(PropertiesIn, 128, UseAnim.EAT, 1);
+	public FrozenThighItem(Properties properties) {
+    	super(properties, 128, UseAnim.EAT, 1);
         Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 7.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -3.0D, AttributeModifier.Operation.ADDITION));
@@ -40,8 +40,8 @@ public class FrozenThighItem extends FURItem {
 		int frozen_ticks = target.getTicksFrozen();
 		target.setTicksFrozen(Math.min(target.getTicksRequiredToFreeze(), frozen_ticks + 80));
 		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4 * 20, 2));
-		stack.hurtAndBreak(1, attacker, (p_220045_0_) -> {
-			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+		stack.hurtAndBreak(1, attacker, (level) -> {
+			level.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
         return true;
     }
@@ -52,8 +52,8 @@ public class FrozenThighItem extends FURItem {
 	@Override
     public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         if (state.getDestroySpeed(worldIn, pos) != 0.0F) {
-           stack.hurtAndBreak(2, entityLiving, (p_220044_0_) -> {
-              p_220044_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+           stack.hurtAndBreak(2, entityLiving, (level) -> {
+              level.broadcastBreakEvent(EquipmentSlot.MAINHAND);
            });
         }
 

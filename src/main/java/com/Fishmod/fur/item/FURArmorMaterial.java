@@ -43,25 +43,25 @@ public enum FURArmorMaterial implements ArmorMaterial {
 	private final float knockbackResistance;
 	private final LazyLoadedValue<Ingredient> repairIngredient;
 
-	private FURArmorMaterial(String p_268171_, int p_268303_, EnumMap<ArmorItem.Type, Integer> p_267941_, int p_268086_, SoundEvent p_268145_, float p_268058_, float p_268180_, Supplier<Ingredient> p_268256_) {
-		this.name = p_268171_;
-		this.durabilityMultiplier = p_268303_;
-		this.protectionFunctionForType = p_267941_;
-		this.enchantmentValue = p_268086_;
-		this.sound = p_268145_;
-		this.toughness = p_268058_;
-		this.knockbackResistance = p_268180_;
-		this.repairIngredient = new LazyLoadedValue<>(p_268256_);
+	private FURArmorMaterial(String name, int durabilityMultiplier, EnumMap<ArmorItem.Type, Integer> protectionFunctionForType, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
+		this.name = name;
+		this.durabilityMultiplier = durabilityMultiplier;
+		this.protectionFunctionForType = protectionFunctionForType;
+		this.enchantmentValue = enchantmentValue;
+		this.sound = sound;
+		this.toughness = toughness;
+		this.knockbackResistance = knockbackResistance;
+		this.repairIngredient = new LazyLoadedValue<>(repairIngredient);
 	}
 
 	@Override
-	public int getDurabilityForType(ArmorItem.Type Slot) {
-		return HEALTH_FUNCTION_FOR_TYPE.get(Slot) * this.durabilityMultiplier;
+	public int getDurabilityForType(ArmorItem.Type slot) {
+		return HEALTH_FUNCTION_FOR_TYPE.get(slot) * this.durabilityMultiplier;
 	}
 
 	@Override
-	public int getDefenseForType(ArmorItem.Type Slot) {
-		return this.protectionFunctionForType.get(Slot);
+	public int getDefenseForType(ArmorItem.Type slot) {
+		return this.protectionFunctionForType.get(slot);
 	}
 
 	@Override

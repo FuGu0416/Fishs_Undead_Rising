@@ -31,9 +31,9 @@ public class FURArrowItem extends ArrowItem {
      * 1: tooltips w/ white text 
      * 2: tooltips w/ yellow text 
      */	
-	public FURArrowItem(Properties p_i48487_1_, int TooltipIn) {
-		super(p_i48487_1_);
-		this.Tooltip = TooltipIn;
+	public FURArrowItem(Properties properties, int tooltip) {
+		super(properties);
+		this.Tooltip = tooltip;
 	}
 	
 	public FURArrowItem(Properties p_i48487_1_) {
@@ -41,16 +41,16 @@ public class FURArrowItem extends ArrowItem {
 	}
 
 	@Override
-	public AbstractArrow createArrow(Level p_200887_1_, ItemStack stack, LivingEntity p_200887_3_) {
-		EntityType<? extends FURArrowEntity> Type = FUREntityRegistry.GHOUL_ARROW.get();
+	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity living) {
+		EntityType<? extends FURArrowEntity> type = FUREntityRegistry.GHOUL_ARROW.get();
 		
 		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW.get())) {
-			Type = FUREntityRegistry.GHOUL_ARROW.get();
+			type = FUREntityRegistry.GHOUL_ARROW.get();
 		} else if (stack.getItem().equals(FURItemRegistry.FANG_ARROW.get())) {
-			Type = FUREntityRegistry.FANG_ARROW.get();
+			type = FUREntityRegistry.FANG_ARROW.get();
 		}
 		
-		FURArrowEntity arrowentity = new FURArrowEntity(Type, p_200887_1_, p_200887_3_);
+		FURArrowEntity arrowentity = new FURArrowEntity(type, level, living);
 		return arrowentity;
 	}
 
@@ -62,7 +62,7 @@ public class FURArrowItem extends ArrowItem {
 
 	@Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW.get())) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 40/*FURConfig.Ghoul_targetHPThreshold.get()*/).withStyle(ChatFormatting.YELLOW));
 		} else if (stack.getItem().equals(FURItemRegistry.FANG_ARROW.get())) {

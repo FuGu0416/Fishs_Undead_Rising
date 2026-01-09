@@ -20,8 +20,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ChitinArmorItem extends ArmorItem {	
-	public ChitinArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_) {
-		super(FURArmorMaterial.CHITIN, slot, p_i48534_3_);
+	public ChitinArmorItem(ArmorItem.Type slot, Item.Properties properties) {
+		super(FURArmorMaterial.CHITIN, slot, properties);
 	}
 	
 	@Override
@@ -40,7 +40,7 @@ public class ChitinArmorItem extends ArmorItem {
 
 	@Override
     @OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.fur.chitin_armor.desc0").withStyle(ChatFormatting.YELLOW));
 		tooltip.add(Component.translatable("item.fur.chitin_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}

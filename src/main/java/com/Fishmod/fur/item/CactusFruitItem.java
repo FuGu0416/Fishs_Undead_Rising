@@ -18,22 +18,22 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CactusFruitItem extends FURItem {
-	public CactusFruitItem(Properties p_i48487_1_, int TooltipIn) {
-		super(p_i48487_1_, TooltipIn);
+	public CactusFruitItem(Properties properties, int tooltip) {
+		super(properties, tooltip);
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext p_195939_1_) {
-		Level worldIn = p_195939_1_.getLevel();
-		Player player = p_195939_1_.getPlayer();
-		InteractionHand hand = p_195939_1_.getHand();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Level worldIn = ctx.getLevel();
+		Player player = ctx.getPlayer();
+		InteractionHand hand = ctx.getHand();
 		ItemStack itemstack = player.getItemInHand(hand);
-        BlockPos blockpos = p_195939_1_.getClickedPos();
+        BlockPos blockpos = ctx.getClickedPos();
         BlockState blockstate = worldIn.getBlockState(blockpos);
         BlockState blockstate1 = worldIn.getBlockState(blockpos.above());
         
         if (!(blockstate.is(BlockTags.SAND) || blockstate.getBlock().equals(Blocks.SOUL_SAND)) || !blockstate1.isAir()) {
-        	return super.useOn(p_195939_1_);
+        	return super.useOn(ctx);
         }
         
         if (player.isShiftKeyDown()) {
@@ -51,7 +51,7 @@ public class CactusFruitItem extends FURItem {
 	            }          
 	        }
         } else {
-        	return super.useOn(p_195939_1_); 
+        	return super.useOn(ctx); 
         }
              
         return InteractionResult.sidedSuccess(worldIn.isClientSide);

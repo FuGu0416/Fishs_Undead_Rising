@@ -1,0 +1,20 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "fur:item/parasite_item"
+    },
+	"overrides": [
+	    {
+			"predicate": { "fur:variant": 0.1 },
+			"model": "fur:item/parasite_raw1"
+	    },
+	    {
+			"predicate": { "fur:variant": 0.2 },
+			"model": "fur:item/parasite_raw2"
+	    },
+	    {
+			"predicate": { "fur:variant": 0.3 },
+			"model": "fur:item/parasite_raw3"
+	    }
+  	]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": [
+	{
+    	"item": "fur:parasite_raw"
+	}
+  ],
+  "result": "fur:parasite_cooked",
+  "experience": 0.35,
+  "cookingtime": 600
+}

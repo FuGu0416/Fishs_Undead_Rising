@@ -27,8 +27,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class WetaHoeItem extends HoeItem {
 	private Item repair_material;
 	
-	public WetaHoeItem(Properties p_i48487_1_, Tier materialIn, int damageIn, float attackspeedIn, Item repair) {
-		super(materialIn, damageIn, attackspeedIn, p_i48487_1_);
+	public WetaHoeItem(Properties properties, Tier material, int damage, float attackspeed, Item repair) {
+		super(material, damage, attackspeed, properties);
 		this.repair_material = repair;
 	}
 
@@ -36,10 +36,10 @@ public class WetaHoeItem extends HoeItem {
 	* Called when this item is used when targeting a Block
 	*/
 	@Override
-	public InteractionResult useOn(UseOnContext p_195939_1_) {
-		Level worldIn = p_195939_1_.getLevel();
-		BlockPos pos = p_195939_1_.getClickedPos();
-		Block block = worldIn.getBlockState(pos).getBlock();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Block block = level.getBlockState(pos).getBlock();
 		boolean flag = false;
 		
 		if (block instanceof CropBlock || block instanceof NetherWartBlock || block instanceof BushBlock) {
@@ -47,11 +47,11 @@ public class WetaHoeItem extends HoeItem {
 	    		for (int y = -1; y <= 1 ; y++) {
 	    			for (int z = -1; z <= 1 ; z++) {
 	    				BlockPos pos_crop = pos.offset(x, y, z);
-	    				BlockState iblockstate_crop = worldIn.getBlockState(pos_crop);
+	    				BlockState iblockstate_crop = level.getBlockState(pos_crop);
 			            if (iblockstate_crop.getBlock() instanceof CropBlock) {
 			            	if (((CropBlock)iblockstate_crop.getBlock()).isMaxAge(iblockstate_crop)) {
-				                worldIn.destroyBlock(pos_crop, true);
-				                worldIn.setBlock(pos_crop, iblockstate_crop.getBlock().defaultBlockState(), 3);
+				                level.destroyBlock(pos_crop, true);
+				                level.setBlock(pos_crop, iblockstate_crop.getBlock().defaultBlockState(), 3);
 				                
 				                if (!flag) {
 				                	flag = true;
@@ -59,15 +59,15 @@ public class WetaHoeItem extends HoeItem {
 			            	}
 			            } else if (iblockstate_crop.getBlock() instanceof NetherWartBlock) {
 			            	if (iblockstate_crop.getValue(NetherWartBlock.AGE) >= 3) {
-				                worldIn.destroyBlock(pos_crop, true);
-				                worldIn.setBlock(pos_crop, iblockstate_crop.getBlock().defaultBlockState(), 3);
+				                level.destroyBlock(pos_crop, true);
+				                level.setBlock(pos_crop, iblockstate_crop.getBlock().defaultBlockState(), 3);
 				                
 				                if (!flag) {
 				                	flag = true;
 				                }
 			            	}
 			            } else if (iblockstate_crop.getBlock() instanceof BushBlock) {
-			            	worldIn.destroyBlock(pos_crop, true);
+			            	level.destroyBlock(pos_crop, true);
 			            	
 			                if (!flag) {
 			                	flag = true;
@@ -77,12 +77,12 @@ public class WetaHoeItem extends HoeItem {
 				}
 			}
 	    	
-	    	p_195939_1_.getPlayer().getItemInHand(p_195939_1_.getHand()).hurtAndBreak(1, p_195939_1_.getPlayer(), (p_220045_0_) -> {
+	    	ctx.getPlayer().getItemInHand(ctx.getHand()).hurtAndBreak(1, ctx.getPlayer(), (p_220045_0_) -> {
     			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
 		}
 
-		return super.useOn(p_195939_1_);
+		return super.useOn(ctx);
 	}
     
 	@Override
@@ -92,7 +92,7 @@ public class WetaHoeItem extends HoeItem {
 	
 	@Override
     @OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
     	tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 	}	      
 }

@@ -24,8 +24,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class FamineArmorItem extends ArmorItem {	
-	public FamineArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_) {
-		super(ArmorMaterials.DIAMOND, slot, p_i48534_3_);
+	public FamineArmorItem(ArmorItem.Type slot, Item.Properties properties) {
+		super(ArmorMaterials.DIAMOND, slot, properties);
 	}		
 		
 	@Override
@@ -63,7 +63,7 @@ public class FamineArmorItem extends ArmorItem {
 	
 	@Override
     @OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("item.fur.famine_armor.desc0").withStyle(ChatFormatting.YELLOW));
 		tooltip.add(Component.translatable("item.fur.famine_armor.desc1").withStyle(ChatFormatting.YELLOW));
 	}

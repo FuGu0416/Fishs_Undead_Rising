@@ -26,50 +26,50 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FURThrowableItem extends Item {
 
-	public FURThrowableItem(Properties p_i48487_1_) {
-		super(p_i48487_1_);
+	public FURThrowableItem(Properties properties) {
+		super(properties);
 	}
 	
     /**
      * Called when the equipped item is right clicked.
      */
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
-        ItemStack itemstack = playerIn.getItemInHand(handIn);
+        ItemStack itemstack = player.getItemInHand(hand);
 
-        if (!playerIn.isCreative()) {
+        if (!player.isCreative()) {
             itemstack.shrink(1);
         }
 
-        worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (playerIn.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
         
     	if (itemstack.getItem().equals(FURItemRegistry.HOLY_GRENADE.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE.get(), playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
-            worldIn.addFreshEntity(entitysnowball);
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE.get(), player, level, SoundEvents.GENERIC_EXPLODE, 4.0F);
+            entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
+            level.addFreshEntity(entitysnowball);
     	} else if (itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB.get(), playerIn, worldIn, FURSoundRegistry.BANSHEE_HURT.get(), 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
-            worldIn.addFreshEntity(entitysnowball);
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB.get(), player, level, FURSoundRegistry.BANSHEE_HURT.get(), 4.0F);
+            entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
+            level.addFreshEntity(entitysnowball);
     	} else if (itemstack.getItem().equals(FURItemRegistry.SONICBOMB.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB.get(), playerIn, worldIn, FURSoundRegistry.BANSHEE_ATTACK.get(), 4.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
-            worldIn.addFreshEntity(entitysnowball);
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB.get(), player, level, FURSoundRegistry.BANSHEE_ATTACK.get(), 4.0F);
+            entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
+            level.addFreshEntity(entitysnowball);
     	} else if (itemstack.getItem().equals(FURItemRegistry.BASIC_BOMB.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.BASIC_BOMB.get(), playerIn, worldIn, SoundEvents.GENERIC_EXPLODE, 2.0F);
-            entitysnowball.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), -20.0F, 0.75F, 1.0F);
-            worldIn.addFreshEntity(entitysnowball);
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.BASIC_BOMB.get(), player, level, SoundEvents.GENERIC_EXPLODE, 2.0F);
+            entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
+            level.addFreshEntity(entitysnowball);
     	}
 
-        playerIn.awardStat(Stats.ITEM_USED.get(this));
+        player.awardStat(Stats.ITEM_USED.get(this));
         
         return InteractionResultHolder.pass(itemstack);
     }
     
 	@Override
     @OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
     	tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 	}
 }

@@ -26,8 +26,7 @@ public class FURItemstackRenderer extends BlockEntityWithoutLevelRenderer  {
 
 	@Override
     public void renderByItem(ItemStack itemStackIn, ItemDisplayContext p_239207_2_, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        @SuppressWarnings("resource")
-		Context context = new Context(Minecraft.getInstance().getBlockEntityRenderDispatcher(), 
+        Context context = new Context(Minecraft.getInstance().getBlockEntityRenderDispatcher(), 
         		Minecraft.getInstance().getBlockRenderer(), 
         		Minecraft.getInstance().getItemRenderer(), 
         		Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels(), Minecraft.getInstance().font);

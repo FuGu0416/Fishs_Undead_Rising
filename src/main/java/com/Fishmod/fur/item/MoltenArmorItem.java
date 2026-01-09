@@ -33,10 +33,10 @@ public class MoltenArmorItem extends ArmorItem {
 	 */
 	public float fireprooflevel;
 
-	public MoltenArmorItem(ArmorItem.Type slot, Item.Properties p_i48534_3_, float effectlevelIn) {
-		super(ArmorMaterials.DIAMOND, slot, p_i48534_3_);
-        this.effectlevel = effectlevelIn * 0.2F;
-        this.fireprooflevel = effectlevelIn * 0.5F;
+	public MoltenArmorItem(ArmorItem.Type slot, Item.Properties properties, float effectlevel) {
+		super(ArmorMaterials.DIAMOND, slot, properties);
+        this.effectlevel = effectlevel * 0.2F;
+        this.fireprooflevel = effectlevel * 0.5F;
 	}
 	
 	@Override

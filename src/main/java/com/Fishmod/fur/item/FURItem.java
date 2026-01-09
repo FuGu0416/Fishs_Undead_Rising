@@ -25,11 +25,11 @@ public class FURItem extends Item {
 	private int UseDuration;
 	private int Tooltip = 0;
 	
-	public FURItem(Properties p_i48487_1_, int UseDurationIn, UseAnim UseAnimIn, int TooltipIn) {
-		super(p_i48487_1_);
-		this.UseDuration = UseDurationIn;
-		this.UseAnim = UseAnimIn;
-		this.Tooltip = TooltipIn;
+	public FURItem(Properties properties, int useDuration, UseAnim useAnim, int tooltip) {
+		super(properties);
+		this.UseDuration = useDuration;
+		this.UseAnim = useAnim;
+		this.Tooltip = tooltip;
 	}
 	
     /**
@@ -37,21 +37,21 @@ public class FURItem extends Item {
      * 1: tooltips w/ white text 
      * 2: tooltips w/ yellow text 
      */	
-	public FURItem(Properties p_i48487_1_, int TooltipIn) {
-		this(p_i48487_1_, 32, net.minecraft.world.item.UseAnim.EAT, TooltipIn);
+	public FURItem(Properties properties, int tooltip) {
+		this(properties, 32, net.minecraft.world.item.UseAnim.EAT, tooltip);
 	}
 	
-	public FURItem(Properties p_i48487_1_) {
-		this(p_i48487_1_, 0);
+	public FURItem(Properties properties) {
+		this(properties, 0);
 	}
 
 	@Override
-    public int getUseDuration(ItemStack p_77626_1_) {
+    public int getUseDuration(ItemStack stack) {
         return this.UseDuration;
     }
 
 	@Override
-    public UseAnim getUseAnimation(ItemStack p_77661_1_) {
+    public UseAnim getUseAnimation(ItemStack stack) {
         return this.UseAnim;
     }
 	
@@ -60,19 +60,19 @@ public class FURItem extends Item {
      * the Item before the action is complete.
      */
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
     	
-		if (stack.getItem().equals(FURItemRegistry.BOABING.get()) && entityLiving.isOnFire()) {
-			entityLiving.clearFire();
+		if (stack.getItem().equals(FURItemRegistry.BOABING.get()) && living.isOnFire()) {
+			living.clearFire();
 		}
 		
-        /*if (!worldIn.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI) && entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
-        	if (!((PlayerEntity)entityLiving).inventory.add(new ItemStack(Items.STICK, 2))) {
-        		((PlayerEntity)entityLiving).spawnAtLocation(new ItemStack(Items.STICK, 2));
+        /*if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI) && living instanceof PlayerEntity && !((PlayerEntity)living).isCreative()) {
+        	if (!((PlayerEntity)living).inventory.add(new ItemStack(Items.STICK, 2))) {
+        		((PlayerEntity)living).spawnAtLocation(new ItemStack(Items.STICK, 2));
             }
         }*/
 		
-    	return super.finishUsingItem(stack, worldIn, entityLiving);
+    	return super.finishUsingItem(stack, level, living);
     }
     
     @Override
@@ -81,20 +81,20 @@ public class FURItem extends Item {
     }
     
     @Override
-    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+    public int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType) {
     	/*if (itemStack.getItem().equals(FURItemRegistry.BURNTOVIPOSITOR)) {
     		return 6400;
-    	} else */if (itemStack.getItem().equals(FURItemRegistry.IMP_HORN.get())) {
+    	} else */if (stack.getItem().equals(FURItemRegistry.IMP_HORN.get())) {
     		return 3200;
     	} else {
-    		return super.getBurnTime(itemStack, recipeType);
+    		return super.getBurnTime(stack, recipeType);
     	}
     }
  
 	@Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		FoodProperties foodStats = stack.getItem().getFoodProperties();
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		FoodProperties foodStats = stack.getItem().getFoodProperties(stack, null);
 		
 		if (foodStats != null) {
 			SpawnUtil.addFoodEffectTooltip(stack, tooltip, 1.0F);

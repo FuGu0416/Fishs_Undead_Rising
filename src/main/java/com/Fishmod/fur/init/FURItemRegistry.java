@@ -22,6 +22,7 @@ import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenHammerItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
+import com.Fishmod.fur.item.ParasiteRawItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
 import com.Fishmod.fur.item.WetaHoeItem;
 
@@ -131,14 +132,11 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOUL_CLAW = DEF_REG.register("ghoul_claw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> new FURArrowItem(new Item.Properties()));
 	public static final RegistryObject<Item> FANG_ARROW = DEF_REG.register("fang_arrow", () -> new FURArrowItem(new Item.Properties()));
+	public static final RegistryObject<Item> PARASITE_RAW = DEF_REG.register("parasite_raw", () -> new ParasiteRawItem(new Item.Properties()));
+	public static final RegistryObject<Item> PARASITE_COOKED = DEF_REG.register("parasite_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
-	public static final RegistryObject<Item> PARASITE_COMMON = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_common");
-	public static final RegistryObject<Item> PARASITE_DESERT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_desert");
-	public static final RegistryObject<Item> PARASITE_JUNGLE = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.POISON, 4*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_jungle");
-	public static final RegistryObject<Item> PARASITE_MAGGOT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(Effects.HUNGER, 30*20, 0), 0.3F).build()), 2).setRegistryName("mod_lavacow:parasite_item_maggot");
-	public static final RegistryObject<Item> PARASITE_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:parasite_item_cooked");
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("mod_lavacow:intestine");
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA).setRegistryName("mod_lavacow:potion_of_mooten_lava");
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("mod_lavacow:plagued_porkchop");

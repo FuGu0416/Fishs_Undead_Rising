@@ -13,42 +13,42 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 public class FURStewItem extends FURItem {
-	public FURStewItem(Properties PropertiesIn, int TooltipIn) {
-    	super(PropertiesIn, 32, UseAnim.DRINK, TooltipIn);
+	public FURStewItem(Properties properties, int tooltip) {
+    	super(properties, 32, UseAnim.DRINK, tooltip);
     }
 
-	public FURStewItem(Properties PropertiesIn, UseAnim UseActionIn, int TooltipIn) {
-    	super(PropertiesIn.craftRemainder(Items.BOWL), 32, UseActionIn, TooltipIn);
+	public FURStewItem(Properties properties, UseAnim useAnim, int tooltip) {
+    	super(properties.craftRemainder(Items.BOWL), 32, useAnim, tooltip);
     }
 	
 	@Override
-	public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
-    	/*if (this.equals(FURItemRegistry.NETHERSTEW) && target instanceof PigEntity && !target.isBaby()) {
-    		if(!playerIn.isCreative()) 
+	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity living, InteractionHand hand) {
+    	/*if (this.equals(FURItemRegistry.NETHERSTEW) && living instanceof PigEntity && !living.isBaby()) {
+    		if(!player.isCreative()) 
     		{
     			stack.shrink(1);
     		}
     		
-    		playerIn.playSound(SoundEvents.GENERIC_BURN, 1.0F, 1.0F);
+    		player.playSound(SoundEvents.GENERIC_BURN, 1.0F, 1.0F);
         	for (int i = 0; i < 5; ++i)
             {
-                double d0 = target.getRandom().nextGaussian() * 0.02D;
-                double d1 = target.getRandom().nextGaussian() * 0.02D;
-                double d2 = target.getRandom().nextGaussian() * 0.02D;
-                target.level.addParticle(ParticleTypes.HEART, target.getRandomX(1.0D), target.getRandomY() + 0.5D, target.getRandomZ(1.0D), d0, d1, d2);
+                double d0 = living.getRandom().nextGaussian() * 0.02D;
+                double d1 = living.getRandom().nextGaussian() * 0.02D;
+                double d2 = living.getRandom().nextGaussian() * 0.02D;
+                living.level.addParticle(ParticleTypes.HEART, living.getRandomX(1.0D), living.getRandomY() + 0.5D, living.getRandomZ(1.0D), d0, d1, d2);
             }
         	
-        	if (!playerIn.level.isClientSide) 
+        	if (!player.level.isClientSide) 
         	{
-                ZombifiedPiglinEntity zombifiedpiglinentity = EntityType.ZOMBIFIED_PIGLIN.create(playerIn.level);
+                ZombifiedPiglinEntity zombifiedpiglinentity = EntityType.ZOMBIFIED_PIGLIN.create(player.level);
                 zombifiedpiglinentity.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
-                zombifiedpiglinentity.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+                zombifiedpiglinentity.moveTo(living.getX(), living.getY(), living.getZ(), living.yRot, living.xRot);
                 zombifiedpiglinentity.setBaby(true);
-                playerIn.level.addFreshEntity(zombifiedpiglinentity);
+                player.level.addFreshEntity(zombifiedpiglinentity);
         	}
             return ActionResultType.PASS;
         } else {  */ 	
-        	return super.interactLivingEntity(stack, playerIn, target, hand);
+        	return super.interactLivingEntity(stack, player, living, hand);
         //}
     }
       
@@ -57,15 +57,15 @@ public class FURStewItem extends FURItem {
      * the Item before the action is complete.
      */
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
-    	ItemStack itemstack = super.finishUsingItem(stack, worldIn, entityLiving);
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
+    	ItemStack itemstack = super.finishUsingItem(stack, level, living);
     	
     	if (this.equals(FURItemRegistry.GHOSTJELLY.get())) {
-    		entityLiving.setDeltaMovement(0.0D, 2.0D, 0.0D);
-    		entityLiving.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
+    		living.setDeltaMovement(0.0D, 2.0D, 0.0D);
+    		living.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
     	}
     	
-        if (!worldIn.isClientSide && entityLiving instanceof Player player && !player.isCreative() && !itemstack.isEmpty()) {
+        if (!level.isClientSide && living instanceof Player player && !player.isCreative() && !itemstack.isEmpty()) {
         	if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
         		player.spawnAtLocation(new ItemStack(Items.BOWL));
             }

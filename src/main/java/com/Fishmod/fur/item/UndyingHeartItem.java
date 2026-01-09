@@ -18,42 +18,42 @@ import net.minecraft.world.level.block.Blocks;
 
 public class UndyingHeartItem extends FURItem {
 
-	public UndyingHeartItem(Properties p_i48487_1_) {
-		super(p_i48487_1_);
+	public UndyingHeartItem(Properties properties) {
+		super(properties);
 	}
 
 	/**
 	* Called when this item is used when targetting a Block
 	*/
 	@Override
-	public InteractionResult useOn(UseOnContext p_195939_1_) {
-		Level worldIn = p_195939_1_.getLevel();
-		BlockPos pos = p_195939_1_.getClickedPos();
-		Player player = p_195939_1_.getPlayer();
-		ItemStack itemstack = p_195939_1_.getItemInHand();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Player player = ctx.getPlayer();
+		ItemStack itemstack = ctx.getItemInHand();
 		
-		if((worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_COMMON.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_STRAW.get()) || worldIn.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get())) 
-				&& (worldIn.getBlockState(pos.below()).getBlock().equals(Blocks.HAY_BLOCK) || worldIn.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get())) 
-				&& (worldIn.getBlockState(pos).getBlock().equals(Blocks.HAY_BLOCK) || worldIn.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get()))) {
-			Types type = ((ScarecrowHeadBlock)worldIn.getBlockState(pos.above()).getBlock()).type;
+		if((level.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_COMMON.get()) || level.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_STRAW.get()) || level.getBlockState(pos.above()).getBlock().equals(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get())) 
+				&& (level.getBlockState(pos.below()).getBlock().equals(Blocks.HAY_BLOCK) || level.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get())) 
+				&& (level.getBlockState(pos).getBlock().equals(Blocks.HAY_BLOCK) || level.getBlockState(pos.below()).getBlock().equals(FURBlockRegistry.DISEASED_HAY_BLOCK.get()))) {
+			Types type = ((ScarecrowHeadBlock)level.getBlockState(pos.above()).getBlock()).type;
 			
 	        if (!player.isCreative()) {
 	            itemstack.shrink(1);
 	        }
 			
-			worldIn.destroyBlock(pos, false);
-			worldIn.destroyBlock(pos.below(), false);
-			worldIn.destroyBlock(pos.above(), false);
+			level.destroyBlock(pos, false);
+			level.destroyBlock(pos.below(), false);
+			level.destroyBlock(pos.above(), false);
 			
-			if(!worldIn.isClientSide) {
-	        	ScarecrowEntity scarecrowentity = FUREntityRegistry.SCARECROW.get().create(worldIn);
+			if(!level.isClientSide) {
+	        	ScarecrowEntity scarecrowentity = FUREntityRegistry.SCARECROW.get().create(level);
 	        	
 	        	scarecrowentity.tame(player);
 	        	scarecrowentity.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 	        	scarecrowentity.setSkin(type.ordinal());
-	        	worldIn.addFreshEntity(scarecrowentity);
+	        	level.addFreshEntity(scarecrowentity);
 	        	
-	            for(ServerPlayer serverplayerentity1 : worldIn.getEntitiesOfClass(ServerPlayer.class, scarecrowentity.getBoundingBox().inflate(5.0D))) {
+	            for(ServerPlayer serverplayerentity1 : level.getEntitiesOfClass(ServerPlayer.class, scarecrowentity.getBoundingBox().inflate(5.0D))) {
 	                CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayerentity1, scarecrowentity);
 	            }
         	}
@@ -61,6 +61,6 @@ public class UndyingHeartItem extends FURItem {
 			return InteractionResult.CONSUME;
 		}
 						
-		return super.useOn(p_195939_1_);		
+		return super.useOn(ctx);		
 	}
 }

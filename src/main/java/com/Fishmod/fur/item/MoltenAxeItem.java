@@ -28,27 +28,27 @@ public class MoltenAxeItem extends AxeItem {
 	private Item repair_material;
 	private SimpleParticleType particles;
 	
-	public MoltenAxeItem(Properties p_i48487_1_, Tier materialIn, float damageIn, float attackspeedIn, Item repair, SimpleParticleType particlesIn) {
-		super(materialIn, damageIn, attackspeedIn, p_i48487_1_);
+	public MoltenAxeItem(Properties properties, Tier material, float damage, float attackspeed, Item repair, SimpleParticleType particles) {
+		super(material, damage, attackspeed, properties);
 		this.repair_material = repair;
-		this.particles = particlesIn;
+		this.particles = particles;
 	}
 		
 	/**
 	    * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
 	    */
 	@Override
-	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {	
-		if (worldIn.getBlockState(pos).is(BlockTags.MINEABLE_WITH_AXE)) {
-			worldIn.playSound((Player)null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.FIRE_AMBIENT, entityLiving.getSoundSource(), 1.0F, 1.0F);
+	public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {	
+		if (level.getBlockState(pos).is(BlockTags.MINEABLE_WITH_AXE)) {
+			level.playSound((Player)null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.FIRE_AMBIENT, living.getSoundSource(), 1.0F, 1.0F);
 			double j = 1.2D;
 			for(int i = 0; i < 16; i++) {
-				((ServerLevel) worldIn).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, pos.getY() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, pos.getZ() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-				((ServerLevel) worldIn).sendParticles(this.particles, pos.getX() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, pos.getY() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, pos.getZ() + 0.5D + entityLiving.getRandom().nextDouble() * j - j/2, 1, 0.0D, 0.0D, 0.0D, 0.0D);	
+				((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5D + living.getRandom().nextDouble() * j - j/2, pos.getY() + 0.5D + living.getRandom().nextDouble() * j - j/2, pos.getZ() + 0.5D + living.getRandom().nextDouble() * j - j/2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+				((ServerLevel) level).sendParticles(this.particles, pos.getX() + 0.5D + living.getRandom().nextDouble() * j - j/2, pos.getY() + 0.5D + living.getRandom().nextDouble() * j - j/2, pos.getZ() + 0.5D + living.getRandom().nextDouble() * j - j/2, 1, 0.0D, 0.0D, 0.0D, 0.0D);	
 			}
 		}
 				
-		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+		return super.mineBlock(stack, level, state, pos, living);
 	}
 	
     /**
@@ -70,7 +70,7 @@ public class MoltenAxeItem extends AxeItem {
 	
 	@Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
     	tooltip.add(Component.translatable(stack.getDescriptionId() + ".desc").withStyle(ChatFormatting.YELLOW));
 	}	
 }

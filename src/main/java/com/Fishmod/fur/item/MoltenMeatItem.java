@@ -18,19 +18,19 @@ public class MoltenMeatItem extends FlintAndSteelItem {
     	super(properties);
     }     
 	
-	public InteractionResult useOn(UseOnContext p_195939_1_) {
-		Player player = p_195939_1_.getPlayer();
-		ItemStack itemstack = player.getItemInHand(p_195939_1_.getHand());
-		Level world = p_195939_1_.getLevel();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Player player = ctx.getPlayer();
+		ItemStack itemstack = player.getItemInHand(ctx.getHand());
+		Level world = ctx.getLevel();
 		
-		if(!super.useOn(p_195939_1_).equals(InteractionResult.FAIL)) {
+		if(!super.useOn(ctx).equals(InteractionResult.FAIL)) {
 			if(!player.isCreative())
 				itemstack.shrink(1);
 			
 			return InteractionResult.sidedSuccess(world.isClientSide());
 		}
 		
-		return super.useOn(p_195939_1_);
+		return super.useOn(ctx);
 	}
 	
 	/**
