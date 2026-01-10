@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
 
 import net.minecraft.core.BlockPos;
@@ -73,7 +74,7 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     protected void registerGoals() {   	
     	super.registerGoals();    
     	this.goalSelector.addGoal(1, new SeaHagEntity.GoToWaterGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
+		this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));
 		this.goalSelector.addGoal(3, new SeaHagEntity.AIUseSpell());
     }
 

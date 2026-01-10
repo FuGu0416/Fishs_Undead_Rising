@@ -21,7 +21,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -30,7 +29,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -41,9 +39,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.HoverRandomPos;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -66,9 +61,12 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.ICharging;
+import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
+import com.Fishmod.fur.entities.ai.FloatingMoveControl;
+import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.entities.ai.WispSwellGoal;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -78,11 +76,11 @@ import com.Fishmod.fur.init.FURParticleRegistry;
 
 Updated for Minecraft Forge 1.20.1 using Mojang mappings.
 */
-public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEntity {
+public class WispEntity extends FURTameableEntity implements ICharging, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation FLOAT = RawAnimation.begin().thenPlay("wisp.model.floating");
-    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.spinning");
+    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.floating2");
     private static final RawAnimation CHARGE = RawAnimation.begin().thenPlay("wisp.model.charging");
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wisp.model.casting");
     
@@ -92,11 +90,12 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 	private int oldSwell;
 	private int swell;
 	private int maxSwell = 30;
-	private boolean isCharging = false;
+	public boolean isCharging = false;
 	
 	public WispEntity(EntityType<? extends WispEntity> type, Level level) {
 		super(type, level);
-		this.moveControl = new FlyingMoveControl(this, 20, true);
+		this.moveControl = new FloatingMoveControl(this);
+		this.setNoGravity(true);
 	}
 
     /**
@@ -118,9 +117,9 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new WispSwellGoal(this));
 		//this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
-		this.goalSelector.addGoal(3, new WispEntity.AIChargeAttack());
+		this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));  
-        this.goalSelector.addGoal(8, new WispEntity.AIMoveRandom());
+        this.goalSelector.addGoal(8, new FloatingMoveRandomGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.applyEntityAI();
 	}
@@ -136,7 +135,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 
     @Override
     protected Goal wanderGoal() {
-    	return new WispEntity.AIMoveRandom();
+    	return new FloatingMoveRandomGoal(this);
     }
     
     @Override
@@ -146,8 +145,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
-        		.add(Attributes.MOVEMENT_SPEED, 0.3D)
-        		.add(Attributes.FLYING_SPEED, 0.6F)
+        		.add(Attributes.MOVEMENT_SPEED, 0.15D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
         		.add(Attributes.MAX_HEALTH, 8.0D/*FURConfig.Wisp_Health.get()*/)
         		.add(Attributes.ATTACK_DAMAGE, 1.0D)
@@ -375,6 +373,14 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
         this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
+	public boolean isCharging() {
+        return this.isCharging;
+	}
+
+	public void setIsCharging(boolean bool) {
+        this.isCharging = bool;
+	}
+    
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
         return p_213348_2_.height * 0.5F;
@@ -408,11 +414,6 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
     protected void playStepSound(BlockPos pos, BlockState state) {
 	} 
 	
-	@Override
-	public boolean isFlying() {
-		return true;
-	}
-
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
@@ -453,95 +454,7 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
     	} else {
             super.handleEntityEvent(id);
         }
-    }
-    
-    class AIChargeAttack extends Goal {
-    	
-        public AIChargeAttack() {
-        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        public boolean canUse() {
-            if (WispEntity.this.getTarget() != null/* && !WispEntity.this.getMoveControl().hasWanted() && WispEntity.this.getRandom().nextInt(7) == 0*/) {
-                return WispEntity.this.distanceToSqr(WispEntity.this.getTarget()) > 4.0D;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            return WispEntity.this.getMoveControl().hasWanted() && WispEntity.this.getTarget() != null && WispEntity.this.getTarget().isAlive();
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void start() {
-            LivingEntity LivingEntity = WispEntity.this.getTarget();
-            Vec3 vec3d = LivingEntity.getEyePosition(1.0F);
-            WispEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
-            WispEntity.this.isCharging = true;
-            WispEntity.this.level().broadcastEntityEvent(WispEntity.this, (byte) 6);
-        }
-
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
-        public void stop() {
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            LivingEntity livingentity = WispEntity.this.getTarget();
-            if (WispEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
-               WispEntity.this.doHurtTarget(livingentity);
-            } else {
-               double d0 = WispEntity.this.distanceToSqr(livingentity);
-               if (d0 < 9.0D) {
-            	   Vec3 vector3d = livingentity.getEyePosition(1.0F);
-            	   WispEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
-               }
-            }
-        }
-    }
-    
-    class AIMoveRandom extends Goal {
-    	AIMoveRandom() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-    	}
-
-    	public boolean canUse() {
-    		return WispEntity.this.navigation.isDone() && WispEntity.this.random.nextInt(10) == 0;
-    	}
-
-    	public boolean canContinueToUse() {
-            return WispEntity.this.navigation.isInProgress();
-    	}
-
-    	public void start() {
-    		Vec3 vector3d = this.findPos();
-            if (vector3d != null) {
-               WispEntity.this.navigation.moveTo(WispEntity.this.navigation.createPath(new BlockPos((int)vector3d.x(), (int)vector3d.y(), (int)vector3d.z()), 1), 1.0D);
-            }
-
-    	}
-
-        @Nullable
-        private Vec3 findPos() {
-           Vec3 vector3d;
-           vector3d = WispEntity.this.getViewVector(0.0F);
-           Vec3 vector3d2 = HoverRandomPos.getPos(WispEntity.this, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
-           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(WispEntity.this, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
-        }
-    }
+    }            
     
     /**
      * Called when the mob's health reaches 0.
@@ -556,11 +469,11 @@ public class WispEntity extends FURTameableEntity implements FlyingAnimal, GeoEn
 	
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isCharging) {
-		state.getController().setAnimation(CHARGE);
+    		state.getController().setAnimation(CHARGE);
     	} else if (this.swell > 0 && this.swell <= this.maxSwell) {
     		state.getController().setAnimation(CAST);
-    	//} else if (state.isMoving() && this.random.nextFloat() < 0.05F) {
-			//state.getController().setAnimation(SPIN);
+    	/*} else if (state.isMoving() && this.random.nextFloat() < 0.05F) {
+			state.getController().setAnimation(SPIN);*/
         } else {
             state.getController().setAnimation(FLOAT);
         }

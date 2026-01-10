@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.floating;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -64,7 +65,7 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     protected void registerGoals() {
     	super.registerGoals();      
     	this.goalSelector.addGoal(2, new WraithEntity.AIUseSpell());
-		this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());
+		this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));
     }
     
     @Override

@@ -3,31 +3,30 @@ package com.Fishmod.fur.entities.floating;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.IAggressive;
+import com.Fishmod.fur.entities.ICharging;
+import com.Fishmod.fur.entities.ai.FloatingMoveControl;
+import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -39,14 +38,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FloatingMobEntity extends Monster implements IAggressive {
+public class FloatingMobEntity extends Monster implements IAggressive, ICharging {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(FloatingMobEntity.class, EntityDataSerializers.BYTE);
 	private int attackTimer = 0;
 	protected int spellTicks;
 	
 	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
-        this.moveControl = new FloatingMobEntity.AIMoveControl(this);
+        this.moveControl = new FloatingMoveControl(this);
     }
 	
     /**
@@ -74,7 +73,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
     }
     
     protected Goal wanderGoal() {
-    	return new FloatingMobEntity.AIMoveRandom();
+    	return new FloatingMoveRandomGoal(this);
     }
     
     public static AttributeSupplier.Builder createAttributes() {
@@ -148,7 +147,7 @@ public class FloatingMobEntity extends Monster implements IAggressive {
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;
-            this.level().addParticle(this.ParticleType(), this.getRandomX(1.0D), this.getRandomY() + (this.getBbHeight() * 0.75D), this.getRandomZ(1.0D), d0, d1, d2);
+            this.level().addParticle(this.ParticleType(), this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
         }     	
     }
     
@@ -203,6 +202,18 @@ public class FloatingMobEntity extends Monster implements IAggressive {
     	}
     }
 	
+    protected PathNavigation createNavigation(Level p_175447_1_) {
+    	FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, p_175447_1_) {
+           public boolean isStableDestination(BlockPos p_188555_1_) {
+              return !this.level.getBlockState(p_188555_1_.below()).isAir();
+           }
+        };
+        flyingpathnavigator.setCanOpenDoors(false);
+        flyingpathnavigator.setCanFloat(true);
+        flyingpathnavigator.setCanPassDoors(true);
+        return flyingpathnavigator;
+	}
+	
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -254,151 +265,8 @@ public class FloatingMobEntity extends Monster implements IAggressive {
                 FloatingMobEntity.this.getLookControl().setLookAt(FloatingMobEntity.this.getTarget(), (float)FloatingMobEntity.this.getMaxHeadYRot(), (float)FloatingMobEntity.this.getMaxHeadXRot());
             }
         }
-    }
-       
-    class AIChargeAttack extends Goal {  	
-        public AIChargeAttack() {
-        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        public boolean canUse() {
-            if (FloatingMobEntity.this.getTarget() != null && !FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.getRandom().nextInt(7) == 0) {
-                return FloatingMobEntity.this.distanceToSqr(FloatingMobEntity.this.getTarget()) > 4.0D;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            return FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.isCharging() && FloatingMobEntity.this.getTarget() != null && FloatingMobEntity.this.getTarget().isAlive();
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void start() {
-            LivingEntity LivingEntity = FloatingMobEntity.this.getTarget();
-            Vec3 vec3d = LivingEntity.getEyePosition();
-            FloatingMobEntity.this.moveControl.setWantedPosition(vec3d.x, vec3d.y, vec3d.z, 1.2D);
-            FloatingMobEntity.this.setIsCharging(true);
-        }
-
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
-        public void stop() {
-        	FloatingMobEntity.this.setIsCharging(false);
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-        	LivingEntity livingentity = FloatingMobEntity.this.getTarget();
-            if (FloatingMobEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
-            	FloatingMobEntity.this.doHurtTarget(livingentity);
-            	FloatingMobEntity.this.setIsCharging(false);
-            } else {
-            	double d0 = FloatingMobEntity.this.distanceToSqr(livingentity);
-            	if (d0 < 9.0D) {
-        	   		Vec3 vector3d = livingentity.getEyePosition();
-        	   		FloatingMobEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
-        	   		if (FloatingMobEntity.this.attackTimer == 0) {
-        	   			FloatingMobEntity.this.attackTimer = 30;
-        	   			FloatingMobEntity.this.level().broadcastEntityEvent(FloatingMobEntity.this, (byte)4);
-        	   		}
-            	}
-            }
-        }
-    }
+    }       
     
-    class AIMoveControl extends MoveControl {
-        public AIMoveControl(FloatingMobEntity Banshee) {
-            super(Banshee);
-        }
-
-        public void tick() {            
-            if (this.operation == MoveControl.Operation.MOVE_TO) {
-            	Vec3 vector3d = new Vec3(this.wantedX - FloatingMobEntity.this.getX(), this.wantedY - FloatingMobEntity.this.getY(), this.wantedZ - FloatingMobEntity.this.getZ());
-                double d0 = vector3d.length();
-                if (d0 < FloatingMobEntity.this.getBoundingBox().getSize()) {
-                   this.operation = MoveControl.Operation.WAIT;
-                   FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().scale(0.5D));
-                } else {
-                   FloatingMobEntity.this.setDeltaMovement(FloatingMobEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
-                   if (FloatingMobEntity.this.getTarget() == null) {
-                	   Vec3 vector3d1 = FloatingMobEntity.this.getDeltaMovement();
-                      FloatingMobEntity.this.setYRot(-((float)Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI));
-                      FloatingMobEntity.this.yBodyRot = FloatingMobEntity.this.getYRot();
-                   } else {
-                      double d2 = FloatingMobEntity.this.getTarget().getX() - FloatingMobEntity.this.getX();
-                      double d1 = FloatingMobEntity.this.getTarget().getZ() - FloatingMobEntity.this.getZ();
-                      FloatingMobEntity.this.setYRot(-((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI));
-                      FloatingMobEntity.this.yBodyRot = FloatingMobEntity.this.getYRot();
-                   }
-                }
-            }
-        }
-    }
-    
-    class AIMoveRandom extends Goal {
-        public AIMoveRandom() {
-        	this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
-        public boolean canUse() {
-            return !FloatingMobEntity.this.getMoveControl().hasWanted() && FloatingMobEntity.this.getRandom().nextInt(7) == 0;
-        }
-
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
-        public boolean canContinueToUse() {
-            return false;
-        }
-
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {            
-            BlockPos blockpos = FloatingMobEntity.this.blockPosition();
-            int groundHeight = SpawnUtil.getHeight(FloatingMobEntity.this).getY();
-            int y = FloatingMobEntity.this.getRandom().nextInt(11) - 5;
-
-            if (groundHeight > 0) {
-            	y = Math.min(groundHeight + 4 - blockpos.getY(), y);
-            }
-            
-            for(int i = 0; i < 3; ++i) {
-            	Vec3 vector3d = this.findPos();
-            	if (vector3d != null) {
-            		FloatingMobEntity.this.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 0.25D);
-            		if (FloatingMobEntity.this.getTarget() == null) {
-            			FloatingMobEntity.this.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
-            		}
-            		break;
-            	}
-            }
-        }
-        
-        @Nullable
-        private Vec3 findPos() {
-           Vec3 vector3d;
-           vector3d = FloatingMobEntity.this.getViewVector(0.0F);
-           Vec3 vector3d2 = HoverRandomPos.getPos(FloatingMobEntity.this, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
-           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(FloatingMobEntity.this, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
-        }
-    }
-
     @Override
     protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
         return p_213348_2_.height * 0.8F;

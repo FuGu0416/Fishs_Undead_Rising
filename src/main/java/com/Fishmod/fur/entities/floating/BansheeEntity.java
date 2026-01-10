@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import org.joml.Vector3f;
 
+import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -62,7 +63,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     protected void registerGoals() {
 		super.registerGoals();
         this.goalSelector.addGoal(2, new BansheeEntity.AIUseSpell());
-        this.goalSelector.addGoal(3, new FloatingMobEntity.AIChargeAttack());  
+        this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));  
     }
 
 	@Override
