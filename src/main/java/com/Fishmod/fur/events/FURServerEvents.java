@@ -155,7 +155,7 @@ public class FURServerEvents {
     	if (entity instanceof MimicEntity mimic) {
     		int ItemPos = mimic.containsItem(Items.TOTEM_OF_UNDYING);
     		            
-    		if(ItemPos != -1) {
+    		if (ItemPos != -1) {
     			mimic.setHealth(1.0F);
     			mimic.removeAllEffects();
     			mimic.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
@@ -256,17 +256,12 @@ public class FURServerEvents {
     public void playerTick(final TickEvent.PlayerTickEvent event) {
     	int Armor_Famine_lvl = 0;
     	
-    	if (event.phase == TickEvent.Phase.START) {
-            return;
-        }
+    	if (event.phase == TickEvent.Phase.START) return;
+    	
         final Player player = event.player;
-        if (player.level().isClientSide()) {
-            return;
-        }
-
-        if ((player.level().getGameTime() & 0x1FL) > 0L) {
-            return;
-        }     
+        
+        if (player.level().isClientSide()) return;
+        if ((player.level().getGameTime() & 0x1FL) > 0L) return;    
         
 		if (player.level() instanceof ServerLevel && player.level().getDifficulty() != Difficulty.PEACEFUL && player.level().random.nextFloat() < 0.1F) {
 			for (ItemEntity ItemEntity : player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
@@ -287,7 +282,7 @@ public class FURServerEvents {
 		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER.get(), ((ServerLevel) player.level()), blockpos);	    						
 		    					}
 		    					
-			    				if(ItemEntity != null) {
+			    				if (ItemEntity != null) {
 			    					ItemEntity.playSound(SoundEvents.GENERIC_EAT, 1, 1);
 			    					ItemEntity.discard();
 			    				}	
@@ -299,7 +294,7 @@ public class FURServerEvents {
 		}
 			  	    
 		for (ItemStack S : player.getArmorSlots()) {
-			if(S.getItem() instanceof FamineArmorItem) {
+			if (S.getItem() instanceof FamineArmorItem) {
 				Armor_Famine_lvl++;
 			}
 		}
@@ -373,16 +368,19 @@ public class FURServerEvents {
 	    	}
 		}
     	
-    	if (Attacked instanceof Player && !Attacked.fireImmune() && source.is(DamageTypeTags.IS_FIRE)) {    		
+    	if (Attacked instanceof Player player && !Attacked.fireImmune() && source.is(DamageTypeTags.IS_FIRE)) {    		
     		for (ItemStack S : Attacked.getArmorSlots()) {
     			if (S.getItem() instanceof MoltenArmorItem)effectlevel -= ((MoltenArmorItem)S.getItem()).fireprooflevel;
     		}
     		
     		boolean have_Heart = false;
     		
-    		for (int i = 0; i < 9 ; i++)
-    			if(((Player)Attacked).getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART.get()) || ((Player)Attacked).getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART.get()))
+    		for (int i = 0; i < 9 ; i++) {
+    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART.get()) 
+    					|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART.get())) {
 					have_Heart = true;
+    			}
+    		}
 
     		/*if (ModList.get().isLoaded("curios") && !have_Heart) {
     			have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
@@ -410,8 +408,9 @@ public class FURServerEvents {
     		}
     	}   	
     	
-    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get()))
+    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get())) {
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED.get()).getAmplifier())));
+    	}
     	
     	if (Attacked.hasEffect(FUREffectRegistry.THORNED.get())) {
     		if (source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH) || source.is(DamageTypes.THORNS)) {
@@ -464,7 +463,7 @@ public class FURServerEvents {
     
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
-    	if(event.getEntity() != null && event.getEntity() instanceof PathfinderMob mob && mob.getType().is(FURTagRegistry.WENDIGO_TARGETS)) {
+    	if (event.getEntity() != null && event.getEntity() instanceof PathfinderMob mob && mob.getType().is(FURTagRegistry.WENDIGO_TARGETS)) {
     		mob.goalSelector.addGoal(1, new AvoidEntityGoal<>(mob, WendigoEntity.class, 8.0F, 0.8D, 0.8D));
     	}
     	
@@ -472,10 +471,10 @@ public class FURServerEvents {
     		villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, UnburiedEntity.class, 8.0F, 0.8D, 0.8D));
     	}
 
-    	/*if(event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
+    	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));*/
     	
-    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
+    	if (event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
     		event.getEntity().removeTag("FUR_tameSkeleton");
     	}
     	
@@ -639,22 +638,23 @@ public class FURServerEvents {
 	
     @SubscribeEvent
     public void onTradeSetup(VillagerTradesEvent event) {
+    	// 2 = Apprentice, 3 = Journeyman, 4 = Expert, 5 = Master, reference = VillagerTrades.class
     	//if (FURConfig.BonusVillagerTrades.get()) {
 	        if (event.getType() == VillagerProfession.FISHERMAN) {
 	            event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
 	            		new ItemStack(FURItemRegistry.PIRANHA_RAW.get(), 6),
 	            		new ItemStack(Items.EMERALD, 1),
 	                    new ItemStack(FURItemRegistry.PIRANHA_COOKED.get(), 6),
-	                    6,		// max uses
-	                    16,     // villager xp
+	                    16,		// max uses
+	                    5,      // villager xp
 	                    0.05f   // price multiplier
 	                ));
 	            event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
 	            		new ItemStack(FURItemRegistry.SWARMER_RAW.get(), 6),
 	            		new ItemStack(Items.EMERALD, 1),
 	                    new ItemStack(FURItemRegistry.SWARMER_COOKED.get(), 6),
-	                    6,
 	                    16,
+	                    5,
 	                    0.05f
 	                ));
 	            
@@ -667,6 +667,16 @@ public class FURServerEvents {
 	            list.add(new ItemsForEmeraldsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 1, 12, 1));
 	            event.getTrades().put(2, list);
 	        }*/
+	        
+	        if (event.getType() == VillagerProfession.CLERIC) {
+	            event.getTrades().get(5).add((trader, rand) -> new MerchantOffer(
+	            		new ItemStack(Items.EMERALD, 10),
+	            		new ItemStack(FURItemRegistry.HOLY_WATER.get(), 1),
+	                    4,
+	                    20,
+	                    0.05f
+	                ));	        	
+	        }
     	//}
     }
     
@@ -767,13 +777,13 @@ public class FURServerEvents {
     public void onEJump(LivingJumpEvent event) {
 	    int Armor_Chitin_lvl = 0;
 	    
-		for(ItemStack S : event.getEntity().getArmorSlots()) {			
+		for (ItemStack S : event.getEntity().getArmorSlots()) {			
 			if(S.getItem() instanceof ChitinArmorItem) {
 				Armor_Chitin_lvl++;
 			}
 		}   
 		
-		if(Armor_Chitin_lvl >= 4 && event.getEntity() instanceof LivingEntity) {
+		if (Armor_Chitin_lvl >= 4 && event.getEntity() instanceof LivingEntity) {
 			event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3 * 20, 0));
 		}
     }
@@ -790,7 +800,7 @@ public class FURServerEvents {
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
     	
-    	if(event.getEntity() instanceof Player) {    		
+    	if (event.getEntity() instanceof Player) {    		
     		boolean have_Heart = false;
   		
     		for (int i = 0; i < 9 ; i++) {
@@ -970,8 +980,8 @@ public class FURServerEvents {
     	int Armor_Famine_lvl = 0;	    
 	    
 	    if (event.getEntity() != null) {
-			for(ItemStack S : event.getEntity().getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem) {
+			for (ItemStack S : event.getEntity().getArmorSlots()) {
+				if (S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
 				}
 			}

@@ -77,7 +77,7 @@ public class FURItem extends Item {
     
     @Override
     public boolean isFoil(ItemStack stack) {
-    	return super.isFoil(stack)/* || stack.getItem().equals(FURItemRegistry.HOLY_WATER)*/;
+    	return super.isFoil(stack) || stack.getItem().equals(FURItemRegistry.HOLY_WATER.get());
     }
     
     @Override

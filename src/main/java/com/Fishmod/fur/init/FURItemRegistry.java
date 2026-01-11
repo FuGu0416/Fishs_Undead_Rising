@@ -134,6 +134,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> FANG_ARROW = DEF_REG.register("fang_arrow", () -> new FURArrowItem(new Item.Properties()));
 	public static final RegistryObject<Item> PARASITE_RAW = DEF_REG.register("parasite_raw", () -> new ParasiteRawItem(new Item.Properties()));
 	public static final RegistryObject<Item> PARASITE_COOKED = DEF_REG.register("parasite_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
+	public static final RegistryObject<Item> HOLY_WATER = DEF_REG.register("holy_water", () -> new FURItem(new Item.Properties()));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
@@ -183,7 +184,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).tab(mod_LavaCow.TAB).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("mod_lavacow:charming_catalyst");
 	public static final RegistryObject<Item> ENIGMOTH_LARVA = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new EffectInstance(FUREffectRegistry.VOID_DUST, 20*20, 3), 0.3F).build())).setRegistryName("mod_lavacow:enigmoth_larva");
 	public static final RegistryObject<Item> ENIGMOTH_LARVA_COOKED = new Item(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(6).saturationMod(0.6F).build())).setRegistryName("mod_lavacow:enigmoth_larva_cooked");
-	public static final RegistryObject<Item> HOLY_WATER = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:holy_water");
 	public static final RegistryObject<Item> MUMMIFIED_COD = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB).food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CORRODED, 16*20, 0), 0.3F).build())).setRegistryName("mod_lavacow:mummified_cod");
 	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = new FishBucketItem(() -> FUREntityRegistry.MUMMIFIEDCOD, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:mummified_cod_bucket");
 	public static final RegistryObject<Item> BONE_TROUT = new FURItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:bone_trout");
