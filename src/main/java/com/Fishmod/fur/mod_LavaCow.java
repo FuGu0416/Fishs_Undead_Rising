@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import com.Fishmod.fur.client.model.layer.FURModelLayers;
 import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.events.FURClientEvents;
+import com.Fishmod.fur.events.FURServerEvents;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -63,7 +64,8 @@ public class mod_LavaCow {
     	eventBus.addListener(this::registerLayerDefinitions);
         // Register ourselves for server and other game events we are interested in
     	
-        MinecraftForge.EVENT_BUS.register(this);                             
+        MinecraftForge.EVENT_BUS.register(this);      
+        MinecraftForge.EVENT_BUS.register(new FURServerEvents()); 
         //ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
         FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);

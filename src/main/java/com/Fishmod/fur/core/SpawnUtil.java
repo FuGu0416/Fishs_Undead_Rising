@@ -35,11 +35,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class SpawnUtil {	
-	/*public static boolean isDay(World worldIn) {
-		return worldIn.getDayTime() <= 12000;
+	public static boolean isDay(Level level) {
+		return level.getDayTime() <= 12000;
 	}
 	
-	public static boolean isAllowedDimension(String dimensionIn) {
+	/*public static boolean isAllowedDimension(String dimensionIn) {
 		for(String i : FURConfig.Spawn_AllowList.get()) {
 			if(i.equalsIgnoreCase(dimensionIn))
 				return true;
