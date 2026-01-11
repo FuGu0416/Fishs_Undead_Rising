@@ -80,7 +80,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation FLOAT = RawAnimation.begin().thenPlay("wisp.model.floating");
-    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.floating2");
+    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.spinning");
     private static final RawAnimation CHARGE = RawAnimation.begin().thenPlay("wisp.model.charging");
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wisp.model.casting");
     

@@ -35,7 +35,7 @@ public class MoltenHammerItem extends FURWeaponItem {
     	if (!(living instanceof Player player) || (this.getUseDuration(stack) - remainingticks) < 6) return;
     	
 		float f = BowItem.getPowerForTime((this.getUseDuration(stack) - remainingticks));
-		double radius = 4.0D * f;
+		double radius = 5.0D * f;
 		int[] enchantment_list = new int[10];		
 		enchantment_list[0] = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
 		enchantment_list[1] = stack.getEnchantmentLevel(Enchantments.SHARPNESS);

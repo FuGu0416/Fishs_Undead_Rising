@@ -29,15 +29,15 @@
 	"minecraft:zombie_horse",
 	"minecraft:zombified_piglin",
 	"minecraft:zombie_villager",
-	//"fur:mycosis",
+	"fur:mycosis",
 	//"fur:parasite",
 	"fur:foglet",
 	"fur:isnachi",
-	"fur:imp"
-	//"fur:frigid",
-	//"fur:unburied",
-	//"fur:weta",
-	//"fur:mummy",
+	"fur:imp",
+	"fur:frigid",
+	"fur:unburied",
+	"fur:weta",
+	"fur:mummy"
 	//"fur:graverobber",
 	//"fur:scarab"
   ]
