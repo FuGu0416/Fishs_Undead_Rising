@@ -27,7 +27,7 @@ public class WorldGenGlowShroom extends WorldGenerator {
         for (int i = 0; i < 64; ++i) {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-            if (worldIn.isAirBlock(blockpos) && blockpos.getY() < 70 && rand.nextInt(100) < this.spawnRate &&
+            if (worldIn.isAirBlock(blockpos) && worldIn.getLight(blockpos) < 10 && blockpos.getY() < 70 && rand.nextInt(100) < this.spawnRate &&
                     glowshroom.canBlockStay(worldIn, blockpos, glowshroom.getDefaultState())) {
                 worldIn.setBlockState(blockpos, glowshroom.withAge(rand.nextInt(2)), 2);
             }
