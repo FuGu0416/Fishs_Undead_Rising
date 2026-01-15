@@ -33,12 +33,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 	protected static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 14.0D, 16.0D, 12.0D);
 	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 16.0D, 14.0D);
 	
 	public TombStoneBlock(Properties p_i48301_1_) {
 		super(p_i48301_1_);
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.valueOf(false)));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(NATURAL, Boolean.valueOf(false)));
 	}
 
     @Override
@@ -69,10 +70,12 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
     
     @Override
     public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
+    	if (!state.getValue(NATURAL) || !worldIn.isAreaLoaded(pos, 3)) return;
+    	
     	Direction enumfacing = state.getValue(FACING);
         int i = worldIn.getEntitiesOfClass(UnburiedEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(8.0D)).size();
         
-    	if(i < 3 && worldIn.isAreaLoaded(pos, 3) && rand.nextInt(100) < 40/*FURConfig.Cemetery_SpawnRate.get()*/ && !worldIn.isDay() && worldIn.getDifficulty() != Difficulty.PEACEFUL) {           
+    	if(i < 3 && rand.nextInt(100) < 40/*FURConfig.Cemetery_SpawnRate.get()*/ && !worldIn.isDay() && worldIn.getDifficulty() != Difficulty.PEACEFUL) {           
 	        UnburiedEntity entityunburied = FUREntityRegistry.UNBURIED.get().create(worldIn);
 	        	        
 			switch(enumfacing) {
@@ -108,7 +111,7 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
     public BlockState getStateForPlacement(BlockPlaceContext p_196258_1_) {
         BlockPos blockpos = p_196258_1_.getClickedPos();
         FluidState fluidstate = p_196258_1_.getLevel().getFluidState(blockpos);
-        BlockState blockstate = this.defaultBlockState().setValue(FACING, p_196258_1_.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+        BlockState blockstate = this.defaultBlockState().setValue(FACING, p_196258_1_.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)).setValue(NATURAL, Boolean.valueOf(false));
         return blockstate;
     }
     
@@ -127,7 +130,7 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
 	
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
-		p_206840_1_.add(FACING, WATERLOGGED);
+		p_206840_1_.add(FACING, WATERLOGGED, NATURAL);
 	}
 	
     /**

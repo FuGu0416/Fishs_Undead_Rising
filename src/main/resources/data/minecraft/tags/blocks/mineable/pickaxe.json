@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "fur:soul_furnace"
+    "fur:soul_furnace",
+    "fur:tombstone"
   ]
 }

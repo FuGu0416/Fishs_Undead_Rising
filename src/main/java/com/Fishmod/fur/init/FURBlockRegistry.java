@@ -46,7 +46,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> CORDY_SHROOM = registerBlocks("cordy_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 1;
 	   })));
-	public static final RegistryObject<Block> TOMBSTONE = registerBlocks("tombstone", () -> new TombStoneBlock(BlockBehaviour.Properties.of().randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion()));
+	public static final RegistryObject<Block> TOMBSTONE = registerBlocks("tombstone", () -> new TombStoneBlock(BlockBehaviour.Properties.of().randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).noOcclusion()));
 	
 	/*
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");
