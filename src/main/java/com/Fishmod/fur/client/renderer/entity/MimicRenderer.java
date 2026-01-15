@@ -2,8 +2,8 @@ package com.Fishmod.fur.client.renderer.entity;
 
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.Fishmod.fur.client.layer.LayerMimicChest;
 import com.Fishmod.fur.client.model.MimicModel;
-import com.Fishmod.fur.client.model.layer.LayerMimicChest;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

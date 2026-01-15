@@ -21,7 +21,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -152,11 +151,7 @@ public class FURWeaponItem extends SwordItem {
 			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
 		}/* else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
         	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
-		}*/ else if (stack.getItem() == FURItemRegistry.MOLTEN_HAMMER.get()/* stack.getItem() == FURItemRegistry.SOULFIREHAMMER*/) {
-			int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			
-			target.setSecondsOnFire((i + 2) * 4);
-			target.playSound(SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
-		}/* else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
+		} else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
 			int i = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, stack);			
 			target.addEffect(new EffectInstance(Effects.POISON, 8 * 20, i + 1));
 		}*/

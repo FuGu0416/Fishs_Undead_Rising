@@ -1,8 +1,8 @@
 package com.Fishmod.fur.client.renderer.item;
 
+import com.Fishmod.fur.client.layer.FURModelLayers;
 import com.Fishmod.fur.client.model.armor.FamineArmorModel;
 import com.Fishmod.fur.client.model.armor.MoltenArmorModel;
-import com.Fishmod.fur.client.model.layer.FURModelLayers;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;

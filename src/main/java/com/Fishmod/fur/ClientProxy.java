@@ -15,11 +15,13 @@ import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
+import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.UnburiedRenderer;
+import com.Fishmod.fur.client.renderer.entity.AbstractUnburiedRenderer;
 import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
@@ -73,9 +75,9 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WRAITH.get(), WraithRenderer::new); 
     	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.UNBURIED.get(), UnburiedRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), MycosisRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), UnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), AbstractUnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BANSHEE.get(), BansheeRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
@@ -134,14 +136,17 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.MOTH_SCALES, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, true));
         */
         
-        /*RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM, RenderType.cutout());
+        /*
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM, RenderType.solid());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP, RenderType.translucent());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.BLOODTOOTH_SHROOM, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.CORDY_SHROOM, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.VEIL_SHROOM, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.TOMBSTONE, RenderType.cutout());*/
+        */
+    	
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM.get(), RenderType.cutout());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get(), RenderType.solid());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get(), RenderType.translucent());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.CORDY_SHROOM.get(), RenderType.cutout());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.TOMBSTONE.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.SOUL_FURNACE.get(), RenderType.solid());

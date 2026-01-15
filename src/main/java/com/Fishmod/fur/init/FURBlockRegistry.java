@@ -5,8 +5,11 @@ import java.util.function.Supplier;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
+import com.Fishmod.fur.block.FURHugeShroomBlock;
+import com.Fishmod.fur.block.FURShroomBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
 import com.Fishmod.fur.block.SoulFurnaceBlock;
+import com.Fishmod.fur.block.TombStoneBlock;
 import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
@@ -33,25 +36,26 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> SOUL_FURNACE = registerBlocks("soul_furnace", () -> new SoulFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel((p_50884_) -> {
 	      return 10;
 	   })));
+	public static final RegistryObject<Block> GLOWSHROOM = registerBlocks("glowshroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
+	      return 15;
+	   })));
+	public static final RegistryObject<Block> GLOWSHROOM_BLOCK_STEM = registerBlocks("glowshroom_block_stem", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> GLOWSHROOM_BLOCK_CAP = registerBlocks("glowshroom_block_cap", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).randomTicks().lightLevel((p_235439_0_) -> {
+	      return 15;
+	   })));
+	public static final RegistryObject<Block> CORDY_SHROOM = registerBlocks("cordy_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
+	      return 1;
+	   })));
+	public static final RegistryObject<Block> TOMBSTONE = registerBlocks("tombstone", () -> new TombStoneBlock(BlockBehaviour.Properties.of().randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion()));
 	
-	/*public static final Block GLOWSHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
-	      return 15;
-	   }), "mod_lavacow:glowshroom");
+	/*
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");
-	public static final Block GLOWSHROOM_BLOCK_STEM = new FURHugeShroomBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)).setRegistryName("mod_lavacow:glowshroom_block_stem");
-    public static final Block GLOWSHROOM_BLOCK_CAP = new FURHugeShroomBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).randomTicks().lightLevel((p_235439_0_) -> {
-	      return 15;
-	   })).setRegistryName("mod_lavacow:glowshroom_block_cap");
 	public static final Block BLOODTOOTH_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_PINK).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 1;
 	   }), "mod_lavacow:bloodtooth_shroom");
-	public static final Block CORDY_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
-	      return 1;
-	   }), "mod_lavacow:cordy_shroom");
 	public static final Block VEIL_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
 	      return 1;
 	   }), "mod_lavacow:veil_shroom");	
-	public static final Block TOMBSTONE = new TombStoneBlock(AbstractBlock.Properties.of(Material.STONE).randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion()).setRegistryName("mod_lavacow:tombstone");
 	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
 	      return 15;
 	   })).setRegistryName("mod_lavacow:glowing_air");*/	

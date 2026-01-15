@@ -7,8 +7,8 @@ import com.mojang.math.Axis;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.client.layer.ScarecrowCollarLayer;
 import com.Fishmod.fur.client.model.ScarecrowModel;
-import com.Fishmod.fur.client.model.layer.ScarecrowCollarLayer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

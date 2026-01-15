@@ -2,6 +2,7 @@ package com.Fishmod.fur.item;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -10,6 +11,7 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -19,23 +21,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FURRangedItem extends BowItem {
+public class FURRangedItem extends CrossbowItem {
 		
 	private Item ammo = null;
-	private final EntityType <? extends Entity > shot;
+	private final Supplier<EntityType<? extends Entity>> shot;
 	
-	public FURRangedItem(Item ammo, EntityType <? extends Entity > shot, Item.Properties properties) {
+	public FURRangedItem(Item ammo, Supplier<EntityType<?>> shot, Item.Properties properties) {
 		super(properties);
         this.ammo = ammo;
         this.shot = shot;
@@ -70,64 +72,76 @@ public class FURRangedItem extends BowItem {
 	        return p_220002_0_.getItem().equals(this.ammo);
 	    };
 	}
+	
+	public static boolean isCharged(ItemStack stack) {
+		CompoundTag compoundtag = stack.getTag();
+		return compoundtag != null && compoundtag.getBoolean("Charged");
+	}
 		
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
-
 	}
-		
-	/**
-	* Called when the player stops using an Item (stops holding the right mouse button).
-	*/
+	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-		boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+	public void onUseTick(Level level, LivingEntity user, ItemStack stack, int remaining) {
+	    if (!(user instanceof Player player)) return;
+
+		boolean flag = player.getAbilities().instabuild || stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) > 0;
         ItemStack itemstack = this.getProjectile(stack, player);
+        int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
         
      	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
      		if (itemstack.isEmpty()) {
      			itemstack = new ItemStack(this.ammo);
  			}
-	    } else return InteractionResultHolder.fail(player.getItemInHand(hand));
-	         
-        if (!level.isClientSide) {
-        	//Vec3 lookVec = player.getLookAngle();
-			int power_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
-			int punch_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
-			int flame_lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack);
-			if (this.shot.equals(FUREntityRegistry.CACTUS_THORN.get())) {
-	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(level, player);
-	        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 2.0F);                       
-	        	level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-	        	
-                if (power_lvl > 0) {
-                   abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
-                }
-           
-                if (punch_lvl > 0) {
-                   abstractarrowentity.setKnockback(punch_lvl);
-                }
-
-                if (flame_lvl > 0) {
-                   abstractarrowentity.setSecondsOnFire(100);
-                }
-                
-                if (player.getRandom().nextFloat() < 0.25F) {
-	                stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-	                    p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
-	                });
-                }
-                
-                if (flag) {
-                    abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                }
-                
-                level.addFreshEntity(abstractarrowentity);
-				if (!flag && !player.isCreative()) {
-					itemstack.shrink(1);
-					if (itemstack.isEmpty()) {
-						player.getInventory().removeItem(itemstack);
+	    } else return;
+     	
+	    if (!level.isClientSide && remaining % (7 - quick_charge_lvl) == 0) {
+			int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+			int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+			int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+			int piercing_lvl = stack.getEnchantmentLevel(Enchantments.PIERCING);
+			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
+			
+			if (this.shot.get().equals(FUREntityRegistry.CACTUS_THORN.get())) {
+				for (int i = -1; i < ((multishot_lvl > 0) ? 2 : 0) ; i++) {
+		        	CactusThornEntity abstractarrowentity = new CactusThornEntity(level, player);
+		        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot() + (((multishot_lvl > 0) ? (10.0F * i) : 0.0F)), 0.0F, 2.0F, 2.0F);                       
+		        	level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+		        	
+	                if (power_lvl > 0) {
+	                	abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
+	                }
+	           
+	                if (punch_lvl > 0) {
+	                	abstractarrowentity.setKnockback(punch_lvl);
+	                }
+	
+	                if (flame_lvl > 0) {
+	                	abstractarrowentity.setSecondsOnFire(100);
+	                }
+	                
+	                if (piercing_lvl > 0) {
+	                	abstractarrowentity.setPierceLevel((byte)i);
+	                }
+	                
+	                if (player.getRandom().nextFloat() < 0.25F) {
+		                stack.hurtAndBreak(1, player, (p_220009_1_) -> {
+		                    p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+		                });
+	                }
+	                
+	                if (flag) {
+	                    abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+	                }
+	                
+	                level.addFreshEntity(abstractarrowentity);
+					if (!flag && !player.isCreative()) {
+						itemstack.shrink(1);
+						if (itemstack.isEmpty()) {
+							player.getInventory().removeItem(itemstack);
+							break;
+						}
 					}
 				}
 			}/* else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
@@ -194,11 +208,20 @@ public class FURRangedItem extends BowItem {
 				}
 				player.getCooldowns().addCooldown(this, 20 - (power_lvl * 2));
 			}*/
-			
-			return InteractionResultHolder.consume(player.getItemInHand(hand));
-        }
+	    }
+	}
 		
-		return InteractionResultHolder.consume(player.getItemInHand(hand));
+	/**
+	* Called when the player stops using an Item (stops holding the right mouse button).
+	*/
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		
+		stack.getOrCreateTag().putBoolean("Charged", true);
+	    player.startUsingItem(hand);
+	    
+	    return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
     /**
@@ -206,7 +229,12 @@ public class FURRangedItem extends BowItem {
     */
 	@Override
     public int getUseDuration(ItemStack stack) {
-		return 320;
+		return 72000;
+    }
+	
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.BOW;
     }
    
 	@Override

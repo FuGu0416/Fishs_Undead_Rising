@@ -47,7 +47,7 @@ public class UnburiedModel extends GeoModel<UnburiedEntity> {
 	
     @Override
     public void setCustomAnimations(UnburiedEntity animatable, long instanceId, AnimationState<UnburiedEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        CoreGeoBone head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

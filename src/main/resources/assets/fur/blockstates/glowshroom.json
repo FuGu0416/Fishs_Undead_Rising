@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "fur:block/glowshroom"
+    },
+    "age=1": {
+      "model": "fur:block/glowshroom_m"
+    }
+  }
+}

@@ -120,7 +120,13 @@ public class MycosisEntity extends UnburiedEntity {
     	
     	if(is_near_shroom || (this.getY() < 50.0D && !this.level.canSeeSky(new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ()))))
         	this.setSkin(1);*/
-    	this.setSkin(1);               
+    	
+    	if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+        	this.setSkin(Integer.valueOf(this.random.nextInt(2) + 1));
+        } else {       
+        	this.setSkin(1);      
+        }
+    	
         return entityLivingData;
     }
          

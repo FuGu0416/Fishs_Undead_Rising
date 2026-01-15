@@ -11,6 +11,7 @@ import com.Fishmod.fur.item.DiseasedBreadItem;
 import com.Fishmod.fur.item.EntityBucketItem;
 import com.Fishmod.fur.item.FURArrowItem;
 import com.Fishmod.fur.item.FURItem;
+import com.Fishmod.fur.item.FURRangedItem;
 import com.Fishmod.fur.item.FURStewItem;
 import com.Fishmod.fur.item.FURThrowableItem;
 import com.Fishmod.fur.item.FURWeaponItem;
@@ -107,6 +108,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CACTUS_FRUIT = DEF_REG.register("cactus_fruit", () -> new CactusFruitItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2F).effect(() -> new MobEffectInstance(FUREffectRegistry.THORNED.get(), 60 * 20, 0), 1.0F).build()), 1));
 	public static final RegistryObject<Item> CACTOID_POT = DEF_REG.register("cactoid_pot", () -> new EntityBucketItem(() -> FUREntityRegistry.CACTOID.get(), Items.FLOWER_POT, (new Item.Properties()).stacksTo(1)));
+	public static final RegistryObject<Item> THORN_SHOOTER = DEF_REG.register("thorn_shooter", () -> new FURRangedItem(CACTUS_THORN.get(), () -> FUREntityRegistry.CACTUS_THORN.get(), new Item.Properties().durability(768)));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DISEASED_WHEAT = DEF_REG.register("diseased_wheat", () -> new Item(new Item.Properties())); 
 	public static final RegistryObject<Item> DISEASED_BREAD = DEF_REG.register("diseased_bread", () -> new DiseasedBreadItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).
@@ -170,11 +172,9 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> EMBLEM_OF_KING = new Item(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.UNCOMMON)).setRegistryName("mod_lavacow:emblem_of_king");
 	public static final RegistryObject<Item> BEAST_CLAW = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC)), "mod_lavacow:beast_claw", ItemTier.DIAMOND, 3, -2.4F, FURItemRegistry.SCYTHE_CLAW);
 	public static final RegistryObject<Item> SKELETONKING_MACE = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant()), "mod_lavacow:skeletonking_mace", ItemTier.DIAMOND, 12, -3.2F, FURItemRegistry.HATRED_SHARD);
-	public static final RegistryObject<Item> THORN_SHOOTER = new FURRangedItem("mod_lavacow:thorn_shooter", CACTUS_THORN, FUREntityRegistry.CACTUS_THORN, new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.RARE).durability(768));
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:salamander_bucket");
 	public static final RegistryObject<Item> SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> SOULFIREAXE = new MoltenAxeItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfireaxe", ItemTier.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
-	public static final RegistryObject<Item> SOULFIREPAN = new FURWeaponItem(new Item.Properties().tab(mod_LavaCow.TAB).rarity(Rarity.EPIC).fireResistant(), "mod_lavacow:soulfirepan", ItemTier.NETHERITE, 2, -3.0F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("mod_lavacow:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().tab(mod_LavaCow.TAB).durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties().tab(mod_LavaCow.TAB)).setRegistryName("mod_lavacow:sinister_whetstone");
 	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().tab(mod_LavaCow.TAB))).setRegistryName("mod_lavacow:illager_nose");

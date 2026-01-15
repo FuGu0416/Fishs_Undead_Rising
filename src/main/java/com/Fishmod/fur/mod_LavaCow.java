@@ -2,7 +2,7 @@ package com.Fishmod.fur;
 
 import org.slf4j.Logger;
 
-import com.Fishmod.fur.client.model.layer.FURModelLayers;
+import com.Fishmod.fur.client.layer.FURModelLayers;
 import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.events.FURClientEvents;
 import com.Fishmod.fur.events.FURServerEvents;

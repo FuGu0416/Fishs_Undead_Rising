@@ -29,6 +29,19 @@ public class MoltenHammerItem extends FURWeaponItem {
 	public MoltenHammerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
 		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
+	
+    /**
+     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+     * the damage on the stack.
+     */
+	@Override
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {	
+		int i = attacker.getMainHandItem().getEnchantmentLevel(Enchantments.FIRE_ASPECT);			
+		target.setSecondsOnFire((i + 2) * 4);
+		target.playSound(SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.85F);
+			
+        return super.hurtEnemy(stack, target, attacker);
+    }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int remainingticks) {

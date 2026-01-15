@@ -49,14 +49,12 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM.get());
             	output.accept(FURItemRegistry.ECTOPLASM_MASS.get());
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
-            	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_HELMET.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_CHESTPLATE.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.GHOSTLY_ARMOR_BOOTS.get());
             	output.accept(FURItemRegistry.WISP_ASHES.get());
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
-            	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());            	
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
@@ -73,13 +71,12 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
             	output.accept(FURItemRegistry.CACTOID_POT.get());
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
-            	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
+            	output.accept(FURItemRegistry.THORN_SHOOTER.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_STRAW.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_PLAGUE.get());
             	output.accept(FURItemRegistry.DISEASED_WHEAT.get());
-            	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURItemRegistry.FEATHER_BLACK.get());
             	output.accept(FURItemRegistry.HYPHAE.get());
             	output.accept(FURItemRegistry.POISONSPORE.get());
@@ -111,6 +108,16 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOUL_CLAW.get());
             	output.accept(FURItemRegistry.GHOUL_ARROW.get());
             	output.accept(FURItemRegistry.FANG_ARROW.get());
+            	
+            	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
+            	output.accept(FURBlockRegistry.GLOWSHROOM.get());
+            	output.accept(FURBlockRegistry.CORDY_SHROOM.get());
+            	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
+            	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
+            	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
+            	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get());
+            	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get());
+            	output.accept(FURBlockRegistry.TOMBSTONE.get());
             	
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })

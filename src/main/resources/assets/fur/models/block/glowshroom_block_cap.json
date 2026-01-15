@@ -1,0 +1,7 @@
+
+{
+    "parent": "minecraft:block/cube_all",
+    "textures": {
+        "all": "fur:block/glowshroom_block_cap"
+    }
+}
