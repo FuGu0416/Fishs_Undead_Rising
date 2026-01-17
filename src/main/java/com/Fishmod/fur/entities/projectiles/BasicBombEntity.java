@@ -32,10 +32,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
@@ -44,10 +44,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
@@ -56,10 +56,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
     
@@ -70,10 +70,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
@@ -84,10 +84,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
@@ -98,10 +98,10 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     	
     	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOSTBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.GHOSTBOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONICBOMB.get())) {
-    		this.getDefaultItem = FURItemRegistry.SONICBOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
+    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
     

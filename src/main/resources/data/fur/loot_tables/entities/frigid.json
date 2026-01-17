@@ -28,7 +28,7 @@
                 },
                 {
                     "type":"item",
-                    "name":"fur:frozenthigh",
+                    "name":"fur:frozen_thigh",
                     "functions":[
                         {
                             "function":"minecraft:looting_enchant",

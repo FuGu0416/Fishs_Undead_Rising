@@ -376,8 +376,8 @@ public class FURServerEvents {
     		boolean have_Heart = false;
     		
     		for (int i = 0; i < 9 ; i++) {
-    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTENHEART.get()) 
-    					|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART.get())) {
+    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get()) 
+    					|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
 					have_Heart = true;
     			}
     		}
@@ -738,21 +738,21 @@ public class FURServerEvents {
 
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 24),
-    	            new ItemStack(FURItemRegistry.POISONSPORE.get(), 1),
+    	            new ItemStack(FURItemRegistry.POISON_SPORE.get(), 1),
     	            4, 
     	            15, 
     	            0.05f
     	        ));
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 30),
-    	            new ItemStack(FURItemRegistry.UNDYINGHEART.get(), 1),
+    	            new ItemStack(FURItemRegistry.UNDYING_HEART.get(), 1),
     	            4, 
     	            20, 
     	            0.05f
     	        ));
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 30),
-    	            new ItemStack(FURItemRegistry.ACIDICHEART.get(), 1),
+    	            new ItemStack(FURItemRegistry.ACIDIC_HEART.get(), 1),
     	            4, 
     	            20, 
     	            0.05f
@@ -804,7 +804,7 @@ public class FURServerEvents {
     		boolean have_Heart = false;
   		
     		for (int i = 0; i < 9 ; i++) {
-    			if (((Player)event.getEntity()).getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFIREHEART.get())) {
+    			if (((Player)event.getEntity()).getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
 					have_Heart = true;
     			}
     		}

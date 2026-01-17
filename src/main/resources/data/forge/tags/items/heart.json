@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "fur:undyingheart",
-    "fur:mootenheart",
-    "fur:acidicheart",
-    "fur:soulfireheart"
+    "fur:undying_heart",
+    "fur:mooten_heart",
+    "fur:acidic_heart",
+    "fur:soulforged_heart"
   ]
 }

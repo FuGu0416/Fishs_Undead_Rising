@@ -87,8 +87,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.GHOSTBOMB.get(), ThrownItemRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.SONICBOMB.get(), ThrownItemRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.GHOST_BOMB.get(), ThrownItemRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SONIC_BOMB.get(), ThrownItemRenderer::new);
         EntityRenderers.register(FUREntityRegistry.GHOUL_ARROW.get(), manager -> new FURArrowRenderer(manager, 0));
         EntityRenderers.register(FUREntityRegistry.FANG_ARROW.get(), manager -> new FURArrowRenderer(manager, 1));
         EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);

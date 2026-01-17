@@ -100,10 +100,10 @@ public class FURItem extends Item {
 			SpawnUtil.addFoodEffectTooltip(stack, tooltip, 1.0F);
 		}
 
-		if (stack.getItem().equals(FURItemRegistry.SOULFIREHEART.get())) {
+		if (stack.getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc0", 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW));
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc1", 25).withStyle(ChatFormatting.GREEN));
-		} else if(stack.getItem().equals(FURItemRegistry.MOOTENHEART.get())) {
+		} else if(stack.getItem().equals(FURItemRegistry.MOOTEN_HEART.get())) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 50/*FURConfig.MootenHeart_Damage.get()*/).withStyle(ChatFormatting.YELLOW).append(Component.translatable("item.fur.potion_of_mooten_lava").withStyle(ChatFormatting.YELLOW)));
 		} else if (this.Tooltip == 2) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc"));

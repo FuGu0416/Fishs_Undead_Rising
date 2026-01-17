@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "fur:item/poisonspore"
+        "layer0": "fur:item/ghost_jelly"
     }
 }

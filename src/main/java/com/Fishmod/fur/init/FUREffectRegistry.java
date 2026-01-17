@@ -108,9 +108,9 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, FOULODOR_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_FOULODOR_POTION.get())));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, FOULODOR_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_FOULODOR_POTION.get())));
         
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISONSPORE.get())), createPotion(Items.POTION, Potions.LONG_POISON)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISONSPORE.get())), createPotion(Items.LINGERING_POTION, Potions.LONG_POISON)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISONSPORE.get())), createPotion(Items.SPLASH_POTION, Potions.LONG_POISON)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_SPORE.get())), createPotion(Items.POTION, Potions.LONG_POISON)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_SPORE.get())), createPotion(Items.LINGERING_POTION, Potions.LONG_POISON)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_SPORE.get())), createPotion(Items.SPLASH_POTION, Potions.LONG_POISON)));
         
         /*BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.SLOWNESS)), Ingredient.of(new ItemStack(FURItemRegistry.PARASITE_OVUM)), createPotion(Items.POTION, INFESTATION_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.SLOWNESS)), Ingredient.of(new ItemStack(FURItemRegistry.PARASITE_OVUM)), createPotion(Items.LINGERING_POTION, INFESTATION_POTION)));

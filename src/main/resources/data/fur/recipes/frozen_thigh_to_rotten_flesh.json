@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:smoking",
+  "type": "minecraft:smelting",
   "ingredient": {
-	"item": "fur:frozenthigh"
+	"item": "fur:frozen_thigh"
   },
   "result": {
     "item": "minecraft:rotten_flesh",
     "count": 4
   },
   "experience": 0.35,
-  "cookingtime": 100
+  "cookingtime": 200
 }

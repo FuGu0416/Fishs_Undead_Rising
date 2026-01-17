@@ -7,7 +7,7 @@
                 {
                     "type":"item",
                     "weight":1,
-                    "name":"fur:ptera_wing",
+                    "name":"fur:ptera_wing_raw",
                     "functions":[
                         {
                             "function":"set_count",

@@ -492,7 +492,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
         	       }
 
         	       return InteractionResult.SUCCESS;
-                } else if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == FURItemRegistry.MOOTENHEART.get()) {
+                } else if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == FURItemRegistry.MOOTEN_HEART.get()) {
                 	if (!player.getAbilities().instabuild) {
                 		itemstack.shrink(1);
                 	}
@@ -564,7 +564,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
      */
     @Override
     public boolean isFood(ItemStack stack) {
-    	return stack.getItem().equals(FURItemRegistry.PTERA_WING.get()) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED.get());
+    	return stack.getItem().equals(FURItemRegistry.PTERA_WING_RAW.get()) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED.get());
     }
     
     @Override

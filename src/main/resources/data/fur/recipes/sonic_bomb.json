@@ -7,14 +7,14 @@
     ],
     "key": {
         "#": {
-            "item": "fur:ectoplasm_mass"
+            "item": "fur:shriek_cord"
         },
         "X": {
             "item": "fur:basic_bomb"
         }
     },
     "result": {
-        "item": "fur:ghostbomb",
+        "item": "fur:sonic_bomb",
         "count": 4
     }
 }

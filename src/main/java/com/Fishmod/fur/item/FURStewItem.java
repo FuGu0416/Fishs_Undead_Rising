@@ -60,7 +60,7 @@ public class FURStewItem extends FURItem {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
     	ItemStack itemstack = super.finishUsingItem(stack, level, living);
     	
-    	if (this.equals(FURItemRegistry.GHOSTJELLY.get())) {
+    	if (this.equals(FURItemRegistry.GHOST_JELLY.get())) {
     		living.setDeltaMovement(0.0D, 2.0D, 0.0D);
     		living.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 1.0F, 1.0F);
     	}

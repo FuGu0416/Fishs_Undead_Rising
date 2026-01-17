@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "fur:item/soulfireheart"
+        "layer0": "fur:item/ptera_wing_raw"
     }
 }

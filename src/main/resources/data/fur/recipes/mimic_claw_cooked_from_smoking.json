@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smoking",
   "ingredient": {
-	"item": "fur:mimic_claw"
+	"item": "fur:mimic_claw_raw"
   },
   "result": "fur:mimic_claw_cooked",
   "experience": 0.35,

@@ -48,12 +48,12 @@ public class FURThrowableItem extends Item {
     		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.HOLY_GRENADE.get(), player, level, SoundEvents.GENERIC_EXPLODE, 4.0F);
             entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
             level.addFreshEntity(entitysnowball);
-    	} else if (itemstack.getItem().equals(FURItemRegistry.GHOSTBOMB.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOSTBOMB.get(), player, level, FURSoundRegistry.BANSHEE_HURT.get(), 4.0F);
+    	} else if (itemstack.getItem().equals(FURItemRegistry.GHOST_BOMB.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.GHOST_BOMB.get(), player, level, FURSoundRegistry.BANSHEE_HURT.get(), 4.0F);
             entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
             level.addFreshEntity(entitysnowball);
-    	} else if (itemstack.getItem().equals(FURItemRegistry.SONICBOMB.get())) {
-    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONICBOMB.get(), player, level, FURSoundRegistry.BANSHEE_ATTACK.get(), 4.0F);
+    	} else if (itemstack.getItem().equals(FURItemRegistry.SONIC_BOMB.get())) {
+    		BasicBombEntity entitysnowball = new BasicBombEntity(FUREntityRegistry.SONIC_BOMB.get(), player, level, FURSoundRegistry.BANSHEE_ATTACK.get(), 4.0F);
             entitysnowball.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
             level.addFreshEntity(entitysnowball);
     	} else if (itemstack.getItem().equals(FURItemRegistry.BASIC_BOMB.get())) {

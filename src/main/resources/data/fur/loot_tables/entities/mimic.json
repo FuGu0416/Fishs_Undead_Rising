@@ -7,7 +7,7 @@
                 {
                     "type": "item",
                     "weight": 7,
-                    "name": "fur:mimic_claw",
+                    "name": "fur:mimic_claw_raw",
                     "functions": [
 		                {
 							"function": "furnace_smelt",

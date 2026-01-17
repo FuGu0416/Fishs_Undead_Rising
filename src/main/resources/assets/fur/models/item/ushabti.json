@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "fur:item/ghostjelly"
+        "layer0": "fur:item/ushabti"
     }
 }

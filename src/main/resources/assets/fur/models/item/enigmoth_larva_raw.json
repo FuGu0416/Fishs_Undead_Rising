@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "fur:item/ptera_wing"
+        "layer0": "fur:item/enigmoth_larva_raw"
     }
 }

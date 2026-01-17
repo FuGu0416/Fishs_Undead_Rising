@@ -101,7 +101,7 @@ public class FrigidEntity extends UnburiedEntity {
         super.populateDefaultEquipmentSlots(random, difficulty);
 
         if (this.random.nextFloat() < (this.level().getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F)) {
-        	this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(FURItemRegistry.FROZENTHIGH.get()));
+        	this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(FURItemRegistry.FROZEN_THIGH.get()));
         }   
     }
     

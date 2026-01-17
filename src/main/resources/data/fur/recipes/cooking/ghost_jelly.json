@@ -13,7 +13,7 @@
   ],
   "container": { "item": "minecraft:bowl" },
   "result": {
-    "item": "fur:ghostjelly"
+    "item": "fur:ghost_jelly"
   },
   "experience": 0.35,
   "time": 200

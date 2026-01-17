@@ -1,0 +1,17 @@
+{
+    "type": "fur:cooking",
+    "ingredients": [
+	    {
+			"tag": "forge:bones"
+	    },
+	    {
+			"item": "fur:bloodtooth_shroom"
+	    }
+    ],
+  	"container": { "item": "minecraft:bowl" },
+  	"result": {
+    	"item": "fur:bone_stew"
+  	},
+  	"experience": 0.35,
+  	"time": 200
+}

@@ -2,7 +2,7 @@
   "type": "minecraft:smoking",
   "ingredient": [
 	{
-		"item": "fur:ptera_wing"
+		"item": "fur:ptera_wing_raw"
 	}
   ],
   "result": "fur:ptera_wing_cooked",
