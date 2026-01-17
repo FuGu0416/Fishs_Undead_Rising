@@ -111,7 +111,9 @@ public class FURItemGroup {
             	
             	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM.get());
+            	output.accept(FURBlockRegistry.BLOODTOOTH_SHROOM.get());
             	output.accept(FURBlockRegistry.CORDY_SHROOM.get());
+            	output.accept(FURBlockRegistry.VEIL_SHROOM.get());
             	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURBlockRegistry.SOUL_FURNACE.get());

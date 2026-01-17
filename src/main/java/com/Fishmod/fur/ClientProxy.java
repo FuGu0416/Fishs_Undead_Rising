@@ -138,14 +138,14 @@ public class ClientProxy extends CommonProxy {
         
         /*
         RenderTypeLookup.setRenderLayer(FURBlockRegistry.SLUDGEPILE, RenderType.solid());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.BLOODTOOTH_SHROOM, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(FURBlockRegistry.VEIL_SHROOM, RenderType.cutout());
         */
     	
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get(), RenderType.solid());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get(), RenderType.translucent());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.BLOODTOOTH_SHROOM.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.CORDY_SHROOM.get(), RenderType.cutout());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.VEIL_SHROOM.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.TOMBSTONE.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());

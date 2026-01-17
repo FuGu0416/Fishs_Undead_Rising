@@ -14,6 +14,7 @@ import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -47,18 +48,19 @@ public class FURBlockRegistry {
 	      return 1;
 	   })));
 	public static final RegistryObject<Block> TOMBSTONE = registerBlocks("tombstone", () -> new TombStoneBlock(BlockBehaviour.Properties.of().randomTicks().requiresCorrectToolForDrops().strength(1.5F, 10.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).noOcclusion()));
+	public static final RegistryObject<Block> BLOODTOOTH_SHROOM = registerBlocks("bloodtooth_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
+	      return 1;
+	   })));
+	public static final RegistryObject<Block> VEIL_SHROOM = registerBlocks("veil_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
+	      return 1;
+	   })));	
+	public static final RegistryObject<Block> GLOWING_AIR = registerBlocks("glowing_air", () -> new AirBlock(BlockBehaviour.Properties.of().noCollission().air().lightLevel((p_235417_0_) -> {
+	      return 15;
+	   })));	
 	
 	/*
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");
-	public static final Block BLOODTOOTH_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_PINK).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
-	      return 1;
-	   }), "mod_lavacow:bloodtooth_shroom");
-	public static final Block VEIL_SHROOM = new FURShroomBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((p_235417_0_) -> {
-	      return 1;
-	   }), "mod_lavacow:veil_shroom");	
-	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
-	      return 15;
-	   })).setRegistryName("mod_lavacow:glowing_air");*/	
+	 */	
 	
 	private static RegistryObject<Block> registerBlocks(String name, Supplier<Block> block) {
         RegistryObject<Block> blockObj = DEF_REG.register(name, block);
