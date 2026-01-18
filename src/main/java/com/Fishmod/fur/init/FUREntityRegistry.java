@@ -48,7 +48,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class FUREntityRegistry {
 	public static final DeferredRegister<EntityType<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, mod_LavaCow.MODID);
 	
-	public static final RegistryObject<EntityType<LavaCowEntity>> LAVACOW = DEF_REG.register("lavacow", () -> (EntityType<LavaCowEntity>) EntityType.Builder.of(LavaCowEntity::new, MobCategory.CREATURE).sized(0.8F, 1.5F).setTrackingRange(8).build("lavacow"));
+	public static final RegistryObject<EntityType<LavaCowEntity>> LAVACOW = DEF_REG.register("lavacow", () -> (EntityType<LavaCowEntity>) EntityType.Builder.of(LavaCowEntity::new, MobCategory.CREATURE).sized(0.8F, 1.5F).setTrackingRange(8).fireImmune().build("lavacow"));
 	public static final RegistryObject<EntityType<FogletEntity>> FOGLET = DEF_REG.register("foglet", () -> (EntityType<FogletEntity>) EntityType.Builder.of(FogletEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("foglet"));
 	public static final RegistryObject<EntityType<IsnachiEntity>> ISNACHI = DEF_REG.register("isnachi", () -> (EntityType<IsnachiEntity>) EntityType.Builder.of(IsnachiEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("isnachi"));
 	public static final RegistryObject<EntityType<ImpEntity>> IMP = DEF_REG.register("imp", () -> (EntityType<ImpEntity>) EntityType.Builder.of(ImpEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).fireImmune().build("imp"));

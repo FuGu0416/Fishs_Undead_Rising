@@ -5,7 +5,7 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,9 +17,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class EntityAIDestroyCrops extends Goal {
 
-	protected final Mob entity;
+	protected final TamableAnimal entity;
 	public int destroyTicks;
-	private boolean isHarvest;
     private final double movementSpeed;
     /** Controls task execution delay */
     protected int runDelay;
@@ -30,10 +29,9 @@ public class EntityAIDestroyCrops extends Goal {
     private boolean isAboveDestination;
     private final int searchLength;
 	
-	public EntityAIDestroyCrops(Mob creature, double speedIn, boolean isHarvestIn) {
+	public EntityAIDestroyCrops(TamableAnimal creature, double speedIn) {
 		this.entity = creature;
 		this.destroyTicks = 0;
-		this.isHarvest = isHarvestIn;
         this.movementSpeed = speedIn;
         this.searchLength = 16;
 	}
@@ -107,7 +105,7 @@ public class EntityAIDestroyCrops extends Goal {
             	
             	world.destroyBlock(blockpos, true);
             	
-            	if (this.isHarvest) {
+            	if (this.entity.isTame()) {
             		world.setBlock(blockpos, block.defaultBlockState(), 3);
             		world.destroyBlockProgress(entity.getId(), blockpos, 0);
             	}
@@ -169,7 +167,7 @@ public class EntityAIDestroyCrops extends Goal {
             BlockState iblockstate = worldIn.getBlockState(pos);
             block = iblockstate.getBlock();
 
-            if (block instanceof CropBlock && (!this.isHarvest || ((CropBlock)block).isMaxAge(iblockstate))) {
+            if (block instanceof CropBlock && (!this.entity.isTame() || ((CropBlock)block).isMaxAge(iblockstate))) {
                 return true;
             }
         }
@@ -178,7 +176,7 @@ public class EntityAIDestroyCrops extends Goal {
         BlockState iblockstate = worldIn.getBlockState(pos);
         block = iblockstate.getBlock();
 
-        if (!this.isHarvest && block instanceof BushBlock) {
+        if (!this.entity.isTame() && block instanceof BushBlock) {
             return true;
         }
 

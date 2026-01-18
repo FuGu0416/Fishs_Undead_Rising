@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
@@ -50,12 +51,12 @@ public class EntityBucketItem extends Item {
     private void spawn(ServerLevel level, ItemStack stack, BlockPos pos) {
         Entity entity = this.typeSupplier.get().spawn(level, stack, null, pos, MobSpawnType.BUCKET, true, false);
         
-		/*if (entity != null && entity.getType() == FUREntityRegistry.CACTOID) {
-			CompoundNBT compoundnbt = stack.getOrCreateTag();
+		if (entity != null && entity.getType() == FUREntityRegistry.CACTOID.get()) {
+			CompoundTag compoundnbt = stack.getOrCreateTag();
 			if(compoundnbt.contains("CactoidData")){
                 ((CactoidEntity) entity).readAdditionalSaveData(compoundnbt.getCompound("CactoidData"));
             }
-		}*/
+		}
 		
 		if (entity != null && entity.getType() == FUREntityRegistry.WISP.get()) {
 			CompoundTag compoundnbt = stack.getOrCreateTag();

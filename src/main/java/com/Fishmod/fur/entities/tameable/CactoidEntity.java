@@ -200,8 +200,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    @SuppressWarnings("resource")
-	@Override
+    @Override
     public void tick() {   
     	if (this.attackTimer > 0) {
     		--this.attackTimer;
@@ -253,8 +252,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
         return stack;
     }
     
-    @SuppressWarnings("resource")
-	@Override
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
     	
@@ -326,8 +324,9 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
             source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
         }
         
-    	if(source.is(DamageTypeTags.IS_FIRE))
+    	if (source.is(DamageTypeTags.IS_FIRE)) {
     		return super.hurt(source, 2.0F * amount);
+    	}
 
     	return super.hurt(source, amount);
     }
