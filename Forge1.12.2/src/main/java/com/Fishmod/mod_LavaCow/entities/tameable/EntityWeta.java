@@ -64,7 +64,6 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
     private boolean isAggressive = false;
     private int attackTimer = 0;
     private int limitedLifeTicks;
-    private EntityAIDestroyCrops DestroyCrops;
     private EntityAITempt tempt;
 
     public EntityWeta(World worldIn) {
@@ -76,7 +75,6 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
 
     @Override
     protected void initEntityAI() {
-        this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTamed());
         this.tempt = new EntityAITempt(this, 1.25D, false, Sets.newHashSet(FishItems.CANEPORK, FishItems.PLAGUED_PORKCHOP, FishItems.GREEN_BACON_AND_EGGS));
 
         super.initEntityAI();
@@ -85,7 +83,7 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(3, this.tempt);
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(5, this.DestroyCrops);
+        this.tasks.addTask(5, new EntityAIDestroyCrops(this, 1.1D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.applyEntityAI();
@@ -173,24 +171,20 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
 
     @Override
     protected void doSitCommand(EntityPlayer playerIn) {
-        this.tasks.removeTask(this.DestroyCrops);
         super.doSitCommand(playerIn);
     }
 
     @Override
     protected void doWanderCommand(EntityPlayer playerIn) {
-        this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTamed());
-        this.tasks.addTask(5, this.DestroyCrops);
         super.doWanderCommand(playerIn);
     }
 
     @Override
     protected void setupTamedAI() {
-        if (this.isTamed() && !(this.getOwner() instanceof EntityPlayer))
+    	super.setupTamedAI();
+    	
+        if (this.isTamed() && !(this.getOwner() instanceof EntityPlayer)) {
             this.tasks.removeTask(this.tempt);
-
-        if (this.isTamed() && !this.isWandering() && this.DestroyCrops != null && this.getOwner() instanceof EntityPlayer) {
-            this.tasks.removeTask(this.DestroyCrops);
         }
     }
 

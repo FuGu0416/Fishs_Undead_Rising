@@ -8,8 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -17,9 +17,8 @@ import net.minecraft.world.World;
 
 public class EntityAIDestroyCrops extends EntityAIBase {
 
-	protected final EntityCreature entity;
+	protected final EntityTameable entity;
 	public int destroyTicks;
-	private boolean isHarvest;
     private final double movementSpeed;
     /** Controls task execution delay */
     protected int runDelay;
@@ -30,10 +29,9 @@ public class EntityAIDestroyCrops extends EntityAIBase {
     private boolean isAboveDestination;
     private final int searchLength;
 	
-	public EntityAIDestroyCrops(EntityCreature creature, double speedIn, boolean isHarvestIn) {
+	public EntityAIDestroyCrops(EntityTameable creature, double speedIn) {
 		this.entity = creature;
 		this.destroyTicks = 0;
-		this.isHarvest = isHarvestIn;
         this.movementSpeed = speedIn;
         this.searchLength = 16;
         this.setMutexBits(5);
@@ -110,7 +108,7 @@ public class EntityAIDestroyCrops extends EntityAIBase {
             	
             	world.destroyBlock(blockpos, true);
             	
-            	if(this.isHarvest) {
+            	if(this.entity.isTamed()) {
             		world.setBlockState(blockpos, block.getDefaultState(), 3);
             		world.sendBlockBreakProgress(entity.getEntityId(), blockpos, 0);
             	}
@@ -162,7 +160,7 @@ public class EntityAIDestroyCrops extends EntityAIBase {
             IBlockState iblockstate = worldIn.getBlockState(pos);
             block = iblockstate.getBlock();
 
-            if (block instanceof BlockCrops && (!this.isHarvest || ((BlockCrops)block).isMaxAge(iblockstate))) {
+            if (block instanceof BlockCrops && (!this.entity.isTamed() || ((BlockCrops)block).isMaxAge(iblockstate))) {
                 return true;
             }
         }
@@ -171,7 +169,7 @@ public class EntityAIDestroyCrops extends EntityAIBase {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         block = iblockstate.getBlock();
 
-        if (!this.isHarvest && block instanceof BlockBush) {
+        if (!this.entity.isTamed() && block instanceof BlockBush) {
             return true;
         }
 
