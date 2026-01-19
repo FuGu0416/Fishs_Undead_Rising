@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:undying_heart"
+        },
+        "title": {
+            "translate": "advancements.fur.root.title"
+        },
+        "description": {
+            "translate": "advancements.fur.root.description"
+        },
+        "background": "fur:textures/block/diseased_hay_block_top.png",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden" : false
+    },
+    "criteria": {
+        "tick": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

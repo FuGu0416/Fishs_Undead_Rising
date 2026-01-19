@@ -3,15 +3,14 @@ package com.Fishmod.fur.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class EffectSoiled extends MobEffect {
+public class EffectVenomous extends MobEffect {
 
-	public EffectSoiled() {
-        super(MobEffectCategory.HARMFUL, 0x6F5C3C);
+	public EffectVenomous() {
+        super(MobEffectCategory.BENEFICIAL, 0x6BCF4A);
 	}
 	
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return false;
     }
-	
 }

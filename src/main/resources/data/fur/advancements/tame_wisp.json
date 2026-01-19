@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+			"item": "fur:wisp_in_a_bottle"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_wisp.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_wisp.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "tamed_wisp": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:wisp"
+		        }
+		      }
+        }
+    }
+}

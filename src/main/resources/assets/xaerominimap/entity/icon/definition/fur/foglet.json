@@ -1,0 +1,8 @@
+{
+    "variants": {
+    	"fur:textures/mobs/foglet/foglet.png": "outlined_sprite:fur/foglet.png",
+        "fur:textures/mobs/foglet/foglet2.png": "outlined_sprite:fur/foglet.png",
+        "fur:textures/mobs/foglet/foglet3.png": "outlined_sprite:fur/foglet.png",
+        "default": "outlined_sprite:fur/foglet.png"
+    }
+}

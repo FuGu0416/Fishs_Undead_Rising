@@ -87,7 +87,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	protected int bane_of_arthropods;
 	protected int smite;
 	private int lifesteal;
-	private int poisonous;
 	protected int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
@@ -304,9 +303,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
 	            }
 	            
-	            if (this.poisonous > 0)
-	    			((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, this.poisonous - 1));
-	            
 	            if (this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20, this.corrosive - 1));
             }
@@ -420,7 +416,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
     	this.smite = compound.getInt("fire_aspect");
     	this.lifesteal = compound.getInt("lifesteal");
-    	this.poisonous = compound.getInt("poisonous");
     	this.corrosive = compound.getInt("corrosive");
     	this.unbreaking = compound.getInt("unbreaking");  
     	this.setSkin(compound.getInt("Variant"));
@@ -440,7 +435,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
         compound.putInt("smite", this.smite);
         compound.putInt("lifesteal", this.lifesteal);
-        compound.putInt("poisonous", this.poisonous);
         compound.putInt("corrosive", this.corrosive);
         compound.putInt("unbreaking", this.unbreaking);     
         compound.putInt("Variant", this.getSkin());

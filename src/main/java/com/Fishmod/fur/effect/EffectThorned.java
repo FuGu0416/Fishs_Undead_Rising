@@ -8,4 +8,9 @@ public class EffectThorned extends MobEffect {
 	public EffectThorned() {
         super(MobEffectCategory.BENEFICIAL, 0xD0EF63);
 	}
+	
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return false;
+    }
 }

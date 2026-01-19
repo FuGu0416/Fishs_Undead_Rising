@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
@@ -24,6 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -149,9 +151,9 @@ public class FURWeaponItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {	
 		if (attacker instanceof Player && stack.getItem() == FURItemRegistry.FAMINE.get()) {
 			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
-		}/* else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE) {
-        	target.addEffect(new EffectInstance(FUREffectRegistry.FRAGILE, 200, 4));
-		} else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
+		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE.get()) {
+        	target.addEffect(new MobEffectInstance(FUREffectRegistry.FRAGILE.get(), 200, 4));
+		}/* else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
 			int i = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, stack);			
 			target.addEffect(new EffectInstance(Effects.POISON, 8 * 20, i + 1));
 		}*/
@@ -173,7 +175,6 @@ public class FURWeaponItem extends SwordItem {
 		    	CompoundNBT.putInt("smite", enchantmentIn[4]);
 		    	CompoundNBT.putInt("unbreaking", enchantmentIn[8]);
 		    	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
-		    	CompoundNBT.putInt("poisonous", enchantmentIn[6]);
 		    	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
 		    	
 		    	entity.readAdditionalSaveData(CompoundNBT);  	
@@ -202,7 +203,6 @@ public class FURWeaponItem extends SwordItem {
 		enchantment_list[3] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
 		enchantment_list[4] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.SMITE);
 		//enchantment_list[5] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.LIFESTEAL);
-		//enchantment_list[6] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS);
 		//enchantment_list[7] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
 		enchantment_list[8] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.UNBREAKING);
 		//enchantment_list[9] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.DOMINION);

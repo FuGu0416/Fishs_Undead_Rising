@@ -44,7 +44,6 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	public int bane_of_arthropods = 0;
 	public int smite = 0;
 	public int lifesteal = 0;
-	public int poisonous = 0;
 	public int corrosive = 0;
 	public int baseDamage = 0;
 	
@@ -135,10 +134,6 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
         	   if (this.bane_of_arthropods > 0 && (livingentity.getMobType().equals(MobType.ARTHROPOD))) {
         		   int l = 20 + this.random.nextInt(10 * bane_of_arthropods);
         		   livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, l, 3));
-        	   }
-	            
-        	   if (this.poisonous > 0) {
-        		   livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, this.poisonous - 1));
         	   }
 	            
         	   if (this.corrosive > 0) {

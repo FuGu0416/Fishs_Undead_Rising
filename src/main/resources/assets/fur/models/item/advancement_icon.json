@@ -1,0 +1,12 @@
+{
+	"parent": "item/generated",
+    "textures": {
+        "layer0": "fur:item/undying_heart"
+    },
+    "overrides": [
+	    {
+			"predicate": { "custom_model_data": 1 },
+	      	"model": "fur:item/advancement_icon_foglet"
+	    }
+  	]
+}

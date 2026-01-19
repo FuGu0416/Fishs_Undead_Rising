@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+    		"item": "fur:advancement_icon",
+    		"nbt": "{CustomModelData:1}"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_foglet.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_foglet.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:foglet"
+		        }
+		      }
+        }
+    }
+}

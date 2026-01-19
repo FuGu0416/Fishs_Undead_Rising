@@ -8,4 +8,9 @@ public class EffectCharmingPheromone extends MobEffect {
 	public EffectCharmingPheromone() {
         super(MobEffectCategory.BENEFICIAL, 0x6E9070);
 	}
+	
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return false;
+    }
 }

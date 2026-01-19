@@ -11,6 +11,7 @@ import com.Fishmod.fur.effect.EffectImmolation;
 import com.Fishmod.fur.effect.EffectInfested;
 import com.Fishmod.fur.effect.EffectSoiled;
 import com.Fishmod.fur.effect.EffectThorned;
+import com.Fishmod.fur.effect.EffectVenomous;
 import com.Fishmod.fur.effect.EffectVoidDust;
 
 import net.minecraft.world.effect.MobEffect;
@@ -43,6 +44,7 @@ public class FUREffectRegistry {
 	public static final RegistryObject<MobEffect> CHARMING_PHEROMONE = EFFECT_DEF_REG.register("charming_pheromone", ()-> new EffectCharmingPheromone());
 	public static final RegistryObject<MobEffect> FLOURISHED = EFFECT_DEF_REG.register("flourished", ()-> new EffectFlourished());
 	public static final RegistryObject<MobEffect> VOID_DUST = EFFECT_DEF_REG.register("void_dust", ()-> new EffectVoidDust());
+	public static final RegistryObject<MobEffect> VENOMOUS = EFFECT_DEF_REG.register("venomous", ()-> new EffectVenomous());
 	
 	public static final RegistryObject<Potion> CORROSIVE_POTION = POTION_DEF_REG.register("corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900)));
 	public static final RegistryObject<Potion> STRONG_CORROSIVE_POTION = POTION_DEF_REG.register("strong_corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900, 1)));
@@ -65,6 +67,9 @@ public class FUREffectRegistry {
 	public static final RegistryObject<Potion> VOID_DUST_POTION = POTION_DEF_REG.register("void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 900)));
 	public static final RegistryObject<Potion> STRONG_VOID_DUST_POTION = POTION_DEF_REG.register("strong_void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 450, 2)));
 	public static final RegistryObject<Potion> LONG_VOID_DUST_POTION = POTION_DEF_REG.register("long_void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 1800)));
+	public static final RegistryObject<Potion> VENOMOUS_POTION = POTION_DEF_REG.register("venomous", ()-> new Potion(new MobEffectInstance(VENOMOUS.get(), 3600)));
+	public static final RegistryObject<Potion> STRONG_VENOMOUS_POTION = POTION_DEF_REG.register("strong_venomous", ()-> new Potion(new MobEffectInstance(VENOMOUS.get(), 1800, 1)));
+	public static final RegistryObject<Potion> LONG_VENOMOUS_POTION = POTION_DEF_REG.register("long_venomous", ()-> new Potion(new MobEffectInstance(VENOMOUS.get(), 9600)));
 	
     public static ItemStack createPotion(RegistryObject<Potion> potion){
         return  PotionUtils.setPotion(new ItemStack(Items.POTION), potion.get());
@@ -86,17 +91,17 @@ public class FUREffectRegistry {
         //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.HOLY_SLUDGE)), new ItemStack(FURItemRegistry.HOLY_WATER)));
         
         /* Brew into typical potions */
-        //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING)), createPotion(Items.POTION, Potions.SLOW_FALLING)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING_RAW.get())), createPotion(Items.POTION, Potions.SLOW_FALLING)));
         
-        /*BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDICHEART)), createPotion(Items.POTION, CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDICHEART)), createPotion(Items.LINGERING_POTION, CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDICHEART)), createPotion(Items.SPLASH_POTION, CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_CORROSIVE_POTION)));
-        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, CORROSIVE_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_CORROSIVE_POTION)));*/
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDIC_HEART.get())), createPotion(Items.POTION, CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDIC_HEART.get())), createPotion(Items.LINGERING_POTION, CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.ACIDIC_HEART.get())), createPotion(Items.SPLASH_POTION, CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_CORROSIVE_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, CORROSIVE_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_CORROSIVE_POTION.get())));
         
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.FOUL_BRISTLE.get())), createPotion(Items.POTION, FOULODOR_POTION.get())));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.FOUL_BRISTLE.get())), createPotion(Items.LINGERING_POTION, FOULODOR_POTION.get())));
@@ -164,5 +169,15 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_VOID_DUST_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_VOID_DUST_POTION)));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, VOID_DUST_POTION)), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_VOID_DUST_POTION)));*/
+        
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_STINGER.get())), createPotion(Items.POTION, VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_STINGER.get())), createPotion(Items.LINGERING_POTION, VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.POISON_STINGER.get())), createPotion(Items.SPLASH_POTION, VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_VENOMOUS_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, VENOMOUS_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_VENOMOUS_POTION.get())));
     }
 }

@@ -913,17 +913,18 @@ public class FURServerEvents {
     public void onEHurt(LivingHurtEvent event) {
     	DamageSource source = event.getSource();
     	LivingEntity Attacked = event.getEntity();
-    	Entity Attacker = source.getDirectEntity();
+    	Entity Attacker = source.getEntity();
+    	Entity DirectAttacker = source.getDirectEntity();
 	    int Armor_Famine_lvl = 0;	    
 	    
-	    if (Attacker != null) {
-			for(ItemStack S : Attacker.getArmorSlots()) {
+	    if (DirectAttacker != null) {
+			for(ItemStack S : DirectAttacker.getArmorSlots()) {
 				if(S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
 				}
 			}		
 		
-			if (Armor_Famine_lvl >= 4 && Attacker instanceof LivingEntity) {
+			if (Armor_Famine_lvl >= 4 && DirectAttacker instanceof LivingEntity) {
 				event.setAmount(event.getAmount() + 2.0F);
 			}
 			
@@ -935,7 +936,7 @@ public class FURServerEvents {
 				event.setAmount(event.getAmount() + ((ScarabEntity)Attacker).getBonusDamage(Attacked));		
 			}*/
 			
-	    	if (Attacker instanceof LivingEntity living) {
+	    	if (DirectAttacker instanceof LivingEntity living) {
 	    		Item heldItem = living.getMainHandItem().getItem();
 	    		if (heldItem.equals(FURItemRegistry.BONE_SWORD.get()))
 	    			event.setAmount(event.getAmount() + Math.min(2/*(float)FURConfig.BoneSword_DamageCap.get()*/, Attacked.getMaxHealth() * (5/*(float)FURConfig.BoneSword_Damage.get()*/ * 0.01F)));
@@ -943,15 +944,19 @@ public class FURServerEvents {
 	    			event.setAmount(event.getAmount() + 2.0F);*/
 	    	}
 	    	
-			if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW.get()) && (Attacked.getHealth() <= Attacked.getMaxHealth() * (40.0F/*(float)FURConfig.Ghoul_targetHPThreshold.get()*/ / 100.0F))) {
-				if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerLevel) {
+	    	if (Attacker instanceof LivingEntity living && (Attacker.equals(DirectAttacker) || source.is(DamageTypeTags.IS_PROJECTILE)) && living.hasEffect(FUREffectRegistry.VENOMOUS.get())) {
+		        Attacked.addEffect(new MobEffectInstance(MobEffects.POISON, 80, living.getEffect(FUREffectRegistry.VENOMOUS.get()).getAmplifier()));
+	    	}
+	    	
+			if (DirectAttacker.getType().equals(FUREntityRegistry.GHOUL_ARROW.get()) && (Attacked.getHealth() <= Attacked.getMaxHealth() * (40.0F/*(float)FURConfig.Ghoul_targetHPThreshold.get()*/ / 100.0F))) {
+				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
 					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
 				event.setAmount(event.getAmount() + 4.0F);
 			}
 			
-			if (event.getSource().getDirectEntity().getType().equals(FUREntityRegistry.FANG_ARROW.get())) {
-				if (event.getSource().getDirectEntity().getCommandSenderWorld() instanceof ServerLevel) {
+			if (DirectAttacker.getType().equals(FUREntityRegistry.FANG_ARROW.get())) {
+				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
 					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
 				event.setAmount(event.getAmount() + Math.min(2/*(float)FURConfig.BoneSword_DamageCap.get()*/, Attacked.getMaxHealth() * (5/*(float)FURConfig.BoneSword_Damage.get()*/ * 0.01F)));
