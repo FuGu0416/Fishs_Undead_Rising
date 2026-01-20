@@ -2,7 +2,6 @@ package com.Fishmod.fur.entities.tameable;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -63,7 +62,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class CactoidEntity extends FURTameableEntity implements IAggressive, GeoEntity {
+public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("cactoid.model.idle");
@@ -74,10 +73,8 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
     private static final EntityDataAccessor<Boolean> DATA_IS_SHAKING = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(CactoidEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 20;
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
-	private int attackTimer;
 	
 	public CactoidEntity(EntityType<? extends CactoidEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
@@ -131,17 +128,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
         }
 
         super.onSyncedDataUpdated(p_184206_1_);
-	}
-    
-    @Override
-    public int getAttackTimer() {
-       return this.attackTimer;
-    }
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
+	}    
 	
     public boolean isShaking() {
     	return this.entityData.get(DATA_IS_SHAKING);
@@ -202,10 +189,6 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
      */
     @Override
     public void tick() {   
-    	if (this.attackTimer > 0) {
-    		--this.attackTimer;
-    	}
-    	
     	if (!this.level().isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick() && !this.isAggressive() && this.getLastHurtByMob() == null) {
     			this.doSitCommand(null);
@@ -402,7 +385,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
 	@Override
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = ATTACK_TIMER;
+    		this.triggerAnim("trigger_controller", "attack");
         } else if (id == 14) {
             this.addParticlesAroundSelf(ParticleTypes.FALLING_NECTAR);
         } else {
@@ -480,10 +463,6 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isSilent()) {
     		state.getController().setAnimation(IDLE_SLEEP);
-    	} else if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
-			state.getController().setAnimation(ATTACK);			 		
-    	} else if (this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
         } else {
@@ -496,6 +475,7 @@ public class CactoidEntity extends FURTameableEntity implements IAggressive, Geo
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
 	}
 
 	@Override

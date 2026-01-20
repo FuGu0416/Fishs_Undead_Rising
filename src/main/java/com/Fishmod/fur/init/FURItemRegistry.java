@@ -159,7 +159,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SLUDGE_WAND = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "mod_lavacow:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
 	public static final RegistryObject<Item> BURNTOVIPOSITOR = new FURItem(new Item.Properties().rarity(Rarity.RARE).fireResistant()).setRegistryName("mod_lavacow:burntovipositor");
 	public static final RegistryObject<Item> WAR = new FURRangedItem("mod_lavacow:war", Items.FIRE_CHARGE, FUREntityRegistry.WAR_SMALL_FIREBALL, new Item.Properties().rarity(Rarity.RARE).durability(384));
-	public static final RegistryObject<Item> POISONSTINGER = new Item(new Item.Properties()).setRegistryName("mod_lavacow:poison_stinger");
 	public static final RegistryObject<Item> VESPA_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "mod_lavacow:vespa_dagger", ItemTier.IRON, 2, -2.4F, FURItemRegistry.POISONSTINGER);
 	public static final RegistryObject<Item> SAUSAGE_ROLL = new Item(new Item.Properties().food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("mod_lavacow:sausage_roll");
 	public static final RegistryObject<Item> SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties())).setRegistryName("mod_lavacow:swinearmor_helmet");

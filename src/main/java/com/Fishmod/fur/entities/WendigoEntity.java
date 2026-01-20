@@ -219,9 +219,18 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4 || id == 5 || id == 6) {
-    		this.attackTimer = ATTACK_TIMER;
-    		this.AttackStance = id;
+    	if (id == 4) {
+            this.attackTimer = ATTACK_TIMER;
+            this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_smash");
+    	} else if (id == 5) {
+            this.attackTimer = ATTACK_TIMER;
+            this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_r");
+    	} else if (id == 6) {
+            this.attackTimer = ATTACK_TIMER;
+            this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_l");
     	} else if (id == 7) {	
     		this.jumpTimer = JUMP_TIMER;
     	} else {
@@ -417,23 +426,13 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
 	}
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
-    		if (this.getAttackStance() == (byte)6) {
-    			state.getController().setAnimation(ATTACK_L);
-    		} else if (this.getAttackStance() == (byte)5) { 
-    			state.getController().setAnimation(ATTACK_R);
-    		} else if (this.getAttackStance() == (byte)4) { 
-    			state.getController().setAnimation(ATTACK_SMASH);
-    		}   		
-    	} else if (this.isPouncing()) {
+    	if (this.isPouncing()) {
     		if (this.jumpTimer >= (JUMP_TIMER - 8)) {
     			state.getController().setAnimation(LEAP_START);
     			state.getController().setAnimation(LEAP);
     		} else if (this.onGround()) {
     			state.getController().setAnimation(LEAP_END);
     		}
-    	} else if (this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
         } else {
@@ -446,6 +445,10 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack_l", ATTACK_L)
+				.triggerableAnim("attack_r", ATTACK_R)
+				.triggerableAnim("attck_smash", ATTACK_SMASH));
 	}
 
 	@Override

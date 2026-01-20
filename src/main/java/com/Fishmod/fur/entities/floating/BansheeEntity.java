@@ -34,6 +34,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -52,7 +54,6 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("banshee.model.attacking");
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("banshee.model.casting");
  
-	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 45;
 	
 	public BansheeEntity(EntityType<? extends BansheeEntity> p_i48549_1_, Level LevelIn) {
@@ -93,11 +94,11 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     public void aiStep() {
         super.aiStep();
         
-        if (this.getSpellTicks() > 5 && this.getSpellTicks() < 12) {
+        if (this.getSpellTicks() > 12 && this.getSpellTicks() < 16) {
         	this.level().addParticle(FURParticleRegistry.BANSHEE_SHRIEK.get(), this.getX(), this.getY() + this.getBbHeight(), this.getZ(), 0.0D, 1.0D, 0.0D);
         }
     }
-    
+	
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
@@ -110,6 +111,21 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     	this.setHealth(this.getMaxHealth());*/
         
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    }
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+        if (id == 10) {
+        	this.triggerAnim("trigger_controller", "cast");
+        	this.spellTicks = SPELL_TIMER;
+        } else if (id == 4) {
+        	this.triggerAnim("trigger_controller", "attack");
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
     
     public class AIUseSpell extends Goal {
@@ -165,7 +181,6 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
 
         protected void castSpell() {
         	List<Entity> list = BansheeEntity.this.level().getEntities(BansheeEntity.this, BansheeEntity.this.getBoundingBox().inflate(3.0D/*FURConfig.Banshee_Ability_Radius.get()*/));
-        	BansheeEntity.this.level().broadcastEntityEvent(BansheeEntity.this, (byte)11);
         	
         	for (Entity entity1 : list) {
         		if (entity1 instanceof LivingEntity livingentity) {     
@@ -228,13 +243,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving()) {
+    	if (state.isMoving()) {
             state.getController().setAnimation(FLOAT);
         } else {
             state.getController().setAnimation(IDLE);
@@ -245,7 +254,8 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
+		controllers.add(new AnimationController<>(this, "controller", 30, this::predicate));		
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("cast", CAST));
 	}
 
 	@Override

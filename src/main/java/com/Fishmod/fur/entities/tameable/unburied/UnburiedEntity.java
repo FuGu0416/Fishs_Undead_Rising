@@ -3,7 +3,6 @@ package com.Fishmod.fur.entities.tameable.unburied;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -66,7 +65,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class UnburiedEntity extends FURTameableEntity implements IAggressive, GeoEntity {
+public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("unburied.model.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("unburied.model.walking");
@@ -75,10 +74,8 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     private static final RawAnimation BIRTH = RawAnimation.begin().thenPlay("unburied.model.birth");
     
     private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(UnburiedEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 22;
 	public static final int SPELL_TIMER = 75;
 	
-	private int attackTimer;
 	protected int spellTicks;
 	private int limitedLifeTicks;
 	private int fire_aspect;
@@ -220,10 +217,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     public void tick() {        
     	super.tick();
 
-    	if (this.attackTimer > 0) {
-            --this.attackTimer;
-        }
-        
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
@@ -288,7 +281,6 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	@Override
     public boolean doHurtTarget(Entity entityIn) {
         if (super.doHurtTarget(entityIn)) {
-        	this.attackTimer = ATTACK_TIMER;
 	        this.level().broadcastEntityEvent(this, (byte)4);
 
             if(entityIn instanceof LivingEntity) {
@@ -330,25 +322,16 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
         return livingdata;
     }    
     
-    @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
     /**
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 32) {
+    		this.triggerAnim("trigger_controller", "birth");
         	this.spellTicks = SPELL_TIMER;
         } else if (id == 4) {
-            this.attackTimer = ATTACK_TIMER;
+        	this.triggerAnim("trigger_controller", "attack");
         } else if (id == 11) {
             this.isSmoking = true;
         } else {
@@ -465,13 +448,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
     }
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(BIRTH);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving() && !this.isInWater()) {
+    	if (state.isMoving() && !this.isInWater()) {
             state.getController().setAnimation(this.getWalkAnimation());
         } else {
             state.getController().setAnimation(IDLE);
@@ -483,6 +460,7 @@ public class UnburiedEntity extends FURTameableEntity implements IAggressive, Ge
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("birth", BIRTH));
 	}
 
 	@Override

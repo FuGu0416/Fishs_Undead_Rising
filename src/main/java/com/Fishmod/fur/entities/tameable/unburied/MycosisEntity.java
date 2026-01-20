@@ -33,8 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class MycosisEntity extends UnburiedEntity {	
-	
-	private Vector3f[] spore_color = {new Vector3f(0.83F, 0.73F, 0.5F), new Vector3f(0.0F, 0.98F, 0.93F)};
+	private static final Vector3f[] SPORE_COLOR = {new Vector3f(0.83F, 0.73F, 0.5F), new Vector3f(0.0F, 0.98F, 0.93F)};
 		
     public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
@@ -93,7 +92,7 @@ public class MycosisEntity extends UnburiedEntity {
         }
         
         if(this.tickCount % 10 == 0 && this.level().isClientSide);
-        	this.level().addParticle(new DustParticleOptions(this.spore_color[this.getSkin() - 1], 0.6F), 
+        	this.level().addParticle(new DustParticleOptions(SPORE_COLOR[this.getSkin() - 1], 0.6F), 
         			this.getX() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 
         			this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), 
         			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);

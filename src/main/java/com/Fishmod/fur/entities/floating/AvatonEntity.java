@@ -7,7 +7,6 @@ import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,6 +33,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -53,7 +54,6 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wraith.model.casting_avaton");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(AvatonEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 45;
 	
 	public AvatonEntity(EntityType<? extends AvatonEntity> p_i48549_1_, Level worldIn) {
@@ -118,6 +118,21 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
     public boolean canBreakDoors() {
         return false;
 	}
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+        if (id == 10) {
+        	this.triggerAnim("trigger_controller", "cast");
+        	this.spellTicks = SPELL_TIMER;
+        } else if (id == 4) {
+        	this.triggerAnim("trigger_controller", "attack");
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
     	    
     public class AIUseSpell extends Goal {
         protected int spellWarmup;
@@ -273,13 +288,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving()) {
+    	if (state.isMoving()) {
             state.getController().setAnimation(FLOAT);
         } else {
             state.getController().setAnimation(IDLE);
@@ -291,6 +300,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("cast", CAST));
 	}
 
 	@Override

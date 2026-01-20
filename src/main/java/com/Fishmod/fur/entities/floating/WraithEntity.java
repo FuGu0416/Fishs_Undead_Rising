@@ -33,6 +33,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -54,7 +56,6 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
 	private static final EntityDataAccessor<Boolean> ISFADING = SynchedEntityData.defineId(WraithEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final int SPELL_WARMUP_TIMER = 50;
 	public static final int SPELL_TIMER = 30;
-	public static final int ATTACK_TIMER = 30;
     private float fadeProgress = SPELL_WARMUP_TIMER;
     
 	public WraithEntity(EntityType<? extends WraithEntity> p_i48549_1_, Level worldIn) {
@@ -135,6 +136,21 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     	this.setHealth(this.getMaxHealth());*/
 
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    }
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+        if (id == 10) {
+        	this.triggerAnim("trigger_controller", "cast");
+        	this.spellTicks = SPELL_TIMER;
+        } else if (id == 4) {
+        	this.triggerAnim("trigger_controller", "attack");
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
     
     public class AIUseSpell extends Goal {
@@ -277,13 +293,7 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving()) {
+    	if (state.isMoving()) {
             state.getController().setAnimation(FLOAT);
         } else {
             state.getController().setAnimation(IDLE);
@@ -295,6 +305,7 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("cast", CAST));
 	}
 
 	@Override

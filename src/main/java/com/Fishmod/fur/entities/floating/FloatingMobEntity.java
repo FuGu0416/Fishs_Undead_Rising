@@ -3,7 +3,6 @@ package com.Fishmod.fur.entities.floating;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ICharging;
 import com.Fishmod.fur.entities.ai.FloatingMoveControl;
 import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
@@ -14,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -38,9 +38,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FloatingMobEntity extends Monster implements IAggressive, ICharging {
+public class FloatingMobEntity extends Monster implements ICharging {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(FloatingMobEntity.class, EntityDataSerializers.BYTE);
-	private int attackTimer = 0;
 	protected int spellTicks;
 	
 	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> p_i48549_1_, Level worldIn) {
@@ -160,10 +159,6 @@ public class FloatingMobEntity extends Monster implements IAggressive, ICharging
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
-        
-        if (this.attackTimer > 0) {
-        	--this.attackTimer;
-        }
     	
     	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick()) {
     		this.setSecondsOnFire(8);
@@ -174,15 +169,16 @@ public class FloatingMobEntity extends Monster implements IAggressive, ICharging
         this.noPhysics = false;
         this.setNoGravity(true);
     }
-
-    @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
     
 	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
+	public boolean doHurtTarget(Entity par1Entity) {
+		boolean flag = super.doHurtTarget(par1Entity);
+		
+        if (flag) {
+        	this.level().broadcastEntityEvent(this, (byte)4);
+        }
+        
+		return flag;
 	}
 
     @Override
@@ -212,21 +208,7 @@ public class FloatingMobEntity extends Monster implements IAggressive, ICharging
         flyingpathnavigator.setCanFloat(true);
         flyingpathnavigator.setCanPassDoors(true);
         return flyingpathnavigator;
-	}
-	
-    /**
-     * Handler for {@link World#setEntityState}
-     */
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 10) {
-        	this.spellTicks = 45;
-        } else if (id == 4) {
-            this.attackTimer = 30;
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
+	}	
         
     public class AICastingApell extends Goal {
         public AICastingApell() {

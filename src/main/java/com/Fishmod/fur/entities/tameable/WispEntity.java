@@ -80,7 +80,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation FLOAT = RawAnimation.begin().thenPlay("wisp.model.floating");
-    //private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.spinning");
+    private static final RawAnimation SPIN = RawAnimation.begin().thenPlay("wisp.model.spinning");
     private static final RawAnimation CHARGE = RawAnimation.begin().thenPlay("wisp.model.charging");
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wisp.model.casting");
     
@@ -205,6 +205,10 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 		if (this.isGastly() && this.getSkin() != 3) {
 			this.setSkin(3);
 		}      
+		
+		if (!this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
+			this.level().broadcastEntityEvent(this, (byte)7);
+		}
 
         if (this.isAggressive()) this.noPhysics = true;
      	super.tick();
@@ -451,6 +455,8 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
     		this.isCharging = false;
 		} else if (id == 6) {	
     		this.isCharging = true;
+		} else if (id == 7) {	
+			this.triggerAnim("trigger_controller", "spin");
     	} else {
             super.handleEntityEvent(id);
         }
@@ -461,8 +467,9 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
      */
 	@Override
     public void dropAllDeathLoot(DamageSource cause) {
-		if(this.isTame())
+		if (this.isTame()) {
 			this.spawnAtLocation(this.getAshes(), 1); 
+		}
 		
 		super.dropAllDeathLoot(cause);
 	}
@@ -472,8 +479,6 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
     		state.getController().setAnimation(CHARGE);
     	} else if (this.swell > 0 && this.swell <= this.maxSwell) {
     		state.getController().setAnimation(CAST);
-    	/*} else if (state.isMoving() && this.random.nextFloat() < 0.05F) {
-			state.getController().setAnimation(SPIN);*/
         } else {
             state.getController().setAnimation(FLOAT);
         }
@@ -484,6 +489,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("spin", SPIN));
 	}
 
 	@Override

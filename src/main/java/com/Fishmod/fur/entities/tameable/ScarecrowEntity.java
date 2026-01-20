@@ -410,9 +410,18 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4 || id == 5 || id == 6) {
+    	if (id == 4) {
             this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_0");
+    	} else if (id == 5) {
+            this.attackTimer = ATTACK_TIMER;
+            this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_1");
+    	} else if (id == 6) {
+            this.attackTimer = ATTACK_TIMER;
+            this.AttackStance = id;
+            this.triggerAnim("trigger_controller", "attack_swipe");
         } else {
             super.handleEntityEvent(id);
         }
@@ -588,16 +597,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isInSittingPose()) {
     		state.getController().setAnimation(SIT);
-    	} else if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
-    		if (this.AttackStance == (byte)4) {
-				state.getController().setAnimation(ATTACK_0);			
-    		} else if (this.AttackStance == (byte)5) { 
-    			state.getController().setAnimation(ATTACK_1);
-    		} else if (this.AttackStance == (byte)6) { 
-    			state.getController().setAnimation(ATTACK_SWIPE);
-    		}   		
-    	} else if (this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
         } else {
@@ -610,6 +609,10 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack_0", ATTACK_0)
+				.triggerableAnim("attack_1", ATTACK_1)
+				.triggerableAnim("attack_swipe", ATTACK_SWIPE));
 	}
 
 	@Override

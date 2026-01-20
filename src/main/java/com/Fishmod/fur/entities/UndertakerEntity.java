@@ -238,8 +238,10 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
+    		this.triggerAnim("trigger_controller", "attack");
             this.attackTimer = ATTACK_TIMER;
-        } else if (id == 10) {   		
+        } else if (id == 10) {
+        	this.triggerAnim("trigger_controller", "cast");
         	this.spellTicks = SPELL_TIMER;
         } else {
             super.handleEntityEvent(id);
@@ -443,13 +445,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
 	}
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving() && !this.isInWater()) {
+    	if (state.isMoving() && !this.isInWater()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);
@@ -460,7 +456,10 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK)
+				.triggerableAnim("cast", CAST));
 	}
 
 	@Override

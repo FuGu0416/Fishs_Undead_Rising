@@ -366,8 +366,10 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
+    		this.triggerAnim("trigger_controller", "attack");
             this.attackTimer = ATTACK_TIMER;
         } else if (id == 10) {
+        	this.triggerAnim("trigger_controller", "attack_volley");
         	this.spellTicks = 20;
         } else if (id == 14) {
             this.addParticlesAroundSelf(ParticleTypes.FALLING_NECTAR);
@@ -497,20 +499,17 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     }
     
     @Override
-    protected SoundEvent getAmbientSound()
-    {
+    protected SoundEvent getAmbientSound() {
         return FURSoundRegistry.CACTYRANT_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-    {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.WOOL_BREAK;
     }
 
     @Override
-    protected SoundEvent getDeathSound()
-    {
+    protected SoundEvent getDeathSound() {
         return FURSoundRegistry.CACTYRANT_DEATH.get();
     }
 
@@ -599,12 +598,6 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isVehicle()) {
     		state.getController().setAnimation(ATTACKING_GRAB);
-    	} else if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(ATTACKING_VOLLEY);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACKING);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
     	} else if (this.isCamouflaging()) {
     		state.getController().setAnimation(IDLE_SLEEP);
     	} else if (state.isMoving() && !this.isInWater()) {
@@ -619,6 +612,9 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACKING)
+				.triggerableAnim("attack_volley", ATTACKING_VOLLEY));
 	}
 
 	@Override

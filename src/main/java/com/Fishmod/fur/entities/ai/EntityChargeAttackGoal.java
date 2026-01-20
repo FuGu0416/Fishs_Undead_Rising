@@ -77,10 +77,7 @@ public class EntityChargeAttackGoal extends Goal {
         	this.mob.doHurtTarget(this.target);
         	this.mob.setDeltaMovement(this.mob.getDeltaMovement().scale(0.2D));
         } else if (this.mob.distanceTo(this.target) < 9.0D && this.mob instanceof FloatingMobEntity floater) {
-        	if (floater.getAttackTimer() == 0) {
-        		floater.setAttackTimer(30);
-        		floater.level().broadcastEntityEvent(floater, (byte)4);
-        	}
+        	floater.level().broadcastEntityEvent(floater, (byte)4);
         }
     }
 }

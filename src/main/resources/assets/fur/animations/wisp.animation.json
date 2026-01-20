@@ -28,7 +28,7 @@
 			"bones": {
 				"Head": {
 					"rotation": {
-						"vector": ["math.cos(query.anim_time * 180) * 4", "", "math.cos((query.anim_time - 0.5) * 180) * 180"]
+						"vector": ["math.cos(query.anim_time * 180) * 4", 0, "math.cos((query.anim_time - 0.5) * 180) * 180"]
 					},
 					"position": {
 						"vector": [0, "math.sin(query.anim_time * 180) * 5", 0]

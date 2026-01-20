@@ -43,6 +43,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -62,7 +64,6 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wraith.model.casting");
     
     private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(SeaHagEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 45;
 	
 	public SeaHagEntity(EntityType<? extends SeaHagEntity> p_i48549_1_, Level worldIn) {
@@ -148,7 +149,22 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     		return false;
 
     	return super.hurt(source, amount);
-    }	    
+    }	  
+    
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+        if (id == 10) {
+        	this.triggerAnim("trigger_controller", "cast");
+        	this.spellTicks = SPELL_TIMER;
+        } else if (id == 4) {
+        	this.triggerAnim("trigger_controller", "attack");
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
     
     public class AIUseSpell extends Goal {
         protected int spellWarmup;
@@ -406,13 +422,7 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving()) {
+    	if (state.isMoving()) {
             state.getController().setAnimation(FLOAT);
         } else {
             state.getController().setAnimation(IDLE);
@@ -424,6 +434,7 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("cast", CAST));
 	}
 
 	@Override

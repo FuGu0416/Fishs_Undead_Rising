@@ -2,7 +2,6 @@ package com.Fishmod.fur.entities.flying;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.EntityAIDropRider;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.init.FURTagRegistry;
@@ -50,16 +49,14 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PteraEntity extends FlyingMobEntity implements IAggressive, GeoEntity {
+public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("ptera.model.idle");
-    private static final RawAnimation FLY = RawAnimation.begin().thenPlay("ptera.model.flying");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("ptera.model.attacking");
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("ptera.model.idle");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("ptera.model.flying");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("ptera.model.attacking_blend");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(PteraEntity.class, EntityDataSerializers.INT);
-	public static final int ATTACK_TIMER = 20;
-	private int attackTimer;
 	
 	public PteraEntity(EntityType<? extends PteraEntity> p_i48549_1_, Level worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -131,23 +128,9 @@ public class PteraEntity extends FlyingMobEntity implements IAggressive, GeoEnti
 	public LivingEntity getControllingPassenger() {
 		return null;
 	}
-   
-	@Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-   
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
 	
 	@Override
-    public void tick() {   
-    	if (this.attackTimer > 0) {
-    		--this.attackTimer;
-    	}
-    	
+    public void tick() {       	
     	super.tick();
 	}
 
@@ -259,7 +242,7 @@ public class PteraEntity extends FlyingMobEntity implements IAggressive, GeoEnti
 	@Override
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = ATTACK_TIMER;
+            this.triggerAnim("trigger_controller", "attack");
         } else {
             super.handleEntityEvent(id);
         }
@@ -289,22 +272,19 @@ public class PteraEntity extends FlyingMobEntity implements IAggressive, GeoEnti
 	}
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
-			state.getController().setAnimation(ATTACK);			 		
-    	} else if (this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (state.isMoving()) {
+    	if (state.isMoving()) {
             state.getController().setAnimation(FLY);
         } else {
             state.getController().setAnimation(IDLE);
         }
         
-        return PlayState.CONTINUE;
-    }
+    	return PlayState.CONTINUE;
+    }    
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
 	}
 
 	@Override

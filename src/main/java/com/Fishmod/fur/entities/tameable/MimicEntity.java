@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.client.model.MimicModel;
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -94,7 +93,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEntity {
+public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("mimic.model.idle");
@@ -112,13 +111,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
             "textures/entity/chest/normal.png"
     ));
 
-    public static final int ATTACK_TIMER = 15;
-    public static final int IDLE_TIMER = 40;
-    public static final int HIDE_IN_TIMER = 15;
-    public static final int HIDE_OUT_TIMER = 21;
-    private int AttackTimer, AggressiveTimer = 40;
+    private int AggressiveTimer = 40;
     public float rotationAngle = 0.0F;
-    private int IdleTimer, SitTimer;
 	public SimpleContainer inventory;
     private EntityAITargetItem<ItemEntity> AITargetItem;
 	
@@ -261,10 +255,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 		super.setInSittingPose(p_21838_);
 
 		if (p_21838_) {
-			this.SitTimer = HIDE_IN_TIMER;
 			this.level().broadcastEntityEvent(this, (byte)5);
 		} else {
-			this.SitTimer = HIDE_OUT_TIMER;
 			this.level().broadcastEntityEvent(this, (byte)6);
 		}
 	}
@@ -280,18 +272,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 		if (this.AggressiveTimer > 0) {
 			this.AggressiveTimer--;
 		}
-		
-    	if (this.AttackTimer > 0) {
-    		this.AttackTimer--;
-    	}
-
-    	if (this.SitTimer > 0) {
-    		this.SitTimer--;
-    	}
-    	
-    	if (this.IdleTimer > 0) {
-    		this.IdleTimer--;
-    	}
     	
 		if (!this.level().isClientSide()) {
 			if (!this.isAggressive() && !this.isTame()) {
@@ -343,7 +323,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 		}
 		
 		if (!this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
-			this.IdleTimer = IDLE_TIMER;
 			this.level().broadcastEntityEvent(this, (byte)7);
 		}
     }
@@ -358,7 +337,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 	
     @Override
     public void travel(Vec3 p_213352_1_) {
-		if (this.SitTimer > 0 || this.isInSittingPose()) {
+		if (this.isInSittingPose()) {
             this.setDeltaMovement(Vec3.ZERO);
 		} else
 			super.travel(p_213352_1_);
@@ -370,7 +349,11 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     @Override
     public boolean hurt(DamageSource source, float amount) {
     	Entity entity = source.getDirectEntity();
-    	this.setInSittingPose(false);
+    	
+    	if (this.isInSittingPose()) {
+    		this.setInSittingPose(false);
+    	}
+    	
 		this.AggressiveTimer = 200;
 		this.setSilent(false);
 		this.setSpeed(0.19F);
@@ -389,7 +372,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
         if (flag) {
         	this.playSound(FURSoundRegistry.SWARMER_ATTACK.get(), 1.0F, 1.0F);
         	this.doEnchantDamageEffects(this, entityIn);
-        	this.AttackTimer = ATTACK_TIMER;
         	this.level().broadcastEntityEvent(this, (byte)40);
         	
         	if (this.getSkin() == MimicModel.getNetherSkin() && this.getRandom().nextInt(4) == 0) {
@@ -515,8 +497,11 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
         if (!this.isTame() && this.distanceToSqr(player) < 2.0D) {
 	        this.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
 	        this.playSound(FURSoundRegistry.MIMIC_AMBIENT.get(), 0.4F, 1.0F);
-	        this.setTarget(player);	        
-	        this.setInSittingPose(false);
+	        this.setTarget(player);	      
+	        
+	        if (this.isInSittingPose()) {
+	        	this.setInSittingPose(false);
+	        }
         }
 
         return super.mobInteract(player, hand);
@@ -621,20 +606,6 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     public void setSkin(int skinType) {
         this.getEntityData().set(SKIN_TYPE, skinType);
     }
-	
-    public int getSitTimer() {
-       return this.SitTimer;
-	}
-    
-	@Override
-	public int getAttackTimer() {
-		return this.AttackTimer;
-	}
-
-	@Override
-	public void setAttackTimer(int i) {		
-		this.AttackTimer = i;
-	}
     
     /**
      * Handler for {@link World#setEntityState}
@@ -642,13 +613,13 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 5) {
-    		this.SitTimer = HIDE_IN_TIMER;
+    		this.triggerAnim("trigger_controller", "hide_in");
     	} else if (id == 6) {
-    		this.SitTimer = HIDE_OUT_TIMER;
+    		this.triggerAnim("trigger_controller", "hide_out");
     	} else if (id == 7) {
-    		this.IdleTimer = IDLE_TIMER;
+    		this.triggerAnim("trigger_controller", "hide_peek");
     	} else if (id == 40) {
-            this.AttackTimer = ATTACK_TIMER;
+    		this.triggerAnim("trigger_controller", "attack");
         } else if (id == 41) {
         	this.rotationAngle = 180.0F * ((float)Math.PI / 180.0F);
         } else if (id == 42) {
@@ -768,25 +739,11 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isInSittingPose()) {
-    		if (this.getSitTimer() == (HIDE_IN_TIMER - 1)) {
-    			state.getController().setAnimation(HIDE_IN);
-    		} if (this.IdleTimer == (IDLE_TIMER - 1)) {
-    			state.getController().setAnimation(HIDE_PEEK);
-    		} else {
-    			state.getController().setAnimation(IDLE_HIDE);
-    		}
-    	} else if (this.getAttackTimer() == (ATTACK_TIMER - 1)) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.getAttackTimer() > 0 || this.getSitTimer() > 0) {
-    		return PlayState.CONTINUE;
+			state.getController().setAnimation(IDLE_HIDE);
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
         } else {
-        	if (this.getSitTimer() == (HIDE_IN_TIMER - 1)) {
-    			state.getController().setAnimation(HIDE_OUT);
-    		} else {
-    			state.getController().setAnimation(IDLE);
-    		}
+			state.getController().setAnimation(IDLE);
         }
         
         return PlayState.CONTINUE;
@@ -794,7 +751,12 @@ public class MimicEntity extends FURTameableEntity implements IAggressive, GeoEn
     
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK)
+				.triggerableAnim("hide_in", HIDE_IN)
+				.triggerableAnim("hide_out", HIDE_OUT)
+				.triggerableAnim("hide_peek", HIDE_PEEK));
 	}
 
 	@Override

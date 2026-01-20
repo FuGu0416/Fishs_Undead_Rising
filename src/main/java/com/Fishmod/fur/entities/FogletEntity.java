@@ -215,9 +215,11 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     public void handleEntityEvent(byte id) {
 		switch(id) {
 			case 5:
+				this.triggerAnim("trigger_controller", "attack");
 				this.setAttackTimer(ATTACK_TIMER);
 				break;
 			case 10:
+				this.triggerAnim("trigger_controller", "cast");
 				this.spellTicks = SPELL_TIMER;
 				break;			
 			default:
@@ -506,13 +508,7 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
     }    
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.getSpellTicks() >= SPELL_TIMER - 5) {
-    		state.getController().setAnimation(CAST);
-    	} else if (this.getAttackTimer() == ATTACK_TIMER) {
-    		state.getController().setAnimation(ATTACK);
-    	} else if (this.isSpellcasting() || this.getAttackTimer() > 0) {
-    		return PlayState.CONTINUE;
-    	} else if (this.getIsHanging()) {
+    	if (this.getIsHanging()) {
     		state.getController().setAnimation(HANG);
     	} else if (state.isMoving() && !this.isInWater()) {
             state.getController().setAnimation(this.getWalkAnimation());
@@ -526,6 +522,9 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK)
+				.triggerableAnim("cast", CAST));
 	}
 
 	@Override
