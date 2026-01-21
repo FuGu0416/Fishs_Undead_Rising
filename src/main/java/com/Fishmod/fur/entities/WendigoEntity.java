@@ -63,11 +63,11 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("wendigo.model.idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("wendigo.model.walking");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("wendigo.model.walk");
     private static final RawAnimation ATTACK_L = RawAnimation.begin().thenPlay("wendigo.model.attack_l_blend");
     private static final RawAnimation ATTACK_R = RawAnimation.begin().thenPlay("wendigo.model.attack_r_blend");
-    private static final RawAnimation ATTACK_SMASH = RawAnimation.begin().thenPlay("wendigo.model.slam");
-    //private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("wendigo.model.roaring");
+    private static final RawAnimation ATTACK_SMASH = RawAnimation.begin().thenPlay("wendigo.model.slam_blend");
+    //private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("wendigo.model.roar");
     private static final RawAnimation LEAP_START = RawAnimation.begin().thenPlay("wendigo.model.leap_start");
     private static final RawAnimation LEAP = RawAnimation.begin().thenPlay("wendigo.model.leap");
     private static final RawAnimation LEAP_END = RawAnimation.begin().thenPlay("wendigo.model.leap_end");
@@ -148,7 +148,6 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	
         if (this.attackTimer > 0) {
             --this.attackTimer;
-            this.setDeltaMovement(Vec3.ZERO);
         }
         
         if (this.jumpTimer > 0) {

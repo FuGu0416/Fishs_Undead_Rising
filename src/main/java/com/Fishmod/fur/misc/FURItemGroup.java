@@ -6,6 +6,8 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -65,6 +67,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.CACTOID_POT.get());
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	
+            	// Infused Bandage
+                ItemStack stack = new ItemStack(FURItemRegistry.INFUSED_BANDAGE.get());
+                PotionUtils.setPotion(stack, Potions.HEALING);
+                output.accept(stack);
+            	
             	// Weapon
             	output.accept(FURItemRegistry.FANG_DAGGER.get());
             	output.accept(FURItemRegistry.BONE_SWORD.get());
@@ -114,11 +121,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SWARMER_RAW.get());
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
 
-                // PARASITE_RAW variants
+                // Raw Parasite variants
                 for (int i = 0; i < 4; i++) {
-                    ItemStack stack = new ItemStack(FURItemRegistry.PARASITE_RAW.get());
-                    stack.getOrCreateTag().putInt("variant", i);
-                    output.accept(stack);
+                    ItemStack stack1 = new ItemStack(FURItemRegistry.PARASITE_RAW.get());
+                    stack1.getOrCreateTag().putInt("variant", i);
+                    output.accept(stack1);
                 }
                 
                 output.accept(FURItemRegistry.PARASITE_COOKED.get());

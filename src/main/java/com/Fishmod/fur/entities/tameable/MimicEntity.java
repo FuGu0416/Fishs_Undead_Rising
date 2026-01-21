@@ -166,7 +166,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
 
     public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) { 	
-    	return SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null && FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    	return p_223316_4_.nextFloat() < 0.1F && SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null && FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
     }
     
     /**
@@ -254,9 +254,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	public void setInSittingPose(boolean p_21838_) {
 		super.setInSittingPose(p_21838_);
 
-		if (p_21838_) {
+		if (!this.isInSittingPose() && p_21838_) {
 			this.level().broadcastEntityEvent(this, (byte)5);
-		} else {
+		} else if (this.isInSittingPose() && !p_21838_) {
 			this.level().broadcastEntityEvent(this, (byte)6);
 		}
 	}

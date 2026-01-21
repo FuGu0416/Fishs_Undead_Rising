@@ -85,6 +85,7 @@ public class mod_LavaCow {
         structureModifiers.register("structure_spawns", FURStructureModifier.Modifier::makeCodec);
         eventBus.addListener(FURStructureModifier::generateStructureModifiers);                    
         eventBus.addListener(FURClientEvents::clientSetup);                    
+        eventBus.addListener(FURClientEvents::registerItemColors);    
         
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(

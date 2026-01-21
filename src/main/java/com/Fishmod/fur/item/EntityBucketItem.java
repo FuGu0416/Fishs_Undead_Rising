@@ -72,7 +72,7 @@ public class EntityBucketItem extends Item {
         BlockPos blockpos = raytraceresult.getBlockPos();
         
         if (!worldIn.isClientSide) {
-            if(player == null || !player.isCreative()){
+            if (player == null || !player.isCreative()) {
             	itemstack.shrink(1);
             }
             

@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.entities.WendigoEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
-import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -33,12 +31,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -463,14 +458,6 @@ public class FURServerEvents {
     
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
-    	if (event.getEntity() != null && event.getEntity() instanceof PathfinderMob mob && mob.getType().is(FURTagRegistry.WENDIGO_TARGETS)) {
-    		mob.goalSelector.addGoal(1, new AvoidEntityGoal<>(mob, WendigoEntity.class, 8.0F, 0.8D, 0.8D));
-    	}
-    	
-    	if (event.getEntity() != null && event.getEntity() instanceof Villager villager) {
-    		villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, UnburiedEntity.class, 8.0F, 0.8D, 0.8D));
-    	}
-
     	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));*/
     	

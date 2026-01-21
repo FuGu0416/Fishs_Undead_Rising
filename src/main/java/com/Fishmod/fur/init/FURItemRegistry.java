@@ -19,6 +19,7 @@ import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.FangDaggerItem;
 import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
+import com.Fishmod.fur.item.InfusedBandageItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenHammerItem;
@@ -147,6 +148,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> USHABTI = DEF_REG.register("ushabti", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> POISON_STINGER = DEF_REG.register("poison_stinger", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ADVANCEMENT_ICON = DEF_REG.register("advancement_icon", () -> new Item(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> INFUSED_BANDAGE = DEF_REG.register("infused_bandage", () -> new InfusedBandageItem(new Item.Properties(), 32, UseAnim.BOW, 0));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
@@ -166,7 +168,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("mod_lavacow:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("mod_lavacow:swinearmor_boots");
 	public static final RegistryObject<Item> PIRANHALAUNCHER = new FURRangedItem("mod_lavacow:piranhalauncher", SWARMER, FUREntityRegistry.PIRANHA_LAUNCHER, new Item.Properties().rarity(Rarity.RARE).durability(384));
-	public static final RegistryObject<Item> CURSED_BANDAGE = new CursedBandageItem(new Item.Properties(), 0).setRegistryName("cursed_bandage");
 	public static final RegistryObject<Item> HOLY_SLUDGE = new Item(new Item.Properties()).setRegistryName("mod_lavacow:holy_sludge");
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");

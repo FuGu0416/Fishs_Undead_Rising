@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "fur:item/infused_bandage",
+        "layer1": "fur:item/infused_bandage_overlay"
+    }
+}
