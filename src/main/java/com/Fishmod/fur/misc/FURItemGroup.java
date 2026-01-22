@@ -69,7 +69,7 @@ public class FURItemGroup {
             	
             	// Infused Bandage
                 ItemStack stack = new ItemStack(FURItemRegistry.INFUSED_BANDAGE.get());
-                PotionUtils.setPotion(stack, Potions.HEALING);
+                PotionUtils.setPotion(stack, Potions.WATER);
                 output.accept(stack);
             	
             	// Weapon

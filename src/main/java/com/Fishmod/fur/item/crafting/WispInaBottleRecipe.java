@@ -18,19 +18,20 @@ public class WispInaBottleRecipe extends CustomRecipe {
 		super(resource, category);
 	}
 
-	public boolean matches(CraftingContainer p_77569_1_, Level p_77569_2_) {
+	public boolean matches(CraftingContainer inv, Level level) {
 		boolean flag = false;
 		boolean flag1 = false;
 		boolean flag2 = false;
 
-		for(int i = 0; i < p_77569_1_.getContainerSize(); ++i) {
-			ItemStack itemstack = p_77569_1_.getItem(i);
-			if (!itemstack.isEmpty()) {
-				if (itemstack.getItem() == FURItemRegistry.WISP_ASHES.get() && !flag2) {
+		for(int i = 0; i < inv.getContainerSize(); ++i) {
+			ItemStack stack = inv.getItem(i);
+			
+			if (!stack.isEmpty()) {
+				if (stack.is(FURItemRegistry.WISP_ASHES.get()) && !flag2) {
 					flag2 = true;
-	            } else if (itemstack.getItem() == FURItemRegistry.ECTOPLASM.get() && !flag1) {
+	            } else if (stack.is(FURItemRegistry.ECTOPLASM.get()) && !flag1) {
 	            	flag1 = true;
-	            } else if (itemstack.getItem() == Items.GLASS_BOTTLE && !flag) {
+	            } else if (stack.is(Items.GLASS_BOTTLE) && !flag) {
 	            	flag = true;
 	            } else {
 	            	return false;
@@ -42,26 +43,26 @@ public class WispInaBottleRecipe extends CustomRecipe {
 	}
 
 	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack stack = ItemStack.EMPTY;
 
 		for(int i = 0; i < container.getContainerSize(); ++i) {
-			ItemStack itemstack1 = container.getItem(i);
-			if (!itemstack1.isEmpty() && itemstack1.getItem() == FURItemRegistry.WISP_ASHES.get()) {
-				itemstack = itemstack1;
+			ItemStack stack1 = container.getItem(i);
+			if (!stack1.isEmpty() && stack1.getItem() == FURItemRegistry.WISP_ASHES.get()) {
+				stack = stack1;
 	            break;
 			}
 		}
 
-		ItemStack itemstack2 = new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE.get(), 1);
-		if (itemstack.getTag() != null && itemstack.getTag().contains("WispData")) {
-	        itemstack2.setTag(itemstack.getTag());
+		ItemStack stack2 = new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE.get(), 1);
+		if (stack.getTag() != null && stack.getTag().contains("WispData")) {
+	        stack2.setTag(stack.getTag());
 	        
-	        if (itemstack.getHoverName().getStyle().isItalic()) {
-	        	itemstack2.setHoverName(itemstack.getHoverName());
+	        if (stack.getHoverName().getStyle().isItalic()) {
+	        	stack2.setHoverName(stack.getHoverName());
 	        }
 		}
 
-		return itemstack2;
+		return stack2;
 	}
 
 	public boolean canCraftInDimensions(int p_194133_1_, int p_194133_2_) {

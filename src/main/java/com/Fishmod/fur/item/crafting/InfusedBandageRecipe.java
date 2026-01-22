@@ -28,9 +28,18 @@ public class InfusedBandageRecipe extends CustomRecipe {
 
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
-            if (stack.is(FURItemRegistry.CURSEWEAVE_CLOTH.get())) hasCloth = true;
-            if (stack.is(Items.STRING)) hasString = true;
-            if (stack.getItem() instanceof PotionItem) hasPotion = true;
+
+			if (!stack.isEmpty()) {
+				if (stack.is(FURItemRegistry.CURSEWEAVE_CLOTH.get()) && !hasCloth) {
+					hasCloth = true;
+	            } else if (stack.is(Items.STRING) && !hasString) {
+	            	hasString = true;
+	            } else if (stack.is(net.minecraft.world.item.Items.POTION) && !hasPotion) {
+	            	hasPotion = true;
+	            } else {
+	            	return false;
+	            }
+	         }
         }
 
         return hasCloth && hasString && hasPotion;
