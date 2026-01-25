@@ -11,7 +11,6 @@ import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,7 +23,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -33,13 +34,12 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
@@ -76,6 +76,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -91,6 +92,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 
 public class MimicEntity extends FURTameableEntity implements GeoEntity {
@@ -110,16 +112,25 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
             "textures/entity/chest/normal.png"
     ));
+    
+    private MimicState state = MimicState.HOSTILE_ACTIVE;
+    private int stateTimer = 0;
+    private static final double RESET_DISTANCE_SQR = 16 * 16;
+    private int distanceCheckCooldown = 0;
+    private int pickupCooldown = 0;
+    public SimpleContainer inventory;
+    
+    public enum MimicState {
+        DORMANT,		// wild only
+        AWAKENING,		// wild only
+        HOSTILE_ACTIVE,	// wild only
+        TAME_IDLE,		// tamed only
+        TAME_ACTIVE		// tamed only
+    }
 
-    private int AggressiveTimer = 40;
-    public float rotationAngle = 0.0F;
-	public SimpleContainer inventory;
-    private EntityAITargetItem<ItemEntity> AITargetItem;
-	
 	public MimicEntity(EntityType<? extends MimicEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
         this.inventory = new SimpleContainer(27);
-        this.setCanPickUpLoot(true);
     }
 	
     @Override
@@ -127,16 +138,15 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	super.registerGoals();
     	this.goalSelector.addGoal(1, this.aiSit);
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.applyEntityAI();
     }
 
     protected void applyEntityAI() {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)));
-        this.AITargetItem = new EntityAITargetItem<>(this, ItemEntity.class, true);
-        this.targetSelector.addGoal(4, this.AITargetItem);
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new MimicEntity.TargetItemGoal<>(this, ItemEntity.class, true));
     }
     
     @Override
@@ -160,13 +170,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	return new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false);
     }
 
-	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
-        return this.inventory.isEmpty() && super.removeWhenFarAway(p_213397_1_);
-    }
-
     public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) { 	
-    	return p_223316_4_.nextFloat() < 0.1F && SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null && FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null;
     }
     
     /**
@@ -204,60 +209,47 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         }
         
         this.setHealth(this.getHealth() * (this.getMaxHealth() / maxHealthO));
+ 
+        if (tamed) {
+	        if (this.state == MimicState.DORMANT || this.state == MimicState.AWAKENING) {
+	        	this.state = MimicState.TAME_IDLE;
+	            setNoAi(true);
+	            navigation.stop();
+	        } else if (this.state == MimicState.HOSTILE_ACTIVE) {
+	        	this.state = MimicState.TAME_ACTIVE;
+	            setNoAi(false);
+	        }
+        } else {
+	        if (this.state == MimicState.TAME_IDLE) {
+	        	this.state = MimicState.DORMANT;
+	            setNoAi(true);
+	            navigation.stop();
+	        } else if (this.state == MimicState.TAME_ACTIVE) {
+	        	this.state = MimicState.HOSTILE_ACTIVE;
+	            setNoAi(false);
+	        }       	
+        }
 	}
 
-    private boolean canPickupItems() {
-    	for (int i = 0; i < this.inventory.getContainerSize();i++) {
-    		if (this.inventory.getItem(i).isEmpty()) {
-    			return true;
-    		}
-    	}
-        return false;
-    }
-
-    private void hasSpace(ItemStack itemstackIn) {
-    	if (!this.level().isClientSide()) {
-			for (int i = 0; i < this.inventory.getContainerSize();i++)
-				if (this.inventory.getItem(i).isEmpty()) {
-					this.inventory.setItem(i, itemstackIn.copy());
-					itemstackIn.shrink(itemstackIn.getCount());
-					return;
-				}			
-    	}
-    }
-    
     public int containsItem(Item itemIn) {
     	if (!this.level().isClientSide()) {
-			for (int i = 0; i < this.inventory.getContainerSize();i++)
+			for (int i = 0; i < this.inventory.getContainerSize();i++) {
 				if (this.inventory.getItem(i).getItem().equals(itemIn)) {
 					return i;
 				}			
+			}
     	}  
     	
     	return -1;
-    }
-    
-    private void EmergencyFood() {
-    	if (!this.level().isClientSide()) {
-			for (int i = 0; i < this.inventory.getContainerSize();i++) {
-				if (this.isFood(this.inventory.getItem(i))) {
-					Item item = this.inventory.getItem(i).getItem();
-					this.playSound(SoundEvents.GENERIC_EAT, 0.4F, 1.0F);
-					this.heal((float)item.getFoodProperties().getNutrition());
-                    this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 8*20, 0));
-                    this.inventory.setItem(i, new ItemStack(this.inventory.getItem(i).getItem(), this.inventory.getItem(i).getCount() - 1));
-				}
-    		}
-		}
     }
     
 	public void setInSittingPose(boolean p_21838_) {
 		super.setInSittingPose(p_21838_);
 
 		if (!this.isInSittingPose() && p_21838_) {
-			this.level().broadcastEntityEvent(this, (byte)5);
+			this.level().broadcastEntityEvent(this, (byte)9);
 		} else if (this.isInSittingPose() && !p_21838_) {
-			this.level().broadcastEntityEvent(this, (byte)6);
+			this.level().broadcastEntityEvent(this, (byte)10);
 		}
 	}
 	
@@ -267,46 +259,31 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
      */
 	@Override
     public void tick() {
-		super.tick();
-		
-		if (this.AggressiveTimer > 0) {
-			this.AggressiveTimer--;
-		}
-    	
-		if (!this.level().isClientSide()) {
-			if (!this.isAggressive() && !this.isTame()) {
-				if (!this.isSilent() || !this.isInSittingPose()) {
-					this.setInSittingPose(true);
-					this.level().broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
-				}
-			
-				this.setPos(Math.floor(this.getX()) + 0.5D, Math.floor(this.getY()), Math.floor(this.getZ()) + 0.55D);
-				this.setYRot(this.rotationAngle);
-				this.yRotO = this.rotationAngle;
-				this.yBodyRot = this.yBodyRotO = 0F;	
-				
-				if (this.level().getBlockState(this.blockPosition().below()).isAir()) {
-					this.setPos(this.getX(), this.getY() - 1, this.getZ());
-				}
-	
-				this.setSilent(true);
-				this.setSpeed(0.0F);
-			} else if (this.getTarget() != null) {
-				this.AggressiveTimer = 200;
-				this.setSilent(false);
-				this.setSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue());
-			}
-		}
-		
-		if (!this.isTame() && this.getTarget() != null && this.distanceTo(this.getTarget()) > this.getAttribute(Attributes.FOLLOW_RANGE).getValue()) {
-			this.setTarget((LivingEntity)null);
-		}
-		
-		for(ItemStack S: this.getHandSlots())
-			if (!S.isEmpty())this.hasSpace(S);
-		
-		if (this.isTame() && this.getHealth() <= this.getMaxHealth() * 0.5F)
-			this.EmergencyFood();
+	    super.tick();
+
+	    if (this.level().isClientSide) return;
+	    if (state == MimicState.DORMANT) {
+	    	return;
+	    }
+
+	    if (state == MimicState.AWAKENING) {
+	        if (--stateTimer <= 0) {
+	            this.enterAmbush();
+	        }
+	    }
+	    
+	    if (--distanceCheckCooldown <= 0) {
+	        distanceCheckCooldown = 20;
+
+	        LivingEntity target = this.getTarget();
+	        if (!this.isTame() && (target == null || this.distanceToSqr(target) > RESET_DISTANCE_SQR)) {
+	            this.returnToDormant();
+	        }
+	    }
+	    
+	    if ((this.getSkin() != MimicModel.getVoidSkin()) && pickupCooldown == 0) {
+	    	this.tryPickupItems();
+	    }    	
 		
 		if (this.getSkin() == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
@@ -322,25 +299,79 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
             }
 		}
 		
-		if (!this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
-			this.level().broadcastEntityEvent(this, (byte)7);
+		if ((state == MimicState.DORMANT || state == MimicState.TAME_IDLE) && !this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
+			this.level().broadcastEntityEvent(this, (byte)11);
 		}
     }
 	
-    /**
-     * Called to update the entity's position/logic.
-     */
-	@Override
-    public void aiStep() {
-    	super.aiStep();
-    }
+	private void enterAmbush() {
+		System.out.println("enterAmbush");
+	    this.state = MimicState.HOSTILE_ACTIVE;
+	    this.setNoAi(false);
+	    this.setSilent(false);
+	    this.distanceCheckCooldown = 80;
+	    
+        if (this.isInSittingPose()) {
+        	this.setInSittingPose(false);
+        }
+	}
+	
+	private void returnToDormant() {
+		System.out.println("returnToDormant");
+		this.setInSittingPose(true);
+	    this.setTarget(null);
+	    this.setSilent(true);
+		
+	    this.snapRotationToCardinal();
+		
+		if (this.level().getBlockState(this.blockPosition().below()).isAir()) {
+			this.setPos(this.getX(), this.getY() - 1, this.getZ());
+		}
+		
+		this.setNoAi(true);
+	    this.navigation.stop();
+		
+	    state = isTame() ? MimicState.TAME_IDLE : MimicState.DORMANT;
+	}
+	
+	private void tryPickupItems() {
+	    if (state == MimicState.DORMANT || state == MimicState.TAME_IDLE) return;
+
+	    if (--pickupCooldown > 0) return;
+	    pickupCooldown = 10;
+
+	    AABB box = this.getBoundingBox().inflate(1.5);
+	    List<ItemEntity> items = level().getEntitiesOfClass(ItemEntity.class, box);
+
+	    for (ItemEntity item : items) {
+	        if (!item.isAlive()) continue;
+
+	        ItemStack stack = item.getItem();
+	        if (this.insertIntoInternalInventory(stack)) {
+	            item.discard();
+	            level().playSound(null, blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 0.4F, 1.2F);
+	        }
+	    }
+	}
+	
+	private boolean insertIntoInternalInventory(ItemStack stack) {
+	    for (int i = 0; i < inventory.getContainerSize(); i++) {
+	        ItemStack slot = inventory.getItem(i);
+	        if (slot.isEmpty()) {
+	            inventory.setItem(i, stack.copy());
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 	
     @Override
     public void travel(Vec3 p_213352_1_) {
 		if (this.isInSittingPose()) {
             this.setDeltaMovement(Vec3.ZERO);
-		} else
+		} else {
 			super.travel(p_213352_1_);
+		}
 	}
     
     /**
@@ -350,15 +381,11 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     public boolean hurt(DamageSource source, float amount) {
     	Entity entity = source.getDirectEntity();
     	
-    	if (this.isInSittingPose()) {
-    		this.setInSittingPose(false);
+    	if (this.state == MimicState.DORMANT) {
+    		this.triggerAmbush(null);
     	}
-    	
-		this.AggressiveTimer = 200;
-		this.setSilent(false);
-		this.setSpeed(0.19F);
 		
-    	if (entity != null && !(entity instanceof Player) && !(entity instanceof Arrow)) {
+    	if (this.isTame() && entity != null && !(entity instanceof Player) && !(entity instanceof Arrow)) {
     		amount = (amount + 1.0F) / 2.0F;
     	}
 
@@ -385,19 +412,18 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public void doSitCommand(Player playerIn) {
     	super.doSitCommand(playerIn);
-    	this.level().broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
-    	this.setInSittingPose(true);
-    	
+    	this.returnToDormant();
     }
     
     @Override
     public void doFollowCommand(Player playerIn) {
     	ItemStack is;
     	super.doFollowCommand(playerIn);
-    	
+        this.state = MimicState.TAME_ACTIVE;
+        this.setNoAi(false);
+        this.setSilent(false);
+        
     	if (this.getSkin() == MimicModel.getVoidSkin()) {
-      	   this.setCanPickUpLoot(false);
-     	   
 	       for (int i = 0; i < this.inventory.getContainerSize();i++) {
 	    	   is = this.inventory.getItem(i);
 
@@ -409,10 +435,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	}
     	
     	this.setInSittingPose(false);
-    }
-    
-    public void doMimicChest(Direction facing) {
-    	this.level().broadcastEntityEvent(this, (byte)(41 + facing.get2DDataValue()));
     }
     
     @Override
@@ -439,22 +461,11 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         	}
 
             if (!itemstack.isEmpty()) {            	
-            	if (item.isEdible()) {
-                    if (item.getFoodProperties().isMeat() && this.getHealth() < this.getMaxHealth()) {
-                       if (!player.getAbilities().instabuild) {
-                          itemstack.shrink(1);
-                       }
-
-                       this.playSound(SoundEvents.GENERIC_EAT, 0.4F, 1.0F);
-                       this.heal((float)item.getFoodProperties().getNutrition());
-                       return InteractionResult.SUCCESS;
-                    }
-            	} else if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == Items.ENDER_EYE) {
+            	if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == Items.ENDER_EYE) {
              	   if (!player.getAbilities().instabuild) {
                         itemstack.shrink(1);
              	   }
              	   this.setSkin(MimicModel.getVoidSkin());
-             	   this.setCanPickUpLoot(false);
              	   ItemStack is;
  
         	       for (int i = 0; i < this.inventory.getContainerSize();i++) {
@@ -494,18 +505,62 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
             return super.mobInteract(player, hand);
         }
         
-        if (!this.isTame() && this.distanceToSqr(player) < 2.0D) {
-	        this.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
-	        this.playSound(FURSoundRegistry.MIMIC_AMBIENT.get(), 0.4F, 1.0F);
-	        this.setTarget(player);	      
-	        
-	        if (this.isInSittingPose()) {
-	        	this.setInSittingPose(false);
-	        }
+        if ((super.mobInteract(player, hand) == InteractionResult.PASS) && state == MimicState.DORMANT && this.distanceToSqr(player) < 2.0D && !player.getAbilities().instabuild) {
+            this.triggerAmbush(player);
+            return InteractionResult.CONSUME;
         }
 
         return super.mobInteract(player, hand);
-     }
+	}
+    
+    private void triggerAmbush(Player player) {
+    	System.out.println("triggerAmbush");
+        this.state = MimicState.AWAKENING;
+        this.stateTimer = 20;
+
+        this.setNoAi(true);
+        
+        if (player != null) {
+	        this.setTarget(player);
+	
+	        this.level().playSound(null, this.blockPosition(), SoundEvents.CHEST_OPEN, SoundSource.HOSTILE, 1.0F, 0.6F);
+	        this.level().playSound(null, this.blockPosition(), FURSoundRegistry.MIMIC_AMBIENT.get(), SoundSource.HOSTILE, 0.4F, 1.0F);
+        }
+    }
+    
+    private static final float[] CARDINAL_YAWS = {
+            0.0F,    // South
+            90.0F,   // West
+            180.0F,  // North
+            -90.0F   // East
+    };
+
+    private void snapRotationToCardinal() {
+        float currentYaw = Mth.wrapDegrees(this.getYRot());
+
+        float closestYaw = CARDINAL_YAWS[0];
+        float smallestDiff = Float.MAX_VALUE;
+
+        for (float yaw : CARDINAL_YAWS) {
+            float diff = Math.abs(Mth.wrapDegrees(currentYaw - yaw));
+            if (diff < smallestDiff) {
+                smallestDiff = diff;
+                closestYaw = yaw;
+            }
+        }
+
+        this.moveTo(Math.floor(this.getX()) + 0.5D, Math.floor(this.getY()), Math.floor(this.getZ()) + 0.55D, closestYaw, 0.0F);
+        this.setYHeadRot(closestYaw);
+        this.setYBodyRot(closestYaw);
+    }
+    
+    @Override
+    public void aiStep() {
+        if (state == MimicState.DORMANT || state == MimicState.TAME_IDLE) {
+            return;
+        }
+        super.aiStep();
+    }
     
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {   	
@@ -540,7 +595,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 
            loottable.fill(this.inventory, lootcontext$builder.create(LootContextParamSets.CHEST), lootTableSeed);
         }
-
      }
     
     /**
@@ -550,25 +604,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public boolean isFood(ItemStack stack) {
     	return stack.getItem().equals(FURItemRegistry.PTERA_WING_RAW.get()) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED.get());
-    }
-    
-    @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        
-        if (this.getTarget() != null || this.AggressiveTimer > 0 || this.lastHurtByPlayerTime > 58) {
-            this.setAggressive(true);
-            this.level().broadcastEntityEvent(this, (byte)11);
-        } else if (this.AITargetItem.canUse() && this.canPickupItems()) {
-            if (!this.isAggressive() && this.getRandom().nextInt(1000) < 10) {
-            	this.setAggressive(true);
-                this.level().broadcastEntityEvent(this, (byte)11);
-            }
-        } else if (this.getRandom().nextInt(1000) < 100) {
-        	this.setAggressive(false);
-            this.level().broadcastEntityEvent(this, (byte)34);
-        }
-    }
+    }    
 
     public void openGUI(Player playerIn, Component NameIn) {
         if (!this.level().isClientSide && (!this.hasPassenger(playerIn))) {
@@ -612,22 +648,14 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
      */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 5) {
+    	if (id == 9) {
     		this.triggerAnim("trigger_controller", "hide_in");
-    	} else if (id == 6) {
+    	} else if (id == 10) {
     		this.triggerAnim("trigger_controller", "hide_out");
-    	} else if (id == 7) {
+    	} else if (id == 11) {
     		this.triggerAnim("trigger_controller", "hide_peek");
     	} else if (id == 40) {
     		this.triggerAnim("trigger_controller", "attack");
-        } else if (id == 41) {
-        	this.rotationAngle = 180.0F * ((float)Math.PI / 180.0F);
-        } else if (id == 42) {
-        	this.rotationAngle = 270.0F * ((float)Math.PI / 180.0F);
-        } else if (id == 43) {
-        	this.rotationAngle = 0.0F * ((float)Math.PI / 180.0F);
-        } else if (id == 44) {
-        	this.rotationAngle = 90.0F * ((float)Math.PI / 180.0F);
         } else {
             super.handleEntityEvent(id);
         }
@@ -680,12 +708,17 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	    this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
 	}
     
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
-    @Override
-    public void push(Entity entityIn) {
-    }
+	@Override
+	public boolean isPushable() {
+	    return state != MimicState.DORMANT && state != MimicState.TAME_IDLE;
+	}
+	
+	@Override
+	protected void pushEntities() {
+	    if (state != MimicState.DORMANT && state != MimicState.TAME_IDLE) {
+	        super.pushEntities();
+	    }
+	}
 
     /**
      * Get this Entity's EnumCreatureAttribute
@@ -736,9 +769,24 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 
 		this.inventory.clearContent();
 	}
+    
+    static class TargetItemGoal<T extends ItemEntity> extends EntityAITargetItem<T> {
+    	MimicEntity mimic;
+    	
+		public TargetItemGoal(Mob creature, Class<T> classTarget, boolean checkSight) {
+			super(creature, classTarget, checkSight);
+			this.mimic = (MimicEntity) this.mob;
+		}
+    	
+		public boolean canUse() {
+			if (this.mimic.state == MimicState.DORMANT || this.mimic.state == MimicState.TAME_IDLE || this.mimic.isInSittingPose() || this.mimic.getSkin() == MimicModel.getVoidSkin()) return false;
+			
+			return super.canUse();
+		}
+    }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.isInSittingPose()) {
+    	if (this.state == MimicState.DORMANT || this.state == MimicState.TAME_IDLE || this.isInSittingPose()) {
 			state.getController().setAnimation(IDLE_HIDE);
     	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);

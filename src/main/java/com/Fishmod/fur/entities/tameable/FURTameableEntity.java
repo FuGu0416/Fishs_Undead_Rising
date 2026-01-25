@@ -164,8 +164,7 @@ public class FURTameableEntity extends TamableAnimal {
     	return this.state.equals(FURTameableEntity.State.WANDERING);
     }
     
-    @SuppressWarnings("resource")
-	@Override
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         
@@ -240,8 +239,7 @@ public class FURTameableEntity extends TamableAnimal {
     /**
      * Called to update the entity's position/logic.
      */
-    @SuppressWarnings("resource")
-	public void tick() {
+    public void tick() {
         super.tick();
         
         if (!this.level().isClientSide/* && FURConfig.Suicidal_Minion.get()*/ && (this.getOwner() != null && (!(this.getOwner() instanceof Player) && !this.getOwner().isAlive()))) {
