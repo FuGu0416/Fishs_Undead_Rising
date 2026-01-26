@@ -76,7 +76,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -92,7 +91,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
 
 public class MimicEntity extends FURTameableEntity implements GeoEntity {
@@ -117,7 +115,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     private int stateTimer = 0;
     private static final double RESET_DISTANCE_SQR = 16 * 16;
     private int distanceCheckCooldown = 0;
-    private int pickupCooldown = 0;
     public SimpleContainer inventory;
     
     public enum MimicState {
@@ -213,20 +210,20 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         if (tamed) {
 	        if (this.state == MimicState.DORMANT || this.state == MimicState.AWAKENING) {
 	        	this.state = MimicState.TAME_IDLE;
-	            setNoAi(true);
-	            navigation.stop();
+	            this.setNoAi(true);
+	            this.navigation.stop();
 	        } else if (this.state == MimicState.HOSTILE_ACTIVE) {
 	        	this.state = MimicState.TAME_ACTIVE;
-	            setNoAi(false);
+	        	this.setNoAi(false);
 	        }
         } else {
 	        if (this.state == MimicState.TAME_IDLE) {
 	        	this.state = MimicState.DORMANT;
-	            setNoAi(true);
-	            navigation.stop();
+	        	this.setNoAi(true);
+	        	this.navigation.stop();
 	        } else if (this.state == MimicState.TAME_ACTIVE) {
 	        	this.state = MimicState.HOSTILE_ACTIVE;
-	            setNoAi(false);
+	        	this.setNoAi(false);
 	        }       	
         }
 	}
@@ -279,11 +276,16 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        if (!this.isTame() && (target == null || this.distanceToSqr(target) > RESET_DISTANCE_SQR)) {
 	            this.returnToDormant();
 	        }
+	        
+		    if ((this.getSkin() != MimicModel.getVoidSkin()) && this.getMainHandItem() != null) {
+		    	this.getMainHandItem().setCount(0);
+		    	ItemStack stack = this.inventory.addItem(this.getMainHandItem());
+		    	
+		    	if (!stack.isEmpty()) {
+		    		this.spawnAtLocation(stack, 0.2F);
+		    	}
+		    }  
 	    }
-	    
-	    if ((this.getSkin() != MimicModel.getVoidSkin()) && pickupCooldown == 0) {
-	    	this.tryPickupItems();
-	    }    	
 		
 		if (this.getSkin() == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
@@ -305,7 +307,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
 	
 	private void enterAmbush() {
-		System.out.println("enterAmbush");
 	    this.state = MimicState.HOSTILE_ACTIVE;
 	    this.setNoAi(false);
 	    this.setSilent(false);
@@ -317,7 +318,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	}
 	
 	private void returnToDormant() {
-		System.out.println("returnToDormant");
 		this.setInSittingPose(true);
 	    this.setTarget(null);
 	    this.setSilent(true);
@@ -331,45 +331,24 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		this.setNoAi(true);
 	    this.navigation.stop();
 		
-	    state = isTame() ? MimicState.TAME_IDLE : MimicState.DORMANT;
-	}
+	    this.state = isTame() ? MimicState.TAME_IDLE : MimicState.DORMANT;
+	}	
 	
-	private void tryPickupItems() {
-	    if (state == MimicState.DORMANT || state == MimicState.TAME_IDLE) return;
-
-	    if (--pickupCooldown > 0) return;
-	    pickupCooldown = 10;
-
-	    AABB box = this.getBoundingBox().inflate(1.5);
-	    List<ItemEntity> items = level().getEntitiesOfClass(ItemEntity.class, box);
-
-	    for (ItemEntity item : items) {
-	        if (!item.isAlive()) continue;
-
-	        ItemStack stack = item.getItem();
-	        if (this.insertIntoInternalInventory(stack)) {
-	            item.discard();
-	            level().playSound(null, blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 0.4F, 1.2F);
-	        }
-	    }
-	}
+	@Override
+	public boolean canPickUpLoot() {
+		return this.getSkin() != MimicModel.getVoidSkin();
+	}	
 	
-	private boolean insertIntoInternalInventory(ItemStack stack) {
-	    for (int i = 0; i < inventory.getContainerSize(); i++) {
-	        ItemStack slot = inventory.getItem(i);
-	        if (slot.isEmpty()) {
-	            inventory.setItem(i, stack.copy());
-	            return true;
-	        }
-	    }
-	    return false;
+	@Override
+	protected float getWaterSlowDown() {
+		return 0.9F;
 	}
 	
     @Override
     public void travel(Vec3 p_213352_1_) {
 		if (this.isInSittingPose()) {
             this.setDeltaMovement(Vec3.ZERO);
-		} else {
+	    } else {
 			super.travel(p_213352_1_);
 		}
 	}
@@ -399,7 +378,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         if (flag) {
         	this.playSound(FURSoundRegistry.SWARMER_ATTACK.get(), 1.0F, 1.0F);
         	this.doEnchantDamageEffects(this, entityIn);
-        	this.level().broadcastEntityEvent(this, (byte)40);
         	
         	if (this.getSkin() == MimicModel.getNetherSkin() && this.getRandom().nextInt(4) == 0) {
         		entityIn.setSecondsOnFire(4);
@@ -514,7 +492,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	}
     
     private void triggerAmbush(Player player) {
-    	System.out.println("triggerAmbush");
         this.state = MimicState.AWAKENING;
         this.stateTimer = 20;
 
@@ -552,14 +529,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         this.moveTo(Math.floor(this.getX()) + 0.5D, Math.floor(this.getY()), Math.floor(this.getZ()) + 0.55D, closestYaw, 0.0F);
         this.setYHeadRot(closestYaw);
         this.setYBodyRot(closestYaw);
-    }
-    
-    @Override
-    public void aiStep() {
-        if (state == MimicState.DORMANT || state == MimicState.TAME_IDLE) {
-            return;
-        }
-        super.aiStep();
     }
     
     @Override
@@ -745,7 +714,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 			entity.setTame(true);
 			entity.setHealth(this.getMaxHealth());
 			entity.setSkin(this.getRandom().nextBoolean() ? this.getSkin() : ((MimicEntity)ageable).getSkin());
-			if(entity.getSkin() == MimicModel.getVoidSkin())entity.setSkin(0);
+			if (entity.getSkin() == MimicModel.getVoidSkin()) entity.setSkin(0);
 		}
 
 		return entity;
@@ -782,6 +751,13 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 			if (this.mimic.state == MimicState.DORMANT || this.mimic.state == MimicState.TAME_IDLE || this.mimic.isInSittingPose() || this.mimic.getSkin() == MimicModel.getVoidSkin()) return false;
 			
 			return super.canUse();
+		}
+		
+		public void stop() {
+			if (this.targetEntity != null && this.targetEntity.isAlive()) {
+				this.mimic.level().broadcastEntityEvent(this.mimic, (byte)40);
+			}
+			super.stop();
 		}
     }
 

@@ -79,17 +79,21 @@ public class InfusedBandageItem extends FURItem {
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
     	Level level = player.level();
     	
-	    if (level instanceof ServerLevel server && !player.getCooldowns().isOnCooldown(stack.getItem())) {
-	    	applyBandageEffects(stack, player, target, server);
-	    }
+    	if (!player.getCooldowns().isOnCooldown(stack.getItem())) {
+    		if (level instanceof ServerLevel server) {
+    			applyBandageEffects(stack, player, target, server);
+    		}
+    		
+    	    player.getCooldowns().addCooldown(this, 20);
+    	    
+    	    if (!player.getAbilities().instabuild) {
+    	        stack.shrink(1);
+    	    }
+    	    
+    	    return InteractionResult.sidedSuccess(level.isClientSide);
+    	}
 	    
-	    player.getCooldowns().addCooldown(this, 20);
-	    
-	    if (!player.getAbilities().instabuild) {
-	        stack.shrink(1);
-	    }
-	    
-		return InteractionResult.sidedSuccess(level.isClientSide);
+    	return super.interactLivingEntity(stack, player, target, hand);	    		
     }
     
     @Override
