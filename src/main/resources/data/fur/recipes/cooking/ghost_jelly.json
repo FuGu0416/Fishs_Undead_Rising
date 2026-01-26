@@ -9,6 +9,9 @@
     },
     {
 		"tag": "forge:slimeballs"
+    },
+    {
+		"tag": "forge:slimeballs"
     }
   ],
   "container": { "item": "minecraft:bowl" },

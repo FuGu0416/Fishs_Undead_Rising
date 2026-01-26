@@ -149,6 +149,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> POISON_STINGER = DEF_REG.register("poison_stinger", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ADVANCEMENT_ICON = DEF_REG.register("advancement_icon", () -> new Item(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> INFUSED_BANDAGE = DEF_REG.register("infused_bandage", () -> new InfusedBandageItem(new Item.Properties(), 32, UseAnim.BOW, 0));
+	public static final RegistryObject<Item> MIMIC_EGG = DEF_REG.register("mimic_egg", () -> new FURItem(new Item.Properties().stacksTo(1)));
 	
 	/*
 	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	

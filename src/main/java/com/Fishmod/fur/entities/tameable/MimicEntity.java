@@ -53,6 +53,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -114,6 +115,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     private MimicState state = MimicState.HOSTILE_ACTIVE;
     private int stateTimer = 0;
     private static final double RESET_DISTANCE_SQR = 16 * 16;
+    public static final int MIMIC_EGG_HATCH_TIME = 600;
     private int distanceCheckCooldown = 0;
     public SimpleContainer inventory;
     
@@ -287,6 +289,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		    }  
 	    }
 		
+	    if (this.tickCount % 20 == 0) {
+	        this.tickEggIncubation();
+	    }
+	    
 		if (this.getSkin() == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
                 int j = this.getRandom().nextInt(2) * 2 - 1;
@@ -333,6 +339,28 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		
 	    this.state = isTame() ? MimicState.TAME_IDLE : MimicState.DORMANT;
 	}	
+	
+	private void tickEggIncubation() {
+	    for (int i = 0; i < inventory.getContainerSize(); i++) {
+	        ItemStack stack = inventory.getItem(i);
+
+	        if (!stack.is(FURItemRegistry.MIMIC_EGG.get())) continue;
+
+	        CompoundTag tag = stack.getOrCreateTag();
+	        int time = tag.getInt("HatchTime");
+	        time++;
+
+	        if (time >= MIMIC_EGG_HATCH_TIME) {
+	        	this.inventory.removeItem(i, 1);
+	        	if (this.level() instanceof ServerLevel server) {
+	        		this.getBreedOffspring(server, this);
+	        	}
+	            return; 
+	        }
+	        
+	        tag.putInt("HatchTime", time);
+	    }
+	}
 	
 	@Override
 	public boolean canPickUpLoot() {
@@ -572,6 +600,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
      */
     @Override
     public boolean isFood(ItemStack stack) {
+        if (this.getSkin() == MimicModel.getVoidSkin()) {
+            return false;
+        }
+        
     	return stack.getItem().equals(FURItemRegistry.PTERA_WING_RAW.get()) || stack.getItem().equals(FURItemRegistry.PTERA_WING_COOKED.get());
     }    
 
@@ -703,6 +735,35 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     @Override
     protected boolean shouldDropLoot() {
        return !this.isTame() && super.shouldDropLoot();
+    }
+    
+    @Override
+    public boolean canFallInLove() {
+        if (this.getSkin() == MimicModel.getVoidSkin()) {
+            return false;
+        }
+
+        return super.canFallInLove();
+    }
+    
+    @Override
+    public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
+        this.setAge(6000);
+        partner.setAge(6000);
+
+        ItemStack egg = new ItemStack(FURItemRegistry.MIMIC_EGG.get());
+
+        if (this.inventory.canAddItem(egg)) {
+        	this.inventory.addItem(egg);
+            level.playSound(null, this.blockPosition(), SoundEvents.SNIFFER_EGG_PLOP, SoundSource.NEUTRAL, 1.0F, 1.0F);
+        } else if (partner instanceof MimicEntity mimic && mimic.inventory.canAddItem(egg)) {
+        	mimic.inventory.addItem(egg);
+        	level.playSound(null, this.blockPosition(), SoundEvents.SNIFFER_EGG_PLOP, SoundSource.NEUTRAL, 1.0F, 1.0F);
+        } else {
+        	this.setInLoveTime(0);
+        }
+
+        level.broadcastEntityEvent(this, (byte) 18);
     }
 	
     @Override

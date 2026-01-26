@@ -54,6 +54,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());
             	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
             	output.accept(FURItemRegistry.USHABTI.get());
+            	output.accept(FURItemRegistry.MIMIC_EGG.get());
             	
             	// Heart
             	output.accept(FURItemRegistry.UNDYING_HEART.get());
