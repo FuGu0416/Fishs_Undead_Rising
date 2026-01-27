@@ -171,7 +171,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     public void tick() {
     	if (this.attackTimer > 0) {
     		--this.attackTimer;
-    		this.setDeltaMovement(Vec3.ZERO);
     	}
 
     	if (this.cleaveTimer > 0) {

@@ -272,7 +272,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	    }
 	    
 	    if (--distanceCheckCooldown <= 0) {
-	        distanceCheckCooldown = 20;
+	        this.distanceCheckCooldown = 20;
 
 	        LivingEntity target = this.getTarget();
 	        if (!this.isTame() && (target == null || this.distanceToSqr(target) > RESET_DISTANCE_SQR)) {
@@ -280,11 +280,12 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        }
 	        
 		    if ((this.getSkin() != MimicModel.getVoidSkin()) && this.getMainHandItem() != null) {
-		    	this.getMainHandItem().setCount(0);
 		    	ItemStack stack = this.inventory.addItem(this.getMainHandItem());
 		    	
 		    	if (!stack.isEmpty()) {
 		    		this.spawnAtLocation(stack, 0.2F);
+		    	} else {
+		    		this.getMainHandItem().setCount(0);
 		    	}
 		    }  
 	    }
@@ -353,7 +354,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        if (time >= MIMIC_EGG_HATCH_TIME) {
 	        	this.inventory.removeItem(i, 1);
 	        	if (this.level() instanceof ServerLevel server) {
-	        		this.getBreedOffspring(server, this);
+	        		super.spawnChildFromBreeding(server, this);
 	        	}
 	            return; 
 	        }

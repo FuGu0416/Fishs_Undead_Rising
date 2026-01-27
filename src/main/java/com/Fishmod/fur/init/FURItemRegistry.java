@@ -169,7 +169,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("mod_lavacow:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("mod_lavacow:swinearmor_boots");
 	public static final RegistryObject<Item> PIRANHALAUNCHER = new FURRangedItem("mod_lavacow:piranhalauncher", SWARMER, FUREntityRegistry.PIRANHA_LAUNCHER, new Item.Properties().rarity(Rarity.RARE).durability(384));
-	public static final RegistryObject<Item> HOLY_SLUDGE = new Item(new Item.Properties()).setRegistryName("mod_lavacow:holy_sludge");
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("mod_lavacow:dreamcatcher");	
 	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().stacksTo(1)).setRegistryName("mod_lavacow:raven_whistle");
 	public static final RegistryObject<Item> VESPA_SHIELD = new VespaShieldItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties()).durability(504)).setRegistryName("mod_lavacow:vespa_shield");
