@@ -11,6 +11,7 @@ import com.Fishmod.fur.item.DiseasedBreadItem;
 import com.Fishmod.fur.item.EntityBucketItem;
 import com.Fishmod.fur.item.FURArrowItem;
 import com.Fishmod.fur.item.FURItem;
+import com.Fishmod.fur.item.FURPotionItem;
 import com.Fishmod.fur.item.FURRangedItem;
 import com.Fishmod.fur.item.FURStewItem;
 import com.Fishmod.fur.item.FURThrowableItem;
@@ -150,11 +151,11 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ADVANCEMENT_ICON = DEF_REG.register("advancement_icon", () -> new Item(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> INFUSED_BANDAGE = DEF_REG.register("infused_bandage", () -> new InfusedBandageItem(new Item.Properties(), 32, UseAnim.BOW, 0));
 	public static final RegistryObject<Item> MIMIC_EGG = DEF_REG.register("mimic_egg", () -> new FURItem(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> POTION_OF_FISSION = DEF_REG.register("potion_of_fission", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER));	
+	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = DEF_REG.register("potion_of_mooten_lava", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA));
 	
 	/*
-	public static final RegistryObject<Item> FISSIONPOTION = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER).setRegistryName("mod_lavacow:fissionpotion");	
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("mod_lavacow:intestine");
-	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA).setRegistryName("mod_lavacow:potion_of_mooten_lava");
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("mod_lavacow:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("mod_lavacow:green_bacon_and_eggs");
 	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties()).setRegistryName("mod_lavacow:pigboarhide");

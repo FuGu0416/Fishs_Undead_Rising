@@ -62,11 +62,15 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SOULFORGED_HEART.get());
             	output.accept(FURItemRegistry.ACIDIC_HEART.get());
             	
+            	// Potion
+            	output.accept(FURItemRegistry.POTION_OF_FISSION.get());
+            	output.accept(FURItemRegistry.POTION_OF_MOOTEN_LAVA.get());
+            	
             	// Bucket
+            	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
             	output.accept(FURItemRegistry.CACTOID_POT.get());
-            	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	
             	// Infused Bandage
                 ItemStack stack = new ItemStack(FURItemRegistry.INFUSED_BANDAGE.get());
