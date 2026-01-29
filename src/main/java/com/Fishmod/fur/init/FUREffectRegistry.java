@@ -85,7 +85,7 @@ public class FUREffectRegistry {
     
     public static void onInitItems() {
     	/* Brew into special potions */
-        //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.STRONG_REGENERATION)), Ingredient.of(new ItemStack(FURItemRegistry.HYPHAE)), new ItemStack(FURItemRegistry.FISSIONPOTION)));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.FISSION_REAGENT.get())), new ItemStack(FURItemRegistry.POTION_OF_FISSION.get())));
         //BrewingRecipeRegistry.addRecipe(Ingredient.of(new ItemStack(FURItemRegistry.FISSIONPOTION)), Ingredient.of(new ItemStack(FURItemRegistry.MOOTENHEART)), new ItemStack(FURItemRegistry.POTION_OF_MOOTEN_LAVA));
         //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PHEROMONE_GLAND)), new ItemStack(FURItemRegistry.CHARMING_CATALYST)));
         //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.HOLY_SLUDGE)), new ItemStack(FURItemRegistry.HOLY_WATER)));

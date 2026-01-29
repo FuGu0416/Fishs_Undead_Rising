@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:potion_of_fission"
+        },
+        "title": {
+            "translate": "advancements.fur.get_potion_of_fission.title"
+        },
+        "description": {
+            "translate": "advancements.fur.get_potion_of_fission.description"
+        }
+    },
+    "parent": "fur:kill_mycosis",
+    "criteria": {
+        "get_potion_of_fission": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "fur:potion_of_fission"
+                    }
+                ]
+            }
+        }
+    }
+}

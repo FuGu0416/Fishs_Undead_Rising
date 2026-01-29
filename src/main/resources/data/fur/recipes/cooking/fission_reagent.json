@@ -1,0 +1,20 @@
+{
+    "type": "fur:cooking",
+    "ingredients": [
+	    {
+			"item": "fur:hyphae"
+	    },
+	    {
+			"item": "fur:undying_heart"
+	    },
+	    {
+			"item": "minecraft:ghast_tear"
+	    }
+    ],
+  	"container": { "item": "fur:curseweave_cloth" },
+  	"result": {
+    	"item": "fur:fission_reagent"
+  	},
+  	"experience": 0.35,
+  	"time": 400
+}

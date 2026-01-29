@@ -142,6 +142,7 @@
 	"item.fur.fang_arrow": "利牙之箭",
  	"item.fur.magmacho": "熔核起司玉米片",
 	"item.fur.mimic_egg": "拟箱蟹卵囊",
+	"item.fur.fission_reagent": "分裂混合物",
 	
 	"item.fur.spawn_egg_lavacow": "熔岩牛刷怪蛋",
 	"item.fur.spawn_egg_mycosis": "菌尸刷怪蛋",
@@ -694,8 +695,8 @@
 	"advancements.fur.kill_parasite.description": "杀死一只尸蛆",
 	"advancements.fur.kill_vespa.title": "不要是蜜蜂！",
 	"advancements.fur.kill_vespa.description": "杀死一只巨蜂",
-	"advancements.fur.kill_zombiemushroom.title": "最后生还者",
-	"advancements.fur.kill_zombiemushroom.description": "杀死一只菌尸",
+	"advancements.fur.kill_mycosis.title": "最后生还者",
+	"advancements.fur.kill_mycosis.description": "杀死一只菌尸",
 	"advancements.fur.kill_piranha.title": "丛林巡航",
 	"advancements.fur.kill_piranha.description": "杀死一条食人鱼",
 	"advancements.fur.kill_zombiepiranha.title": "丛林巡航II：变异鱼王",

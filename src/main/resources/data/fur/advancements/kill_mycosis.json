@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:hyphae"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_mycosis.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_mycosis.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:mycosis"
+		        }
+		      }
+        }
+    }
+}

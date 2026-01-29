@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURTagRegistry;
 
 import net.minecraft.core.HolderLookup;
@@ -22,6 +23,6 @@ public class FURItemTagsProvider extends ItemTagsProvider {
 	}
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-        this.tag(FURTagRegistry.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET);
+        this.tag(FURTagRegistry.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET, FURItemRegistry.CURSEWEAVE_CLOTH.get());
     }
 }

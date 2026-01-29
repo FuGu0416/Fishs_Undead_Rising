@@ -143,6 +143,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOST_JELLY.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
+            	output.accept(FURItemRegistry.FISSION_REAGENT.get());
             	
             	// Block
             	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
