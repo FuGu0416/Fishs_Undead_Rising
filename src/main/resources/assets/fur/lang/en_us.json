@@ -600,7 +600,9 @@
 	"description.effect.fur:void_dust": "Teleport to a nearby random location periodically.",
 	"effect.fur.venomous": "Venomous",
 	"description.effect.fur:venomous": "Inflicts the target with Poison.",
-					
+	"effect.fur.possessed": "Possessed",
+	"description.effect.fur:possessed": "Apply strength and swift, summon a wraith when the effect is expired",
+						
 	"item.minecraft.potion.effect.corrosive": "Potion of Corrosion",
 	"item.minecraft.splash_potion.effect.corrosive": "Splash Potion of Corrosion",
 	"item.minecraft.lingering_potion.effect.corrosive": "Lingering Potion of Corrosion",

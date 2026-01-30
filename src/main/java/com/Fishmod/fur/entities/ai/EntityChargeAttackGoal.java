@@ -40,7 +40,7 @@ public class EntityChargeAttackGoal extends Goal {
     		flag = true;
     	} 
     			
-    	return this.mob.getMoveControl().hasWanted() && flag && target != null && target.isAlive();
+    	return this.mob.getMoveControl().hasWanted() && flag && this.target != null && this.target.isAlive();
     }
 
     /**

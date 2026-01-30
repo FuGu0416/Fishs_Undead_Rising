@@ -9,6 +9,7 @@ import com.Fishmod.fur.effect.EffectFlourished;
 import com.Fishmod.fur.effect.EffectFragile;
 import com.Fishmod.fur.effect.EffectImmolation;
 import com.Fishmod.fur.effect.EffectInfested;
+import com.Fishmod.fur.effect.EffectPossessed;
 import com.Fishmod.fur.effect.EffectSoiled;
 import com.Fishmod.fur.effect.EffectThorned;
 import com.Fishmod.fur.effect.EffectVenomous;
@@ -45,6 +46,7 @@ public class FUREffectRegistry {
 	public static final RegistryObject<MobEffect> FLOURISHED = EFFECT_DEF_REG.register("flourished", ()-> new EffectFlourished());
 	public static final RegistryObject<MobEffect> VOID_DUST = EFFECT_DEF_REG.register("void_dust", ()-> new EffectVoidDust());
 	public static final RegistryObject<MobEffect> VENOMOUS = EFFECT_DEF_REG.register("venomous", ()-> new EffectVenomous());
+	public static final RegistryObject<MobEffect> POSSESSED = EFFECT_DEF_REG.register("possessed", ()-> new EffectPossessed().addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL).addAttributeModifier(Attributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, AttributeModifier.Operation.ADDITION));
 	
 	public static final RegistryObject<Potion> CORROSIVE_POTION = POTION_DEF_REG.register("corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900)));
 	public static final RegistryObject<Potion> STRONG_CORROSIVE_POTION = POTION_DEF_REG.register("strong_corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900, 1)));

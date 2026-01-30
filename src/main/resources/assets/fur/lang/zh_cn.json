@@ -601,7 +601,9 @@
 	"description.effect.fur:void_dust": "定时随机传送至附近地点",
 	"effect.fur.venomous": "蚀毒",
 	"description.effect.fur:venomous": "攻击时能使目标中毒",
-					
+	"effect.fur.possessed": "着魔",
+	"description.effect.fur:possessed": "赋予力量与迅捷，当效果结束时会窜出一只怨灵",
+		
 	"item.minecraft.potion.effect.corrosive": "腐蚀药水",
 	"item.minecraft.splash_potion.effect.corrosive": "喷溅型腐蚀药水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滞留型腐蚀药水",

@@ -602,7 +602,9 @@
 	"description.effect.fur:void_dust": "定時隨機傳送至附近地點",
 	"effect.fur.venomous": "蝕毒",
 	"description.effect.fur:venomous": "攻擊時能使目標中毒",
-						
+	"effect.fur.possessed": "著魔",
+	"description.effect.fur:possessed": "賦予力量與迅捷，當效果結束時會竄出一隻怨靈",
+							
 	"item.minecraft.potion.effect.corrosive": "腐蝕藥水",
 	"item.minecraft.splash_potion.effect.corrosive": "飛濺 腐蝕藥水",
 	"item.minecraft.lingering_potion.effect.corrosive": "滯留 腐蝕藥水",

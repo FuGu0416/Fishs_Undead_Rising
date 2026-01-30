@@ -153,7 +153,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> MIMIC_EGG = DEF_REG.register("mimic_egg", () -> new FURItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> POTION_OF_FISSION = DEF_REG.register("potion_of_fission", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER));	
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = DEF_REG.register("potion_of_mooten_lava", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA));
-	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");

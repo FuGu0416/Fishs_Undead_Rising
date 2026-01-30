@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.floating;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.entities.ICharging;
 import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -17,7 +18,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,6 +33,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -118,10 +119,6 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
         if (!this.isFading() && fadeProgress < SPELL_WARMUP_TIMER) {
         	fadeProgress++;
         }
-        
-        if (this.isFading() && fadeProgress <= 0) {
-            this.remove(Entity.RemovalReason.KILLED);
-        }
     }
     
     /**
@@ -154,21 +151,17 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     }
     
     public class AIUseSpell extends Goal {
-        protected int spellWarmup;
         protected int spellCooldown;
-        private boolean isAlly;
+        protected LivingEntity target;
         
         /**
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean canUse() {
-            if (WraithEntity.this.getTarget() == null) {
-                return false;
-            } else if (WraithEntity.this.isSpellcasting()) {
+            if (WraithEntity.this.isSpellcasting() || WraithEntity.this.isOnFire()) {
                 return false;
             } else {
             	return WraithEntity.this.tickCount >= this.spellCooldown 
-            			&& WraithEntity.this.distanceTo(WraithEntity.this.getTarget()) < 8.0 
             			&& WraithEntity.this.getHealth() < WraithEntity.this.getMaxHealth() * 0.5F;
             }
         }
@@ -177,78 +170,71 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean canContinueToUse() {
-            return WraithEntity.this.getTarget() != null && this.spellWarmup > 0;
+            return WraithEntity.this.tickCount >= this.getCastingInterval() && WraithEntity.this.getMoveControl().hasWanted() && this.target != null && this.target.isAlive();
         }
 
         /**
          * Execute a one shot task or start executing a continuous task
          */
         public void start() {
-            this.spellWarmup = this.getCastWarmupTime();
-            WraithEntity.this.spellTicks = this.getCastingTime();
-            WraithEntity.this.level().broadcastEntityEvent(WraithEntity.this, (byte)10);
-            this.spellCooldown = WraithEntity.this.tickCount + this.getCastingInterval();
-            this.isAlly = false;
             SoundEvent soundevent = this.getSpellPrepareSound();
 
             for (Monster entitylivingbase : WraithEntity.this.level().getEntitiesOfClass(Monster.class, WraithEntity.this.getBoundingBox().inflate(8.0D))) {
-                if (!WraithEntity.this.equals(entitylivingbase) && entitylivingbase.getTarget() != null && entitylivingbase.getTarget().equals(WraithEntity.this.getTarget())) {
-                	WraithEntity.this.setTarget(entitylivingbase);
-                	this.isAlly = true;
+                if (!(entitylivingbase instanceof ICharging) && !entitylivingbase.hasEffect(FUREffectRegistry.POSSESSED.get())) {
+                	this.target = entitylivingbase;
                 	break;
                 }             
             }
             
-            if (soundevent != null) {
-                WraithEntity.this.playSound(soundevent, 1.0F, 1.0F);
+            if (this.target != null) {
+            	WraithEntity.this.spellTicks = this.getCastingTime();
+            	WraithEntity.this.level().broadcastEntityEvent(WraithEntity.this, (byte)10);
+            	this.spellCooldown = WraithEntity.this.tickCount + this.getCastingInterval();
             }
             
-            WraithEntity.this.setFading(true);
+            if (soundevent != null) {
+                WraithEntity.this.playSound(soundevent, 1.0F, 1.0F);
+            }            
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
-            --this.spellWarmup;
+        	if (this.target == null) return;
 
-            if (this.spellWarmup == 5) {
+        	Vec3 aim = this.target.position().add(0.0D, target.getBbHeight() * 0.5D, 0.0D);
+        	WraithEntity.this.getMoveControl().setWantedPosition(aim.x(), aim.y(), aim.z(), 1.0D);
+        	
+            if (WraithEntity.this.distanceTo(this.target) < this.target.getBbWidth()) {
+            	WraithEntity.this.doHurtTarget(this.target);
+            	WraithEntity.this.setDeltaMovement(WraithEntity.this.getDeltaMovement().scale(0.2D));
+            }
+            
+            if (WraithEntity.this.distanceTo(this.target) < 2.0D) {
                 this.castSpell();
+                WraithEntity.this.setFading(true);
                 WraithEntity.this.playSound(WraithEntity.this.getSpellSound(), 4.0F, 1.2F);                        
             }
         }
 
         protected void castSpell() {
-        	if (WraithEntity.this.getTarget() != null) {
-        		
-        		LivingEntity target = WraithEntity.this.getTarget();
-        		
-        		if (this.isAlly) {
-        			target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10 * 20, 2));  
-        			target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10 * 20, 2));
-        			target.setHealth(Math.min(target.getHealth() + WraithEntity.this.getHealth(), target.getMaxHealth()));
-        		} else {
-        			float local_difficulty = WraithEntity.this.level().getCurrentDifficultyAt(WraithEntity.this.blockPosition()).getEffectiveDifficulty();
-        			
-        			target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 5 * 20 * (int)local_difficulty, 0));
-        			target.addEffect(new MobEffectInstance(FUREffectRegistry.FRAGILE.get(), 5 * 20 * (int)local_difficulty, 2));  
-        			target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5 * 20 * (int)local_difficulty, 0));
-        		}
-        		
+        	if (this.target != null) {
+    			this.target.addEffect(new MobEffectInstance(FUREffectRegistry.POSSESSED.get(), 10 * 20, 2));  
+    			this.target.setHealth(Math.min(this.target.getHealth() + WraithEntity.this.getHealth(), this.target.getMaxHealth()));
+       		
                 if (WraithEntity.this.level() instanceof ServerLevel) {
 	                for (int j = 0; j < 8; ++j) {
-	                	double d0 = WraithEntity.this.getTarget().getX() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbWidth() * 2.0F) - (double)WraithEntity.this.getTarget().getBbWidth();
-	                	double d1 = WraithEntity.this.getTarget().getY() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbHeight());
-	                	double d2 = WraithEntity.this.getTarget().getZ() + (double)(WraithEntity.this.getRandom().nextFloat() * WraithEntity.this.getTarget().getBbWidth() * 2.0F) - (double)WraithEntity.this.getTarget().getBbWidth();
+	                	double d0 = this.target.getX() + (double)(WraithEntity.this.getRandom().nextFloat() * this.target.getBbWidth() * 2.0F) - (double)this.target.getBbWidth();
+	                	double d1 = this.target.getY() + (double)(WraithEntity.this.getRandom().nextFloat() * this.target.getBbHeight());
+	                	double d2 = this.target.getZ() + (double)(WraithEntity.this.getRandom().nextFloat() * this.target.getBbWidth() * 2.0F) - (double)this.target.getBbWidth();
 	                	((ServerLevel) WraithEntity.this.level()).sendParticles(ParticleTypes.SOUL, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-	                	
 	                }
                 }
+                
+                WraithEntity.this.remove(Entity.RemovalReason.KILLED);
         	}
-        }
-
-        protected int getCastWarmupTime() {
-            return SPELL_WARMUP_TIMER;
+        	
         }
 
         protected int getCastingTime() {
