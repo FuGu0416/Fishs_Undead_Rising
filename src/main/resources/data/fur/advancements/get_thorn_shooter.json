@@ -17,7 +17,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "fur:thorn_shooter"
+                        "items": ["fur:thorn_shooter"]
                     }
                 ]
             }

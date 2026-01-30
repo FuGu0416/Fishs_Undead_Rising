@@ -1,11 +1,11 @@
 package com.Fishmod.fur.entities.ai;
 
+import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class EntityAIDestroyCrops extends Goal {
 
-	protected final TamableAnimal entity;
+	protected final FURTameableEntity entity;
 	public int destroyTicks;
     private final double movementSpeed;
     /** Controls task execution delay */
@@ -29,7 +29,7 @@ public class EntityAIDestroyCrops extends Goal {
     private boolean isAboveDestination;
     private final int searchLength;
 	
-	public EntityAIDestroyCrops(TamableAnimal creature, double speedIn) {
+	public EntityAIDestroyCrops(FURTameableEntity creature, double speedIn) {
 		this.entity = creature;
 		this.destroyTicks = 0;
         this.movementSpeed = speedIn;
@@ -45,6 +45,8 @@ public class EntityAIDestroyCrops extends Goal {
         } else if (this.runDelay > 0) {
             --this.runDelay;
             return false;
+        } else if (!this.entity.isWandering()) {
+        	return false;
         } else {
             this.runDelay = 40 + this.entity.getRandom().nextInt(40);
             return this.searchForDestination();

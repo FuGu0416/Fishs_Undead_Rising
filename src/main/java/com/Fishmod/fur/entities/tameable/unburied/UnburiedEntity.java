@@ -101,7 +101,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	
     protected void registerGoals() {
     	super.registerGoals();
-    	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.5D, true));
+    	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.applyEntityAI();

@@ -97,7 +97,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     	this.goalSelector.addGoal(1, new FloatGoal(this));
     	this.goalSelector.addGoal(3, new AvoidOrFrightEntityGoal<>(this, Camel.class, 6.0F, 1.0D, 1.6D));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-    	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, true));
+    	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(10, this.watch);
         this.goalSelector.addGoal(10, this.look);
 
