@@ -151,5 +151,4 @@ public class BasicBombEntity extends ThrowableItemProjectile {
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-    
 }

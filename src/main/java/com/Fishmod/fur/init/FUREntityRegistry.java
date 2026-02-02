@@ -20,8 +20,10 @@ import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.entities.projectiles.FURArrowEntity;
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
+import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
+import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
@@ -71,6 +73,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<CactoidEntity>> CACTOID = DEF_REG.register("cactoid", () -> (EntityType<CactoidEntity>) EntityType.Builder.of(CactoidEntity::new, MobCategory.MONSTER).sized(0.5F, 1.1F).setTrackingRange(8).build("cactoid"));
 	public static final RegistryObject<EntityType<MimicEntity>> MIMIC = DEF_REG.register("mimic", () -> (EntityType<MimicEntity>) EntityType.Builder.of(MimicEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F).setTrackingRange(8).build("mimic"));
 	public static final RegistryObject<EntityType<PteraEntity>> PTERA = DEF_REG.register("ptera", () -> (EntityType<PteraEntity>) EntityType.Builder.of(PteraEntity::new, MobCategory.MONSTER).sized(1.6F, 0.8F).setTrackingRange(8).build("ptera"));
+	public static final RegistryObject<EntityType<SalamanderEntity>> SALAMANDER = DEF_REG.register("salamander", () -> (EntityType<SalamanderEntity>) EntityType.Builder.of(SalamanderEntity::new, MobCategory.MONSTER).sized(1.95F, 1.6F).fireImmune().setTrackingRange(8).build("salamander"));
 	
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -80,11 +83,11 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<FURArrowEntity>> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("ghoul_arrow"));
 	public static final RegistryObject<EntityType<FURArrowEntity>> FANG_ARROW = DEF_REG.register("fang_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_arrow"));
 	public static final RegistryObject<EntityType<FangDaggerEntity>> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> (EntityType) EntityType.Builder.of(FangDaggerEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_dagger"));
+	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(20).build("warsmallfireball"));
 	
 	/*
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
-	public static final EntityType<SalamanderEntity> SALAMANDER = registerEntity(EntityType.Builder.of(SalamanderEntity::new, EntityClassification.MONSTER).sized(1.95F, 1.6F).fireImmune(), "salamander");
 	public static final EntityType<SludgeLordEntity> SLUDGELORD = registerEntity(EntityType.Builder.of(SludgeLordEntity::new, EntityClassification.MONSTER).sized(2.2F, 3.7F), "sludgelord");
 	public static final EntityType<LilSludgeEntity> LILSLUDGE = registerEntity(EntityType.Builder.of(LilSludgeEntity::new, EntityClassification.MONSTER).sized(1.0F, 2.0F), "lilsludge");
 	public static final EntityType<RavenEntity> RAVEN = registerEntity(EntityType.Builder.of(RavenEntity::new, EntityClassification.CREATURE).sized(0.5F, 0.9F), "raven");
@@ -109,7 +112,6 @@ public class FUREntityRegistry {
 	public static final EntityType<GhoulEntity> GHOUL = registerEntity(EntityType.Builder.of(GhoulEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.2F), "ghoul");
 	public static final EntityType<LivingArmorEntity> LIVING_ARMOR = registerEntity(EntityType.Builder.of(LivingArmorEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "living_armor");
 	
-	public static final EntityType<WarSmallFireballEntity> WAR_SMALL_FIREBALL = registerEntity(EntityType.Builder.<WarSmallFireballEntity>of(WarSmallFireballEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "warsmallfireball");
 	public static final EntityType<PiranhaLauncherEntity> PIRANHA_LAUNCHER = registerEntity(EntityType.Builder.<PiranhaLauncherEntity>of(PiranhaLauncherEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10), "piranhalauncher");
 	public static final EntityType<AcidJetEntity> ACIDJET = registerEntity(EntityType.Builder.<AcidJetEntity>of(AcidJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "acidjet");
 	public static final EntityType<SludgeJetEntity> SLUDGEJET = registerEntity(EntityType.Builder.<SludgeJetEntity>of(SludgeJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sludgejet");
@@ -144,11 +146,11 @@ public class FUREntityRegistry {
         event.register(CACTOID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(MIMIC.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MimicEntity::checkMimicSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(PTERA.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, PteraEntity::checkPteraSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(SALAMANDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SalamanderEntity::checkSalamanderSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         
         /*
         event.register(PARASITE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules);
         event.register(UNDEADSWINE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
-        event.register(SALAMANDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SalamanderEntity::checkSalamanderSpawnRules);        
         event.register(SLUDGELORD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SludgeLordEntity::checkSludgeLordSpawnRules);
         event.register(RAVEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, RavenEntity::checkRavenSpawnRules);
         event.register(SEAGULL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, RavenEntity::checkSeagullSpawnRules);
@@ -195,11 +197,11 @@ public class FUREntityRegistry {
         event.put(CACTOID.get(), CactoidEntity.createAttributes().build());
         event.put(MIMIC.get(), MimicEntity.createAttributes().build());
         event.put(PTERA.get(), PteraEntity.createAttributes().build());
+        event.put(SALAMANDER.get(), SalamanderEntity.createAttributes().build());   
         
         /*
         event.put(PARASITE, ParasiteEntity.createAttributes().build());
         event.put(UNDEADSWINE, UndeadSwineEntity.createAttributes().build());
-        event.put(SALAMANDER, SalamanderEntity.createAttributes().build());   
         event.put(SLUDGELORD, SludgeLordEntity.createAttributes().build());
         event.put(LILSLUDGE, LilSludgeEntity.createAttributes().build());
         event.put(RAVEN, RavenEntity.createAttributes().build());

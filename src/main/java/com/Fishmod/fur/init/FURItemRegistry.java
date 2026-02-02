@@ -154,6 +154,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> POTION_OF_FISSION = DEF_REG.register("potion_of_fission", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER));	
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = DEF_REG.register("potion_of_mooten_lava", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA));
 	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
+	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
@@ -180,7 +181,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
 	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
 	public static final RegistryObject<Item> BEAST_CLAW = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().rarity(Rarity.EPIC)), "fur:beast_claw", ItemTier.DIAMOND, 3, -2.4F, FURItemRegistry.SCYTHE_CLAW);
-	public static final RegistryObject<Item> SALAMANDER_BUCKET = new FURFishBucketItem(FUREntityRegistry.SALAMANDER, () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:salamander_bucket");
 	public static final RegistryObject<Item> SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), "fur:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> SOULFIREAXE = new MoltenAxeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), "fur:soulfireaxe", ItemTier.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME);
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
@@ -237,11 +237,11 @@ public class FURItemRegistry {
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
         spawnEgg("mimic", FUREntityRegistry.MIMIC, 0xE168FF, 0x070000);
         spawnEgg("ptera", FUREntityRegistry.PTERA, 0x208938, 0xD61717);
+        spawnEgg("salamander", FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142);
         
         /*
     	spawnEgg(FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE, new Item.Properties()).setRegistryName("fur:spawn_egg_parasite"));
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
-    	spawnEgg(FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142, new Item.Properties()).setRegistryName("fur:spawn_egg_salamander"));
     	spawnEgg(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties()).setRegistryName("fur:spawn_egg_sludgelord"));
     	spawnEgg(FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E, new Item.Properties()).setRegistryName("fur:spawn_egg_raven"));
     	spawnEgg(FUREntityRegistry.SEAGULL, 0xEEEEEE, 0x121212, new Item.Properties()).setRegistryName("fur:spawn_egg_seagull"));

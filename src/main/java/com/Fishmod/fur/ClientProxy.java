@@ -33,6 +33,7 @@ import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURKeybindRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 
 import net.minecraft.client.particle.FlameParticle;
@@ -45,6 +46,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -55,8 +57,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ClientProxy extends CommonProxy {
     public void commonInit(){
     	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-    	//FURKeybindRegistry.init();
     	bus.addListener(ClientProxy::setupParticles);
+    	bus.addListener(this::registerKeybinds);
     }
     
     public void clientInit() {
@@ -92,6 +94,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GHOUL_ARROW.get(), manager -> new FURArrowRenderer(manager, 0));
         EntityRenderers.register(FUREntityRegistry.FANG_ARROW.get(), manager -> new FURArrowRenderer(manager, 1));
         EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
         
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
@@ -125,7 +128,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GHOUL, manager -> new GhoulRenderer(manager)); 
         //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
         
-        EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.75F, true));
         EntityRenderers.register(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.ACIDJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         EntityRenderers.register(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
@@ -182,5 +184,10 @@ public class ClientProxy extends CommonProxy {
 		registry.registerSpriteSet(FURParticleRegistry.SAP_JET.get(), GastroAcidParticle.SapJetFactory::new);
 		registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
 		registry.registerSpriteSet(FURParticleRegistry.BANSHEE_SHRIEK.get(), BansheeShriekParticle.Provider::new);
+    }
+    
+    private void registerKeybinds(RegisterKeyMappingsEvent registry) {
+    	registry.register(FURKeybindRegistry.MOUNT_SPECIAL);
+    	registry.register(FURKeybindRegistry.MOUNT_DOWN);
     }
 }

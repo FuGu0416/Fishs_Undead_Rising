@@ -71,7 +71,7 @@ public class FURBiomeModifier {
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.AVATON.get(), 20, 1, 2));   
         addSpawn(context, ADD_WRAITH, biomes.getOrThrow(FURTagRegistry.IS_OVERWORLD_HOSTILE),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 5, 1, 2));
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 20, 2, 4));
         addSpawn(context, ADD_WISP, HolderSet.direct(biomes.getOrThrow(Biomes.NETHER_WASTES), biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY), biomes.getOrThrow(Biomes.BASALT_DELTAS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WISP.get(), 10, 4, 8));
         addSpawn(context, ADD_MYCOSIS, biomes.getOrThrow(FURTagRegistry.HAS_MYCOSIS),
