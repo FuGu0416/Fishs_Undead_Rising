@@ -70,6 +70,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());
+            	output.accept(FURItemRegistry.SALAMANDER_BUCKET.get());
             	output.accept(FURItemRegistry.CACTOID_POT.get());
             	
             	// Infused Bandage

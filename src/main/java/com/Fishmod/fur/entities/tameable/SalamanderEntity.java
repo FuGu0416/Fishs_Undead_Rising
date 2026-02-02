@@ -78,8 +78,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SalamanderEntity extends FURTameableEntity implements IAggressive, Saddleable, GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	
 	private static final EntityDataAccessor<Integer> SKIN_TYPE =  SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> ATTACK_TIMER = SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
@@ -842,7 +845,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.cache;
 	}
 }

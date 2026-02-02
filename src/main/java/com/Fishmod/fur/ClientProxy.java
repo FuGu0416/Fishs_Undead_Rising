@@ -17,6 +17,7 @@ import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
+import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
@@ -85,6 +86,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MIMIC.get(), MimicRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.PTERA.get(), PteraRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SALAMANDER.get(), SalamanderRenderer::new);        
     	
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -103,7 +105,6 @@ public class ClientProxy extends CommonProxy {
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(FUREntityRegistry.PARASITE, manager -> new ParasiteRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.SALAMANDER, manager -> new SalamanderRenderer(manager));        
         EntityRenderers.register(FUREntityRegistry.SLUDGELORD, manager -> new SludgeLordRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.RAVEN, manager -> new RavenRenderer(manager));

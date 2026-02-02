@@ -54,6 +54,6 @@ public class LayerMimicChest<T extends MimicEntity> extends GeoRenderLayer<T> {
         RenderType RenderType = net.minecraft.client.renderer.RenderType.entityCutoutNoCull(this.textureLocation);        
 		getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, RenderType,
 				   bufferSource.getBuffer(RenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-				   1, 1, 1, 1);
+				   1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
