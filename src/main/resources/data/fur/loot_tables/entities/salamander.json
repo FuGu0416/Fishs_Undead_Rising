@@ -1,0 +1,50 @@
+{
+    "pools": [
+        {
+            "name": "fur:salamander",
+            "rolls": 4,
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "fur:molten_meat",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:salamander",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "fur:burnt_ovipositor",
+					"conditions":[
+                        {
+
+                            "condition": "minecraft:random_chance_with_looting",
+                            "chance": 0.2,
+                            "looting_multiplier": 0.05
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

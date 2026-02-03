@@ -431,7 +431,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		tag.putShort("Fuse", (short)this.maxSwell);
-		tag.putInt("Variant", getSkin());
+		tag.putInt("Variant", this.getSkin());
 	}
 
     /**

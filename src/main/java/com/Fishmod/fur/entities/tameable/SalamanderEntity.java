@@ -7,8 +7,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.EntityFishAIAttackRange;
+import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -44,6 +44,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -76,20 +77,32 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SalamanderEntity extends FURTameableEntity implements IAggressive, Saddleable, GeoEntity {
+public class SalamanderEntity extends FURTameableEntity implements Saddleable, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("salamander.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("salamander.model.walking");
+    private static final RawAnimation SWIM = RawAnimation.begin().thenPlay("salamander.model.swimming");
+    private static final RawAnimation ATTACK_RANGE = RawAnimation.begin().thenPlay("salamander.model.attacking_range");
+    private static final RawAnimation ATTACK_MELEE = RawAnimation.begin().thenPlay("salamander.model.attacking_melee");
+    private static final RawAnimation ATTACK_RIDDEN = RawAnimation.begin().thenPlay("salamander.model.attacking_ridden");
+	
 	private static final EntityDataAccessor<Integer> SKIN_TYPE =  SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> ATTACK_TIMER = SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> GROWING_STAGE = SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.INT);
 	// 0: isSaddled, 1: isBoostingFurnace
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS = SynchedEntityData.defineId(SalamanderEntity.class, EntityDataSerializers.BYTE);
 	
 	private static final int RANGE = 2;
+	public static final int ATTACK_TIMER = 20;
 	
 	private EntityFishAIAttackRange<WarSmallFireballEntity> range_atk;
 	private AvoidEntityGoal<Player> avoid_entity;
@@ -111,7 +124,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));		
-		this.entityData.define(ATTACK_TIMER, Integer.valueOf(0));
 		this.entityData.define(GROWING_STAGE, Integer.valueOf(-1));
 		this.entityData.define(DATA_FLAGS, (byte)0);
 	}
@@ -127,8 +139,9 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	this.goalSelector.addGoal(0, new FloatGoal(this));
     	this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
     	this.goalSelector.addGoal(4, this.range_atk);
-    	this.goalSelector.addGoal(5, new LookatFurnaceGoal(this));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    	this.goalSelector.addGoal(5, new SalamanderEntity.AttackGoal(this));
+    	this.goalSelector.addGoal(6, new LookatFurnaceGoal(this));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         //if (FURConfig.Salamander_Defender.get()) {
         	this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -317,9 +330,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     @Override
     public void tick() {
         super.tick();
-        
-    	if(this.getAttackTimer() > 0)
-    		this.setAttackTimer(this.getAttackTimer() - 1);
     	
         if(this.barrage_CD > 0)
         	this.barrage_CD--;
@@ -663,11 +673,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
         return this.isBaby() ? 0.2F : 0.8F;
     }
-    
-    @Override
-    public int getAttackTimer() {
-       return this.getEntityData().get(ATTACK_TIMER).intValue();
-    }
 
     public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
@@ -676,11 +681,6 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     public void setSkin(int skinType) {
     	this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
-    
-    @Override
-    public void setAttackTimer(int i) {
-        this.getEntityData().set(ATTACK_TIMER, i);
-	}
     
     @Override
     protected SoundEvent getAmbientSound() {
@@ -726,7 +726,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     @Nullable
     @Override
     protected ResourceLocation getDefaultLootTable() {
-    	return this.isBaby() ? new ResourceLocation(mod_LavaCow.MODID, "entities/salamanderlesser") : super.getDefaultLootTable();
+    	return this.isBaby() ? new ResourceLocation(mod_LavaCow.MODID, "entities/salamander_nymph") : super.getDefaultLootTable();
     }
     
     @Override
@@ -774,15 +774,21 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-		switch(id) {
-			case 5:
-				this.setAttackTimer(80);
+		switch (id) {
+			case 9:
+				this.triggerAnim("trigger_controller", "attacking_range");
 				break;
+			case 10:
+				this.triggerAnim("trigger_controller", "attacking_melee");
+				break;
+			case 11:
+				this.triggerAnim("trigger_controller", "attacking_ridden");
+				break;				
 			default:
 				super.handleEntityEvent(id);
 				break;
 		}
-    }    
+    }  
 	
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -836,11 +842,49 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
             }
 		}
 	}
+	
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(PathfinderMob p_i46676_1_) {
+           super(p_i46676_1_, 1.0D, true);
+        }
+        
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+			return 5; 		
+    	}
+    	
+    	protected byte atkTimerEvent() {	        
+    		return (byte)10;
+    	}
+	}
+	
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.isInFluidType()) {
+    		state.getController().setAnimation(SWIM);
+    		if (state.isMoving()) {
+    			state.setControllerSpeed(1.0F);
+    		} else {
+    			state.setControllerSpeed(0.5F);
+    		}
+    	} else if (state.isMoving()) {
+			state.getController().setAnimation(WALK);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		// TODO Auto-generated method stub
-		
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attacking_range", ATTACK_RANGE)
+				.triggerableAnim("attacking_melee", ATTACK_MELEE)
+				.triggerableAnim("attacking_ridden", ATTACK_RIDDEN));
 	}
 
 	@Override

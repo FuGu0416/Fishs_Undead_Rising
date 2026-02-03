@@ -83,7 +83,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<FURArrowEntity>> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("ghoul_arrow"));
 	public static final RegistryObject<EntityType<FURArrowEntity>> FANG_ARROW = DEF_REG.register("fang_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_arrow"));
 	public static final RegistryObject<EntityType<FangDaggerEntity>> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> (EntityType) EntityType.Builder.of(FangDaggerEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_dagger"));
-	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(20).build("warsmallfireball"));
+	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("warsmallfireball"));
 	
 	/*
 	public static final EntityType<ParasiteEntity> PARASITE = registerEntity(EntityType.Builder.of(ParasiteEntity::new, EntityClassification.MONSTER).sized(0.8F, 0.3F), "parasite");

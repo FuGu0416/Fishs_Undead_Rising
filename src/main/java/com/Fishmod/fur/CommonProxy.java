@@ -1,7 +1,10 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.message.MessageMountSpecial;
+
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.network.NetworkDirection;
 
 public class CommonProxy {
 	
@@ -38,20 +41,12 @@ public class CommonProxy {
     public static void setupParticles(RegisterParticleProvidersEvent registry) {
     }
     
-    /*public void initNetwork() {
-        final String version = "1";
-        mod_LavaCow.NETWORK = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(mod_LavaCow.MODID, "net"))
-                .networkProtocolVersion(() -> version)
-                .clientAcceptedVersions(version::equals)
-                .serverAcceptedVersions(version::equals)
-                .simpleChannel();
-        this.registerMessage(MessageMountSpecial.class, MessageMountSpecial::serialize, MessageMountSpecial::deserialize, new MessageMountSpecial.Handler());
+    public void initNetwork() {
+		int packetId = 0;
+    	mod_LavaCow.NETWORK.messageBuilder(MessageMountSpecial.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+        .encoder(MessageMountSpecial::serialize)
+        .decoder(MessageMountSpecial::deserialize)
+        .consumerMainThread(MessageMountSpecial::handle)
+        .add();
     }
-    
-    private <MSG> void registerMessage(final Class<MSG> clazz, final BiConsumer<MSG, PacketBuffer> encoder, final Function<PacketBuffer, MSG> decoder, final BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
-    	mod_LavaCow.NETWORK.messageBuilder(clazz, this.ID++)
-                .encoder(encoder).decoder(decoder)
-                .consumer(consumer)
-                .add();
-    }*/
 }

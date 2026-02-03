@@ -135,10 +135,8 @@ public class EntityFishAIAttackRange<T extends Fireball> extends Goal {
               if (this.attackTime <= 0) {
                  ++this.attackStep;
                  if (this.attackStep == 1) {
-                    this.attackTime = 30;
-                    if(!this.shooter.isBaby()) {
-                    	this.shooter.level().broadcastEntityEvent(this.shooter, (byte)5);
-                    }
+                    this.attackTime = 4;
+                	this.shooter.level().broadcastEntityEvent(this.shooter, (byte)9);
                  } else if (this.attackStep <= (this.shot_times + 1)) {
                     this.attackTime = 6;
                  } else {
@@ -157,9 +155,9 @@ public class EntityFishAIAttackRange<T extends Fireball> extends Goal {
                     Fireball shotentity = this.shot.create(this.shooter.level());
                     shotentity.setOwner(this.shooter);
                     shotentity.moveTo(this.shooter.getX() + (d1 / t4 * Xoffset), this.shooter.getY() + (double)(this.shooter.getBbHeight() / 2.0F) + Yoffset, this.shooter.getZ() + (d3 / t4 * Zoffset), this.shooter.getYRot(), this.shooter.getXRot());
-                    shotentity.xPower = (t1 / t4) * 0.75D;
-                    shotentity.yPower = (t2 / t4) * 0.75D;
-                    shotentity.zPower = (t3 / t4) * 0.75D;
+                    shotentity.xPower = (t1 / t4) * 0.075D;
+                    shotentity.yPower = (t2 / t4) * 0.075D;
+                    shotentity.zPower = (t3 / t4) * 0.075D;
                     this.shooter.level().addFreshEntity(shotentity);               
                  }
               }

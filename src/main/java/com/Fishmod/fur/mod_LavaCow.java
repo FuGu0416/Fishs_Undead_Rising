@@ -20,6 +20,7 @@ import com.Fishmod.fur.worldgen.FURStructureModifier;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.StructureModifier;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,7 +45,14 @@ public class mod_LavaCow {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MODID = "fur";
     public static final String NAME = "Fish's Undead Rising";
-    public static SimpleChannel NETWORK;
+    private static final String PROTOCOL_VERSION = Integer.toString(1);
+    private static final ResourceLocation PACKET_NETWORK_NAME = new ResourceLocation(mod_LavaCow.MODID, "main");
+    public static SimpleChannel NETWORK = NetworkRegistry.ChannelBuilder
+            .named(PACKET_NETWORK_NAME)
+            .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+            .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+            .networkProtocolVersion(() -> PROTOCOL_VERSION)
+            .simpleChannel();
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     
     public mod_LavaCow() {   
@@ -115,7 +124,7 @@ public class mod_LavaCow {
             //LootTableHandler.addLootTable();
     		FURItemRegistry.SetCompostables();
         });
-        //PROXY.initNetwork();
+        PROXY.initNetwork();
     	FUREffectRegistry.onInitItems();
     }
 

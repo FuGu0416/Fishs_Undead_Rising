@@ -52,12 +52,33 @@ public class SalamanderModel extends GeoModel<SalamanderEntity> {
     @Override
     public void setCustomAnimations(SalamanderEntity animatable, long instanceId, AnimationState<SalamanderEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("Head");
+        CoreGeoBone tooth_l = getAnimationProcessor().getBone("Tooth_l");
+        CoreGeoBone tooth_r = getAnimationProcessor().getBone("Tooth_r");
+        CoreGeoBone cannon = getAnimationProcessor().getBone("CannonBase");
     	
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
             head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
+        }
+        
+        if (tooth_l != null && tooth_r != null && cannon != null) {
+	        if (animatable.isBaby()) {
+	    		if (animatable.getGrowingStage() == 1) {
+	        		tooth_l.setHidden(true);
+	        		tooth_r.setHidden(true);
+	    		} else {
+	        		tooth_l.setHidden(false);
+	        		tooth_r.setHidden(false);
+	    		}
+	    		
+	    		cannon.setHidden(true);
+	    	} else {
+	    		tooth_l.setHidden(false);
+	    		tooth_r.setHidden(false);
+	    		cannon.setHidden(false);
+	    	}
         }
     }
     
