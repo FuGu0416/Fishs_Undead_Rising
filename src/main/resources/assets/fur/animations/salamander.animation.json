@@ -337,6 +337,203 @@
 				}
 			}
 		},
+		"salamander.model.lying": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"Head": {
+					"rotation": {
+						"vector": [" math.cos(query.anim_time * 90) - 25.5", 0, 0]
+					},
+					"position": {
+						"vector": [0, "0.5 + math.cos((query.anim_time - 0.2) * 90) * -0.8", "1 + math.cos((query.anim_time - 0.6) * 90) * 0.5"]
+					}
+				},
+				"Jaw_lower": {
+					"rotation": {
+						"vector": ["math.cos((query.anim_time - 0.6) * 90) * 7", 0, 0]
+					}
+				},
+				"Body2": {
+					"rotation": {
+						"vector": ["math.sin((query.anim_time - 0.2) * 90) * 5", 0, 0]
+					}
+				},
+				"Tail1": {
+					"rotation": {
+						"vector": ["7.5+math.cos((query.anim_time - 0.2) * 90) * 5", "math.cos(query.anim_time * 90) * 10", 0]
+					}
+				},
+				"Tail2": {
+					"rotation": {
+						"vector": [0, "math.cos((query.anim_time - 0.2) * 90) * 7", 0]
+					}
+				},
+				"Tail3": {
+					"rotation": {
+						"vector": [0, "math.cos((query.anim_time - 0.4) * 90) * 10", 0]
+					}
+				},
+				"CannonBase": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 180) * -3", 0, 0]
+					},
+					"position": {
+						"vector": [0, "-1 + math.cos(query.anim_time * 90) * -1", 0]
+					}
+				},
+				"Cannon1": {
+					"rotation": {
+						"vector": ["math.cos((query.anim_time - 0.2) * 180) * 3", 0, 0]
+					}
+				},
+				"Body": {
+					"position": {
+						"vector": [0, -2, 0]
+					}
+				},
+				"RightArm": {
+					"rotation": {
+						"vector": [-35.48788, 11.79291, 19.30006]
+					}
+				},
+				"RightArm2": {
+					"rotation": {
+						"vector": [-50.19829, -23.81003, -19.6235]
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"vector": [-35.48788, -11.79291, -19.30006]
+					}
+				},
+				"LeftArm2": {
+					"rotation": {
+						"vector": [-50.19829, 23.81003, 19.6235]
+					}
+				},
+				"RightLeg": {
+					"rotation": {
+						"vector": [25, 0, 0]
+					}
+				},
+				"RightLeg2": {
+					"rotation": {
+						"vector": [42.5, 0, 0]
+					}
+				},
+				"LeftLeg": {
+					"rotation": {
+						"vector": [25, 0, 0]
+					}
+				},
+				"LeftLeg2": {
+					"rotation": {
+						"vector": [42.5, 0, 0]
+					}
+				}
+			}
+		},
+		"salamander.model.lying_furnace": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"Head": {
+					"rotation": {
+						"vector": ["-15+ math.cos(query.anim_time * 90) -NaN", 0, 0]
+					},
+					"position": {
+						"vector": [0, "1.5 + math.cos((query.anim_time - 0.2) * 90) * -0.8", "1 + math.cos((query.anim_time - 0.6) * 90) * 0.5"]
+					}
+				},
+				"Jaw_lower": {
+					"rotation": {
+						"vector": ["45+math.cos((query.anim_time - 0.6) * 360) * 7", 0, 0]
+					}
+				},
+				"Body2": {
+					"rotation": {
+						"vector": ["math.sin((query.anim_time - 0.2) * 90) * 5", 0, 0]
+					}
+				},
+				"Tail1": {
+					"rotation": {
+						"vector": ["27.5+math.cos((query.anim_time - 0.2) * 90) * 5", "math.cos(query.anim_time * 90) * 10", 0]
+					}
+				},
+				"Tail2": {
+					"rotation": {
+						"vector": [0, "math.cos((query.anim_time - 0.2) * 90) * 7", 0]
+					}
+				},
+				"Tail3": {
+					"rotation": {
+						"vector": [0, "math.cos((query.anim_time - 0.4) * 90) * 10", 0]
+					}
+				},
+				"CannonBase": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 180) * -3", 0, 0]
+					},
+					"position": {
+						"vector": [0, "-1 + math.cos(query.anim_time * 90) * -1", 0]
+					}
+				},
+				"Cannon1": {
+					"rotation": {
+						"vector": ["math.cos((query.anim_time - 0.2) * 180) * 3", 0, 0]
+					}
+				},
+				"Body": {
+					"rotation": {
+						"vector": [-12.5, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"RightArm": {
+					"rotation": {
+						"vector": [-35.48788, 11.79291, 19.30006]
+					}
+				},
+				"RightArm2": {
+					"rotation": {
+						"vector": [34.80171, -23.81003, -19.6235]
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"vector": [-35.48788, -11.79291, -19.30006]
+					}
+				},
+				"LeftArm2": {
+					"rotation": {
+						"vector": [34.80171, 23.81003, 19.6235]
+					}
+				},
+				"RightLeg": {
+					"rotation": {
+						"vector": [25, 0, 0]
+					}
+				},
+				"RightLeg2": {
+					"rotation": {
+						"vector": [42.5, 0, 0]
+					}
+				},
+				"LeftLeg": {
+					"rotation": {
+						"vector": [25, 0, 0]
+					}
+				},
+				"LeftLeg2": {
+					"rotation": {
+						"vector": [42.5, 0, 0]
+					}
+				}
+			}
+		},
 		"salamander.model.attacking_range": {
 			"animation_length": 1,
 			"bones": {

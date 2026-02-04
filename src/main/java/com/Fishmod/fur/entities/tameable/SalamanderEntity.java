@@ -92,6 +92,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("salamander.model.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("salamander.model.walking");
     private static final RawAnimation SWIM = RawAnimation.begin().thenPlay("salamander.model.swimming");
+    private static final RawAnimation LIE = RawAnimation.begin().thenPlay("salamander.model.lying");
+    private static final RawAnimation HEAT = RawAnimation.begin().thenPlay("salamander.model.lying_furnace");
     private static final RawAnimation ATTACK_RANGE = RawAnimation.begin().thenPlay("salamander.model.attacking_range");
     private static final RawAnimation ATTACK_MELEE = RawAnimation.begin().thenPlay("salamander.model.attacking_melee");
     private static final RawAnimation ATTACK_RIDDEN = RawAnimation.begin().thenPlay("salamander.model.attacking_ridden");
@@ -862,7 +864,13 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
 	}
 	
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.isInFluidType()) {
+    	if (this.isInSittingPose()) {
+    		if (this.isBoostingFurnace()) {
+    			state.getController().setAnimation(HEAT);
+    		} else {
+    			state.getController().setAnimation(LIE);
+    		}
+    	} else if (this.isInFluidType()) {
     		state.getController().setAnimation(SWIM);
     		if (state.isMoving()) {
     			state.setControllerSpeed(1.0F);
@@ -880,7 +888,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "controller", 10, this::predicate));
 		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
 				.triggerableAnim("attacking_range", ATTACK_RANGE)
 				.triggerableAnim("attacking_melee", ATTACK_MELEE)

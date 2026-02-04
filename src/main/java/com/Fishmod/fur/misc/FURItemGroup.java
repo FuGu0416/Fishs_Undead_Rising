@@ -38,7 +38,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ECTOPLASM_INGOT.get());
             	output.accept(FURItemRegistry.WISP_ASHES.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
-            	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());            	
+            	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());     
+            	output.accept(FURItemRegistry.BURNT_OVIPOSITOR.get());
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());

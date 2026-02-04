@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.ai;
 
 import java.util.EnumSet;
 
+import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -155,9 +156,12 @@ public class EntityFishAIAttackRange<T extends Fireball> extends Goal {
                     Fireball shotentity = this.shot.create(this.shooter.level());
                     shotentity.setOwner(this.shooter);
                     shotentity.moveTo(this.shooter.getX() + (d1 / t4 * Xoffset), this.shooter.getY() + (double)(this.shooter.getBbHeight() / 2.0F) + Yoffset, this.shooter.getZ() + (d3 / t4 * Zoffset), this.shooter.getYRot(), this.shooter.getXRot());
-                    shotentity.xPower = (t1 / t4) * 0.075D;
-                    shotentity.yPower = (t2 / t4) * 0.075D;
-                    shotentity.zPower = (t3 / t4) * 0.075D;
+                    shotentity.setDeltaMovement((t1 / t4) * 0.5D, (t2 / t4) * 0.5D, (t3 / t4) * 0.5D);
+                    
+                    if (shotentity instanceof EnchantableFireBallEntity) {
+                    	((EnchantableFireBallEntity) shotentity).setFlame(true);
+                    }
+                    
                     this.shooter.level().addFreshEntity(shotentity);               
                  }
               }
