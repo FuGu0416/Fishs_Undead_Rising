@@ -52,7 +52,7 @@ public class WarSmallFireballEntity extends EnchantableFireBallEntity {
 		super.onHitEntity(result);
 		if (!this.level().isClientSide) {
 			Entity entity = result.getEntity();
-            if(this.getOwner() instanceof SalamanderEntity)
+            if (this.getOwner() instanceof SalamanderEntity)
             	this.setDamage((float) ((LivingEntity) this.getOwner()).getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
 			Entity entity1 = this.getOwner();
             int i = entity.getRemainingFireTicks();

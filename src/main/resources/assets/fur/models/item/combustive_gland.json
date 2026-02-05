@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "fur:item/burnt_ovipositor"
+        "layer0": "fur:item/combustive_gland"
     }
 }

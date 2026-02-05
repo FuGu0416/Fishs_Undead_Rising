@@ -39,7 +39,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.WISP_ASHES.get());
             	output.accept(FURItemRegistry.MOLTEN_MEAT.get());
             	output.accept(FURItemRegistry.MOLTEN_ALLOY.get());     
-            	output.accept(FURItemRegistry.BURNT_OVIPOSITOR.get());
+            	output.accept(FURItemRegistry.COMBUSTIVE_GLAND.get());
             	output.accept(FURItemRegistry.CACTUS_THORN.get());
             	output.accept(FURItemRegistry.HATRED_SHARD.get());
             	output.accept(FURBlockRegistry.SCARECROWHEAD_COMMON.get());
@@ -79,23 +79,26 @@ public class FURItemGroup {
                 PotionUtils.setPotion(stack, Potions.WATER);
                 output.accept(stack);
             	
-            	// Weapon
+            	// Melee Weapon
             	output.accept(FURItemRegistry.FANG_DAGGER.get());
             	output.accept(FURItemRegistry.BONE_SWORD.get());
-            	output.accept(FURItemRegistry.BASIC_BOMB.get());
-            	output.accept(FURItemRegistry.GHOST_BOMB.get());
-            	output.accept(FURItemRegistry.HOLY_GRENADE.get());
-            	output.accept(FURItemRegistry.SONIC_BOMB.get());
             	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
             	output.accept(FURItemRegistry.FAMINE.get());
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
-            	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());
-            	output.accept(FURItemRegistry.THORN_SHOOTER.get());
+            	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());           	
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
-            	output.accept(FURItemRegistry.GHOUL_ARROW.get());
-            	output.accept(FURItemRegistry.FANG_ARROW.get());    
             	output.accept(FURItemRegistry.SKELETONKING_MACE.get());
+            	
+            	// Range Weapon
+            	output.accept(FURItemRegistry.WAR.get());
+            	output.accept(FURItemRegistry.THORN_SHOOTER.get());
+            	output.accept(FURItemRegistry.BASIC_BOMB.get());
+            	output.accept(FURItemRegistry.GHOST_BOMB.get());
+            	output.accept(FURItemRegistry.HOLY_GRENADE.get());
+            	output.accept(FURItemRegistry.SONIC_BOMB.get());
+            	output.accept(FURItemRegistry.GHOUL_ARROW.get());
+            	output.accept(FURItemRegistry.FANG_ARROW.get());   
             	
             	// Armour
             	output.accept(FURItemRegistry.CHITIN_ARMOR_HELMET.get());

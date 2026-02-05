@@ -156,7 +156,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = DEF_REG.register("potion_of_mooten_lava", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA));
 	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new SalamanderBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
-	public static final RegistryObject<Item> BURNT_OVIPOSITOR = DEF_REG.register("burnt_ovipositor", () -> new FURItem(new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
@@ -165,7 +166,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties()).setRegistryName("fur:pigboarhide");
 	public static final RegistryObject<Item> SILKY_SLUDGE = new Item(new Item.Properties()).setRegistryName("fur:silky_sludge");
 	public static final RegistryObject<Item> SLUDGE_WAND = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "fur:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
-	public static final RegistryObject<Item> WAR = new FURRangedItem("fur:war", Items.FIRE_CHARGE, FUREntityRegistry.WAR_SMALL_FIREBALL, new Item.Properties().rarity(Rarity.RARE).durability(384));
 	public static final RegistryObject<Item> VESPA_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "fur:vespa_dagger", ItemTier.IRON, 2, -2.4F, FURItemRegistry.POISONSTINGER);
 	public static final RegistryObject<Item> SAUSAGE_ROLL = new Item(new Item.Properties().food(new Food.Builder().nutrition(8).saturationMod(0.8F).meat().build())).setRegistryName("fur:sausage_roll");
 	public static final RegistryObject<Item> SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties())).setRegistryName("fur:swinearmor_helmet");

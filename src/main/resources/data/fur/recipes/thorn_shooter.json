@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " //",
+        "/DC",
+        " CC"
+    ],
+    "key": {
+        "C": {
+			"item": "minecraft:cactus"
+        },
+        "D": {
+            "item": "fur:war"
+        },
+        "/": {
+			"item": "fur:cactus_thorn"
+        }
+ 	},
+    "result": {
+        "item": "fur:thorn_shooter",
+        "count": 1
+    }
+}

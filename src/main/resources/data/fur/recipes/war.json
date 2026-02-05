@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " DD",
+        "DX#",
+        "  D"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:dispenser"
+        },
+        "X": {
+            "item": "fur:combustive_gland"
+        },
+        "D": {
+			"item": "fur:molten_alloy"
+        }
+    },
+    "result": {
+        "item": "fur:war"
+    }
+}

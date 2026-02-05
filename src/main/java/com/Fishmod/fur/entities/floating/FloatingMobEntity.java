@@ -13,6 +13,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -179,6 +181,14 @@ public class FloatingMobEntity extends Monster implements ICharging {
         }
         
 		return flag;
+	}
+	
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+	    if (source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.CRAMMING)) {
+	        return true;
+	    }
+	    return super.isInvulnerableTo(source);
 	}
 
     @Override
