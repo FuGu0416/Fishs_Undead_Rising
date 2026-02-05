@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -299,6 +300,12 @@ public class FURTameableEntity extends TamableAnimal {
     @Override
     public boolean isFood(ItemStack stack) {
         return false;
+    }
+    
+    public float getBonusDamage(LivingEntity LivingEntityIn, int sharpness, int bane_of_arthropods, int smite) {
+    	return (0.5F * sharpness + 0.5F)
+				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? bane_of_arthropods * 2.5F : 0)
+				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? smite * 2.5F : 0);
     }
     
 	@Override

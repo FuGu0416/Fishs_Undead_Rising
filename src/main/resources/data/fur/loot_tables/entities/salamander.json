@@ -34,7 +34,7 @@
                 {
                     "type": "item",
                     "weight": 1,
-                    "name": "fur:burnt_ovipositor",
+                    "name": "fur:combustive_gland",
 					"conditions":[
                         {
 

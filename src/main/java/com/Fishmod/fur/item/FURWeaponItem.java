@@ -165,19 +165,18 @@ public class FURWeaponItem extends SwordItem {
 		if (level instanceof ServerLevel) {
 			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) level), blockpos);  
 			
-			if (entity != null) {
-				CompoundTag CompoundNBT = new CompoundTag();
+			if (entity != null) {	
+				CompoundTag data = entity.getPersistentData();
 		             	              
-		    	CompoundNBT.putInt("fire_aspect", enchantmentIn[0]);
-		    	CompoundNBT.putInt("sharpness", enchantmentIn[1]);
-		    	CompoundNBT.putInt("knockback", enchantmentIn[2]);
-		    	CompoundNBT.putInt("bane_of_arthropods", enchantmentIn[3]);
-		    	CompoundNBT.putInt("smite", enchantmentIn[4]);
-		    	CompoundNBT.putInt("unbreaking", enchantmentIn[8]);
-		    	CompoundNBT.putInt("lifesteal", enchantmentIn[5]);
-		    	CompoundNBT.putInt("corrosive", enchantmentIn[7]);
+				data.putInt("fire_aspect", enchantmentIn[0]);
+				data.putInt("sharpness", enchantmentIn[1]);
+				data.putInt("knockback", enchantmentIn[2]);
+				data.putInt("bane_of_arthropods", enchantmentIn[3]);
+				data.putInt("smite", enchantmentIn[4]);
+				data.putInt("unbreaking", enchantmentIn[8]);
+				data.putInt("lifesteal", enchantmentIn[5]);
+				data.putInt("corrosive", enchantmentIn[7]);
 		    	
-		    	entity.readAdditionalSaveData(CompoundNBT);  	
 		    	entity.tame(player);
 		        entity.setLimitedLife(limitLife);
 		        entity.setSkin(skin);		       		        

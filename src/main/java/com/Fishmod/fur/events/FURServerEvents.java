@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -16,6 +17,8 @@ import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -546,12 +549,10 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
 	    //int Armor_Swine_lvl = 0;
-		
-    	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get()) && event.getItem().isEdible()) {
-    		event.setCanceled(true);
-    	}
     	
-    	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get())  && event.getItem().getItem() instanceof PotionItem) {
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get()) && 
+    			!FUREffectRegistry.SOILED.get().getCurativeItems().contains(event.getItem()) &&
+    			(event.getItem().isEdible() || event.getItem().getItem() instanceof PotionItem)) {
     		event.setCanceled(true);
     	}
     			
@@ -902,11 +903,14 @@ public class FURServerEvents {
     	LivingEntity Attacked = event.getEntity();
     	Entity Attacker = source.getEntity();
     	Entity DirectAttacker = source.getDirectEntity();
+    	
 	    int Armor_Famine_lvl = 0;	    
 	    
 	    if (DirectAttacker != null) {
-			for(ItemStack S : DirectAttacker.getArmorSlots()) {
-				if(S.getItem() instanceof FamineArmorItem) {
+	    	CompoundTag data = DirectAttacker.getPersistentData();
+	    	
+			for (ItemStack S : DirectAttacker.getArmorSlots()) {
+				if (S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
 				}
 			}		
@@ -914,14 +918,13 @@ public class FURServerEvents {
 			if (Armor_Famine_lvl >= 4 && DirectAttacker instanceof LivingEntity) {
 				event.setAmount(event.getAmount() + 2.0F);
 			}
-			
-			/*if (Attacker instanceof LilSludgeEntity) {			
-				event.setAmount(event.getAmount() + ((LilSludgeEntity)Attacker).getBonusDamage(Attacked));			
-			} else if (Attacker instanceof UnburiedEntity) {	
-				event.setAmount(event.getAmount() + ((UnburiedEntity)Attacker).getBonusDamage(Attacked));		
-			} else if (Attacker instanceof ScarabEntity) {	
-				event.setAmount(event.getAmount() + ((ScarabEntity)Attacker).getBonusDamage(Attacked));		
-			}*/
+						
+			if (DirectAttacker instanceof FURTameableEntity tamable && 
+					data.contains("sharpness", Tag.TAG_INT) && 
+					data.contains("bane_of_arthropods", Tag.TAG_INT) && 
+					data.contains("smite", Tag.TAG_INT)) {
+				event.setAmount(event.getAmount() + tamable.getBonusDamage(Attacked, data.getInt("sharpness"), data.getInt("bane_of_arthropods"), data.getInt("smite")));	
+			}
 			
 	    	if (DirectAttacker instanceof LivingEntity living) {
 	    		Item heldItem = living.getMainHandItem().getItem();
