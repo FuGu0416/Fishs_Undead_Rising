@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -20,14 +21,17 @@ public class CactusThornEntity extends AbstractArrow implements IEntityAdditiona
 	@SuppressWarnings("unchecked")
 	public CactusThornEntity(EntityType<?> p_i50158_1_, Level worldIn) {
 		super((EntityType<? extends CactusThornEntity>) p_i50158_1_, worldIn);
+		this.setBaseDamage(1.0D);
 	}
 	
 	public CactusThornEntity(Level worldIn, LivingEntity shooter) {
 		super(FUREntityRegistry.CACTUS_THORN.get(), shooter, worldIn);
+		this.setBaseDamage(1.0D);
 	}
 
 	public CactusThornEntity(Level worldIn, double posX, double posY, double posZ) {
 		super(FUREntityRegistry.CACTUS_THORN.get(), posX, posY, posZ, worldIn);
+		this.setBaseDamage(1.0D);
 	}	
 
 	@Override
@@ -36,6 +40,15 @@ public class CactusThornEntity extends AbstractArrow implements IEntityAdditiona
 		if (!this.inGround) {
 			this.level().addParticle(ParticleTypes.INSTANT_EFFECT, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 		}
+	}
+	
+	@Override
+	protected void onHitEntity(EntityHitResult entity) {
+	      super.onHitEntity(entity);
+	            
+	      if (!this.level().isClientSide) {
+	    	  entity.getEntity().invulnerableTime = 0;
+	      }
 	}
 
 	@Override

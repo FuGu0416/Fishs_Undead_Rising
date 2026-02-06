@@ -126,52 +126,31 @@ public class FURRangedItem extends CrossbowItem {
 	    } else return;
      	
 	    if (!level.isClientSide && remaining % (7 - quick_charge_lvl) == 0) {
-			int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
-			int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
-			int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
-			int piercing_lvl = stack.getEnchantmentLevel(Enchantments.PIERCING);
 			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
 			
 			if (this.shot.get().equals(FUREntityRegistry.CACTUS_THORN.get())) {
-				for (int i = ((multishot_lvl > 0) ? -1 : 0); i < ((multishot_lvl > 0) ? 2 : 1) ; i++) {
-		        	CactusThornEntity abstractarrowentity = new CactusThornEntity(level, player);
-		        	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot() + (10.0F * i), 0.0F, 2.0F, 2.0F);                       
-		        	level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-		        	
-	                if (power_lvl > 0) {
-	                	abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
-	                }
-	           
-	                if (punch_lvl > 0) {
-	                	abstractarrowentity.setKnockback(punch_lvl);
-	                }
-	
-	                if (flame_lvl > 0) {
-	                	abstractarrowentity.setSecondsOnFire(100);
-	                }
-	                
-	                if (piercing_lvl > 0) {
-	                	abstractarrowentity.setPierceLevel((byte)i);
-	                }
-	                
-	                if (player.getRandom().nextFloat() < 0.25F) {
-		                stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-		                    p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
-		                });
-	                }
-	                
-	                if (flag) {
-	                    abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-	                }
-	                
-	                level.addFreshEntity(abstractarrowentity);
-					if (!flag && !player.isCreative()) {
-						itemstack.shrink(1);
-						if (itemstack.isEmpty()) {
-							player.getInventory().removeItem(itemstack);
-							break;
-						}
-					}
+				for (int step = 0; step <= multishot_lvl; step++) {
+	    	    	this.shoot_thorn_shooter(level, player, stack, flag, step);
+	    	    	
+	    			if (!flag && !player.isCreative()) {
+	    				itemstack.shrink(1);
+	    				if (itemstack.isEmpty()) {
+	    					player.getInventory().removeItem(itemstack);
+	    					break;
+	    				}
+	    			}    	  
+	    			
+	    	    	if (step != 0) {
+	        	    	this.shoot_thorn_shooter(level, player, stack, flag, -step);
+	        	    	
+	        			if (!flag && !player.isCreative()) {
+	        				itemstack.shrink(1);
+	        				if (itemstack.isEmpty()) {
+	        					player.getInventory().removeItem(itemstack);
+	        					break;
+	        				}
+	        			}
+	        	    }
 				}
 			/*} else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
 				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(level);
@@ -220,63 +199,116 @@ public class FURRangedItem extends CrossbowItem {
 	 			}
 		    } else return super.use(level, player, hand);
 	     	
-			Vec3 lookVec = player.getLookAngle();	
-			int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
-			int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
-			int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
 			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
-			int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
-			float angle = (float) Math.toRadians(10);
-			
-	        
-	        
-	        for (int i = ((multishot_lvl > 0) ? -1 : 0); i < ((multishot_lvl > 0) ? 2 : 1) ; i++) {
-				Entity entityammo = this.shot.get().create(level);
-				((Fireball)entityammo).setOwner(player);
-				
-				if (this.shot.get().equals(FUREntityRegistry.WAR_SMALL_FIREBALL.get())) {
-					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D).yRot(angle * i)));
-					entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getEyeY() - 0.1D, player.getZ() + lookVec.z * 1.0D);
-					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-				}
-				
-				/*if (this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
-					entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
-					entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()) - 0.5D, player.getZ() + lookVec.z * 1.0D);
-					level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-				}*/
-				 
-				if (power_lvl > 0) {
-					((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
-				}
-				  
-				if (punch_lvl > 0) {
-					((EnchantableFireBallEntity) entityammo).setKnockbackStrength(punch_lvl);
-				}
-				  
-				if (flame_lvl > 0) {
-					((EnchantableFireBallEntity) entityammo).setFlame(true);
-				}
-				 				 
-				level.addFreshEntity(entityammo);
-	            
-	            stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-	                p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
-	            });
-				
-				if (!flag && !player.isCreative()) {
-					itemstack.shrink(1);
-					if (itemstack.isEmpty()) {
-						player.getInventory().removeItem(itemstack);
-						break;
-					}
-				}
+			int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);			
+				        	        
+	        for (int step = 0; step <= multishot_lvl; step++) {
+    	    	this.shoot_war(level, player, stack, step);
+    	    	
+    			if (!flag && !player.isCreative()) {
+    				itemstack.shrink(1);
+    				if (itemstack.isEmpty()) {
+    					player.getInventory().removeItem(itemstack);
+    					break;
+    				}
+    			}    	  
+    			
+    	    	if (step != 0) {
+        	    	this.shoot_war(level, player, stack, -step);
+        	    	
+        			if (!flag && !player.isCreative()) {
+        				itemstack.shrink(1);
+        				if (itemstack.isEmpty()) {
+        					player.getInventory().removeItem(itemstack);
+        					break;
+        				}
+        			}
+        	    }
 	        }
 			
 			player.getCooldowns().addCooldown(this, 20 - (quick_charge_lvl * 2));
 		}
 	    
 	    return InteractionResultHolder.consume(player.getItemInHand(hand));
+	}
+	
+	private void shoot_thorn_shooter(Level level, Player player, ItemStack stack, boolean flag, int step) {
+		int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+		int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+		int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+		int piercing_lvl = stack.getEnchantmentLevel(Enchantments.PIERCING);
+    	CactusThornEntity abstractarrowentity = new CactusThornEntity(level, player);
+    	abstractarrowentity.shootFromRotation(player, player.getXRot(), player.getYRot() + (10.0F * step), 0.0F, 2.0F, 2.0F);                       
+    	level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_THORN_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+    	
+        if (power_lvl > 0) {
+        	abstractarrowentity.setBaseDamage(abstractarrowentity.getBaseDamage() + (double)power_lvl * 0.1D + 0.1D);
+        }
+   
+        if (punch_lvl > 0) {
+        	abstractarrowentity.setKnockback(punch_lvl);
+        }
+
+        if (flame_lvl > 0) {
+        	abstractarrowentity.setSecondsOnFire(100);
+        }
+        
+        if (piercing_lvl > 0) {
+        	abstractarrowentity.setPierceLevel((byte) piercing_lvl);
+        }
+        
+        if (player.getRandom().nextFloat() < 0.25F) {
+            stack.hurtAndBreak(1, player, (p_220009_1_) -> {
+                p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+            });
+        }
+        
+        if (flag) {
+            abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+        }
+        
+        level.addFreshEntity(abstractarrowentity);
+	}
+	
+	private void shoot_war(Level level, Player player, ItemStack stack, int step) {
+		Vec3 lookVec = player.getLookAngle();	
+		int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+		int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+		int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+		float angle = (float) Math.toRadians(10);
+		
+		Entity entityammo = this.shot.get().create(level);
+		((Fireball)entityammo).setOwner(player);
+		
+		if (this.shot.get().equals(FUREntityRegistry.WAR_SMALL_FIREBALL.get())) {
+			entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D).yRot(angle * step)));
+			entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getEyeY() - 0.1D, player.getZ() + lookVec.z * 1.0D);
+			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+		}
+		
+		/*if (this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
+			entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
+			entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()) - 0.5D, player.getZ() + lookVec.z * 1.0D);
+			level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+		}*/
+		 
+		if (power_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+		}
+		  
+		if (punch_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setKnockbackStrength(punch_lvl);
+		}
+		  
+		if (flame_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setFlame(true);
+		}
+		 				 
+		level.addFreshEntity(entityammo);
+        
+        stack.hurtAndBreak(1, player, (p_220009_1_) -> {
+            p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+        });
 	}
 
     /**
