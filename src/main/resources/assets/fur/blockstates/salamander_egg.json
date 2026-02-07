@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "hatch=0,age=0": {
+      "model": "fur:block/salamander_egg"
+    },
+    "hatch=1,age=0": {
+      "model": "fur:block/salamander_egg_slightly_cracked"
+    },
+    "hatch=2,age=0": {
+      "model": "fur:block/salamander_egg_very_cracked"
+    },
+    "hatch=0,age=1": {
+      "model": "fur:block/salamander_egg_soul"
+    },
+    "hatch=1,age=1": {
+      "model": "fur:block/salamander_egg_soul_slightly_cracked"
+    },
+    "hatch=2,age=1": {
+      "model": "fur:block/salamander_egg_soul_very_cracked"
+    }
+  }
+}

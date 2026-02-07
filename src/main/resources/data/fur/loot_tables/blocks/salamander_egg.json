@@ -1,0 +1,50 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"bonus_rolls": 0.0,
+			"conditions": [
+        		{
+          			"condition": "minecraft:survives_explosion"
+        		}
+      		],
+			"entries": [
+        		{
+					"type": "minecraft:alternatives",
+					"children": [
+						{
+							"type": "minecraft:item",
+              				"conditions": [
+                				{
+                  					"block": "fur:salamander_egg",
+                  					"condition": "minecraft:block_state_property",
+                  					"properties": {
+                    					"age": "0"
+                  					}
+                				}
+              				],
+              				"name": "fur:salamander_egg",
+              				"functions":[
+					            {
+					              "function": "minecraft:set_nbt",
+					              "tag":  "{variant:0}"
+					            }
+		                    ]
+            			},
+            			{
+              				"type": "minecraft:item",
+              				"name": "fur:salamander_egg",
+              				"functions":[
+					            {
+					              "function": "minecraft:set_nbt",
+					              "tag":  "{variant:1}"
+					            }
+		                    ]
+            			}           		
+            		]
+        		}
+			],
+			"rolls": 1.0
+    	}
+	]
+}

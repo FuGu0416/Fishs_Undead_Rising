@@ -1,0 +1,24 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"3": "fur:block/salamander_egg_very_cracked",
+		"particle": "fur:block/salamander_egg_very_cracked"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 8, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [3, 3, 6, 7], "texture": "#3"},
+				"east": {"uv": [0, 3, 3, 7], "texture": "#3"},
+				"south": {"uv": [9, 3, 12, 7], "texture": "#3"},
+				"west": {"uv": [6, 3, 9, 7], "texture": "#3"},
+				"up": {"uv": [6, 3, 3, 0], "texture": "#3"},
+				"down": {"uv": [9, 0, 6, 3], "texture": "#3"}
+			}
+		}
+	]
+}

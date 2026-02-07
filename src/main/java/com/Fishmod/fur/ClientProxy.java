@@ -164,6 +164,13 @@ public class ClientProxy extends CommonProxy {
     		        return stack.getTag().getInt("variant") / 10.0f;
     		    }
     		);
+    	
+    	ItemProperties.register(FURBlockRegistry.SALAMANDER_EGG.get().asItem(), new ResourceLocation(mod_LavaCow.MODID, "variant"),
+    		    (stack, level, entity, seed) -> {
+    		        if (!stack.hasTag()) return 0;
+    		        return stack.getTag().getInt("variant");
+    		    }
+    		);
     }
     
     @Override

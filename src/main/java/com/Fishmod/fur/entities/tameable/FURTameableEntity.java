@@ -27,6 +27,7 @@ import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
@@ -311,6 +312,33 @@ public class FURTameableEntity extends TamableAnimal {
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel worldIn, AgeableMob entity) {
 		return null;
+	}
+	
+	@Override
+	public boolean canMate(Animal target) {
+	    if (target == this) {
+	        return false;
+	    }
+	    
+	    if (!(target instanceof FURTameableEntity mate)) {
+	        return false;
+	    }
+
+	    if (!(target.getType().equals(this.getType()))) {
+	        return false;
+	    }
+
+	    if (this.isTame() != mate.isTame()) {
+	        return false;
+	    }
+
+	    if (this.isTame()) {
+	        if (this.isInSittingPose() || mate.isInSittingPose()) {
+	            return false;
+	        }
+	    }
+
+	    return this.isInLove() && mate.isInLove();
 	}
 	
 	@Override

@@ -56,7 +56,14 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
             	output.accept(FURItemRegistry.USHABTI.get());
             	output.accept(FURItemRegistry.MIMIC_EGG.get());
-            	
+ 
+                // Salamander Egg variants
+                for (int i = 0; i < 2; i++) {
+                    ItemStack stack1 = new ItemStack(FURBlockRegistry.SALAMANDER_EGG.get());
+                    stack1.getOrCreateTag().putInt("variant", i);
+                    output.accept(stack1);
+                }
+                
             	// Heart
             	output.accept(FURItemRegistry.UNDYING_HEART.get());
             	output.accept(FURItemRegistry.MOOTEN_HEART.get());

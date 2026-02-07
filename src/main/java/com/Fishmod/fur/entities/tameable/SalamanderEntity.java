@@ -10,6 +10,7 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.entities.ai.EntityFishAIAttackRange;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURKeybindRegistry;
@@ -61,6 +62,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -554,6 +557,18 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     	
     	super.setTame(tamed);
     }
+    
+    public void spawnChildFromBreeding(ServerLevel server, Animal animal) {
+        ItemStack itemstack = new ItemStack(FURBlockRegistry.SALAMANDER_EGG.get());
+        CompoundTag tag = itemstack.getOrCreateTag();
+        tag.putInt("variant", this.getRandom().nextBoolean() ? this.getSkin() : ((SalamanderEntity) animal).getSkin());
+        
+        ItemEntity itementity = new ItemEntity(server, this.position().x(), this.position().y(), this.position().z(), itemstack);
+        itementity.setDefaultPickUpDelay();
+        this.finalizeSpawnChildFromBreeding(server, animal, (AgeableMob)null);
+        this.playSound(SoundEvents.SNIFFER_EGG_PLOP, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.5F);
+        server.addFreshEntity(itementity);
+	}
     
     @Override
 	public SalamanderEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {

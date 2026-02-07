@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "fur:mimic_egg"
+    "fur:mimic_egg",
+    "fur:salamander_egg"
   ]
 }

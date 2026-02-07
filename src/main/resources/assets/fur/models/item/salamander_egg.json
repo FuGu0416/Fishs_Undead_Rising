@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "fur:item/salamander_egg"
+    },
+	"overrides": [
+	    {
+			"predicate": { "fur:variant": 1 },
+			"model": "fur:item/salamander_egg_soul"
+	    }
+  	]
+}
