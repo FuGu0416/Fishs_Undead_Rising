@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+  	"fur:chitin_armor_chestplate",
+  	"fur:ghostly_armor_chestplate",
+  	"fur:molten_armor_chestplate",
+  	"fur:famine_armor_chestplate"
+  ]
+}

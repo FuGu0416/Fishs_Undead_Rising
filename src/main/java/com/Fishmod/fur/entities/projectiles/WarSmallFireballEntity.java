@@ -55,12 +55,15 @@ public class WarSmallFireballEntity extends EnchantableFireBallEntity {
             if (this.getOwner() instanceof SalamanderEntity)
             	this.setDamage((float) ((LivingEntity) this.getOwner()).getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
 			Entity entity1 = this.getOwner();
-            int i = entity.getRemainingFireTicks();
-            entity.setSecondsOnFire(5 + flame);
-            boolean flag = entity.hurt(this.damageSources().fireball(this, entity1), this.getDamage());
-            if (!flag) {
-            	entity.setRemainingFireTicks(i);
-            } else if (entity1 instanceof LivingEntity) {
+            
+            if (entity.fireImmune()) {
+                entity.hurt(this.damageSources().fireball(this, entity1), this.getDamage());
+            } else {
+                entity.setSecondsOnFire(5 + flame);
+                entity.hurt(this.damageSources().indirectMagic(this, entity1), this.getDamage());
+            }           
+
+            if (entity1 instanceof LivingEntity) {
                 if (this.knockbackStrength > 0) {
                 	Vec3 vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
                     if (vector3d.lengthSqr() > 0.0D) {

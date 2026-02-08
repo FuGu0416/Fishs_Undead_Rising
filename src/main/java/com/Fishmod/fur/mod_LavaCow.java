@@ -3,6 +3,7 @@ package com.Fishmod.fur;
 import org.slf4j.Logger;
 
 import com.Fishmod.fur.client.layer.FURModelLayers;
+import com.Fishmod.fur.client.recipebook.RecipeCategories;
 import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.events.FURClientEvents;
 import com.Fishmod.fur.events.FURServerEvents;
@@ -14,6 +15,7 @@ import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURMenuTypesRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURRecipeRegistry;
+import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
 import com.Fishmod.fur.worldgen.FURStructureModifier;
@@ -87,6 +89,7 @@ public class mod_LavaCow {
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
         FURRecipeRegistry.DEF_REG.register(eventBus);
         FURMenuTypesRegistry.DEF_REG.register(eventBus);
+        FURRecipeTypeRegistry.DEF_REG.register(eventBus);
         EventBusHandler.create(eventBus);       
         
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, mod_LavaCow.MODID);
@@ -95,6 +98,7 @@ public class mod_LavaCow {
         eventBus.addListener(FURStructureModifier::generateStructureModifiers);                    
         eventBus.addListener(FURClientEvents::clientSetup);                    
         eventBus.addListener(FURClientEvents::registerItemColors);    
+        eventBus.addListener(RecipeCategories::init);
         
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(

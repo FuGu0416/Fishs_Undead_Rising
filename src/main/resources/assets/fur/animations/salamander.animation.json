@@ -43,7 +43,7 @@
 						"vector": ["math.cos(query.anim_time * 180) * -3", 0, 0]
 					},
 					"position": {
-						"vector": [0, "-1 + math.cos(query.anim_time * 90) * -1", 0]
+						"vector": [0, "math.cos(query.anim_time * 90) * -0.6", 0]
 					}
 				},
 				"Cannon1": {
@@ -379,7 +379,7 @@
 						"vector": ["math.cos(query.anim_time * 180) * -3", 0, 0]
 					},
 					"position": {
-						"vector": [0, "-1 + math.cos(query.anim_time * 90) * -1", 0]
+						"vector": [0, "math.cos(query.anim_time * 90) * -0.6", 0]
 					}
 				},
 				"Cannon1": {
@@ -476,7 +476,7 @@
 						"vector": ["math.cos(query.anim_time * 180) * -3", 0, 0]
 					},
 					"position": {
-						"vector": [0, "-1 + math.cos(query.anim_time * 90) * -1", 0]
+						"vector": [0, "math.cos(query.anim_time * 90) * -0.6", 0]
 					}
 				},
 				"Cannon1": {

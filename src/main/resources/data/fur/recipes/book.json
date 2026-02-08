@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fur:curseweave_cloth"
+    },
+    {
+      "item": "fur:curseweave_cloth"
+    },
+    {
+      "item": "fur:curseweave_cloth"
+    },
+    {
+      "tag": "forge:leather"
+    }
+  ],
+  "result": {
+    "item": "minecraft:book"
+  }
+}

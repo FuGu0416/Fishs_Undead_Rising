@@ -46,7 +46,7 @@ public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe
 
     @Override
     public RecipeType<SoulFurnaceRecipe> getRecipeType() {
-        return FURJeiTypes.SOUL_FURNACE;
+        return FURJeiTypes.SOUL_FURNACE.get();
     }
 
     @Override

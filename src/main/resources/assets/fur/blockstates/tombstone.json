@@ -3,6 +3,9 @@
         "facing=north": { "model": "fur:block/tombstone"},
         "facing=south": { "model": "fur:block/tombstone", "y": 180},
         "facing=west":  { "model": "fur:block/tombstone", "y": 270},
-        "facing=east":  { "model": "fur:block/tombstone", "y": 90}
+        "facing=east":  { "model": "fur:block/tombstone", "y": 90},
+        "facing=up":    { "model": "fur:block/tombstone"},
+        "facing=down":  { "model": "fur:block/tombstone"}
+        
     }
 }

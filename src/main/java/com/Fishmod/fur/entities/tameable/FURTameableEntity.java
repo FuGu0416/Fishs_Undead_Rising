@@ -190,6 +190,8 @@ public class FURTameableEntity extends TamableAnimal {
 	            	   } else if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
 	            		   player.spawnAtLocation(new ItemStack(Items.BOWL));
 	                   }
+	               } else if (itemstack.hasCraftingRemainingItem()) {
+	            	   player.spawnAtLocation(itemstack.getCraftingRemainingItem());
 	               } else {
 	            	   itemstack.shrink(1);
 	               }

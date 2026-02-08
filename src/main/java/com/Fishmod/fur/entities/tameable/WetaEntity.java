@@ -51,6 +51,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -123,9 +124,12 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     }
 
     @Override
-    public void tick() {
-    	super.tick();
-    }
+    protected void ageBoundaryReached() {
+    	super.ageBoundaryReached();
+    	if (!this.isBaby() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+    		this.spawnAtLocation(FURItemRegistry.CHITIN.get(), this.random.nextInt(2) + 1);
+    	}
+	}
     
     /**
      * Called when the entity is attacked.

@@ -136,10 +136,11 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     @Override
     protected void registerGoals() {   	
     	super.registerGoals();
-    	if(this.isNymph())
+    	if (this.isNymph()) {
     		this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
-    	else
+    	} else {
     		this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
+    	}
     	
     	this.goalSelector.addGoal(0, new FloatGoal(this));
     	this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -282,12 +283,13 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     
     @Override
     protected int TameRate(ItemStack stack) {
-    	if(stack.getItem().equals(FURItemRegistry.IMP_HORN.get()))
+    	if (stack.getItem().equals(FURItemRegistry.IMP_HORN.get())) {
     		return 3;
-    	else if(stack.getItem().equals(FURItemRegistry.KUNG_PAO_CHICKEN.get()))
+    	} else if (stack.getItem().equals(FURItemRegistry.KUNG_PAO_CHICKEN.get())) {
     		return 1;
-    	else
+    	} else { 
     		return super.TameRate(stack);
+    	}
     }
     
     /**

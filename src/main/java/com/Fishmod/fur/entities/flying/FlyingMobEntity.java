@@ -114,7 +114,6 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
     /**
      * Called to update the entity's position/logic.
      */
-	@SuppressWarnings("resource")
 	@Override
     public void aiStep() {
 		super.aiStep();

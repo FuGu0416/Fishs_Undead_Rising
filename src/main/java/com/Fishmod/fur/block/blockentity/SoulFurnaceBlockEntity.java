@@ -10,6 +10,7 @@ import com.Fishmod.fur.block.SoulFurnaceBlock;
 import com.Fishmod.fur.block.blockentity.container.SoulFurnaceMenu;
 import com.Fishmod.fur.block.blockentity.container.SoulFurnaceRecipe;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
+import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 import com.google.common.collect.Lists;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -108,7 +109,7 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
         }
 
         return this.level.getRecipeManager()
-            .getRecipeFor(SoulFurnaceRecipe.TYPE, inv, this.level);
+            .getRecipeFor(FURRecipeTypeRegistry.SOUL_FURNACE.get(), inv, this.level);
     }
 
     public boolean canCook() {

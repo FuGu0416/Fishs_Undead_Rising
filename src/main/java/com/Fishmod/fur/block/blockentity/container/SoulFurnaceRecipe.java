@@ -1,6 +1,7 @@
 package com.Fishmod.fur.block.blockentity.container;
 
 import com.Fishmod.fur.init.FURRecipeRegistry;
+import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -19,7 +20,6 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 public class SoulFurnaceRecipe implements Recipe<Container> {
-	public static final RecipeType<SoulFurnaceRecipe> TYPE = new RecipeType<>(){};
 	public static final int INPUT_SLOTS = 6;
 	
     private final ResourceLocation id;
@@ -86,7 +86,7 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TYPE;
+		return FURRecipeTypeRegistry.SOUL_FURNACE.get();
 	}
 
 	public Ingredient getContainer() {

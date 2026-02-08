@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.block.blockentity.container.SoulFurnaceRecipe;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -44,7 +44,7 @@ public class FURJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration reg) {
-        var recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(SoulFurnaceRecipe.TYPE);
+        var recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(FURRecipeTypeRegistry.SOUL_FURNACE.get());
         List<CraftingRecipe> craft_recipes = new ArrayList<>();
         List<ItemStack> potionStacks = new ArrayList<>();
         
@@ -56,7 +56,7 @@ public class FURJeiPlugin implements IModPlugin {
             potionStacks.add(stack);
         }        
         
-        reg.addRecipes(FURJeiTypes.SOUL_FURNACE, recipes);
+        reg.addRecipes(FURJeiTypes.SOUL_FURNACE.get(), recipes);
 					
 		craft_recipes.add(new ShapelessRecipe(new ResourceLocation(mod_LavaCow.MODID, "jei.wisp_ashes"), 
 				"jei.wisp_ashes", CraftingBookCategory.MISC, 
@@ -83,7 +83,7 @@ public class FURJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration reg) {
         reg.addRecipeCatalyst(
             new ItemStack(FURBlockRegistry.SOUL_FURNACE.get()),
-            FURJeiTypes.SOUL_FURNACE
+            FURJeiTypes.SOUL_FURNACE.get()
         );
     }
     

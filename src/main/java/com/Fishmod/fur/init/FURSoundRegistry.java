@@ -155,8 +155,7 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> GHOUL_HURT = addSoundEvent("ghoul_hurt");
 	public static final RegistryObject<SoundEvent> GHOUL_DEATH = addSoundEvent("ghoul_death");
 	
-    @SuppressWarnings("removal")
-	private static RegistryObject<SoundEvent> addSoundEvent(final String soundName) {
+    private static RegistryObject<SoundEvent> addSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(mod_LavaCow.MODID, soundName)));
     }	
 }

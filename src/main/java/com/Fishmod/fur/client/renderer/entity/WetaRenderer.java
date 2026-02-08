@@ -26,7 +26,7 @@ public class WetaRenderer extends GeoEntityRenderer<WetaEntity> {
     protected void applyRotations(WetaEntity entity, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
     	super.applyRotations(entity, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
     	if (entity.isBaby()) {
-        	p_225621_2_.scale(0.8F, 0.8F, 0.8F);
+        	p_225621_2_.scale(0.5F, 0.5F, 0.5F);
         }    	
 	}
 }
