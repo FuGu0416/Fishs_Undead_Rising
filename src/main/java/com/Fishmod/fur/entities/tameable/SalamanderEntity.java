@@ -7,7 +7,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.entities.ai.EntityFishAIAttackRange;
+import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
+import com.Fishmod.fur.entities.IRangeMob;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.init.FURBlockRegistry;
@@ -59,10 +60,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -89,7 +92,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SalamanderEntity extends FURTameableEntity implements Saddleable, GeoEntity {
+public class SalamanderEntity extends FURTameableEntity implements Saddleable, IRangeMob, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("salamander.model.idle");
@@ -109,7 +112,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
 	private static final int RANGE = 2;
 	public static final int ATTACK_TIMER = 20;
 	
-	private EntityFishAIAttackRange<WarSmallFireballEntity> range_atk;
+	private FURRangeAttackGoal<WarSmallFireballEntity> range_atk;
 	private AvoidEntityGoal<Player> avoid_entity;
 	private int barrage_CD;
 	@Nullable
@@ -137,26 +140,31 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     protected void registerGoals() {   	
     	super.registerGoals();
     	if (this.isNymph()) {
-    		this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
+    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
     	} else {
-    		this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
+    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
     	}
     	
     	this.goalSelector.addGoal(0, new FloatGoal(this));
-    	this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-    	this.goalSelector.addGoal(4, this.range_atk);
-    	this.goalSelector.addGoal(5, new SalamanderEntity.AttackGoal(this));
-    	this.goalSelector.addGoal(6, new LookatFurnaceGoal(this));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+    	this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+    	this.goalSelector.addGoal(2, this.range_atk);
+    	this.goalSelector.addGoal(3, new SalamanderEntity.AttackGoal(this));   	
+    	this.goalSelector.addGoal(4, new LookatFurnaceGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.applyEntityAI();
+    }
+    
+    protected void applyEntityAI() {
         //if (FURConfig.Salamander_Defender.get()) {
-        	this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        	this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        //}
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
-            return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
-        }));
+    		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+    		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+    	//}
+		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Pig.class, true));
+    	this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+    	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
+    		return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
+    	}));    	
     }
     
     public static AttributeSupplier.Builder createAttributes() {
@@ -499,7 +507,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
 		    	this.avoid_entity = new AvoidEntityGoal<>(this, Player.class, 4.0F, 0.8D, 1.6D);
 		    	this.goalSelector.addGoal(3, this.avoid_entity);
 		    	this.goalSelector.removeGoal(this.range_atk);
-		    	this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
+		    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
 		    	this.goalSelector.addGoal(4, this.range_atk);
 		    	
 		    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/ * 0.25D);
@@ -538,7 +546,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
     	    	
     	    	this.goalSelector.removeGoal(this.avoid_entity);
     	    	this.goalSelector.removeGoal(this.range_atk);
-    	    	this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
+    	    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
     	    	this.goalSelector.addGoal(4, this.range_atk);
     	    	
     	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/);
@@ -867,16 +875,27 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, G
            super(p_i46676_1_, 1.0D, true);
         }
         
+        @Override
     	protected int atkTimerMax() {
     		return ATTACK_TIMER;
     	}
     	
+    	@Override
     	protected int atkTimerHit() {
-			return 5; 		
+			return 13; 		
     	}
     	
-    	protected byte atkTimerEvent() {	        
+    	@Override
+    	protected byte atkTimerEvent() {
     		return (byte)10;
+    	}
+    	
+    	@Override
+    	protected void dmgEvent(LivingEntity target) {
+    		float pitch = 0.4F + (this.mob.getRandom().nextFloat() - 0.5F) * 0.05F;
+    		this.mob.playSound(FURSoundRegistry.SALAMANDER_ATTACK.get(), 0.8F, pitch);
+    		this.mob.playSound(FURSoundRegistry.SALAMANDER_ATTACK.get(), 0.3F, pitch * 0.5F);
+    		super.dmgEvent(target);
     	}
 	}
 	

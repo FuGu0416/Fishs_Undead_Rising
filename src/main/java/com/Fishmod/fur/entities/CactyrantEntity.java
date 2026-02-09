@@ -60,7 +60,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {	
+public class CactyrantEntity extends Monster implements GeoEntity {	
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("cactyrant.model.idle");
@@ -77,7 +77,6 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CactyrantEntity.class, EntityDataSerializers.INT);
 	public static final int ATTACK_TIMER = 15;
 	public static final int SPELL_TIMER = 20;
-	private int attackTimer;
 	protected int spellTicks;
 	private WaterAvoidingRandomStrollGoal move;
 	private LookAtPlayerGoal watch;
@@ -201,11 +200,7 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 	@Override
     public void tick() {
         super.tick();
-    	
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-        }
-        
+
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
@@ -339,15 +334,6 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
 		
         return livingdata;
     }
-
-    public int getAttackTimer() {
-        return this.attackTimer;
-    }
-
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
 	
 	@OnlyIn(Dist.CLIENT)
 	protected void addParticlesAroundSelf(SimpleParticleType p_213718_1_) {
@@ -367,7 +353,6 @@ public class CactyrantEntity extends Monster implements IAggressive, GeoEntity {
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
     		this.triggerAnim("trigger_controller", "attack");
-            this.attackTimer = ATTACK_TIMER;
         } else if (id == 10) {
         	this.triggerAnim("trigger_controller", "attack_volley");
         	this.spellTicks = 20;

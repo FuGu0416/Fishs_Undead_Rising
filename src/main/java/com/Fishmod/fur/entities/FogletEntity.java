@@ -58,7 +58,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FogletEntity extends Monster implements IAggressive, GeoEntity {
+public class FogletEntity extends Monster implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("foglet.model.idle");
@@ -73,7 +73,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 	private static final EntityDataAccessor<Byte> CASTING = SynchedEntityData.defineId(FogletEntity.class, EntityDataSerializers.BYTE);
 	public static final int ATTACK_TIMER = 30;
 	public static final int SPELL_TIMER = 20;
-	private int attackTimer = 0;
 	protected int spellTicks;
 	
 	public FogletEntity(EntityType<? extends FogletEntity> p_i48549_1_, Level worldIn) {
@@ -149,10 +148,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
-        
-    	if (this.getAttackTimer() > 0) {
-    		--this.attackTimer;
-    	}
     	
     	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick() && !this.fireImmune()) {
     		this.setSecondsOnFire(8);
@@ -197,16 +192,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
         this.getEntityData().set(SKIN_TYPE, Integer.valueOf(skinType));
     }
     
-    @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -216,7 +201,6 @@ public class FogletEntity extends Monster implements IAggressive, GeoEntity {
 		switch(id) {
 			case 5:
 				this.triggerAnim("trigger_controller", "attack");
-				this.setAttackTimer(ATTACK_TIMER);
 				break;
 			case 10:
 				this.triggerAnim("trigger_controller", "cast");

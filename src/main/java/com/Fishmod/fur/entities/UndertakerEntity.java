@@ -61,7 +61,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class UndertakerEntity extends Monster implements IAggressive, GeoEntity {
+public class UndertakerEntity extends Monster implements GeoEntity {
 private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("undertaker.model.idle");
@@ -71,7 +71,6 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
     
 	public static final int ATTACK_TIMER = 40;
 	public static final int SPELL_TIMER = 40;
-	private int attackTimer;
 	protected int spellTicks;
 	
 	public UndertakerEntity(EntityType<? extends UndertakerEntity> p_i48549_1_, Level worldIn) {
@@ -144,10 +143,6 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
 	@Override
     public void tick() {
         super.tick();
-    	
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-         }
         
         if (this.spellTicks > 0) {
             --this.spellTicks;
@@ -222,15 +217,6 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
         return livingdata;
     }
 
-    public int getAttackTimer() {
-        return this.attackTimer;
-    }
-
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -239,7 +225,6 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
     		this.triggerAnim("trigger_controller", "attack");
-            this.attackTimer = ATTACK_TIMER;
         } else if (id == 10) {
         	this.triggerAnim("trigger_controller", "cast");
         	this.spellTicks = SPELL_TIMER;

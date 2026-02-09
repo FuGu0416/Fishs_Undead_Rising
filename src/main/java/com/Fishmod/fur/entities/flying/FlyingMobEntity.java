@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -44,8 +43,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
-	private int attackTimer;
+public class FlyingMobEntity extends FURTameableEntity {
 	private int hoverTimer;
 	private int landTimer;
 	
@@ -117,11 +115,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	@Override
     public void aiStep() {
 		super.aiStep();
-		
-		if (this.attackTimer > 0) {
-            --this.attackTimer;
-        }
-		
+
 		if (!this.level().isClientSide && !this.isBaby()) {
 	    	if (this.onGround()) {
 	    		if (this.getLandTimer() < 20) {
@@ -156,26 +150,6 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 		}
     }
 
-	@Override
-    public boolean doHurtTarget(Entity entityIn) {
-		if (this.attackTimer == 0) {
-			this.attackTimer = 20;
-    		this.level().broadcastEntityEvent(this, (byte)4);
-		}
-		
-        return super.doHurtTarget(entityIn);
-    }
-    
-    @Override
-	public int getAttackTimer() {
-		return this.attackTimer;
-	}
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-	
 	public int getHoverTimer() {
 		return this.hoverTimer;
 	}
@@ -198,9 +172,7 @@ public class FlyingMobEntity extends FURTameableEntity implements IAggressive {
 	@Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-    	if (id == 4)  {
-            this.attackTimer = 20;
-        } else if (id == 40)  {
+    	if (id == 40)  {
     		if (this.getLandTimer() < 20) {
     			this.setLandTimer(this.getLandTimer() + 1);
     		}

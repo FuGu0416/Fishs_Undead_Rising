@@ -59,7 +59,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
+public class WendigoEntity extends Monster implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("wendigo.model.idle");
@@ -76,7 +76,6 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
 	public static final int ATTACK_TIMER = 40;
 	public static final int JUMP_TIMER = 240;
 	
-	private int attackTimer;
 	/** set the Cooldown to pounce attack*/
 	private int jumpTimer;
 	/** 40: Attack with both hands 41: right hand 42: left hand */
@@ -146,10 +145,6 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     public void tick() {
     	super.tick();
     	
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-        }
-        
         if (this.jumpTimer > 0) {
             --this.jumpTimer;
         }
@@ -187,15 +182,6 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     	return livingdata;
     }
         
-    public int getAttackTimer() {
-    	return this.attackTimer;
-    }
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
     public void setAttackStance(byte byteIn) {
     	this.AttackStance = byteIn;
     }
@@ -219,15 +205,12 @@ public class WendigoEntity extends Monster implements IAggressive, GeoEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_smash");
     	} else if (id == 5) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_r");
     	} else if (id == 6) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_l");
     	} else if (id == 7) {	

@@ -258,6 +258,7 @@
 	"block.fur.ectoplasm_block": "靈質磚",
 	"block.fur.diseased_hay_block": "染疫乾草捆",
 	"block.fur.soul_furnace": "靈魂熔爐",
+	"block.fur.salamander_egg": "炎熔螈蛋",
 
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌屍",
@@ -341,6 +342,7 @@
 	"entity_undeadswine_hurt": "疫豬受傷",
 
 	"entity_salamander_ambient": "炎熔螈低吼聲",
+	"entity_salamander_attack": "炎熔螈啃咬聲",
 	"entity_salamander_death": "炎熔螈死亡",
 	"entity_salamander_hurt": "炎熔螈受傷",
 

@@ -26,6 +26,7 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> UNDEADSWINE_DEATH = addSoundEvent("undeadswine_death");
 	
 	public static final RegistryObject<SoundEvent> SALAMANDER_AMBIENT = addSoundEvent("salamander_ambient");
+	public static final RegistryObject<SoundEvent> SALAMANDER_ATTACK = addSoundEvent("salamander_attack");
 	public static final RegistryObject<SoundEvent> SALAMANDER_HURT = addSoundEvent("salamander_hurt");
 	public static final RegistryObject<SoundEvent> SALAMANDER_DEATH = addSoundEvent("salamander_death");
 	

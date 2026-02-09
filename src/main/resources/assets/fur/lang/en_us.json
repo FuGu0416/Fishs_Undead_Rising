@@ -258,6 +258,7 @@
 	"block.fur.ectoplasm_block": "Block of Ectoplasm",
 	"block.fur.diseased_hay_block": "Diseased Hay Bale",
 	"block.fur.soul_furnace": "Soul Furnace",
+	"block.fur.salamander_egg": "Salamander Egg",
 
 	"entity.fur.lavacow": "Moogma",
 	"entity.fur.mycosis": "Mycosis",
@@ -340,6 +341,7 @@
 	"entity_undeadswine_hurt": "Undead Swine hurts",
 
 	"entity_salamander_ambient": "Salamander groans",
+	"entity_salamander_attack": "Salamander chomps",
 	"entity_salamander_death": "Salamander dies",
 	"entity_salamander_hurt": "Salamander hurts",
 

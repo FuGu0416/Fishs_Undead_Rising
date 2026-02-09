@@ -2,12 +2,13 @@ package com.Fishmod.fur.entities.ai;
 
 import java.util.EnumSet;
 
-import com.Fishmod.fur.entities.IAggressive;
+import com.Fishmod.fur.entities.IRangeMob;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
@@ -26,7 +27,8 @@ public class FURMeleeAttackGoal extends Goal {
     private long lastCanUseCheck;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
-   
+    private int attackTimer = 0;
+    
 	public FURMeleeAttackGoal(PathfinderMob p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_, int attackIntervalIn) {
 		this.mob = p_i1636_1_;
 		this.speedModifier = p_i1636_2_;
@@ -54,7 +56,16 @@ public class FURMeleeAttackGoal extends Goal {
 				return false;
 			} else if (!livingentity.isAlive()) {
 				return false;
+			} else if (this.mob instanceof TamableAnimal tamable && tamable.isInSittingPose()) {
+				return false;
 			} else {
+				if (this.mob instanceof IRangeMob) {
+		    		double d0 = this.mob.distanceToSqr(livingentity);
+		    		if (d0 >= (this.mob.getBbWidth() + livingentity.getBbWidth()) * (this.mob.getBbWidth() + livingentity.getBbWidth())) {
+		    			return false;
+		    		}
+				}
+				
 				if (canPenalize) {
 					if (--this.ticksUntilNextPathRecalculation <= 0) {
 						this.path = this.mob.getNavigation().createPath(livingentity, 0);
@@ -76,11 +87,18 @@ public class FURMeleeAttackGoal extends Goal {
 
 	public boolean canContinueToUse() {
 		LivingEntity livingentity = this.mob.getTarget();
-		if (livingentity == null) {
+		if (livingentity == null || !livingentity.isAlive()) {
 			return false;
-		} else if (!livingentity.isAlive()) {
-			return false;
-		} else if ((this.mob instanceof IAggressive) && ((IAggressive)this.mob).getAttackTimer() > 0) {
+		} 
+		
+		if (this.mob instanceof IRangeMob) {
+    		double d0 = this.mob.distanceToSqr(livingentity);
+    		if (d0 >= (this.mob.getBbWidth() + livingentity.getBbWidth()) * (this.mob.getBbWidth() + livingentity.getBbWidth())) {
+    			return false;
+    		}
+		}
+    		
+		if (this.attackTimer > 0) {
 			return true;
 		} else if (!this.followingTargetEvenIfNotSeen) {
 			return !this.mob.getNavigation().isDone();
@@ -96,6 +114,7 @@ public class FURMeleeAttackGoal extends Goal {
 		this.mob.setAggressive(true);
 		this.ticksUntilNextPathRecalculation = 0;
 		this.ticksUntilNextAttack = 0;
+		this.attackTimer = 0;
 	}
 
 	public void stop() {
@@ -110,6 +129,11 @@ public class FURMeleeAttackGoal extends Goal {
 
 	public void tick() {
 		LivingEntity livingentity = this.mob.getTarget();
+		
+		if (this.attackTimer > 0) {
+			this.attackTimer--;
+		}
+		
 		this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 		double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
 		this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -147,14 +171,13 @@ public class FURMeleeAttackGoal extends Goal {
 
 	protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(p_190102_1_);
-
-		if (this.ticksUntilNextAttack <= 0) {	
-			if (!(this.mob instanceof IAggressive) || ((IAggressive)this.mob).getAttackTimer() == this.atkTimerHit() && p_190102_2_ <= (d0 * 1.2D)) {
+		if (this.ticksUntilNextAttack <= 0) {							
+			if (this.attackTimer == this.atkTimerHit() && p_190102_2_ <= (d0 * 1.2D)) {
 				this.resetAttackCooldown();
 				this.dmgEvent(p_190102_1_);
-			} else if (this.mob instanceof IAggressive && ((IAggressive)this.mob).getAttackTimer() == 0 && p_190102_2_ <= d0) {	
+			} else if (this.attackTimer == 0 && p_190102_2_ <= d0) {	
 				this.mob.level().broadcastEntityEvent(this.mob, this.atkTimerEvent());
-				((IAggressive) this.mob).setAttackTimer(this.atkTimerMax());
+				this.attackTimer = this.atkTimerMax();
 			}
 		}
 	}

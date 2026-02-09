@@ -82,7 +82,14 @@
 		"subtitle": "entity_salamander_ambient",
 		"sounds": ["fur:entity/salamander/ambient0","fur:entity/salamander/ambient1","fur:entity/salamander/ambient2"]
 	},
-	
+
+	"salamander_attack":
+	{
+		"category": "hostile",
+		"subtitle": "entity_salamander_attack",
+		"sounds": [{"name": "fur:entity/salamander/attack","stream": true}]
+	},
+		
 	"salamander_hurt":
 	{
 		"category": "hostile",

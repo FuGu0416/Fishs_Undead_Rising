@@ -3,7 +3,6 @@ package com.Fishmod.fur.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.entities.IAggressive;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -76,7 +75,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ScarecrowEntity extends FURTameableEntity implements IAggressive, GeoEntity {
+public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public static final RawAnimation IDLE = RawAnimation.begin().thenPlay("scarecrow.model.idle");
@@ -91,7 +90,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
 	public static final int ATTACK_TIMER = 25;
 	private static final int RANGE = 5;
 	
-	private int attackTimer;
 	private int cleaveTimer;
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
@@ -169,9 +167,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
      */
     @Override
     public void tick() {
-    	if (this.attackTimer > 0) {
-    		--this.attackTimer;
-    	}
 
     	if (this.cleaveTimer > 0) {
     		--this.cleaveTimer;
@@ -374,16 +369,6 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
         return livingdata;
     }
     
-    @Override
-    public int getAttackTimer() {
-       return this.attackTimer;
-    }
-    
-	@Override
-	public void setAttackTimer(int i) {
-		this.attackTimer = i;
-	}
-    
     public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE).intValue();
     }
@@ -410,15 +395,12 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive, G
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_0");
     	} else if (id == 5) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_1");
     	} else if (id == 6) {
-            this.attackTimer = ATTACK_TIMER;
             this.AttackStance = id;
             this.triggerAnim("trigger_controller", "attack_swipe");
         } else {
