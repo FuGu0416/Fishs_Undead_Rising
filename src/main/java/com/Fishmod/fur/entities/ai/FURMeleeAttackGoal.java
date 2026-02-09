@@ -2,14 +2,13 @@ package com.Fishmod.fur.entities.ai;
 
 import java.util.EnumSet;
 
-import com.Fishmod.fur.entities.IRangeMob;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
 
@@ -59,7 +58,7 @@ public class FURMeleeAttackGoal extends Goal {
 			} else if (this.mob instanceof TamableAnimal tamable && tamable.isInSittingPose()) {
 				return false;
 			} else {
-				if (this.mob instanceof IRangeMob) {
+				if (this.mob instanceof RangedAttackMob) {
 		    		double d0 = this.mob.distanceToSqr(livingentity);
 		    		if (d0 >= (this.mob.getBbWidth() + livingentity.getBbWidth()) * (this.mob.getBbWidth() + livingentity.getBbWidth())) {
 		    			return false;
@@ -91,7 +90,7 @@ public class FURMeleeAttackGoal extends Goal {
 			return false;
 		} 
 		
-		if (this.mob instanceof IRangeMob) {
+		if (this.mob instanceof RangedAttackMob) {
     		double d0 = this.mob.distanceToSqr(livingentity);
     		if (d0 >= (this.mob.getBbWidth() + livingentity.getBbWidth()) * (this.mob.getBbWidth() + livingentity.getBbWidth())) {
     			return false;

@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
-import com.Fishmod.fur.entities.IRangeMob;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.init.FURBlockRegistry;
@@ -60,13 +59,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -92,7 +90,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SalamanderEntity extends FURTameableEntity implements Saddleable, IRangeMob, GeoEntity {
+public class SalamanderEntity extends FURTameableEntity implements Saddleable, RangedAttackMob, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("salamander.model.idle");
@@ -160,7 +158,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, I
     		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
     		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     	//}
-		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Pig.class, true));
     	this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
     		return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
@@ -934,5 +931,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, I
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return this.cache;
+	}
+
+	@Override
+	public void performRangedAttack(LivingEntity p_33317_, float p_33318_) {
 	}
 }

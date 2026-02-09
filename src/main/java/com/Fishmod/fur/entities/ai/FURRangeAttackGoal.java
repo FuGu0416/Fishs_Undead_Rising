@@ -5,8 +5,10 @@ import java.util.EnumSet;
 import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,6 +24,10 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
     private int attackStep;
     private int attackTime;
     private double Xoffset, Yoffset, Zoffset;
+    private int seeTime;
+    private boolean strafingClockwise;
+    private boolean strafingBackwards;
+    private int strafingTime = -1;
     
     // how many projectiles
     private int shot_times;
@@ -187,8 +193,60 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
            			}
            		}	
 
-           		this.shooter.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
+                boolean flag = this.shooter.getSensing().hasLineOfSight(this.target);
+                boolean flag1 = this.seeTime > 0;
+                double attackRadiusSqr = this.range * this.range;
+                
+                if (flag != flag1) {
+                   this.seeTime = 0;
+                }
+
+                if (flag) {
+                   ++this.seeTime;
+                } else {
+                   --this.seeTime;
+                }
+
+                if (!(d0 > attackRadiusSqr) && this.seeTime >= 20) {
+                   this.shooter.getNavigation().stop();
+                   ++this.strafingTime;
+                } else {
+                   this.shooter.getNavigation().moveTo(this.target, 1.0D);
+                   this.strafingTime = -1;
+                }
+
+                if (this.strafingTime >= 20) {
+                   if (this.shooter.getRandom().nextDouble() < 0.3D) {
+                      this.strafingClockwise = !this.strafingClockwise;
+                   }
+
+                   if (this.shooter.getRandom().nextDouble() < 0.3D) {
+                      this.strafingBackwards = !this.strafingBackwards;
+                   }
+
+                   this.strafingTime = 0;
+                }
+
+                if (this.strafingTime > -1) {
+                   if (d0 > (attackRadiusSqr * 0.75D)) {
+                      this.strafingBackwards = false;
+                   } else if (d0 < (attackRadiusSqr * 0.25D)) {
+                      this.strafingBackwards = true;
+                   }
+
+                   this.shooter.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
+                   Entity entity = this.shooter.getControlledVehicle();
+                   if (entity instanceof Mob) {
+                      Mob mob = (Mob)entity;
+                      mob.lookAt(this.target, 30.0F, 30.0F);
+                   }
+
+                   this.shooter.lookAt(this.target, 30.0F, 30.0F);
+                } else {
+                   this.shooter.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
+                }
            	} else if (!this.shooter.getMoveControl().hasWanted()) {
+           		this.strafingTime = -1;
            		this.shooter.getMoveControl().setWantedPosition(this.target.getX(), this.target.getY(), this.target.getZ(), 1.0D);
            	}
        	}
