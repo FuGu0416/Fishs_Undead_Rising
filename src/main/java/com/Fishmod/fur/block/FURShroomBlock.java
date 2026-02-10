@@ -2,12 +2,14 @@ package com.Fishmod.fur.block;
 
 import org.joml.Vector3f;
 
+import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.init.FURBlockRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -25,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
 	public static final IntegerProperty AGE = BlockStateProperties.AGE_1;
-
+	
 	public FURShroomBlock(Properties p_i48363_1_) {
 		super(p_i48363_1_, TreeFeatures.HUGE_BROWN_MUSHROOM);
 		this.registerDefaultState(this.stateDefinition.any().setValue(this.getAgeProperty(), Integer.valueOf(0)));
@@ -95,39 +97,24 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
         } else {
            return ((this == FURBlockRegistry.GLOWSHROOM.get()) || worldIn.getRawBrightness(pos, 0) < 13) && blockstate.canSustainPlant(worldIn, blockpos, Direction.UP, this);
         }
-    }
-     
-    public boolean growMushroom(ServerLevel worldIn, BlockPos pos, BlockState state, RandomSource rand) {
-		return false;
-        /*worldIn.removeBlock(pos, false);
-        ConfiguredFeature<?, ?> configuredfeature;
-        if (this == FURBlockRegistry.GLOWSHROOM.get()) {
-           configuredfeature = FURWorldRegistry.HUGE_GLOWSHROOM_CF;
-        } else {
-           if (this != Blocks.RED_MUSHROOM) {
-              worldIn.setBlock(pos, state, 3);
-              return false;
-           }
+    }  
+    
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        var feature = level.registryAccess()
+            .registryOrThrow(Registries.CONFIGURED_FEATURE)
+            .get(new ResourceLocation(mod_LavaCow.MODID, "huge_glowshroom"));
 
-           configuredfeature = TreeFeatures.HUGE_RED_MUSHROOM;
+        level.removeBlock(pos, false);
+        
+        if (!feature.place(level, level.getChunkSource().getGenerator(), random, pos)) {
+        	level.setBlock(pos, state, 3);
         }
-
-        if (configuredfeature.place(worldIn, worldIn.getChunkSource().getGenerator(), rand, pos)) {
-           return true;
-        } else {
-           worldIn.setBlock(pos, state, 3);
-           return false;
-        }*/
     }
        
     @Override
 	public boolean isValidBonemealTarget(LevelReader blockreader, BlockPos pos, BlockState state, boolean isClient) {
         return this == FURBlockRegistry.GLOWSHROOM.get();
-    }
-    
-    @Override
-    public boolean isBonemealSuccess(Level worldIn, RandomSource rand, BlockPos pos, BlockState state) {
-    	return this == FURBlockRegistry.GLOWSHROOM.get() && (double)rand.nextFloat() < 0.4D;
     }
     
     @Override
