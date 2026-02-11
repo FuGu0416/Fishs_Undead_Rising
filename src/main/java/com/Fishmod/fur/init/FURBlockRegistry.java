@@ -17,6 +17,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.MyceliumBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -45,6 +46,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> VEIL_SHROOM = registerBlocks("veil_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 1)));
 	public static final RegistryObject<Block> GLOWING_AIR = registerBlocks("glowing_air", () -> new AirBlock(BlockBehaviour.Properties.of().noCollission().air().lightLevel(state -> 15)));	
 	public static final RegistryObject<Block> SALAMANDER_EGG = registerBlocks("salamander_egg", () -> new SalamanderEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).lightLevel(state -> 5).strength(0.5F).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> LUMINOUS_MYCELIUM = registerBlocks("luminous_mycelium", () -> new MyceliumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
 	
 	/*
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");

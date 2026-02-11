@@ -168,6 +168,7 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get());
+            	output.accept(FURBlockRegistry.LUMINOUS_MYCELIUM.get());
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
             	
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
