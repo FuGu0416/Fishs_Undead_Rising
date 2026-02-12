@@ -19,6 +19,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -224,6 +225,14 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
         	   this.spawnAtLocation(this.getAshes(), 1); 
            this.discard();
         }
+	}
+    
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+	    if (source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.CRAMMING)) {
+	        return true;
+	    }
+	    return super.isInvulnerableTo(source);
 	}
 
 	@Override
