@@ -260,6 +260,9 @@
 	"block.fur.soul_furnace": "靈魂熔爐",
 	"block.fur.salamander_egg": "炎熔螈蛋",
 	"block.fur.luminous_mycelium": "冷輝菌絲",
+	"block.fur.mycelial_mat": "菌絲墊層",
+	"block.fur.mycelial_veil": "覆地菌絲",
+	"block.fur.mycelial_tendrils": "菌絲觸鬚",
 	
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌屍",

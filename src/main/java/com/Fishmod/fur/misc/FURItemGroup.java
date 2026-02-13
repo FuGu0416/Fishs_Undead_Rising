@@ -163,12 +163,15 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.BLOODTOOTH_SHROOM.get());
             	output.accept(FURBlockRegistry.CORDY_SHROOM.get());
             	output.accept(FURBlockRegistry.VEIL_SHROOM.get());
+            	output.accept(FURBlockRegistry.MYCELIAL_TENDRILS.get());
             	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get());
             	output.accept(FURBlockRegistry.LUMINOUS_MYCELIUM.get());
+            	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
+            	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
             	
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));

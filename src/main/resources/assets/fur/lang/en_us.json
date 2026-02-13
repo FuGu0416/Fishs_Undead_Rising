@@ -260,6 +260,9 @@
 	"block.fur.soul_furnace": "Soul Furnace",
 	"block.fur.salamander_egg": "Salamander Egg",
 	"block.fur.luminous_mycelium": "Luminous Mycelium",
+	"block.fur.mycelial_mat": "Mycelial Mat",
+	"block.fur.mycelial_veil": "Mycelial Veil",
+	"block.fur.mycelial_tendrils": "Mycelial Tendrils",
 
 	"entity.fur.lavacow": "Moogma",
 	"entity.fur.mycosis": "Mycosis",
