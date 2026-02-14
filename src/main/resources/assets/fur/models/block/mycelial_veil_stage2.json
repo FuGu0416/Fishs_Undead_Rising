@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "wool": "fur:block/mycelial_veil_stage2"
+  }
+}

@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "fur:block/mycelial_veil"
-    }
+    "phase=0": { "model": "fur:block/mycelial_veil" },
+    "phase=1": { "model": "fur:block/mycelial_veil_stage1" },
+    "phase=2": { "model": "fur:block/mycelial_veil_stage2" },
+    "phase=3": { "model": "fur:block/mycelial_veil_stage1" }
   }
 }

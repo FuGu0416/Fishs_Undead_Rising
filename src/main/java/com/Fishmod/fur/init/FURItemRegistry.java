@@ -276,15 +276,15 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.HYPHAE.get(), 0.50F);
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_FRUIT.get(), 0.85F);
         ComposterBlock.COMPOSTABLES.put(FURItemRegistry.CACTUS_THORN.get(), 0.30F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CACTOID_SPROUT.get(), 0.85F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.BLOODTOOTH_SHROOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CORDY_SHROOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.VEIL_SHROOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get(), 0.85F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_MAT.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get(), 0.30F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CACTOID_SPROUT.get().asItem(), 0.85F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.BLOODTOOTH_SHROOM.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.CORDY_SHROOM.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.VEIL_SHROOM.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get().asItem(), 0.85F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_MAT.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get().asItem(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get().asItem(), 0.30F);
     }
 }
