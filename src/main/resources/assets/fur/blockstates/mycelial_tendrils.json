@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+  	"variant=0": {
       "model": "fur:block/mycelial_tendrils"
+    },
+    "variant=1": {
+      "model": "fur:block/mycelial_tendrils1"
     }
   }
 }

@@ -34,12 +34,12 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
     }
 	
 	@Override
-	public void onPlace(BlockState stateIn, Level worldIn, BlockPos pos, BlockState p_220082_4_, boolean p_220082_5_) {
-		worldIn.setBlock(pos, this.getStateForAge(worldIn.random.nextInt(2)), 2);
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState p_220082_4_, boolean p_220082_5_) {
+		level.setBlock(pos, this.getStateForAge(level.random.nextInt(2)), 3);
 	}
 	
-    protected int getAge(BlockState p_185527_1_) {
-		return p_185527_1_.getValue(this.getAgeProperty());
+    protected int getAge(BlockState state) {
+		return state.getValue(this.getAgeProperty());
 	}
 
     public BlockState getStateForAge(int p_185528_1_) {
@@ -52,8 +52,8 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
     
 	@Override
 	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-		if(this.asBlock().equals(FURBlockRegistry.GLOWSHROOM.get())) {
-			if(rand.nextInt(100) < 100/*FURConfig.pSpreadRate_Glowshroom.get()*/)
+		if (this.asBlock().equals(FURBlockRegistry.GLOWSHROOM.get())) {
+			if (rand.nextInt(100) < 100/*FURConfig.pSpreadRate_Glowshroom.get()*/)
 				super.randomTick(state, worldIn, pos, rand);
 		} else
 			super.randomTick(state, worldIn, pos, rand);
@@ -65,12 +65,12 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
 	    * of whether the block can receive random update ticks
 	    */
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
+    public void animateTick(BlockState state, Level worldIn, BlockPos pos, RandomSource rand) {
 		if (this == FURBlockRegistry.GLOWSHROOM.get() && rand.nextInt(16) == 0) {
 			spawnParticles(worldIn, pos);
 		}
 		
-		super.animateTick(stateIn, worldIn, pos, rand);
+		super.animateTick(state, worldIn, pos, rand);
 	}
 		
 	static void spawnParticles(Level worldIn, BlockPos pos) {
