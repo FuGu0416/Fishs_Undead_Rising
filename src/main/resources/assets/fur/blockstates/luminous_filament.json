@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "segment=upper,mirrored=0":  { "model": "fur:block/luminous_filament_top" },
+    "segment=upper,mirrored=1":  { "model": "fur:block/luminous_filament_top", "y": 180 },
+    "segment=upper,mirrored=2":  { "model": "fur:block/luminous_filament_top" },
+    "segment=upper,mirrored=3":  { "model": "fur:block/luminous_filament_top", "y": 180 },
+
+    "segment=middle,mirrored=0": { "model": "fur:block/luminous_filament_mid" },
+    "segment=middle,mirrored=1": { "model": "fur:block/luminous_filament_mid", "y": 180 },
+    "segment=middle,mirrored=2": { "model": "fur:block/luminous_filament_mid1" },
+    "segment=middle,mirrored=3": { "model": "fur:block/luminous_filament_mid1", "y": 180 },
+
+    "segment=lower,mirrored=0":  { "model": "fur:block/luminous_filament_end" },
+    "segment=lower,mirrored=1":  { "model": "fur:block/luminous_filament_end", "y": 180 },
+    "segment=lower,mirrored=2":  { "model": "fur:block/luminous_filament_end" },
+    "segment=lower,mirrored=3":  { "model": "fur:block/luminous_filament_end", "y": 180 }
+  }
+}

@@ -164,6 +164,7 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.CORDY_SHROOM.get());
             	output.accept(FURBlockRegistry.VEIL_SHROOM.get());
             	output.accept(FURBlockRegistry.MYCELIAL_TENDRILS.get());
+            	output.accept(FURBlockRegistry.LUMINOUS_FILAMENT.get());
             	output.accept(FURBlockRegistry.ECTOPLASM_BLOCK.get());
             	output.accept(FURBlockRegistry.DISEASED_HAY_BLOCK.get());
             	output.accept(FURBlockRegistry.SOUL_FURNACE.get());

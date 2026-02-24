@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "fur:block/luminous_filament_mid"
+  },
+  "render_type": "cutout"
+}
