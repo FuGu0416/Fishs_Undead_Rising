@@ -1,0 +1,20 @@
+{
+    "type": "fur:cooking",
+    "ingredients": [
+	    {
+			"item": "minecraft:blaze_powder"
+	    },
+	    {
+			"item": "fur:mooten_heart"
+	    },
+	    {
+			"item": "minecraft:beef"
+	    }
+    ],
+  	"container": { "item": "fur:curseweave_cloth" },
+  	"result": {
+    	"item": "fur:mooten_reagent"
+  	},
+  	"experience": 0.35,
+  	"time": 400
+}

@@ -155,6 +155,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> POTION_OF_FISSION = DEF_REG.register("potion_of_fission", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER));	
 	public static final RegistryObject<Item> POTION_OF_MOOTEN_LAVA = DEF_REG.register("potion_of_mooten_lava", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.EPIC), SoundEvents.FIREWORK_ROCKET_BLAST, ParticleTypes.LAVA));
 	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
+	public static final RegistryObject<Item> MOOTEN_REAGENT = DEF_REG.register("mooten_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new SalamanderBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));

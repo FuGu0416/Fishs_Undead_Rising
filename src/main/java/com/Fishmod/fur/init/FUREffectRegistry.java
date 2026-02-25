@@ -88,9 +88,8 @@ public class FUREffectRegistry {
     public static void onInitItems() {
     	/* Brew into special potions */
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.FISSION_REAGENT.get())), new ItemStack(FURItemRegistry.POTION_OF_FISSION.get())));
-        //BrewingRecipeRegistry.addRecipe(Ingredient.of(new ItemStack(FURItemRegistry.FISSIONPOTION)), Ingredient.of(new ItemStack(FURItemRegistry.MOOTENHEART)), new ItemStack(FURItemRegistry.POTION_OF_MOOTEN_LAVA));
+        BrewingRecipeRegistry.addRecipe(Ingredient.of(new ItemStack(FURItemRegistry.POTION_OF_FISSION.get())), Ingredient.of(new ItemStack(FURItemRegistry.MOOTEN_REAGENT.get())), new ItemStack(FURItemRegistry.POTION_OF_MOOTEN_LAVA.get()));
         //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PHEROMONE_GLAND)), new ItemStack(FURItemRegistry.CHARMING_CATALYST)));
-        //BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.HOLY_SLUDGE)), new ItemStack(FURItemRegistry.HOLY_WATER)));
         
         /* Brew into typical potions */
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURItemRegistry.PTERA_WING_RAW.get())), createPotion(Items.POTION, Potions.SLOW_FALLING)));

@@ -156,6 +156,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
             	output.accept(FURItemRegistry.FISSION_REAGENT.get());
+            	output.accept(FURItemRegistry.MOOTEN_REAGENT.get());
             	
             	// Block
             	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
