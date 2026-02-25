@@ -29,5 +29,6 @@ public class DataGenerators {
 		gen.addProvider(event.includeServer(), new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
 		gen.addProvider(event.includeServer(), new FURGlobalLootModifiersProvider(packOutput));
 		gen.addProvider(event.includeServer(), new FURItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
+		gen.addProvider(event.includeServer(), new FURBannerPatternTagsProvider(packOutput, lookupProvider, mod_LavaCow.MODID, existingFileHelper));
 	}
 }

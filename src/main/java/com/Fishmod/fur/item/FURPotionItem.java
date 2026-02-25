@@ -48,7 +48,7 @@ public class FURPotionItem extends FURItem {
     @Override
     public boolean isFoil(ItemStack stack) {
         return stack.getItem().equals(FURItemRegistry.POTION_OF_MOOTEN_LAVA.get());
-     }
+	}
 	   
     private boolean isVanilla(ResourceLocation resourceLocation) {
     	return resourceLocation.toString().contains("minecraft:") || resourceLocation.toString().contains("fur:");

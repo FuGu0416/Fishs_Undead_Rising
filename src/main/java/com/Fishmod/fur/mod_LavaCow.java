@@ -83,7 +83,8 @@ public class mod_LavaCow {
         FURItemGroup.DEF_REG.register(eventBus);
         FURBlockRegistry.DEF_REG.register(eventBus);
         FURBlockEntityRegistry.DEF_REG.register(eventBus);
-        FURItemRegistry.DEF_REG.register(eventBus);       
+        FURItemRegistry.DEF_REG.register(eventBus);
+        FURItemRegistry.BANNER_DEF_REG.register(eventBus);
         FURSoundRegistry.DEF_REG.register(eventBus);
         FURParticleRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);

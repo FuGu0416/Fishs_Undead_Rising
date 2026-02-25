@@ -31,12 +31,14 @@ import com.Fishmod.fur.item.UndyingHeartItem;
 import com.Fishmod.fur.item.WetaHoeItem;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
@@ -44,6 +46,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -54,6 +57,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 public class FURItemRegistry {
 	public static List<RegistryObject<Item>> creativeTabSpawnEggMap = new ArrayList<RegistryObject<Item>>();
 	public static final DeferredRegister<Item> DEF_REG = DeferredRegister.create(ForgeRegistries.ITEMS, mod_LavaCow.MODID);
+	public static final DeferredRegister<BannerPattern> BANNER_DEF_REG = DeferredRegister.create(Registries.BANNER_PATTERN, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<Item> SHARP_FANG = DEF_REG.register("sharp_fang", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> new FangDaggerItem(new Item.Properties(), Tiers.STONE, 1, -2.0F, -1.0D, FURItemRegistry.SHARP_FANG.get(), true));
@@ -203,18 +207,14 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
 	public static final RegistryObject<Item> FROZEN_GRIP = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);	
-	
-	public static final BannerPattern PATTERN_SKELETONKING = addBanner("skeletonking");
-    public static final BannerPattern PATTERN_WENDIGO = addBanner("wendigo");
-    
-    private static BannerPattern addBanner(String name) {
-        return BannerPattern.create(name.toUpperCase(), name, "fur." + name, true);
-    }
-    
-	event.getRegistry().register(new BannerPatternItem(PATTERN_SKELETONKING, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:banner_pattern_skeletonking"));
-	event.getRegistry().register(new BannerPatternItem(PATTERN_WENDIGO, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:banner_pattern_wendigo"));
 	*/
 	
+    public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));
+    public static final RegistryObject<BannerPattern> PATTERN_WENDIGO = BANNER_DEF_REG.register("wendigo", () -> new BannerPattern("wendigo"));
+		
+    public static final RegistryObject<Item> SKELETONKING_PATTERN = DEF_REG.register("banner_pattern_skeletonking", () -> new BannerPatternItem(FURTagRegistry.PATTERN_SKELETONKING, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> WENDIGO_PATTERN = DEF_REG.register("banner_pattern_wendigo", () -> new BannerPatternItem(FURTagRegistry.PATTERN_WENDIGO, new Item.Properties().stacksTo(1)));
+    
     static {
         spawnEgg("lavacow", FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00);
         spawnEgg("foglet", FUREntityRegistry.FOGLET, 0xCBD3B9, 0x41352F);
@@ -287,5 +287,6 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_MAT.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get().asItem(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.LUMINOUS_FILAMENT.get().asItem(), 0.50F);
     }
 }

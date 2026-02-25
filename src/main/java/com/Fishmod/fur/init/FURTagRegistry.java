@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class FURTagRegistry {
@@ -42,4 +43,7 @@ public class FURTagRegistry {
     public static final TagKey<Item> SERVING_CONTAINERS = TagKey.create(Registries.ITEM, new ResourceLocation("farmersdelight", "serving_containers"));
     
     public static final TagKey<Block> SALAMANDER_EGG_HATCH_BOOST = TagKey.create(Registries.BLOCK, new ResourceLocation(mod_LavaCow.MODID, "salamander_egg_hatch_boost"));
+    
+    public static final TagKey<BannerPattern> PATTERN_SKELETONKING = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(mod_LavaCow.MODID, "skeletonking"));
+    public static final TagKey<BannerPattern> PATTERN_WENDIGO = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(mod_LavaCow.MODID, "wendigo"));
 }

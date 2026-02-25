@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:paper"
+		},
+		{
+			"item": "fur:emblem_of_king"
+		}
+  	],
+  	"result": {
+    	"item": "fur:banner_pattern_skeletonking"
+  	}
+}
