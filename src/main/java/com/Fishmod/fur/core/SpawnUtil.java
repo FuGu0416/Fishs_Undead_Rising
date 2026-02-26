@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.config.FURConfig;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 
@@ -39,7 +40,7 @@ public class SpawnUtil {
 		return level.getDayTime() <= 12000;
 	}
 	
-	/*public static boolean isAllowedDimension(String dimensionIn) {
+	public static boolean isAllowedDimension(String dimensionIn) {
 		for(String i : FURConfig.Spawn_AllowList.get()) {
 			if(i.equalsIgnoreCase(dimensionIn))
 				return true;
@@ -55,7 +56,7 @@ public class SpawnUtil {
 		}
 		
 		return false;
-	}*/
+	}
 	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
@@ -127,10 +128,6 @@ public class SpawnUtil {
     public static Component TimeupDeathMessage(Entity entityIn) {
     	return Component.translatable("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});
     }
-    
-	/*public static RegistryKey<Biome> getRegistryKey(Biome BiomeIn) {
-		return RegistryKey.create(Registry.BIOME_REGISTRY, BiomeIn.getRegistryName());
-	}*/
 	
     @Nullable
     public static <T extends LivingEntity> T trySpawnEntity(EntityType<T> entityIn, ServerLevel worldIn, BlockPos blockpos) {

@@ -1,5 +1,6 @@
 package com.Fishmod.fur.entities.ai;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -99,7 +100,7 @@ public class EntityAIDestroyCrops extends Goal {
             if (this.destroyTicks > 30) {
             	Block block = world.getBlockState(blockpos).getBlock();
 
-            	if (this.entity.getRandom().nextDouble() < 0.15D/*FURConfig.Weta_Harvest_Diseased_Wheat.get()*/ && this.entity instanceof WetaEntity && ((WetaEntity) this.entity).getSkin() == 2 && block.equals(Blocks.WHEAT)) {
+            	if (this.entity.getRandom().nextDouble() < FURConfig.Weta_Harvest_Diseased_Wheat.get() && this.entity instanceof WetaEntity && ((WetaEntity) this.entity).getSkin() == 2 && block.equals(Blocks.WHEAT)) {
          	       if(!world.isClientSide()) {			
          				this.entity.spawnAtLocation(new ItemStack(FURItemRegistry.DISEASED_WHEAT.get()), 0.0F);
          	       }

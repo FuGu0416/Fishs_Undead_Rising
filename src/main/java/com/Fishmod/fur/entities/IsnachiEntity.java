@@ -2,6 +2,8 @@ package com.Fishmod.fur.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -54,8 +56,8 @@ public class IsnachiEntity extends FogletEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 16.0D/*FURConfig.Isnachi_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 2.0D/*FURConfig.Isnachi_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 16.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }   
     
     public static boolean checkIsnachiSpawnRules(EntityType<? extends IsnachiEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -113,8 +115,8 @@ public class IsnachiEntity extends FogletEntity {
 	@Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
-        //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setSkin(1);
     	

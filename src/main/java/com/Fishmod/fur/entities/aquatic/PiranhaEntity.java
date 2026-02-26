@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.aquatic;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURTagRegistry;
@@ -49,8 +50,8 @@ public class PiranhaEntity extends SwarmerEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 1.2D)
         		.add(Attributes.FOLLOW_RANGE, 8.0D)
-        		.add(Attributes.MAX_HEALTH, 3.0D/*FURConfig.Piranha_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 1.0D/*FURConfig.Piranha_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 3.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
     
     public static boolean checkPiranhaSpawnRules(EntityType<? extends PiranhaEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -68,9 +69,9 @@ public class PiranhaEntity extends SwarmerEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Piranha_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Piranha_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Piranha_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }

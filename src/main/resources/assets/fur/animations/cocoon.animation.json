@@ -1,0 +1,31 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"cocoon.model.idle": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"base": {
+					"scale": {
+						"vector": [
+							"1 - math.abs(math.sin(query.anim_time * 45) * 0.05)",
+							"1 - math.abs(math.sin(query.anim_time * 45) * 0.15)",
+							"1 - math.abs(math.sin(query.anim_time * 45) * 0.05)"
+						]
+					}
+				},
+				"silk0": {
+					"scale": {
+						"vector": [1, "1 - math.abs(math.sin(query.anim_time * 45) * 0.1)", 1]
+					}
+				},
+				"silk1": {
+					"scale": {
+						"vector": [1, "1 - math.abs(math.sin(query.anim_time * 45) * 0.1)", 1]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

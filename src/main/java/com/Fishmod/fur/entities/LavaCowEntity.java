@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -57,7 +58,7 @@ public class LavaCowEntity extends Cow {
 	}
 	
 	public static AttributeSupplier.Builder createAttributes() {
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D/*FURConfig.Lavacow_Health.get()*/).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
 	}	
 		
     public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -110,7 +111,7 @@ public class LavaCowEntity extends Cow {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Lavacow_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Lavacow_Health.get());
     	this.setHealth(this.getMaxHealth());
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);

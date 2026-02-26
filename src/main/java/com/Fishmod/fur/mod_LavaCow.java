@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.Fishmod.fur.client.layer.FURModelLayers;
 import com.Fishmod.fur.client.recipebook.RecipeCategories;
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.events.EventBusHandler;
 import com.Fishmod.fur.events.FURClientEvents;
 import com.Fishmod.fur.events.FURServerEvents;
@@ -29,7 +30,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -78,7 +81,7 @@ public class mod_LavaCow {
     	
         MinecraftForge.EVENT_BUS.register(this);      
         MinecraftForge.EVENT_BUS.register(new FURServerEvents()); 
-        //ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "mod_lavacow.common.toml");
+        ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "fur.common.toml");
         FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);
         FURBlockRegistry.DEF_REG.register(eventBus);

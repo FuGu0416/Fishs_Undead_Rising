@@ -1,0 +1,72 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "base",
+					"pivot": [0, 6, -0.5]
+				},
+				{
+					"name": "head",
+					"parent": "base",
+					"pivot": [0, 0, -4.5],
+					"cubes": [
+						{"origin": [-2, 0, -8.5], "size": [4, 4, 4], "uv": [20, 8]}
+					]
+				},
+				{
+					"name": "thorax",
+					"parent": "base",
+					"pivot": [0, 0, -1.5],
+					"cubes": [
+						{"origin": [-3, 0, -4.5], "size": [6, 6, 6], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "thorax_bristle_right",
+					"parent": "thorax",
+					"pivot": [-3, 6, -1.5],
+					"rotation": [0, 0, -45],
+					"cubes": [
+						{"origin": [-3, 6, -4.5], "size": [0, 2, 6], "uv": [18, -6]}
+					]
+				},
+				{
+					"name": "thorax_bristle_left",
+					"parent": "thorax",
+					"pivot": [3, 6, -1.5],
+					"rotation": [0, 0, 45],
+					"cubes": [
+						{"origin": [3, 6, -4.5], "size": [0, 2, 6], "uv": [18, -6]}
+					]
+				},
+				{
+					"name": "abdomen",
+					"parent": "base",
+					"pivot": [-0.5, 0, 1.5],
+					"cubes": [
+						{"origin": [-2.5, 0, 1.5], "size": [5, 5, 7], "uv": [0, 12]}
+					]
+				},
+				{
+					"name": "tail",
+					"parent": "abdomen",
+					"pivot": [0, 3, 8.5],
+					"rotation": [32.5, 0, 0],
+					"cubes": [
+						{"origin": [-1.5, 3, 8.5], "size": [3, 0, 5], "uv": [-5, 12]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable.unburied;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -127,8 +128,8 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.23D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 20.0D/*FURConfig.Unburied_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 3.0D/*FURConfig.Unburied_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 20.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 3.0D)
         		.add(Attributes.ARMOR, 2.0D);
     }
     
@@ -222,7 +223,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         }
         
         if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
-            if (/*FURConfig.Show_Expire_Death_Messege.get() &&*/ !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
+            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
             }        
             this.level().broadcastEntityEvent(this, (byte)11);
@@ -231,7 +232,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         }
     	
         if (this.isAlive()) {
-            boolean flag = /*!FURConfig.SunScreen_Mode.get() &&*/ !(this.getOwner() instanceof Player) && this.isSunBurnTick();
+            boolean flag = !FURConfig.SunScreen_Mode.get() && !(this.getOwner() instanceof Player) && this.isSunBurnTick();
             if (flag) {
                ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
                if (!itemstack.isEmpty()) {
@@ -312,9 +313,9 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
         livingdata = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);       
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
         
         this.setSkin(0);
         this.setLeftHanded(true);

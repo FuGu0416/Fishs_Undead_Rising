@@ -49,15 +49,6 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
     public IntegerProperty getAgeProperty() {
         return AGE;
     }
-    
-	@Override
-	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-		if (this.asBlock().equals(FURBlockRegistry.GLOWSHROOM.get())) {
-			if (rand.nextInt(100) < 100/*FURConfig.pSpreadRate_Glowshroom.get()*/)
-				super.randomTick(state, worldIn, pos, rand);
-		} else
-			super.randomTick(state, worldIn, pos, rand);
-	}
 	
 	/**
 	    * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that

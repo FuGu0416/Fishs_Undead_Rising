@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable.unburied;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FURItemRegistry;
 
@@ -38,15 +39,15 @@ public class FrigidEntity extends UnburiedEntity {
     @Override
     protected void registerGoals() {
     	super.registerGoals();
-    	/*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
+    	if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return  Zombie.createAttributes()
         		.add(Attributes.FOLLOW_RANGE, 35.0D)
         		.add(Attributes.MOVEMENT_SPEED, (double)0.23F)
-        		.add(Attributes.MAX_HEALTH, 30.0D/*FURConfig.ZombieFrozen_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 3.0D/*FURConfig.ZombieFrozen_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 30.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 3.0D)
         		.add(Attributes.ARMOR, 2.0D)
         		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
@@ -120,9 +121,9 @@ public class FrigidEntity extends UnburiedEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
     	livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-    	/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.ZombieFrozen_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.ZombieFrozen_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Frigid_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Frigid_Attack.get());
+    	this.setHealth(this.getMaxHealth());
     	this.setSkin(3);
     	return livingdata;
     }    

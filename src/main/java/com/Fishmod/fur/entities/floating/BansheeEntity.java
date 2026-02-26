@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import org.joml.Vector3f;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
@@ -77,8 +78,8 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, 34.0D/*FURConfig.Banshee_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 7.0D/*FURConfig.Banshee_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 34.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 7.0D);
     }
 
     @Override
@@ -106,9 +107,9 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Banshee_Health.get());
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Banshee_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Banshee_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
         
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -180,7 +181,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
         }
 
         protected void castSpell() {
-        	List<Entity> list = BansheeEntity.this.level().getEntities(BansheeEntity.this, BansheeEntity.this.getBoundingBox().inflate(3.0D/*FURConfig.Banshee_Ability_Radius.get()*/));
+        	List<Entity> list = BansheeEntity.this.level().getEntities(BansheeEntity.this, BansheeEntity.this.getBoundingBox().inflate(FURConfig.Banshee_Ability_Radius.get()));
         	
         	for (Entity entity1 : list) {
         		if (entity1 instanceof LivingEntity livingentity) {     

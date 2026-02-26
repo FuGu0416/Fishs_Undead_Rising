@@ -34,7 +34,7 @@ public class FURTagRegistry {
     public static final TagKey<EntityType<?>> WENDIGO_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "wendigo_targets"));
     //public static final ResourceLocation INTESTINE_DROP_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "intestine_drop_targets");
     //public static final ResourceLocation BEELZEBUB_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "beelzebub_targets");
-    //public static final ResourceLocation ENIGMOTH_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "enigmoth_targets");
+    public static final TagKey<EntityType<?>> ENIGMOTH_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "enigmoth_targets"));
     //public static final ResourceLocation PARASITE_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "parasite_targets");
     public static final TagKey<EntityType<?>> PTERA_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "ptera_targets"));
     //public static final ResourceLocation VESPA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "vespa_targets");

@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.aquatic;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -105,8 +106,8 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 1.2D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 8.0D/*FURConfig.Swarmer_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 1.0D/*FURConfig.Swarmer_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 8.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
     
     @Override
@@ -171,11 +172,11 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	/*if (this.getType().equals(FUREntityRegistry.SWARMER)) {
+    	if (this.getType().equals(FUREntityRegistry.SWARMER.get())) {
 	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Swarmer_Health.get());
 	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Swarmer_Attack.get());
 	    	this.setHealth(this.getMaxHealth());
-    	}*/    	
+    	}   	
     	
     	if (!this.getIsAmmo()) {
     		if (this.getType().equals(FUREntityRegistry.PIRANHA.get())) {

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityAIDestroyCrops;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -115,8 +116,8 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.23D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 12.0D/*FURConfig.Weta_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 1.0D/*FURConfig.Weta_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 12.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
     
     public static boolean checkWetaSpawnRules(EntityType<? extends WetaEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -230,9 +231,9 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Weta_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Weta_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Weta_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
     	
     	this.setSkin(this.getRandom().nextFloat() < 0.05F ? 2 : 0);
     	

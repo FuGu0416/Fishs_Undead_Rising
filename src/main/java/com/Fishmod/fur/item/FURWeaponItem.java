@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
@@ -288,7 +289,7 @@ public class FURWeaponItem extends SwordItem {
         if (player.getItemInHand(hand).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && level instanceof ServerLevel) {
             for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
                 BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.UNBURIED.get(), 20/*FURConfig.Unburied_Lifespan.get()*/ * 20, 0);
+                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.UNBURIED.get(), FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
             
             player.getItemInHand(hand).hurtAndBreak(63, player, (p_220045_0_) -> {
@@ -296,7 +297,7 @@ public class FURWeaponItem extends SwordItem {
     		});
             //player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
             //player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), 60/*FURConfig.Undertaker_Shovel_Cooldown.get()*/ * 20);
+            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
             //player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
             //player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
             //player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
@@ -394,7 +395,7 @@ public class FURWeaponItem extends SwordItem {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.getItem().equals(FURItemRegistry.BONE_SWORD.get())) {
-			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 5/*FURConfig.BoneSword_Damage.get()*/, 2/*FURConfig.BoneSword_DamageCap.get()*/).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", FURConfig.BoneSword_Damage.get(), FURConfig.BoneSword_DamageCap.get()).withStyle(ChatFormatting.YELLOW));
 		/*} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW)) {
 			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc0").withStyle(TextFormatting.YELLOW));
 			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc1").withStyle(TextFormatting.YELLOW));*/

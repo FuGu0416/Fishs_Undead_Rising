@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREffectRegistry;
 
@@ -47,8 +48,8 @@ public class ImpEntity extends FogletEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 16.0D/*FURConfig.Imp_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 2.0D/*FURConfig.Imp_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 16.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
     
     public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -80,8 +81,8 @@ public class ImpEntity extends FogletEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
-        //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setSkin(2);
     	

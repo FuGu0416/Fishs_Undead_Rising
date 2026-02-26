@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.item.FURStewItem;
 
@@ -246,7 +247,7 @@ public class FURTameableEntity extends TamableAnimal {
     public void tick() {
         super.tick();
         
-        if (!this.level().isClientSide/* && FURConfig.Suicidal_Minion.get()*/ && (this.getOwner() != null && (!(this.getOwner() instanceof Player) && !this.getOwner().isAlive()))) {
+        if (!this.level().isClientSide && FURConfig.Suicidal_Minion.get() && (this.getOwner() != null && (!(this.getOwner() instanceof Player) && !this.getOwner().isAlive()))) {
         	this.hurt(this.damageSources().genericKill(), this.getMaxHealth());
         	this.addTag("FUR_noLoot");
         }

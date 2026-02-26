@@ -2,6 +2,7 @@ package com.Fishmod.fur.item;
 
 import java.util.Random;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.LavaCowEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -55,7 +56,7 @@ public class FURPotionItem extends FURItem {
     }
 	
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand InteractionHand) {
-    	if(((/*!FURConfig.Fission_ModEntity.get() && */isVanilla(ForgeRegistries.ENTITY_TYPES.getKey(target.getType()))) || (/*FURConfig.Fission_ModEntity.get() && */target instanceof AgeableMob))) {
+    	if(((!FURConfig.Fission_ModEntity.get() && isVanilla(ForgeRegistries.ENTITY_TYPES.getKey(target.getType()))) || (FURConfig.Fission_ModEntity.get() && target instanceof AgeableMob))) {
 			
     		double dx = target.getX();
     		double dy = target.getY();

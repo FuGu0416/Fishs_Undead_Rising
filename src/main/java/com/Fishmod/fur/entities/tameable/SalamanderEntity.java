@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
@@ -154,10 +155,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     }
     
     protected void applyEntityAI() {
-        //if (FURConfig.Salamander_Defender.get()) {
+        if (FURConfig.Salamander_Defender.get()) {
     		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
     		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-    	//}
+    	}
     	this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
     		return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
@@ -167,8 +168,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.23D)
-        		.add(Attributes.MAX_HEALTH, 60.0D/*FURConfig.Salamander_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 4.0D/*FURConfig.Salamander_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 60.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 4.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -468,6 +469,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @OnlyIn(Dist.CLIENT)
     private void ClientControl() {
     	Minecraft game = Minecraft.getInstance();
+    	
 		if (this.barrage_CD == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player)) {
 			this.barrage_CD = 80;
 			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ()));
@@ -507,9 +509,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 		    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D);
 		    	this.goalSelector.addGoal(4, this.range_atk);
 		    	
-		    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/ * 0.25D);
+		    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.25D);
 		        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0D/*FURConfig.Salamander_Attack.get()*/ * 0.5D);
+		        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.5D);
 		        
 		        if (this.getHealth() > this.getMaxHealth())
 		        	this.setHealth(this.getMaxHealth());
@@ -521,22 +523,22 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	        	break;
 	        case 1:   		
 	    		this.xpReward = 10;
-	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/ * 0.40D);
+	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.40D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0D/*FURConfig.Salamander_Attack.get()*/ * 0.65D);
+	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.65D);
 	    		
 	    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	        	break;
 	        case 2:
 	    		this.xpReward = 15;
-	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/ * 0.60D);
+	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.60D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0D/*FURConfig.Salamander_Attack.get()*/ * 0.75D);
+	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.75D);
 	    		
 	    		this.heal(this.getHealth() * 0.5F);
         		break;
         	default:
-    			this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/);
+    			this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
     			this.heal(this.getHealth() * 2.0F / 3.0F);
     			
     	    	this.xpReward = 20;
@@ -546,9 +548,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
     	    	this.goalSelector.addGoal(4, this.range_atk);
     	    	
-    	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(60.0D/*FURConfig.Salamander_Health.get()*/);
+    	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
     	        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-    	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0D/*FURConfig.Salamander_Attack.get()*/);	
+    	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get());	
         		break;
         }
 	}
@@ -663,9 +665,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
        float chance_to_spawn_as_child = 0.0F;
-       /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
+       this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get());
-       this.setHealth(this.getMaxHealth());*/
+       this.setHealth(this.getMaxHealth());
    	
        if(world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
     	   this.setSkin(1);

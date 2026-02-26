@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -83,7 +84,7 @@ public class FogletEntity extends Monster implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new AICastingApell());
         this.goalSelector.addGoal(3, new FogletEntity.AIUseSpell());    
-        if(/*!FURConfig.SunScreen_Mode.get() && */!this.fireImmune()) {
+        if (!FURConfig.SunScreen_Mode.get() && !this.fireImmune()) {
             this.goalSelector.addGoal(2, new RestrictSunGoal(this));
             this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
         }
@@ -105,8 +106,8 @@ public class FogletEntity extends Monster implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 16.0D/*FURConfig.Foglet_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 2.0D/*FURConfig.Foglet_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 16.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
     
     public static boolean checkFogletSpawnRules(EntityType<? extends FogletEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -149,7 +150,7 @@ public class FogletEntity extends Monster implements GeoEntity {
             --this.spellTicks;
         }
     	
-    	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick() && !this.fireImmune()) {
+    	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick() && !this.fireImmune()) {
     		this.setSecondsOnFire(8);
         }
     	
@@ -177,8 +178,8 @@ public class FogletEntity extends Monster implements GeoEntity {
 	@Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
-        //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
  	   	   
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);

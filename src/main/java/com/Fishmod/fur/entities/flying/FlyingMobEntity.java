@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.flying;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
@@ -388,9 +389,9 @@ public class FlyingMobEntity extends FURTameableEntity {
             		
     	            if (this.parentEntity.isInWaterRainOrBubble()) {
     	            	vector3d = new Vec3(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);       	            
-                	}/* else if (FURConfig.FlyingHeight_limit.get() != 0 && ((vector3d.y > (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) + 4.0D) || (vector3d.y < (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) - 8.0D ))) {
+                	} else if (FURConfig.FlyingHeight_limit.get() != 0 && ((vector3d.y > (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) + 4.0D) || (vector3d.y < (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) - 8.0D ))) {
             			vector3d = new Vec3(vector3d.x, groundHeight + FURConfig.FlyingHeight_limit.get(), vector3d.z);
-    	            }*/
+    	            }
                          
             		this.parentEntity.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 1.0D);
             		if (this.parentEntity.getTarget() == null) {

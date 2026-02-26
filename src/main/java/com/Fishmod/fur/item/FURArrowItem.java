@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.projectiles.FURArrowEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -64,9 +65,9 @@ public class FURArrowItem extends ArrowItem {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.getItem().equals(FURItemRegistry.GHOUL_ARROW.get())) {
-			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 40/*FURConfig.Ghoul_targetHPThreshold.get()*/).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", FURConfig.Ghoul_targetHPThreshold.get()).withStyle(ChatFormatting.YELLOW));
 		} else if (stack.getItem().equals(FURItemRegistry.FANG_ARROW.get())) {
-			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", 5/*FURConfig.BoneSword_Damage.get()*/, 10000/*FURConfig.BoneSword_DamageCap.get()*/).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", FURConfig.BoneSword_Damage.get(), FURConfig.BoneSword_DamageCap.get()).withStyle(ChatFormatting.YELLOW));
 		} else if (this.Tooltip == 2) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc"));			
 		} else if (this.Tooltip == 1) {

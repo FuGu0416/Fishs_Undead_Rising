@@ -2,6 +2,7 @@ package com.Fishmod.fur.item;
 
 import java.util.List;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -63,7 +64,7 @@ public class MoltenHammerItem extends FURWeaponItem {
 		
 		List<Entity> list = level.getEntities(player, player.getBoundingBox().inflate(radius));
 		for (Entity entity1 : list) {
-			if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(player))/* || (entity1 instanceof Player && FURConfig.MoltenHammer_PVP.get())*/) {
+			if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(player)) || (entity1 instanceof Player && FURConfig.MoltenHammer_PVP.get())) {
 				entity1.setSecondsOnFire(2 * enchantment_list[0]);
 				entity1.hurt(entity1.damageSources().playerAttack(player) , 8.0F + (enchantment_list[1] > 0 ? (0.5f * enchantment_list[1] + 0.5f) : 0.0f)
 						+ (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD) ? (float)enchantment_list[3] : 0)

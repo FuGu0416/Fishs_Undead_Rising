@@ -4,6 +4,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.client.model.MimicModel;
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -158,8 +159,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.22D)
-        		.add(Attributes.MAX_HEALTH, 10.0D/*FURConfig.Mimic_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 8.0D/*FURConfig.Mimic_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 10.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 8.0D)
         		.add(Attributes.ARMOR, 20.0D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D);
     }
@@ -197,14 +198,14 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         float maxHealthO = this.getMaxHealth();
         
         if (tamed) {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D/*FURConfig.Mimic_Health.get()*/ * 3.0D);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get() * 3.0D);
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D/*FURConfig.Mimic_Attack.get()*/ * 0.5D);
+        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get() * 0.5D);
         	this.setSilent(false);
         } else {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D/*FURConfig.Mimic_Health.get()*/);
+        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         	this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22D);
-        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D/*FURConfig.Mimic_Attack.get()*/);
+        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
         }
         
         this.setHealth(this.getHealth() * (this.getMaxHealth() / maxHealthO));
@@ -562,9 +563,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {   	
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
 
     	if (worldIn.getBiome(this.blockPosition()).containsTag(BiomeTags.IS_NETHER)) {
     		this.setSkin(MimicModel.getNetherSkin()); 	 

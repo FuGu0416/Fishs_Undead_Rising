@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.floating;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -76,8 +77,8 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.175D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, 30.0D/*FURConfig.Avaton_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 5.0D/*FURConfig.Avaton_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 30.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
     
     public static boolean checkAvatonSpawnRules(EntityType<? extends AvatonEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
@@ -97,9 +98,9 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Avaton_Health.get());
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Avaton_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Avaton_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/  		
+    	this.setHealth(this.getMaxHealth());  		
 
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -153,7 +154,10 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
                 				farmlandnearby = true;
                 		}              
                 
-            	return AvatonEntity.this.tickCount >= this.spellCooldown && ((AvatonEntity.this.getTarget() != null && Math.abs(AvatonEntity.this.getY() - AvatonEntity.this.getTarget().getY()) < 4.0D) || farmlandnearby) && i < 16/*FURConfig.Avaton_Ability_Max.get()*/;
+            	return AvatonEntity.this.tickCount >= this.spellCooldown 
+            			&& ((AvatonEntity.this.getTarget() != null 
+            			&& Math.abs(AvatonEntity.this.getY() - AvatonEntity.this.getTarget().getY()) < 4.0D) || farmlandnearby) 
+            			&& i < FURConfig.Avaton_Ability_Max.get();
             }
         }
 
@@ -192,7 +196,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         }
 
         protected void castSpell() {
-            for (int i = 0; i < 2/*FURConfig.Avaton_Ability_Num.get()*/; ++i) {
+            for (int i = 0; i < FURConfig.Avaton_Ability_Num.get(); ++i) {
             	if (AvatonEntity.this.level() instanceof ServerLevel) {
 	                BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(5), 1, -2 + AvatonEntity.this.getRandom().nextInt(5));
 	                WetaEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.WETA.get(), ((ServerLevel) AvatonEntity.this.level()), blockpos);
@@ -224,7 +228,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         }
 
         protected int getCastingInterval() {
-        	return 8/*FURConfig.Avaton_Ability_Cooldown.get()*/ * 20;
+        	return FURConfig.Avaton_Ability_Cooldown.get() * 20;
         }
 
         @Nullable

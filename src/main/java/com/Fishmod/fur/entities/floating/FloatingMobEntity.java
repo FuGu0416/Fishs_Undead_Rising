@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.floating;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ICharging;
 import com.Fishmod.fur.entities.ai.FloatingMoveControl;
 import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
@@ -63,7 +64,7 @@ public class FloatingMobEntity extends Monster implements ICharging {
 		super.registerGoals();
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
-        /*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
+        if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(5, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(7, this.wanderGoal());
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -162,7 +163,7 @@ public class FloatingMobEntity extends Monster implements ICharging {
             --this.spellTicks;
         }
     	
-    	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick()) {
+    	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(8);
         }
     	

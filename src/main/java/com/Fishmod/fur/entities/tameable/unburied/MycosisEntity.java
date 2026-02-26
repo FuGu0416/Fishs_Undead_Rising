@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
 import net.minecraft.core.BlockPos;
@@ -42,15 +43,15 @@ public class MycosisEntity extends UnburiedEntity {
     @Override
     protected void registerGoals() {
     	super.registerGoals();
-    	/*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
+    	if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
     }
     
     public static AttributeSupplier.Builder createAttributes() {
         return Zombie.createAttributes()
         		.add(Attributes.FOLLOW_RANGE, 35.0D)
         		.add(Attributes.MOVEMENT_SPEED, (double)0.23F)
-        		.add(Attributes.MAX_HEALTH, 20.0D/*FURConfig.ZombieMushroom_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 3.0D/*FURConfig.ZombieMushroom_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 20.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 3.0D)
         		.add(Attributes.ARMOR, 2.0D)
         		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
@@ -104,13 +105,13 @@ public class MycosisEntity extends UnburiedEntity {
         int dx = MathHelper.floor(this.getX());
         int dy = MathHelper.floor(this.getBoundingBox().minY);
         int dz = MathHelper.floor(this.getZ());
-        int r = 4;
+        int r = 4;*/
 
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.ZombieMushroom_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.ZombieMushroom_Attack.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mycosis_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mycosis_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-        for(BlockPos C : BlockPos.betweenClosed(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
+        /*for(BlockPos C : BlockPos.betweenClosed(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
         	if(worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM
         	|| worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM_BLOCK_STEM
         	|| worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM_BLOCK_CAP)

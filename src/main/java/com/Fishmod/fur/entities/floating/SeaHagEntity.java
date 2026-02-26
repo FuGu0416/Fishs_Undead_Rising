@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.floating;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -99,8 +100,8 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.175D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, 30.0D/*FURConfig.SeaHag_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 5.0D/*FURConfig.SeaHag_Attack.get()*/);
+        		.add(Attributes.MAX_HEALTH, 30.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
     
 	public static boolean checkSeaHagSpawnRules(EntityType<SeaHagEntity> p_223332_0_, ServerLevelAccessor p_223332_1_, MobSpawnType p_223332_2_, BlockPos p_223332_3_, RandomSource p_223332_4_) {
@@ -127,9 +128,9 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SeaHag_Health.get());
-        //this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SeaHag_Attack.get());
-    	//this.setHealth(this.getMaxHealth());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SeaHag_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SeaHag_Attack.get());
+    	this.setHealth(this.getMaxHealth());
 
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -178,7 +179,10 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
                 return false;
             } else {
                 int i = SeaHagEntity.this.level().getEntitiesOfClass(Pufferfish.class, SeaHagEntity.this.getBoundingBox().inflate(16.0D)).size();               
-            	return SeaHagEntity.this.tickCount >= this.spellCooldown && ((SeaHagEntity.this.getTarget() != null && Math.abs(SeaHagEntity.this.getY() - SeaHagEntity.this.getTarget().getY()) < 4.0D)) && i < 8/*FURConfig.SeaHag_Ability_Max.get()*/;
+            	return SeaHagEntity.this.tickCount >= this.spellCooldown 
+            			&& ((SeaHagEntity.this.getTarget() != null 
+            			&& Math.abs(SeaHagEntity.this.getY() - SeaHagEntity.this.getTarget().getY()) < 4.0D)) 
+            			&& i < FURConfig.SeaHag_Ability_Max.get();
             }
         }
 
@@ -217,7 +221,7 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         }
        
         protected void castSpell() {
-            for (int i = 0; i < 4/*FURConfig.SeaHag_Ability_Num.get()*/; ++i) {
+            for (int i = 0; i < FURConfig.SeaHag_Ability_Num.get(); ++i) {
             	if (SeaHagEntity.this.level() instanceof ServerLevel) {
 	                BlockPos blockpos = SeaHagEntity.this.blockPosition().offset(-2 + SeaHagEntity.this.getRandom().nextInt(3), 1, -2 + SeaHagEntity.this.getRandom().nextInt(3));
 	                Mob entity;
@@ -258,7 +262,7 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         }
 
         protected int getCastingInterval() {
-        	return 12/*FURConfig.SeaHag_Ability_Cooldown.get()*/ * 20;
+        	return FURConfig.SeaHag_Ability_Cooldown.get() * 20;
         }
 
         @Nullable

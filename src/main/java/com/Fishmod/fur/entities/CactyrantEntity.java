@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
@@ -124,8 +125,8 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.19D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 60.0D/*FURConfig.Cactyrant_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 8.0D/*FURConfig.Cactyrant_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 60.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 8.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -317,9 +318,9 @@ public class CactyrantEntity extends Monster implements GeoEntity {
      */
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
         
 		if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
     		this.setSkin(1);
@@ -474,7 +475,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         }
 
         protected int getCastingInterval() {
-            return 3/*FURConfig.Cactyrant_Ability_Cooldown.get()*/ * 20;
+            return FURConfig.Cactyrant_Ability_Cooldown.get() * 20;
         }
 
         @Nullable

@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
@@ -83,7 +84,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
         this.goalSelector.addGoal(1, new AICastingApell());
         this.goalSelector.addGoal(2, new UndertakerEntity.AIUseSpell());
         this.goalSelector.addGoal(3, new UndertakerEntity.AttackGoal(this));  
-        /*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
+        if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -102,8 +103,8 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.21D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 40.0D/*FURConfig.Undertaker_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 6.0D/*FURConfig.Undertaker_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 40.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 6.0D)
         		.add(Attributes.ARMOR, 3.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
@@ -148,7 +149,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
             --this.spellTicks;
         }
                
-		if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick()) {
+		if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
 			this.setSecondsOnFire(40);
 		}   	   	        
     }
@@ -207,9 +208,9 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
      */
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Undertaker_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
     	
 		this.populateDefaultEquipmentSlots(this.random, difficulty);
         this.populateDefaultEquipmentEnchantments(this.random, difficulty);
@@ -287,7 +288,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
                 return false;
             else {
                 int i = UndertakerEntity.this.level().getEntitiesOfClass(UnburiedEntity.class, UndertakerEntity.this.getBoundingBox().inflate(16.0D)).size();
-            	return UndertakerEntity.this.tickCount >= this.spellCooldown && i < 4/*FURConfig.Undertaker_Ability_Max.get()*/;
+            	return UndertakerEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Undertaker_Ability_Max.get();
             }
         }
 
@@ -325,7 +326,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
         }
 
         protected void castSpell() {
-            for (int i = 0; i < 4/*FURConfig.Undertaker_Ability_Num.get()*/; ++i) {
+            for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i) {
             	if (UndertakerEntity.this.level() instanceof ServerLevel) {
 	                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
 	                UnburiedEntity entity;
@@ -362,7 +363,7 @@ private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(t
         }
 
         protected int getCastingInterval() {
-            return 15/*FURConfig.Undertaker_Ability_Cooldown.get()*/ * 20;
+            return FURConfig.Undertaker_Ability_Cooldown.get() * 20;
         }
 
         @Nullable

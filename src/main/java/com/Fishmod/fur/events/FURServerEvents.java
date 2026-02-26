@@ -3,6 +3,7 @@ package com.Fishmod.fur.events;
 import java.util.List;
 import java.util.Random;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -48,6 +50,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -75,6 +78,182 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber
 //@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 public class FURServerEvents {
+	
+	@SubscribeEvent
+	public static void onAttributeCreate(EntityAttributeCreationEvent event) {
+	    event.put(FUREntityRegistry.LAVACOW.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Lavacow_Health.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.FOGLET.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Foglet_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Foglet_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.ISNACHI.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Foglet_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Foglet_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.IMP.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Imp_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Imp_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.SEAHAG.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.SeaHag_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.SeaHag_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.PIRANHA.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Piranha_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Piranha_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.SWARMER.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Swarmer_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Swarmer_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.CACTYRANT.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Cactyrant_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Cactyrant_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.WENDIGO.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Wendigo_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Wendigo_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.SCARECROW.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Scarecrow_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Scarecrow_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.WETA.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Weta_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Weta_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.AVATON.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Avaton_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Avaton_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.WRAITH.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Wraith_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Wraith_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.WISP.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Wisp_Health.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.UNBURIED.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Unburied_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Unburied_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.MYCOSIS.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Mycosis_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Mycosis_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.FRIGID.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Frigid_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Frigid_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.MUMMY.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Mummy_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Mummy_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.UNDERTAKER.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Undertaker_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Undertaker_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.BANSHEE.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Banshee_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Banshee_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.CACTOID.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Cactoid_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Cactoid_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.MIMIC.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Mimic_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Mimic_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.PTERA.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Ptera_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Ptera_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.SALAMANDER.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Salamander_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Salamander_Attack.get())
+	                    .build()
+	    );
+	    
+	    event.put(FUREntityRegistry.ENIGMOTH.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Enigmoth_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Enigmoth_Attack.get())
+	                    .build()
+	    );
+	}
 	
     /**
      * Custom entity death event, using for manipulating vanilla entities loots or onDeath triggers.
@@ -386,7 +565,7 @@ public class FURServerEvents {
     		}*/
     		
     		if (have_Heart) {
-    			effectlevel -= 20.0F/*(float)FURConfig.MootenHeart_Damage.get()*/ / 100.0F;
+    			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
     		}
     	}
     	
@@ -591,7 +770,7 @@ public class FURServerEvents {
 		Entity entity = event.getEntity();
 		Random random = new Random();
 
-		if (entity.level().isClientSide() || !(entity instanceof Player) || random.nextInt(1000) > 250/*FURConfig.pSpawnRate_DeathMimic.get()*/) {
+		if (entity.level().isClientSide() || !(entity instanceof Player) || random.nextInt(1000) > FURConfig.pSpawnRate_DeathMimic.get()) {
 			return;
 		}
 
@@ -627,7 +806,7 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onTradeSetup(VillagerTradesEvent event) {
     	// 2 = Apprentice, 3 = Journeyman, 4 = Expert, 5 = Master, reference = VillagerTrades.class
-    	//if (FURConfig.BonusVillagerTrades.get()) {
+    	if (FURConfig.BonusVillagerTrades.get()) {
 	        if (event.getType() == VillagerProfession.FISHERMAN) {
 	            event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
 	            		new ItemStack(FURItemRegistry.PIRANHA_RAW.get(), 6),
@@ -665,12 +844,12 @@ public class FURServerEvents {
 	                    0.05f
 	                ));	        	
 	        }
-    	//}
+    	}
     }
     
     @SubscribeEvent
     public void onWanderingTradeSetup(WandererTradesEvent event) {
-    	//if (FURConfig.BonusWanderingTraderTrades.get()) {
+    	if (FURConfig.BonusWanderingTraderTrades.get()) {
     		var genericTrades = event.getGenericTrades();
     		var rareTrades = event.getRareTrades(); 
     		
@@ -695,7 +874,7 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		//if (FURConfig.pSpawnRate_Cactoid.get() > 0)
+    		if (FURConfig.pSpawnRate_Cactoid.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 8),
     	            new ItemStack(FURItemRegistry.CACTUS_FRUIT.get(), 1),
@@ -703,7 +882,7 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		//if (FURConfig.pSpawnRate_Piranha.get() > 0)
+    		if (FURConfig.pSpawnRate_Piranha.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 5),
     	            new ItemStack(FURItemRegistry.PIRANHA_BUCKET.get(), 1),
@@ -711,7 +890,7 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		//if (FURConfig.pSpawnRate_Swarmer.get() > 0)
+    		if (FURConfig.pSpawnRate_Swarmer.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 5),
     	            new ItemStack(FURItemRegistry.SWARMER_BUCKET.get(), 1),
@@ -745,7 +924,7 @@ public class FURServerEvents {
     	            20, 
     	            0.05f
     	        ));
-    		//if (FURConfig.pSpawnRate_Wisp.get() > 0)
+    		if (FURConfig.pSpawnRate_Wisp.get() > 0)
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 3),
     	            new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE.get(), 1),
@@ -758,7 +937,7 @@ public class FURServerEvents {
 	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PHEROMONE_GLAND, 18, 1, 4, 20));
 	        /*if(FURConfig.pSpawnRate_Lamprey.get() > 0)
 	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.LAMPREY_BUCKET, 5, 1, 12, 1));*/
-    	//}
+    	}
     }
     
     @SubscribeEvent
@@ -929,7 +1108,7 @@ public class FURServerEvents {
 	    	if (DirectAttacker instanceof LivingEntity living) {
 	    		Item heldItem = living.getMainHandItem().getItem();
 	    		if (heldItem.equals(FURItemRegistry.BONE_SWORD.get()))
-	    			event.setAmount(event.getAmount() + Math.min(2/*(float)FURConfig.BoneSword_DamageCap.get()*/, Attacked.getMaxHealth() * (5/*(float)FURConfig.BoneSword_Damage.get()*/ * 0.01F)));
+	    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
 	    		/*else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
 	    			event.setAmount(event.getAmount() + 2.0F);*/
 	    	}
@@ -938,7 +1117,7 @@ public class FURServerEvents {
 		        Attacked.addEffect(new MobEffectInstance(MobEffects.POISON, 80, living.getEffect(FUREffectRegistry.VENOMOUS.get()).getAmplifier()));
 	    	}
 	    	
-			if (DirectAttacker.getType().equals(FUREntityRegistry.GHOUL_ARROW.get()) && (Attacked.getHealth() <= Attacked.getMaxHealth() * (40.0F/*(float)FURConfig.Ghoul_targetHPThreshold.get()*/ / 100.0F))) {
+			if (DirectAttacker.getType().equals(FUREntityRegistry.GHOUL_ARROW.get()) && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float)FURConfig.Ghoul_targetHPThreshold.get() / 100.0F))) {
 				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
 					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
@@ -949,7 +1128,7 @@ public class FURServerEvents {
 				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
 					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
-				event.setAmount(event.getAmount() + Math.min(2/*(float)FURConfig.BoneSword_DamageCap.get()*/, Attacked.getMaxHealth() * (5/*(float)FURConfig.BoneSword_Damage.get()*/ * 0.01F)));
+				event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
 			}
     	}
     } 

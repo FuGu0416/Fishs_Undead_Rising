@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
@@ -94,7 +95,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
 	
     @Override
     protected void registerGoals() {
-        /*if(!FURConfig.SunScreen_Mode.get())*/this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
+        if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
     	this.goalSelector.addGoal(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.goalSelector.addGoal(3, new AttackGoal(this)); 
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -116,8 +117,8 @@ public class WendigoEntity extends Monster implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.FOLLOW_RANGE, 35.0D)
-        		.add(Attributes.MAX_HEALTH, 60.0D/*FURConfig.Wendigo_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 8.0D/*FURConfig.Wendigo_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 60.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 8.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
@@ -153,7 +154,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
         	this.setPouncing(false);
         }
         
-    	if (/*!FURConfig.SunScreen_Mode.get() && */this.isSunBurnTick()) {
+    	if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
     		this.setSecondsOnFire(40);
         } 
     }
@@ -175,9 +176,9 @@ public class WendigoEntity extends Monster implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wendigo_Health.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wendigo_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Wendigo_Attack.get());
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
         
     	return livingdata;
     }

@@ -64,6 +64,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ICharging;
 import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.entities.ai.FloatingMoveControl;
@@ -148,7 +149,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 		return Mob.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.15D)
         		.add(Attributes.FOLLOW_RANGE, 16.0D)
-        		.add(Attributes.MAX_HEALTH, 8.0D/*FURConfig.Wisp_Health.get()*/)
+        		.add(Attributes.MAX_HEALTH, 8.0D)
         		.add(Attributes.ATTACK_DAMAGE, 1.0D)
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
 	}
@@ -181,7 +182,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	
 	@Override
 	public void tick() {
-		if (this.isAlive() && (!this.isTame() || (this.isTame()/* && FURConfig.Wisp_Tamed_Explosion.get()*/))) {
+		if (this.isAlive() && (!this.isTame() || (this.isTame() && FURConfig.Wisp_Tamed_Explosion.get()))) {
 			this.oldSwell = this.swell;
 
             int i = this.getSwellDir();
@@ -220,7 +221,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
     private void explodeWisp() {
         if (!this.level().isClientSide()) {
            this.dead = true;
-           this.level().explode(this, this.getX(), this.getY(), this.getZ(), 3.0F/*FURConfig.Wisp_ExplosionPower.get().floatValue()*/, net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this), Level.ExplosionInteraction.NONE);
+           this.level().explode(this, this.getX(), this.getY(), this.getZ(), FURConfig.Wisp_ExplosionPower.get().floatValue(), net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this), Level.ExplosionInteraction.NONE);
            if(this.isTame())
         	   this.spawnAtLocation(this.getAshes(), 1); 
            this.discard();
@@ -310,8 +311,8 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-        /*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wisp_Health.get());
-    	this.setHealth(this.getMaxHealth());*/
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wisp_Health.get());
+    	this.setHealth(this.getMaxHealth());
 		
 		if (reason != MobSpawnType.BUCKET) {
 			this.entityData.set(SKIN_TYPE, this.random.nextInt(3));

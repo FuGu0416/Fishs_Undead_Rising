@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.flying;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityAIDropRider;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.init.FURTagRegistry;
@@ -84,8 +85,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.1D)
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
-        		.add(Attributes.MAX_HEALTH, 10.0D/*FURConfig.Ptera_Health.get()*/)
-        		.add(Attributes.ATTACK_DAMAGE, 3.0D/*FURConfig.Ptera_Attack.get()*/)
+        		.add(Attributes.MAX_HEALTH, 10.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 3.0D)
         		.add(Attributes.FLYING_SPEED, 0.1D);
     }
     
@@ -137,9 +138,9 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	@Override
 	public boolean doHurtTarget(Entity par1Entity) {
 		if (par1Entity.getType().is(FURTagRegistry.PTERA_TARGETS)) {
-			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D/*FURConfig.Ptera_Attack.get()*/ * 2.0D);
+			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get() * 2.0D);
 		} else {
-			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D/*FURConfig.Ptera_Attack.get()*/);
+			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
 		}
 		
 		boolean flag = super.doHurtTarget(par1Entity);
@@ -163,9 +164,9 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	}
    
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {
-		/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ptera_Health.get());
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ptera_Health.get());
        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
-       	this.setHealth(this.getMaxHealth());*/
+       	this.setHealth(this.getMaxHealth());
 	   
 		if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
 			this.setSkin(Integer.valueOf(this.random.nextInt(6)));
