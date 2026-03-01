@@ -7,7 +7,10 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
+import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
+import com.Fishmod.fur.entities.tameable.CocoonEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -32,6 +35,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -64,8 +68,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class EnigmothEntity extends RidableFlyingMobEntity {
+public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("enigmoth.model.idle");
+	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("enigmoth.model.walk");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("enigmoth.model.fly");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("enigmoth.model.attack_blend");
+    private static final RawAnimation CAST = RawAnimation.begin().thenPlay("enigmoth.model.cast_blend");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(EnigmothEntity.class, EntityDataSerializers.INT);
 
 	private int skinFixedTick;
@@ -249,14 +270,14 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     	} else {
     		if (this.level() instanceof ServerLevel) {		
     			this.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
-    	        /*CompoundTag CompoundTag = new CompoundTag();
+    	        CompoundTag CompoundTag = new CompoundTag();
     	        this.addAdditionalSaveData(CompoundTag);
     	         	        
-	    		VespaCocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.VESPACOCOON, ((ServerLevel) this.level()), this.blockPosition());
+	    		CocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), ((ServerLevel) this.level()), this.blockPosition());
 	    		
 	    		if(pupa != null) {
 	    			pupa.serializeNBT().put("EnigmothData", CompoundTag);
-	    		}*/
+	    		}
     		}   
     		
     		this.discard();
@@ -309,6 +330,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     }
+    
+	@Override
+	public boolean doHurtTarget(Entity par1Entity) {
+		boolean flag = super.doHurtTarget(par1Entity);
+		
+        if (flag) {
+        	this.level().broadcastEntityEvent(this, (byte)4);
+        }
+        
+		return flag;
+	}
 
     /**
      * Called when the entity is attacked.
@@ -325,9 +357,9 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	/*this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * (this.isBaby() ? 0.2F : 1.0F));
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * (this.isBaby() ? 0.2F : 1.0F));
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
-    	this.setHealth(this.getMaxHealth());*/
+    	this.setHealth(this.getMaxHealth());
  
     	if (worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) && p_213386_3_ != MobSpawnType.SPAWN_EGG) {
     		BlockPos ground = worldIn.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, this.blockPosition());
@@ -374,8 +406,11 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
 		switch(id) {
+			case 4:
+				this.triggerAnim("trigger_controller", "attack");
+				break;
 			case 10:
-				this.spellTicks = this.isBaby() ? 60: 15;
+				this.triggerAnim("trigger_controller", "cast");
 				break;
 			case 39:
 				this.skinFixedTick = 2 * 60 * 20;
@@ -463,15 +498,15 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
         
         protected void castSpell() {
        	 	for(int i = 0 ; i < 8 ; i++) {
-       	 		/*Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
+       	 		Double d0 = new Random().nextDouble() * 8.0D - 4.0D;
        	 		Double d1 = new Random().nextDouble() * 8.0D - 4.0D;
-       	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES, EnigmothEntity.this, d0, - 2.4D, d1, EnigmothEntity.this.level);
+       	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES.get(), EnigmothEntity.this, d0, - 2.4D, d1, EnigmothEntity.this.level());
        	 		entityammo.setPos(EnigmothEntity.this.getX() + d0 * 0.25D, EnigmothEntity.this.getY() + (double)(EnigmothEntity.this.getBbHeight() / 2.0F) + 1.5D, EnigmothEntity.this.getZ() + d1 * 0.25D);
 	       	 	
        	 		if(!EnigmothEntity.this.level().isClientSide()) {
 	       	 		EnigmothEntity.this.level().addFreshEntity(entityammo);	
 	       	 		entityammo.setScaleType(EnigmothEntity.this.getSkin());
-	       	 	}*/
+	       	 	}
        	 	}	
        	 	
        	 	if (EnigmothEntity.this.getSkin() == 2) {
@@ -574,5 +609,30 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 		}
 
 		return entity;
+	}
+
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (state.isMoving()) {
+    		if (this.onGround()) {
+    			state.getController().setAnimation(WALK);
+    		} else {
+    			state.getController().setAnimation(FLY);
+    		}
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+    	return PlayState.CONTINUE;
+    }    
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("cast", CAST));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
 	}
 }

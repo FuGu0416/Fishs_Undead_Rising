@@ -17,7 +17,6 @@ public class WraithRenderer extends GeoEntityRenderer<WraithEntity> {
     public WraithRenderer(EntityRendererProvider.Context rendermanagerIn) {
     	super(rendermanagerIn, new WraithModel());
     	this.addRenderLayer(new LayerWraith<>(this));
-    	//this.addRenderLayer(new AutoGlowingGeoLayer<>(this));
         this.shadowRadius = 0.0F;
     }
     
