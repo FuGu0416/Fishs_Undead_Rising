@@ -129,9 +129,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	   	
     }
     
-    public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, ServerLevelAccessor level, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) || (p_223316_4_.nextInt(20) == 0);
-    	return flag && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, level, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, ServerLevelAccessor level, MobSpawnType p_223316_2_, BlockPos pos, RandomSource p_223316_4_) {
+    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (p_223316_4_.nextInt(5) == 0) : (p_223316_4_.nextInt(20) == 0);
+    	BlockPos ground = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
+    	return flag && (pos.getY() >= ground.getY() - 2) && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, level, p_223316_2_, pos, p_223316_4_);
     }
     
     /**
@@ -367,13 +368,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	this.setHealth(this.getMaxHealth());
  
     	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS)) 
-    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG || p_213386_3_ != MobSpawnType.MOB_SUMMONED)) {
-    		BlockPos ground = worldIn.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, this.blockPosition());
-    		if (this.level().getRandom().nextFloat() <= 0.8F && ground.getY() > 0) {
-    			this.setBaby(true);
-    		} else if (ground.getY() ==  0) {
-    			this.moveTo(this.blockPosition().above(70), 0.0F, 0.0F);
-    		}
+    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG || p_213386_3_ != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
+		    this.setBaby(true);   		
     	}
     	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);

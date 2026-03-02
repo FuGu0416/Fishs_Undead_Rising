@@ -28,6 +28,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
@@ -83,10 +84,6 @@ public class FlyingMobEntity extends FURTameableEntity {
     
     @Override
     public void doSitCommand(Player playerIn) {
-    	/*if (SpawnUtil.getHeight(this).getY() > 0 || this.isBaby()) {   		
-    		this.setNoGravity(false);
-    	}*/
-    	
     	super.doSitCommand(playerIn);
     }
     
@@ -330,7 +327,11 @@ public class FlyingMobEntity extends FURTameableEntity {
         private final double speed;
         private final int horizontalRange = 10;
         private final int verticalRange = 6;
-        private final int voidCheckDepth = 12;
+
+        private Vec3 lastPos = Vec3.ZERO;
+        private int stuckTicks = 0;
+        private static final int STUCK_THRESHOLD = 40;
+        private static final double MIN_MOVE_SQ = 0.002D;
 
         public AIRandomFly(FlyingMobEntity entity, double speed) {
             this.parentEntity = entity;
@@ -340,40 +341,66 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public boolean canUse() {
-            if (this.parentEntity.getTarget() != null)
-                return false;
-
-            MoveControl move = this.parentEntity.getMoveControl();
-
-            if (!move.hasWanted())
-                return true;
-
-            double dx = move.getWantedX() - this.parentEntity.getX();
-            double dy = move.getWantedY() - this.parentEntity.getY();
-            double dz = move.getWantedZ() - this.parentEntity.getZ();
-            double distSq = dx * dx + dy * dy + dz * dz;
-
-            return distSq < 2.0D || distSq > 400.0D;
+            return this.parentEntity.getTarget() == null && !(this.parentEntity.getNavigation() instanceof GroundPathNavigation);
         }
 
         @Override
         public boolean canContinueToUse() {
-            return false;
+            return true;
         }
 
         @Override
         public void start() {
+            pickNewTarget();
+            this.lastPos = this.parentEntity.position();
+            this.stuckTicks = 0;
+        }
 
+        @Override
+        public void tick() {
+            Vec3 current = this.parentEntity.position();
+
+            if (current.distanceToSqr(this.lastPos) < MIN_MOVE_SQ) {
+                this.stuckTicks++;
+            } else {
+                this.stuckTicks = 0;
+            }
+
+            this.lastPos = current;
+
+            if (this.stuckTicks > STUCK_THRESHOLD) {
+                Vec3 look = this.parentEntity.getViewVector(0.0F);
+                Vec3 side = new Vec3(-look.z, 0, look.x);
+                Vec3 escape = current.add(side.scale(4.0D + this.parentEntity.getRandom().nextDouble() * 2.0D)).add(0, 3.0D, 0);
+
+                this.parentEntity.getMoveControl().setWantedPosition(escape.x, escape.y, escape.z, this.speed);
+                this.stuckTicks = 0;
+                
+                return;
+            }
+
+            MoveControl move = this.parentEntity.getMoveControl();
+            double dx = move.getWantedX() - current.x;
+            double dy = move.getWantedY() - current.y;
+            double dz = move.getWantedZ() - current.z;
+
+            double distSq = dx * dx + dy * dy + dz * dz;
+
+            if (!move.hasWanted() || distSq < 2.0D || distSq > 400.0D) {
+                this.pickNewTarget();
+            }
+        }
+
+        private void pickNewTarget() {
             for (int i = 0; i < 5; i++) {
                 Vec3 target = findAirPosition();
-
+                
                 if (target == null)
                     continue;
 
                 target = adjustHeightSafety(target);
 
                 this.parentEntity.getMoveControl().setWantedPosition(target.x + 0.5D, target.y + 0.5D, target.z + 0.5D, this.speed);
-
                 this.parentEntity.getLookControl().setLookAt(target.x, target.y, target.z, 180.0F, 20.0F);
 
                 break;
@@ -383,12 +410,12 @@ public class FlyingMobEntity extends FURTameableEntity {
         @Nullable
         private Vec3 findAirPosition() {
             Vec3 view = this.parentEntity.getViewVector(0.0F);
-            Vec3 pos = HoverRandomPos.getPos(this.parentEntity, horizontalRange, verticalRange, view.x, view.z, (float) Math.PI / 2F, 3, 1);
+            Vec3 pos = HoverRandomPos.getPos(this.parentEntity, this.horizontalRange, this.verticalRange, view.x, view.z, (float) Math.PI / 2F, 3, 1);
 
             if (pos != null)
                 return pos;
 
-            return AirAndWaterRandomPos.getPos(this.parentEntity, horizontalRange, verticalRange, -2, view.x, view.y, view.z);
+            return AirAndWaterRandomPos.getPos(this.parentEntity, this.horizontalRange, this.verticalRange, -2, view.x, view.y, view.z);
         }
 
         private Vec3 adjustHeightSafety(Vec3 target) {
@@ -406,9 +433,8 @@ public class FlyingMobEntity extends FURTameableEntity {
                     target = new Vec3(target.x, maxY, target.z);
             }
 
-            if (isOverVoid(target)) {
-                double safeHeight = Math.max(currentY + 4.0D, 40.0D);
-                target = new Vec3(target.x, safeHeight, target.z);
+            if (this.isOverVoid(target) && target.y < 60) {
+                target = new Vec3(target.x, 70, target.z);
             }
 
             if (target.y < -20) {
@@ -419,12 +445,12 @@ public class FlyingMobEntity extends FURTameableEntity {
         }
 
         private boolean isOverVoid(Vec3 pos) {
-            BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos(pos.x, pos.y, pos.z);
+            BlockPos.MutableBlockPos check = new BlockPos.MutableBlockPos(pos.x, pos.y, pos.z);
 
-            for (int i = 0; i < this.voidCheckDepth; i++) {
-                checkPos.move(0, -1, 0);
+            for (int i = 0; i < 40; i++) {
+                check.move(0, -1, 0);
 
-                if (!this.parentEntity.level().isEmptyBlock(checkPos)) {
+                if (!this.parentEntity.level().isEmptyBlock(check)) {
                     return false;
                 }
             }
