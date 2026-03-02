@@ -41,6 +41,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_CACTOID = registerKey("add_cactoid");
 	public static final ResourceKey<BiomeModifier> ADD_PTERA = registerKey("add_ptera");
 	public static final ResourceKey<BiomeModifier> ADD_SALAMANDER = registerKey("add_salamander");
+	public static final ResourceKey<BiomeModifier> ADD_ENIGMOTH = registerKey("add_enigmoth");
 	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -89,6 +90,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.PTERA.get(), 20, 2, 4)); 
         addSpawn(context, ADD_SALAMANDER, HolderSet.direct(biomes.getOrThrow(Biomes.NETHER_WASTES), biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SALAMANDER.get(), 10, 4, 8));
+        addSpawn(context, ADD_ENIGMOTH, HolderSet.direct(biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.WARPED_FOREST)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.ENIGMOTH.get(), 1, 1, 2));
     }
     
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

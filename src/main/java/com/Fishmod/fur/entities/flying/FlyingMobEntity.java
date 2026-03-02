@@ -7,7 +7,6 @@ import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +28,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
@@ -325,90 +323,113 @@ public class FlyingMobEntity extends FURTameableEntity {
            Vec3 vector3d2 = HoverRandomPos.getPos(FlyingMobEntity.this, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
            return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(FlyingMobEntity.this, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
         }
-     }
+	}
     
     static class AIRandomFly extends Goal {
         private final FlyingMobEntity parentEntity;
+        private final double speed;
+        private final int horizontalRange = 10;
+        private final int verticalRange = 6;
+        private final int voidCheckDepth = 12;
 
-        public AIRandomFly(FlyingMobEntity entityFlyingMob) {
-            this.parentEntity = entityFlyingMob;
+        public AIRandomFly(FlyingMobEntity entity, double speed) {
+            this.parentEntity = entity;
+            this.speed = speed;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
+        @Override
         public boolean canUse() {
-            MoveControl entitymovehelper = this.parentEntity.getMoveControl();
-            
-            if (this.parentEntity.getNavigation() instanceof GroundPathNavigation) {
-            	return false;
-            }
-            
-            if (!entitymovehelper.hasWanted()) {
-                return true;
-            } else if (this.parentEntity.getTarget() != null) {
-            	return false;
-            } else {
-                double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
-                double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
-                double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+            if (this.parentEntity.getTarget() != null)
+                return false;
 
-                return d3 < 1.0D || d3 > 3600.0D;
-            }
+            MoveControl move = this.parentEntity.getMoveControl();
+
+            if (!move.hasWanted())
+                return true;
+
+            double dx = move.getWantedX() - this.parentEntity.getX();
+            double dy = move.getWantedY() - this.parentEntity.getY();
+            double dz = move.getWantedZ() - this.parentEntity.getZ();
+            double distSq = dx * dx + dy * dy + dz * dz;
+
+            return distSq < 2.0D || distSq > 400.0D;
         }
 
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
+        @Override
         public boolean canContinueToUse() {
             return false;
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void start() {           
-            for (int i = 0; i < 3; ++i) {
-            	Vec3 vector3d = this.findPos();
-            	       
-            	if (vector3d != null) {
-            		BlockPos pos = new BlockPos((int)vector3d.x, (int)vector3d.y, (int)vector3d.z);
-            		int groundHeight;
-            		
-            		if (this.parentEntity.level().dimension() != Level.END) {
-            			groundHeight = SpawnUtil.getHeight(this.parentEntity.level(), pos).getY();
-            		} else {
-            			groundHeight = this.parentEntity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY();
-            			
-            			if (groundHeight == 0) {
-            				groundHeight = Math.min(((this.parentEntity.blockPosition().getY() / 16) + 1) * 8, 60);
-            			}
-            		}
-            		
-    	            if (this.parentEntity.isInWaterRainOrBubble()) {
-    	            	vector3d = new Vec3(vector3d.x, Math.min(vector3d.y, groundHeight + 3.0D), vector3d.z);       	            
-                	} else if (FURConfig.FlyingHeight_limit.get() != 0 && ((vector3d.y > (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) + 4.0D) || (vector3d.y < (double)(groundHeight + FURConfig.FlyingHeight_limit.get()) - 8.0D ))) {
-            			vector3d = new Vec3(vector3d.x, groundHeight + FURConfig.FlyingHeight_limit.get(), vector3d.z);
-    	            }
-                         
-            		this.parentEntity.moveControl.setWantedPosition(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 1.0D);
-            		if (this.parentEntity.getTarget() == null) {
-            			this.parentEntity.getLookControl().setLookAt(vector3d.x + 0.5D, vector3d.y + 0.5D, vector3d.z + 0.5D, 180.0F, 20.0F);
-            		}
-            		
-            		break;
-            	}
+        @Override
+        public void start() {
+
+            for (int i = 0; i < 5; i++) {
+                Vec3 target = findAirPosition();
+
+                if (target == null)
+                    continue;
+
+                target = adjustHeightSafety(target);
+
+                this.parentEntity.getMoveControl().setWantedPosition(target.x + 0.5D, target.y + 0.5D, target.z + 0.5D, this.speed);
+
+                this.parentEntity.getLookControl().setLookAt(target.x, target.y, target.z, 180.0F, 20.0F);
+
+                break;
             }
         }
-        
+
         @Nullable
-        private Vec3 findPos() {
-           Vec3 vector3d;
-           vector3d = this.parentEntity.getViewVector(0.0F);
-           Vec3 vector3d2 = HoverRandomPos.getPos(this.parentEntity, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
-           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(this.parentEntity, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
+        private Vec3 findAirPosition() {
+            Vec3 view = this.parentEntity.getViewVector(0.0F);
+            Vec3 pos = HoverRandomPos.getPos(this.parentEntity, horizontalRange, verticalRange, view.x, view.z, (float) Math.PI / 2F, 3, 1);
+
+            if (pos != null)
+                return pos;
+
+            return AirAndWaterRandomPos.getPos(this.parentEntity, horizontalRange, verticalRange, -2, view.x, view.y, view.z);
+        }
+
+        private Vec3 adjustHeightSafety(Vec3 target) {
+            double currentY = this.parentEntity.getY();
+            double limit = FURConfig.FlyingHeight_limit.get();
+
+            if (limit > 0) {
+                double minY = currentY - limit;
+                double maxY = currentY + limit;
+
+                if (target.y < minY)
+                    target = new Vec3(target.x, minY, target.z);
+
+                if (target.y > maxY)
+                    target = new Vec3(target.x, maxY, target.z);
+            }
+
+            if (isOverVoid(target)) {
+                double safeHeight = Math.max(currentY + 4.0D, 40.0D);
+                target = new Vec3(target.x, safeHeight, target.z);
+            }
+
+            if (target.y < -20) {
+                target = new Vec3(target.x, 50, target.z);
+            }
+
+            return target;
+        }
+
+        private boolean isOverVoid(Vec3 pos) {
+            BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos(pos.x, pos.y, pos.z);
+
+            for (int i = 0; i < this.voidCheckDepth; i++) {
+                checkPos.move(0, -1, 0);
+
+                if (!this.parentEntity.level().isEmptyBlock(checkPos)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
     

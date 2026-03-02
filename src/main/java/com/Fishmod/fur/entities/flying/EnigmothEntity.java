@@ -130,7 +130,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     }
     
     public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, ServerLevelAccessor level, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (level.canSeeSky(p_223316_3_)) : p_223316_4_.nextInt(20) == 0;
+    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) || (p_223316_4_.nextInt(20) == 0);
     	return flag && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, level, p_223316_2_, p_223316_3_, p_223316_4_);
     }
     
@@ -168,7 +168,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     
     @Override
     protected Goal wanderGoal() {
-    	return (this.isBaby() || this.getNavigation() instanceof GroundPathNavigation) ? new WaterAvoidingRandomStrollGoal(this, 1.0D) : new FlyingMobEntity.AIRandomFly(this);
+    	return (this.isBaby() || this.getNavigation() instanceof GroundPathNavigation) ? new WaterAvoidingRandomStrollGoal(this, 1.0D) : new FlyingMobEntity.AIRandomFly(this, 1.0D);
     }
     
     @Override
@@ -244,7 +244,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     
     @Override
     public boolean isFood(ItemStack stack) {
-        return this.isTame() && (stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT));
+        return /*this.isTame() && */(stack.getItem().equals(Items.CHORUS_FRUIT) || stack.getItem().equals(Items.POPPED_CHORUS_FRUIT));
     }
     
     @Override
@@ -254,7 +254,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     
     @Override
     protected void ageBoundaryReached() {
-    	if(this.isBaby()) {
+    	if (this.isBaby()) {
     		this.setNoGravity(false);
     		this.moveControl = new MoveControl(this);
     		this.navigation = new GroundPathNavigation(this, this.level());
@@ -268,15 +268,20 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         	this.setHealth(this.getHealth() * 0.2F);
         	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * 0.25F);
     	} else {
-    		if (this.level() instanceof ServerLevel) {		
+    		if (this.level() instanceof ServerLevel server) {		
     			this.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
     	        CompoundTag CompoundTag = new CompoundTag();
     	        this.addAdditionalSaveData(CompoundTag);
     	         	        
-	    		CocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), ((ServerLevel) this.level()), this.blockPosition());
+	    		CocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), server, this.blockPosition());
 	    		
-	    		if(pupa != null) {
+	    		if (pupa != null) {
 	    			pupa.serializeNBT().put("EnigmothData", CompoundTag);
+	    			pupa.setSkin(1);
+	    			
+	    			if (this.isTame() && this.getOwner() instanceof Player player) {
+	    				pupa.tame(player);
+	    			}
 	    		}
     		}   
     		
@@ -361,7 +366,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
     	this.setHealth(this.getMaxHealth());
  
-    	if (worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) && p_213386_3_ != MobSpawnType.SPAWN_EGG) {
+    	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS)) 
+    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG || p_213386_3_ != MobSpawnType.MOB_SUMMONED)) {
     		BlockPos ground = worldIn.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, this.blockPosition());
     		if (this.level().getRandom().nextFloat() <= 0.8F && ground.getY() > 0) {
     			this.setBaby(true);
@@ -612,15 +618,16 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	}
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving()) {
-    		if (this.onGround()) {
-    			state.getController().setAnimation(WALK);
-    		} else {
-    			state.getController().setAnimation(FLY);
-    		}
-        } else {
-            state.getController().setAnimation(IDLE);
-        }
+    	
+		if (this.onGround() || this.isBaby()) {
+			if (state.isMoving()) {
+				state.getController().setAnimation(WALK);
+			} else {
+				state.getController().setAnimation(IDLE);
+			}
+		} else {
+			state.getController().setAnimation(FLY);
+		}
         
     	return PlayState.CONTINUE;
     }    

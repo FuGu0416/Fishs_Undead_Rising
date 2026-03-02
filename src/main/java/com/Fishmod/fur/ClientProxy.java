@@ -11,6 +11,7 @@ import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
+import com.Fishmod.fur.client.renderer.entity.CocoonRenderer;
 import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
 import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
@@ -89,7 +90,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.PTERA.get(), PteraRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SALAMANDER.get(), SalamanderRenderer::new);        
     	EntityRenderers.register(FUREntityRegistry.ENIGMOTH.get(), EnigmothRenderer::new); 
-    	
+        EntityRenderers.register(FUREntityRegistry.COCOON.get(), manager -> new CocoonRenderer(manager));
+
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
@@ -113,7 +115,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.RAVEN, manager -> new RavenRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.SEAGULL, manager -> new RavenRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.VESPA, manager -> new VespaRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.VESPACOCOON, manager -> new VespaCocoonRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));

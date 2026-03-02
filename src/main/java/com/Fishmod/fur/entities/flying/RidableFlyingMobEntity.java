@@ -96,7 +96,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     
     @Override
     public void positionRider(Entity passenger, Entity.MoveFunction p_19958_) {
-        super.positionRider(passenger);
+        super.positionRider(passenger, p_19958_);
         if (passenger instanceof Mob) {
         	this.yBodyRot = ((Mob)passenger).yBodyRot;
         	this.setYRot(passenger.getYRot());

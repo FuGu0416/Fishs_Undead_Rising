@@ -19,6 +19,6 @@ public class EnigmothRenderer extends GeoEntityRenderer<EnigmothEntity> {
         this.shadowRadius = 1.0F;
         
         this.addRenderLayer(new LayerEnigmoth(this));
-    	this.addRenderLayer(new LayerSaddle<>(this, new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/enighmoth/enighmoth_saddle.png")));
+    	this.addRenderLayer(new LayerSaddle<>(this, new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/enigmoth/enigmoth_saddle.png")));
     }    
 }

@@ -874,7 +874,6 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		if (FURConfig.pSpawnRate_Cactoid.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 8),
     	            new ItemStack(FURItemRegistry.CACTUS_FRUIT.get(), 1),
@@ -882,7 +881,6 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		if (FURConfig.pSpawnRate_Piranha.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 5),
     	            new ItemStack(FURItemRegistry.PIRANHA_BUCKET.get(), 1),
@@ -890,7 +888,6 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		if (FURConfig.pSpawnRate_Swarmer.get() > 0)
     		genericTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 5),
     	            new ItemStack(FURItemRegistry.SWARMER_BUCKET.get(), 1),
@@ -924,7 +921,6 @@ public class FURServerEvents {
     	            20, 
     	            0.05f
     	        ));
-    		if (FURConfig.pSpawnRate_Wisp.get() > 0)
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 3),
     	            new ItemStack(FURItemRegistry.WISP_IN_A_BOTTLE.get(), 1),

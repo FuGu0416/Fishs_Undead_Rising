@@ -71,7 +71,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this));
+		this.goalSelector.addGoal(5, new FlyingMobEntity.AIRandomFly(this, 1.0D));
 		if(this.level().getDifficulty() == Difficulty.HARD)
 			this.goalSelector.addGoal(1, new EntityAIDropRider(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));

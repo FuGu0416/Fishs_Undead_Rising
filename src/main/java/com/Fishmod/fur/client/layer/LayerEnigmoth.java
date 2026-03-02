@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.texture.AutoGlowingTexture;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
@@ -22,8 +21,8 @@ public class LayerEnigmoth extends GeoRenderLayer<EnigmothEntity> {
 			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/enigmoth/enigmoth_eyes2.png")
 	};
 	
-	public LayerEnigmoth(GeoRenderer<EnigmothEntity> mycosisRenderer) {
-		super(mycosisRenderer);
+	public LayerEnigmoth(GeoRenderer<EnigmothEntity> renderer) {
+		super(renderer);
 	}
 	
 	/**
@@ -32,15 +31,7 @@ public class LayerEnigmoth extends GeoRenderLayer<EnigmothEntity> {
 	 * Uses a custom RenderType similar to {@link RenderType#eyes(ResourceLocation)} by default, which may not be ideal in all circumstances
 	 */
 	protected RenderType getRenderType(EnigmothEntity animatable) {
-		return AutoGlowingTexture.getRenderType(getTextureResource(animatable));
-	}
-	
-	/**
-	 * Get the texture resource path for the given {@link GeoAnimatable}.<br>
-	 * By default, falls back to {@link GeoRenderer#getTextureLocation(GeoAnimatable)}
-	 */
-	protected ResourceLocation getTextureResource(EnigmothEntity animatable) {
-		return animatable.isBaby() ? this.renderer.getTextureLocation(animatable) : TEXTURES_EYE[animatable.getSkin()];
+		return animatable.isBaby() ? AutoGlowingTexture.getRenderType(getTextureResource(animatable)) : RenderType.eyes(TEXTURES_EYE[animatable.getSkin()]);
 	}
 
 	/**
@@ -48,9 +39,7 @@ public class LayerEnigmoth extends GeoRenderLayer<EnigmothEntity> {
 	 * This is called <i>after</i> the animatable has been rendered, but before supplementary rendering like nametags.
 	 */
 	@Override
-	public void render(PoseStack poseStack, EnigmothEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-		if (animatable.getSkin() != 2) return;
-		
+	public void render(PoseStack poseStack, EnigmothEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {		
 		RenderType emissiveRenderType = getRenderType(animatable);
 
 		getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, emissiveRenderType,
