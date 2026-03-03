@@ -78,7 +78,7 @@ public class MessageMountSpecial {
 			entity.level.broadcastEntityEvent(entity, (byte)10);					
 		}*/ else if (entity instanceof EnigmothEntity) {
 	   	 	for (int i = 0 ; i < 5 ; i++) {
-	   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES.get(), (LivingEntity)entity, 0.0D, 0.0D, 0.0D, entity.level());
+	   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES.get(), (LivingEntity)entity, entity.getDeltaMovement().x, 0.0D, entity.getDeltaMovement().z, entity.level());
 	   	 		entityammo.setPos(message.posX - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()), message.posY - (double)(entity.getBbHeight() / 2.0F), message.posZ - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()));		   	 			
 	   	 		entity.level().addFreshEntity(entityammo);	
 	   	 		entityammo.setScaleType(((EnigmothEntity) entity).getSkin());

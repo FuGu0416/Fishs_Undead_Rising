@@ -87,7 +87,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, 10.0D)
         		.add(Attributes.ATTACK_DAMAGE, 3.0D)
-        		.add(Attributes.FLYING_SPEED, 0.1D);
+        		.add(Attributes.FLYING_SPEED, 1.0D);
     }
     
     public static boolean checkPteraSpawnRules(EntityType<? extends PteraEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {

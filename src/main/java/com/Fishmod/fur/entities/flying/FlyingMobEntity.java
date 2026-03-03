@@ -7,6 +7,7 @@ import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -341,7 +341,7 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public boolean canUse() {
-            return this.parentEntity.getTarget() == null && !(this.parentEntity.getNavigation() instanceof GroundPathNavigation);
+            return this.parentEntity.getTarget() == null && !(this.parentEntity.getNavigation() instanceof GroundPathNavigation) && !this.parentEntity.isInSittingPose();
         }
 
         @Override
@@ -461,86 +461,78 @@ public class FlyingMobEntity extends FURTameableEntity {
     
     static class FlyingMoveHelper extends MoveControl {
         private final FlyingMobEntity parentEntity;
-        private int courseChangeCooldown;
-		double entityMoveSpeed;
-		
+
+        private Vec3 velocity = Vec3.ZERO;
+
+        private static final double ACCELERATION = 0.08D;
+        private static final double DRAG = 0.92D;
+
         public FlyingMoveHelper(FlyingMobEntity flyer) {
             super(flyer);
             this.parentEntity = flyer;
-            this.entityMoveSpeed = flyer.getAttributeValue(Attributes.FLYING_SPEED);
         }
 
+        @Override
         public void tick() {
-            if (this.operation == MoveControl.Operation.MOVE_TO) {
-                if (this.courseChangeCooldown-- <= 0) {
-                    this.courseChangeCooldown += this.parentEntity.getRandom().nextInt(5) + 2;
-                    Vec3 vector3d = new Vec3(this.wantedX - this.parentEntity.getX(), this.wantedY - this.parentEntity.getY(), this.wantedZ - this.parentEntity.getZ());
-                    double d0 = vector3d.length();
-                    vector3d = vector3d.normalize();
-                    if (this.isNotColliding(this.wantedX, this.wantedY, this.wantedZ, d0) && this.isNotPassengerColliding(this.wantedX, this.wantedY, this.wantedZ, d0)) {
-                        this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add(vector3d.scale(this.entityMoveSpeed)));
-                        
-                        float yaw = (float)(Mth.atan2(this.wantedZ - this.parentEntity.getZ(), this.wantedX - this.parentEntity.getX()) * (180D / Math.PI)) - 90.0F;
-                        this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yaw, Movement2RotationAngle(entityMoveSpeed)));
-                    } else {
-                        this.operation = MoveControl.Operation.WAIT;
-                    }
-                }
-                
-    	        if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null) {
-    	        	this.operation = MoveControl.Operation.WAIT;
-    	        }
+            if (this.operation != MoveControl.Operation.MOVE_TO) {
+                this.velocity = this.velocity.scale(0.8D);
+                this.parentEntity.setDeltaMovement(this.velocity);
+                return;
             }
+
+            Vec3 currentPos = this.parentEntity.position();
+            Vec3 targetPos = new Vec3(this.wantedX, this.wantedY, this.wantedZ);
+
+            Vec3 toTarget = targetPos.subtract(currentPos);
+            double distance = toTarget.length();
+
+            if (distance < 0.5D) {
+                this.operation = MoveControl.Operation.WAIT;
+                return;
+            }
+
+            Vec3 desiredDirection = toTarget.normalize();
+
+            // Natural vertical oscillation (wing flutter effect)
+            double oscillation = Math.sin(this.parentEntity.tickCount * 0.3D) * 0.05D;
+
+            desiredDirection = new Vec3(desiredDirection.x, desiredDirection.y + oscillation, desiredDirection.z).normalize();
+
+            // Side drift (moth-like wandering)
+            double driftStrength = 0.05D;
+            Vec3 side = new Vec3(-desiredDirection.z, 0, desiredDirection.x);
+            desiredDirection = desiredDirection.add(side.scale((this.parentEntity.getRandom().nextDouble() - 0.5D) * driftStrength)).normalize();            
+            
+            Vec3 desiredVelocity = desiredDirection.scale(0.4D * this.parentEntity.getAttributeValue(Attributes.FLYING_SPEED));
+
+            // Smooth acceleration
+            this.velocity = this.velocity.lerp(desiredVelocity, ACCELERATION);
+
+            // Apply drag
+            this.velocity = this.velocity.scale(DRAG);
+
+            // Prevent runaway vertical ascent
+            if (this.velocity.y > 0.3D) {
+                this.velocity = new Vec3(this.velocity.x, 0.3D, this.velocity.z);
+            }
+
+            // Collision steering instead of hard WAIT
+            if (!this.isPathClear(this.velocity)) {
+                Vec3 avoidance = new Vec3(-this.velocity.z, 0, this.velocity.x).normalize().scale(0.2D);
+                this.velocity = this.velocity.add(avoidance);
+            }
+
+            this.parentEntity.setDeltaMovement(this.velocity);
+
+            // Smooth yaw rotation
+            float yaw = (float)(Mth.atan2(this.velocity.z, this.velocity.x) * (180F / Math.PI)) - 90.0F;
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yaw, 10.0F));
         }
-        
-        private float Movement2RotationAngle(double movement) {
-        	return (float) (movement * 1214.2857F - 31.428571428571427F);
-        }
 
-        /**
-         * Checks if the lowest passenger's entity bounding box is not colliding with terrain
-         */
-        private boolean isNotPassengerColliding(double x, double y, double z, double distance) {
-            if (this.parentEntity.getPassengers().isEmpty()) {
-                return true;
-            }
-
-            double d0 = (x - this.parentEntity.getX()) / distance;
-            double d1 = (y - this.parentEntity.getY()) / distance;
-            double d2 = (z - this.parentEntity.getZ()) / distance;
-            Entity lowestPassenger = this.parentEntity.getLowestPassenger();
-            AABB axisalignedbb = lowestPassenger.getBoundingBox();
-
-            for (int i = 1; (double)i < distance; ++i) {
-                axisalignedbb = axisalignedbb.move(d0, d1, d2);
-
-                if (!lowestPassenger.level().noCollision(lowestPassenger, axisalignedbb)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-
-        /**
-         * Checks if entity bounding box is not colliding with terrain
-         */
-        private boolean isNotColliding(double x, double y, double z, double distance) {
-            double d0 = (x - this.parentEntity.getX()) / distance;
-            double d1 = (y - this.parentEntity.getY()) / distance;
-            double d2 = (z - this.parentEntity.getZ()) / distance;
-            AABB axisalignedbb = this.parentEntity.getBoundingBox();
-
-            for (int i = 1; (double)i < distance; ++i) {
-                axisalignedbb = axisalignedbb.move(d0, d1, d2);
-
-                if (!this.parentEntity.level().noCollision(this.parentEntity, axisalignedbb)) {
-                    return false;
-                }
-            }
-
-            return true;
+        private boolean isPathClear(Vec3 movement) {
+            AABB box = this.parentEntity.getBoundingBox();
+            AABB nextBox = box.move(movement);
+            return this.parentEntity.level().noCollision(this.parentEntity, nextBox);
         }
     }
     

@@ -120,7 +120,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         		.add(Attributes.FOLLOW_RANGE, 32.0D)
         		.add(Attributes.MAX_HEALTH, 50.0D)
         		.add(Attributes.ATTACK_DAMAGE, 8.0D)
-        		.add(Attributes.FLYING_SPEED, 0.067D);
+        		.add(Attributes.FLYING_SPEED, 0.67D);
     }
 	
     @Override
@@ -130,7 +130,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     }
     
     public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, ServerLevelAccessor level, MobSpawnType p_223316_2_, BlockPos pos, RandomSource p_223316_4_) {
-    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (p_223316_4_.nextInt(5) == 0) : (p_223316_4_.nextInt(20) == 0);
+    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (p_223316_4_.nextInt(3) == 0) : (p_223316_4_.nextInt(20) == 0);
     	BlockPos ground = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
     	return flag && (pos.getY() >= ground.getY() - 2) && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, level, p_223316_2_, pos, p_223316_4_);
     }
@@ -142,19 +142,6 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     public int getMaxSpawnClusterSize() {
        return 1;
     }
-    
-    @Override
-    public void setTame(boolean tamed) {
-    	super.setTame(tamed);
-        
-        if (tamed) {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * 2.0D);
-        	this.setHealth(this.getHealth() * 2.0F);
-        } else {
-        	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get());
-        	this.setHealth(this.getHealth() * 0.5F);
-        }
-	}
 
     @Override
     public void setBaby(boolean p_82227_1_) {
@@ -368,7 +355,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	this.setHealth(this.getMaxHealth());
  
     	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS)) 
-    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG || p_213386_3_ != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
+    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG && p_213386_3_ != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
 		    this.setBaby(true);   		
     	}
     	
@@ -537,7 +524,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         	return null;
         }
     }
-	
+		
 	@Override
 	public int getAmbientSoundInterval() {
 		return 1000;
