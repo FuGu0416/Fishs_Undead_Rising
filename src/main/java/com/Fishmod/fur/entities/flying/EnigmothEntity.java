@@ -13,6 +13,7 @@ import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.init.FURTagRegistry;
 
@@ -55,7 +56,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -90,6 +90,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(EnigmothEntity.class, EntityDataSerializers.INT);
 
 	private int skinFixedTick;
+	private int dustCooldown = 0;
+	private static final int DUST_COOLDOWN_TIME = 6000; // 5 minutes
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, Level worldIn) {
 		super(p_i48549_1_, worldIn);		
@@ -166,16 +168,29 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-    	ItemStack itemstack = player.getItemInHand(hand);
-    	Item item = itemstack.getItem();
+    	ItemStack stack = player.getItemInHand(hand);
 
     	if (this.isTame() && this.isOwnedBy(player) && !this.isBaby()) {
-			if (item.equals(Items.NETHER_WART)) { 	
+            if (stack.is(Items.BRUSH) && this.dustCooldown <= 0) {
+            	this.spawnAtLocation(new ItemStack(FURItemRegistry.ENIGMOTH_DUST.get()), 0.0F);
+                this.swing(InteractionHand.MAIN_HAND);
+                this.playSound(SoundEvents.BRUSH_GENERIC, 0.8F, 1.0F);
+                
+                if (!player.getAbilities().instabuild) {
+	                stack.hurtAndBreak(1, player, (p) -> {
+	                    p.broadcastBreakEvent(hand);
+	                });
+                }
+
+                this.dustCooldown = DUST_COOLDOWN_TIME;
+                
+                return InteractionResult.SUCCESS;
+            } else if (stack.is(Items.NETHER_WART)) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.level().broadcastEntityEvent(this, (byte)39);
 				this.setSkin(2);
 				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
+					stack.shrink(1);
 				}
 				
 	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
@@ -188,12 +203,12 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	            }	
 	        	
 				return InteractionResult.SUCCESS;
-			} else if (item.equals(Items.BLAZE_POWDER)) { 	
+			} else if (stack.is(Items.BLAZE_POWDER)) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.level().broadcastEntityEvent(this, (byte)39);
 				this.setSkin(1);
 				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
+					stack.shrink(1);
                 }
 
 	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
@@ -206,12 +221,12 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	            }	
 	        	
 				return InteractionResult.SUCCESS;
-			} else if (item.equals(Items.ENDER_PEARL)) { 	
+			} else if (stack.is(Items.ENDER_PEARL)) { 	
 				this.skinFixedTick = 2 * 60 * 20;
 				this.level().broadcastEntityEvent(this, (byte)39);
 				this.setSkin(0);
 				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
+					stack.shrink(1);
 				}
 
 	        	this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
@@ -312,6 +327,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 			--this.skinFixedTick;
 		}
 		
+	    if (this.dustCooldown > 0) {
+	    	--this.dustCooldown;
+	    }
+	    
         super.aiStep();
 	}
     
@@ -600,8 +619,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 		return entity;
 	}
 
-    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {   	
 		if (this.onGround() || this.isBaby()) {
 			if (state.isMoving()) {
 				state.getController().setAnimation(WALK);

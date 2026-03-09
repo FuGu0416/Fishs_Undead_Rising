@@ -490,6 +490,11 @@ public class FlyingMobEntity extends FURTameableEntity {
                 this.operation = MoveControl.Operation.WAIT;
                 return;
             }
+            
+	        if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null) {
+	        	this.operation = MoveControl.Operation.WAIT;
+	        	return;
+	        }
 
             Vec3 desiredDirection = toTarget.normalize();
 

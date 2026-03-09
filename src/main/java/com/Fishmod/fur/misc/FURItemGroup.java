@@ -54,9 +54,10 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.POISON_STINGER.get());
             	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());
             	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
+            	output.accept(FURItemRegistry.ENIGMOTH_DUST.get());
             	output.accept(FURItemRegistry.USHABTI.get());
             	output.accept(FURItemRegistry.MIMIC_EGG.get());
- 
+            	
                 // Salamander Egg variants
                 for (int i = 0; i < 2; i++) {
                     ItemStack stack1 = new ItemStack(FURBlockRegistry.SALAMANDER_EGG.get());

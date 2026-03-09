@@ -163,6 +163,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new SalamanderBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
+	public static final RegistryObject<Item> ENIGMOTH_DUST = DEF_REG.register("enigmoth_dust", () -> new Item(new Item.Properties()));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
