@@ -474,6 +474,14 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public void tick() {
+        	if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null && !this.parentEntity.onGround()) {
+        	    Vec3 motion = this.parentEntity.getDeltaMovement();
+        	    motion = new Vec3(motion.x * 0.5D, motion.y - 0.03D, motion.z * 0.5D); // Gradually remove horizontal movement
+        	    this.parentEntity.setDeltaMovement(motion);
+        	    this.operation = MoveControl.Operation.WAIT;
+        	    return;
+        	}
+        	
             if (this.operation != MoveControl.Operation.MOVE_TO) {
                 this.velocity = this.velocity.scale(0.8D);
                 this.parentEntity.setDeltaMovement(this.velocity);
@@ -489,21 +497,16 @@ public class FlyingMobEntity extends FURTameableEntity {
             if (distance < 0.5D) {
                 this.operation = MoveControl.Operation.WAIT;
                 return;
-            }
-            
-	        if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null) {
-	        	this.operation = MoveControl.Operation.WAIT;
-	        	return;
-	        }
+            }            
 
             Vec3 desiredDirection = toTarget.normalize();
 
-            // Natural vertical oscillation (wing flutter effect)
+            // Natural vertical oscillation 
             double oscillation = Math.sin(this.parentEntity.tickCount * 0.3D) * 0.05D;
 
             desiredDirection = new Vec3(desiredDirection.x, desiredDirection.y + oscillation, desiredDirection.z).normalize();
 
-            // Side drift (moth-like wandering)
+            // Side drift 
             double driftStrength = 0.05D;
             Vec3 side = new Vec3(-desiredDirection.z, 0, desiredDirection.x);
             desiredDirection = desiredDirection.add(side.scale((this.parentEntity.getRandom().nextDouble() - 0.5D) * driftStrength)).normalize();            

@@ -311,7 +311,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     }
     
 	public void aiStep() {
-		if (this.level().isClientSide) {
+		if (this.level().isClientSide && this.dustCooldown <= 0) {
 			if (!this.isBaby()) {
 				for(int i = 0; i < 2; ++i) {
 					this.level().addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
@@ -437,6 +437,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
         this.skinFixedTick = compound.getInt("SkinFixedTick");
+        this.dustCooldown = compound.getInt("dustCooldown");
     }
 
     /**
@@ -447,6 +448,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getSkin());
         compound.putInt("SkinFixedTick", this.skinFixedTick);
+        compound.putInt("dustCooldown", this.dustCooldown);
     }
 		
 	public class AIUseSpell extends Goal {
