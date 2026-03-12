@@ -20,6 +20,7 @@ import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
 import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
+import com.Fishmod.fur.client.renderer.entity.ScarabRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
@@ -90,8 +91,9 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.PTERA.get(), PteraRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SALAMANDER.get(), SalamanderRenderer::new);        
     	EntityRenderers.register(FUREntityRegistry.ENIGMOTH.get(), EnigmothRenderer::new); 
-        EntityRenderers.register(FUREntityRegistry.COCOON.get(), manager -> new CocoonRenderer(manager));
-
+        EntityRenderers.register(FUREntityRegistry.COCOON.get(), CocoonRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.SCARAB.get(), ScarabRenderer::new); 
+        
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
@@ -123,7 +125,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
-        EntityRenderers.register(FUREntityRegistry.SCARAB, manager -> new ScarabRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.MUMMIFIEDCOD, manager -> new MummifiedCodRenderer(manager)); 

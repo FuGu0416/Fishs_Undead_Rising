@@ -27,6 +27,7 @@ import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
+import com.Fishmod.fur.entities.tameable.ScarabEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
@@ -76,9 +77,10 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<CactoidEntity>> CACTOID = DEF_REG.register("cactoid", () -> (EntityType<CactoidEntity>) EntityType.Builder.of(CactoidEntity::new, MobCategory.MONSTER).sized(0.5F, 1.1F).setTrackingRange(8).build("cactoid"));
 	public static final RegistryObject<EntityType<MimicEntity>> MIMIC = DEF_REG.register("mimic", () -> (EntityType<MimicEntity>) EntityType.Builder.of(MimicEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F).setTrackingRange(8).build("mimic"));
 	public static final RegistryObject<EntityType<PteraEntity>> PTERA = DEF_REG.register("ptera", () -> (EntityType<PteraEntity>) EntityType.Builder.of(PteraEntity::new, MobCategory.MONSTER).sized(1.6F, 0.8F).setTrackingRange(8).build("ptera"));
-	public static final RegistryObject<EntityType<SalamanderEntity>> SALAMANDER = DEF_REG.register("salamander", () -> (EntityType<SalamanderEntity>) EntityType.Builder.of(SalamanderEntity::new, MobCategory.MONSTER).sized(1.95F, 1.6F).fireImmune().setTrackingRange(8).build("salamander"));
-	public static final RegistryObject<EntityType<EnigmothEntity>> ENIGMOTH = DEF_REG.register("enigmoth", () -> (EntityType<EnigmothEntity>) EntityType.Builder.of(EnigmothEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).fireImmune().build("enigmoth"));
-	public static final RegistryObject<EntityType<CocoonEntity>> COCOON = DEF_REG.register("cocoon", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).build("cocoon"));
+	public static final RegistryObject<EntityType<SalamanderEntity>> SALAMANDER = DEF_REG.register("salamander", () -> (EntityType<SalamanderEntity>) EntityType.Builder.of(SalamanderEntity::new, MobCategory.MONSTER).sized(1.95F, 1.6F).setTrackingRange(8).fireImmune().build("salamander"));
+	public static final RegistryObject<EntityType<EnigmothEntity>> ENIGMOTH = DEF_REG.register("enigmoth", () -> (EntityType<EnigmothEntity>) EntityType.Builder.of(EnigmothEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).fireImmune().setTrackingRange(8).build("enigmoth"));
+	public static final RegistryObject<EntityType<CocoonEntity>> COCOON = DEF_REG.register("cocoon", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).setTrackingRange(8).build("cocoon"));
+	public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = DEF_REG.register("scarab", () -> (EntityType<ScarabEntity>) EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER).sized(1.0F, 0.6F).setTrackingRange(8).build("scarab"));
 	
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -107,7 +109,6 @@ public class FUREntityRegistry {
 	public static final EntityType<WarpedFireflyEntity> WARPEDFIREFLY = registerEntity(EntityType.Builder.of(WarpedFireflyEntity::new, EntityClassification.MONSTER).sized(0.7F, 0.6F).fireImmune().clientTrackingRange(8), "warpedfirefly");
 	public static final EntityType<GraveRobberEntity> GRAVEROBBER = registerEntity(EntityType.Builder.of(GraveRobberEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobber");
 	public static final EntityType<GraveRobberGhostEntity> GRAVEROBBERGHOST = registerEntity(EntityType.Builder.of(GraveRobberGhostEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobberghost");
-	public static final EntityType<ScarabEntity> SCARAB = registerEntity(EntityType.Builder.of(ScarabEntity::new, EntityClassification.MONSTER).sized(1.0F, 0.6F).clientTrackingRange(8), "scarab");
 	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");
 	public static final EntityType<VespaCocoonEntity> BEELZEBUBPUPA = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "beelzebubpupa");
 	public static final EntityType<UndeadFishEntity> MUMMIFIEDCOD = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "mummified_cod");
@@ -203,6 +204,7 @@ public class FUREntityRegistry {
         event.put(SALAMANDER.get(), SalamanderEntity.createAttributes().build());   
         event.put(ENIGMOTH.get(), EnigmothEntity.createAttributes().build());
         event.put(COCOON.get(), CocoonEntity.createAttributes().build());
+        event.put(SCARAB.get(), ScarabEntity.createAttributes().build());
         
         /*
         event.put(PARASITE, ParasiteEntity.createAttributes().build());
@@ -220,7 +222,6 @@ public class FUREntityRegistry {
         event.put(WARPEDFIREFLY, WarpedFireflyEntity.createAttributes().build());
         event.put(GRAVEROBBER, GraveRobberEntity.createAttributes().build());
         event.put(GRAVEROBBERGHOST, GraveRobberGhostEntity.createAttributes().build());
-        event.put(SCARAB, ScarabEntity.createAttributes().build());
         event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
         event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());
         event.put(MUMMIFIEDCOD, CodEntity.createAttributes().build());

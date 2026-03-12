@@ -253,6 +253,13 @@ public class FURServerEvents {
 	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Enigmoth_Attack.get())
 	                    .build()
 	    );
+	    
+	    event.put(FUREntityRegistry.SCARAB.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Scarab_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Scarab_Attack.get())
+	                    .build()
+	    );
 	}
 	
     /**
