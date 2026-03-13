@@ -260,6 +260,13 @@ public class FURServerEvents {
 	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Scarab_Attack.get())
 	                    .build()
 	    );
+	    
+	    event.put(FUREntityRegistry.PARASITE.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Parasite_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Parasite_Attack.get())
+	                    .build()
+	    );
 	}
 	
     /**

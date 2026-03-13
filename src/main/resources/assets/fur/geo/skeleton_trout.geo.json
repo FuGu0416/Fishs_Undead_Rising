@@ -1,0 +1,74 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.skeleton_trout",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "head",
+					"pivot": [0, 1, -5],
+					"cubes": [
+						{"origin": [-1.5, 1, -6], "size": [3, 4, 4], "uv": [0, 14]}
+					]
+				},
+				{
+					"name": "fin_pectoral_l",
+					"parent": "head",
+					"pivot": [-1.5, 0, -1.5],
+					"rotation": [33.91, -41.74, 0],
+					"cubes": [
+						{"origin": [-1.5, 0, -1.5], "size": [0, 2, 4], "uv": [16, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "fin_pectoral_r",
+					"parent": "head",
+					"pivot": [1.5, 0, -1.5],
+					"rotation": [33.91, 41.74, 0],
+					"cubes": [
+						{"origin": [1.5, 0, -1.5], "size": [0, 2, 4], "uv": [16, 0]}
+					]
+				},
+				{
+					"name": "body",
+					"pivot": [0, 1, -2],
+					"cubes": [
+						{"origin": [0, 0, -2], "size": [0, 5, 9], "uv": [0, 0]},
+						{"origin": [-1.5, -1, -2], "size": [3, 3, 5], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "fin_anal",
+					"parent": "body",
+					"pivot": [0, 0, 4.5],
+					"cubes": [
+						{"origin": [0, -1, 3], "size": [0, 1, 3], "uv": [11, 0]}
+					]
+				},
+				{
+					"name": "fin_caudal",
+					"parent": "body",
+					"pivot": [0, 2.5, 7],
+					"cubes": [
+						{"origin": [0, 0, 7], "size": [0, 5, 4], "uv": [14, 12]}
+					]
+				},
+				{
+					"name": "fin_dorsal",
+					"parent": "body",
+					"pivot": [0, 5, 3],
+					"cubes": [
+						{"origin": [0, 5, 0], "size": [0, 2, 6], "uv": [10, 8]}
+					]
+				}
+			]
+		}
+	]
+}

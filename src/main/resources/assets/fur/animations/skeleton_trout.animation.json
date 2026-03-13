@@ -1,0 +1,50 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"skeleton_trout.model.swim": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"head": {
+					"position": {
+						"vector": ["-math.cos(query.anim_time * 180-60) * 0.25", 0, 0]
+					}
+				},
+				"fin_anal": {
+					"rotation": {
+						"vector": [0, 0, "math.cos(query.anim_time * 180 - 60) * 8"]
+					}
+				},
+				"fin_caudal": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180 - 60) * 6", 0]
+					}
+				},
+				"body": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180) * 6", 0]
+					},
+					"position": {
+						"vector": ["-math.cos(query.anim_time * 180) * 0.25", 0, 0]
+					}
+				},
+				"fin_dorsal": {
+					"rotation": {
+						"vector": [0, 0, "math.cos(query.anim_time * 180 - 60) * -8"]
+					}
+				},
+				"fin_pectoral_r": {
+					"rotation": {
+						"vector": [0, 0, "math.cos(query.anim_time * 180-60) * 10"]
+					}
+				},
+				"fin_pectoral_l": {
+					"rotation": {
+						"vector": [0, 0, "math.cos(query.anim_time * 180-60) * -10"]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
