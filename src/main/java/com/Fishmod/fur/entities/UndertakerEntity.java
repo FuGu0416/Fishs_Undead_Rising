@@ -63,7 +63,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class UndertakerEntity extends Monster implements GeoEntity {
-private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("undertaker.model.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("undertaker.model.walk");

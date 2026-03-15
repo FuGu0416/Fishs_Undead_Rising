@@ -115,7 +115,7 @@ public class SpawnUtil {
     	return null;
     }
     
-	/*public static Entity gotRiderEntity(List<Entity> listIn, EntityType<? extends Entity> typeIn) {
+	public static Entity gotRiderEntity(List<Entity> listIn, EntityType<? extends Entity> typeIn) {
 		for(Entity C : listIn) {
 			if (C.getType().equals(typeIn)) {
 				return C;	
@@ -123,7 +123,7 @@ public class SpawnUtil {
 		}
 		
 		return null;
-	}*/
+	}
     
     public static Component TimeupDeathMessage(Entity entityIn) {
     	return Component.translatable("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});

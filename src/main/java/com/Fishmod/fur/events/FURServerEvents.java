@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Difficulty;
@@ -46,8 +48,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -277,49 +281,48 @@ public class FURServerEvents {
     public void onEDeath(LivingDeathEvent event) {
     	Entity entity = event.getEntity();
     	//Entity killer = event.getSource().getDirectEntity();
-	    //Level world = event.getEntity().level();
-		//ITag<EntityType<?>> tag_parasite = EntityTypeTags.getAllTags().getTag(FURTagRegistry.PARASITE_TARGETS);
-		//ITag<EntityType<?>> tag_lamprey = EntityTypeTags.getAllTags().getTag(FURTagRegistry.LAMPREY_TARGETS);
+	    Level world = event.getEntity().level();
 		
     	/**
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
-    	/*if (world instanceof ServerLevel && tag_parasite != null && !entity.isInWaterOrBubble() &&
-    			(((entity instanceof LivingEntity && entity.getType().is(tag_parasite)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
-    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE) != null)
-    			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED))) {
+    	if (world instanceof ServerLevel server && !entity.isInWaterOrBubble() &&
+    			(((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FURTagRegistry.PARASITE_TARGETS)) 
+    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
+    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get()) != null)
+    			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
-    		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE);
+    		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get());
     		
-    		if (event.getEntity().hasEffect(FUREffectRegistry.INFESTED)) {
-    			var6 = Math.min(FURConfig.Parasite_InfestedAmpSpawns.get(), event.getEntity().getEffect(FUREffectRegistry.INFESTED).getAmplifier());
+    		if (event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get())) {
+    			var6 = Math.min(FURConfig.Parasite_InfestedAmpSpawns.get(), event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier());
     		}
     		
     		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE, ((ServerLevel) world), new BlockPos(entity.getX() + (double)var4, entity.getY() + 1.0D, entity.getZ() + (double)var5));
+        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE.get(), server, new BlockPos((int)(entity.getX() + var4), (int)entity.getY() + 1, (int)(entity.getZ() + var5)));
 
         		if (ParasiteEntity != null) {
 	        		if (passenger != null) { 
 	        			ParasiteEntity.setSkin(passenger.getSkin());
-	        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level().getBiome(entity.blockPosition()))).contains(Type.DRY)) {
+	        		} else if (world.getBiome(entity.blockPosition()).containsTag(Tags.Biomes.IS_DESERT) || world.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_BADLANDS)) {
 	        			ParasiteEntity.setSkin(1);
-	        		} else if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(entity.level().getBiome(entity.blockPosition()))).contains(Type.JUNGLE)) {
+	        		} else if (world.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_JUNGLE)) {
 	        			ParasiteEntity.setSkin(2);
-	        		} else if (killer != null && killer instanceof VespaEntity) {
+	        		/*} else if (killer != null && killer instanceof VespaEntity) {
 	        			ParasiteEntity.setSkin(2);
 	        			if (((VespaEntity)killer).isTame()) {
 	        				ParasiteEntity.setSummoned(true);
-	        			}
+	        			}*/
 	        		} else {
 	        			ParasiteEntity.setSkin(0);
 	        		}
         		}
     		}
-    	}*/			
+    	}		
 
     	/**
          * Give a chance to spawn horde of Lampreys when a listed target dies.

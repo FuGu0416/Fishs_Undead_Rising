@@ -60,10 +60,28 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.damagesource.DamageSource;
 
 
-public class ParasiteEntity extends Spider {
+public class ParasiteEntity extends Spider implements GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("parasite.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("parasite.model.walking");
+    private static final RawAnimation LEECH = RawAnimation.begin().thenPlay("parasite.model.leeching");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("parasite.model.attack_blend");
+    
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Direction> ATTACHED_BLK = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.DIRECTION);
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.BYTE);
@@ -288,7 +306,9 @@ public class ParasiteEntity extends Spider {
 	
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		if (super.doHurtTarget(entity)) {
+		this.level().broadcastEntityEvent(this, (byte)4);
+		
+		if (super.doHurtTarget(entity)) {			
 			if (!this.isSummoned()) {
 				((LivingEntity) entity).addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));		
 			}
@@ -469,6 +489,19 @@ public class ParasiteEntity extends Spider {
         return !this.isSummoned() && this.lifespawn > 0;
 	}
     
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+	@Override
+    @OnlyIn(Dist.CLIENT)
+    public void handleEntityEvent(byte id) {
+    	if (id == 4) {
+    		this.triggerAnim("trigger_controller", "attack");
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
+    
     static class AttackGoal extends MeleeAttackGoal {
         public AttackGoal(ParasiteEntity p_i46676_1_) {
            super(p_i46676_1_, 1.0D, true);
@@ -492,4 +525,28 @@ public class ParasiteEntity extends Spider {
            return (double)(0.1F + p_179512_1_.getBbWidth());
         }
      }
+
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.isPassenger())
+    		state.getController().setAnimation(LEECH);
+    	if (state.isMoving()) {
+            state.getController().setAnimation(WALK);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
+	}
 }
