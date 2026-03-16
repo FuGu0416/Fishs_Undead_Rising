@@ -37,6 +37,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -288,7 +289,7 @@ public class FURServerEvents {
          **/
     	if (world instanceof ServerLevel server && !entity.isInWaterOrBubble() &&
     			(((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FURTagRegistry.PARASITE_TARGETS)) 
-    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
+    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame()))
     			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get()) != null)
     			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;

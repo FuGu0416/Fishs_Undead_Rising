@@ -56,7 +56,6 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -80,7 +79,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("parasite.model.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("parasite.model.walking");
     private static final RawAnimation LEECH = RawAnimation.begin().thenPlay("parasite.model.leeching");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("parasite.model.attack_blend");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("parasite.model.attacking_blend");
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Direction> ATTACHED_BLK = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.DIRECTION);
@@ -127,7 +126,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(this.getRandom().nextInt(4)));
+		this.entityData.define(SKIN_TYPE, 0);
 		this.entityData.define(ATTACHED_BLK, Direction.DOWN);
 		this.entityData.define(DATA_FLAGS_ID, (byte)0);
 		this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
@@ -169,7 +168,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Parasite_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return livingdata;
+    	this.setSkin(this.random.nextInt(4));
+    	
+    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 	
 	@Override
@@ -512,7 +513,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
         }
 
         public boolean canContinueToUse() {
-           float f = this.mob.level().getBrightness(LightLayer.SKY, this.mob.blockPosition());
+           float f = this.mob.getLightLevelDependentMagicValue();
            if (f >= 0.5F && this.mob.getRandom().nextInt(100) == 0) {
               this.mob.setTarget((LivingEntity)null);
               return false;
@@ -527,9 +528,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
      }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (this.isPassenger())
+    	if (this.isPassenger()) {
     		state.getController().setAnimation(LEECH);
-    	if (state.isMoving()) {
+    	} else if (state.isMoving()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);
@@ -541,8 +542,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
-		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
-				.triggerableAnim("attack", ATTACK));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
 	}
 
 	@Override

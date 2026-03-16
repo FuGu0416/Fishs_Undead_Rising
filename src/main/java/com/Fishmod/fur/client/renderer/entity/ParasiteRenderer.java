@@ -8,7 +8,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Zombie;
@@ -35,26 +34,17 @@ public class ParasiteRenderer extends GeoEntityRenderer<ParasiteEntity> {
     protected void applyRotations(ParasiteEntity entityLiving, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
         super.applyRotations(entityLiving, poseStack, ageInTicks, rotationYaw, partialTicks);
     	
-        if (entityLiving.getVehicle() != null) {
+        if (entityLiving.isPassenger()) {
     		poseStack.scale(1.2F, 1.2F, 1.2F);
-			poseStack.translate(0.0F, 0.0F, -0.4F);
-			poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 			
-			if ((entityLiving.getVehicle() instanceof Player 
+			if (!(entityLiving.getVehicle() instanceof Player 
 					|| entityLiving.getVehicle() instanceof Zombie 
 					|| entityLiving.getVehicle() instanceof AbstractVillager 
 					|| entityLiving.getVehicle() instanceof AbstractIllager 
-					|| entityLiving.getVehicle() instanceof AbstractSkeleton) 
-					&& !((LivingEntity)entityLiving.getVehicle()).isBaby()) {
-				if (!(entityLiving.getVehicle() instanceof Player)) {
-					poseStack.translate(0.0F, 0.3F, -0.3F);
-				} else {
-					poseStack.translate(0.0F, 0.5F, -0.3F);
-				}
-				
-				poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));				
+					|| entityLiving.getVehicle() instanceof AbstractSkeleton)) {				
+				poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 			}
-		} else if(entityLiving.getAttachedBlock() == Direction.UP) {
+		} else if (entityLiving.getAttachedBlock() == Direction.UP) {
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));

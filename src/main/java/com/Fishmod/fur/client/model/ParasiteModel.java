@@ -49,7 +49,7 @@ public class ParasiteModel extends GeoModel<ParasiteEntity> {
     public void setCustomAnimations(ParasiteEntity animatable, long instanceId, AnimationState<ParasiteEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("Head");
     	
-        if (head != null) {
+        if (head != null && !animatable.isPassenger()) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
