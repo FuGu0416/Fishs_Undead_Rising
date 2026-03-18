@@ -164,6 +164,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
 	public static final RegistryObject<Item> ENIGMOTH_DUST = DEF_REG.register("enigmoth_dust", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 16*20, 0), 0.3F).build())));
+	public static final RegistryObject<Item> BONE_TROUT = DEF_REG.register("bone_trout", () -> new Item(new Item.Properties()));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
@@ -196,9 +198,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SCARAB_SCEPTER = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "fur:scarab_scepter", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.ANCIENT_AMBER);	
 	public static final RegistryObject<Item> PHEROMONE_GLAND = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("fur:pheromone_gland");
 	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("fur:charming_catalyst");
-	public static final RegistryObject<Item> MUMMIFIED_COD = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CORRODED, 16*20, 0), 0.3F).build())).setRegistryName("fur:mummified_cod");
 	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = new FishBucketItem(() -> FUREntityRegistry.MUMMIFIEDCOD, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:mummified_cod_bucket");
-	public static final RegistryObject<Item> BONE_TROUT = new FURItem(new Item.Properties()).setRegistryName("fur:bone_trout");
 	public static final RegistryObject<Item> BONE_TROUT_BUCKET = new FishBucketItem(() -> FUREntityRegistry.BONETROUT, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:bone_trout_bucket");
 	public static final RegistryObject<Item> LAMPREY = new Item(new Item.Properties().food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.CONFUSION, 60*20, 0), 0.3F).build())).setRegistryName("fur:lamprey");
 	public static final RegistryObject<Item> LAMPREY_COOKED = new Item(new Item.Properties().food(new Food.Builder().nutrition(6).saturationMod(0.8F).build())).setRegistryName("fur:lamprey_cooked");

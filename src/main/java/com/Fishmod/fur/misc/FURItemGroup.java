@@ -138,6 +138,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.PTERA_WING_COOKED.get());
             	output.accept(FURItemRegistry.SWARMER_RAW.get());
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
+            	output.accept(FURItemRegistry.MUMMIFIED_COD.get());
+            	output.accept(FURItemRegistry.BONE_TROUT.get());
 
                 // Raw Parasite variants
                 for (int i = 0; i < 4; i++) {

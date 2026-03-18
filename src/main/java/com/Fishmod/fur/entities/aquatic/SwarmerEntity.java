@@ -1,6 +1,8 @@
 package com.Fishmod.fur.entities.aquatic;
 
 import java.util.EnumSet;
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
@@ -31,6 +33,8 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -66,7 +70,8 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
 	
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(SwarmerEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(SwarmerEntity.class, EntityDataSerializers.INT);
-
+	private static final UUID SPEED_BOOST_UUID = UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890");
+	
     private static final RawAnimation SWIM = RawAnimation.begin().thenPlay("swarmer.model.swimming");
     private static final RawAnimation LAND = RawAnimation.begin().thenPlay("swarmer.model.onland");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("swarmer.model.attacking");
@@ -86,7 +91,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new AIPiranhaLeapAtTarget(this, 0.6F));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 3.0D, true));      
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, true));      
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
         this.applyEntityAI();
 	}
@@ -146,9 +151,19 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     @Override
     public void tick() {
     	super.tick();
+    	
+        AttributeInstance attr = this.getAttribute(Attributes.MOVEMENT_SPEED);
+
+        if (this.getTarget() != null) {
+            if (attr.getModifier(SPEED_BOOST_UUID) == null) {
+                attr.addTransientModifier(new AttributeModifier(SPEED_BOOST_UUID, "Chasing speed", 1.5D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            }
+        } else {
+            attr.removeModifier(SPEED_BOOST_UUID);
+        }
  
-    	if (this.tickCount >= 8 * 20 && this.getIsAmmo()) {
-    		this.hurt(this.damageSources().genericKill(), this.getMaxHealth());
+    	if (this.getIsAmmo() && this.tickCount >= 8 * 20) {
+    		this.kill();
     	}
     }
     
