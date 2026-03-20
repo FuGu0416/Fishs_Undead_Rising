@@ -11,6 +11,7 @@ import com.Fishmod.fur.entities.UndertakerEntity;
 import com.Fishmod.fur.entities.WendigoEntity;
 import com.Fishmod.fur.entities.aquatic.PiranhaEntity;
 import com.Fishmod.fur.entities.aquatic.SwarmerEntity;
+import com.Fishmod.fur.entities.aquatic.UndeadFishEntity;
 import com.Fishmod.fur.entities.floating.AvatonEntity;
 import com.Fishmod.fur.entities.floating.BansheeEntity;
 import com.Fishmod.fur.entities.floating.FloatingMobEntity;
@@ -40,6 +41,7 @@ import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Cod;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -83,6 +85,8 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<CocoonEntity>> COCOON = DEF_REG.register("cocoon", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).setTrackingRange(8).build("cocoon"));
 	public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = DEF_REG.register("scarab", () -> (EntityType<ScarabEntity>) EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER).sized(1.0F, 0.6F).setTrackingRange(8).build("scarab"));
 	public static final RegistryObject<EntityType<ParasiteEntity>> PARASITE = DEF_REG.register("parasite", () -> (EntityType<ParasiteEntity>) EntityType.Builder.of(ParasiteEntity::new, MobCategory.MONSTER).sized(0.8F, 0.3F).setTrackingRange(8).build("parasite"));
+	public static final RegistryObject<EntityType<UndeadFishEntity>> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> (EntityType<UndeadFishEntity>) EntityType.Builder.of(UndeadFishEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).setTrackingRange(4).build("mummified_cod"));
+	public static final RegistryObject<EntityType<UndeadFishEntity>> BONE_TROUT = DEF_REG.register("bone_trout", () -> (EntityType<UndeadFishEntity>) EntityType.Builder.of(UndeadFishEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).setTrackingRange(4).build("bone_trout"));
 	
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -112,8 +116,6 @@ public class FUREntityRegistry {
 	public static final EntityType<GraveRobberGhostEntity> GRAVEROBBERGHOST = registerEntity(EntityType.Builder.of(GraveRobberGhostEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8), "graverobberghost");
 	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");
 	public static final EntityType<VespaCocoonEntity> BEELZEBUBPUPA = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "beelzebubpupa");
-	public static final EntityType<UndeadFishEntity> MUMMIFIEDCOD = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "mummified_cod");
-	public static final EntityType<UndeadFishEntity> BONETROUT = registerEntity(EntityType.Builder.of(UndeadFishEntity::new, EntityClassification.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4), "bone_trout");
 	public static final EntityType<LampreyEntity> LAMPREY = registerEntity(EntityType.Builder.of(LampreyEntity::new, EntityClassification.WATER_AMBIENT).sized(0.8F, 0.3F).clientTrackingRange(4), "lamprey");
 	public static final EntityType<GhoulEntity> GHOUL = registerEntity(EntityType.Builder.of(GhoulEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.2F), "ghoul");
 	public static final EntityType<LivingArmorEntity> LIVING_ARMOR = registerEntity(EntityType.Builder.of(LivingArmorEntity::new, EntityClassification.MONSTER).sized(1.0F, 1.95F), "living_armor");
@@ -154,6 +156,8 @@ public class FUREntityRegistry {
         event.register(SALAMANDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SalamanderEntity::checkSalamanderSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(ENIGMOTH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, EnigmothEntity::checkEnigmothSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(PARASITE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(MUMMIFIED_COD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(BONE_TROUT.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         
         /*
         event.register(UNDEADSWINE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
@@ -170,8 +174,6 @@ public class FUREntityRegistry {
         event.register(GRAVEROBBER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         event.register(GRAVEROBBERGHOST.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FloatingMobEntity::checkBansheeSpawnRules);
         event.register(BEELZEBUB.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);
-        event.register(MUMMIFIEDCOD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
-        event.register(BONETROUT.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules);
         event.register(LAMPREY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules);
         event.register(GHOUL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, GhoulEntity::checkGhoulSpawnRules);
         event.register(LIVING_ARMOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, LivingArmorEntity::checkLivingArmorSpawnRules);*/
@@ -207,6 +209,8 @@ public class FUREntityRegistry {
         event.put(COCOON.get(), CocoonEntity.createAttributes().build());
         event.put(SCARAB.get(), ScarabEntity.createAttributes().build());
         event.put(PARASITE.get(), ParasiteEntity.createAttributes().build());
+        event.put(MUMMIFIED_COD.get(), Cod.createAttributes().build());
+        event.put(BONE_TROUT.get(), Cod.createAttributes().build());
         
         /*       
         event.put(UNDEADSWINE, UndeadSwineEntity.createAttributes().build());
@@ -225,8 +229,6 @@ public class FUREntityRegistry {
         event.put(GRAVEROBBERGHOST, GraveRobberGhostEntity.createAttributes().build());
         event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
         event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());
-        event.put(MUMMIFIEDCOD, CodEntity.createAttributes().build());
-        event.put(BONETROUT, CodEntity.createAttributes().build());
         event.put(LAMPREY, LampreyEntity.createAttributes().build());
         event.put(GHOUL, GhoulEntity.createAttributes().build());
         event.put(LIVING_ARMOR, LivingArmorEntity.createAttributes().build());*/

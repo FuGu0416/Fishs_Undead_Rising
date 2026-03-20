@@ -380,7 +380,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
 	
 	@Override
 	protected void dropExperience() {
-		if(!this.getIsAmmo()) {
+		if (!this.getIsAmmo()) {
 			super.dropExperience();
 		}
 	}

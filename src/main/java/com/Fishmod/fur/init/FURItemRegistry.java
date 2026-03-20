@@ -166,6 +166,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ENIGMOTH_DUST = DEF_REG.register("enigmoth_dust", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 16*20, 0), 0.3F).build())));
 	public static final RegistryObject<Item> BONE_TROUT = DEF_REG.register("bone_trout", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = DEF_REG.register("mummified_cod_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.MUMMIFIED_COD.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
+	public static final RegistryObject<Item> BONE_TROUT_BUCKET = DEF_REG.register("bone_trout_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.BONE_TROUT.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	
 	/*
 	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
@@ -198,8 +200,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SCARAB_SCEPTER = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "fur:scarab_scepter", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.ANCIENT_AMBER);	
 	public static final RegistryObject<Item> PHEROMONE_GLAND = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("fur:pheromone_gland");
 	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("fur:charming_catalyst");
-	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = new FishBucketItem(() -> FUREntityRegistry.MUMMIFIEDCOD, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:mummified_cod_bucket");
-	public static final RegistryObject<Item> BONE_TROUT_BUCKET = new FishBucketItem(() -> FUREntityRegistry.BONETROUT, () -> Fluids.WATER, (new Item.Properties()).stacksTo(1)).setRegistryName("fur:bone_trout_bucket");
 	public static final RegistryObject<Item> LAMPREY = new Item(new Item.Properties().food(new Food.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new EffectInstance(Effects.CONFUSION, 60*20, 0), 0.3F).build())).setRegistryName("fur:lamprey");
 	public static final RegistryObject<Item> LAMPREY_COOKED = new Item(new Item.Properties().food(new Food.Builder().nutrition(6).saturationMod(0.8F).build())).setRegistryName("fur:lamprey_cooked");
 	public static final RegistryObject<Item> LAMPREY_KABAYAKI = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(8).saturationMod(0.8F).build())).setRegistryName("fur:lamprey_kabayaki");
@@ -244,7 +244,9 @@ public class FURItemRegistry {
         spawnEgg("enigmoth", FUREntityRegistry.ENIGMOTH, 0x0D0B11, 0xA675E9);
         spawnEgg("scarab", FUREntityRegistry.SCARAB, 0x282219, 0xFFCD55);
         spawnEgg("parasite", FUREntityRegistry.PARASITE, 0xAAFFEE, 0xBBFFEE);
-        
+    	spawnEgg("mummified_cod", FUREntityRegistry.MUMMIFIED_COD, 0xDDC88D, 0xAF905B);
+    	spawnEgg("bone_trout", FUREntityRegistry.BONE_TROUT, 0xDFDDCB, 0xBBB8A0);
+    	
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
     	spawnEgg(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties()).setRegistryName("fur:spawn_egg_sludgelord"));
@@ -260,8 +262,6 @@ public class FURItemRegistry {
     	spawnEgg(FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties()).setRegistryName("fur:spawn_egg_graverobber"));
     	spawnEgg(FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties()).setRegistryName("fur:spawn_egg_graverobberghost"));
     	spawnEgg(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties()).setRegistryName("fur:spawn_egg_beelzebub"));
-    	spawnEgg(FUREntityRegistry.MUMMIFIEDCOD, 0xDDC88D, 0xAF905B, new Item.Properties()).setRegistryName("fur:spawn_egg_mummified_cod"));
-    	spawnEgg(FUREntityRegistry.BONETROUT, 0xDFDDCB, 0xBBB8A0, new Item.Properties()).setRegistryName("fur:spawn_egg_bone_trout"));
     	spawnEgg(FUREntityRegistry.LAMPREY, 0x70ACAE, 0xDCF2F3, new Item.Properties()).setRegistryName("fur:spawn_egg_lamprey"));
     	spawnEgg(FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9, new Item.Properties()).setRegistryName("fur:spawn_egg_ghoul"));
     	*/
