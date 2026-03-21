@@ -26,6 +26,7 @@ import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.UnburiedRenderer;
+import com.Fishmod.fur.client.renderer.entity.UndeadFishRenderer;
 import com.Fishmod.fur.client.renderer.entity.AbstractUnburiedRenderer;
 import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
@@ -95,6 +96,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.COCOON.get(), CocoonRenderer::new);
         EntityRenderers.register(FUREntityRegistry.SCARAB.get(), ScarabRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.PARASITE.get(), ParasiteRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.MUMMIFIED_COD.get(), UndeadFishRenderer::new); 
+        EntityRenderers.register(FUREntityRegistry.BONE_TROUT.get(), UndeadFishRenderer::new); 
         
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -128,8 +131,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
-        EntityRenderers.register(FUREntityRegistry.MUMMIFIEDCOD, manager -> new MummifiedCodRenderer(manager)); 
-        EntityRenderers.register(FUREntityRegistry.BONETROUT, manager -> new BoneTroutRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.LAMPREY, manager -> new LampreyRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.GHOUL, manager -> new GhoulRenderer(manager)); 
         //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 

@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"bone_trout.model.swim": {
+		"undead_fish.model.swim": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {

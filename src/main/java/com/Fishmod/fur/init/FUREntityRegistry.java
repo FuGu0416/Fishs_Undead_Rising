@@ -85,8 +85,8 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<CocoonEntity>> COCOON = DEF_REG.register("cocoon", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).setTrackingRange(8).build("cocoon"));
 	public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = DEF_REG.register("scarab", () -> (EntityType<ScarabEntity>) EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER).sized(1.0F, 0.6F).setTrackingRange(8).build("scarab"));
 	public static final RegistryObject<EntityType<ParasiteEntity>> PARASITE = DEF_REG.register("parasite", () -> (EntityType<ParasiteEntity>) EntityType.Builder.of(ParasiteEntity::new, MobCategory.MONSTER).sized(0.8F, 0.3F).setTrackingRange(8).build("parasite"));
-	public static final RegistryObject<EntityType<UndeadFishEntity>> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> (EntityType<UndeadFishEntity>) EntityType.Builder.of(UndeadFishEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).setTrackingRange(4).build("mummified_cod"));
 	public static final RegistryObject<EntityType<UndeadFishEntity>> BONE_TROUT = DEF_REG.register("bone_trout", () -> (EntityType<UndeadFishEntity>) EntityType.Builder.of(UndeadFishEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).setTrackingRange(4).build("bone_trout"));
+	public static final RegistryObject<EntityType<UndeadFishEntity>> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> (EntityType<UndeadFishEntity>) EntityType.Builder.of(UndeadFishEntity::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).setTrackingRange(4).build("mummified_cod"));
 	
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -157,7 +157,7 @@ public class FUREntityRegistry {
         event.register(ENIGMOTH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, EnigmothEntity::checkEnigmothSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(PARASITE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ParasiteEntity::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(MUMMIFIED_COD.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(BONE_TROUT.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkUndeadFishSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(BONE_TROUT.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadFishEntity::checkBoneTroutSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         
         /*
         event.register(UNDEADSWINE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
