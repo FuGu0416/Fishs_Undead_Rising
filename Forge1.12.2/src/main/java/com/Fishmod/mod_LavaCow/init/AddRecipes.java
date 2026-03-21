@@ -148,6 +148,7 @@ public class AddRecipes {
         OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_cordy_shroom);
         OreDictionary.registerOre("listAllmushroom", Modblocks.item_block_veil_shroom);
         OreDictionary.registerOre("toolSkillet", FishItems.MOLTENPAN);
+        OreDictionary.registerOre("toolSkillet", FishItems.SOULFORGED_PAN);
         OreDictionary.registerOre("foodHotwings", FishItems.PTERA_WING_COOKED);
         OreDictionary.registerOre("foodBaconandeggs", FishItems.GREEN_BACON_AND_EGGS);
         OreDictionary.registerOre("foodGreeneggsandham", FishItems.GREEN_BACON_AND_EGGS);

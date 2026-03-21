@@ -120,7 +120,8 @@ public class ItemFishCustomWeapon extends ItemSword {
 
     @Override
     public boolean hasContainerItem(ItemStack stack) {
-        return stack.getItem() == FishItems.MOLTENPAN && stack.getItemDamage() < stack.getMaxDamage();
+        return (stack.getItem() == FishItems.MOLTENPAN || stack.getItem() == FishItems.SOULFORGED_PAN)
+        		&& stack.getItemDamage() < stack.getMaxDamage();
     }
 
     @Override
