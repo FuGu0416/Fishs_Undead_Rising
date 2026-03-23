@@ -141,6 +141,18 @@ item.mod_lavacow.enigmoth_larva_item_cooked.name=炙烧谜影蛾幼虫
 item.mod_lavacow.holy_water.name=圣水
 item.mod_lavacow.basicbomb.name=基础炸弹
 item.mod_lavacow.foul_hide.name=恶臭皮革
+item.mod_lavacow.mummified_cod.name=木乃伊鳕鱼
+item.mod_lavacow.bone_trout.name=骸骨鳟鱼
+item.mod_lavacow.lamprey.name=生七鳃鳗
+item.mod_lavacow.lamprey_cooked.name=熟七鳃鳗
+item.mod_lavacow.lamprey_kabayaki.name=蒲烧七鳃鳗
+item.mod_lavacow.ushabti.name=巫沙布提俑
+item.mod_lavacow.ankh_wand.name=安卡权杖
+item.mod_lavacow.fungal_rod.name=真菌法杖
+item.mod_lavacow.frozen_grip.name=凛寒之握
+item.mod_lavacow.ghoul_claw.name=食尸鬼爪
+item.mod_lavacow.ghoul_arrow.name=食尸鬼箭
+item.mod_lavacow.fang_arrow.name=尖牙箭
 
 #Tconstruct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
@@ -170,7 +182,7 @@ modifier.mod_lavacow.amber_pharaoh.desc=§o虫族听我号令！ §r\n在攻击�
 modifier.mod_lavacow.broodmother_armor.name=育母蜂
 modifier.mod_lavacow.broodmother_armor.desc=§o享受虫满温暖的怀抱！ §r\n在受伤害时有机会孵化出对你忠诚的巨蜂幼虫
 modifier.mod_lavacow.feeding_frenzy_armor.name=掠食狂热
-modifier.mod_lavacow.feeding_frenzy_armor.desc=§o贪食！ §r\n赋予常驻的饥饿V，造成伤害+25%
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§o贪食！ §r\n赋予常驻的饥饿V，造成伤害+40%
 modifier.mod_lavacow.unholy_aura_armor.name=不洁灵气
 modifier.mod_lavacow.unholy_aura_armor.desc=§o对生者充满怨恨！ §r\n减少受到来自非亡灵单位的伤害并赋予它们虚弱
 modifier.mod_lavacow.vespa_ward_armor.name=巨蜂守护
@@ -219,6 +231,7 @@ tile.mod_lavacow.scarecrowhead_straw.name=稻草人头
 tile.mod_lavacow.scarecrowhead_plague.name=稻草人头
 tile.mod_lavacow.tombstone.name=墓碑
 tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
+tile.mod_lavacow.diseased_hay_block.name=染疫干草块
 tile.mod_lavacow.ectoplasm_block.name=灵质砖
 tile.mod_lavacow.molten_alloy_block.name=熔核锭砖
 tile.mod_lavacow.scythe_claw_block.name=镰刀爪桶
@@ -274,6 +287,7 @@ entity.mod_lavacow.ghost_swarmer.name=鬼灵群猎者
 entity.mod_lavacow.amber_scarab.name=琥珀圣甲虫
 entity.mod_lavacow.enigmoth.name=谜影蛾
 entity.mod_lavacow.enigmoth_larva.name=谜影蛾幼虫
+entity.mod_lavacow.ghoul.name=食尸鬼
 
 entity.mod_lavacow.sludgejet.name=泥浆弹
 entity.mod_lavacow.warsmallfireball.name=火球
@@ -290,6 +304,7 @@ entity.mod_lavacow.sapjet.name=蝗虫群
 entity.mod_lavacow.moth_scales.name=蛾鳞粉
 entity.mod_lavacow.basicbomb.name=炸弹
 entity.mod_lavacow.kings_wrath.name=王之怒
+entity.mod_lavacow.fish_custom_arrow.name=亡灵箭
 
 ##########
 # Sounds #
@@ -388,9 +403,9 @@ entity_banshee_attack=报丧女妖：尖叫
 entity_banshee_death=报丧女妖：死亡
 entity_banshee_hurt=鬼灵：受伤
 
-entity_weta_ambient=沙螽：唧唧
-entity_weta_death=沙螽：死亡
-entity_weta_hurt=沙螽：受伤
+entity_weta_ambient=帝沙螽：唧唧
+entity_weta_death=帝沙螽：死亡
+entity_weta_hurt=帝沙螽：受伤
 
 entity_avaton_ambient=艾薇妲：低语
 entity_avaton_death=艾薇妲：死亡
@@ -408,7 +423,7 @@ entity_skeletonking_spell_teleport=骷髅王：传送
 entity_skeletonking_spell_toss=骷髅王：施法
 entity_skeletonking_spawn=不详的声响
 
-entity_cactyrant_ambient=暴君掌：沙沙聲
+entity_cactyrant_ambient=暴君掌：嘶嘶声
 entity_cactyrant_death=暴君掌：死亡
 entity_cactyrant_grow=植物：生長
 
@@ -419,23 +434,27 @@ entity_wraith_ambient=怨灵：低语
 entity_wraith_attack=怨灵：尖叫
 entity_wraith_death=怨灵：死亡
 
-entity_graverobberghost_ambient=盜墓賊亡魂：低語
-entity_graverobberghost_death=盜墓賊亡魂：死亡
-entity_graverobberghost_hurt=盜墓賊亡魂：受傷
+entity_graverobberghost_ambient=盗墓贼亡魂：低语
+entity_graverobberghost_death=盗墓贼亡魂：死亡
+entity_graverobberghost_hurt=盗墓贼亡魂：受伤
 
 entity_scarab_ambient=帝沙螽：唧唧
 entity_scarab_death=帝沙螽：死亡
-entity_scarab_hurt=帝沙螽：受傷
+entity_scarab_hurt=帝沙螽：受伤
 
-entity_enigmoth_ambient=謎影蛾：窸窣
-entity_enigmoth_flap=謎影蛾：拍翼
-entity_enigmoth_death=謎影蛾：死亡
-entity_enigmoth_hurt=謎影蛾：受傷
+entity_enigmoth_ambient=谜影蛾：窸窣
+entity_enigmoth_flap=谜影蛾：拍翼
+entity_enigmoth_death=谜影蛾：死亡
+entity_enigmoth_hurt=谜影蛾：受伤
 
-random_death_coil_shoot=死影纏發射
-random_piranha_shoot=群獵者發射
-random_thorn_shoot=尖刺發射
-random_spin=旋轉噪音
+entity_ghoul_ambient=食尸鬼：呻吟
+entity_ghoul_death=食尸鬼：死亡
+entity_ghoul_hurt=食尸鬼：受伤
+
+random_death_coil_shoot=死缠影：发射
+random_piranha_shoot=群猎者：发射
+random_thorn_shoot=尖刺：发射
+random_spin=旋转噪音
 
 ############
 # Tooltips #
@@ -533,6 +552,9 @@ tootip.mod_lavacow.pheromone_gland=食用后获得迷情信息素(1:00)与恶心
 tootip.mod_lavacow.charming_catalyst=食用后获得抗性迷情信息素(0:45)，或是用于驯服并触发某些幼虫的变态
 tootip.mod_lavacow.basicbomb=投掷出去！在接触地面后爆炸
 tootip.mod_lavacow.crabcake=食用后获得抗性提升(0:30)
+tootip.mod_lavacow.ankh_wand=右键点击以召唤一支木乃伊大军。
+tootip.mod_lavacow.fungal_rod=右键点击以召唤一支真菌大军。
+tootip.mod_lavacow.frozen_grip=右键点击以召唤一支冻尸大军。
 
 message.mod_lavacow.metamorphosis=的外型正在变化！
 command.mod_lavacow.sitting=现在于原地待命
@@ -541,7 +563,7 @@ command.mod_lavacow.wandering=进入徘徊状态
 command.mod_lavacow.whistle=现在为哨子目标
 command.mod_lavacow.whistle_err=离你太远了
 itemGroup.mod_lavacow_items=Fish的亡灵崛起
-key.mod_lavacow.special=座骑特殊能力
+key.mod_lavacow.special=座骑特殊能力（Fish的亡灵崛起）
 key.mod_lavacow.down=飞行座骑下降（Fish的亡灵崛起）
 
 ################
@@ -556,6 +578,8 @@ enchantment.mod_lavacow.corrosive=酸蚀性
 enchantment.mod_lavacow.corrosive.desc=攻击时能侵蚀目标，提高它接下来所受到的伤害
 enchantment.mod_lavacow.critical_boost=弱点爆击
 enchantment.mod_lavacow.critical_boost.desc=提高跳跃攻击时爆击所能造成的伤害
+enchantment.mod_lavacow.dominion=统御
+enchantment.mod_lavacow.dominion.desc=增加Fish的亡灵崛起模组召唤物品的仆从数量。
 
 ##############
 # MobEffects #
