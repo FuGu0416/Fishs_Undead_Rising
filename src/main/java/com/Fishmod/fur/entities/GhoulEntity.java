@@ -33,10 +33,26 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GhoulEntity extends Monster {
+public class GhoulEntity extends Monster implements GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("ghoul.model.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("ghoul.model.walk");
+    private static final RawAnimation RUN = RawAnimation.begin().thenPlay("ghoul.model.run");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("ghoul.model.attack");
+    
     private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(GhoulEntity.class, EntityDataSerializers.INT);
-    public static final int ATTACK_TIMER = 12;
+    public static final int ATTACK_TIMER = 15;
 
     public GhoulEntity(EntityType<? extends GhoulEntity> type, Level level) {
         super(type, level);
@@ -71,8 +87,8 @@ public class GhoulEntity extends Monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.266D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MAX_HEALTH, FURConfig.Ghoul_Health.get())
-                .add(Attributes.ATTACK_DAMAGE, FURConfig.Ghoul_Attack.get())
+                .add(Attributes.MAX_HEALTH, 16.0D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
                 .add(Attributes.ARMOR, 2.0D);
     }
 
@@ -163,10 +179,14 @@ public class GhoulEntity extends Monster {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-        if (id == 5) {
-        } else {
-            super.handleEntityEvent(id);
-        }
+		switch(id) {
+			case 5:
+				this.triggerAnim("trigger_controller", "attack");
+				break;		
+			default:
+				super.handleEntityEvent(id);
+				break;
+		}
     }
 
     @Override
@@ -221,11 +241,37 @@ public class GhoulEntity extends Monster {
         }
 
         protected int atkTimerHit() {
-            return 5;
+            return 6;
         }
 
         protected byte atkTimerEvent() {
             return (byte) 5;
         }
     }
+
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (state.isMoving() && !this.isInWater()) {
+            if (this.isAggressive()) {
+            	state.getController().setAnimation(RUN);
+            } else {
+            	state.getController().setAnimation(WALK);
+            }            
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+
+	@Override
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
+	}
 }

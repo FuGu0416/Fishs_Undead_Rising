@@ -15,6 +15,7 @@ import com.Fishmod.fur.client.renderer.entity.CocoonRenderer;
 import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
 import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
+import com.Fishmod.fur.client.renderer.entity.GhoulRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
@@ -98,6 +99,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.PARASITE.get(), ParasiteRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MUMMIFIED_COD.get(), UndeadFishRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.BONE_TROUT.get(), UndeadFishRenderer::new); 
+        EntityRenderers.register(FUREntityRegistry.GHOUL.get(), GhoulRenderer::new); 
         
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
