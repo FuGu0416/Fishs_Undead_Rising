@@ -78,6 +78,7 @@ public class FURItemGroup {
             	// Bucket
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());
             	output.accept(FURItemRegistry.BONE_TROUT_BUCKET.get());
+            	output.accept(FURItemRegistry.LAMPREY_BUCKET.get());
             	output.accept(FURItemRegistry.MUMMIFIED_COD_BUCKET.get());
             	output.accept(FURItemRegistry.PIRANHA_BUCKET.get());
             	output.accept(FURItemRegistry.SWARMER_BUCKET.get());            	
@@ -132,6 +133,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.FROZEN_THIGH.get());    
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
             	output.accept(FURItemRegistry.DISEASED_BREAD.get());
+            	output.accept(FURItemRegistry.LAMPREY_RAW.get());
+            	output.accept(FURItemRegistry.LAMPREY_COOKED.get());
             	output.accept(FURItemRegistry.MIMIC_CLAW_RAW.get());
             	output.accept(FURItemRegistry.MIMIC_CLAW_COOKED.get());
             	output.accept(FURItemRegistry.PIRANHA_RAW.get());
@@ -158,6 +161,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.BONE_STEW.get());
             	output.accept(FURItemRegistry.GHOST_JELLY.get());
+            	output.accept(FURItemRegistry.LAMPREY_KABAYAKI.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
             	output.accept(FURItemRegistry.FISSION_REAGENT.get());

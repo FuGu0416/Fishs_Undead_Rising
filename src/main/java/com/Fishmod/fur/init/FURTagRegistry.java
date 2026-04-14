@@ -38,8 +38,9 @@ public class FURTagRegistry {
     public static final TagKey<EntityType<?>> PARASITE_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "parasite_targets"));
     public static final TagKey<EntityType<?>> PTERA_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "ptera_targets"));
     //public static final ResourceLocation VESPA_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "vespa_targets");
-    //public static final ResourceLocation LAMPREY_TARGETS = new ResourceLocation(mod_LavaCow.MODID, "lamprey_targets");
+    public static final TagKey<EntityType<?>> LAMPREY_TARGETS = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "lamprey_targets"));
     
+    public static final TagKey<Item> WOODEN_RODS = TagKey.create(Registries.ITEM, new ResourceLocation("forge", "rods/wooden"));
     public static final TagKey<Item> SERVING_CONTAINERS = TagKey.create(Registries.ITEM, new ResourceLocation("farmersdelight", "serving_containers"));
     
     public static final TagKey<Block> SALAMANDER_EGG_HATCH_BOOST = TagKey.create(Registries.BLOCK, new ResourceLocation(mod_LavaCow.MODID, "salamander_egg_hatch_boost"));

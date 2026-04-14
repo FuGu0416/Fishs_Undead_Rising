@@ -1,0 +1,17 @@
+{
+    "type": "fur:cooking",
+    "ingredients": [
+	    {
+	      	"tag": "forge:rods/wooden"
+	    },
+	    {
+			"item": "fur:lamprey_raw"
+	    }
+    ],
+	"container": { "tag": "forge:rods/wooden" },
+    "result": {
+        "item": "fur:lamprey_kabayaki"
+    },
+  	"experience": 0.35,
+  	"time": 200
+}

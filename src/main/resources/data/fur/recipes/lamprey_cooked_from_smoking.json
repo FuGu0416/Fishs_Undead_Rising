@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+	"item": "fur:lamprey_raw"
+  },
+  "result": "fur:lamprey_cooked",
+  "experience": 0.35,
+  "cookingtime": 100
+}

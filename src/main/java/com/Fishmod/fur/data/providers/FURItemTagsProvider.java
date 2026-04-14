@@ -23,6 +23,6 @@ public class FURItemTagsProvider extends ItemTagsProvider {
 	}
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-        this.tag(FURTagRegistry.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET, FURItemRegistry.CURSEWEAVE_CLOTH.get());
+        this.tag(FURTagRegistry.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET, FURItemRegistry.CURSEWEAVE_CLOTH.get()).addTag(FURTagRegistry.WOODEN_RODS);
     }
 }

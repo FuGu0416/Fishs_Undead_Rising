@@ -279,6 +279,13 @@ public class FURServerEvents {
 	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Ghoul_Attack.get())
 	                    .build()
 	    );
+	    
+	    event.put(FUREntityRegistry.LAMPREY.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Lamprey_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Lamprey_Attack.get())
+	                    .build()
+	    );
 	}
 	
     /**
