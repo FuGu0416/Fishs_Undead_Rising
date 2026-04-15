@@ -174,6 +174,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown_Mount;
 	
+	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Lamprey;
 	public static final ForgeConfigSpec.ConfigValue<Double> Lamprey_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Lamprey_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Lamprey_Attach;
@@ -500,6 +501,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Lamprey");
+		pSpawnRate_Lamprey = BUILDER.comment("Set the spawn rate of Lamprey [0-100]").defineInRange("lamprey spawn rate", 10, 0, 100);
 		Lamprey_Health = BUILDER.comment("Maximum Lamprey health [1-1000]").defineInRange("lamprey health", 6.0D, 1.0D, 1000.0D);
 		Lamprey_Attack = BUILDER.comment("Lamprey strength [1-1000]").defineInRange("lamprey attack", 1.0D, 1.0D, 1000.0D);
 		Lamprey_Attach = BUILDER.comment("Lamprey will attack their target by attaching on them [false/true]").define("lamprey attacks by attaching onto target", true);

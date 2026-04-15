@@ -1,0 +1,68 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "head",
+					"pivot": [0, 3.5, -5],
+					"cubes": [
+						{"origin": [-2, 0, -6], "size": [4, 4, 3], "uv": [0, 8]}
+					]
+				},
+				{
+					"name": "mouth",
+					"parent": "head",
+					"pivot": [0, 2, -6],
+					"cubes": [
+						{"origin": [-2.5, -0.5, -7], "size": [5, 5, 1], "uv": [14, 0]}
+					]
+				},
+				{
+					"name": "Seg2",
+					"parent": "head",
+					"pivot": [0, 2, -3],
+					"cubes": [
+						{"origin": [0, -1, -3], "size": [0, 6, 4], "uv": [14, 6]},
+						{"origin": [-1.5, 0, -3], "size": [3, 4, 4], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Seg3",
+					"parent": "Seg2",
+					"pivot": [0, 1.75, 1],
+					"cubes": [
+						{"origin": [0, -1, 1], "size": [0, 6, 3], "uv": [20, 16]},
+						{"origin": [-1, 0.25, 1], "size": [2, 3, 3], "uv": [0, 15]}
+					]
+				},
+				{
+					"name": "Seg4",
+					"parent": "Seg3",
+					"pivot": [0, 1.5, 4],
+					"cubes": [
+						{"origin": [-1, 0.5, 4], "size": [2, 2, 3], "uv": [10, 16]},
+						{"origin": [0, -1, 4], "size": [0, 5, 3], "uv": [8, 21]}
+					]
+				},
+				{
+					"name": "seg5",
+					"parent": "Seg4",
+					"pivot": [0, 1.25, 7],
+					"cubes": [
+						{"origin": [-0.5, 0.75, 7], "size": [1, 1, 2], "uv": [14, 21]},
+						{"origin": [0, 0, 7], "size": [0, 3, 4], "uv": [0, 21]}
+					]
+				}
+			]
+		}
+	]
+}

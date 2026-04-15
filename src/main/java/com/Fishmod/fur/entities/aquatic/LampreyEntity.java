@@ -35,8 +35,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.object.PlayState;
 
 public class LampreyEntity extends SwarmerEntity {
+    private static final RawAnimation SWIM = RawAnimation.begin().thenPlay("lamprey.model.swim");
+    private static final RawAnimation LEECH = RawAnimation.begin().thenPlay("lamprey.model.leeching");
+    private static final RawAnimation LAND = RawAnimation.begin().thenPlay("lamprey.model.onland");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("lamprey.model.attacking_blend");
+    
 	public int lifespawn;
 	
     public LampreyEntity(EntityType<? extends LampreyEntity> p_i48549_1_, Level worldIn) {
@@ -220,5 +231,23 @@ public class LampreyEntity extends SwarmerEntity {
         protected double getAttackReachSqr(LivingEntity p_179512_1_) {
            return (double)(0.1F + p_179512_1_.getBbWidth());
         }
+	}
+    
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    	if (this.isPassenger()) {
+    		state.getController().setAnimation(LEECH);
+    	} else if (!this.isInWaterOrBubble() && !this.isAggressive()) {
+    		state.getController().setAnimation(LAND);
+        } else {
+            state.getController().setAnimation(SWIM);
+        }
+        
+        return PlayState.CONTINUE;
+    }
+    
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
 	}
 }

@@ -172,9 +172,9 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
         if (flag) {
            this.doEnchantDamageEffects(this, p_70652_1_);
            this.level().broadcastEntityEvent(this, (byte)4);
-           /*if (!this.getType().equals(FUREntityRegistry.LAMPREY)) {
+           if (!this.getType().equals(FUREntityRegistry.LAMPREY.get())) {
         	   this.playSound(FURSoundRegistry.SWARMER_ATTACK.get(), 1.0F, 1.0F);
-           }*/
+           }
         }
 
         return flag;
