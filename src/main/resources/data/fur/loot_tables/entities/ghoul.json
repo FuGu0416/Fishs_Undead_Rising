@@ -1,54 +1,72 @@
 {
-  "pools": [
-    {
-      
-      "name": "fur:ghoul",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "item",
-          "name": "fur:sharp_fang",
-          "weight": 3,
-          "functions": [
-			{
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 0,
-                "max": 2
-              }
-            },          
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "min": 1,
-                "max": 2
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "fur:ghoul_claw",
-          "weight": 1,
-          "functions": [
-			{
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 0,
-                "max": 2
-              }
-            },          
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "min": 0,
-                "max": 1
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"pools": [
+		{      
+      		"name": "fur:ghoul",
+      		"rolls": 1,
+      		"entries": [
+        		{
+          			"type": "item",
+          			"name": "fur:sharp_fang",
+          			"weight": 3,
+          			"functions": [
+						{
+              				"function": "minecraft:set_count",
+              				"count": {
+                				"min": 0,
+                				"max": 2
+              				}
+            			},          
+            			{
+              				"function": "minecraft:looting_enchant",
+              				"count": {
+                				"min": 1,
+                				"max": 2
+              				}
+            			}
+          			]
+        		},
+        		{
+          			"type": "item",
+          			"name": "fur:ghoul_claw",
+          			"weight": 1,
+          			"functions": [
+						{
+              				"function": "minecraft:set_count",
+              				"count": {
+                				"min": 0,
+                				"max": 2
+	              				}
+	            			},          
+	            		{
+              				"function": "minecraft:looting_enchant",
+              				"count": {
+                				"min": 0,
+                				"max": 1
+              				}
+            			}
+          			]
+        		}
+      		]
+    	},
+	    {
+	        "name": "fur:ghoul",
+	        "rolls": 1,
+	        "entries": [
+	            {
+	                "type": "item",
+	                "weight": 1,
+	                "name": "fur:bloated_intestine",
+					"conditions":[
+	                    {
+	
+	                        "condition": "minecraft:random_chance_with_looting",
+	                        "chance": 0.1,
+	                        "looting_multiplier": 0.05
+	                    }
+	                ]
+	            }
+	        ]
+	    }
+  	]
 }
 

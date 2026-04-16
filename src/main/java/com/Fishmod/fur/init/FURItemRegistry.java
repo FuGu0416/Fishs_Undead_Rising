@@ -21,6 +21,7 @@ import com.Fishmod.fur.item.FangDaggerItem;
 import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.InfusedBandageItem;
+import com.Fishmod.fur.item.BloatedIntestineItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenHammerItem;
@@ -172,9 +173,9 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> LAMPREY_COOKED = DEF_REG.register("lamprey_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> LAMPREY_KABAYAKI = DEF_REG.register("lamprey_kabayaki", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 0), 1.0F).build())));
 	public static final RegistryObject<Item> LAMPREY_BUCKET = DEF_REG.register("lamprey_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.LAMPREY.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
+	public static final RegistryObject<Item> BLOATED_INTESTINE = DEF_REG.register("bloated_intestine", () -> new BloatedIntestineItem());
 	
 	/*
-	public static final RegistryObject<Item> INTESTINE = new IntestineItem().setRegistryName("fur:intestine");
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("fur:green_bacon_and_eggs");
 	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties()).setRegistryName("fur:pigboarhide");

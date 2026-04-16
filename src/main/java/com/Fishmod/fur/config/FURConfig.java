@@ -192,15 +192,12 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> SoulFireHammer_Damage;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SoulFireHammer_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Fission_ModEntity;
-	public static final ForgeConfigSpec.ConfigValue<Integer> General_Intestine;
 	public static final ForgeConfigSpec.ConfigValue<Integer> GoldenHeart_dur;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> GoldenHeart_bl;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> GoldenHeart_GrantsRegeneration;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> GoldenHeart_RepairsEquipment;
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Intestine_lt;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Intestine_banlist;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Raven_Loot;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Seagull_Loot;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spectral_Raven_Loot;
@@ -524,23 +521,6 @@ public final class FURConfig {
 		SoulFireHammer_Damage = BUILDER.comment("Area Damage of Soulforged Hammer [1-1000]").defineInRange("soulforged hammer attack", 10.0D, 1.0D, 1000.0D);
 		SoulFireHammer_Cooldown = BUILDER.comment("Ability cooldown of Soulforged Hammer [1-10000]").defineInRange("soulforged hammer cooldown", 4, 0, 10000);
 		Fission_ModEntity = BUILDER.comment("Allow Potion of Fission to be used on entites from other mods [false/true]").define("fission potion works on entities from other mods", false);
-		General_Intestine = BUILDER.comment("Set the drop rate of Intestine [0-100]").defineInRange("entity drop intestine", 4, 0, 100);
-		Intestine_lt = BUILDER.comment("Customize Items and their drop rates for the Intestine. Ex. \\\"minecraft:slime_ball,0.4\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for intestine", 
-				Lists.newArrayList(
-						"minecraft:slime_ball,0.4",
-						"minecraft:bone_meal,0.4",
-						"mod_lavacow:sharptooth,0.1",
-						"minecraft:beetroot_seeds,0.1",
-						"minecraft:wheat_seeds,0.1",
-						"minecraft:melon_seeds,0.1",
-						"minecraft:pumpkin_seeds,0.1",
-						"minecraft:clay_ball,0.1",
-						"mod_lavacow:chitin,0.1",
-						"minecraft:gold_nugget,0.05",
-						"minecraft:iron_nugget,0.05",
-						"minecraft:diamond,0.01"), 
-				o -> o instanceof String);
-		Intestine_banlist = BUILDER.comment("The list of \\\"intestine_drop_targets.json\\\" should be a banlist. (false then only the mobs in the list drop Intestine) [false/true]").define("intestine drop banlist", true);
 		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 durability per tick , 0 = Infinite [0-100]").defineInRange("golden heart durability", 100, 0, 100);
 		GoldenHeart_bl = BUILDER.comment("BlackBanlist for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"mod_lavacow:moltenhammer\\\"").defineList("banlisted items from golden heart", 
 				Lists.newArrayList(), o -> o instanceof String);		
