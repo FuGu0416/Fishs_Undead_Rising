@@ -23,7 +23,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Attach;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Pickup;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_InfestedAmpSpawns;
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Attack;
@@ -250,7 +249,6 @@ public final class FURConfig {
 		Parasite_Attach = BUILDER.comment("Parasite will attack their target by attaching on them [false/true]").define("parasite attacks by attaching onto target", true);
 		Parasite_Lifespan = BUILDER.comment("The amount of seconds before parasites naturally die or form into cocoons").defineInRange("parasite lifespan", 16, 0, 10000);
 		Parasite_Pickup = BUILDER.comment("You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").define("parasite pickup", true);
-		Parasite_InfestedAmpSpawns = BUILDER.comment("The maximum amplifier of the Infested potion effect that scales additional parasite spawns").define("parasite infested amplifier spawns", 4);
 		BUILDER.pop();
 		
 		BUILDER.push("Undead Swine");

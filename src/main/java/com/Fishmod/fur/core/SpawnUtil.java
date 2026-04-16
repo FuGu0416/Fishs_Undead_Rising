@@ -131,7 +131,7 @@ public class SpawnUtil {
 	
     @Nullable
     public static <T extends LivingEntity> T trySpawnEntity(EntityType<T> entityIn, ServerLevel worldIn, BlockPos blockpos) {
-    	for(int i = 0; i < 10; ++i) {
+    	for (int i = 0; i < 10; ++i) {
     		int d0 = (i == 0) ? 0 : (worldIn.random.nextInt(4) - 2);
     		int d1 = (i == 0) ? 0 : (worldIn.random.nextInt(4) - 2);
     		BlockPos blockpos1 = findSpawnPositionInColumn(worldIn, blockpos, d0, d1);
@@ -147,13 +147,17 @@ public class SpawnUtil {
 	private static BlockPos findSpawnPositionInColumn(ServerLevel worldIn, BlockPos p_241433_1_, int p_241433_2_, int p_241433_4_) {
 		BlockPos blockpos = p_241433_1_.offset(p_241433_2_, 6, p_241433_4_);
 		BlockState blockstate = worldIn.getBlockState(blockpos);
+		
+		if (blockstate.liquid()) {
+			return blockpos;
+		}
 
 		for (int j = 6; j >= -6; --j) {
 			BlockPos blockpos1 = blockpos;
 			BlockState blockstate1 = blockstate;
 			blockpos = blockpos.below();
 			blockstate = worldIn.getBlockState(blockpos);
-			if ((blockstate1.isAir() || blockstate1.liquid()) && blockstate.isSolid()) {
+			if (blockstate1.isAir() && blockstate.isSolid()) {
 				return blockpos1.offset(0, 1, 0);
 			}
 		}

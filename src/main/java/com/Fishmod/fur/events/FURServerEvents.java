@@ -301,24 +301,23 @@ public class FURServerEvents {
     	/**
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
-    	if (world instanceof ServerLevel server && !entity.isInWaterOrBubble() &&
-    			(((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FURTagRegistry.PARASITE_TARGETS)) 
-    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame()))
-    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get()) != null)
+    	if (world instanceof ServerLevel && !entity.isInWaterOrBubble() &&
+    			((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FURTagRegistry.PARASITE_TARGETS)) 
+    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame())
     			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
     		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get());
     		
     		if (event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get())) {
-    			var6 = Math.min(FURConfig.Parasite_InfestedAmpSpawns.get(), event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier());
+    			var6 = event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier();
     		}
     		
-    		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
+    		for (int var3 = 0; var3 < var2 + (var6 * (1 + new Random().nextInt(3))); ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE.get(), server, new BlockPos((int)(entity.getX() + var4), (int)entity.getY() + 1, (int)(entity.getZ() + var5)));
+        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE.get(), ((ServerLevel) world), new BlockPos((int)(entity.getX() + var4), (int)entity.getY() + 1, (int)(entity.getZ() + var5)));
 
         		if (ParasiteEntity != null) {
 	        		if (passenger != null) { 
@@ -341,10 +340,9 @@ public class FURServerEvents {
 
     	/**
          * Give a chance to spawn horde of Lampreys when a listed target dies.
-         **/
+         **/    	   	
     	if (world instanceof ServerLevel && entity.isInWaterOrBubble() &&
-    			(((entity instanceof LivingEntity living && living.getType().is(FURTagRegistry.LAMPREY_TARGETS)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get()))
-    			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.LAMPREY.get()) != null)
+    			((entity instanceof LivingEntity living && living.getType().is(FURTagRegistry.LAMPREY_TARGETS)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
     			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
@@ -353,11 +351,11 @@ public class FURServerEvents {
     			var6 = event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier();
     		}
     		
-    		for (int var3 = 0; var3 < var2 + ((var6 - 1) * (1 + new Random().nextInt(3))); ++var3) {
+    		for (int var3 = 0; var3 < var2 + (var6 * (1 + new Random().nextInt(3))); ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
                 
-        		SpawnUtil.trySpawnEntity(FUREntityRegistry.LAMPREY.get(), ((ServerLevel) world), new BlockPos((int)(entity.getX() + var4), (int)entity.getY() + 1, (int)(entity.getZ() + var5)));
+        		SpawnUtil.trySpawnEntity(FUREntityRegistry.LAMPREY.get(), ((ServerLevel) world), new BlockPos((int)(entity.getX() + var4), (int)entity.getY(), (int)(entity.getZ() + var5)));
     		}
     	}
     	

@@ -7,14 +7,18 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -68,11 +72,15 @@ public class FURItem extends Item {
 			living.clearFire();
 		}
 		
-        /*if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI) && living instanceof PlayerEntity && !((PlayerEntity)living).isCreative()) {
-        	if (!((PlayerEntity)living).inventory.add(new ItemStack(Items.STICK, 2))) {
-        		((PlayerEntity)living).spawnAtLocation(new ItemStack(Items.STICK, 2));
+		
+        if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI.get()) && living instanceof Player player && !player.isCreative()) {
+        	living.removeEffect(MobEffects.POISON);
+        	living.removeEffect(FUREffectRegistry.INFESTED.get());
+        	
+        	if (!player.getInventory().add(new ItemStack(Items.STICK))) {
+        		player.spawnAtLocation(new ItemStack(Items.STICK));
             }
-        }*/
+        }
 		
     	return super.finishUsingItem(stack, level, living);
     }
@@ -84,9 +92,9 @@ public class FURItem extends Item {
     
     @Override
     public int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType) {
-    	/*if (itemStack.getItem().equals(FURItemRegistry.BURNTOVIPOSITOR)) {
+    	if (stack.getItem().equals(FURItemRegistry.COMBUSTIVE_GLAND.get())) {
     		return 6400;
-    	} else */if (stack.getItem().equals(FURItemRegistry.IMP_HORN.get())) {
+    	} else if (stack.getItem().equals(FURItemRegistry.IMP_HORN.get())) {
     		return 3200;
     	} else {
     		return super.getBurnTime(stack, recipeType);

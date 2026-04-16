@@ -2,10 +2,13 @@
     "type": "fur:cooking",
     "ingredients": [
 	    {
-	      	"tag": "forge:rods/wooden"
+			"item": "fur:lamprey_raw"
 	    },
 	    {
-			"item": "fur:lamprey_raw"
+			"item": "minecraft:ink_sac"
+	    },
+	    {
+			"item": "minecraft:honey_bottle"
 	    }
     ],
 	"container": { "tag": "forge:rods/wooden" },

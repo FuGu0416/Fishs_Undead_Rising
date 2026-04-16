@@ -170,7 +170,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> BONE_TROUT_BUCKET = DEF_REG.register("bone_trout_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.BONE_TROUT.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> LAMPREY_RAW = DEF_REG.register("lamprey_raw", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 60*20, 0), 0.3F).build())));
 	public static final RegistryObject<Item> LAMPREY_COOKED = DEF_REG.register("lamprey_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
-	public static final RegistryObject<Item> LAMPREY_KABAYAKI = DEF_REG.register("lamprey_kabayaki", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build())));
+	public static final RegistryObject<Item> LAMPREY_KABAYAKI = DEF_REG.register("lamprey_kabayaki", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 0), 1.0F).build())));
 	public static final RegistryObject<Item> LAMPREY_BUCKET = DEF_REG.register("lamprey_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.LAMPREY.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	
 	/*
@@ -247,7 +247,7 @@ public class FURItemRegistry {
     	spawnEgg("mummified_cod", FUREntityRegistry.MUMMIFIED_COD, 0xDDC88D, 0xAF905B);
     	spawnEgg("bone_trout", FUREntityRegistry.BONE_TROUT, 0xDFDDCB, 0xBBB8A0);
     	spawnEgg("ghoul", FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9);
-    	spawnEgg("lamprey", FUREntityRegistry.LAMPREY, 0x0A1822, 0x3E0D0D);
+    	spawnEgg("lamprey", FUREntityRegistry.LAMPREY, 0x0A1822, 0xA0C3CF);
     	
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));

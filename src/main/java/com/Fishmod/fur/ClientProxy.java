@@ -16,6 +16,7 @@ import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
 import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.GhoulRenderer;
+import com.Fishmod.fur.client.renderer.entity.LampreyRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
@@ -100,6 +101,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.MUMMIFIED_COD.get(), UndeadFishRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.BONE_TROUT.get(), UndeadFishRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.GHOUL.get(), GhoulRenderer::new); 
+        EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new); 
         
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -133,7 +135,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
-        EntityRenderers.register(FUREntityRegistry.LAMPREY, manager -> new LampreyRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.GHOUL, manager -> new GhoulRenderer(manager)); 
         //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
         
