@@ -52,11 +52,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOUL_CLAW.get());
             	output.accept(FURItemRegistry.VESPA_CARAPACE.get());
             	output.accept(FURItemRegistry.POISON_STINGER.get());
-            	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());
-            	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
-            	output.accept(FURItemRegistry.ENIGMOTH_DUST.get());
-            	output.accept(FURItemRegistry.USHABTI.get());
             	output.accept(FURItemRegistry.BLOATED_INTESTINE.get());
+            	output.accept(FURItemRegistry.ENIGMOTH_DUST.get());
+            	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
+            	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());            	           	
+            	output.accept(FURItemRegistry.USHABTI.get());
             	output.accept(FURItemRegistry.MIMIC_EGG.get());
             	
                 // Salamander Egg variants

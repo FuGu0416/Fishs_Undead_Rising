@@ -1,0 +1,29 @@
+{
+  	"type": "fur:cooking",
+  	"ingredients": [
+	    {
+			"item": "fur:parasite_raw"
+		},
+	    {
+			"item": "fur:parasite_raw"
+		},
+	    {
+			"item": "fur:parasite_raw"
+		},
+	    {
+			"item": "fur:parasite_raw"
+		},
+	    {
+			"item": "fur:parasite_raw"
+		},
+	    {
+			"item": "fur:bloated_intestine"
+		}
+  	],  
+  	"result": {
+    	"item": "fur:sausage_roll",
+    	"count": 5
+  	},
+	"experience": 0.35,
+	"time": 200
+}

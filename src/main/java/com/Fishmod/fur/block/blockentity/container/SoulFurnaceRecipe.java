@@ -49,7 +49,7 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 				++i;
 				inputs.add(itemstack);
 			}
-		}
+		}		
 		
 		return i == this.ingredients.size() && net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.ingredients) != null;
     }
@@ -108,7 +108,12 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 	    @Override
 	    public SoulFurnaceRecipe fromJson(ResourceLocation id, JsonObject json) {
 	        NonNullList<Ingredient> input = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
-	        Ingredient container = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "container"));
+	        Ingredient container = Ingredient.EMPTY;
+	        
+	        if (json.has("container")) {
+	        	container = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "container"));
+	        }
+	        
 	        ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 	        float experience  = GsonHelper.getAsFloat(json, "experience", 0.0F);
 	        int time = GsonHelper.getAsInt(json, "time", 200);
@@ -137,7 +142,11 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 	            input.set(i, Ingredient.fromNetwork(buf));
 	        }
 
-	        Ingredient container = Ingredient.fromNetwork(buf);
+	        Ingredient container = Ingredient.EMPTY;
+	        if (buf.readBoolean()) {
+	            container = Ingredient.fromNetwork(buf);
+	        }
+	        
 	        ItemStack result = buf.readItem();
 	        float experience = buf.readFloat();
 	        int time = buf.readVarInt();
@@ -151,8 +160,13 @@ public class SoulFurnaceRecipe implements Recipe<Container> {
 	            i.toNetwork(buf);
 	        }
 
-	        recipe.getContainer().toNetwork(buf);
+	        buf.writeBoolean(!recipe.getContainer().isEmpty());
+	        if (!recipe.getContainer().isEmpty()) {
+	            recipe.getContainer().toNetwork(buf);
+	        }
+	        
 	        buf.writeItem(recipe.result);
+	        buf.writeFloat(recipe.getExperience());
 	        buf.writeVarInt(recipe.getTime());
 	    }
 	}
