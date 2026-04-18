@@ -327,26 +327,26 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i) {
-            	if (UndertakerEntity.this.level() instanceof ServerLevel) {
+            	if (UndertakerEntity.this.level() instanceof ServerLevel server) {
 	                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
 	                UnburiedEntity entity;
 	                Holder<Biome> Biome = UndertakerEntity.this.level().getBiome(UndertakerEntity.this.blockPosition());
 	                
 	                if (Biome.containsTag(BiomeTags.HAS_DESERT_PYRAMID)) {
-	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), server, blockpos);
 	                } else if (Biome.containsTag(BiomeTags.SPAWNS_SNOW_FOXES)) {
-	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FRIGID.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FRIGID.get(), server, blockpos);
 	                } else if (Biome.containsTag(FURTagRegistry.HAS_MYCOSIS)) {
-	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MYCOSIS.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MYCOSIS.get(), server, blockpos);
 	                } else {
-	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.UNBURIED.get(), ((ServerLevel) UndertakerEntity.this.level()), blockpos);
+	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.UNBURIED.get(), server, blockpos);
 	                }
 	
 	                if (entity != null) {
 		                entity.setOwnerUUID(UndertakerEntity.this.getUUID());
 		                entity.setSpellcasting();   		                
 		                
-		                if(UndertakerEntity.this.getTarget() != null) {
+		                if (UndertakerEntity.this.getTarget() != null) {
 		                	entity.setTarget(UndertakerEntity.this.getTarget());
 		                }
 	                }

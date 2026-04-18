@@ -5,6 +5,9 @@
     },
     "variant=1": {
       "model": "fur:block/mycelial_tendrils1"
+    },
+    "variant=2": {
+      "model": "fur:block/mycelial_tendrils2"
     }
   }
 }

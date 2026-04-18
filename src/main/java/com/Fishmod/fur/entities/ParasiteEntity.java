@@ -173,101 +173,104 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 	
-	@Override
-	public void tick() {
+    @Override
+    public void tick() {
+        this.handleLifespanAndEvolution();
+        this.handleRidingEffects();
+        this.updateAttachedBlockDirection();
+        super.tick();
+    }
+
+    private void handleLifespanAndEvolution() {
         if (this.lifespawn > 0) {
-        	if (this.getVehicle() == null) {
-        		this.lifespawn--;
-        	}
+            if (this.getVehicle() == null) {
+                this.lifespawn--;
+            }
         } else if (!this.isSummoned() && this.getSkin() == 2 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get() || this.isTame())) {
-        	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
-        	List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(d0));
-
-        	if(!list.isEmpty() || this.isTame()) {
-            	this.lifespawn = 5 * 20;
-        		
-        		if (this.level() instanceof ServerLevel server) {
-        			this.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
-        			
-		    		CocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), server, this.blockPosition());
-		    		
-		    		if (pupa != null) {
-			    		pupa.setSkin(0);
-			    		
-			    		if (this.isTame() && this.getOwner() instanceof Player) {
-			    			pupa.tame((Player) this.getOwner());
-			    			pupa.setCustomName(this.getCustomName());
-			    		}
-		    		}
-        		}   
-        		
-        		this.discard();
-        	} else
-        		this.kill();
-        /*} else if (!this.isSummoned() && this.getSkin() == 3 && this.isTame()) {
-        	double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
-        	List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(d0));
-
-        	if(!list.isEmpty() || this.isTame()) {
-            	this.lifespawn = 5 * 20;
-        		
-            	if (this.level() instanceof ServerLevel) {		
-        			this.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
-        			
-		    		CocoonEntity pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUBPUPA, ((ServerLevel) this.level), this.blockPosition());
-
-		    		if (pupa != null && this.isTame() && this.getOwner() instanceof Player) {
-		    			pupa.tame((Player) this.getOwner());
-		    			pupa.setCustomName(this.getCustomName());
-		    		}
-        		}   
-        		
-        		this.discard();
-        	} else {
-        		this.kill();
-        	}*/
+        	this.tryEvolveToCocoon(this.getSkin());
+        } else if (!this.isSummoned() && this.getSkin() == 3 && this.isTame()) {
+        	this.tryEvolveToCocoon(this.getSkin());
         } else {
-        	this.kill();
+            this.kill();
         }
-        	     
-        if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity && this.getVehicle().isAlive() && !this.level().isClientSide()) {
-        	Entity mount = this.getVehicle();
-        	
-        	if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
-        		this.stopRiding();   		
-        		this.kill();
-        	} else if (mount.isAlive() && mount.isOnFire()) {
-        		this.setRemainingFireTicks(20);
-        		this.stopRiding();        		
-        	} else if (mount.isAlive() && this.tickCount % 20 == 0) {
-        		this.doHurtTarget(mount);
-        	}
-        	
+    }
+
+    private void tryEvolveToCocoon(int skinType) {
+        double range = this.getAttributeValue(Attributes.FOLLOW_RANGE);
+        List<Player> players = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(range));
+
+        if (!players.isEmpty() || this.isTame()) {
+            this.lifespawn = 5 * 20;
+
+            if (this.level() instanceof ServerLevel server) {
+                this.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
+                CocoonEntity pupa = null;
+                
+                if (skinType == 2) {
+                	pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), server, this.blockPosition());
+                }/* else if (skinType == 3) {         
+                	pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUBPUPA.get(), server, this.blockPosition());
+                }*/
+
+                if (pupa != null) {
+                    if (skinType == 2) {
+                        pupa.setSkin(0);
+                    }
+                    if (this.isTame() && this.getOwner() instanceof Player) {
+                        pupa.tame((Player) this.getOwner());
+                        pupa.setCustomName(this.getCustomName());
+                    }
+                }
+            }
+            this.discard();
+        } else {
+            this.kill();
         }
-             
+    }
+
+    private void handleRidingEffects() {
+        if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity mount && !this.level().isClientSide()) {
+            if (!mount.hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
+                this.stopRiding();
+                this.kill();
+            } else if (mount.isAlive() && mount.isOnFire()) {
+                this.setRemainingFireTicks(20);
+                this.stopRiding();
+            } else if (mount.isAlive() && this.tickCount % 20 == 0) {
+                this.doHurtTarget(mount);
+            }
+        }
+    }
+
+    private void updateAttachedBlockDirection() {
         if (!this.level().isClientSide()) {
             if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
                 this.entityData.set(ATTACHED_BLK, Direction.DOWN);
             } else if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_BLK, Direction.UP);
             } else {
-                Direction closestDirection = Direction.DOWN;
-                double closestDistance = 100;
-                
-                for (Direction dir : DIRECTIONS) {
-                    BlockPos antPos = new BlockPos((int)Math.floor(this.getX()), (int)Math.floor(this.getY()), (int)Math.floor(this.getZ()));
-                    BlockPos offsetPos = antPos.relative(dir);
-                    Vec3 offset = Vec3.atCenterOf(offsetPos);
-                    if (closestDistance > this.position().distanceTo(offset) && this.level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
-                        closestDistance = this.position().distanceTo(offset);
-                        closestDirection = dir;
-                    }
-                }
-                
-                this.entityData.set(ATTACHED_BLK, closestDirection);
+                this.entityData.set(ATTACHED_BLK, findClosestAttachableDirection());
             }
-        }      
-        super.tick();
+        }
+    }
+
+    private Direction findClosestAttachableDirection() {
+        Direction closestDirection = Direction.DOWN;
+        double closestDistance = 100.0D;
+
+        for (Direction dir : DIRECTIONS) {
+            BlockPos antPos = new BlockPos((int) Math.floor(this.getX()), (int) Math.floor(this.getY()), (int) Math.floor(this.getZ()));
+            BlockPos offsetPos = antPos.relative(dir);
+            Vec3 offset = Vec3.atCenterOf(offsetPos);
+            double distance = this.position().distanceTo(offset);
+
+            if (distance < closestDistance && this.level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                closestDistance = distance;
+                closestDirection = dir;
+            }
+        }
+
+        return closestDirection;
     }
 	
     @Override
