@@ -76,7 +76,7 @@ public class EntityVespaCocoon extends EntityFishTameable {
                     }
 
                     // Enigmoth
-                } else if (this.getSkin() == 1) {
+                } else if (this.getSkin() == 1) {               
                     EntityEnigmoth adult = new EntityEnigmoth(this.world);
                     adult.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                     this.world.spawnEntity(adult);

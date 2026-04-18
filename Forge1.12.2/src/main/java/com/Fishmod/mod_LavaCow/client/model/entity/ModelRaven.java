@@ -149,42 +149,42 @@ public class ModelRaven extends ModelBase {
     	this.prepare(getState((EntityRaven)entityIn));
     }
     
-    private void setupAnim(ModelRaven.State p_217162_1_, int p_217162_2_, float p_217162_3_, float p_217162_4_, float p_217162_5_, float p_217162_6_, float p_217162_7_) {
-        this.head.rotateAngleX = p_217162_7_ * ((float)Math.PI / 180F);
-        this.head.rotateAngleY = p_217162_6_ * ((float)Math.PI / 180F);
+    private void setupAnim(ModelRaven.State state, int ticksExisted, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {    	
+    	this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
         this.head.rotateAngleZ = 0.0F;
         this.head.rotationPointX = 0.0F;
         this.body.rotationPointX = 0.0F;
         this.tail.rotationPointX = 0.0F;
         this.wingRight.rotationPointX = -1.5F;
         this.wingLeft.rotationPointX = 1.5F;
-        switch(p_217162_1_) {
+        switch (state) {
         case SITTING:
         	break;
         case PARTY:
-        	float f = MathHelper.cos((float)p_217162_2_);
-           	float f1 = MathHelper.sin((float)p_217162_2_);
-           	this.head.rotationPointX = f;
-           	this.head.rotationPointY = 15.69F + f1;
+        	float f1 = MathHelper.cos((float)ticksExisted);
+           	float f2 = MathHelper.sin((float)ticksExisted);
+           	this.head.rotationPointX = f1;
+           	this.head.rotationPointY = 15.69F + f2;
            	this.head.rotateAngleX = 0.0F;
            	this.head.rotateAngleY = 0.0F;
-           	this.head.rotateAngleZ = MathHelper.sin((float)p_217162_2_) * 0.4F;
-           	this.body.rotationPointX = f;
-           	this.body.rotationPointY = 16.5F + f1;
-           	this.wingLeft.rotateAngleZ = -0.0873F - p_217162_5_;
-           	this.wingLeft.rotationPointX = 1.5F + f;
-           	this.wingLeft.rotationPointY = 16.94F + f1;
-           	this.wingRight.rotateAngleZ = 0.0873F + p_217162_5_;
-           	this.wingRight.rotationPointX = -1.5F + f;
-           	this.wingRight.rotationPointY = 16.94F + f1;
-           	this.tail.rotationPointX = f;
-           	this.tail.rotationPointY = 21.07F + f1;
+           	this.head.rotateAngleZ = MathHelper.sin((float)ticksExisted) * 0.4F;
+           	this.body.rotationPointX = f1;
+           	this.body.rotationPointY = 16.5F + f2;
+           	this.wingLeft.rotateAngleZ = -0.0873F - ageInTicks;
+           	this.wingLeft.rotationPointX = 1.5F + f1;
+           	this.wingLeft.rotationPointY = 16.94F + f2;
+           	this.wingRight.rotateAngleZ = 0.0873F + ageInTicks;
+           	this.wingRight.rotationPointX = -1.5F + f1;
+           	this.wingRight.rotationPointY = 16.94F + f2;
+           	this.tail.rotationPointX = f1;
+           	this.tail.rotationPointY = 21.07F + f2;
            	break;
         case STANDING:
-        	this.legLeft.rotateAngleX += MathHelper.cos(p_217162_3_ * 0.6662F) * 1.4F * p_217162_4_;
-           	this.legRight.rotateAngleX += MathHelper.cos(p_217162_3_ * 0.6662F + (float)Math.PI) * 1.4F * p_217162_4_;
+        	this.legLeft.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+           	this.legRight.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
            	this.head.rotationPointY = 15.69F;
-           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
+           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
            	this.tail.rotationPointY = 21.07F;
            	this.body.rotationPointY = 16.5F;
            	this.wingLeft.rotateAngleZ = -0.0873F;
@@ -196,25 +196,30 @@ public class ModelRaven extends ModelBase {
            	break;
         case FLYING:
         default:
+        	float speed = 1.5F;
+        	float amplitude = 0.6F;
+        	float flap = MathHelper.cos(ageInTicks * speed) * amplitude;
+        	
            	this.head.rotationPointY = 15.69F;
-           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
+           	this.tail.rotateAngleX = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
            	this.tail.rotationPointY = 21.07F;
            	this.body.rotationPointY = 16.5F;
-           	this.wingLeft.rotateAngleZ = -0.0873F - p_217162_5_;
-           	this.wingLeft.rotationPointY = 16.94F;
-           	this.wingRight.rotateAngleZ = 0.0873F + p_217162_5_;
-           	this.wingRight.rotationPointY = 16.94F;
+           	this.wingLeft.rotateAngleZ = -1.5934F + flap;
+           	this.wingLeft.rotationPointY = 16.94F + MathHelper.cos(ageInTicks * speed) * 0.3F;
+           	this.wingRight.rotateAngleZ = 1.5934F - flap;
+           	this.wingRight.rotationPointY = 16.94F + MathHelper.cos(ageInTicks * speed) * 0.3F;
            	this.legLeft.rotationPointY = 22.0F;
            	this.legRight.rotationPointY = 22.0F;
+           	break;
         }
 	}
     
 	private void prepare(ModelRaven.State p_217160_1_) {
         this.feather.rotateAngleX = -0.2214F;
         this.body.rotateAngleX = 0.4937F;
-        this.wingLeft.rotateAngleX = -0.6981F;
+        this.wingLeft.rotateAngleX = -((float)Math.PI * 2F / 9F);
         this.wingLeft.rotateAngleY = -(float)Math.PI;
-        this.wingRight.rotateAngleX = -0.6981F;
+        this.wingRight.rotateAngleX = -((float)Math.PI * 2F / 9F);
         this.wingRight.rotateAngleY = -(float)Math.PI;
         this.legLeft.rotateAngleX = -0.0299F;
         this.legRight.rotateAngleX = -0.0299F;
@@ -241,12 +246,14 @@ public class ModelRaven extends ModelBase {
         case PARTY:
         	this.legLeft.rotateAngleZ = -0.34906584F;
            	this.legRight.rotateAngleZ = 0.34906584F;
+           	break;
         case STANDING:
         default:
         	break;
     	case FLYING:
         	this.legLeft.rotateAngleX += 0.6981317F;
         	this.legRight.rotateAngleX += 0.6981317F;
+        	break;
         }
 
 	}

@@ -143,7 +143,6 @@ public class EntityAvaton extends EntityFloatingMob implements IAggressive {
                 entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entity.onInitialSpawn(EntityAvaton.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData)null);
                 entity.setLimitedLife(Modconfig.Weta_Lifespan * 20);
-                entity.setTamed(true);
                 entity.setOwnerId(EntityAvaton.this.getUniqueID());
 
                 if(!EntityAvaton.this.world.isRemote)

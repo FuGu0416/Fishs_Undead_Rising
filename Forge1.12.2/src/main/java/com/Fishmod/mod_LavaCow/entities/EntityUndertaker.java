@@ -344,7 +344,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
         }
 
         protected void castSpell() {
-            for (int i = 0; i < Modconfig.Undertaker_Ability_Num; ++i) {
+            for (int i = 0; i < Modconfig.Undertaker_Ability_Num; ++i) {           	
                 BlockPos blockpos = (new BlockPos(EntityUndertaker.this)).add(-6 + EntityUndertaker.this.rand.nextInt(12), 0, -6 + EntityUndertaker.this.rand.nextInt(12));
                 if (EntityUndertaker.this.rand.nextFloat() < 0.15F) {
                     if (BiomeDictionary.hasType(EntityUndertaker.this.getEntityWorld().getBiome(EntityUndertaker.this.getPosition()), Type.DRY)) {
@@ -353,7 +353,6 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
                         entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
                         entity.setCanPickUpLoot(false);
-                        entity.setTamed(true);
                         entity.setOwnerId(EntityUndertaker.this.getUniqueID());
 
                         if (!EntityUndertaker.this.world.isRemote)
@@ -378,7 +377,6 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
                         entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
                         entity.setCanPickUpLoot(false);
-                        entity.setTamed(true);
                         entity.setOwnerId(EntityUndertaker.this.getUniqueID());
 
                         if (!EntityUndertaker.this.world.isRemote)
@@ -403,7 +401,6 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
                         entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                         entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
                         entity.setCanPickUpLoot(false);
-                        entity.setTamed(true);
                         entity.setOwnerId(EntityUndertaker.this.getUniqueID());
 
                         if (!EntityUndertaker.this.world.isRemote)
@@ -429,7 +426,6 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
                     entity.onInitialSpawn(EntityUndertaker.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                     entity.setLimitedLife(Modconfig.Unburied_Lifespan * 20);
                     entity.setCanPickUpLoot(false);
-                    entity.setTamed(true);
                     entity.setOwnerId(EntityUndertaker.this.getUniqueID());
 
                     if (!EntityUndertaker.this.world.isRemote)

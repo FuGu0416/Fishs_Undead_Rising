@@ -153,7 +153,6 @@ public class EntitySeaHag extends EntityFloatingMob implements IAggressive {
                 entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entity.onInitialSpawn(EntitySeaHag.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                 entity.setLimitedLife(Modconfig.Ghost_Swarmer_Lifespan * 20);
-                entity.setTamed(true);
                 entity.setOwnerId(EntitySeaHag.this.getUniqueID());
                 entity.setSkin(1);
 

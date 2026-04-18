@@ -4,7 +4,6 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityCactusThorn;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityDeathCoil;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityEnchantableFireBall;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityPiranhaLauncher;
 import com.Fishmod.mod_LavaCow.item.ItemPiranhaLauncher;
 import com.shultrea.rin.SoManyEnchantments;
 import com.shultrea.rin.properties.ArrowPropertiesProvider;
@@ -177,7 +176,7 @@ public class LauncherAmmoHandler {
     // This is ridiculous
     public static void setArrowEnchantmentsFromStack(ItemStack bow, Entity arrow, IArrowProperties properties) {
         boolean isDeathCoil = arrow instanceof EntityDeathCoil;
-        boolean ispiranha = arrow instanceof EntityPiranhaLauncher;
+        //boolean ispiranha = arrow instanceof EntityPiranhaLauncher;
         boolean isFireBall = arrow instanceof EntityEnchantableFireBall;
         boolean isCactusThorn = arrow instanceof EntityCactusThorn;
 

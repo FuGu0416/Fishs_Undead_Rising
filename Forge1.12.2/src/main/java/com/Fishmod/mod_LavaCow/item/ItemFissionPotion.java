@@ -74,7 +74,7 @@ public class ItemFissionPotion extends ItemFishCustom {
         double dy = target.posY;
         double dz = target.posZ;
         boolean flag = false;
-
+ 		
         // Potion of Fission
         if (((!Modconfig.Fission_ModEntity && LootTableHandler.FISSION_WHITELIST.contains(EntityList.getKey(target))) || Modconfig.Fission_ModEntity && target instanceof EntityLiving) && !target.isChild()) {
             if (!playerIn.world.isRemote) {
@@ -207,7 +207,7 @@ public class ItemFissionPotion extends ItemFishCustom {
             }
         }
 
-        return super.itemInteractionForEntity(stack, playerIn, target, hand);
+        return (flag || super.itemInteractionForEntity(stack, playerIn, target, hand));
     }
 
     /**

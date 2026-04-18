@@ -385,7 +385,6 @@ public class EntitySludgeLord extends EntityMob implements IAggressive {
                 entity.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                 entity.onInitialSpawn(EntitySludgeLord.this.world.getDifficultyForLocation(blockpos), (IEntityLivingData) null);
                 entity.setOwnerId(EntitySludgeLord.this.getUniqueID());
-                entity.setTamed(true);
                 entity.setLimitedLife(20 * (30 + EntitySludgeLord.this.rand.nextInt(90)));
 
                 if (!EntitySludgeLord.this.world.isRemote) {
