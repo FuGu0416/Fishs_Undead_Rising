@@ -5,7 +5,9 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -504,12 +506,28 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     	}
     }
     
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+
+        if (this.isTame() && !this.level().isClientSide) {
+            Block headBlock = switch (this.getSkin()) {
+                case 1 -> FURBlockRegistry.SCARECROWHEAD_STRAW.get();
+                case 2 -> FURBlockRegistry.SCARECROWHEAD_PLAGUE.get();
+                default -> FURBlockRegistry.SCARECROWHEAD_COMMON.get();
+            };
+
+            this.spawnAtLocation(new ItemStack(headBlock.asItem()), 0.5F);
+            this.spawnAtLocation(new ItemStack(FURItemRegistry.UNDYING_HEART.get()), 0.5F);
+        }
+    }
+    
     /**
      * Entity won't drop items or experience points if this returns false
      */
     @Override
     public boolean shouldDropLoot() {
-    	return !this.isOnFire() || this.lastHurtByPlayer != null;
+    	return !this.isTame() && (!this.isOnFire() || this.lastHurtByPlayer != null);
     }
     
     @Override
