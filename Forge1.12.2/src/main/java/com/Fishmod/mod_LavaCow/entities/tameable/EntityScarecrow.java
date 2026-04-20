@@ -6,6 +6,7 @@ import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
+import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
@@ -531,9 +532,23 @@ public class EntityScarecrow extends EntityFishTameable {
      */
     @Override
     protected boolean canDropLoot() {
-        return !this.isBurning() || this.recentlyHit != 0;
+        return !this.isTamed() && (!this.isBurning() || this.recentlyHit != 0);
     }
 
+    @Override
+    public void onDeath(DamageSource cause) {
+        super.onDeath(cause);
+
+        if (this.isTamed() && !this.world.isRemote) {
+            Block headBlock = this.getSkin() == 1 ? Modblocks.SCARECROWHEAD_STRAW : 
+                              this.getSkin() == 2 ? Modblocks.SCARECROWHEAD_PLAGUE : 
+                            	  Modblocks.SCARECROWHEAD_COMMON;
+
+            this.entityDropItem(new ItemStack(Item.getItemFromBlock(headBlock)), 0.5F);
+            this.entityDropItem(new ItemStack(FishItems.UNDYINGHEART), 0.5F);
+        }
+    }
+    
     static class AIScarecrowAttackMelee extends EntityAIAttackMelee {
         public AIScarecrowAttackMelee(EntityCreature creature, double speedIn, boolean useLongMemory) {
             super(creature, speedIn, useLongMemory);
