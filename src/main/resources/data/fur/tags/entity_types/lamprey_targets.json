@@ -1,7 +1,0 @@
-{
-  "__comment": "all non-player targets of Lamprey.",
-  "replace": false,
-  "values": [
-	"#fur:zombies"
-  ]
-}
