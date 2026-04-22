@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
@@ -15,8 +16,6 @@ import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -112,7 +111,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         }).setUnseenMemoryTicks(160));        
         
     	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
-    		return !this.isBaby() && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.ENIGMOTH_TARGETS);
+    		return !this.isBaby() && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.ENIGMOTH_TARGETS);
     	}).setUnseenMemoryTicks(160));
 	}
 	

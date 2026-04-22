@@ -5,10 +5,9 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.block.blockentity.SalamanderEggBlockEntity;
+import com.Fishmod.fur.data.providers.FURBlockTagsProvider;
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -130,7 +129,7 @@ public class SalamanderEggBlock extends BaseEntityBlock {
 	}
 
 	public static boolean hatchBoost(BlockGetter getter, BlockPos pos) {
-		return getter.getBlockState(pos.below()).is(FURTagRegistry.SALAMANDER_EGG_HATCH_BOOST);
+		return getter.getBlockState(pos.below()).is(FURBlockTagsProvider.SALAMANDER_EGG_HATCH_BOOST);
 	}
 
 	@Override

@@ -5,13 +5,12 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -336,7 +335,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), server, blockpos);
 	                } else if (Biome.containsTag(BiomeTags.SPAWNS_SNOW_FOXES)) {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FRIGID.get(), server, blockpos);
-	                } else if (Biome.containsTag(FURTagRegistry.HAS_MYCOSIS)) {
+	                } else if (Biome.containsTag(FURBiomeTagsProvider.HAS_MYCOSIS)) {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MYCOSIS.get(), server, blockpos);
 	                } else {
 	                	entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.UNBURIED.get(), server, blockpos);

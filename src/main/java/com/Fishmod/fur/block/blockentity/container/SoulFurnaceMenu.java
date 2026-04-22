@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.block.blockentity.SoulFurnaceBlockEntity;
+import com.Fishmod.fur.data.providers.FURItemTagsProvider;
 import com.Fishmod.fur.init.FURMenuTypesRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -101,7 +101,7 @@ public class SoulFurnaceMenu extends AbstractContainerMenu {
 					return ItemStack.EMPTY;
 				}
 			} else if (index > indexOutput) {
-				boolean isValidContainer = slotStack.is(FURTagRegistry.SERVING_CONTAINERS) || slotStack.is(blockEntity.getContainer().getItem());
+				boolean isValidContainer = slotStack.is(FURItemTagsProvider.SERVING_CONTAINERS) || slotStack.is(blockEntity.getContainer().getItem());
 				if (isValidContainer && !this.moveItemStackTo(slotStack, indexContainerInput, indexContainerInput + 1, false)) {
 					return ItemStack.EMPTY;
 				} else if (!this.moveItemStackTo(slotStack, 0, indexContainerInput, false)) {

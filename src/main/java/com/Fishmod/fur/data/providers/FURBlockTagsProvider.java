@@ -7,20 +7,24 @@ import org.jetbrains.annotations.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.init.FURBlockRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class FURBlockTagsProvider extends BlockTagsProvider {    
+public class FURBlockTagsProvider extends BlockTagsProvider {   
+    public static final TagKey<Block> SALAMANDER_EGG_HATCH_BOOST = TagKey.create(Registries.BLOCK, new ResourceLocation(mod_LavaCow.MODID, "salamander_egg_hatch_boost"));
+    
 	public FURBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
 	}
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
-    	this.tag(FURTagRegistry.SALAMANDER_EGG_HATCH_BOOST).add(Blocks.MAGMA_BLOCK, FURBlockRegistry.SOUL_FURNACE.get());
+    	this.tag(SALAMANDER_EGG_HATCH_BOOST).add(Blocks.MAGMA_BLOCK, FURBlockRegistry.SOUL_FURNACE.get());
     }
 }

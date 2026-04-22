@@ -6,12 +6,11 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -102,7 +101,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
             return !this.requiresCustomPersistence();
     	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.SWARMER_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.SWARMER_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
     	}));
     	this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }

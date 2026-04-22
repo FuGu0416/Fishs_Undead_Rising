@@ -14,11 +14,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 
 public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
-
-    public FUREntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, existingFileHelper);
-    }
-
     // ── Custom Tag Keys ──────────────────────────────────────────────────────
     public static final TagKey<EntityType<?>> FISHES =
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "fishes"));
@@ -36,11 +31,21 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "piranha_targets"));
     public static final TagKey<EntityType<?>> PTERA_TARGETS =
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "ptera_targets"));
+    public static final TagKey<EntityType<?>> PTERA_CARGOS = 
+    		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "ptera_cargos"));
     public static final TagKey<EntityType<?>> SWARMER_TARGETS =
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "swarmer_targets"));
     public static final TagKey<EntityType<?>> WENDIGO_TARGETS =
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "wendigo_targets"));
-
+    public static final TagKey<EntityType<?>> BEELZEBUB_TARGETS = 
+    		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "beelzebub_targets"));
+    public static final TagKey<EntityType<?>> VESPA_TARGETS = 
+    		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "vespa_targets"));
+    
+    public FUREntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, existingFileHelper);
+    }
+   
     @Override
 	public void addTags(HolderLookup.Provider provider) {
         this.addFishesTag();
@@ -51,6 +56,7 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         this.addParasiteTargetsTag();
         this.addPiranhaTargetsTag();
         this.addPteraTargetsTag();
+        this.addPteraCargosTag();
         this.addSwarmerTargetsTag();
         this.addWendigoTargetsTag();
     }
@@ -141,6 +147,17 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(EntityType.GLOW_SQUID);
     }
 
+    // ── fur:ptera_cargos ────────────────────────────────────────────────────
+    private void addPteraCargosTag() {
+        tag(PTERA_CARGOS)
+        		.add(FUREntityRegistry.FOGLET.get())
+        		.add(FUREntityRegistry.ISNACHI.get())
+                .add(EntityType.DROWNED)
+                .add(EntityType.HUSK)
+                .add(EntityType.ZOMBIE)
+                .add(EntityType.CREEPER);
+    }
+    
     // ── fur:swarmer_targets ──────────────────────────────────────────────────
     private void addSwarmerTargetsTag() {
         tag(SWARMER_TARGETS)

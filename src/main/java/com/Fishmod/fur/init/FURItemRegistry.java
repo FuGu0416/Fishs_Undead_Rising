@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.data.providers.FURBannerPatternTagsProvider;
 import com.Fishmod.fur.item.CactusFruitItem;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.DiseasedBreadItem;
@@ -214,8 +215,8 @@ public class FURItemRegistry {
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));
     public static final RegistryObject<BannerPattern> PATTERN_WENDIGO = BANNER_DEF_REG.register("wendigo", () -> new BannerPattern("wendigo"));
 		
-    public static final RegistryObject<Item> SKELETONKING_PATTERN = DEF_REG.register("banner_pattern_skeletonking", () -> new BannerPatternItem(FURTagRegistry.PATTERN_SKELETONKING, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> WENDIGO_PATTERN = DEF_REG.register("banner_pattern_wendigo", () -> new BannerPatternItem(FURTagRegistry.PATTERN_WENDIGO, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> SKELETONKING_PATTERN = DEF_REG.register("banner_pattern_skeletonking", () -> new BannerPatternItem(FURBannerPatternTagsProvider.PATTERN_SKELETONKING, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> WENDIGO_PATTERN = DEF_REG.register("banner_pattern_wendigo", () -> new BannerPatternItem(FURBannerPatternTagsProvider.PATTERN_WENDIGO, new Item.Properties().stacksTo(1)));
     
     static {
         spawnEgg("lavacow", FUREntityRegistry.LAVACOW, 0x312C36, 0xFFDE00);

@@ -3,11 +3,10 @@ package com.Fishmod.fur.entities.aquatic;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -72,7 +71,7 @@ public class LampreyEntity extends SwarmerEntity {
             return !this.requiresCustomPersistence();
     	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.LAMPREY_TARGETS) && !this.requiresCustomPersistence();
+    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS) && !this.requiresCustomPersistence();
     	}));	
     }
  
@@ -151,7 +150,7 @@ public class LampreyEntity extends SwarmerEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		
-		if (FURConfig.Lamprey_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FURTagRegistry.LAMPREY_TARGETS) && !this.isPassenger() && !this.requiresCustomPersistence()) {
+		if (FURConfig.Lamprey_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS) && !this.isPassenger() && !this.requiresCustomPersistence()) {
 			((LivingEntity) entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
     		this.startRiding(entityIn);
         }

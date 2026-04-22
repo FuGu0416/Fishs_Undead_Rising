@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -109,7 +109,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
     	this.targetSelector.addGoal(2, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
     	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.WENDIGO_TARGETS);
+    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.WENDIGO_TARGETS);
     	}));	 	
     }
     

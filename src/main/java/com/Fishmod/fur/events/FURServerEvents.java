@@ -5,6 +5,8 @@ import java.util.Random;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
@@ -12,7 +14,6 @@ import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
@@ -302,7 +303,7 @@ public class FURServerEvents {
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
     	if (world instanceof ServerLevel && !entity.isInWaterOrBubble() &&
-    			((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FURTagRegistry.PARASITE_TARGETS)) 
+    			((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS)) 
     					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame())
     			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
@@ -342,7 +343,7 @@ public class FURServerEvents {
          * Give a chance to spawn horde of Lampreys when a listed target dies.
          **/    	   	
     	if (world instanceof ServerLevel && entity.isInWaterOrBubble() &&
-    			((entity instanceof LivingEntity living && living.getType().is(FURTagRegistry.LAMPREY_TARGETS)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
+    			((entity instanceof LivingEntity living && living.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
     			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
     		float var4,var5;
@@ -475,7 +476,7 @@ public class FURServerEvents {
 		    	if (((ItemEntity) ItemEntity).getItem().getItem().isEdible() && ((ItemEntity) ItemEntity).getItem().getItem().getFoodProperties().isMeat()) {	
 					BlockPos pos = ItemEntity.blockPosition();
 	
-		            if (ItemEntity.isInWater() && player.level().getBiome(pos).containsTag(FURTagRegistry.HAS_SWARMER)) {     		            			         	            	
+		            if (ItemEntity.isInWater() && player.level().getBiome(pos).containsTag(FURBiomeTagsProvider.HAS_SWARMER)) {     		            			         	            	
 						for (int i = 0; i < 2 + player.level().random.nextInt(3); i++) {	    				
 		    				double posX = pos.getX() + ((player.level().random.nextDouble() * 5.0D) - 2.5D);
 		    				double posY = pos.getY();
@@ -483,7 +484,7 @@ public class FURServerEvents {
 		    				BlockPos blockpos= new BlockPos((int)posX, (int)posY, (int)posZ);
 		    				
 		    				if (player.level().getBlockState(blockpos).getFluidState().is(FluidTags.WATER)) {
-		    					if (SpawnUtil.isDay(player.level()) && player.level().getBiome(blockpos).containsTag(FURTagRegistry.HAS_PIRANHA)) {
+		    					if (SpawnUtil.isDay(player.level()) && player.level().getBiome(blockpos).containsTag(FURBiomeTagsProvider.HAS_PIRANHA)) {
 		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.PIRANHA.get(), ((ServerLevel) player.level()), blockpos);
 		    					} else {
 		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER.get(), ((ServerLevel) player.level()), blockpos);	    						

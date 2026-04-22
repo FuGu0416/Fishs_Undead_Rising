@@ -1,17 +1,21 @@
 package com.Fishmod.fur.entities.flying;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
+import com.Fishmod.fur.entities.IsnachiEntity;
 import com.Fishmod.fur.entities.ai.EntityAIDropRider;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
@@ -31,12 +35,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
@@ -77,7 +83,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true).setUnseenMemoryTicks(160));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 120, true, true, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.PTERA_TARGETS);
+    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PTERA_TARGETS);
     	}).setUnseenMemoryTicks(160));
 	}
 	
@@ -137,7 +143,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 
 	@Override
 	public boolean doHurtTarget(Entity par1Entity) {
-		if (par1Entity.getType().is(FURTagRegistry.PTERA_TARGETS)) {
+		if (par1Entity.getType().is(FUREntityTypeTagsProvider.PTERA_TARGETS)) {
 			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get() * 2.0D);
 		} else {
 			this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
@@ -182,21 +188,68 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 			this.setSkin(this.random.nextInt(2) * 4);
 		}
 	   
-		/*if (!this.isPassenger() && this.random.nextInt(100) < FURConfig.Ptera_Ability_Chance.get()) {
-		   	MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(this.random, LootTableHandler.PTERA_LIST));
-		   	Entity entityRider = Result.type.create(this.level);
-			
-		   	if (entityRider instanceof Monster) {					
-				entityRider.moveTo(this.blockPosition(), this.yRot, 0.0F);
-				this.level().addFreshEntity(entityRider);
-				entityRider.startRiding(this);
-				((Monster) entityRider).finalizeSpawn(worldIn, difficulty, SpawnReason.MOB_SUMMONED, (ILivingEntityData)null, (CompoundTag)null);								
-				
-				if(entityRider instanceof FogletEntity) {
-					((FogletEntity) entityRider).setIsHanging(true);
-				}
-		   	}
-	   	}*/
+		if (!this.isPassenger() && this.level() instanceof ServerLevel serverLevel && this.random.nextInt(100) < FURConfig.Ptera_Ability_Chance.get()) {
+
+		    // 1. Collect all entities in the current biome that belong to the PTERA_CARGOS tag
+		    List<SpawnerData> candidates = new ArrayList<>();
+		    int totalWeight = 0;
+
+		    for (SpawnerData spawnerData : serverLevel.getBiome(this.blockPosition()).value().getMobSettings()
+		    		.getMobs(net.minecraft.world.entity.MobCategory.MONSTER).unwrap()) {
+		    	
+		        if (spawnerData.type.is(FUREntityTypeTagsProvider.PTERA_CARGOS)) {
+		            candidates.add(spawnerData);
+		            totalWeight += spawnerData.getWeight().asInt();
+		        }
+		    }
+
+		    // 2. Skip if no valid candidates exist in the current biome
+		    if (!candidates.isEmpty() && totalWeight > 0) {
+		    	
+		        // 3. Weighted random selection based on spawn weight
+		        int roll = this.random.nextInt(totalWeight);
+		        int cumulative = 0;
+		        SpawnerData chosen = null;
+
+		        for (SpawnerData spawnerData : candidates) {
+		            cumulative += spawnerData.getWeight().asInt();
+		            if (roll < cumulative) {
+		                chosen = spawnerData;
+		                break;
+		            }
+		        }
+
+		        if (chosen != null) {
+		            EntityType<?> chosenType = chosen.type;
+
+		            // 4. Determine before spawning whether the Creeper should be powered (5% chance)
+		            boolean shouldBePowered = chosenType == EntityType.CREEPER && this.random.nextInt(100) < 5;
+
+		            // 5. Spawn the rider entity
+		            Entity entityRider = chosenType.create(serverLevel);
+
+		            if (entityRider instanceof Monster monster) {
+		                entityRider.moveTo(this.blockPosition(), this.getYRot(), 0.0F);
+		                serverLevel.addFreshEntity(entityRider);
+		                entityRider.startRiding(this);
+		                monster.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null,null);
+
+		                // 6. If the rider is a Creeper and shouldBePowered, apply charged state
+		                if (entityRider instanceof Creeper creeper && shouldBePowered) {
+		                	CompoundTag tag = new CompoundTag();
+		                	creeper.save(tag);
+		                	tag.putBoolean("powered", true);
+		                	creeper.load(tag);
+		                }
+
+		                // 7. Special case: set IsHanging for IsnachiEntity
+		                if (entityRider instanceof IsnachiEntity isnachi) {
+		                    isnachi.setIsHanging(true);
+		                }
+		            }
+		        }
+		    }
+		}
 	   	   
 		return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
 	}  

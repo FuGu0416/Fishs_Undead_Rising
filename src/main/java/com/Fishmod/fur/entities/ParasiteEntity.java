@@ -8,13 +8,12 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -111,7 +110,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
             	return !p_213440_0_.isPassenger() && !this.isTame();
         	}));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.PARASITE_TARGETS) && !this.isTame();
+    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isTame();
     	}));	
     }
     
@@ -331,7 +330,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		
-		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FURTagRegistry.PARASITE_TARGETS) && !this.isPassenger()) {
+		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
 			if (!this.isSummoned()) {
 				((LivingEntity) entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
 			}

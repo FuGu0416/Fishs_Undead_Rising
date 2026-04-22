@@ -3,10 +3,9 @@ package com.Fishmod.fur.entities.aquatic;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.init.FURItemRegistry;
-import com.Fishmod.fur.init.FURTagRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -41,7 +40,7 @@ public class PiranhaEntity extends SwarmerEntity {
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FURTagRegistry.PIRANHA_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PIRANHA_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
     	}));
     	this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
