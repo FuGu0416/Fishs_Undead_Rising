@@ -616,7 +616,7 @@ public class FURServerEvents {
     		}
     	}   	
     	
-    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get())) {
+    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get()) && (source.is(DamageTypeTags.IS_PROJECTILE) || source.is(DamageTypes.MOB_ATTACK))) {
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED.get()).getAmplifier())));
     	}
     	

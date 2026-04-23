@@ -59,7 +59,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Ptera_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Ptera_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ptera_Ability_Chance;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Ptera_Ability_Spawn;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pEvolveRate_Vespa;
 	public static final ForgeConfigSpec.ConfigValue<Double> Vespa_Health;
@@ -324,14 +323,7 @@ public final class FURConfig {
 		BUILDER.push("Ptera");
 		Ptera_Health = BUILDER.comment("Maximum Ptera health [1-1000]").defineInRange("ptera health", 10.0D, 1.0D, 1000.0D);
 		Ptera_Attack = BUILDER.comment("Ptera strength [1-1000]").defineInRange("ptera attack", 3.0D, 1.0D, 1000.0D);
-		Ptera_Ability_Chance = BUILDER.comment("Chance of Ptera to carry a passenger when spawned [0-100]").defineInRange("ptera carries passenger chance", 10, 0, 100);
-		Ptera_Ability_Spawn = BUILDER.comment("Customize the passenger list for the Ptera. Ex. \\\"mod_lavacow:foglet,40\\\" or \\\"minecraft:spider,20\\\"").defineList("passenger list for ptera", 
-				Lists.newArrayList(
-						"mod_lavacow:foglet,40",
-						"minecraft:zombie,40",
-						"minecraft:creeper,20"), 
-				o -> o instanceof String);
-		
+		Ptera_Ability_Chance = BUILDER.comment("Chance of Ptera to carry a passenger when spawned [0-100]").defineInRange("ptera carries passenger chance", 10, 0, 100);		
 		BUILDER.pop();
 		
 		BUILDER.push("Vespa");
