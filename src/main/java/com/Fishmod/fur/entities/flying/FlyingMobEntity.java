@@ -329,10 +329,13 @@ public class FlyingMobEntity extends FURTameableEntity {
         private final int verticalRange = 6;
 
         // Stuck detection
+        // MIN_MOVE_SQ is intentionally higher than before: FlyingMoveHelper's lerp
+        // can produce tiny residual movement even when physically blocked by a wall.
+        // Using a higher threshold ensures stuckTicks accumulates reliably.
         private Vec3 lastPos = Vec3.ZERO;
         private int stuckTicks = 0;
-        private static final int STUCK_THRESHOLD = 40;
-        private static final double MIN_MOVE_SQ = 0.002D;
+        private static final int STUCK_THRESHOLD = 20; // Lowered: escape sooner
+        private static final double MIN_MOVE_SQ = 0.01D; // Raised: ignore micro-jitter from wall lerp
 
         // Ground Y cache (~5 sec refresh)
         private double cachedGroundY = Double.NaN;
@@ -779,23 +782,27 @@ public class FlyingMobEntity extends FURTameableEntity {
                 this.velocity = new Vec3(this.velocity.x, MAX_Y_SPEED, this.velocity.z);
 
             // ── Collision avoidance ──────────────────────────────────────────
-            if (!this.isPathClear(this.velocity)) {
+            // Wall-contact detection: compare velocity we WANT to apply vs what
+            // Minecraft actually allows. If the entity is being stopped by a wall,
+            // the actual deltaMovement after move() will be much smaller than the
+            // velocity we set. We detect this by checking isPathClear BEFORE applying.
+            boolean wallContact = !this.isPathClear(this.velocity);
+
+            if (wallContact) {
                 this.blockedTicks++;
 
                 double spd     = Math.max(this.velocity.length(), 0.05D);
                 Vec3 bestDir   = null;
                 double bestDot = -2.0D;
 
-                // Test pre-built probe directions scaled to current speed.
-                // Also reject any probe heading into lava.
                 for (double[] d : PROBE_DIRS) {
                     Vec3 probe = new Vec3(d[0] * spd, d[1] * spd, d[2] * spd);
 
                     if (!this.isPathClear(probe))
                         continue;
 
-                    // Reject probes that move into lava
-                    Vec3 probePos = currentPos.add(probe);
+                    // Reject probes heading into lava
+                    Vec3 probePos    = currentPos.add(probe);
                     BlockPos probeBlock = BlockPos.containing(probePos.x, probePos.y, probePos.z);
                     if (this.parentEntity.level().getBlockState(probeBlock)
                             .is(net.minecraft.world.level.block.Blocks.LAVA))
@@ -809,12 +816,17 @@ public class FlyingMobEntity extends FURTameableEntity {
                 }
 
                 if (bestDir != null) {
-                    // Escalate blend the longer we are blocked, so we commit harder to the detour
+                    // Commit harder to the detour the longer we have been blocked.
+                    // Using a higher base blend (0.6) so the detour takes effect
+                    // within 1-2 ticks rather than slowly lerping over many ticks.
                     double blend = Math.min(1.0D, this.blockedTicks / (double) BLOCKED_ESCALATE);
-                    this.velocity = this.velocity.lerp(bestDir, 0.4D + blend * 0.4D);
+                    this.velocity = this.velocity.lerp(bestDir, 0.6D + blend * 0.3D);
                 } else {
-                    // Completely boxed in: brake sharply, let AIRandomFly escape() take over
-                    this.velocity = this.velocity.scale(0.2D);
+                    // No clear probe found: full brake. AIRandomFly.escape() will
+                    // trigger once stuckTicks exceeds STUCK_THRESHOLD.
+                    this.velocity = Vec3.ZERO;
+                    this.parentEntity.setDeltaMovement(Vec3.ZERO);
+                    return;
                 }
             } else {
                 this.blockedTicks = 0;
@@ -846,5 +858,4 @@ public class FlyingMobEntity extends FURTameableEntity {
         }
 
     }
-
 }
