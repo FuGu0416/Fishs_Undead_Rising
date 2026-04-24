@@ -474,9 +474,13 @@ public class FURServerEvents {
         if (!player.isShiftKeyDown() && MoltenArmorItem.countMoltenPieces(player) >= 4) {
         	MoltenArmorItem.applyLavaWalking(player);
         }
+
+        // Soulforged Armor full-set: Soul Speed on soul sand / soul soil.
+        if (MoltenArmorItem.isWearingFullSoulforged(player)) {
+        	MoltenArmorItem.tickSoulSpeed(player);
+        }
         
         if (player.level().isClientSide()) return;
-
         if ((player.level().getGameTime() & 0x1FL) > 0L) return;    
         
 		if (player.level() instanceof ServerLevel && player.level().getDifficulty() != Difficulty.PEACEFUL && player.level().random.nextFloat() < 0.1F) {

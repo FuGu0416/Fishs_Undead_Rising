@@ -145,7 +145,12 @@
 	"item.fur.fission_reagent": "Fission Reagent",
 	"item.fur.mooten_reagent": "MOOten Reagent",
 	"item.fur.enigmoth_dust": "Enigmoth Dust",
-	
+	"item.fur.soulforged_armor_helmet": "Soulforged Helmet",
+	"item.fur.soulforged_armor_chestplate": "Soulforged Chestplate",
+	"item.fur.soulforged_armor_leggings": "Soulforged Leggings",
+	"item.fur.soulforged_armor_boots": "Soulforged Boots",
+	"item.fur.soulforged_upgrade_smithing_template": "Soulforged Upgrade Smithing Template",
+		
 	"item.fur.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.fur.spawn_egg_mycosis": "Mycosis Spawn Egg",
 	"item.fur.spawn_egg_parasite": "Parasite Spawn Egg",
@@ -491,6 +496,8 @@
 	"item.fur.bloated_intestine.desc": "Right-click to see what writhes inside.",
 	"item.fur.molten_armor.desc0": "Set Bonus (2): Retaliates with 3 seconds of fire on attackers.",
 	"item.fur.molten_armor.desc1": "Set Bonus (4): Reduces fire damage by 50% and grants the ability to walk on lava. Hold Sneak to sink.",
+	"item.fur.soulforged_armor.desc0": "Set Bonus (2): Retaliates with 5 seconds of fire on attackers.",
+	"item.fur.soulforged_armor.desc1": "Set Bonus (4): Grants complete fire immunity, the ability to walk on lava, and Soul Speed on soul blocks. Hold Sneak to sink.",	
 	"item.fur.swinearmor.desc0": "Set Bonus (2): Time of consuming food -25%%.",
 	"item.fur.swinearmor.desc1": "Set Bonus (4): Remove negative potion effects after consuming food.",
 	"item.fur.piranhalauncher.desc": "Right-click to launch a Swarmer at target. (need Swarmer as ammunition)",

@@ -145,7 +145,12 @@
 	"item.fur.fission_reagent": "分裂混合物",
 	"item.fur.mooten_reagent": "哞哞混合物",
 	"item.fur.enigmoth_dust": "謎影蛾鱗粉",
-				
+	"item.fur.soulforged_armor_helmet": "魂鑄戰盔",
+	"item.fur.soulforged_armor_chestplate": "魂鑄護胸",
+	"item.fur.soulforged_armor_leggings": "魂鑄腿鎧",
+	"item.fur.soulforged_armor_boots": "魂鑄護脛",
+	"item.fur.soulforged_upgrade_smithing_template": "魂鑄升級鍛造模板",
+					
 	"item.fur.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.fur.spawn_egg_mycosis": "菌屍生怪蛋",
 	"item.fur.spawn_egg_parasite": "屍蛆生怪蛋",
@@ -492,6 +497,8 @@
 	"item.fur.bloated_intestine.desc": "右鍵查看裡頭蠢動著什麼。",
 	"item.fur.molten_armor.desc0": "套裝(2): 受到攻擊時，使攻擊者燃燒3秒。",
 	"item.fur.molten_armor.desc1": "套裝(4): 減少50%火焰傷害，並獲得在熔岩上行走的能力。按住潛行鍵可正常下沉。",
+	"item.fur.soulforged_armor.desc0": "套裝(2): 受到攻擊時，使攻擊者燃燒5秒。",
+	"item.fur.soulforged_armor.desc1": "套裝(4): 獲得完全的火焰免疫、在熔岩上行走的能力，以及在靈魂砂和靈魂土上的靈魂疾走效果。按住潛行鍵可正常下沉。",
 	"item.fur.swinearmor.desc0": "套裝(2)：使用食物物品所需時間-25%%",
 	"item.fur.swinearmor.desc1": "套裝(4)：使用食物物品後移除負面效果",
 	"item.fur.piranhalauncher.desc": "右鍵向目標發射一隻群獵者！ (需要群獵者作為彈藥)",

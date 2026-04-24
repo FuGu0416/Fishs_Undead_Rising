@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "fur:item/soulforged_upgrade_smithing_template"
+    }
+}

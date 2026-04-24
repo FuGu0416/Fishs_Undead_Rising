@@ -11,7 +11,10 @@ import com.Fishmod.fur.init.FURItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -37,8 +40,8 @@ public class MoltenArmorItem extends ArmorItem {
     /** Fire damage reduction for full set (0.5 = 50%). */
     private static final float FIRE_REDUCTION  = 0.5F;
 
-    public MoltenArmorItem(ArmorItem.Type slot, Item.Properties properties) {
-        super(ArmorMaterials.DIAMOND, slot, properties);
+    public MoltenArmorItem(ArmorMaterials material, ArmorItem.Type slot, Item.Properties properties) {
+        super(material, slot, properties);
     }
 
     @Override
@@ -50,14 +53,26 @@ public class MoltenArmorItem extends ArmorItem {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept((IClientItemExtensions) mod_LavaCow.PROXY.getArmorProperties());
     }
+    
+	private static boolean isSoulforged(ItemStack stack) {
+		return stack.getItem().getDescriptionId().contains("soulforged");
+	}
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        if (slot == EquipmentSlot.LEGS) {
-            return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_2.png";
-        } else {
-            return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_1.png";
-        }
+    	if (isSoulforged(stack)) {
+	        if (slot == EquipmentSlot.LEGS) {
+	            return mod_LavaCow.MODID + ":textures/armors/soulforged/soulforged_layer_2.png";
+	        } else {
+	            return mod_LavaCow.MODID + ":textures/armors/soulforged/soulforged_layer_1.png";
+	        }    		
+    	} else {
+	        if (slot == EquipmentSlot.LEGS) {
+	            return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_2.png";
+	        } else {
+	            return mod_LavaCow.MODID + ":textures/armors/molten/molten_layer_1.png";
+	        }
+    	}
     }
 
     // Lava walking is handled in FURServerEvents#onELiving via applyLavaWalking()
@@ -68,6 +83,7 @@ public class MoltenArmorItem extends ArmorItem {
 
     /**
      * Returns the number of Molten Armor pieces the given entity is wearing.
+     * Counts both molten and soulforged pieces (both extend MoltenArmorItem).
      */
     public static int countMoltenPieces(LivingEntity entity) {
         int count = 0;
@@ -79,8 +95,30 @@ public class MoltenArmorItem extends ArmorItem {
     }
 
     /**
+     * Returns the number of Soulforged Armor pieces the given entity is wearing.
+     * Soulforged pieces are identified by their item ID containing "soulforged".
+     */
+    public static int countSoulforgedPieces(LivingEntity entity) {
+        int count = 0;
+        for (ItemStack stack : entity.getArmorSlots()) {
+            if (stack.getItem() instanceof MoltenArmorItem && isSoulforged(stack))
+                count++;
+        }
+        return count;
+    }
+
+    /**
+     * Returns true if the entity is wearing a full set of Soulforged Armor.
+     */
+    public static boolean isWearingFullSoulforged(LivingEntity entity) {
+        return countSoulforgedPieces(entity) >= FULLSET_THRESHOLD;
+    }
+
+    /**
      * Called from {@code FURServerEvents#onEDamage} when the wearer is attacked.
-     * If the wearer has >= 2 Molten pieces, sets the attacker on fire for 3 seconds.
+     *
+     * Molten (>= 2 pieces): sets attacker on fire for 3 seconds.
+     * Soulforged full set: sets attacker on fire for 5 seconds instead.
      *
      * @param attacked  The entity wearing the armor (the one being hurt).
      * @param attacker  The entity that dealt the hit (may be null for environmental damage).
@@ -90,24 +128,38 @@ public class MoltenArmorItem extends ArmorItem {
             return;
 
         if (countMoltenPieces(attacked) >= BURN_THRESHOLD) {
-            attacker.setSecondsOnFire(3);
+            if (isWearingFullSoulforged(attacked)) {
+                // Soulforged full set: extended burn
+                attacker.setSecondsOnFire(5);
+            } else {
+                // Molten 2-piece: standard burn
+                attacker.setSecondsOnFire(3);
+            }
         }
     }
 
     /**
      * Called from {@code FURServerEvents#onEDamage} when the wearer takes fire damage.
-     * Returns the modified damage amount after applying the full-set fire resistance bonus.
      *
-     * @param attacked      The entity wearing the armor.
+     * Molten full set: reduces fire damage by 50%.
+     * Soulforged full set: complete fire immunity (cancel the damage entirely).
+     *
+     * @param attacked       The entity wearing the armor.
      * @param originalAmount The original fire damage amount.
-     * @return Reduced damage if full set is worn; original amount otherwise.
+     * @return Modified damage amount (0 for soulforged full set, reduced for molten full set).
      */
     public static float applyFireReduction(LivingEntity attacked, float originalAmount) {
         if (attacked.fireImmune())
             return originalAmount;
 
         if (countMoltenPieces(attacked) >= FULLSET_THRESHOLD) {
-            return originalAmount * (1.0F - FIRE_REDUCTION);
+            if (isWearingFullSoulforged(attacked)) {
+                // Soulforged full set: complete immunity
+                return 0.0F;
+            } else {
+                // Molten full set: 50% reduction
+                return originalAmount * (1.0F - FIRE_REDUCTION);
+            }
         }
 
         return originalAmount;
@@ -158,7 +210,7 @@ public class MoltenArmorItem extends ArmorItem {
 
         if (player.getY() > targetY + 0.15D) {
             // Gently settle down to the surface
-            player.setDeltaMovement(motion.x, Math.min(motion.y, -0.05D)+100.0D, motion.z);
+            player.setDeltaMovement(motion.x, Math.min(motion.y, -0.05D), motion.z);
         } else {
             // At or below surface: override Y motion entirely and position player on surface
             player.setDeltaMovement(motion.x, 0.0D, motion.z);
@@ -172,10 +224,33 @@ public class MoltenArmorItem extends ArmorItem {
             player.clearFire();
     }
 
+    /**
+     * Called from {@code FURServerEvents#playerTick} (Phase.END) for players
+     * wearing the full Soulforged Armor set.
+     *
+     * Soul Speed effect: applies Speed II while standing on Soul Sand or Soul Soil,
+     * matching the behaviour of the vanilla Soul Speed III enchantment.
+     * The effect duration is kept at 3 ticks so it continuously refreshes
+     * without showing a countdown in the status bar.
+     */
+    public static void tickSoulSpeed(Player player) {   	
+        Level level = player.level();       
+        boolean onSoulBlock = level.getBlockState(player.blockPosition()).is(BlockTags.SOUL_SPEED_BLOCKS);
+        
+        if (onSoulBlock) {
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3, 3, false, false, false));
+        }
+    }
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("item.fur.molten_armor.desc0").withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.translatable("item.fur.molten_armor.desc1").withStyle(ChatFormatting.YELLOW));
+    	if (isSoulforged(stack)) {
+            tooltip.add(Component.translatable("item.fur.soulforged_armor.desc0").withStyle(ChatFormatting.YELLOW));
+            tooltip.add(Component.translatable("item.fur.soulforged_armor.desc1").withStyle(ChatFormatting.YELLOW));   		
+    	} else {
+            tooltip.add(Component.translatable("item.fur.molten_armor.desc0").withStyle(ChatFormatting.YELLOW));
+            tooltip.add(Component.translatable("item.fur.molten_armor.desc1").withStyle(ChatFormatting.YELLOW));   		
+    	}
     }
 }

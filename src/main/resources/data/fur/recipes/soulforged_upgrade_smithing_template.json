@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S#",
+    "DCD",
+    "#D#"
+  ],  
+  "key": {
+    "#": {
+		"item": "fur:ectoplasm_ingot"
+    },
+    "D": {
+        "item": "fur:molten_alloy"
+    },
+    "C": {
+        "item": "minecraft:netherrack"
+    },
+    "S": {
+        "item": "fur:soulforged_upgrade_smithing_template"
+    }  
+  },
+  "result": {
+    "count": 2,
+    "item": "fur:soulforged_upgrade_smithing_template"
+  }
+}

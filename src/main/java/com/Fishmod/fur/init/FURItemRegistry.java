@@ -40,6 +40,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -88,10 +89,14 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> MOLTEN_ALLOY = DEF_REG.register("molten_alloy", () -> new Item(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_AXE = DEF_REG.register("molten_axe", () -> new MoltenAxeItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 5.0F, -3.0F, MOLTEN_ALLOY.get(), ParticleTypes.FLAME));
 	public static final RegistryObject<Item> MOLTEN_HAMMER = DEF_REG.register("molten_hammer", () -> new MoltenHammerItem(new Item.Properties().fireResistant(), Tiers.DIAMOND, 3, -2.4F, 0.0D, Items.GUNPOWDER, true));
-	public static final RegistryObject<Item> MOLTEN_ARMOR_HELMET = DEF_REG.register("molten_armor_helmet", () -> new MoltenArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
-	public static final RegistryObject<Item> MOLTEN_ARMOR_CHESTPLATE = DEF_REG.register("molten_armor_chestplate", () -> new MoltenArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
-	public static final RegistryObject<Item> MOLTEN_ARMOR_LEGGINGS = DEF_REG.register("molten_armor_leggings", () -> new MoltenArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
-	public static final RegistryObject<Item> MOLTEN_ARMOR_BOOTS = DEF_REG.register("molten_armor_boots", () -> new MoltenArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+	public static final RegistryObject<Item> MOLTEN_ARMOR_HELMET = DEF_REG.register("molten_armor_helmet", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+	public static final RegistryObject<Item> MOLTEN_ARMOR_CHESTPLATE = DEF_REG.register("molten_armor_chestplate", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+	public static final RegistryObject<Item> MOLTEN_ARMOR_LEGGINGS = DEF_REG.register("molten_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+	public static final RegistryObject<Item> MOLTEN_ARMOR_BOOTS = DEF_REG.register("molten_armor_boots", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
+	public static final RegistryObject<Item> SOULFORGED_ARMOR_HELMET = DEF_REG.register("soulforged_armor_helmet", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+	public static final RegistryObject<Item> SOULFORGED_ARMOR_CHESTPLATE = DEF_REG.register("soulforged_armor_chestplate", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+	public static final RegistryObject<Item> SOULFORGED_ARMOR_LEGGINGS = DEF_REG.register("soulforged_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
+	public static final RegistryObject<Item> SOULFORGED_ARMOR_BOOTS = DEF_REG.register("soulforged_armor_boots", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> UNDYING_HEART = DEF_REG.register("undying_heart", () -> new UndyingHeartItem(new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MOOTEN_HEART = DEF_REG.register("mooten_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
 	public static final RegistryObject<Item> SOULFORGED_HEART = DEF_REG.register("soulforged_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
@@ -176,6 +181,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> LAMPREY_BUCKET = DEF_REG.register("lamprey_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.LAMPREY.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> BLOATED_INTESTINE = DEF_REG.register("bloated_intestine", () -> new BloatedIntestineItem());
 	public static final RegistryObject<Item> SAUSAGE_ROLL = DEF_REG.register("sausage_roll", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
+	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
 	
 	/*
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");

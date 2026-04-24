@@ -129,7 +129,14 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_CHESTPLATE.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_LEGGINGS.get());
             	output.accept(FURItemRegistry.MOLTEN_ARMOR_BOOTS.get());
-            	
+        		output.accept(FURItemRegistry.SOULFORGED_ARMOR_HELMET.get());
+        		output.accept(FURItemRegistry.SOULFORGED_ARMOR_CHESTPLATE.get());
+        		output.accept(FURItemRegistry.SOULFORGED_ARMOR_LEGGINGS.get());
+        		output.accept(FURItemRegistry.SOULFORGED_ARMOR_BOOTS.get());
+        		
+        		// Smithing Template
+        		output.accept(FURItemRegistry.SOULFORGED_UPGRADE_SMITHING_TEMPLATE.get());
+        		
             	// Food
             	output.accept(FURItemRegistry.FROZEN_THIGH.get());    
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
@@ -162,11 +169,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.BONE_STEW.get());
             	output.accept(FURItemRegistry.GHOST_JELLY.get());
-            	output.accept(FURItemRegistry.LAMPREY_KABAYAKI.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
             	output.accept(FURItemRegistry.FISSION_REAGENT.get());
             	output.accept(FURItemRegistry.MOOTEN_REAGENT.get());
+            	output.accept(FURItemRegistry.LAMPREY_KABAYAKI.get());
             	
             	// Block
             	output.accept(FURBlockRegistry.CACTOID_SPROUT.get());
