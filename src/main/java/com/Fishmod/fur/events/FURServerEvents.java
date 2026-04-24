@@ -468,7 +468,15 @@ public class FURServerEvents {
     	
         final Player player = event.player;
         
+        // Molten Armor full-set: lava walking.
+        // Placed here (Phase.END) so it runs after Minecraft's fluid physics,
+        // preventing our position lock from being overwritten in the same tick.
+        if (!player.isShiftKeyDown() && MoltenArmorItem.countMoltenPieces(player) >= 4) {
+        	MoltenArmorItem.applyLavaWalking(player);
+        }
+        
         if (player.level().isClientSide()) return;
+
         if ((player.level().getGameTime() & 0x1FL) > 0L) return;    
         
 		if (player.level() instanceof ServerLevel && player.level().getDifficulty() != Difficulty.PEACEFUL && player.level().random.nextFloat() < 0.1F) {
@@ -569,38 +577,38 @@ public class FURServerEvents {
 					Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
 			}*/
 	    	
-	    	if (Attacked.isOnFire() && Attacker instanceof Player) {   		
-	    		for (ItemStack S : Attacker.getArmorSlots()) {
-	    			if (S.getItem() instanceof MoltenArmorItem)effectlevel += ((MoltenArmorItem)S.getItem()).effectlevel;
-	    		}
-	    	}
+	    	// Molten Armor: attacker wearing molten no longer grants bonus damage (removed).
 		}
     	
-    	if (Attacked instanceof Player player && !Attacked.fireImmune() && source.is(DamageTypeTags.IS_FIRE)) {    		
-    		for (ItemStack S : Attacked.getArmorSlots()) {
-    			if (S.getItem() instanceof MoltenArmorItem)effectlevel -= ((MoltenArmorItem)S.getItem()).fireprooflevel;
-    		}
-    		
-    		boolean have_Heart = false;
-    		
-    		for (int i = 0; i < 9 ; i++) {
-    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get()) 
-    					|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
-					have_Heart = true;
-    			}
-    		}
+    	// Molten Armor full-set bonus: 50% fire damage reduction
+	    	if (source.is(DamageTypeTags.IS_FIRE)) {
+	    		event.setAmount(MoltenArmorItem.applyFireReduction(Attacked, event.getAmount()));
 
-    		/*if (ModList.get().isLoaded("curios") && !have_Heart) {
-    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
-    			have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
-    		}*/
-    		
-    		if (have_Heart) {
-    			effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
-    		}
-    	}
-    	
-    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf) {
+	    		if (Attacked instanceof Player player && !Attacked.fireImmune()) {
+	    			boolean have_Heart = false;
+
+	    			for (int i = 0; i < 9; i++) {
+	    				if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get())
+	    						|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
+	    					have_Heart = true;
+	    				}
+	    			}
+
+	    			/*if (ModList.get().isLoaded("curios") && !have_Heart) {
+	    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
+	    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
+	    			}*/
+
+	    			if (have_Heart) {
+	    				effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
+	    			}
+	    		}
+	    	}
+
+	    	// Molten Armor 2-piece bonus: retaliation burn on attacker
+	    	MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity());
+
+	    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf) {
     		if (Attacked.getMobType().equals(MobType.UNDEAD) && source.getEntity().getName().equals(Component.translatable("entity.fur.holygrenade"))) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
@@ -1074,7 +1082,9 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onELiving(LivingTickEvent event) { 
     	LivingEntity living = event.getEntity();
-    	
+
+    	// Molten Armor lava walking is handled in playerTick (Phase.END).
+
     	if (living.hasEffect(FUREffectRegistry.FEAR.get()) && (living.getRandom().nextFloat() < 0.3f) && (living.level() instanceof ServerLevel)) {
 			double d0 = living.getRandom().nextGaussian() * 0.02D;
 			double d1 = living.getRandom().nextGaussian() * 0.02D;
