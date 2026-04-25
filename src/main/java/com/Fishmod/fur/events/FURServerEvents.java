@@ -610,7 +610,10 @@ public class FURServerEvents {
 	    	}
 
 	    	// Molten Armor 2-piece bonus: retaliation burn on attacker
-	    	MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity());
+	    	// Only triggers on melee attacks (mob attack, mob attack no aggro, player attack)
+	    	if (source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK)) {
+	    		MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity(), event.getAmount());
+	    	}
 
 	    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf) {
     		if (Attacked.getMobType().equals(MobType.UNDEAD) && source.getEntity().getName().equals(Component.translatable("entity.fur.holygrenade"))) {
@@ -628,7 +631,7 @@ public class FURServerEvents {
     		}
     	}   	
     	
-    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get()) && (source.is(DamageTypeTags.IS_PROJECTILE) || source.is(DamageTypes.MOB_ATTACK))) {
+    	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get()) && (source.is(DamageTypeTags.IS_PROJECTILE) || source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK))) {
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED.get()).getAmplifier())));
     	}
     	
@@ -867,16 +870,26 @@ public class FURServerEvents {
 	                    5,
 	                    0.05f
 	                ));
-	            
-	            //list.add(new ItemsForEmeraldsAndItemsTrade(FURItemRegistry.LAMPREY, 6, FURItemRegistry.LAMPREY_COOKED, 6, 16, 1));
+	            event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
+	            		new ItemStack(FURItemRegistry.LAMPREY_RAW.get(), 6),
+	            		new ItemStack(Items.EMERALD, 1),
+	                    new ItemStack(FURItemRegistry.LAMPREY_COOKED.get(), 6),
+	                    16,
+	                    5,
+	                    0.05f
+	                ));	            
 	        }
 	        
-	        /*if (event.getType() == VillagerProfession.BUTCHER) {
-	            List<ITrade> list = event.getTrades().get(2);
-	            list.add(new EmeraldForItemsTrade(FURItemRegistry.INTESTINE, 4, 12, 1));
-	            list.add(new ItemsForEmeraldsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 1, 12, 1));
-	            event.getTrades().put(2, list);
-	        }*/
+	        if (event.getType() == VillagerProfession.BUTCHER) {
+	        	event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
+	        		    new ItemStack(FURItemRegistry.BLOATED_INTESTINE.get(), 4),  // player to trade
+	        		    new ItemStack(Items.EMERALD, 1),                            // player to get
+	        		    12,                                                         // max uses
+	        		    1,                                                          // xp
+	        		    0.05F                                                       // price multiplier
+	        		));
+	            //list.add(new ItemsForEmeraldsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 1, 12, 1));
+	        }
 	        
 	        if (event.getType() == VillagerProfession.CLERIC) {
 	            event.getTrades().get(5).add((trader, rand) -> new MerchantOffer(
@@ -938,10 +951,22 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-
+    		genericTrades.add((trader, rand) -> new MerchantOffer(
+    	            new ItemStack(Items.EMERALD, 5),
+    	            new ItemStack(FURItemRegistry.LAMPREY_BUCKET.get(), 1),
+    	            12, 
+    	            1, 
+    	            0.05f
+    	        ));    		
+    		genericTrades.add((trader, rand) -> new MerchantOffer(
+    	            new ItemStack(Items.EMERALD, 4),
+    	            new ItemStack(FURItemRegistry.ANCIENT_AMBER.get(), 1),
+    	            12, 
+    	            1, 
+    	            0.05f
+    	        ));
 	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SILKY_SLUDGE, 4, 1, 12, 1));
 	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
-	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.ANCIENT_AMBER, 4, 1, 12, 1));
 
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 24),
@@ -974,8 +999,6 @@ public class FURServerEvents {
     		
 	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
 	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PHEROMONE_GLAND, 18, 1, 4, 20));
-	        /*if(FURConfig.pSpawnRate_Lamprey.get() > 0)
-	        	genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.LAMPREY_BUCKET, 5, 1, 12, 1));*/
     	}
     }
     

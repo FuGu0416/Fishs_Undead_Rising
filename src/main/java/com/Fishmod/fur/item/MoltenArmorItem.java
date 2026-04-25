@@ -115,22 +115,29 @@ public class MoltenArmorItem extends ArmorItem {
     }
 
     /**
-     * Called from {@code FURServerEvents#onEDamage} when the wearer is attacked.
+     * Called from {@code FURServerEvents#onEDamage} when the wearer is attacked by a melee hit.
      *
      * Molten (>= 2 pieces): sets attacker on fire for 3 seconds.
-     * Soulforged full set: sets attacker on fire for 5 seconds instead.
+     * Soulforged full set: sets attacker on fire for 3 seconds AND heals the wearer by 1 HP,
+     *   but only if the post-armor damage exceeds 1 HP to prevent abuse from many weak hits.
      *
-     * @param attacked  The entity wearing the armor (the one being hurt).
-     * @param attacker  The entity that dealt the hit (may be null for environmental damage).
+     * @param attacked      The entity wearing the armor (the one being hurt).
+     * @param attacker      The entity that dealt the hit (may be null for environmental damage).
+     * @param damageAmount  The post-armor actual damage amount used for the heal threshold check.
      */
-    public static void applyRetaliationBurn(LivingEntity attacked, Entity attacker) {
+    public static void applyRetaliationBurn(LivingEntity attacked, Entity attacker, float damageAmount) {
         if (attacker == null)
             return;
 
         if (countMoltenPieces(attacked) >= BURN_THRESHOLD) {
             if (isWearingFullSoulforged(attacked)) {
-                // Soulforged full set: extended burn
-                attacker.setSecondsOnFire(5);
+                // Soulforged full set: burn attacker for 3 seconds
+                attacker.setSecondsOnFire(3);
+                // Heal wearer by 1 HP only if actual damage exceeded 1 HP
+                // This prevents stacking healing from many low-damage hits
+                if (damageAmount > 1.0F) {
+                    attacked.heal(1.0F);
+                }
             } else {
                 // Molten 2-piece: standard burn
                 attacker.setSecondsOnFire(3);
@@ -247,10 +254,10 @@ public class MoltenArmorItem extends ArmorItem {
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
     	if (isSoulforged(stack)) {
             tooltip.add(Component.translatable("item.fur.soulforged_armor.desc0").withStyle(ChatFormatting.YELLOW));
-            tooltip.add(Component.translatable("item.fur.soulforged_armor.desc1").withStyle(ChatFormatting.YELLOW));   		
+            tooltip.add(Component.translatable("item.fur.soulforged_armor.desc1").withStyle(ChatFormatting.YELLOW));
     	} else {
             tooltip.add(Component.translatable("item.fur.molten_armor.desc0").withStyle(ChatFormatting.YELLOW));
-            tooltip.add(Component.translatable("item.fur.molten_armor.desc1").withStyle(ChatFormatting.YELLOW));   		
+            tooltip.add(Component.translatable("item.fur.molten_armor.desc1").withStyle(ChatFormatting.YELLOW));
     	}
     }
 }
