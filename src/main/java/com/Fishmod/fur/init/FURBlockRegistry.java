@@ -7,6 +7,7 @@ import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
 import com.Fishmod.fur.block.FURHugeShroomBlock;
 import com.Fishmod.fur.block.FURShroomBlock;
+import com.Fishmod.fur.block.GlimmercapBlock;
 import com.Fishmod.fur.block.LuminousFilamentBlock;
 import com.Fishmod.fur.block.LuminousMyceliumBlock;
 import com.Fishmod.fur.block.MycelialTendrilsBlock;
@@ -41,7 +42,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> DISEASED_HAY_BLOCK = registerBlocks("diseased_hay_block", () -> new DiseasedHayBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BANJO).strength(0.5F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> CACTOID_SPROUT = registerBlocks("cactoid_sprout", () -> new CactoidSproutBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.4F).sound(SoundType.WOOL).noOcclusion().randomTicks().forceSolidOn().dynamicShape().pushReaction(PushReaction.DESTROY).offsetType(BlockBehaviour.OffsetType.XZ)));
 	public static final RegistryObject<Block> SOUL_FURNACE = registerBlocks("soul_furnace", () -> new SoulFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(state -> 10)));
-	public static final RegistryObject<Block> GLOWSHROOM = registerBlocks("glowshroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 10)));
+	public static final RegistryObject<Block> GLOWSHROOM = registerBlocks("glowshroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 10).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> GLOWSHROOM_BLOCK_STEM = registerBlocks("glowshroom_block_stem", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)));
     public static final RegistryObject<Block> GLOWSHROOM_BLOCK_CAP = registerBlocks("glowshroom_block_cap", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 10)));
 	public static final RegistryObject<Block> CORDY_SHROOM = registerBlocks("cordy_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 1)));
@@ -53,8 +54,9 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> LUMINOUS_MYCELIUM = registerBlocks("luminous_mycelium", () -> new LuminousMyceliumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> MYCELIAL_MAT = registerBlocks("mycelial_mat", () -> new MossBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY)));
 	public static final RegistryObject<Block> MYCELIAL_VEIL = registerBlocks("mycelial_veil", () -> new MycelialVeinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS_CARPET).pushReaction(PushReaction.DESTROY)));
-	public static final RegistryObject<Block> MYCELIAL_TENDRILS = registerBlocks("mycelial_tendrils", () -> new MycelialTendrilsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).replaceable().noCollission().instabreak().sound(SoundType.NETHER_SPROUTS).offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).lightLevel(state -> 3)));	
+	public static final RegistryObject<Block> MYCELIAL_TENDRILS = registerBlocks("mycelial_tendrils", () -> new MycelialTendrilsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).replaceable().noCollission().instabreak().sound(SoundType.NETHER_SPROUTS).offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));	
 	public static final RegistryObject<Block> LUMINOUS_FILAMENT = registerBlocks("luminous_filament", () -> new LuminousFilamentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIAMOND).noCollission().instabreak().sound(SoundType.VINE).noOcclusion().offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).emissiveRendering((state, world, pos) -> true)));
+	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));
 	
 	/*
 	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");

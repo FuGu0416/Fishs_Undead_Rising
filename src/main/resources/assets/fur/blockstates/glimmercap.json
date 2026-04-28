@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "half=lower,tall=false": { "model": "fur:block/glimmercap_single" },
+    "half=lower,tall=true":  { "model": "fur:block/glimmercap_lower" },
+    "half=upper,tall=false": { "model": "fur:block/glimmercap_upper" },
+    "half=upper,tall=true":  { "model": "fur:block/glimmercap_upper" }
+  }
+}

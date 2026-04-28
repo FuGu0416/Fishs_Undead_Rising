@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
-	public static final IntegerProperty AGE = BlockStateProperties.AGE_1;
+	public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
 	
 	public FURShroomBlock(Properties p_i48363_1_) {
 		super(p_i48363_1_, TreeFeatures.HUGE_BROWN_MUSHROOM);
@@ -35,7 +35,7 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
 	
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState p_220082_4_, boolean p_220082_5_) {
-		level.setBlock(pos, this.getStateForAge(level.random.nextInt(2)), 3);
+		level.setBlock(pos, this.getStateForAge(level.random.nextInt(3)), 3);
 	}
 	
     protected int getAge(BlockState state) {

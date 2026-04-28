@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "fur:block/glowshroom"
+    "cross": "fur:block/glowshroom2"
   }
 }
