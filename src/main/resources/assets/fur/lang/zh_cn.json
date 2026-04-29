@@ -270,6 +270,7 @@
 	"block.fur.mycelial_veil": "覆地菌丝",
 	"block.fur.mycelial_tendrils": "菌丝触须",
 	"block.fur.luminous_filament": "垂廉萤丝",
+	"block.fur.glimmercap": "幽辉蕈",
 
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌尸",
@@ -319,6 +320,8 @@
 	"entity.fur.bone_trout": "骷髅鳟",
 	"entity.fur.lamprey": "七鳃鳗",
 	"entity.fur.ghoul": "食尸鬼",
+	
+	"biome.fur.luminous_undergrove": "微光菌林",
 	
 	"entity.fur.warsmallfireball": "火球",
 	"entity.fur.piranhalauncher": "群猎者",

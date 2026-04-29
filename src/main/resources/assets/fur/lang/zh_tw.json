@@ -270,6 +270,7 @@
 	"block.fur.mycelial_veil": "覆地菌絲",
 	"block.fur.mycelial_tendrils": "菌絲觸鬚",
 	"block.fur.luminous_filament": "垂廉螢絲",
+	"block.fur.glimmercap": "幽輝蕈",
 	
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌屍",
@@ -337,6 +338,8 @@
 	"entity.fur.ghoul_arrow": "屍鬼之箭",
 	"entity.fur.fang_arrow": "利牙之箭",
 	"entity.fur.fang_dagger": "利牙匕首",
+	
+	"biome.fur.luminous_undergrove": "微光菌林",
 				
 	"entity_parasite_ambient": "屍蛆騷動聲",
 	"entity_parasite_death": "屍蛆死亡",

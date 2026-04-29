@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
+import com.Fishmod.fur.init.FURBiomesRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -101,28 +102,15 @@ public class MycosisEntity extends UnburiedEntity {
     
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {         
     	entityLivingData = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
-    	/*boolean is_near_shroom = false;
-        int dx = MathHelper.floor(this.getX());
-        int dy = MathHelper.floor(this.getBoundingBox().minY);
-        int dz = MathHelper.floor(this.getZ());
-        int r = 4;*/
 
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mycosis_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mycosis_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-        /*for(BlockPos C : BlockPos.betweenClosed(new BlockPos(dx - r, dy - r, dz - r), new BlockPos(dx + r, dy + r, dz + r)))
-        	if(worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM
-        	|| worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM_BLOCK_STEM
-        	|| worldIn.getBlockState(C).getBlock() == FURBlockRegistry.GLOWSHROOM_BLOCK_CAP)
-        		is_near_shroom = true;
-    	
-    	
-    	if(is_near_shroom || (this.getY() < 50.0D && !this.level.canSeeSky(new BlockPos(this.getX(), (double)Math.round(this.getY()), this.getZ()))))
-        	this.setSkin(1);*/
-    	
     	if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(2) + 1));
+        } else if (worldIn.getBiome(this.blockPosition()).is(FURBiomesRegistry.LUMINOUS_UNDERGROVE)) {
+        	this.setSkin(2);
         } else {       
         	this.setSkin(1);      
         }

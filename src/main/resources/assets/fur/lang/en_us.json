@@ -270,6 +270,7 @@
 	"block.fur.mycelial_veil": "Mycelial Veil",
 	"block.fur.mycelial_tendrils": "Mycelial Tendrils",
 	"block.fur.luminous_filament": "Luminous Filament",
+	"block.fur.glimmercap": "Glimmercap",
 
 	"entity.fur.lavacow": "Moogma",
 	"entity.fur.mycosis": "Mycosis",
@@ -336,7 +337,9 @@
 	"entity.fur.ghoul_arrow": "Ghoulish Arrow",
 	"entity.fur.fang_arrow": "Fang Arrow",
 	"entity.fur.fang_dagger": "Fang Dagger",
-			
+
+	"biome.fur.luminous_undergrove": "Luminous Undergrove",
+				
 	"entity_parasite_ambient": "Parasite squirms",
 	"entity_parasite_death": "Parasite dies",
 	"entity_parasite_hurt": "Parasite hurts",
