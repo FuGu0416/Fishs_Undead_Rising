@@ -24,9 +24,12 @@ public class DataGenerators {
 
 		FURBlockTagsProvider blockTags = new FURBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
 		gen.addProvider(event.includeServer(), blockTags);
-		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		// Must be created before BiomeTagsProvider so its extended lookup (which includes
+		// custom biomes like fur:luminous_undergrove) can be passed to the tag provider.
+		FURDatapackBuiltinEntriesProvider datapackEntries = new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider);
+		gen.addProvider(event.includeServer(), datapackEntries);
+		gen.addProvider(event.includeServer(), new FURBiomeTagsProvider(packOutput, datapackEntries.getRegistryProvider(), existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURStructureTagsProvider(packOutput, lookupProvider, existingFileHelper));
-		gen.addProvider(event.includeServer(), new FURDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
 		gen.addProvider(event.includeServer(), new FURGlobalLootModifiersProvider(packOutput));
 		gen.addProvider(event.includeServer(), new FURItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
 		gen.addProvider(event.includeServer(), new FURBannerPatternTagsProvider(packOutput, lookupProvider, mod_LavaCow.MODID, existingFileHelper));

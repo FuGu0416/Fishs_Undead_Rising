@@ -7,6 +7,8 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.init.FURBiomesRegistry;
 import com.Fishmod.fur.worldgen.FURBiomeModifier;
 import com.Fishmod.fur.worldgen.FURLuminousUndergroveBiome;
+import com.Fishmod.fur.worldgen.feature.FURConfiguredFeatures;
+import com.Fishmod.fur.worldgen.feature.FURPlacedFeatures;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -22,13 +24,18 @@ public class FURDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesPro
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, FURBiomeModifier::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, FURConfiguredFeatures::bootstrap)
+            .add(Registries.PLACED_FEATURE,     FURPlacedFeatures::bootstrap)
             .add(Registries.BIOME, context -> {
                 HolderGetter<PlacedFeature> placedFeatures =
                         context.lookup(Registries.PLACED_FEATURE);
                 HolderGetter<ConfiguredWorldCarver<?>> worldCarvers =
                         context.lookup(Registries.CONFIGURED_CARVER);
 
-                context.register(FURBiomesRegistry.LUMINOUS_UNDERGROVE, FURLuminousUndergroveBiome.luminousUndergrove(placedFeatures, worldCarvers));
+                context.register(
+                        FURBiomesRegistry.LUMINOUS_UNDERGROVE,
+                        FURLuminousUndergroveBiome.luminousUndergrove(placedFeatures, worldCarvers)
+                );
             });
 
     public FURDatapackBuiltinEntriesProvider(PackOutput output,

@@ -98,7 +98,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
             	output.accept(FURItemRegistry.FAMINE.get());
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
-            	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());           	
+            	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());  
+            	output.accept(FURItemRegistry.SOULFORGED_AXE.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
             	output.accept(FURItemRegistry.SKELETONKING_MACE.get());
             	

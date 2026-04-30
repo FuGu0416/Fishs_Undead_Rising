@@ -20,5 +20,8 @@ public class FURGlobalLootModifiersProvider extends GlobalLootModifierProvider {
         add("molten_axe_smelt", new SmeltLootModifier(new LootItemCondition[] {
         		MatchTool.toolMatches(ItemPredicate.Builder.item().of(FURItemRegistry.MOLTEN_AXE.get())).build()
                 }));
+        add("soulforged_axe_smelt", new SmeltLootModifier(new LootItemCondition[] {
+        		MatchTool.toolMatches(ItemPredicate.Builder.item().of(FURItemRegistry.SOULFORGED_AXE.get())).build()
+                }));
     }
 }

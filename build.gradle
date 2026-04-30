@@ -138,6 +138,10 @@ repositories {
         name = "JEI"
         url = "https://maven.blamejared.com/"
     }
+    maven {
+        name = "TerraBlender"
+        url = "https://maven.minecraftforge.net"
+    }
 }
 
 dependencies {
@@ -165,6 +169,8 @@ dependencies {
     //JEI COMPAT
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
+
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:1.20.1-${terrablender_version}")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

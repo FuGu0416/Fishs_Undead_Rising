@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.init.FURBiomesRegistry;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -42,7 +44,7 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(HAS_SWARMER).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE).add(Biomes.LUKEWARM_OCEAN).add(Biomes.DEEP_LUKEWARM_OCEAN).add(Biomes.DEEP_DARK);
         this.tag(HAS_CACTYRANT).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).add(Biomes.SOUL_SAND_VALLEY);
         this.tag(HAS_WETA).addTag(BiomeTags.IS_SAVANNA).add(Biomes.LUSH_CAVES).add(Biomes.DRIPSTONE_CAVES);
-        this.tag(HAS_MYCOSIS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE);
+        this.tag(HAS_MYCOSIS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE).add(FURBiomesRegistry.LUMINOUS_UNDERGROVE);
         this.tag(IS_OVERWORLD_HOSTILE).addTag(BiomeTags.IS_OVERWORLD).remove(Tags.Biomes.IS_MUSHROOM);
         this.tag(HAS_BANSHEE).addTag(BiomeTags.IS_HILL).addTag(BiomeTags.IS_MOUNTAIN);
         this.tag(HAS_CACTOID).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).add(Biomes.BASALT_DELTAS);

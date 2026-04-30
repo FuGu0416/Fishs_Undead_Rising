@@ -20,8 +20,10 @@ import com.Fishmod.fur.init.FURRecipeRegistry;
 import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
+import com.Fishmod.fur.worldgen.FURBiomeProvider;
 import com.Fishmod.fur.worldgen.FURStructureModifier;
 import com.mojang.logging.LogUtils;
+import terrablender.api.Regions;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +33,7 @@ import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -133,6 +136,8 @@ public class mod_LavaCow {
             //FURWorldRegistry.register();
             //LootTableHandler.addLootTable();
     		FURItemRegistry.SetCompostables();
+
+            Regions.register(new FURBiomeProvider());
         });
         PROXY.initNetwork();
     	FUREffectRegistry.onInitItems();
