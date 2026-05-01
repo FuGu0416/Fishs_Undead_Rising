@@ -25,7 +25,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureCo
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import com.Fishmod.fur.block.FURShroomBlock;
+import com.Fishmod.fur.block.MycelialTendrilsBlock;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class FURConfiguredFeatures {
@@ -117,7 +122,7 @@ public class FURConfiguredFeatures {
                         5,                     // iterations
                         0.1F,                  // extra edge column chance
                         UniformInt.of(4, 7),   // horizontal radius
-                        0.7F                   // vegetation chance per block
+                        0.8F                   // vegetation chance per block
                 )));
 
         // ── Mycelial Mat patch (bonemeal version — tighter spread) ────────────
@@ -134,7 +139,7 @@ public class FURConfiguredFeatures {
                         5,
                         0.1F,
                         UniformInt.of(2, 4),
-                        0.5F
+                        0.8F
                 )));
 
         // ── Mycelial Veil (carpet layer on top of mycelial mat) ───────────────
@@ -147,12 +152,22 @@ public class FURConfiguredFeatures {
         context.register(MYCELIAL_TENDRILS_SIMPLE, new ConfiguredFeature<>(
                 Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(
-                        BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_TENDRILS.get()))));
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 0), 1)
+                                        .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 1), 1)
+                                        .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 2), 1)
+                                        .build()))));
 
         context.register(GLOWSHROOM_SIMPLE, new ConfiguredFeature<>(
                 Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(
-                        BlockStateProvider.simple(FURBlockRegistry.GLOWSHROOM.get()))));
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(FURBlockRegistry.GLOWSHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, 0), 1)
+                                        .add(FURBlockRegistry.GLOWSHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, 1), 1)
+                                        .add(FURBlockRegistry.GLOWSHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, 2), 1)
+                                        .build()))));
 
         context.register(GLIMMERCAP_SIMPLE, new ConfiguredFeature<>(
                 Feature.SIMPLE_BLOCK,

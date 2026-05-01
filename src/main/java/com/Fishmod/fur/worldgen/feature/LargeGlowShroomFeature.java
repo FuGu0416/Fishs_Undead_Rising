@@ -5,9 +5,13 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 
 public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
@@ -15,6 +19,40 @@ public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
     
     public LargeGlowShroomFeature(Codec<HugeMushroomFeatureConfiguration> p_i231957_1_) {
         super(p_i231957_1_);
+    }
+
+    // Override to accept any solid block as ground (vanilla requires MUSHROOM_GROW_BLOCK tag).
+    @Override
+    public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
+        WorldGenLevel level = context.level();
+        BlockPos pos       = context.origin();
+        RandomSource rand  = context.random();
+        HugeMushroomFeatureConfiguration config = context.config();
+        int height = rand.nextInt(3) + 4;
+
+        if (pos.getY() + height + 1 >= level.getMaxBuildHeight()) return false;
+        if (!level.getBlockState(pos.below()).isSolid()) return false;
+
+        // Only verify the center stem column is clear. The cap spreads freely into
+        // available air, allowing generation in typical cave heights (5-8 blocks).
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int y = 0; y < height; ++y) {
+            mutable.setWithOffset(pos, 0, y, 0);
+            BlockState s = level.getBlockState(mutable);
+            if (!s.isAir() && !s.is(BlockTags.LEAVES)) return false;
+        }
+
+        this.makeCap(level, rand, pos, height, new BlockPos.MutableBlockPos(), config);
+
+        BlockPos.MutableBlockPos stem = new BlockPos.MutableBlockPos();
+        for (int y = 0; y < height; ++y) {
+            stem.setWithOffset(pos, 0, y, 0);
+            BlockState s = level.getBlockState(stem);
+            if (s.isAir() || s.is(BlockTags.LEAVES)) {
+                level.setBlock(stem, config.stemProvider.getState(rand, pos), 2);
+            }
+        }
+        return true;
     }
 	
 	@Override

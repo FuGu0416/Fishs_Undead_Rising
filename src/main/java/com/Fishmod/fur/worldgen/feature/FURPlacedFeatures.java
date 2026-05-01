@@ -146,7 +146,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MYCELIAL_MAT_PATCH),
                         List.of(
-                                CountPlacement.of(12),
+                                CountPlacement.of(255),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -171,7 +171,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MYCELIAL_MAT_PATCH_BONEMEAL),
                         List.of(
-                                RarityFilter.onAverageOnceEvery(1),
+                                RarityFilter.onAverageOnceEvery(2),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -198,7 +198,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MYCELIAL_MAT_CEILING_PATCH),
                         List.of(
-                                CountPlacement.of(8),
+                                CountPlacement.of(255),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -225,7 +225,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LUMINOUS_FILAMENT),
                         List.of(
-                                CountPlacement.of(192),  // high count; mat filter limits actual placements
+                                CountPlacement.of(255),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -248,7 +248,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LARGE_GLOW_SHROOM),
                         List.of(
-                                RarityFilter.onAverageOnceEvery(4),
+                                CountPlacement.of(180),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -265,6 +265,10 @@ public class FURPlacedFeatures {
                                         BlockPredicate.ONLY_IN_AIR_PREDICATE,
                                         32),
                                 RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BlockPredicateFilter.forPredicate(
+                                        BlockPredicate.matchesBlocks(
+                                                new BlockPos(0, -1, 0),
+                                                FURBlockRegistry.MYCELIAL_MAT.get())),
                                 BiomeFilter.biome()
                         )));
 
@@ -275,7 +279,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MIXED_FLOOR_PATCH),
                         List.of(
-                                CountPlacement.of(16),
+                                CountPlacement.of(96),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
