@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
@@ -49,41 +50,25 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_VEIL =
             key("mycelial_veil");
 
-    /** Mycelial Tendrils — single-block placement used inside the RANDOM_PATCH */
+    /** Mycelial Tendrils — single-block placement used by MYCELIAL_TENDRILS_PLACED */
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_TENDRILS_SIMPLE =
             key("mycelial_tendrils_simple");
-
-    /** Mycelial Tendrils — vegetation scattered on the floor */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_TENDRILS =
-            key("mycelial_tendrils");
 
     /** Luminous Filament — ceiling-hanging vines, similar to Cave Vines */
     public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_FILAMENT =
             key("luminous_filament");
 
-    /** Glowshroom — single-block placement used inside the RANDOM_PATCH */
+    /** Glowshroom — single-block placement used by GLOWSHROOM_INNER */
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWSHROOM_SIMPLE =
             key("glowshroom_simple");
 
-    /** Glowshroom — single-block mushroom scattered on floor/mycelial mat */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWSHROOM =
-            key("glowshroom");
-
-    /** Glimmercap — single-block (short) placement used by GLIMMERCAP_RANDOM */
+    /** Glimmercap — single-block (short) placement used by GLIMMERCAP_SHORT_INNER */
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLIMMERCAP_SIMPLE =
             key("glimmercap_simple");
 
     /** Glimmercap — 2-block tall placement (BLOCK_COLUMN upward) */
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLIMMERCAP_TALL =
             key("glimmercap_tall");
-
-    /** Glimmercap — randomly picks tall (40%) or short (60%) */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GLIMMERCAP_RANDOM =
-            key("glimmercap_random");
-
-    /** Glimmercap — tall grass-like fungus scattered on the floor */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GLIMMERCAP =
-            key("glimmercap");
 
     /** Large Glow Shroom — tree-like structure using LargeGlowShroomFeature */
     public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_GLOW_SHROOM =
@@ -107,7 +92,7 @@ public class FURConfiguredFeatures {
 
         // ── Mycelial Mat patch (floor, similar to MOSS_PATCH) ─────────────────
         // Uses VegetationPatch: replaces surface blocks with mycelial_mat in a radius,
-        // then seeds the patch with mycelial_veil vegetation on top.
+        // then seeds the patch with mixed floor vegetation (veil, tendrils, glowshroom, glimmercap).
         context.register(MYCELIAL_MAT_PATCH, new ConfiguredFeature<>(
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
@@ -115,14 +100,14 @@ public class FURConfiguredFeatures {
                         net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
                         BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
                         context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.MYCELIAL_VEIL_BONEMEAL),
+                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
                         CaveSurface.FLOOR,
-                        UniformInt.of(1, 2),   // vertical depth
-                        0.8F,                  // moss chance
-                        5,                     // iterations
-                        0.1F,                  // extra edge column chance
-                        UniformInt.of(4, 7),   // horizontal radius
-                        0.8F                   // vegetation chance per block
+                        UniformInt.of(1, 2),   // depth
+                        0.8F,                  // extraBottomBlockChance
+                        5,                     // verticalRange
+                        0.15F,                 // vegetationChance — 0 disables inline vegetation
+                        UniformInt.of(4, 7),   // xzRadius
+                        0.8F                   // extraEdgeColumnChance
                 )));
 
         // ── Mycelial Mat patch (bonemeal version — tighter spread) ────────────
@@ -132,14 +117,14 @@ public class FURConfiguredFeatures {
                         net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
                         BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
                         context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.MYCELIAL_VEIL_BONEMEAL),
+                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
                         CaveSurface.FLOOR,
                         ConstantInt.of(1),
                         0.6F,
                         5,
-                        0.1F,
+                        0.15F,                 // vegetationChance
                         UniformInt.of(2, 4),
-                        0.8F
+                        0.8F                   // extraEdgeColumnChance
                 )));
 
         // ── Mycelial Veil (carpet layer on top of mycelial mat) ───────────────
@@ -194,31 +179,9 @@ public class FURConfiguredFeatures {
                                                 .setValue(GlimmercapBlock.HALF, DoubleBlockHalf.UPPER)))
                         ),
                         Direction.UP,
-                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                        BlockPredicate.matchesBlocks(Blocks.AIR, Blocks.CAVE_AIR),
                         false
                 )));
-
-        context.register(GLIMMERCAP_RANDOM, new ConfiguredFeature<>(
-                Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(
-                        List.of(new WeightedPlacedFeature(
-                                context.lookup(Registries.PLACED_FEATURE)
-                                        .getOrThrow(FURPlacedFeatures.GLIMMERCAP_TALL_INNER),
-                                0.4F   // 40% 2-tall, 60% 1-tall
-                        )),
-                        context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.GLIMMERCAP_SHORT_INNER)
-                )));
-
-        // ── Mycelial Tendrils (vegetation, similar to Nether Sprouts patch) ───
-        context.register(MYCELIAL_TENDRILS, new ConfiguredFeature<>(
-                Feature.RANDOM_PATCH,
-                new RandomPatchConfiguration(
-                        64,   // tries
-                        6,    // xz spread
-                        2,    // y spread
-                        context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.MYCELIAL_TENDRILS_PLACED))));
 
         // ── Luminous Filament (ceiling vines, similar to Cave Vines) ──────────
         // Three-layer column hanging DOWN from the ceiling:
@@ -253,26 +216,6 @@ public class FURConfiguredFeatures {
                         true   // prioritise tip (removes from top when space-limited)
                 )));
 
-        // ── Glowshroom (single mushroom, scattered on floor) ──────────────────
-        context.register(GLOWSHROOM, new ConfiguredFeature<>(
-                Feature.RANDOM_PATCH,
-                new RandomPatchConfiguration(
-                        32,  // tries
-                        4,   // xz spread
-                        1,   // y spread
-                        context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.GLOWSHROOM_PLACED))));
-
-        // ── Glimmercap (1–2 tall fungus, like GRASS patch) ────────────────────
-        context.register(GLIMMERCAP, new ConfiguredFeature<>(
-                Feature.RANDOM_PATCH,
-                new RandomPatchConfiguration(
-                        16,  // tries (reduced from 48)
-                        5,   // xz spread
-                        2,   // y spread
-                        context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.GLIMMERCAP_PLACED))));
-
         // ── Large Glow Shroom (tree-like structure) ───────────────────────────
         context.register(LARGE_GLOW_SHROOM, new ConfiguredFeature<>(
                 FURFeatureRegistry.HUGE_GLOWSHROOM.get(),
@@ -285,10 +228,10 @@ public class FURConfiguredFeatures {
                 )));
 
         // ── Mixed floor vegetation ────────────────────────────────────────────
-        // RANDOM_SELECTOR: each patch attempt randomly picks one floor plant.
-        // Weights are sequential independent chances:
+        // RANDOM_SELECTOR: sequential independent chances (first match wins):
         //   25% → mycelial_veil  |  25% → mycelial_tendrils
-        //   33% → glowshroom     |  default → glimmercap (tall/short mix)
+        //   33% → glowshroom  |  10% → glimmercap tall  |  8% → glimmercap short
+        //   default → mycelial_tendrils (glimmercap is now an explicit low-weight entry)
         context.register(MIXED_FLOOR_RANDOM, new ConfiguredFeature<>(
                 Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(
@@ -304,36 +247,45 @@ public class FURConfiguredFeatures {
                                 new WeightedPlacedFeature(
                                         context.lookup(Registries.PLACED_FEATURE)
                                                 .getOrThrow(FURPlacedFeatures.GLOWSHROOM_INNER),
-                                        0.33F)
+                                        0.33F),
+                                new WeightedPlacedFeature(
+                                        context.lookup(Registries.PLACED_FEATURE)
+                                                .getOrThrow(FURPlacedFeatures.GLIMMERCAP_TALL_INNER),
+                                        0.1F),
+                                new WeightedPlacedFeature(
+                                        context.lookup(Registries.PLACED_FEATURE)
+                                                .getOrThrow(FURPlacedFeatures.GLIMMERCAP_SHORT_INNER),
+                                        0.08F)
                         ),
                         context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.GLIMMERCAP_PLACED)
+                                .getOrThrow(FURPlacedFeatures.MYCELIAL_VEIL_BONEMEAL)
                 )));
 
         // ── Mycelial Mat ceiling patch ────────────────────────────────────────
         // VegetationPatch(CEILING): covers cave ceilings with mycelial_mat.
-        // vegetationChance=0 — no inner plants; luminous_filament uses a separate
-        // placed feature that checks for mat overhead (like cave vines from moss).
+        // Inner feature is MIXED_FLOOR_INNER but all sub-PF predicates require mat below,
+        // so no vegetation is ever placed from the ceiling surface.
+        // Luminous filament uses a separate placed feature that checks for mat overhead.
         context.register(MYCELIAL_MAT_CEILING_PATCH, new ConfiguredFeature<>(
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
                         net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
                         BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
                         context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.MYCELIAL_VEIL_BONEMEAL),
+                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
                         CaveSurface.CEILING,
                         ConstantInt.of(1),
                         0.4F,
                         3,
-                        0.1F,
+                        0.0F,
                         UniformInt.of(2, 5),
-                        0.0F  // no inner vegetation; filament handled separately
+                        0.0F
                 )));
 
         context.register(MIXED_FLOOR_PATCH, new ConfiguredFeature<>(
                 Feature.RANDOM_PATCH,
                 new RandomPatchConfiguration(
-                        48,  // tries per patch
+                        48,   // tries per patch
                         6,   // xz spread
                         2,   // y spread
                         context.lookup(Registries.PLACED_FEATURE)

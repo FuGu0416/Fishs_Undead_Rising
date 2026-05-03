@@ -106,9 +106,6 @@ public class MummyEntity extends UnburiedEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
     	livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mummy_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mummy_Attack.get());
-    	this.setHealth(this.getMaxHealth());
     	this.setSkin(4);
     	return livingdata;
     }

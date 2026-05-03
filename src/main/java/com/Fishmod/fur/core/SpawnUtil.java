@@ -93,24 +93,24 @@ public class SpawnUtil {
     
     public static LivingEntity getEntityByUniqueId(UUID uniqueId, ServerLevel worldIn){
         Entity entity = worldIn.getEntity(uniqueId);
-        
-        if(entity != null && entity instanceof LivingEntity)
-        	return (LivingEntity) entity;
+
+        if (entity instanceof LivingEntity le)
+        	return le;
 
         return null;
     }
     
     public static BlockPos isNearBlock(ServerLevelAccessor p_223316_1_, Block BlockIn, BlockPos pos, int r) {
-        int dx = (int) Math.floor(pos.getX());
-        int dy = (int) Math.floor(pos.getY());
-        int dz = (int) Math.floor(pos.getZ());
-        
-        for(int i = dx - r; i < dx + r; i++)
-        	for(int j = dy - r; j < dy + r; j++)
-        		for(int k = dz - r; k < dz + r; k++)
-        			if(p_223316_1_.getBlockState(new BlockPos(i, j, k)).getBlock().equals(BlockIn)) {
-                		return new BlockPos(i, j, k);
-        			}
+        int dx = pos.getX();
+        int dy = pos.getY();
+        int dz = pos.getZ();
+        BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
+
+        for (int i = dx - r; i < dx + r; i++)
+        	for (int j = dy - r; j < dy + r; j++)
+        		for (int k = dz - r; k < dz + r; k++)
+        			if (p_223316_1_.getBlockState(mp.set(i, j, k)).getBlock().equals(BlockIn))
+                		return mp.immutable();
 
     	return null;
     }
@@ -126,7 +126,7 @@ public class SpawnUtil {
 	}
     
     public static Component TimeupDeathMessage(Entity entityIn) {
-    	return Component.translatable("death." + mod_LavaCow.MODID + ".timeup", new Object[] {entityIn.getDisplayName()});
+    	return Component.translatable("death." + mod_LavaCow.MODID + ".timeup", entityIn.getDisplayName());
     }
 	
     @Nullable
@@ -158,7 +158,7 @@ public class SpawnUtil {
 			blockpos = blockpos.below();
 			blockstate = worldIn.getBlockState(blockpos);
 			if (blockstate1.isAir() && blockstate.isSolid()) {
-				return blockpos1.offset(0, 1, 0);
+				return blockpos1.above();
 			}
 		}
 
@@ -213,33 +213,35 @@ public class SpawnUtil {
 				for (Pair<Attribute, AttributeModifier> pair : attributeList) {
 					AttributeModifier modifier = pair.getSecond();
 					double amount = modifier.getAmount();
+					AttributeModifier.Operation op = modifier.getOperation();
 					double formattedAmount;
-					if (modifier.getOperation() != AttributeModifier.Operation.MULTIPLY_BASE && modifier.getOperation() != AttributeModifier.Operation.MULTIPLY_TOTAL) {
-						formattedAmount = modifier.getAmount();
+					if (op != AttributeModifier.Operation.MULTIPLY_BASE && op != AttributeModifier.Operation.MULTIPLY_TOTAL) {
+						formattedAmount = amount;
 					} else {
-						formattedAmount = modifier.getAmount() * 100.0D;
+						formattedAmount = amount * 100.0D;
 					}
 
 					if (amount > 0.0D) {
-						tooltip.add((Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.BLUE));
+						tooltip.add((Component.translatable("attribute.modifier.plus." + op.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.BLUE));
 					} else if (amount < 0.0D) {
 						formattedAmount = formattedAmount * -1.0D;
-						tooltip.add((Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.RED));
+						tooltip.add((Component.translatable("attribute.modifier.take." + op.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount), Component.translatable(pair.getFirst().getDescriptionId()))).withStyle(ChatFormatting.RED));
 					}
 				}
 			}
 		}
 	}
 	
-	public static void LavaBurst(Level worldIn, double x, double y, double z, double radius, SimpleParticleType particleIn) {		
+	public static void LavaBurst(Level worldIn, double x, double y, double z, double radius, SimpleParticleType particleIn) {
 		double NumberofParticles = radius * 8.0D;
-		double speed = 0.06D;
-		
-		for(double i = 0.0D; i < NumberofParticles; i++) {
-			double vx = radius * Math.sin((float) (i / NumberofParticles * 360.0f)) * speed;
-            double vz = radius * Math.cos((float) (i / NumberofParticles * 360.0f)) * speed;
-            
-            worldIn.addParticle(particleIn, x, y, z, vx, 0.0D, vz); 
+		double speedRadius = radius * 0.06D;
+
+		for (double i = 0.0D; i < NumberofParticles; i++) {
+			float angle = (float)(i / NumberofParticles * 360.0f);
+			double vx = speedRadius * Math.sin(angle);
+            double vz = speedRadius * Math.cos(angle);
+
+            worldIn.addParticle(particleIn, x, y, z, vx, 0.0D, vz);
 		}
 	}
 	

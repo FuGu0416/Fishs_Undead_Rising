@@ -13,6 +13,7 @@ import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.CocoonRenderer;
 import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
+import com.Fishmod.fur.client.renderer.entity.VespaRenderer;
 import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
 import com.Fishmod.fur.client.renderer.entity.GhoulRenderer;
@@ -88,13 +89,15 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), MycosisRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), AbstractUnburiedRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.MUMMY_LORD.get(), AbstractUnburiedRenderer::new); // TODO: create MummyLordRenderer with dedicated model/texture
     	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BANSHEE.get(), BansheeRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MIMIC.get(), MimicRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.PTERA.get(), PteraRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SALAMANDER.get(), SalamanderRenderer::new);        
-    	EntityRenderers.register(FUREntityRegistry.ENIGMOTH.get(), EnigmothRenderer::new); 
+    	EntityRenderers.register(FUREntityRegistry.ENIGMOTH.get(), EnigmothRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.VESPA.get(), VespaRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.COCOON.get(), CocoonRenderer::new);
         EntityRenderers.register(FUREntityRegistry.SCARAB.get(), ScarabRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.PARASITE.get(), ParasiteRenderer::new);
@@ -124,7 +127,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.RAVEN, manager -> new RavenRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.SEAGULL, manager -> new RavenRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.VESPA, manager -> new VespaRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));

@@ -59,6 +59,7 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         this.addPteraCargosTag();
         this.addSwarmerTargetsTag();
         this.addWendigoTargetsTag();
+        this.addVespaTargetsTag();
     }
 
     // ── fur:fishes ───────────────────────────────────────────────────────────
@@ -208,5 +209,11 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .addTag(net.minecraft.tags.EntityTypeTags.RAIDERS)
                 .add(EntityType.VILLAGER)
                 .add(EntityType.WANDERING_TRADER);
+    }
+
+    // ── fur:vespa_targets ────────────────────────────────────────────────────
+    private void addVespaTargetsTag() {
+        tag(VESPA_TARGETS)
+                .addTag(ZOMBIES);
     }
 }

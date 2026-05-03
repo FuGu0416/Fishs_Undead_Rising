@@ -2,7 +2,6 @@ package com.Fishmod.fur.entities;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -110,10 +109,7 @@ public class LavaCowEntity extends Cow {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Lavacow_Health.get());
-    	this.setHealth(this.getMaxHealth());
-    	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 		

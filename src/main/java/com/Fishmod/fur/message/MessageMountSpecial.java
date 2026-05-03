@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
+import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -67,11 +68,10 @@ public class MessageMountSpecial {
 	   	 	}	
 	   	 	entity.level().broadcastEntityEvent(entity, (byte)11);
 	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
-		}/* else if (entity instanceof VespaEntity) {
-			((VespaEntity) entity).setAttackTimer(20);
-			((VespaEntity) entity).abilityCooldown = ((VespaEntity) entity).abilityCooldown();
-			entity.level.broadcastEntityEvent(entity, (byte)4);					
-		} else if (entity instanceof BeelzebubEntity) {
+		} else if (entity instanceof VespaEntity vespa) {
+			vespa.abilityCooldown = vespa.abilityCooldown();
+			entity.level().broadcastEntityEvent(entity, (byte)4);					
+		}/* else if (entity instanceof BeelzebubEntity) {
 			((BeelzebubEntity) entity).abilityCooldown = ((BeelzebubEntity) entity).abilityCooldown();
 			((BeelzebubEntity) entity).castSpell(FURConfig.Beelzebub_Ability_Num.get());
 			entity.playSound(((BeelzebubEntity) entity).getSpellSound(), 0.175F, 1.0F);

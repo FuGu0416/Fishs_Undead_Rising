@@ -125,6 +125,9 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mummy_Attack;
 
+	public static final ForgeConfigSpec.ConfigValue<Double> MummyLord_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> MummyLord_Attack;
+
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Cactyrant_Ability_Cooldown;
@@ -416,6 +419,11 @@ public final class FURConfig {
 		Mummy_Lifespan = BUILDER.comment("Mummy lifespan [1-10000]").defineInRange("mummy lifespan", 20, 0, 10000);
 		Mummy_Health = BUILDER.comment("Maximum Mummy health [1-1000]").defineInRange("mummy health", 24.0D, 1.0D, 1000.0D);
 		Mummy_Attack = BUILDER.comment("Mummy strength [1-1000]").defineInRange("mummy attack", 4.0D, 1.0D, 1000.0D);
+		BUILDER.pop();
+
+		BUILDER.push("Mummy Lord");
+		MummyLord_Health = BUILDER.comment("Maximum Mummy Lord health [1-1000]").defineInRange("mummy lord health", 120.0D, 1.0D, 1000.0D);
+		MummyLord_Attack = BUILDER.comment("Mummy Lord strength [1-1000]").defineInRange("mummy lord attack", 10.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 
 		BUILDER.push("Cactyrant");

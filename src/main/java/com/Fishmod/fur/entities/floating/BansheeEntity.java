@@ -106,11 +106,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Banshee_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Banshee_Attack.get());
-    	this.setHealth(this.getMaxHealth());
-        
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {        
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     

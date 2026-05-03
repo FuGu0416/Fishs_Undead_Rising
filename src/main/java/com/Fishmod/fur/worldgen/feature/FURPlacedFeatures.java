@@ -34,10 +34,6 @@ public class FURPlacedFeatures {
             key("mycelial_veil_bonemeal");
     public static final ResourceKey<PlacedFeature> MYCELIAL_TENDRILS_PLACED =
             key("mycelial_tendrils_placed");
-    public static final ResourceKey<PlacedFeature> GLOWSHROOM_PLACED =
-            key("glowshroom_placed");
-    public static final ResourceKey<PlacedFeature> GLIMMERCAP_PLACED =
-            key("glimmercap_placed");
     public static final ResourceKey<PlacedFeature> GLIMMERCAP_SHORT_INNER =
             key("glimmercap_short_inner");
     public static final ResourceKey<PlacedFeature> GLIMMERCAP_TALL_INNER =
@@ -85,43 +81,31 @@ public class FURPlacedFeatures {
                         features.getOrThrow(FURConfiguredFeatures.MYCELIAL_TENDRILS_SIMPLE),
                         List.of(PlacementUtils.isEmpty())));
 
-        // ── Internal: Glowshroom simple-block ─────────────────────────────────
-        context.register(GLOWSHROOM_PLACED,
-                new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.GLOWSHROOM_SIMPLE),
-                        List.of(PlacementUtils.isEmpty())));
-
         // ── Internal: Glimmercap short (1-tall) ───────────────────────────────
-        // Air at pos, sturdy face below.
+        // Air (regular or cave) at pos, sturdy face below.
         context.register(GLIMMERCAP_SHORT_INNER,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.GLIMMERCAP_SIMPLE),
                         List.of(
                                 BlockPredicateFilter.forPredicate(
                                         BlockPredicate.allOf(
-                                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                                BlockPredicate.matchesBlocks(Blocks.AIR, Blocks.CAVE_AIR),
                                                 BlockPredicate.hasSturdyFace(
                                                         new BlockPos(0, -1, 0), Direction.UP))))));
 
         // ── Internal: Glimmercap tall (2-tall) ────────────────────────────────
-        // Air at pos AND pos+1, sturdy face below.
+        // Air (regular or cave) at pos AND pos+1, sturdy face below.
         context.register(GLIMMERCAP_TALL_INNER,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.GLIMMERCAP_TALL),
                         List.of(
                                 BlockPredicateFilter.forPredicate(
                                         BlockPredicate.allOf(
-                                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                                BlockPredicate.matchesBlocks(Blocks.AIR, Blocks.CAVE_AIR),
                                                 BlockPredicate.matchesBlocks(
-                                                        new BlockPos(0, 1, 0), Blocks.AIR),
+                                                        new BlockPos(0, 1, 0), Blocks.AIR, Blocks.CAVE_AIR),
                                                 BlockPredicate.hasSturdyFace(
                                                         new BlockPos(0, -1, 0), Direction.UP))))));
-
-        // ── Internal: Glimmercap random selector ──────────────────────────────
-        context.register(GLIMMERCAP_PLACED,
-                new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.GLIMMERCAP_RANDOM),
-                        List.of()));
 
         // ── Internal: Glowshroom (used by MIXED_FLOOR_RANDOM) ─────────────────
         context.register(GLOWSHROOM_INNER,
@@ -279,7 +263,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MIXED_FLOOR_PATCH),
                         List.of(
-                                CountPlacement.of(96),
+                                CountPlacement.of(32),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),

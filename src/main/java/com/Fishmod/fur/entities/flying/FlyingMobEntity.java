@@ -114,22 +114,24 @@ public class FlyingMobEntity extends FURTameableEntity {
 
 		if (!this.level().isClientSide && !this.isBaby()) {
 	    	if (this.onGround()) {
-	    		if (this.getLandTimer() < 20) {
-	    			this.setLandTimer(this.getLandTimer() + 1);
+	    		int lt = this.getLandTimer();
+	    		if (lt < 20) {
+	    			this.setLandTimer(lt + 1);
 	    			this.level().broadcastEntityEvent(this, (byte)40);
 	    		}
-	    		
+
 	    		if (this.isNoGravity()) {
 	    			this.setNoGravity(this.getTarget() != null);
 	    		}
-	    		
+
 	    		if (!this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
 	    			this.setNoGravity(true);
 	    			this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.25F, 0.0F));
 	    		}
 	    	} else {
-	    		if (this.getLandTimer() > 0) {
-	    			this.setLandTimer(this.getLandTimer() - 1);
+	    		int lt = this.getLandTimer();
+	    		if (lt > 0) {
+	    			this.setLandTimer(lt - 1);
 	    			this.level().broadcastEntityEvent(this, (byte)41);
 	    		}
 	    		
@@ -169,12 +171,14 @@ public class FlyingMobEntity extends FURTameableEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 40)  {
-    		if (this.getLandTimer() < 20) {
-    			this.setLandTimer(this.getLandTimer() + 1);
+    		int lt = this.getLandTimer();
+    		if (lt < 20) {
+    			this.setLandTimer(lt + 1);
     		}
         } else if (id == 41)  {
-    		if (this.getLandTimer() > 0) {
-    			this.setLandTimer(this.getLandTimer() - 1);
+    		int lt = this.getLandTimer();
+    		if (lt > 0) {
+    			this.setLandTimer(lt - 1);
     		}
         } else {
             super.handleEntityEvent(id);
@@ -258,17 +262,10 @@ public class FlyingMobEntity extends FURTameableEntity {
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
             BlockPos ground = this.blockPosition().below();
-            float f = 0.91F;
-            if (this.onGround()) {
-               f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
-            }
-
+            float f = this.onGround()
+                    ? this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F
+                    : 0.91F;
             float f1 = 0.16277137F / (f * f * f);
-            f = 0.91F;
-            if (this.onGround()) {
-               f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
-            }
-
             this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, p_213352_1_);
             this.move(MoverType.SELF, this.getDeltaMovement().scale(this.VehicleSpeedMod()));
             this.setDeltaMovement(this.getDeltaMovement().scale((double)f));
@@ -347,6 +344,9 @@ public class FlyingMobEntity extends FURTameableEntity {
         private int ceilingYCacheTimer = 0;
         private static final int CEILING_Y_CACHE_INTERVAL = 60;
 
+        // Reusable mutable position for clearance / lava checks
+        private final BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
+
         public AIRandomFly(FlyingMobEntity entity, double speed) {
             this.parentEntity = entity;
             this.speed = speed;
@@ -421,8 +421,9 @@ public class FlyingMobEntity extends FURTameableEntity {
          *   FlyingMoveHelper starts fresh without carrying the old stuck velocity.
          */
         private void escape(Vec3 current) {
-            double groundY  = this.getGroundY(this.parentEntity.blockPosition());
-            double ceilingY = this.getCeilingY(this.parentEntity.blockPosition());
+            BlockPos origin = this.parentEntity.blockPosition();
+            double groundY  = this.getGroundY(origin);
+            double ceilingY = this.getCeilingY(origin);
             double midY     = (groundY + ceilingY) / 2.0D;
             Level  level    = this.parentEntity.level();
 
@@ -488,8 +489,8 @@ public class FlyingMobEntity extends FURTameableEntity {
             // the walls, then pick a random near target 2 blocks away so that the
             // MoveControl operation is reset to MOVE_TO on the next evaluation.
             this.parentEntity.setDeltaMovement(Vec3.ZERO);
-            double rx = current.x + (this.parentEntity.getRandom().nextDouble() - 0.5D) * 2.0D;
-            double rz = current.z + (this.parentEntity.getRandom().nextDouble() - 0.5D) * 2.0D;
+            double rx = current.x + (this.parentEntity.random.nextDouble() - 0.5D) * 2.0D;
+            double rz = current.z + (this.parentEntity.random.nextDouble() - 0.5D) * 2.0D;
             this.parentEntity.getMoveControl().setWantedPosition(rx, midY, rz, this.speed);
         }
 
@@ -551,8 +552,9 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         private Vec3 clampToSafeHeight(Vec3 target) {
             double limit    = FURConfig.FlyingHeight_limit.get();
-            double groundY  = this.getGroundY(this.parentEntity.blockPosition());
-            double ceilingY = this.getCeilingY(this.parentEntity.blockPosition());
+            BlockPos origin = this.parentEntity.blockPosition();
+            double groundY  = this.getGroundY(origin);
+            double ceilingY = this.getCeilingY(origin);
 
             double minY = groundY + 2.0D;
             double maxY = limit > 0
@@ -582,36 +584,35 @@ public class FlyingMobEntity extends FURTameableEntity {
          *  - No lava at or immediately adjacent to the position
          */
         private boolean hasClearanceAt(Vec3 pos) {
-            BlockPos base  = BlockPos.containing(pos.x, pos.y, pos.z);
-            Level    level = this.parentEntity.level();
+            int bx = Mth.floor(pos.x);
+            int by = Mth.floor(pos.y);
+            int bz = Mth.floor(pos.z);
+            Level level = this.parentEntity.level();
+            BlockPos.MutableBlockPos mp = this.checkPos;
 
-            // Vertical clearance
-            if (!level.isEmptyBlock(base) || !level.isEmptyBlock(base.above()))
+            // Vertical clearance (air blocks cannot be lava, so no separate lava check needed here)
+            if (!level.getBlockState(mp.set(bx, by, bz)).isAir()
+                    || !level.getBlockState(mp.set(bx, by + 1, bz)).isAir())
                 return false;
 
-            // Lava check: reject if the block itself or any face-adjacent block is lava
-            if (this.isLava(level, base)
-                    || this.isLava(level, base.above())
-                    || this.isLava(level, base.below())
-                    || this.isLava(level, base.north())
-                    || this.isLava(level, base.south())
-                    || this.isLava(level, base.east())
-                    || this.isLava(level, base.west()))
+            // Below: lava check only
+            if (level.getBlockState(mp.set(bx, by - 1, bz)).is(Blocks.LAVA))
                 return false;
+
+            // Cardinal: fetch once, check lava and cache air state for squeeze detection
+            BlockState north = level.getBlockState(mp.set(bx, by, bz - 1));
+            if (north.is(Blocks.LAVA)) return false;
+            BlockState south = level.getBlockState(mp.set(bx, by, bz + 1));
+            if (south.is(Blocks.LAVA)) return false;
+            BlockState east  = level.getBlockState(mp.set(bx + 1, by, bz));
+            if (east.is(Blocks.LAVA)) return false;
+            BlockState west  = level.getBlockState(mp.set(bx - 1, by, bz));
+            if (west.is(Blocks.LAVA)) return false;
 
             // Diagonal wall squeeze: reject if both X and Z axes are walled in
-            boolean blockedX = !level.isEmptyBlock(base.east()) || !level.isEmptyBlock(base.west());
-            boolean blockedZ = !level.isEmptyBlock(base.north()) || !level.isEmptyBlock(base.south());
-
+            boolean blockedX = !east.isAir() || !west.isAir();
+            boolean blockedZ = !north.isAir() || !south.isAir();
             return !(blockedX && blockedZ);
-        }
-
-        /**
-         * Returns true if the block at pos is lava (source or flowing).
-         */
-        private boolean isLava(Level level, BlockPos pos) {
-            return level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.LAVA)
-                || level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.LAVA);
         }
 
         /**
@@ -769,7 +770,7 @@ public class FlyingMobEntity extends FURTameableEntity {
             // Cosmetic side drift
             Vec3 side = new Vec3(-desiredDirection.z, 0.0D, desiredDirection.x);
             desiredDirection = desiredDirection.add(
-                    side.scale((this.parentEntity.getRandom().nextDouble() - 0.5D) * 0.03D)
+                    side.scale((this.parentEntity.random.nextDouble() - 0.5D) * 0.03D)
             ).normalize();
 
             Vec3 desiredVelocity = desiredDirection.scale(

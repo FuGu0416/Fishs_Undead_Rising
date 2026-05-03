@@ -33,6 +33,7 @@ public class FURStructureModifier {
     {
         context.register(key("add_seahag"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SEAHAG.get(), 20, 1, 2), FURStructureTagsProvider.HAS_SEAHAG));
         context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 40, 4, 8), FURStructureTagsProvider.HAS_MUMMY));
+        context.register(key("add_mummy_lord"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY_LORD.get(), 10, 1, 2), FURStructureTagsProvider.HAS_MUMMY_LORD));
         context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 5, 1, 1), FURStructureTagsProvider.HAS_MIMIC));
     });
 

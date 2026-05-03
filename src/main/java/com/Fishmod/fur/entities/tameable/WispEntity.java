@@ -311,8 +311,6 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wisp_Health.get());
-    	this.setHealth(this.getMaxHealth());
 		
 		if (reason != MobSpawnType.BUCKET) {
 			this.entityData.set(SKIN_TYPE, this.random.nextInt(3));

@@ -13,6 +13,7 @@ import com.Fishmod.fur.block.LuminousMyceliumBlock;
 import com.Fishmod.fur.block.MycelialMatBlock;
 import com.Fishmod.fur.block.MycelialTendrilsBlock;
 import com.Fishmod.fur.block.MycelialVeinBlock;
+import com.Fishmod.fur.block.EnigmothEggBlock;
 import com.Fishmod.fur.block.SalamanderEggBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
 import com.Fishmod.fur.block.SoulFurnaceBlock;
@@ -51,6 +52,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> VEIL_SHROOM = registerBlocks("veil_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 1)));
 	public static final RegistryObject<Block> GLOWING_AIR = registerBlocks("glowing_air", () -> new AirBlock(BlockBehaviour.Properties.of().noCollission().air().lightLevel(state -> 15)));	
 	public static final RegistryObject<Block> SALAMANDER_EGG = registerBlocks("salamander_egg", () -> new SalamanderEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).lightLevel(state -> 5).strength(0.5F).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> ENIGMOTH_EGG = registerBlocks("enigmoth_egg", () -> new EnigmothEggBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).lightLevel(state -> 3).strength(0.5F).sound(SoundType.METAL).noOcclusion().randomTicks().pushReaction(PushReaction.DESTROY)));
 	public static final RegistryObject<Block> LUMINOUS_MYCELIUM = registerBlocks("luminous_mycelium", () -> new LuminousMyceliumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> MYCELIAL_MAT = registerBlocks("mycelial_mat", () -> new MycelialMatBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY)));
 	public static final RegistryObject<Block> MYCELIAL_VEIL = registerBlocks("mycelial_veil", () -> new MycelialVeinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS_CARPET).pushReaction(PushReaction.DESTROY)));

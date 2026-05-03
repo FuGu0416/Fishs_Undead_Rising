@@ -272,6 +272,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        }
 	    }
 	    
+	    int skin = this.getSkin();
 	    if (--distanceCheckCooldown <= 0) {
 	        this.distanceCheckCooldown = 20;
 
@@ -279,8 +280,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        if (!this.isTame() && (target == null || this.distanceToSqr(target) > RESET_DISTANCE_SQR)) {
 	            this.returnToDormant();
 	        }
-	        
-		    if ((this.getSkin() != MimicModel.getVoidSkin()) && this.getMainHandItem() != null) {
+
+		    if (skin != MimicModel.getVoidSkin() && this.getMainHandItem() != null) {
 		    	ItemStack stack = this.inventory.addItem(this.getMainHandItem());
 		    	
 		    	if (!stack.isEmpty()) {
@@ -295,16 +296,16 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        this.tickEggIncubation();
 	    }
 	    
-		if (this.getSkin() == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
+		if (skin == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
-                int j = this.getRandom().nextInt(2) * 2 - 1;
-                int k = this.getRandom().nextInt(2) * 2 - 1;
+                int j = this.random.nextInt(2) * 2 - 1;
+                int k = this.random.nextInt(2) * 2 - 1;
                 double d0 = (double)this.getX() + 0.5D + 0.25D * (double)j;
-                double d1 = (double)((float)this.getY() + this.getRandom().nextFloat());
+                double d1 = (double)((float)this.getY() + this.random.nextFloat());
                 double d2 = (double)this.getZ() + 0.5D + 0.25D * (double)k;
-                double d3 = (double)(this.getRandom().nextFloat() * (float)j);
-                double d4 = ((double)this.getRandom().nextFloat() - 0.5D) * 0.125D;
-                double d5 = (double)(this.getRandom().nextFloat() * (float)k);
+                double d3 = (double)(this.random.nextFloat() * (float)j);
+                double d4 = ((double)this.random.nextFloat() - 0.5D) * 0.125D;
+                double d5 = (double)(this.random.nextFloat() * (float)k);
                 this.level().addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
             }
 		}
@@ -425,15 +426,14 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
     public void doFollowCommand(Player playerIn) {
-    	ItemStack is;
     	super.doFollowCommand(playerIn);
         this.state = MimicState.TAME_ACTIVE;
         this.setNoAi(false);
         this.setSilent(false);
-        
+
     	if (this.getSkin() == MimicModel.getVoidSkin()) {
-	       for (int i = 0; i < this.inventory.getContainerSize();i++) {
-	    	   is = this.inventory.getItem(i);
+	       for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+	    	   ItemStack is = this.inventory.getItem(i);
 
 	    	   if (!is.isEmpty()) {
 	    		   this.spawnAtLocation(is.copy(), 0.2F);
@@ -513,12 +513,12 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
             return super.mobInteract(player, hand);
         }
         
-        if ((super.mobInteract(player, hand) == InteractionResult.PASS) && state == MimicState.DORMANT && this.distanceToSqr(player) < 2.0D && !player.getAbilities().instabuild) {
+        InteractionResult result = super.mobInteract(player, hand);
+        if (result == InteractionResult.PASS && state == MimicState.DORMANT && this.distanceToSqr(player) < 2.0D && !player.getAbilities().instabuild) {
             this.triggerAmbush(player);
             return InteractionResult.CONSUME;
         }
-
-        return super.mobInteract(player, hand);
+        return result;
 	}
     
     private void triggerAmbush(Player player) {
@@ -563,9 +563,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {   	
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
-    	this.setHealth(this.getMaxHealth());
 
     	if (worldIn.getBiome(this.blockPosition()).containsTag(BiomeTags.IS_NETHER)) {
     		this.setSkin(MimicModel.getNetherSkin()); 	 
@@ -788,11 +785,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	*/
     @Override
     protected void dropEquipment() {
-    	ItemStack is;
-    	super.dropEquipment();	
+    	super.dropEquipment();
 		if (!this.level().isClientSide) {
-			for (int i = 0; i < this.inventory.getContainerSize();i++) {
-				is = this.inventory.getItem(i);
+			for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+				ItemStack is = this.inventory.getItem(i);
 	            if (!is.isEmpty() && !EnchantmentHelper.hasVanishingCurse(is)) {
 	                this.spawnAtLocation(is);
             	}

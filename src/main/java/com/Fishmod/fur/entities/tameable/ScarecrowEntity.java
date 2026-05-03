@@ -3,7 +3,6 @@ package com.Fishmod.fur.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -148,7 +147,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     protected boolean isSunBurnTick() {
         if (this.level().isDay() && !this.level().isClientSide) {
            float f = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-           BlockPos blockpos = this.getVehicle() instanceof Boat ? (new BlockPos((int)this.getX(), (int)Math.round(this.getY()), (int)this.getZ())).above() : new BlockPos((int)this.getX(), (int)Math.round(this.getY()), (int)this.getZ());
+           BlockPos blockpos = new BlockPos((int)this.getX(), (int)Math.round(this.getY()), (int)this.getZ());
+           if (this.getVehicle() instanceof Boat) blockpos = blockpos.above();
            return (f > 0.5F && this.level().canSeeSky(blockpos));
         }
         return false;
@@ -186,18 +186,19 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         
         // accelerate crop growing
         if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
-        	int x = this.blockPosition().getX() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
-			int z = this.blockPosition().getZ() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;   
-			
+        	BlockPos origin = this.blockPosition();
+        	int x = origin.getX() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
+			int z = origin.getZ() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
+
 			for (int i = 4; i > -2; i--) {
-				int y = this.blockPosition().getY() + i;
+				int y = origin.getY() + i;
 				BlockPos blockpos = new BlockPos(x, y, z);
 				BlockState blockstate = this.level().getBlockState(blockpos);
 				Block block = blockstate.getBlock();
 				BlockState blockstate1 = null;
 				boolean flag = false;
-				
-				if (this.level().isEmptyBlock(blockpos)) {
+
+				if (blockstate.isAir()) {
 					continue;
 				}
 	               
@@ -323,10 +324,11 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
             	entity.setSecondsOnFire(2 * (int)f);
             }
             
-			if (this.getSkin() != 2)
-				((LivingEntity)entity).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20 * (int)f, 1));
-			else
-				((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+			if (entity instanceof LivingEntity le) {
+				le.addEffect(this.getSkin() != 2
+						? new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20 * (int)f, 1)
+						: new MobEffectInstance(MobEffects.WITHER, 4 * 20 * (int)f, 1));
+			}
 		}
 		
 		return flag;
@@ -350,9 +352,6 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarecrow_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
-    	this.setHealth(this.getMaxHealth());
         
     	/*if (this.random.nextFloat() < 0.00625F * FURConfig.pSpawnRate_Raven.get() && !this.level.isClientSide) {
     		RavenEntity crowpet = FUREntityRegistry.RAVEN.create(this.level);
@@ -553,30 +552,26 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     	}
     	
     	protected int atkTimerHit() {
-    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4) {
-    			return 12;
-    		} else {
-    			return 5;
-    		}  		
+    		return ((ScarecrowEntity) this.mob).AttackStance == (byte) 4 ? 12 : 5;
     	}
     	
     	protected byte atkTimerEvent() {
-	        if(((ScarecrowEntity)this.mob).cleaveTimer == 0) {
-	        	((ScarecrowEntity)this.mob).AttackStance = (byte)6;
-	        	((ScarecrowEntity)this.mob).cleaveTimer = 140;
+    		ScarecrowEntity sc = (ScarecrowEntity) this.mob;
+	        if (sc.cleaveTimer == 0) {
+	        	sc.AttackStance = (byte)6;
+	        	sc.cleaveTimer = 140;
 	        } else if (this.mob.getRandom().nextBoolean()) {
-	        	((ScarecrowEntity)this.mob).AttackStance = (byte)5;
+	        	sc.AttackStance = (byte)5;
 	        } else {
-	        	((ScarecrowEntity)this.mob).AttackStance = (byte)4;
+	        	sc.AttackStance = (byte)4;
 	        }
-	        
-    		return ((ScarecrowEntity)this.mob).AttackStance;
+    		return sc.AttackStance;
     	}
     	
-    	protected void dmgEvent(LivingEntity target) {  		
+    	protected void dmgEvent(LivingEntity target) {
     		this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-    		
-    		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4 || ((ScarecrowEntity)this.mob).AttackStance == (byte)5) {
+    		ScarecrowEntity sc = (ScarecrowEntity) this.mob;
+    		if (sc.AttackStance == (byte)4 || sc.AttackStance == (byte)5) {
     			super.dmgEvent(target);
     		} else {               
     			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {

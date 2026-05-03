@@ -3,7 +3,6 @@ package com.Fishmod.fur.entities;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREffectRegistry;
 
@@ -81,9 +80,6 @@ public class ImpEntity extends FogletEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
-    	this.setHealth(this.getMaxHealth());
     	this.setSkin(2);
     	
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);

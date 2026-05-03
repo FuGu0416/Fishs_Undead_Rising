@@ -313,9 +313,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
         livingdata = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);       
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());
-    	this.setHealth(this.getMaxHealth());
         
         this.setSkin(0);
         this.setLeftHanded(true);

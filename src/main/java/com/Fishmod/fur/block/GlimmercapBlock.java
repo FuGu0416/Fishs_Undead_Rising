@@ -99,9 +99,13 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            // Upper half: must have a lower half directly below
-            BlockState below = level.getBlockState(pos.below());
-            return below.is(this) && below.getValue(HALF) == DoubleBlockHalf.LOWER;
+            if (state.getValue(TALL)) {
+                // Paired upper half: must have a lower half directly below
+                BlockState below = level.getBlockState(pos.below());
+                return below.is(this) && below.getValue(HALF) == DoubleBlockHalf.LOWER;
+            }
+            // Standalone cap (TALL=false): survives on any valid surface
+            return canSurviveAt(level, pos);
         }
         return canSurviveAt(level, pos);
     }
@@ -124,14 +128,17 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         DoubleBlockHalf half = state.getValue(HALF);
+        boolean tall = state.getValue(TALL);
 
-        if (half == DoubleBlockHalf.LOWER && direction == Direction.UP && state.getValue(TALL)) {
-            // Lower half: if the upper half is gone, collapse to single-tall
+        if (half == DoubleBlockHalf.LOWER && direction == Direction.UP && tall) {
             if (!neighborState.is(this) || neighborState.getValue(HALF) != DoubleBlockHalf.UPPER) {
-                return state.setValue(TALL, false);
+                // UPPER is missing — become a standalone cap at this position
+                return this.defaultBlockState()
+                        .setValue(HALF, DoubleBlockHalf.UPPER)
+                        .setValue(TALL, false);
             }
-        } else if (half == DoubleBlockHalf.UPPER && direction == Direction.DOWN) {
-            // Upper half: must have a valid lower half below; otherwise pop off
+        } else if (half == DoubleBlockHalf.UPPER && tall && direction == Direction.DOWN) {
+            // Paired upper half: must have a valid lower half below; otherwise pop off
             if (!neighborState.is(this) || neighborState.getValue(HALF) != DoubleBlockHalf.LOWER) {
                 return Blocks.AIR.defaultBlockState();
             }
@@ -165,9 +172,9 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
                 }
             }
 
-            // Drop one glimmercap item at the lower block position
+            // Drop one glimmercap item at the block's own position (or lower pos for paired UPPER)
 			if (!player.isCreative()) {
-	            BlockPos dropPos = (half == DoubleBlockHalf.LOWER) ? pos : pos.below();
+	            BlockPos dropPos = (isTall && half == DoubleBlockHalf.UPPER) ? pos.below() : pos;
 	            Block.popResource(level, dropPos, new ItemStack(FURBlockRegistry.GLIMMERCAP.get()));
 			}
         }

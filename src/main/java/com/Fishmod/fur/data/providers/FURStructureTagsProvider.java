@@ -18,8 +18,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class FURStructureTagsProvider extends StructureTagsProvider {
-    public static final TagKey<Structure> HAS_SEAHAG = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_seahag"));   
+    public static final TagKey<Structure> HAS_SEAHAG = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_seahag"));
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));
+    public static final TagKey<Structure> HAS_MUMMY_LORD = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy_lord"));
     public static final TagKey<Structure> HAS_MIMIC = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mimic"));
     
     public FURStructureTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
@@ -28,7 +29,8 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
         this.tag(HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
-        this.tag(HAS_MUMMY).add(BuiltinStructures.BASTION_REMNANT);
+        this.tag(HAS_MUMMY).add(BuiltinStructures.DESERT_PYRAMID);
+        this.tag(HAS_MUMMY_LORD).add(BuiltinStructures.DESERT_PYRAMID);
         this.tag(HAS_MIMIC).add(BuiltinStructures.JUNGLE_TEMPLE)
         						   .add(BuiltinStructures.MINESHAFT)
         						   .add(BuiltinStructures.FORTRESS)

@@ -148,9 +148,6 @@ public class GhoulEntity extends Monster implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ghoul_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ghoul_Attack.get());
-        this.setHealth(this.getMaxHealth());
 
 		if (reason == MobSpawnType.COMMAND || reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.SPAWNER || reason == MobSpawnType.DISPENSER) {
 			this.setSkin(this.getRandom().nextInt(5));

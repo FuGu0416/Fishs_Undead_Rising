@@ -1,13 +1,13 @@
 package com.Fishmod.fur.events;
 
 import java.util.List;
-import java.util.Random;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -37,9 +37,11 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -210,7 +212,14 @@ public class FURServerEvents {
 	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Mummy_Attack.get())
 	                    .build()
 	    );
-	    
+
+	    event.put(FUREntityRegistry.MUMMY_LORD.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.MummyLord_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.MummyLord_Attack.get())
+	                    .build()
+	    );
+
 	    event.put(FUREntityRegistry.UNDERTAKER.get(),
 	            Mob.createMobAttributes()
 	                    .add(Attributes.MAX_HEALTH, FURConfig.Undertaker_Health.get())
@@ -287,76 +296,84 @@ public class FURServerEvents {
 	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Lamprey_Attack.get())
 	                    .build()
 	    );
+
+	    event.put(FUREntityRegistry.VESPA.get(),
+	            Mob.createMobAttributes()
+	                    .add(Attributes.MAX_HEALTH, FURConfig.Vespa_Health.get())
+	                    .add(Attributes.ATTACK_DAMAGE, FURConfig.Vespa_Attack.get())
+	                    .build()
+	    );
 	}
-	
+
     /**
      * Custom entity death event, using for manipulating vanilla entities loots or onDeath triggers.
      * Example: Spawn swarm of parasites when a zombie dies (10% chance)
      */
     @SubscribeEvent
     public void onEDeath(LivingDeathEvent event) {
-    	Entity entity = event.getEntity();
-    	//Entity killer = event.getSource().getDirectEntity();
-	    Level world = event.getEntity().level();
+    	LivingEntity entity = event.getEntity();
+    	Entity killer = event.getSource().getDirectEntity();
+	    Level world = entity.level();
 		
     	/**
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
-    	if (world instanceof ServerLevel && !entity.isInWaterOrBubble() &&
-    			((entity instanceof LivingEntity living && living.attackable() && living.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS)) 
-    					&& (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame())
-    			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
-    		int var2 = 3 + new Random().nextInt(3), var6 = 0;
+    	if (world instanceof ServerLevel serverLevel && !entity.isInWaterOrBubble() &&
+    			((entity.attackable() && entity.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS))
+    					&& (world.random.nextInt(100) < FURConfig.pSpawnRate_Parasite.get()) && (!(entity instanceof TamableAnimal tamed) || !tamed.isTame())
+    			|| entity.hasEffect(FUREffectRegistry.INFESTED.get()))) {
+    		MobEffectInstance infestedEffect = entity.getEffect(FUREffectRegistry.INFESTED.get());
+    		int var6 = infestedEffect != null ? infestedEffect.getAmplifier() : 0;
+    		int var2 = 3 + world.random.nextInt(3);
+    		int spawnCount = var2 + (var6 * (1 + world.random.nextInt(3)));
     		float var4,var5;
     		ParasiteEntity passenger = (ParasiteEntity) SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE.get());
-    		
-    		if (event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get())) {
-    			var6 = event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier();
-    		}
-    		
-    		for (int var3 = 0; var3 < var2 + (var6 * (1 + new Random().nextInt(3))); ++var3) {
+    		var biome = world.getBiome(entity.blockPosition());
+    		double ex = entity.getX(), ey = entity.getY(), ez = entity.getZ();
+
+    		for (int var3 = 0; var3 < spawnCount; ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
-                
-        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE.get(), ((ServerLevel) world), new BlockPos((int)(entity.getX() + var4), (int)entity.getY() + 1, (int)(entity.getZ() + var5)));
+
+        		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE.get(), serverLevel, new BlockPos((int)(ex + var4), (int)ey + 1, (int)(ez + var5)));
 
         		if (ParasiteEntity != null) {
-	        		if (passenger != null) { 
+	        		if (passenger != null) {
 	        			ParasiteEntity.setSkin(passenger.getSkin());
-	        		} else if (world.getBiome(entity.blockPosition()).containsTag(Tags.Biomes.IS_DESERT) || world.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_BADLANDS)) {
+	        		} else if (biome.containsTag(Tags.Biomes.IS_DESERT) || biome.containsTag(BiomeTags.IS_BADLANDS)) {
 	        			ParasiteEntity.setSkin(1);
-	        		} else if (world.getBiome(entity.blockPosition()).containsTag(BiomeTags.IS_JUNGLE)) {
+	        		} else if (biome.containsTag(BiomeTags.IS_JUNGLE)) {
 	        			ParasiteEntity.setSkin(2);
-	        		/*} else if (killer != null && killer instanceof VespaEntity) {
+	        		} else if (killer instanceof VespaEntity vespa) {
 	        			ParasiteEntity.setSkin(2);
-	        			if (((VespaEntity)killer).isTame()) {
+	        			if (vespa.isTame()) {
 	        				ParasiteEntity.setSummoned(true);
-	        			}*/
+	        			}
 	        		} else {
 	        			ParasiteEntity.setSkin(0);
 	        		}
         		}
     		}
-    	}		
+    	}
 
     	/**
          * Give a chance to spawn horde of Lampreys when a listed target dies.
          **/    	   	
-    	if (world instanceof ServerLevel && entity.isInWaterOrBubble() &&
-    			((entity instanceof LivingEntity living && living.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
-    			|| event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get()))) {
-    		int var2 = 3 + new Random().nextInt(3), var6 = 0;
+    	if (world instanceof ServerLevel serverLevel && entity.isInWaterOrBubble() &&
+    			(entity.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS) && (world.random.nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
+    			|| entity.hasEffect(FUREffectRegistry.INFESTED.get()))) {
+    		MobEffectInstance infestedEffect = entity.getEffect(FUREffectRegistry.INFESTED.get());
+    		int var6 = infestedEffect != null ? infestedEffect.getAmplifier() : 0;
+    		int var2 = 3 + world.random.nextInt(3);
+    		int spawnCount = var2 + (var6 * (1 + world.random.nextInt(3)));
     		float var4,var5;
-    		
-    		if (event.getEntity().hasEffect(FUREffectRegistry.INFESTED.get())) {
-    			var6 = event.getEntity().getEffect(FUREffectRegistry.INFESTED.get()).getAmplifier();
-    		}
-    		
-    		for (int var3 = 0; var3 < var2 + (var6 * (1 + new Random().nextInt(3))); ++var3) {
+    		double ex = entity.getX(), ey = entity.getY(), ez = entity.getZ();
+
+    		for (int var3 = 0; var3 < spawnCount; ++var3) {
     			var4 = ((float)(var3 % 2) - 0.5F) / 4.0F;
                 var5 = ((float)(var3 / 2) - 0.5F) / 4.0F;
-                
-        		SpawnUtil.trySpawnEntity(FUREntityRegistry.LAMPREY.get(), ((ServerLevel) world), new BlockPos((int)(entity.getX() + var4), (int)entity.getY(), (int)(entity.getZ() + var5)));
+
+        		SpawnUtil.trySpawnEntity(FUREntityRegistry.LAMPREY.get(), serverLevel, new BlockPos((int)(ex + var4), (int)ey, (int)(ez + var5)));
     		}
     	}
     	
@@ -483,29 +500,27 @@ public class FURServerEvents {
         if (player.level().isClientSide()) return;
         if ((player.level().getGameTime() & 0x1FL) > 0L) return;    
         
-		if (player.level() instanceof ServerLevel && player.level().getDifficulty() != Difficulty.PEACEFUL && player.level().random.nextFloat() < 0.1F) {
-			for (ItemEntity ItemEntity : player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
-		    	if (((ItemEntity) ItemEntity).getItem().getItem().isEdible() && ((ItemEntity) ItemEntity).getItem().getItem().getFoodProperties().isMeat()) {	
-					BlockPos pos = ItemEntity.blockPosition();
-	
-		            if (ItemEntity.isInWater() && player.level().getBiome(pos).containsTag(FURBiomeTagsProvider.HAS_SWARMER)) {     		            			         	            	
-						for (int i = 0; i < 2 + player.level().random.nextInt(3); i++) {	    				
-		    				double posX = pos.getX() + ((player.level().random.nextDouble() * 5.0D) - 2.5D);
+		if (player.level() instanceof ServerLevel serverLevel && serverLevel.getDifficulty() != Difficulty.PEACEFUL && serverLevel.random.nextFloat() < 0.1F) {
+			for (ItemEntity itemEnt : serverLevel.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
+				Item foodItem = itemEnt.getItem().getItem();
+		    	if (foodItem.isEdible() && foodItem.getFoodProperties().isMeat()) {
+					BlockPos pos = itemEnt.blockPosition();
+
+		            if (itemEnt.isInWater() && serverLevel.getBiome(pos).containsTag(FURBiomeTagsProvider.HAS_SWARMER)) {
+						for (int i = 0; i < 2 + serverLevel.random.nextInt(3); i++) {
+		    				double posX = pos.getX() + ((serverLevel.random.nextDouble() * 5.0D) - 2.5D);
 		    				double posY = pos.getY();
-		    				double posZ = pos.getZ() + ((player.level().random.nextDouble() * 5.0D) - 2.5D);
-		    				BlockPos blockpos= new BlockPos((int)posX, (int)posY, (int)posZ);
-		    				
-		    				if (player.level().getBlockState(blockpos).getFluidState().is(FluidTags.WATER)) {
-		    					if (SpawnUtil.isDay(player.level()) && player.level().getBiome(blockpos).containsTag(FURBiomeTagsProvider.HAS_PIRANHA)) {
-		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.PIRANHA.get(), ((ServerLevel) player.level()), blockpos);
+		    				double posZ = pos.getZ() + ((serverLevel.random.nextDouble() * 5.0D) - 2.5D);
+		    				BlockPos blockpos = new BlockPos((int)posX, (int)posY, (int)posZ);
+
+		    				if (serverLevel.getBlockState(blockpos).getFluidState().is(FluidTags.WATER)) {
+		    					if (SpawnUtil.isDay(serverLevel) && serverLevel.getBiome(blockpos).containsTag(FURBiomeTagsProvider.HAS_PIRANHA)) {
+		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.PIRANHA.get(), serverLevel, blockpos);
 		    					} else {
-		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER.get(), ((ServerLevel) player.level()), blockpos);	    						
+		    						SpawnUtil.trySpawnEntity(FUREntityRegistry.SWARMER.get(), serverLevel, blockpos);
 		    					}
-		    					
-			    				if (ItemEntity != null) {
-			    					ItemEntity.playSound(SoundEvents.GENERIC_EAT, 1, 1);
-			    					ItemEntity.discard();
-			    				}	
+		    					itemEnt.playSound(SoundEvents.GENERIC_EAT, 1, 1);
+		    					itemEnt.discard();
 		    				}
 		    			}
 		            }
@@ -615,21 +630,21 @@ public class FURServerEvents {
 	    		MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity(), event.getAmount());
 	    	}
 
-	    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf) {
-    		if (Attacked.getMobType().equals(MobType.UNDEAD) && source.getEntity().getName().equals(Component.translatable("entity.fur.holygrenade"))) {
+	    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf wolf) {
+    		if (Attacked.getMobType().equals(MobType.UNDEAD) && wolf.getName().equals(Component.translatable("entity.fur.holygrenade"))) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
-    		} else if (source.getEntity().getName().equals(Component.translatable("entity.fur.ghostbomb"))) {
+    		} else if (wolf.getName().equals(Component.translatable("entity.fur.ghostbomb"))) {
     			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
     			Attacked.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if (source.getEntity().getName().equals(Component.translatable("entity.fur.sonicbomb"))) {
+    		} else if (wolf.getName().equals(Component.translatable("entity.fur.sonicbomb"))) {
     			Attacked.addEffect(new MobEffectInstance(FUREffectRegistry.FEAR.get(), 4 * 20, 2, false, false, true));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else {
     			event.setAmount(event.getAmount() * 0.15F);
     		}
-    	}   	
+    	}
     	
     	if (Attacked.hasEffect(FUREffectRegistry.CORRODED.get()) && (source.is(DamageTypeTags.IS_PROJECTILE) || source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK))) {
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED.get()).getAmplifier())));
@@ -655,10 +670,10 @@ public class FURServerEvents {
 			Attacked.heal(event.getAmount() * 0.2F);
 		}
 		
-		if (source.getEntity() != null && Attacked != null && source.getEntity() instanceof LivingEntity && (((LivingEntity) source.getEntity()).getHealth() < Attacked.getHealth())) {
+		if (source.getEntity() instanceof LivingEntity attackerLiving && (attackerLiving.getHealth() < Attacked.getHealth())) {
 			Armor_Ghostly_lvl = 0;
-			
-			for (ItemStack S : source.getEntity().getArmorSlots()) {
+
+			for (ItemStack S : attackerLiving.getArmorSlots()) {
 				if (S.getItem() instanceof GhostlyArmorItem) {
 					Armor_Ghostly_lvl++;
 				}
@@ -689,8 +704,8 @@ public class FURServerEvents {
     	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));*/
     	
-    	if (event.getEntity() != null && event.getEntity() instanceof AbstractSkeleton && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
-    		event.getEntity().removeTag("FUR_tameSkeleton");
+    	if (event.getEntity() instanceof AbstractSkeleton skeleton && skeleton.getTags().contains("FUR_tameSkeleton")) {
+    		skeleton.removeTag("FUR_tameSkeleton");
     	}
     	
     	/*if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
@@ -707,7 +722,7 @@ public class FURServerEvents {
     	
     	for(Hand hand : Hand.values()) {
 			ItemStack stack = attacked.getItemInHand(hand);
-			if(!stack.isEmpty() && stack.getItem() instanceof VespaShieldItem) {
+			if (!stack.isEmpty() && stack.getItem() instanceof VespaShieldItem) {
 				VespaShieldItem shield = (VespaShieldItem)stack.getItem();
 				
 				if(shield.canBlockDamageSource(stack, attacked, hand, event.getSource())) {
@@ -813,20 +828,16 @@ public class FURServerEvents {
 			return;
 		}
 
-		Entity entity = event.getEntity();
-		Random random = new Random();
-
-		if (entity.level().isClientSide() || !(entity instanceof Player) || random.nextInt(1000) > FURConfig.pSpawnRate_DeathMimic.get()) {
+		if (!(event.getEntity() instanceof Player player) || player.level().isClientSide() || player.getRandom().nextInt(1000) > FURConfig.pSpawnRate_DeathMimic.get()) {
 			return;
 		}
 
-		Player player = (Player) entity;
 		AABB boundingBox = new AABB(player.blockPosition()).inflate(16);
 		List<MimicEntity> nearbyMimics = player.level().getEntitiesOfClass(MimicEntity.class, boundingBox);
 
 		if (nearbyMimics.isEmpty()) {
-			int spawnX = (int) Math.floor(player.getX() + random.nextInt(8) - 4);
-			int spawnZ = (int) Math.floor(player.getZ() + random.nextInt(8) - 4);
+			int spawnX = (int) Math.floor(player.getX() + player.getRandom().nextInt(8) - 4);
+			int spawnZ = (int) Math.floor(player.getZ() + player.getRandom().nextInt(8) - 4);
 			BlockPos spawn = new BlockPos(spawnX, player.level().getHeight(Heightmap.Types.WORLD_SURFACE, spawnX, spawnZ), spawnZ);
 
 			// We show some pretty effects to indicate they magically spawned in or something like that.
@@ -1012,7 +1023,7 @@ public class FURServerEvents {
 			}
 		}   
 		
-		if (Armor_Chitin_lvl >= 4 && event.getEntity() instanceof LivingEntity) {
+		if (Armor_Chitin_lvl >= 4) {
 			event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3 * 20, 0));
 		}
     }
@@ -1029,11 +1040,11 @@ public class FURServerEvents {
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
     	
-    	if (event.getEntity() instanceof Player) {    		
+    	if (event.getEntity() instanceof Player player) {
     		boolean have_Heart = false;
-  		
+
     		for (int i = 0; i < 9 ; i++) {
-    			if (((Player)event.getEntity()).getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
+    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
 					have_Heart = true;
     			}
     		}
@@ -1112,32 +1123,34 @@ public class FURServerEvents {
 
     	// Molten Armor lava walking is handled in playerTick (Phase.END).
 
-    	if (living.hasEffect(FUREffectRegistry.FEAR.get()) && (living.getRandom().nextFloat() < 0.3f) && (living.level() instanceof ServerLevel)) {
-			double d0 = living.getRandom().nextGaussian() * 0.02D;
-			double d1 = living.getRandom().nextGaussian() * 0.02D;
-			double d2 = living.getRandom().nextGaussian() * 0.02D;
-			((ServerLevel) living.level()).sendParticles(FURParticleRegistry.FEAR.get(), living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
-    	}  
-    	
-    	if (living.hasEffect(FUREffectRegistry.IMMOLATION.get()) && (living.getRandom().nextFloat() < 0.3f) && (living.level() instanceof ServerLevel)) {
-			double d0 = living.getRandom().nextGaussian() * 0.3D;
-			double d1 = living.getRandom().nextGaussian() * 0.3D;
-			double d2 = living.getRandom().nextGaussian() * 0.3D;
-			((ServerLevel) living.level()).sendParticles(ParticleTypes.FLAME, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
+    	if (living.hasEffect(FUREffectRegistry.FEAR.get()) && living.getRandom().nextFloat() < 0.3f && living.level() instanceof ServerLevel serverLevel) {
+    		var rng = living.getRandom();
+			double d0 = rng.nextGaussian() * 0.02D;
+			double d1 = rng.nextGaussian() * 0.02D;
+			double d2 = rng.nextGaussian() * 0.02D;
+			serverLevel.sendParticles(FURParticleRegistry.FEAR.get(), living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
+    	}
+
+    	if (living.hasEffect(FUREffectRegistry.IMMOLATION.get()) && living.getRandom().nextFloat() < 0.3f && living.level() instanceof ServerLevel serverLevel) {
+    		var rng = living.getRandom();
+			double d0 = rng.nextGaussian() * 0.3D;
+			double d1 = rng.nextGaussian() * 0.3D;
+			double d2 = rng.nextGaussian() * 0.3D;
+			serverLevel.sendParticles(ParticleTypes.FLAME, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
     	}			
     }
     
     @SubscribeEvent
     public void onELightning(EntityStruckByLightningEvent event) { 
-    	/*if (event.getEntity().level().getDifficulty() != Difficulty.PEACEFUL && event.getEntity() instanceof Bee && (new Random().nextInt(100) < FURConfig.pBeeConvertRate_Vespa.get())) {
-            VespaEntity entity = FUREntityRegistry.VESPA.create(event.getEntity().level);
-            entity.finalizeSpawn((ServerLevel)event.getEntity().level, event.getEntity().level().getCurrentDifficultyAt(entity.blockPosition()), SpawnReason.CONVERSION, null, (CompoundNBT)null);
+    	if (event.getEntity().level().getDifficulty() != Difficulty.PEACEFUL && event.getEntity() instanceof Bee bee && bee.getRandom().nextInt(100) < FURConfig.pBeeConvertRate_Vespa.get()) {
+            VespaEntity entity = FUREntityRegistry.VESPA.get().create(event.getEntity().level());
+            entity.finalizeSpawn((ServerLevel)event.getEntity().level(), event.getEntity().level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.CONVERSION, null, (CompoundTag)null);
             entity.moveTo(event.getEntity().blockPosition(), 0.0F, 0.0F);
             entity.setSkin(1);
             entity.setPersistenceRequired();
             event.getEntity().level().addFreshEntity(entity);
             event.getEntity().discard();
-    	}*/
+    	}
     }
     
     @SubscribeEvent
@@ -1182,15 +1195,15 @@ public class FURServerEvents {
 	    	}
 	    	
 			if (DirectAttacker.getType().equals(FUREntityRegistry.GHOUL_ARROW.get()) && (Attacked.getHealth() <= Attacked.getMaxHealth() * ((float)FURConfig.Ghoul_targetHPThreshold.get() / 100.0F))) {
-				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
-					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
+					serverLevel.sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
 				event.setAmount(event.getAmount() + 4.0F);
 			}
-			
+
 			if (DirectAttacker.getType().equals(FUREntityRegistry.FANG_ARROW.get())) {
-				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel) {
-					((ServerLevel)event.getSource().getDirectEntity().getCommandSenderWorld()).sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+				if (DirectAttacker.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
+					serverLevel.sendParticles(ParticleTypes.CRIT, Attacked.getX(), Attacked.getY(), Attacked.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
 				}
 				event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
 			}
@@ -1206,8 +1219,9 @@ public class FURServerEvents {
             }
         }*/
         
-        if (Attacker != null && event.getDamageSource().getDirectEntity() != null) {
-            if (event.getDamageSource().getDirectEntity().getType().equals(FUREntityRegistry.GHOUL_ARROW.get())) {
+        if (Attacker != null) {
+            Entity directEntity = event.getDamageSource().getDirectEntity();
+            if (directEntity != null && directEntity.getType().equals(FUREntityRegistry.GHOUL_ARROW.get())) {
                 event.setLootingLevel(event.getLootingLevel() + 3);
             }
         }

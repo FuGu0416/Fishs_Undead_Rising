@@ -12,11 +12,13 @@ import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,6 +37,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -607,6 +610,35 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	return true;
 	}
 	
+    @Override
+    public void spawnChildFromBreeding(ServerLevel level, Animal other) {
+        BlockPos eggPos = findEnigmothEggPos(level);
+        if (eggPos != null) {
+            level.setBlock(eggPos, FURBlockRegistry.ENIGMOTH_EGG.get().defaultBlockState(), 3);
+        }
+        this.finalizeSpawnChildFromBreeding(level, other, null);
+    }
+
+    private BlockPos findEnigmothEggPos(ServerLevel level) {
+        BlockPos origin = this.blockPosition();
+        for (BlockPos p : BlockPos.betweenClosed(origin.offset(-3, -1, -3), origin.offset(3, 1, 3))) {
+            if (level.getBlockState(p).is(Blocks.END_STONE)) {
+                BlockPos above = p.above();
+                if (level.getBlockState(above).isAir()) {
+                    return above.immutable();
+                }
+            }
+        }
+        for (BlockPos p : BlockPos.betweenClosed(origin.offset(-2, -1, -2), origin.offset(2, 1, 2))) {
+            BlockPos above = p.above();
+            if (level.getBlockState(p).isFaceSturdy(level, p, Direction.UP)
+                    && level.getBlockState(above).isAir()) {
+                return above.immutable();
+            }
+        }
+        return null;
+    }
+
     @Override
 	public EnigmothEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {
     	EnigmothEntity entity = FUREntityRegistry.ENIGMOTH.get().create(worldIn);

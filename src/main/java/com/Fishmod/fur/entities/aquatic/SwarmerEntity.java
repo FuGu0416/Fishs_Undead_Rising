@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ai.EntityAIPickupMeat;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -186,12 +185,6 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	if (this.getType().equals(FUREntityRegistry.SWARMER.get())) {
-	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Swarmer_Health.get());
-	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Swarmer_Attack.get());
-	    	this.setHealth(this.getMaxHealth());
-    	}   	
-    	
     	if (!this.getIsAmmo()) {
     		if (this.getType().equals(FUREntityRegistry.PIRANHA.get())) {
     			this.setSkin(0);

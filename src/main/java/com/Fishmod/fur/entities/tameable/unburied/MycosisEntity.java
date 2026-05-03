@@ -102,10 +102,6 @@ public class MycosisEntity extends UnburiedEntity {
     
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {         
     	entityLivingData = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
-
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mycosis_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mycosis_Attack.get());
-    	this.setHealth(this.getMaxHealth());
     	
     	if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(2) + 1));

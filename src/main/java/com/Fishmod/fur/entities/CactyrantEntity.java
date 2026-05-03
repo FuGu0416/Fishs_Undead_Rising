@@ -206,8 +206,9 @@ public class CactyrantEntity extends Monster implements GeoEntity {
             --this.spellTicks;
         }
         
-        if (this.getHuggingCooldown() > 0) {
-        	this.setHuggingCooldown(this.getHuggingCooldown() - 1);
+        int hcd = this.getHuggingCooldown();
+        if (hcd > 0) {
+        	this.setHuggingCooldown(hcd - 1);
         }
  
         if(!this.level().isClientSide()) {
@@ -227,16 +228,13 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 	            this.setCamouflaging(false);
 	        }
 	        
-	        if(this.getGrowingStage() == 2) {
-	        	// Full grown
-	        } else if(this.tickCount > 20 * 60 * 20) {
-	        	if(this.getGrowingStage() != 2) {
+	        int stage = this.getGrowingStage();
+	        if (stage != 2) {
+	        	if (this.tickCount > 20 * 60 * 20) {
 	        		this.setGrowingStage(2);
 	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
 	        		this.level().broadcastEntityEvent(this, (byte)14);
-	        	}
-	        } else if(this.tickCount > 10 * 60 * 20) {
-	        	if(this.getGrowingStage() != 1) {
+	        	} else if (this.tickCount > 10 * 60 * 20 && stage != 1) {
 	        		this.setGrowingStage(1);
 	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
 	        		this.level().broadcastEntityEvent(this, (byte)14);
@@ -275,8 +273,8 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         	return false;
         }
         
-        if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !source.is(DamageTypes.THORNS) && source.getDirectEntity() instanceof LivingEntity) {
-            source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
+        if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && source.getDirectEntity() instanceof LivingEntity le) {
+            le.hurt(this.damageSources().thorns(this), 2.0F);
         }
                
     	if(source.is(DamageTypeTags.IS_FIRE))
@@ -318,9 +316,6 @@ public class CactyrantEntity extends Monster implements GeoEntity {
      */
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
-    	this.setHealth(this.getMaxHealth());
         
 		if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
     		this.setSkin(1);
@@ -409,12 +404,13 @@ public class CactyrantEntity extends Monster implements GeoEntity {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean canUse() {
-    		if (CactyrantEntity.this.getTarget() == null || CactyrantEntity.this.isVehicle())
+            LivingEntity target = CactyrantEntity.this.getTarget();
+    		if (target == null || CactyrantEntity.this.isVehicle())
                 return false;
-            else if (CactyrantEntity.this.isSpellcasting() || !CactyrantEntity.this.getSensing().hasLineOfSight(CactyrantEntity.this.getTarget()))
+            else if (CactyrantEntity.this.isSpellcasting() || !CactyrantEntity.this.getSensing().hasLineOfSight(target))
                 return false;
-            else {                
-            	return CactyrantEntity.this.tickCount >= this.spellCooldown && CactyrantEntity.this.distanceTo(CactyrantEntity.this.getTarget()) > 2.0D;
+            else {
+            	return CactyrantEntity.this.tickCount >= this.spellCooldown && CactyrantEntity.this.distanceTo(target) > 2.0D;
             }
         }
 
@@ -451,19 +447,24 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         }
 
         protected void castSpell() {
-        	double d0, d1, d2, d3, f;
-        	for(int i = 0 ; i < 6 ; i++) {
+            LivingEntity target = CactyrantEntity.this.getTarget();
+            RandomSource rng = CactyrantEntity.this.random;
+            double cx = CactyrantEntity.this.getX();
+            double cz = CactyrantEntity.this.getZ();
+            double d0 = target.getX() - cx;
+            double d2 = target.getZ() - cz;
+            double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+            double spread = Math.sqrt(Math.sqrt(d3)) * 2.0D;
+            double targetY = target.getY(0.3333333333333333D);
+            int diffId = CactyrantEntity.this.level().getDifficulty().getId();
+        	for (int i = 0; i < 6; i++) {
 	        	CactusThornEntity abstractarrowentity = new CactusThornEntity(CactyrantEntity.this.level(), CactyrantEntity.this);
-	            LivingEntity target = CactyrantEntity.this.getTarget();
-	            d0 = target.getX() - CactyrantEntity.this.getX();
-	            d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
-	            d2 = target.getZ() - CactyrantEntity.this.getZ();
-	            d3 = (double)Math.sqrt(d0 * d0 + d2 * d2);
-	            f = i == 3 ? 0 : Math.sqrt(Math.sqrt(d3)) * 2.0D;
-	            abstractarrowentity.shoot(d0 + CactyrantEntity.this.getRandom().nextGaussian() * f, d1 + d3 * 0.2D, d2 + CactyrantEntity.this.getRandom().nextGaussian() * f, 1.6F, (float)(14 - CactyrantEntity.this.level().getDifficulty().getId() * 4));            
+	            double d1 = targetY - abstractarrowentity.getY();
+	            double f = i == 3 ? 0 : spread;
+	            abstractarrowentity.shoot(d0 + rng.nextGaussian() * f, d1 + d3 * 0.2D, d2 + rng.nextGaussian() * f, 1.6F, (float)(14 - diffId * 4));
 	            CactyrantEntity.this.level().addFreshEntity(abstractarrowentity);
         	}
-        	CactyrantEntity.this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (CactyrantEntity.this.getRandom().nextFloat() * 0.4F + 0.8F));
+        	CactyrantEntity.this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (rng.nextFloat() * 0.4F + 0.8F));
         }
 
         protected int getCastWarmupTime() {
@@ -545,39 +546,42 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     		return (byte)4;
     	}
     	
-    	protected void dmgEvent(LivingEntity target) {  		
+    	protected void dmgEvent(LivingEntity target) {
     		this.mob.swing(InteractionHand.MAIN_HAND);
     		float f = (float)this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
     		float f1 = (float)this.mob.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
     		float f2 = this.mob.level().getCurrentDifficultyAt(this.mob.blockPosition()).getEffectiveDifficulty();
     		boolean flag = false;
-    		
-    		if (!this.mob.getTarget().isBlocking()) {
-                if (!this.mob.isVehicle() && !this.mob.getTarget().isShiftKeyDown() && ((CactyrantEntity)this.mob).getHuggingCooldown() == 0) {
-                	this.mob.getTarget().startRiding(this.mob, true);
-                	((CactyrantEntity)this.mob).setHuggingCooldown(120);
+    		CactyrantEntity cac = (CactyrantEntity) this.mob;
+    		LivingEntity mobTarget = this.mob.getTarget();
+
+    		if (!mobTarget.isBlocking()) {
+                if (!this.mob.isVehicle() && !mobTarget.isShiftKeyDown() && cac.getHuggingCooldown() == 0) {
+                	mobTarget.startRiding(this.mob, true);
+                	cac.setHuggingCooldown(120);
                 } else if (!this.mob.isVehicle()) {
                 	flag = target.hurt(this.mob.damageSources().mobAttack(this.mob), f);
                 	this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
                 } else {
-                	flag = target.hurt(this.mob.damageSources().mobAttack(this.mob), f * 0.25F);     
+                	flag = target.hurt(this.mob.damageSources().mobAttack(this.mob), f * 0.25F);
                 	f1 = 0.0F;
                 }
-                
+
                 if (flag) {
-        			if (f1 > 0.0F && target instanceof LivingEntity) {
-        				((LivingEntity)target).knockback(f1 * 0.5F, (double)Math.sin(this.mob.getYRot() * ((float)Math.PI / 180F)), (double)(-Math.cos(this.mob.getYRot() * ((float)Math.PI / 180F))));
+        			if (f1 > 0.0F) {
+        				float yRotRad = this.mob.getYRot() * ((float)Math.PI / 180F);
+        				target.knockback(f1 * 0.5F, Math.sin(yRotRad), -Math.cos(yRotRad));
         				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
         			}
 
         			this.mob.doEnchantDamageEffects(this.mob, target);
         			this.mob.setLastHurtMob(target);
-        			
+
                     if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
                     	target.setSecondsOnFire(2 * (int)f2);
                     }
         		}
-            }    		  		         
+            }
     	}    	
 	}
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "hatch=0": { "model": "fur:block/enigmoth_egg" },
+    "hatch=1": { "model": "fur:block/enigmoth_egg_slightly_cracked" },
+    "hatch=2": { "model": "fur:block/enigmoth_egg_very_cracked" }
+  }
+}

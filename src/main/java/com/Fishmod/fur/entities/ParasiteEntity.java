@@ -71,7 +71,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.damagesource.DamageSource;
 
-
 public class ParasiteEntity extends Spider implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
@@ -163,9 +162,6 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Parasite_Health.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Parasite_Attack.get());
-    	this.setHealth(this.getMaxHealth());
     	
     	this.setSkin(this.random.nextInt(4));
     	
@@ -185,10 +181,14 @@ public class ParasiteEntity extends Spider implements GeoEntity {
             if (this.getVehicle() == null) {
                 this.lifespawn--;
             }
-        } else if (!this.isSummoned() && this.getSkin() == 2 && (this.getRandom().nextInt(100) < FURConfig.pEvolveRate_Vespa.get() || this.isTame())) {
-        	this.tryEvolveToCocoon(this.getSkin());
-        } else if (!this.isSummoned() && this.getSkin() == 3 && this.isTame()) {
-        	this.tryEvolveToCocoon(this.getSkin());
+            return;
+        }
+        int skin = this.getSkin();
+        boolean summoned = this.isSummoned();
+        if (!summoned && skin == 2 && (this.random.nextInt(100) < FURConfig.pEvolveRate_Vespa.get() || this.isTame())) {
+        	this.tryEvolveToCocoon(skin);
+        } else if (!summoned && skin == 3 && this.isTame()) {
+        	this.tryEvolveToCocoon(skin);
         } else {
             this.kill();
         }
@@ -228,7 +228,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     }
 
     private void handleRidingEffects() {
-        if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity mount && !this.level().isClientSide()) {
+        if (this.getVehicle() instanceof LivingEntity mount && !this.level().isClientSide()) {
             if (!mount.hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
                 this.stopRiding();
                 this.kill();
@@ -255,16 +255,16 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 
     private Direction findClosestAttachableDirection() {
         Direction closestDirection = Direction.DOWN;
-        double closestDistance = 100.0D;
+        double closestDistanceSq = Double.MAX_VALUE;
+        BlockPos antPos = this.blockPosition();
+        Vec3 myPos = this.position();
 
         for (Direction dir : DIRECTIONS) {
-            BlockPos antPos = new BlockPos((int) Math.floor(this.getX()), (int) Math.floor(this.getY()), (int) Math.floor(this.getZ()));
             BlockPos offsetPos = antPos.relative(dir);
-            Vec3 offset = Vec3.atCenterOf(offsetPos);
-            double distance = this.position().distanceTo(offset);
+            double distanceSq = myPos.distanceToSqr(Vec3.atCenterOf(offsetPos));
 
-            if (distance < closestDistance && this.level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
-                closestDistance = distance;
+            if (distanceSq < closestDistanceSq && this.level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                closestDistanceSq = distanceSq;
                 closestDirection = dir;
             }
         }
@@ -295,12 +295,13 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     }
 	
 	@Override
-	public double getMyRidingOffset() {		
+	public double getMyRidingOffset() {
 		if (this.isPassenger()) {
-			if ((this.getVehicle() instanceof Player || this.getVehicle() instanceof Zombie || this.getVehicle() instanceof AbstractVillager || this.getVehicle() instanceof AbstractIllager || this.getVehicle() instanceof AbstractSkeleton) && !((LivingEntity)this.getVehicle()).isBaby()) {
-				return this.getVehicle().getBbHeight()/2  - 0.85F;
+			Entity vehicle = this.getVehicle();
+			if ((vehicle instanceof Player || vehicle instanceof Zombie || vehicle instanceof AbstractVillager || vehicle instanceof AbstractIllager || vehicle instanceof AbstractSkeleton) && !((LivingEntity) vehicle).isBaby()) {
+				return vehicle.getBbHeight() / 2 - 0.85F;
 			} else {
-				return this.getVehicle().getBbHeight() * 0.65D - 1.0D;
+				return vehicle.getBbHeight() * 0.65D - 1.0D;
 			}
 		} else {
 			return super.getMyRidingOffset();
@@ -311,15 +312,15 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	public boolean doHurtTarget(Entity entity) {
 		this.level().broadcastEntityEvent(this, (byte)4);
 		
-		if (super.doHurtTarget(entity)) {			
-			if (!this.isSummoned()) {
-				((LivingEntity) entity).addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));		
+		if (super.doHurtTarget(entity)) {
+			if (entity instanceof LivingEntity le) {
+				if (!this.isSummoned()) {
+					le.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
+				}
+				if (this.getSkin() == 2) {
+					le.addEffect(new MobEffectInstance(MobEffects.POISON, 4*20, 0));
+				}
 			}
-			
-			if(this.getSkin() == 2) {
-				((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, 4*20, 0));
-			}
-			
 			return true;
 		}
 		
@@ -330,9 +331,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		
-		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
+		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity le && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
 			if (!this.isSummoned()) {
-				((LivingEntity) entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
+				le.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
 			}
     		this.startRiding(entityIn);
         }
@@ -447,8 +448,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getSkin());
         
-        if (this.getOwnerUUID() != null) {
-        	compound.putUUID("Owner", this.getOwnerUUID());
+        UUID ownerUUID = this.getOwnerUUID();
+        if (ownerUUID != null) {
+        	compound.putUUID("Owner", ownerUUID);
         }
     }
     

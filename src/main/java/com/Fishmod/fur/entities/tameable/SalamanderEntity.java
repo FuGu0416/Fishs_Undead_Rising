@@ -1,7 +1,6 @@
 package com.Fishmod.fur.entities.tameable;
 
 import java.util.EnumSet;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -73,7 +72,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -124,7 +122,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
         this.xpReward = 20;
-        this.barrage_CD = 0;
     }
 
     @Override
@@ -222,10 +219,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         	this.setSkin(0);      	
         	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
         	for (int i = 0; i < 16; ++i) {
-                double d0 = new Random().nextGaussian() * 0.02D;
-                double d1 = new Random().nextGaussian() * 0.02D;
-                double d2 = new Random().nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), d0, d1, d2);
             }
         	
         	return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -236,10 +233,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         	this.setSkin(1);  	
         	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
         	for (int i = 0; i < 16; ++i) {
-                double d0 = new Random().nextGaussian() * 0.02D;
-                double d1 = new Random().nextGaussian() * 0.02D;
-                double d2 = new Random().nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), d0, d1, d2);
             }
         	
         	return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -333,7 +330,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     }
     
     public boolean isRidingPlayer(Player player) {
-        return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player && this.getControllingPassenger().getUUID().equals(player.getUUID());
+        LivingEntity controller = this.getControllingPassenger();
+        return controller instanceof Player p && p.getUUID().equals(player.getUUID());
     }
     
     /**
@@ -358,27 +356,17 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     			}
     		}
 
-	    	if (this.getAge() < -16000) {
-	    		if (this.getGrowingStage() != 0)
-	    			this.setGrowingStage(0);
-	    	} else if (this.getAge() < -8000) {
-	    		if (this.getGrowingStage() != 1) {
-		    		this.setGrowingStage(1);
-	    		}
-	    	} else if (this.getAge() < 0) {
-	    		if (this.getGrowingStage() != 2) {
-		    		this.setGrowingStage(2);		    	
-	    		}
-	    	} else {	    		
-	    		if (this.getGrowingStage() != 3) {
-	    			this.setGrowingStage(3);	    		
-	    		}
-	    	}
-	    	
-	    	// savedFurnacePos no longer valid
-    		if (this.savedFurnacePos != null && (this.blockPosition().distSqr(this.savedFurnacePos) > (this.searchRange() * this.searchRange())
-    				|| !(this.level().getBlockState(this.savedFurnacePos).getBlock()  instanceof AbstractFurnaceBlock)
-    				|| !this.isInSittingPose())) {
+	    	int age = this.getAge();
+	    	int expectedStage = age < -16000 ? 0 : age < -8000 ? 1 : age < 0 ? 2 : 3;
+	    	if (this.getGrowingStage() != expectedStage)
+	    		this.setGrowingStage(expectedStage);
+
+	    	// savedFurnacePos no longer valid — sitting check first (cheap); block state throttled to every 20 ticks
+    		if (this.savedFurnacePos != null
+    				&& (!this.isInSittingPose()
+    				|| (this.tickCount % 20 == 0
+    					&& (this.blockPosition().distSqr(this.savedFurnacePos) > (this.searchRange() * this.searchRange())
+    					|| !(this.level().getBlockState(this.savedFurnacePos).getBlock() instanceof AbstractFurnaceBlock))))) {
     			this.savedFurnacePos = null;
     			this.setBoostingFurnace(false);
     		}
@@ -386,25 +374,12 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     		if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {      			
 	    		// update savedFurnacePos
 	    		if (this.savedFurnacePos == null) {
-					for (int i = this.searchRange(); i > -this.searchRange(); i--) {
-						for (int j = this.searchRange(); j > -this.searchRange(); j--) {
-							for (int k = this.searchRange(); k > -this.searchRange(); k--) {
-								int x = this.blockPosition().getX() + i;
-								int y = this.blockPosition().getY() + j;
-								int z = this.blockPosition().getZ() + k;
-								BlockPos blockpos = new BlockPos(x, y, z);
-								BlockState blockstate = this.level().getBlockState(blockpos);
-								Block block = blockstate.getBlock();
-								
-								if (this.level().isEmptyBlock(blockpos)) {
-									continue;
-								}
-					               
-								if (block instanceof AbstractFurnaceBlock) {
-									this.savedFurnacePos = blockpos;
-									break;
-								}
-							}
+					int r = this.searchRange();
+					BlockPos center = this.blockPosition();
+					for (BlockPos p : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
+						if (this.level().getBlockState(p).getBlock() instanceof AbstractFurnaceBlock) {
+							this.savedFurnacePos = p.immutable();
+							break;
 						}
 					}
 	    		}
@@ -548,7 +523,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D);
     	    	this.goalSelector.addGoal(4, this.range_atk);
     	    	
-    	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
     	        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.23D);
     	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get());	
         		break;
@@ -665,11 +639,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
        float chance_to_spawn_as_child = 0.0F;
-       this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
-       this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get());
-       this.setHealth(this.getMaxHealth());
    	
-       if(world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
+       if (world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
     	   this.setSkin(1);
        }
        
@@ -853,18 +824,18 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 		public void tick() {
 			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);	
 			
-            if (this.mob.level() instanceof ServerLevel && this.mob.tickCount % 20 == 0) {  
-            	double d0 = this.mob.getLookControl().getWantedX() - (double)(this.mob.blockPosition().getX());
-            	double d1 = this.mob.getLookControl().getWantedY() - (double)(this.mob.blockPosition().getY());
-            	double d2 = this.mob.getLookControl().getWantedZ() - (double)(this.mob.blockPosition().getZ());
-            	Vec3 v0 = new Vec3(d0, d1, d2);           	
-    			
-            	((ServerLevel) this.mob.level()).sendParticles((this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME, 
-            			(double)(this.mob.blockPosition().getX()) + 0.5D + v0.normalize().x * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
-            			(double)(this.mob.blockPosition().getY()) + (double)(this.mob.getBbHeight() * 0.2F), 
-            			(double)(this.mob.blockPosition().getZ()) + 0.5D + v0.normalize().z * (this.mob.getGrowingStage() + 1.0D) * 0.5D, 
-            			15, 0.2D + v0.normalize().x * (this.mob.getGrowingStage() + 1.0D) * 0.05D, 0.2D, 0.2D + v0.normalize().z * (this.mob.getGrowingStage() + 1.0D) * 0.05D, 0.01D);
-                	
+            if (this.mob.level() instanceof ServerLevel serverLevel && this.mob.tickCount % 20 == 0) {
+            	BlockPos bp = this.mob.blockPosition();
+            	double d0 = this.mob.getLookControl().getWantedX() - (double) bp.getX();
+            	double d1 = this.mob.getLookControl().getWantedY() - (double) bp.getY();
+            	double d2 = this.mob.getLookControl().getWantedZ() - (double) bp.getZ();
+            	Vec3 dir = new Vec3(d0, d1, d2).normalize();
+            	double reach = (this.mob.getGrowingStage() + 1.0D) * 0.5D;
+            	serverLevel.sendParticles((this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME,
+            			(double) bp.getX() + 0.5D + dir.x * reach,
+            			(double) bp.getY() + (double)(this.mob.getBbHeight() * 0.2F),
+            			(double) bp.getZ() + 0.5D + dir.z * reach,
+            			15, 0.2D + dir.x * reach * 0.1D, 0.2D, 0.2D + dir.z * reach * 0.1D, 0.01D);
             }
 		}
 	}
