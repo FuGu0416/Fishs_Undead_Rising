@@ -2,6 +2,8 @@ package com.Fishmod.fur.entities;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -113,7 +115,10 @@ public class IsnachiEntity extends FogletEntity {
 	@Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	this.setSkin(1);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+		this.setSkin(1);
     	
  	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
  	}

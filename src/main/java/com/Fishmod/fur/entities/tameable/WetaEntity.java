@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.EntityAIDestroyCrops;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -230,7 +231,11 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
-    	this.setSkin(this.getRandom().nextFloat() < 0.05F ? 2 : 0);    	
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Weta_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Weta_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	this.setSkin(this.getRandom().nextFloat() < 0.05F ? 2 : 0);
+    	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 	

@@ -316,7 +316,10 @@ public class CactyrantEntity extends Monster implements GeoEntity {
      */
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
 		if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
     		this.setSkin(1);
     	}

@@ -70,9 +70,7 @@ public class AbstractUnburiedRenderer extends GeoEntityRenderer<UnburiedEntity> 
 				return switch (bone.getName()) {
 					case LEFT_BOOT, RIGHT_BOOT -> EquipmentSlot.FEET;
 					case LEFT_ARMOR_LEG, RIGHT_ARMOR_LEG -> EquipmentSlot.LEGS;
-					case RIGHT_SLEEVE -> !animatable.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-					case LEFT_SLEEVE -> animatable.isLeftHanded() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
-					case CHESTPLATE -> EquipmentSlot.CHEST;
+					case RIGHT_SLEEVE, LEFT_SLEEVE, CHESTPLATE -> EquipmentSlot.CHEST;
 					case HELMET -> EquipmentSlot.HEAD;
 					default -> super.getEquipmentSlotForBone(bone, stack, animatable);
 				};

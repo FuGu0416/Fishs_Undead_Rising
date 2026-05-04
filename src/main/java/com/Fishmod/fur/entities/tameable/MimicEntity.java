@@ -563,7 +563,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {   	
-
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	if (worldIn.getBiome(this.blockPosition()).containsTag(BiomeTags.IS_NETHER)) {
     		this.setSkin(MimicModel.getNetherSkin()); 	 
     	} else {

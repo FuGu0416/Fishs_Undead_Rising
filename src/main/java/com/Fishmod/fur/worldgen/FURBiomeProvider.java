@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
 
@@ -35,24 +34,10 @@ public class FURBiomeProvider extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
 
-        // Populate the full vanilla surface + cave biome set first.
-        // TerraBlender's region system picks biomes using nearest-neighbour across
-        // only THIS region's registered entries. Without vanilla entries, the surface
-        // (depth ≈ 0) has no match and falls back to Luminous Undergrove — the only
-        // registered biome — causing surface bleed. Adding vanilla entries here gives
-        // the surface a proper vanilla winner while leaving the underground open for
-        // Luminous Undergrove to win on depth.
-        // OverworldBiomeBuilder.addBiomes() is protected and the class is final —
-        // reflection is the only way to invoke it from outside the package.
-        try {
-            java.lang.reflect.Method m = OverworldBiomeBuilder.class.getDeclaredMethod("addBiomes", Consumer.class);
-            m.setAccessible(true);
-            m.invoke(new OverworldBiomeBuilder(), mapper);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to invoke OverworldBiomeBuilder.addBiomes", e);
-        }
-
         // ── Cave-only override ────────────────────────────────────────────────
+        // TerraBlender handles vanilla biome distribution automatically for all
+        // parameter points not overridden here. We only need to register the
+        // specific climate parameters where Luminous Undergrove should appear.
         // These mirror the underground cave placement used by Lush Caves,
         // shifted slightly warmer and wetter to give Luminous Undergrove its
         // own identity while still generating in similar zones.

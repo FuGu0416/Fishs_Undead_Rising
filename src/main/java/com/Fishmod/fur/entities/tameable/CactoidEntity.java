@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
@@ -321,6 +322,9 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactoid_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactoid_Attack.get());
+    	this.setHealth(this.getMaxHealth());
     	this.setAge(-24000);
     	
     	if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {

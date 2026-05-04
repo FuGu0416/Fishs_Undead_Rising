@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.floating;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ICharging;
 import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -128,6 +129,10 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wraith_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Wraith_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
     

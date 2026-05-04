@@ -243,6 +243,10 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {        
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarab_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }	
     

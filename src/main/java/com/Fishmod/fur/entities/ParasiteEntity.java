@@ -162,7 +162,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Parasite_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Parasite_Attack.get());
+    	this.setHealth(this.getMaxHealth());    	
     	this.setSkin(this.random.nextInt(4));
     	
     	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);

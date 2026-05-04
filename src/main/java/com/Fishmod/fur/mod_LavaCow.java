@@ -82,7 +82,7 @@ public class mod_LavaCow {
         // Register ourselves for server and other game events we are interested in
     	
         MinecraftForge.EVENT_BUS.register(this);      
-        MinecraftForge.EVENT_BUS.register(new FURServerEvents()); 
+        MinecraftForge.EVENT_BUS.register(new FURServerEvents());         
         ModLoadingContext.get().registerConfig(Type.COMMON, FURConfig.SPEC, "fur.common.toml");
         FUREntityRegistry.DEF_REG.register(eventBus);
         FURItemGroup.DEF_REG.register(eventBus);
@@ -118,24 +118,9 @@ public class mod_LavaCow {
         GeckoLib.initialize();
     }
     
-   /* @SubscribeEvent
-    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
-        //FURWorldRegistry.onBiomesLoad(event);
-    }*/
-    
-    /*@SubscribeEvent
-    public void onStructuresLoadFromJSON(StructureSpawnListGatherEvent event) {
-        //FURWorldRegistry.onStructuresLoad(event);
-    }*/   
-
     private void setup(final FMLCommonSetupEvent event) {
     	event.enqueueWork(() -> {
-    		//FURWorldRegistry.setupStructures();
-    		//FURProcessors.registerProcessors();
-            //FURWorldRegistry.register();
-            //LootTableHandler.addLootTable();
     		FURItemRegistry.SetCompostables();
-
             Regions.register(new FURBiomeProvider());
         });
         PROXY.initNetwork();

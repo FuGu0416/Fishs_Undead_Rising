@@ -639,6 +639,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
        float chance_to_spawn_as_child = 0.0F;
+
+       this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
+       this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get());
+   		this.setHealth(this.getMaxHealth());
    	
        if (world.getBiome(this.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {
     	   this.setSkin(1);

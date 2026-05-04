@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.tameable;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -352,7 +353,11 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
         livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
-        
+
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarecrow_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
     	/*if (this.random.nextFloat() < 0.00625F * FURConfig.pSpawnRate_Raven.get() && !this.level.isClientSide) {
     		RavenEntity crowpet = FUREntityRegistry.RAVEN.create(this.level);
     		crowpet.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);

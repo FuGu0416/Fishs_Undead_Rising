@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.tameable.unburied;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
 import net.minecraft.core.BlockPos;
@@ -49,12 +50,12 @@ public class MummyLordEntity extends MummyEntity {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-            MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
-        groupData = super.finalizeSpawn(world, difficulty, spawnType, groupData, tag);
-        this.setHealth(this.getMaxHealth());
-        this.setSkin(4); // TODO: dedicated MummyLord skin variant (new texture/model)
-        return groupData;
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.MummyLord_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.MummyLord_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
+        return super.finalizeSpawn(world, difficulty, spawnType, groupData, tag);
     }
 
     @Override

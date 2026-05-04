@@ -274,7 +274,11 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
-        return super.finalizeSpawn(world, difficulty, spawnType, groupData, tag);
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Vespa_Health.get());
+       	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get());
+       	this.setHealth(this.getMaxHealth());
+       	
+    	return super.finalizeSpawn(world, difficulty, spawnType, groupData, tag);
     }
 
     // ── Skin variant ──────────────────────────────────────────────────────────

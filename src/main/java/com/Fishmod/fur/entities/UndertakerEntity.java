@@ -207,10 +207,14 @@ public class UndertakerEntity extends Monster implements GeoEntity {
      */
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Undertaker_Attack.get());
+    	this.setHealth(this.getMaxHealth());
+    	
 		this.populateDefaultEquipmentSlots(this.random, difficulty);
         this.populateDefaultEquipmentEnchantments(this.random, difficulty);
                
-        return livingdata;
+        return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
 
     /**

@@ -172,6 +172,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	}
    
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ptera_Health.get());
+       	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
        	this.setHealth(this.getMaxHealth());
 	   
 		if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
