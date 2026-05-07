@@ -6,6 +6,7 @@ import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
+import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
@@ -67,7 +68,6 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
@@ -75,7 +75,6 @@ import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -179,14 +178,7 @@ public class FURServerEvents {
     	/**
          * Add bonus loot (Intestine) to various entities.
          **/
-    	/*ITag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(FURTagRegistry.INTESTINE_DROP_TARGETS);
-    	
-    	if (event.getEntity() instanceof LivingEntity && tag != null && event.getEntity().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_Intestine.get()) {          
-	        if ((FURConfig.Intestine_banlist.get() && !(event.getEntity().getType().is(tag))) || (!FURConfig.Intestine_banlist.get() && event.getEntity().getType().is(tag))) {
-	            event.getEntity().spawnAtLocation(FURItemRegistry.INTESTINE, 1);
-	        }
-        }
-    	
+    	/*    	
     	if (event.isRecentlyHit() && event.getEntity() instanceof AbstractIllagerEntity && event.getEntity().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_IllagerNose.get()) {          
             event.getEntity().spawnAtLocation(FURItemRegistry.ILLAGER_NOSE, 1);
         }*/
@@ -317,26 +309,7 @@ public class FURServerEvents {
 		if (Armor_Famine_lvl >= 4) {
 			player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20, 9));
 		}
-    }
-    
-    @SubscribeEvent
-    public static void onBlockDestroyed(BlockEvent.BreakEvent event) {   
-    	/*if (event.getWorld() instanceof ServerLevel && event.getState().getMaterial() == Material.SAND 
-    		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.HOT)
-    		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.DRY)
-    		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.SANDY)
-    		&& BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(event.getWorld().getBiome(event.getPos()))).contains(Type.OVERWORLD)
-    		&& new Random().nextInt(100) < FURConfig.Parasite_SandSpawn.get()
-    		&& FURConfig.pSpawnRate_Parasite.get() > 0
-    		) {          	 
-    		ParasiteEntity ParasiteEntity = SpawnUtil.trySpawnEntity(FUREntityRegistry.PARASITE, ((ServerLevel) event.getWorld()), event.getPos().above());
-    		
-    		if (ParasiteEntity != null) {
-	    		ParasiteEntity.setSkin(1);
-	            ParasiteEntity.setDeltaMovement(ParasiteEntity.getDeltaMovement().add(0.0D, 0.4D, 0.0D));
-    		}
-    	}*/
-    }
+    }    
     
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
@@ -375,42 +348,40 @@ public class FURServerEvents {
 				if(Owner != null)
 					Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
 			}*/
-	    	
-	    	// Molten Armor: attacker wearing molten no longer grants bonus damage (removed).
 		}
     	
     	// Molten Armor full-set bonus: 50% fire damage reduction
-	    	if (source.is(DamageTypeTags.IS_FIRE)) {
-	    		event.setAmount(MoltenArmorItem.applyFireReduction(Attacked, event.getAmount()));
+    	if (source.is(DamageTypeTags.IS_FIRE)) {
+    		event.setAmount(MoltenArmorItem.applyFireReduction(Attacked, event.getAmount()));
 
-	    		if (Attacked instanceof Player player && !Attacked.fireImmune()) {
-	    			boolean have_Heart = false;
+    		if (Attacked instanceof Player player && !Attacked.fireImmune()) {
+    			boolean have_Heart = false;
 
-	    			for (int i = 0; i < 9; i++) {
-	    				if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get())
-	    						|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
-	    					have_Heart = true;
-	    				}
-	    			}
+    			for (int i = 0; i < 9; i++) {
+    				if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get())
+    						|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
+    					have_Heart = true;
+    				}
+    			}
 
-	    			/*if (ModList.get().isLoaded("curios") && !have_Heart) {
-	    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
-	    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
-	    			}*/
+    			/*if (ModList.get().isLoaded("curios") && !have_Heart) {
+    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
+    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
+    			}*/
 
-	    			if (have_Heart) {
-	    				effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
-	    			}
-	    		}
-	    	}
+    			if (have_Heart) {
+    				effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
+    			}
+    		}
+    	}
 
-	    	// Molten Armor 2-piece bonus: retaliation burn on attacker
-	    	// Only triggers on melee attacks (mob attack, mob attack no aggro, player attack)
-	    	if (source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK)) {
-	    		MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity(), event.getAmount());
-	    	}
+    	// Molten Armor 2-piece bonus: retaliation burn on attacker
+    	// Only triggers on melee attacks (mob attack, mob attack no aggro, player attack)
+    	if (source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK)) {
+    		MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity(), event.getAmount());
+    	}
 
-	    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf wolf) {
+    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf wolf) {
     		if (Attacked.getMobType().equals(MobType.UNDEAD) && wolf.getName().equals(Component.translatable("entity.fur.holygrenade"))) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
@@ -465,19 +436,7 @@ public class FURServerEvents {
 		}
     	
     	event.setAmount(event.getAmount() * effectlevel);
-    }
-    
-    @SubscribeEvent
-    public void onEFall(LivingFallEvent event) {
-        /*if (FURConfig.Raven_Slowfall.get() && event.getEntity().isVehicle()) {
-        	for(Entity E : event.getEntity().getPassengers()) {
-        		if(E instanceof RavenEntity) {
-        			event.setDistance(0.0F);
-        			break;
-        		}
-        	}
-    	}*/ 
-    }
+    }    
     
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
@@ -993,13 +952,11 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onELootingLevelEvent(LootingLevelEvent event) {
         DamageSource Attacker = event.getDamageSource();
-        /*if (Attacker != null) {
+        if (Attacker != null) {
             if (Attacker.getEntity() instanceof GhoulEntity) {
                 event.setLootingLevel(event.getLootingLevel() + 3);
             }
-        }*/
-        
-        if (Attacker != null) {
+
             Entity directEntity = event.getDamageSource().getDirectEntity();
             if (directEntity != null && directEntity.getType().equals(FUREntityRegistry.GHOUL_ARROW.get())) {
                 event.setLootingLevel(event.getLootingLevel() + 3);

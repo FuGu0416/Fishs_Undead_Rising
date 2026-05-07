@@ -17,7 +17,6 @@ public class VespaRenderer extends GeoEntityRenderer<VespaEntity> {
     public VespaRenderer(EntityRendererProvider.Context rendermanagerIn) {
         super(rendermanagerIn, new VespaModel());
         this.shadowRadius = 0.5F;
-        this.addRenderLayer(new LayerSaddle<>(this,
-                new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/vespa/vespa_saddle.png")));
+        this.addRenderLayer(new LayerSaddle<>(this, new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/vespa/vespa_saddle.png")));
     }
 }

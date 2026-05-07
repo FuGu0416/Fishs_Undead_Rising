@@ -44,7 +44,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_BONE_TROUT = registerKey("add_bone_trout");
 	public static final ResourceKey<BiomeModifier> ADD_MUMMIFIED_COD = registerKey("add_mummified_cod");
 	public static final ResourceKey<BiomeModifier> ADD_GHOUL = registerKey("add_ghoul");
-
+	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
+	
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
     }
@@ -100,6 +101,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMIFIED_COD.get(), 1, 3, 6));
         addSpawn(context, ADD_GHOUL, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOUL.get(), 40, 4, 8));
+        addSpawn(context, ADD_VESPA, biomes.getOrThrow(BiomeTags.IS_JUNGLE),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));   
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {
