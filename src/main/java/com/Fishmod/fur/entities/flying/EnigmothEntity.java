@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.block.EnigmothEggBlock;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
@@ -614,7 +615,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     public void spawnChildFromBreeding(ServerLevel level, Animal other) {
         BlockPos eggPos = findEnigmothEggPos(level);
         if (eggPos != null) {
-            level.setBlock(eggPos, FURBlockRegistry.ENIGMOTH_EGG.get().defaultBlockState(), 3);
+            // Spawn a cluster of 2–4 eggs, matching EnigmothEggBlock.canBeReplaced stacking behavior
+            int eggCount = 2 + level.getRandom().nextInt(3); // 2, 3, or 4
+
+            level.setBlock(eggPos, FURBlockRegistry.ENIGMOTH_EGG.get().defaultBlockState().setValue(EnigmothEggBlock.EGGS, eggCount), 3);
         }
         this.finalizeSpawnChildFromBreeding(level, other, null);
     }

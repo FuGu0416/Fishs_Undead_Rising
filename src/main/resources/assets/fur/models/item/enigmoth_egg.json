@@ -1,3 +1,6 @@
 {
-  "parent": "fur:block/enigmoth_egg"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "fur:item/enigmoth_egg"
+    }
 }
