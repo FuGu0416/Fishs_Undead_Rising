@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_four_turtle_eggs",
+  "textures": {
+    "all": "fur:block/enigmoth_egg_very_cracked"
+  }
+}

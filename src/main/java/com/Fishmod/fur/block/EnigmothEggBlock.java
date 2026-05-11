@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -94,7 +93,7 @@ public class EnigmothEggBlock extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (this.shouldUpdateHatchLevel(level) && onSand(level, pos)) {
+        if (this.shouldUpdateHatchLevel(level)) {
             int hatch = state.getValue(HATCH);
 
             if (hatch < 2) {
@@ -119,17 +118,9 @@ public class EnigmothEggBlock extends Block {
         }
     }
 
-    public static boolean onSand(BlockGetter level, BlockPos pos) {
-        return isSand(level, pos.below());
-    }
-
-    public static boolean isSand(BlockGetter level, BlockPos pos) {
-        return level.getBlockState(pos).is(BlockTags.SAND);
-    }
-
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (onSand(level, pos) && !level.isClientSide) {
+        if (!level.isClientSide) {
             level.levelEvent(2005, pos, 0);
         }
     }

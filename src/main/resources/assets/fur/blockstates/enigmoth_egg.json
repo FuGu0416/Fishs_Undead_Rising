@@ -1,7 +1,208 @@
 {
   "variants": {
-    "hatch=0": { "model": "fur:block/enigmoth_egg" },
-    "hatch=1": { "model": "fur:block/enigmoth_egg_slightly_cracked" },
-    "hatch=2": { "model": "fur:block/enigmoth_egg_very_cracked" }
+    "eggs=1,hatch=0": [
+      {
+        "model": "fur:block/enigmoth_egg"
+      },
+      {
+        "model": "fur:block/enigmoth_egg",
+        "y": 90
+      },
+      {
+        "model": "fur:block/enigmoth_egg",
+        "y": 180
+      },
+      {
+        "model": "fur:block/enigmoth_egg",
+        "y": 270
+      }
+    ],
+    "eggs=1,hatch=1": [
+      {
+        "model": "fur:block/slightly_cracked_enigmoth_egg"
+      },
+      {
+        "model": "fur:block/slightly_cracked_enigmoth_egg",
+        "y": 90
+      },
+      {
+        "model": "fur:block/slightly_cracked_enigmoth_egg",
+        "y": 180
+      },
+      {
+        "model": "fur:block/slightly_cracked_enigmoth_egg",
+        "y": 270
+      }
+    ],
+    "eggs=1,hatch=2": [
+      {
+        "model": "fur:block/very_cracked_enigmoth_egg"
+      },
+      {
+        "model": "fur:block/very_cracked_enigmoth_egg",
+        "y": 90
+      },
+      {
+        "model": "fur:block/very_cracked_enigmoth_egg",
+        "y": 180
+      },
+      {
+        "model": "fur:block/very_cracked_enigmoth_egg",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=0": [
+      {
+        "model": "fur:block/two_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/two_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/two_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/two_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=1": [
+      {
+        "model": "fur:block/two_slightly_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/two_slightly_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/two_slightly_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/two_slightly_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=2": [
+      {
+        "model": "fur:block/two_very_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/two_very_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/two_very_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/two_very_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=0": [
+      {
+        "model": "fur:block/three_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/three_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/three_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/three_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=1": [
+      {
+        "model": "fur:block/three_slightly_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/three_slightly_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/three_slightly_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/three_slightly_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=2": [
+      {
+        "model": "fur:block/three_very_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/three_very_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/three_very_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/three_very_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=0": [
+      {
+        "model": "fur:block/four_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/four_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/four_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/four_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=1": [
+      {
+        "model": "fur:block/four_slightly_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/four_slightly_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/four_slightly_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/four_slightly_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=2": [
+      {
+        "model": "fur:block/four_very_cracked_enigmoth_eggs"
+      },
+      {
+        "model": "fur:block/four_very_cracked_enigmoth_eggs",
+        "y": 90
+      },
+      {
+        "model": "fur:block/four_very_cracked_enigmoth_eggs",
+        "y": 180
+      },
+      {
+        "model": "fur:block/four_very_cracked_enigmoth_eggs",
+        "y": 270
+      }
+    ]
   }
 }

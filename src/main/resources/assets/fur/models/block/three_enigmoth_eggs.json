@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_turtle_egg",
+  "parent": "minecraft:block/template_three_turtle_eggs",
   "textures": {
     "all": "fur:block/enigmoth_egg"
   }
