@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "fur:soulforged_heart"
+  },
+  "base": {
+    "item": "fur:molten_hammer"
+  },
+  "result": {
+    "item": "fur:soulforged_hammer"
+  },
+  "template": {
+    "item": "fur:soulforged_upgrade_smithing_template"
+  }
+}

@@ -233,42 +233,7 @@ public class FURWeaponItem extends SwordItem {
 			return InteractionResultHolder.pass(player.getItemInHand(hand));
         }*/
         
-       /* if (player.getItemInHand(hand).getItem() == FURItemRegistry.SOULFIREHAMMER) {
-			double radius = 4.0D;
-
-			List<Entity> list = level.getEntities(player, player.getBoundingBox().inflate(radius));
-			for(Entity entity1 : list) {
-				if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(player)) || (entity1 instanceof PlayerEntity && FURConfig.MoltenHammer_PVP.get())) {
-					entity1.setSecondsOnFire(2 * enchantment_list[0]);
-					entity1.hurt(DamageSource.mobAttack(player) , 10.0F + (float)enchantment_list[1]
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)enchantment_list[3] : 0)
-							+ (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.UNDEAD) ? (float)enchantment_list[4] : 0));
-					
-					if (enchantment_list[2] > 0)
-						((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)enchantment_list[2] * 0.5F, (player.getX() - entity1.getX())/player.distanceTo(entity1), (player.getZ() - entity1.getZ())/player.distanceTo(entity1)));
-					
-		            if (enchantment_list[3] > 0 && (((LivingEntity) entity1).getMobType().equals(CreatureAttribute.ARTHROPOD))) {
-		                int i = 20 + level.random.nextInt(10 * enchantment_list[3]);
-		                ((LivingEntity)entity1).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, i, 3));
-		            }
-		            
-		            if (enchantment_list[6] > 0)
-		    			((LivingEntity)entity1).addEffect(new EffectInstance(Effects.POISON, 8*20, enchantment_list[6] - 1));
-		            
-		            if (enchantment_list[7] > 0)
-		            	((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.CORRODED, 4*20, enchantment_list[7] - 1));
-				}
-			}
-			LavaBurst(level, player.getX(), player.getY(), player.getZ(), radius, ParticleTypes.SOUL_FIRE_FLAME);
-            player.getItemInHand(hand).hurtAndBreak(16, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-			player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.0F);
-			player.getCooldowns().addCooldown(this, 80);
-			
-			return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}
-        
+       /*        
         if (player.getItemInHand(hand).getItem() == FURItemRegistry.BEAST_CLAW && player.isOnGround()) {
         	Vector3d lookVec = player.getLookAngle();
         	

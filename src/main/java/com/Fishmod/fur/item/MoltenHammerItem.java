@@ -5,7 +5,10 @@ import java.util.List;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
+
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -50,6 +53,20 @@ public class MoltenHammerItem extends FURWeaponItem {
     	
 		float f = BowItem.getPowerForTime((this.getUseDuration(stack) - remainingticks));
 		double radius = 5.0D * f;
+		float damage;
+		SimpleParticleType particle;
+		SimpleParticleType particle1;
+		
+		if (stack.getItem() == FURItemRegistry.SOULFORGED_HAMMER.get()) {
+			damage = 10.0F;
+			particle = ParticleTypes.SOUL_FIRE_FLAME;
+			particle1 = ParticleTypes.SOUL;
+		} else { // Molten Hammer
+			damage = 8.0F;
+			particle = ParticleTypes.FLAME;
+			particle1 = ParticleTypes.CAMPFIRE_COSY_SMOKE;
+		}
+		
 		int[] enchantment_list = new int[10];		
 		enchantment_list[0] = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
 		enchantment_list[1] = stack.getEnchantmentLevel(Enchantments.SHARPNESS);
@@ -66,7 +83,7 @@ public class MoltenHammerItem extends FURWeaponItem {
 		for (Entity entity1 : list) {
 			if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(player)) || (entity1 instanceof Player && FURConfig.MoltenHammer_PVP.get())) {
 				entity1.setSecondsOnFire(2 * enchantment_list[0]);
-				entity1.hurt(entity1.damageSources().playerAttack(player) , 8.0F + (enchantment_list[1] > 0 ? (0.5f * enchantment_list[1] + 0.5f) : 0.0f)
+				entity1.hurt(entity1.damageSources().playerAttack(player) , damage + (enchantment_list[1] > 0 ? (0.5f * enchantment_list[1] + 0.5f) : 0.0f)
 						+ (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD) ? (float)enchantment_list[3] : 0)
 						+ (((LivingEntity) entity1).getMobType().equals(MobType.UNDEAD) ? (float)enchantment_list[4] : 0));
 				
@@ -86,8 +103,9 @@ public class MoltenHammerItem extends FURWeaponItem {
 			}
 		}
 		
-		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius, ParticleTypes.FLAME);
-		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius * 0.5D, ParticleTypes.CAMPFIRE_COSY_SMOKE);
+		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius, particle);
+		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius * 0.5D, particle1);
+
         stack.hurtAndBreak(16, player, (p_220045_0_) -> {
 			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});

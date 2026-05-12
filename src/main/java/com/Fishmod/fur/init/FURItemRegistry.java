@@ -94,6 +94,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> MOLTEN_ARMOR_LEGGINGS = DEF_REG.register("molten_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
 	public static final RegistryObject<Item> MOLTEN_ARMOR_BOOTS = DEF_REG.register("molten_armor_boots", () -> new MoltenArmorItem(ArmorMaterials.DIAMOND, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.RARE).fireResistant()));
 	public static final RegistryObject<Item> SOULFORGED_AXE = DEF_REG.register("soulforged_axe", () -> new MoltenAxeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT.get(), ParticleTypes.SOUL_FIRE_FLAME));
+	public static final RegistryObject<Item> SOULFORGED_HAMMER = DEF_REG.register("soulforged_hammer", () -> new MoltenHammerItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.NETHERITE, 4, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT.get(), true));
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_HELMET = DEF_REG.register("soulforged_armor_helmet", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_CHESTPLATE = DEF_REG.register("soulforged_armor_chestplate", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_LEGGINGS = DEF_REG.register("soulforged_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
@@ -205,7 +206,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
 	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
 	public static final RegistryObject<Item> BEAST_CLAW = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().rarity(Rarity.EPIC)), "fur:beast_claw", ItemTier.DIAMOND, 3, -2.4F, FURItemRegistry.SCYTHE_CLAW);
-	public static final RegistryObject<Item> SOULFIREHAMMER = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), "fur:soulfirehammer", ItemTier.NETHERITE, 4, -2.4F, FURItemRegistry.ECTOPLASM_INGOT);
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties()).setRegistryName("fur:sinister_whetstone");
 	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties())).setRegistryName("fur:illager_nose");
@@ -296,5 +296,6 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.LUMINOUS_FILAMENT.get().asItem(), 0.50F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLIMMERCAP.get().asItem(), 0.65F);
     }
 }

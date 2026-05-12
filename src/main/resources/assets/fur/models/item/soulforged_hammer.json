@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "fur:item/molten_hammer",
-		"particle": "fur:item/molten_hammer"
+		"1": "fur:item/soulforged_hammer",
+		"particle": "fur:item/soulforged_hammer"
 	},
 	"elements": [
 		{
