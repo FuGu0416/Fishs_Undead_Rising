@@ -103,6 +103,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();		
+		this.goalSelector.addGoal(2, new AIFlyingAttackMelee(this, 1.0D, true));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.CHORUS_FRUIT, Items.POPPED_CHORUS_FRUIT), false));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.END_ROD), false));

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,7 +26,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -63,8 +63,7 @@ public class FlyingMobEntity extends FURTameableEntity {
 	@Override
     protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new AIFlyingAttackMelee(this, 1.0D, true));		
+		this.goalSelector.addGoal(0, new FloatGoal(this));		
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
@@ -847,7 +846,8 @@ public class FlyingMobEntity extends FURTameableEntity {
             return this.parentEntity.level().noCollision(this.parentEntity, nextBox);
         }
     }
-        static class AIFlyingAttackMelee extends MeleeAttackGoal {
+        
+    static class AIFlyingAttackMelee extends FURMeleeAttackGoal {
 
         public AIFlyingAttackMelee(PathfinderMob creature, double speedIn, boolean useLongMemory) {
             super(creature, speedIn, useLongMemory);

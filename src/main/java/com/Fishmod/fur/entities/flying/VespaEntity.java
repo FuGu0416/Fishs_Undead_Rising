@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -60,63 +62,52 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private static final RawAnimation IDLE   = RawAnimation.begin().thenLoop("animation.vespa.idle");
-    private static final RawAnimation FLY    = RawAnimation.begin().thenLoop("animation.vespa.fly");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.vespa.attack");
+    private static final RawAnimation IDLE   	= RawAnimation.begin().thenLoop("vespa.model.idle");
+    private static final RawAnimation WALK   	= RawAnimation.begin().thenLoop("vespa.model.walk");
+    private static final RawAnimation FLY    	= RawAnimation.begin().thenLoop("vespa.model.fly");
+    private static final RawAnimation FLY_AGGRO = RawAnimation.begin().thenLoop("vespa.model.fly_aggro");
+    private static final RawAnimation ATTACK 	= RawAnimation.begin().thenPlay("vespa.model.attack_blend");
     private static final EntityDataAccessor<Integer> SKIN_TYPE =
             SynchedEntityData.defineId(VespaEntity.class, EntityDataSerializers.INT);
 
     // Mirrors the old FlyingMobEntity.attackTimer; set to 20 on hit, stinger fires at 6.
-    private int attackTimer;
+	public static final int ATTACK_TIMER = 30;
+	public static final int ATTACK_HIT = 9;
 
     public VespaEntity(EntityType<? extends VespaEntity> type, Level world) {
         super(type, world);
     }
-
-    // ── Spawn rules ───────────────────────────────────────────────────────────
 
     public static boolean checkVespaSpawnRules(EntityType<? extends VespaEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return FlyingMobEntity.checkFlyerSpawnRules(type, level, spawnType, pos, random);
     }
 
-    // ── Goals ─────────────────────────────────────────────────────────────────
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
-
+        this.goalSelector.addGoal(2, new AttackGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-
         this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false,
-                p -> !(p.isPassenger() && p.getVehicle() instanceof VespaEntity))
-                .setUnseenMemoryTicks(160));
-
+                p -> !(p.isPassenger() && p.getVehicle() instanceof VespaEntity)).setUnseenMemoryTicks(160));
         this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false,
-                e -> e.attackable() && e.getType().is(FUREntityTypeTagsProvider.VESPA_TARGETS))
-                .setUnseenMemoryTicks(160));
+                e -> e.attackable() && e.getType().is(FUREntityTypeTagsProvider.VESPA_TARGETS)).setUnseenMemoryTicks(160));
     }
-
-    // ── Attributes ────────────────────────────────────────────────────────────
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.1D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MAX_HEALTH, 20.0D)   // overridden per-spawn by finalizeSpawn
-                .add(Attributes.ATTACK_DAMAGE, 5.0D) // overridden per-spawn by finalizeSpawn
-                .add(Attributes.FLYING_SPEED, 0.1D);
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.FLYING_SPEED, 1.0D);
     }
-
-    // ── Synced data ───────────────────────────────────────────────────────────
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(SKIN_TYPE, 0);
     }
-
-    // ── Taming ────────────────────────────────────────────────────────────────
 
     @Override
     public void setTame(boolean tamed) {
@@ -129,9 +120,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
             this.setHealth(this.getHealth() * 0.5F);
         }
     }
-
-    // ── Goals helpers ─────────────────────────────────────────────────────────
-
+    
     @Override
     protected Goal wanderGoal() {
         return new FlyingMobEntity.AIRandomFly(this, 1.0D);
@@ -144,10 +133,8 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return false;
+        return /*this.isTame() && */(stack.getItem().equals(Items.HONEYCOMB));
     }
-
-    // ── Effect immunity ───────────────────────────────────────────────────────
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
@@ -156,8 +143,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         }
         return super.canBeAffected(effect);
     }
-
-    // ── Geometry ──────────────────────────────────────────────────────────────
 
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
@@ -169,22 +154,15 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         return 30;
     }
 
-    // ── Tick ──────────────────────────────────────────────────────────────────
-
     @Override
     public void tick() {
         super.tick();
-
-        if (this.attackTimer > 0) {
-            --this.attackTimer;
-        }
 
         if (!this.onGround() && this.tickCount % 20 == 0) {
             this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
         }
 
-        // Stinger sweep: fires 14 ticks after a successful melee hit.
-        if (this.attackTimer == 6 && this.abilityCooldown > 0 && this.deathTime <= 0) {
+        if (this.abilityCooldown == (this.abilityCooldown() - (ATTACK_TIMER - ATTACK_HIT)) && this.deathTime <= 0) {
             double dx = 1.75D * this.getLookAngle().normalize().x;
             double dz = 1.75D * this.getLookAngle().normalize().z;
             double cx = this.getX() + dx;
@@ -201,8 +179,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
             this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
         }
     }
-
-    // ── Age boundary ──────────────────────────────────────────────────────────
 
     @Override
     protected void ageBoundaryReached() {
@@ -229,8 +205,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         }
     }
 
-    // ── Combat ────────────────────────────────────────────────────────────────
-
     @Override
     public boolean doHurtTarget(Entity target) {
         // Double damage against VESPA_TARGETS.
@@ -241,12 +215,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         }
 
         if (super.doHurtTarget(target)) {
-            // Start the stinger timer on any successful melee hit.
-            if (this.attackTimer == 0) {
-                this.attackTimer = 20;
-                this.level().broadcastEntityEvent(this, (byte) 4);
-            }
-
             if (target instanceof LivingEntity living) {
                 int duration = 6 * 20 * (int) this.level()
                         .getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
@@ -269,8 +237,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         return super.hurt(source, amount);
     }
 
-    // ── Spawn init ────────────────────────────────────────────────────────────
-
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
@@ -281,8 +247,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     	return super.finalizeSpawn(world, difficulty, spawnType, groupData, tag);
     }
 
-    // ── Skin variant ──────────────────────────────────────────────────────────
-
     public int getSkin() {
         return this.getEntityData().get(SKIN_TYPE);
     }
@@ -291,14 +255,10 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         this.getEntityData().set(SKIN_TYPE, skinType);
     }
 
-    // ── Riding ────────────────────────────────────────────────────────────────
-
     @Override
     protected double VehicleSpeedMod() {
         return (this.isInLava() || this.isInWater()) ? 0.2D : 2.0D;
     }
-
-    // ── NBT ───────────────────────────────────────────────────────────────────
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -311,8 +271,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getSkin());
     }
-
-    // ── Sounds ────────────────────────────────────────────────────────────────
 
     @Override
     public int getAmbientSoundInterval() {
@@ -355,33 +313,55 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         return 0.7F;
     }
 
-    // ── Mob type ──────────────────────────────────────────────────────────────
-
     @Override
     public MobType getMobType() {
         return MobType.ARTHROPOD;
     }
 
-    // ── Entity events ─────────────────────────────────────────────────────────
-
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 4) {
+            this.triggerAnim("trigger_controller", "fly_aggro");
             this.triggerAnim("trigger_controller", "attack");
         } else {
             super.handleEntityEvent(id);
         }
     }
+    
+    static class AttackGoal extends FURMeleeAttackGoal {
+        public AttackGoal(PathfinderMob p_i46676_1_) {
+           super(p_i46676_1_, 1.0D, false, 32);
+        }
 
-    // ── GeoEntity ─────────────────────────────────────────────────────────────
+    	protected int atkTimerMax() {
+    		return ATTACK_TIMER;
+    	}
+    	
+    	protected int atkTimerHit() {
+    		return ATTACK_HIT;
+    	}
+    	
+    	protected byte atkTimerEvent() {
+    		return (byte) 4;
+    	}
+	}
 
     private <E extends GeoAnimatable> PlayState animPredicate(AnimationState<E> state) {
-        if (!this.onGround()) {
-            state.getController().setAnimation(FLY);
+    	if (!this.onGround()) {
+        	if (this.isAggressive()) {
+        		state.getController().setAnimation(FLY_AGGRO);
+        	} else {
+        		state.getController().setAnimation(FLY);
+        	}
         } else {
-            state.getController().setAnimation(IDLE);
+        	if (state.isMoving()) {
+        		state.getController().setAnimation(WALK);
+        	} else {
+        		state.getController().setAnimation(IDLE);
+        	}
         }
+    	
         return PlayState.CONTINUE;
     }
 
@@ -389,7 +369,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     public void registerControllers(ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 5, this::animPredicate));
         controllers.add(new AnimationController<>(this, "trigger_controller", 5,
-                state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
+                state -> PlayState.STOP).triggerableAnim("attack", ATTACK).triggerableAnim("fly_aggro", FLY_AGGRO));
     }
 
     @Override
