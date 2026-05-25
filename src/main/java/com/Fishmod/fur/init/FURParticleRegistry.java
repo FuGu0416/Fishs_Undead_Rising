@@ -16,7 +16,6 @@ public class FURParticleRegistry {
 	public static final RegistryObject<SimpleParticleType> SLUDGE_JET = DEF_REG.register("sludge_jet", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> GHOST_FLAME = DEF_REG.register("ghost_flame", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> WITHER_FLAME = DEF_REG.register("wither_flame", () -> new SimpleParticleType(false));
-	public static final RegistryObject<SimpleParticleType> SAP_JET = DEF_REG.register("sap_jet", () -> new SimpleParticleType(false));
-	public static final RegistryObject<SimpleParticleType> FEAR = DEF_REG.register("fear", () -> new SimpleParticleType(false));
+public static final RegistryObject<SimpleParticleType> FEAR = DEF_REG.register("fear", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> BANSHEE_SHRIEK = DEF_REG.register("banshee_shriek", () -> new SimpleParticleType(false));
 }

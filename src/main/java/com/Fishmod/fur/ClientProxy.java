@@ -20,6 +20,7 @@ import com.Fishmod.fur.client.renderer.entity.GhoulRenderer;
 import com.Fishmod.fur.client.renderer.entity.LampreyRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
 import com.Fishmod.fur.client.renderer.entity.MimicRenderer;
+import com.Fishmod.fur.client.renderer.entity.MummyLordRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.ParasiteRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
@@ -89,7 +90,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), MycosisRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MUMMY.get(), AbstractUnburiedRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.MUMMY_LORD.get(), AbstractUnburiedRenderer::new); // TODO: create MummyLordRenderer with dedicated model/texture
+    	EntityRenderers.register(FUREntityRegistry.MUMMY_LORD.get(), MummyLordRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BANSHEE.get(), BansheeRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
@@ -116,6 +117,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);
         EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
         EntityRenderers.register(FUREntityRegistry.MOTH_SCALES.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
+        EntityRenderers.register(FUREntityRegistry.LOCUST_SWARM.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
         
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
@@ -137,7 +139,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager)); 
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
-        EntityRenderers.register(FUREntityRegistry.GHOUL, manager -> new GhoulRenderer(manager)); 
         //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
         
         EntityRenderers.register(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
@@ -146,7 +147,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));        
-        EntityRenderers.register(FUREntityRegistry.SAPJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         */
         
         /*
@@ -200,8 +200,7 @@ public class ClientProxy extends CommonProxy {
 		registry.registerSpriteSet(FURParticleRegistry.SLUDGE_JET.get(), GastroAcidParticle.SludgeJetFactory::new);
 		registry.registerSpriteSet(FURParticleRegistry.GHOST_FLAME.get(), FlameParticle.Provider::new);
 		registry.registerSpriteSet(FURParticleRegistry.WITHER_FLAME.get(), FlameParticle.Provider::new);
-		registry.registerSpriteSet(FURParticleRegistry.SAP_JET.get(), GastroAcidParticle.SapJetFactory::new);
-		registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
+registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
 		registry.registerSpriteSet(FURParticleRegistry.BANSHEE_SHRIEK.get(), BansheeShriekParticle.Provider::new);
     }
     

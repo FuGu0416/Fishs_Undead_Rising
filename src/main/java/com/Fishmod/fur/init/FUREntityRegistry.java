@@ -7,6 +7,7 @@ import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.ImpEntity;
 import com.Fishmod.fur.entities.IsnachiEntity;
 import com.Fishmod.fur.entities.LavaCowEntity;
+import com.Fishmod.fur.entities.MummyLordEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.UndertakerEntity;
 import com.Fishmod.fur.entities.WendigoEntity;
@@ -27,6 +28,7 @@ import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.entities.projectiles.FURArrowEntity;
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
+import com.Fishmod.fur.entities.projectiles.LocustSwarmEntity;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
@@ -38,7 +40,6 @@ import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
 import com.Fishmod.fur.entities.tameable.unburied.FrigidEntity;
 import com.Fishmod.fur.entities.tameable.unburied.MummyEntity;
-import com.Fishmod.fur.entities.tameable.unburied.MummyLordEntity;
 import com.Fishmod.fur.entities.tameable.unburied.MycosisEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 
@@ -106,6 +107,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<FangDaggerEntity>> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> (EntityType) EntityType.Builder.of(FangDaggerEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_dagger"));
 	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("warsmallfireball"));
 	public static final RegistryObject<EntityType<MothScalesEntity>> MOTH_SCALES = DEF_REG.register("moth_scales", () -> (EntityType) EntityType.Builder.of(MothScalesEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("moth_scales"));
+	public static final RegistryObject<EntityType<LocustSwarmEntity>> LOCUST_SWARM = DEF_REG.register("locust_swarm", () -> (EntityType) EntityType.Builder.of(LocustSwarmEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("locust_swarm"));
 	
 	/*
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
@@ -131,7 +133,6 @@ public class FUREntityRegistry {
 	public static final EntityType<SandBurstEntity> SANDBURST = registerEntity(EntityType.Builder.<SandBurstEntity>of(SandBurstEntity::new, EntityClassification.MISC).sized(0.5F, 0.8F).clientTrackingRange(6).updateInterval(2), "sandburst");
 	public static final EntityType<DeathCoilEntity> DEATHCOIL = registerEntity(EntityType.Builder.<DeathCoilEntity>of(DeathCoilEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "deathcoil");
 	public static final EntityType<FlameJetEntity> FLAMEJET = registerEntity(EntityType.Builder.<FlameJetEntity>of(FlameJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "flamejet");	
-	public static final EntityType<SapJetEntity> SAPJET = registerEntity(EntityType.Builder.<SapJetEntity>of(SapJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sapjet");
 	*/
 	
     @SubscribeEvent

@@ -119,15 +119,15 @@ public class FURServerEvents {
         		if (ParasiteEntity != null) {
 	        		if (passenger != null) {
 	        			ParasiteEntity.setSkin(passenger.getSkin());
-	        		} else if (biome.containsTag(Tags.Biomes.IS_DESERT) || biome.containsTag(BiomeTags.IS_BADLANDS)) {
-	        			ParasiteEntity.setSkin(1);
-	        		} else if (biome.containsTag(BiomeTags.IS_JUNGLE)) {
-	        			ParasiteEntity.setSkin(2);
 	        		} else if (killer instanceof VespaEntity vespa) {
 	        			ParasiteEntity.setSkin(2);
 	        			if (vespa.isTame()) {
 	        				ParasiteEntity.setSummoned(true);
-	        			}
+	        			}	        			
+	        		} else if (biome.containsTag(Tags.Biomes.IS_DESERT) || biome.containsTag(BiomeTags.IS_BADLANDS)) {
+	        			ParasiteEntity.setSkin(1);
+	        		} else if (biome.containsTag(BiomeTags.IS_JUNGLE)) {
+	        			ParasiteEntity.setSkin(2);
 	        		} else {
 	        			ParasiteEntity.setSkin(0);
 	        		}

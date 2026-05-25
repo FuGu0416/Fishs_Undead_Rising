@@ -126,6 +126,9 @@ public final class FURConfig {
 
 	public static final ForgeConfigSpec.ConfigValue<Double> MummyLord_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> MummyLord_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> MummyLord_Ability_Num;
+	public static final ForgeConfigSpec.ConfigValue<Integer> MummyLord_Ability_Max;
+	public static final ForgeConfigSpec.ConfigValue<Integer> MummyLord_Ability_Cooldown;
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactyrant_Attack;
@@ -422,6 +425,9 @@ public final class FURConfig {
 		BUILDER.push("Mummy Lord");
 		MummyLord_Health = BUILDER.comment("Maximum Mummy Lord health [1-1000]").defineInRange("mummy lord health", 120.0D, 1.0D, 1000.0D);
 		MummyLord_Attack = BUILDER.comment("Mummy Lord strength [1-1000]").defineInRange("mummy lord attack", 10.0D, 1.0D, 1000.0D);
+		MummyLord_Ability_Num = BUILDER.comment("Set the number of Mummies summoned per cast [0-100]").defineInRange("mummy lord summon number", 2, 0, 100);
+		MummyLord_Ability_Max = BUILDER.comment("Set the max number of Mummies that can be summoned [0-100]").defineInRange("mummy lord summon max", 4, 0, 100);
+		MummyLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Mummies in seconds [0-100]").defineInRange("mummy lord summon cooldown", 20, 0, 100);
 		BUILDER.pop();
 
 		BUILDER.push("Cactyrant");

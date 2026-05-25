@@ -81,16 +81,4 @@ public class GastroAcidParticle extends SimpleAnimatedParticle {
 		}
 	}
 	
-	@OnlyIn(Dist.CLIENT)
-	public static class SapJetFactory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet sprites;
-
-		public SapJetFactory(SpriteSet p_i50599_1_) {
-			this.sprites = p_i50599_1_;
-		}
-
-		public Particle createParticle(SimpleParticleType p_199234_1_, ClientLevel p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-			return new GastroAcidParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 1.0F, 0.68F, 0.20F, 0.19F, this.sprites);
-		}
-	}
 }
