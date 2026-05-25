@@ -164,7 +164,7 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
            			++this.attackStep;
            			if (this.attackStep == 1) {
            				this.attackTime = 4;
-           				this.shooter.level().broadcastEntityEvent(this.shooter, (byte)9);
+           				this.shooter.level().broadcastEntityEvent(this.shooter, (byte)70);
            			} else if (this.attackStep <= (this.shot_times + 1)) {
            				this.attackTime = 6;
            			} else {

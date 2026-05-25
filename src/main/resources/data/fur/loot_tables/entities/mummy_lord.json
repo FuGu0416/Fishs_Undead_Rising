@@ -64,12 +64,7 @@
             "entries":[
                 {
                     "type":"item",
-                    "name":"minecraft:gold_ingot",
-                    "weight":2
-                },
-                {
-                    "type":"item",
-                    "name":"minecraft:gold_block",
+                    "name":"fur:ushabti",
                     "weight":1
                 }
             ]

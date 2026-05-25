@@ -61,7 +61,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     private static final RawAnimation CAST   		= RawAnimation.begin().thenPlay("mummy_lord.model.cast");
     private static final RawAnimation SUMMON   		= RawAnimation.begin().thenPlay("mummy_lord.model.summon");
 
-    public static final int ATTACK_TIMER = 40;
+    public static final int ATTACK_TIMER = 25;
     public static final int SPELL_TIMER  = 40;
 
     protected int spellTicks;
@@ -115,11 +115,9 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        
         if (this.spellTicks > 0) {
             --this.spellTicks;
-        }
-        if (!FURConfig.SunScreen_Mode.get() && this.isSunBurnTick()) {
-            this.setSecondsOnFire(40);
         }
     }
 
@@ -137,10 +135,15 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 4) {
-            this.triggerAnim("trigger_controller", "attack");
-        } else if (id == 10) {
+            this.triggerAnim("trigger_controller", "attack_melee");
+        } else if (id == 70) {
+            this.triggerAnim("trigger_controller", "attack_range");
+        } else if (id == 71) {
             this.triggerAnim("trigger_controller", "cast");
             this.spellTicks = SPELL_TIMER;
+        } else if (id == 72) {
+            this.triggerAnim("trigger_controller", "summon");
+            this.spellTicks = SPELL_TIMER;            
         } else {
             super.handleEntityEvent(id);
         }
@@ -238,7 +241,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
             this.spellWarmup = 20;
             MummyLordEntity.this.spellTicks = SPELL_TIMER;
             this.spellCooldown = MummyLordEntity.this.tickCount + FURConfig.MummyLord_Ability_Cooldown.get() * 20;
-            MummyLordEntity.this.level().broadcastEntityEvent(MummyLordEntity.this, (byte) 10);
+            MummyLordEntity.this.level().broadcastEntityEvent(MummyLordEntity.this, (byte) 72);
             MummyLordEntity.this.playSound(SoundEvents.EVOKER_PREPARE_SUMMON, 1.0F, 1.0F);
         }
 
@@ -280,7 +283,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         }
 
         protected int atkTimerHit() {
-            return 10;
+            return 5;
         }
 
         protected byte atkTimerEvent() {

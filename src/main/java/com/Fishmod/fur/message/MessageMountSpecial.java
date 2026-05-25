@@ -66,7 +66,7 @@ public class MessageMountSpecial {
 	   	 		entityammo.setPos(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D);
 				entity.level().addFreshEntity(entityammo);	
 	   	 	}	
-	   	 	entity.level().broadcastEntityEvent(entity, (byte)11);
+	   	 	entity.level().broadcastEntityEvent(entity, (byte)72);
 	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 		} else if (entity instanceof VespaEntity vespa) {
 			vespa.abilityCooldown = vespa.abilityCooldown();

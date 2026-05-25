@@ -776,13 +776,13 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
 		switch (id) {
-			case 9:
+			case 70:
 				this.triggerAnim("trigger_controller", "attacking_range");
 				break;
-			case 10:
+			case 71:
 				this.triggerAnim("trigger_controller", "attacking_melee");
 				break;
-			case 11:
+			case 72:
 				this.triggerAnim("trigger_controller", "attacking_ridden");
 				break;				
 			default:
@@ -861,7 +861,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	
     	@Override
     	protected byte atkTimerEvent() {
-    		return (byte)10;
+    		return (byte)71;
     	}
     	
     	@Override
