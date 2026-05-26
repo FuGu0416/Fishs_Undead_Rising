@@ -75,7 +75,9 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AICastingSpell());
         this.goalSelector.addGoal(2, new AIUseSummonSpell());
-        this.goalSelector.addGoal(3, new FURRangeAttackGoal<LocustSwarmEntity>(this, FUREntityRegistry.LOCUST_SWARM.get(), FURSoundRegistry.SLUDGELORD_ATTACK.get(), 1, 2, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D));
+        this.goalSelector.addGoal(3, new FURRangeAttackGoal<LocustSwarmEntity>(this, 
+        		FUREntityRegistry.LOCUST_SWARM.get(), 
+        		FURSoundRegistry.AVATON_SPELL.get(), 1, 4, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D).withWindup(20));
         this.goalSelector.addGoal(4, new AttackGoal(this));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -264,6 +266,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
                     if (entity != null) {
                         entity.setOwnerUUID(MummyLordEntity.this.getUUID());
                         entity.setSpellcasting();
+
                         if (MummyLordEntity.this.getTarget() != null) {
                             entity.setTarget(MummyLordEntity.this.getTarget());
                         }
@@ -296,7 +299,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     // -------------------------------------------------------------------------
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-        if (state.isMoving() && !this.isInWater()) {
+        if ((state.isMoving() || !this.getNavigation().isDone()) && !this.isInWater()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);

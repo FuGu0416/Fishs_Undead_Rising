@@ -335,7 +335,7 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving()) {
+    	if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(WALK);
     	} else if (this.isNibbling()) {
     		state.getController().setAnimation(NIBBLE);

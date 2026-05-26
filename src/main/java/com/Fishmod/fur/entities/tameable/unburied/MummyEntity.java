@@ -67,6 +67,11 @@ public class MummyEntity extends UnburiedEntity {
         return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
+    @Override
+    protected boolean isSunBurnTick() {
+        return false;
+    }
+    
     /**
      * Called to update the entity's position/logic.
      */

@@ -355,7 +355,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         		state.getController().setAnimation(FLY);
         	}
         } else {
-        	if (state.isMoving()) {
+        	if (state.isMoving() || !this.getNavigation().isDone()) {
         		state.getController().setAnimation(WALK);
         	} else {
         		state.getController().setAnimation(IDLE);

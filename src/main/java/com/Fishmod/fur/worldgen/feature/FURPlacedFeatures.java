@@ -56,6 +56,10 @@ public class FURPlacedFeatures {
             key("luminous_filament");
     public static final ResourceKey<PlacedFeature> LARGE_GLOW_SHROOM =
             key("large_glow_shroom");
+    public static final ResourceKey<PlacedFeature> LAKE_WATER =
+            key("lake_water");
+    public static final ResourceKey<PlacedFeature> SPRING_WATER =
+            key("spring_water");
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
@@ -253,6 +257,34 @@ public class FURPlacedFeatures {
                                         BlockPredicate.matchesBlocks(
                                                 new BlockPos(0, -1, 0),
                                                 FURBlockRegistry.MYCELIAL_MAT.get())),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Underground water lake ─────────────────────────────────────
+        // Once every ~9 chunks on average, anywhere in the cave height band.
+        context.register(LAKE_WATER,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.LAKE_WATER),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(9),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(56)),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Underground water spring ───────────────────────────────────
+        // ~25 spring attempts per chunk, spread across the full cave height band.
+        context.register(SPRING_WATER,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.SPRING_WATER),
+                        List.of(
+                                CountPlacement.of(25),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
                                 BiomeFilter.biome()
                         )));
 

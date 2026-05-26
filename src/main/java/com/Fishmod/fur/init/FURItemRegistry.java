@@ -184,7 +184,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> BLOATED_INTESTINE = DEF_REG.register("bloated_intestine", () -> new BloatedIntestineItem());
 	public static final RegistryObject<Item> SAUSAGE_ROLL = DEF_REG.register("sausage_roll", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
-	
 	/*
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("fur:green_bacon_and_eggs");
@@ -258,6 +257,7 @@ public class FURItemRegistry {
     	spawnEgg("ghoul", FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9);
     	spawnEgg("lamprey", FUREntityRegistry.LAMPREY, 0x0A1822, 0xA0C3CF);
     	spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
+    	spawnEgg("raven", FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E);
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));

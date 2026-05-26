@@ -416,7 +416,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
     		} else if (this.onGround()) {
     			state.getController().setAnimation(LEAP_END);
     		}
-    	} else if (state.isMoving()) {
+    	} else if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);

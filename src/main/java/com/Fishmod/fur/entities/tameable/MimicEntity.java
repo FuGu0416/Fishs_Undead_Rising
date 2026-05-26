@@ -826,7 +826,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.state == MimicState.DORMANT || this.state == MimicState.TAME_IDLE || this.isInSittingPose()) {
 			state.getController().setAnimation(IDLE_HIDE);
-    	} else if (state.isMoving()) {
+    	} else if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(WALK);
         } else {
 			state.getController().setAnimation(IDLE);

@@ -430,7 +430,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 	}
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving() && !this.isInWater()) {
+    	if ((state.isMoving() || !this.getNavigation().isDone()) && !this.isInWater()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);

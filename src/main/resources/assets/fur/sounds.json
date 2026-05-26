@@ -382,28 +382,7 @@
 		"subtitle": "entity_boneworm_death",
 		"sounds": [{"name": "fur:entity/boneworm/death","stream": true}]
 	},
-	
-	"seagull_ambient":
-	{
-		"category": "neutral",
-		"subtitle": "entity_seagull_ambient",
-		"sounds": ["fur:entity/seagull/ambient0","fur:entity/seagull/ambient1","fur:entity/seagull/ambient2"]
-	},
-	
-	"seagull_hurt":
-	{
-		"category": "neutral",
-		"subtitle": "entity_seagull_hurt",
-		"sounds": [{"name": "fur:entity/seagull/hurt","stream": true}]
-	},
-	
-	"seagull_death":
-	{
-		"category": "neutral",
-		"subtitle": "entity_seagull_death",
-		"sounds": [{"name": "fur:entity/seagull/death","stream": true}]
-	},
-	
+
 	"pingu_ambient":
 	{
 		"category": "neutral",

@@ -495,7 +495,7 @@ public class FogletEntity extends Monster implements GeoEntity {
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.getIsHanging()) {
     		state.getController().setAnimation(HANG);
-    	} else if (state.isMoving() && !this.isInWater()) {
+    	} else if ((state.isMoving() || !this.getNavigation().isDone()) && !this.isInWater()) {
             state.getController().setAnimation(this.getWalkAnimation());
         } else {
             state.getController().setAnimation(this.getIdleAnimation());

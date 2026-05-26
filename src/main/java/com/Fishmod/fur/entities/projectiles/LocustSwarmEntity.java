@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -43,7 +44,7 @@ public class LocustSwarmEntity extends Fireball {
     public void tick() {
         super.tick();
         if (!this.horizontalCollision && !this.verticalCollision)
-            this.yPower -= 0.006D;
+            this.yPower -= 0.002D;
 
         if (this.level().isClientSide())
             for (int i = 0; i < 4 + this.random.nextInt(4); i++)
@@ -66,17 +67,32 @@ public class LocustSwarmEntity extends Fireball {
                 this.doEnchantDamageEffects(owner, target);
             }
 
-            ScarabEntity scarab = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARAB.get(), (ServerLevel) this.level(), BlockPos.containing(result.getLocation()));
+            int count = 2 + this.random.nextInt(2);
+            for (int i = 0; i < count; i++)
+                this.spawnScarab(BlockPos.containing(result.getLocation()), owner);
+        }
+    }
 
-            if (scarab != null) {
-                scarab.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-                scarab.setHealth(scarab.getMaxHealth());
-                scarab.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
-                scarab.setOwnerUUID(owner.getUUID());
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        if (!this.level().isClientSide && this.getOwner() instanceof LivingEntity owner) {
+            int count = 2 + this.random.nextInt(2);
+            for (int i = 0; i < count; i++)
+                this.spawnScarab(result.getBlockPos(), owner);
+        }
+    }
 
-                if (owner instanceof Mob mob && mob.getTarget() != null)
-                    scarab.setTarget(mob.getTarget());
-            }
+    private void spawnScarab(BlockPos pos, LivingEntity owner) {
+        ScarabEntity scarab = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARAB.get(), (ServerLevel) this.level(), pos);
+        if (scarab != null) {
+            scarab.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
+            scarab.setHealth(scarab.getMaxHealth());
+            scarab.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
+            scarab.setOwnerUUID(owner.getUUID());
+
+            if (owner instanceof Mob mob && mob.getTarget() != null)
+                scarab.setTarget(mob.getTarget());
         }
     }
 
@@ -89,7 +105,7 @@ public class LocustSwarmEntity extends Fireball {
 
     @Override
     protected float getInertia() {
-        return 0.33F;
+        return 0.9F;
     }
 
     public void setDamage(float damageIn) {

@@ -24,6 +24,7 @@ import com.Fishmod.fur.client.renderer.entity.MummyLordRenderer;
 import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.ParasiteRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
+import com.Fishmod.fur.client.renderer.entity.RavenRenderer;
 import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarabRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
@@ -105,8 +106,9 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.MUMMIFIED_COD.get(), UndeadFishRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.BONE_TROUT.get(), UndeadFishRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.GHOUL.get(), GhoulRenderer::new); 
-        EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new); 
-        
+        EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.RAVEN.get(), RavenRenderer::new);
+
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.HOLY_GRENADE.get(), ThrownItemRenderer::new);
@@ -127,8 +129,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.SLUDGELORD, manager -> new SludgeLordRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.RAVEN, manager -> new RavenRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.SEAGULL, manager -> new RavenRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));

@@ -536,12 +536,12 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isPassenger()) {
     		state.getController().setAnimation(LEECH);
-    	} else if (state.isMoving()) {
+    	} else if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);
         }
-        
+
         return PlayState.CONTINUE;
     }
 

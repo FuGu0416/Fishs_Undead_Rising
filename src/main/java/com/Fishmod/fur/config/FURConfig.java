@@ -203,7 +203,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Raven_Loot;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Seagull_Loot;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spectral_Raven_Loot;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pScarecrow_PlagueDoctor;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DreamCatcher_spawn;
@@ -311,11 +310,6 @@ public final class FURConfig {
 						"minecraft:pumpkin_seeds,0.15",
 						"minecraft:gold_nugget,0.1,2",
 						"minecraft:iron_nugget,0.1,2"), 
-				o -> o instanceof String);
-		Seagull_Loot = BUILDER.comment("Customize drop rates of the items which seagulls can find. Ex. \\\"minecraft:tropical_fish,0.4,2\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for seagulls", 
-				Lists.newArrayList(
-						"minecraft:cod,0.15",
-						"minecraft:tropical_fish,0.15"), 
 				o -> o instanceof String);
 		Spectral_Raven_Loot = BUILDER.comment("Customize drop rates of the items which spectral ravens can find. Ex. \\\"minecraft:tropical_fish,0.4,2\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for spectral ravens", 
 				Lists.newArrayList(
@@ -478,7 +472,7 @@ public final class FURConfig {
 		BUILDER.pop();		
 
 		BUILDER.push("Amber Scarab");
-		Scarab_Lifespan = BUILDER.comment("Amber Scarab lifespan [1-10000]").defineInRange("amber scarab lifespan", 60, 0, 10000);
+		Scarab_Lifespan = BUILDER.comment("Amber Scarab lifespan [1-10000]").defineInRange("amber scarab lifespan", 8, 0, 10000);
 		Scarab_Health = BUILDER.comment("Maximum Amber Scarab health [1-1000]").defineInRange("amber scarab health", 8.0D, 1.0D, 1000.0D);
 		Scarab_Attack = BUILDER.comment("Amber Scarab strength [1-1000]").defineInRange("amber scarab attack", 1.0D, 1.0D, 1000.0D);
 		BUILDER.pop();

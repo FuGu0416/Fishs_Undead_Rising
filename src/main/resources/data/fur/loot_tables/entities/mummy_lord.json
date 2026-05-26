@@ -7,7 +7,7 @@
                 {
                     "type":"item",
                     "weight":1,
-                    "name":"minecraft:rotten_flesh",
+                    "name":"fur:ancient_amber",
                     "functions":[
                         {
                             "function":"set_count",

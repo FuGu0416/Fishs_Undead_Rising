@@ -329,7 +329,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving()) {
+    	if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(FLY);
         } else {
             state.getController().setAnimation(IDLE);

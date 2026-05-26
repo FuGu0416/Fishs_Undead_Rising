@@ -244,7 +244,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving()) {
+    	if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(FLOAT);
         } else {
             state.getController().setAnimation(IDLE);

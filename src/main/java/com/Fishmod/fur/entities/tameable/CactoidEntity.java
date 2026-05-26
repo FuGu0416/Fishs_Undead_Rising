@@ -464,12 +464,12 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isSilent()) {
     		state.getController().setAnimation(IDLE_SLEEP);
-    	} else if (state.isMoving()) {
+    	} else if (state.isMoving() || !this.getNavigation().isDone()) {
             state.getController().setAnimation(WALK);
         } else {
             state.getController().setAnimation(IDLE);
         }
-        
+
         return PlayState.CONTINUE;
     }
 

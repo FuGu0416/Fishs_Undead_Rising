@@ -37,7 +37,11 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
     private double curve;
     // attack range
     private double range;
-	
+    // launch speed multiplier (default 0.5)
+    private double speedMultiplier;
+    // ticks between broadcastEntityEvent and actual projectile launch (default 4)
+    private int windupTicks = 4;
+
 	public FURRangeAttackGoal(PathfinderMob shooterIn, EntityType<T> shotIn, int timesIn, int attackCDIn) {
     	this.shooter = shooterIn;
     	this.shot = shotIn;
@@ -49,9 +53,10 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
     	this.Xoffset = 0.0D;
     	this.Yoffset = 0.0D;
     	this.Zoffset = 0.0D;
+    	this.speedMultiplier = 0.5D;
     	this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
-    
+
     public FURRangeAttackGoal(PathfinderMob shooterIn, EntityType<T> shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
@@ -63,9 +68,10 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
         this.Xoffset = 0.0D;
         this.Yoffset = 0.0D;
         this.Zoffset = 0.0D;
+        this.speedMultiplier = 0.5D;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
-    
+
     public FURRangeAttackGoal(PathfinderMob shooterIn, EntityType<T> shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn, double XIn, double YIn, double ZIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
@@ -77,9 +83,25 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
         this.Xoffset = XIn;
         this.Yoffset = YIn;
         this.Zoffset = ZIn;
+        this.speedMultiplier = 0.5D;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
-    
+
+    public FURRangeAttackGoal(PathfinderMob shooterIn, EntityType<T> shotIn, SoundEvent soundIn, int timesIn, int attackCDIn, double curveIn, double rangeIn, double XIn, double YIn, double ZIn, double speedIn) {
+        this.shooter = shooterIn;
+        this.shot = shotIn;
+        this.sound = soundIn;
+        this.shot_times = timesIn;
+        this.attackCD = attackCDIn;
+        this.curve = curveIn;
+        this.range = rangeIn;
+        this.Xoffset = XIn;
+        this.Yoffset = YIn;
+        this.Zoffset = ZIn;
+        this.speedMultiplier = speedIn;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+	}
+
     public FURRangeAttackGoal(PathfinderMob shooterIn, EntityType<T> shotIn, int timesIn, int attackCDIn, double XIn, double YIn, double ZIn) {
         this.shooter = shooterIn;
         this.shot = shotIn;
@@ -91,8 +113,14 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
         this.Xoffset = XIn;
         this.Yoffset = YIn;
         this.Zoffset = ZIn;
+        this.speedMultiplier = 0.5D;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
+
+    public FURRangeAttackGoal<T> withWindup(int ticks) {
+        this.windupTicks = ticks;
+        return this;
+    }
 
 	/**
      * Returns whether the EntityAIBase should begin execution.
@@ -163,7 +191,7 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
            		if (this.attackTime <= 0) {
            			++this.attackStep;
            			if (this.attackStep == 1) {
-           				this.attackTime = 4;
+           				this.attackTime = this.windupTicks;
            				this.shooter.level().broadcastEntityEvent(this.shooter, (byte)70);
            			} else if (this.attackStep <= (this.shot_times + 1)) {
            				this.attackTime = 6;
@@ -183,7 +211,7 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
            				Fireball shotentity = this.shot.create(this.shooter.level());
            				shotentity.setOwner(this.shooter);
            				shotentity.moveTo(this.shooter.getX() + (d1 / t4 * Xoffset), this.shooter.getY() + (double)(this.shooter.getBbHeight() / 2.0F) + Yoffset, this.shooter.getZ() + (d3 / t4 * Zoffset), this.shooter.getYRot(), this.shooter.getXRot());
-           				shotentity.setDeltaMovement((t1 / t4) * 0.5D, (t2 / t4) * 0.5D, (t3 / t4) * 0.5D);
+           				shotentity.setDeltaMovement((t1 / t4) * this.speedMultiplier, (t2 / t4) * this.speedMultiplier, (t3 / t4) * this.speedMultiplier);
                     
            				if (shotentity instanceof EnchantableFireBallEntity) {
            					((EnchantableFireBallEntity) shotentity).setFlame(true);

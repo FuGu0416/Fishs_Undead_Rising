@@ -81,10 +81,6 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> BONEWORM_HURT = addSoundEvent("boneworm_hurt");
 	public static final RegistryObject<SoundEvent> BONEWORM_DEATH = addSoundEvent("boneworm_death");
 	
-	public static final RegistryObject<SoundEvent> SEAGULL_AMBIENT = addSoundEvent("seagull_ambient");
-	public static final RegistryObject<SoundEvent> SEAGULL_HURT = addSoundEvent("seagull_hurt");
-	public static final RegistryObject<SoundEvent> SEAGULL_DEATH = addSoundEvent("seagull_death");
-	
 	public static final RegistryObject<SoundEvent> PINGU_AMBIENT = addSoundEvent("pingu_ambient");
 	public static final RegistryObject<SoundEvent> PINGU_HURT = addSoundEvent("pingu_hurt");
 	public static final RegistryObject<SoundEvent> PINGU_DEATH = addSoundEvent("pingu_death");

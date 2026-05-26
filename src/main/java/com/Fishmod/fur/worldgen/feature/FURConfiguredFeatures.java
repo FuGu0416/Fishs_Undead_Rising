@@ -9,27 +9,32 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FURFeatureRegistry;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.LakeFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.material.Fluids;
 import com.Fishmod.fur.block.FURShroomBlock;
 import com.Fishmod.fur.block.MycelialTendrilsBlock;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
@@ -85,6 +90,14 @@ public class FURConfiguredFeatures {
     /** Mycelial Mat ceiling patch — places mat on cave ceilings (no inner vegetation) */
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_MAT_CEILING_PATCH =
             key("mycelial_mat_ceiling_patch");
+
+    /** Underground water lake */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER =
+            key("lake_water");
+
+    /** Underground water spring */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
+            key("spring_water");
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
@@ -280,6 +293,27 @@ public class FURConfiguredFeatures {
                         0.0F,
                         UniformInt.of(2, 5),
                         0.0F
+                )));
+
+        // ── Underground water lake ────────────────────────────────────────────
+        context.register(LAKE_WATER, new ConfiguredFeature<>(
+                Feature.LAKE,
+                new LakeFeature.Configuration(
+                        BlockStateProvider.simple(Blocks.WATER.defaultBlockState()),
+                        BlockStateProvider.simple(Blocks.STONE.defaultBlockState())
+                )));
+
+        // ── Underground water spring ──────────────────────────────────────────
+        context.register(SPRING_WATER, new ConfiguredFeature<>(
+                Feature.SPRING,
+                new SpringConfiguration(
+                        Fluids.WATER.defaultFluidState(),
+                        true, 4, 1,
+                        HolderSet.direct(
+                                Block::builtInRegistryHolder,
+                                Blocks.STONE, Blocks.GRANITE, Blocks.DIORITE, Blocks.ANDESITE,
+                                Blocks.DEEPSLATE, Blocks.CALCITE, Blocks.TUFF, Blocks.GRAVEL
+                        )
                 )));
 
         context.register(MIXED_FLOOR_PATCH, new ConfiguredFeature<>(

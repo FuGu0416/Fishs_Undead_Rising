@@ -659,7 +659,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {   	
 		if (this.onGround() || this.isBaby()) {
-			if (state.isMoving()) {
+			if (state.isMoving() || !this.getNavigation().isDone()) {
 				state.getController().setAnimation(WALK);
 			} else {
 				state.getController().setAnimation(IDLE);

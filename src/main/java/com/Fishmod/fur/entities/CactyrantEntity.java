@@ -593,7 +593,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     		state.getController().setAnimation(ATTACKING_GRAB);
     	} else if (this.isCamouflaging()) {
     		state.getController().setAnimation(IDLE_SLEEP);
-    	} else if (state.isMoving() && !this.isInWater()) {
+    	} else if ((state.isMoving() || !this.getNavigation().isDone()) && !this.isInWater()) {
             state.getController().setAnimation(WALK);
         } else {
         	state.getController().setAnimation(IDLE);

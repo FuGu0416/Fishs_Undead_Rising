@@ -34,7 +34,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -101,7 +100,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
     	this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-    	this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
 
@@ -375,7 +373,7 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
 		if (this.onGround()) {
-			if (state.isMoving()) {
+			if (state.isMoving() || !this.getNavigation().isDone()) {
 				state.getController().setAnimation(WALK);
 			} else {
 				state.getController().setAnimation(IDLE);

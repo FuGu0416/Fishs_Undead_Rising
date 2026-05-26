@@ -50,6 +50,12 @@ public class FURLuminousUndergroveBiome {
 
         // ── Luminous Undergrove exclusive features ────────────────────────────
 
+        // Water lakes and springs
+        genBuilder.addFeature(GenerationStep.Decoration.LAKES,
+                placedFeatures.getOrThrow(FURPlacedFeatures.LAKE_WATER));
+        genBuilder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS,
+                placedFeatures.getOrThrow(FURPlacedFeatures.SPRING_WATER));
+
         // Floor: mycelial mat patches (replace cave stone/deepslate with mat)
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.MYCELIAL_MAT_PATCH));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.MYCELIAL_MAT_PATCH_BONEMEAL));

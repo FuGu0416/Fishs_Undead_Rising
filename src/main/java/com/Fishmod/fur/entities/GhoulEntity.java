@@ -250,7 +250,7 @@ public class GhoulEntity extends Monster implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-    	if (state.isMoving() && !this.isInWater()) {
+    	if ((state.isMoving() || !this.getNavigation().isDone()) && !this.isInWater()) {
             if (this.isAggressive()) {
             	state.getController().setAnimation(RUN);
             } else {
