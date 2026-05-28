@@ -269,6 +269,7 @@
 	"block.fur.mycelial_tendrils": "菌丝触须",
 	"block.fur.luminous_filament": "垂廉萤丝",
 	"block.fur.glimmercap": "幽辉蕈",
+	"block.fur.enigmoth_egg": "谜影蛾蛋",
 
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌尸",
@@ -322,6 +323,7 @@
 	
 	"entity.fur.warsmallfireball": "火球",
 	"entity.fur.piranhalauncher": "群猎者",
+	"entity.fur.swarmer_launcher": "群猎者",
 	"entity.fur.acidjet": "胃酸液",
 	"entity.fur.holy_grenade": "神圣手榴弹",
 	"entity.fur.ghost_bomb": "鬼灵炸弹",
@@ -498,6 +500,8 @@
 	"item.fur.swinearmor.desc0": "套装(2)：使用食物物品所需时间-25%%",
 	"item.fur.swinearmor.desc1": "套装(4)：使用食物物品后移除负面效果",
 	"item.fur.piranhalauncher.desc": "右键向目标发射一只群猎者！ (需要群猎者作为弹药)",
+	"item.fur.swarmer_launcher": "群猎者发射器",
+	"item.fur.swarmer_launcher.desc": "右键向目标发射一只群猎者！ (需要群猎者作为弹药)",
 	"item.fur.holy_grenade.desc": "投向目标地点，造成范围伤害，使亡灵生物受到 300%% 伤害并着火(0:08)",
 	"item.fur.dreamcatcher.desc": "捕捉弥留于梦境之中的梦魇",
 	"item.fur.undertaker_shovel.desc": "右键点击以召唤听命于玩家的活尸军团",

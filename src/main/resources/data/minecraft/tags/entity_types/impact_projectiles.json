@@ -1,18 +1,20 @@
 {
   "replace": false,
-  "values": [
-    //"fur:warsmallfireball",
-    //"fur:piranhalauncher",
+  "values": [        
     //"fur:acidjet",
     "fur:basic_bomb",
-    "fur:holy_grenade",
-    "fur:ghost_bomb",
-    "fur:sonic_bomb",
-    //"fur:sludgejet",
-    //"fur:deathcoil",
-    //"fur:flamejet",
     "fur:cactus_thorn",
+    //"fur:deathcoil",
+    "fur:fang_arrow",
+    //"fur:flamejet",
+    "fur:ghost_bomb",
     "fur:ghoul_arrow",
-  	"fur:fang_arrow"
+    "fur:holy_grenade",
+    "fur:locust_swarm",
+    "fur:moth_scales",        
+    //"fur:sludgejet",
+    "fur:sonic_bomb",
+    "fur:swarmer_launcher",
+    "fur:warsmallfireball"   
   ]
 }

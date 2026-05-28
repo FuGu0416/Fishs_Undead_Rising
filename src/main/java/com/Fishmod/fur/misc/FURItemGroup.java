@@ -108,6 +108,7 @@ public class FURItemGroup {
             	// Range Weapon
             	output.accept(FURItemRegistry.WAR.get());
             	output.accept(FURItemRegistry.THORN_SHOOTER.get());
+            	output.accept(FURItemRegistry.SWARMER_LAUNCHER.get());   
             	output.accept(FURItemRegistry.BASIC_BOMB.get());
             	output.accept(FURItemRegistry.GHOST_BOMB.get());
             	output.accept(FURItemRegistry.HOLY_GRENADE.get());

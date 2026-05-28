@@ -97,8 +97,13 @@ public class FURRangedItem extends CrossbowItem {
 	        	   enchantment != Enchantments.FLAMING_ARROWS &&
 	        		(category.equals(EnchantmentCategory.BOW)
 	            || category.equals(EnchantmentCategory.CROSSBOW));
+        } else if (stack.getItem().equals(FURItemRegistry.SWARMER_LAUNCHER.get())) {
+	        return enchantment != Enchantments.PIERCING &&
+	               enchantment != Enchantments.MULTISHOT &&
+	               (category.equals(EnchantmentCategory.BOW)
+	            || category.equals(EnchantmentCategory.CROSSBOW));
         }
-        
+
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 	
@@ -192,30 +197,30 @@ public class FURRangedItem extends CrossbowItem {
 		} else if (stack.getItem().equals(FURItemRegistry.WAR.get())) {
 			ItemStack itemstack = this.getProjectile(stack, player);
 			boolean flag = player.getAbilities().instabuild || stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) > 0;
-			
+
 	     	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
 	     		if (itemstack.isEmpty()) {
 	     			itemstack = new ItemStack(this.ammo);
 	 			}
 		    } else return super.use(level, player, hand);
-	     	
+
 			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
-			int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);			
-				        	        
+			int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
+
 	        for (int step = 0; step <= multishot_lvl; step++) {
     	    	this.shoot_war(level, player, stack, step);
-    	    	
+
     			if (!flag && !player.isCreative()) {
     				itemstack.shrink(1);
     				if (itemstack.isEmpty()) {
     					player.getInventory().removeItem(itemstack);
     					break;
     				}
-    			}    	  
-    			
+    			}
+
     	    	if (step != 0) {
         	    	this.shoot_war(level, player, stack, -step);
-        	    	
+
         			if (!flag && !player.isCreative()) {
         				itemstack.shrink(1);
         				if (itemstack.isEmpty()) {
@@ -225,7 +230,45 @@ public class FURRangedItem extends CrossbowItem {
         			}
         	    }
 	        }
-			
+
+			player.getCooldowns().addCooldown(this, 20 - (quick_charge_lvl * 2));
+		} else if (stack.getItem().equals(FURItemRegistry.SWARMER_LAUNCHER.get())) {
+			ItemStack itemstack = this.getProjectile(stack, player);
+			boolean flag = player.getAbilities().instabuild || stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) > 0;
+
+	     	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
+	     		if (itemstack.isEmpty()) {
+	     			itemstack = new ItemStack(this.ammo);
+	 			}
+		    } else return super.use(level, player, hand);
+
+			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
+			int quick_charge_lvl = stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
+
+	        for (int step = 0; step <= multishot_lvl; step++) {
+    	    	this.shoot_swarmer_launcher(level, player, stack, step);
+
+    			if (!flag && !player.isCreative()) {
+    				itemstack.shrink(1);
+    				if (itemstack.isEmpty()) {
+    					player.getInventory().removeItem(itemstack);
+    					break;
+    				}
+    			}
+
+    	    	if (step != 0) {
+        	    	this.shoot_swarmer_launcher(level, player, stack, -step);
+
+        			if (!flag && !player.isCreative()) {
+        				itemstack.shrink(1);
+        				if (itemstack.isEmpty()) {
+        					player.getInventory().removeItem(itemstack);
+        					break;
+        				}
+        			}
+        	    }
+	        }
+
 			player.getCooldowns().addCooldown(this, 20 - (quick_charge_lvl * 2));
 		}
 	    
@@ -280,17 +323,17 @@ public class FURRangedItem extends CrossbowItem {
 		Entity entityammo = this.shot.get().create(level);
 		((Fireball)entityammo).setOwner(player);
 		
-		if (this.shot.get().equals(FUREntityRegistry.WAR_SMALL_FIREBALL.get())) {
+		if (this.shot.equals(FUREntityRegistry.WAR_SMALL_FIREBALL)) {
 			entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.5D).yRot(angle * step)));
 			entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getEyeY() - 0.1D, player.getZ() + lookVec.z * 1.0D);
 			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 		}
 		
-		/*if (this.shot.equals(FUREntityRegistry.PIRANHA_LAUNCHER)) {
+		if (this.shot.equals(FUREntityRegistry.SWARMER_LAUNCHER)) {
 			entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D)).add(0.0D, 0.15D, 0.0D));
 			entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()) - 0.5D, player.getZ() + lookVec.z * 1.0D);
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-		}*/
+			level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+		}
 		 
 		if (power_lvl > 0) {
 			((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
@@ -309,6 +352,39 @@ public class FURRangedItem extends CrossbowItem {
         stack.hurtAndBreak(1, player, (p_220009_1_) -> {
             p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
         });
+	}
+
+	private void shoot_swarmer_launcher(Level level, Player player, ItemStack stack, int step) {
+		Vec3 lookVec = player.getLookAngle();
+		int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+		int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+		int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+		float angle = (float) Math.toRadians(10);
+
+		Entity entityammo = this.shot.get().create(level);
+		((Fireball) entityammo).setOwner(player);
+
+		entityammo.setDeltaMovement(entityammo.getDeltaMovement().add(lookVec.scale(2.0D).yRot(angle * step)).add(0.0D, 0.15D, 0.0D));
+		entityammo.moveTo(player.getX() + lookVec.x * 1.0D, player.getEyeY() - 0.5D, player.getZ() + lookVec.z * 1.0D);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_PIRANHA_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
+
+		if (power_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setDamage(((EnchantableFireBallEntity) entityammo).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+		}
+
+		if (punch_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setKnockbackStrength(punch_lvl);
+		}
+
+		if (flame_lvl > 0) {
+			((EnchantableFireBallEntity) entityammo).setFlame(true);
+		}
+
+		level.addFreshEntity(entityammo);
+
+		stack.hurtAndBreak(1, player, (p_220009_1_) -> {
+			p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+		});
 	}
 
     /**

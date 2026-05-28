@@ -269,6 +269,7 @@
 	"block.fur.mycelial_tendrils": "菌絲觸鬚",
 	"block.fur.luminous_filament": "垂廉螢絲",
 	"block.fur.glimmercap": "幽輝蕈",
+	"block.fur.enigmoth_egg": "謎影蛾蛋",
 	
 	"entity.fur.lavacow": "熔岩牛",
 	"entity.fur.mycosis": "菌屍",
@@ -320,6 +321,7 @@
 	
 	"entity.fur.warsmallfireball": "火球",
 	"entity.fur.piranhalauncher": "群獵者",
+	"entity.fur.swarmer_launcher": "群獵者",
 	"entity.fur.acidjet": "胃酸液",
 	"entity.fur.holy_grenade": "神聖手榴彈",
 	"entity.fur.ghost_bomb": "鬼靈炸彈",
@@ -498,6 +500,8 @@
 	"item.fur.swinearmor.desc0": "套裝(2)：使用食物物品所需時間-25%%",
 	"item.fur.swinearmor.desc1": "套裝(4)：使用食物物品後移除負面效果",
 	"item.fur.piranhalauncher.desc": "右鍵向目標發射一隻群獵者！ (需要群獵者作為彈藥)",
+	"item.fur.swarmer_launcher": "群獵者發射器",
+	"item.fur.swarmer_launcher.desc": "右鍵向目標發射一隻群獵者！ (需要群獵者作為彈藥)",
 	"item.fur.holy_grenade.desc": "投向目標地點，造成範圍傷害，且不死族生物受到 300%% 傷害並賦予著火(0:08)",
 	"item.fur.dreamcatcher.desc": "捕捉彌留於夢境之中的夢魘",
 	"item.fur.undertaker_shovel.desc": "右鍵點擊以召喚聽命於玩家的活屍軍團",

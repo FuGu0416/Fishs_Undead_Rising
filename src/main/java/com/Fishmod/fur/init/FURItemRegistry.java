@@ -172,6 +172,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new SalamanderBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
+	public static final RegistryObject<Item> SWARMER_LAUNCHER = DEF_REG.register("swarmer_launcher", () -> new FURRangedItem(SWARMER_RAW.get(), () -> FUREntityRegistry.SWARMER_LAUNCHER.get(), new Item.Properties().durability(384)));
 	public static final RegistryObject<Item> ENIGMOTH_DUST = DEF_REG.register("enigmoth_dust", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> MUMMIFIED_COD = DEF_REG.register("mummified_cod", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 16*20, 0), 0.3F).build())));
 	public static final RegistryObject<Item> BONE_TROUT = DEF_REG.register("bone_trout", () -> new Item(new Item.Properties()));
@@ -195,7 +196,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties())).setRegistryName("fur:swinearmor_chestplate");
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
-	public static final RegistryObject<Item> PIRANHALAUNCHER = new FURRangedItem("fur:piranhalauncher", SWARMER, FUREntityRegistry.PIRANHA_LAUNCHER, new Item.Properties().rarity(Rarity.RARE).durability(384));
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("fur:dreamcatcher");	
 	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().stacksTo(1)).setRegistryName("fur:raven_whistle");
 	public static final RegistryObject<Item> VESPA_SHIELD = new VespaShieldItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties()).durability(504)).setRegistryName("fur:vespa_shield");

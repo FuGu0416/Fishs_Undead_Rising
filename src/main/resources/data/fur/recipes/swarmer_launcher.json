@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "HDC",
+        " //"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:glass/colorless"
+        },
+        "H": {
+            "item": "fur:swarmer_raw"
+        },
+        "C": {
+            "item": "fur:swarmer_bucket"
+        },
+        "D": {
+            "item": "fur:war"
+        },
+        "/": {
+            "tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:swarmer_launcher",
+        "count": 1
+    }
+}

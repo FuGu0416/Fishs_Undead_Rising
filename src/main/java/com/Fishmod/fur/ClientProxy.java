@@ -29,6 +29,7 @@ import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarabRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.SeaHagRenderer;
+import com.Fishmod.fur.client.renderer.entity.SwarmerLauncherRenderer;
 import com.Fishmod.fur.client.renderer.entity.SwarmerRenderer;
 import com.Fishmod.fur.client.renderer.entity.UnburiedRenderer;
 import com.Fishmod.fur.client.renderer.entity.UndeadFishRenderer;
@@ -120,6 +121,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
         EntityRenderers.register(FUREntityRegistry.MOTH_SCALES.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
         EntityRenderers.register(FUREntityRegistry.LOCUST_SWARM.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
+        EntityRenderers.register(FUREntityRegistry.SWARMER_LAUNCHER.get(), SwarmerLauncherRenderer::new);
         
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_COMMON.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(0, manager));
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_STRAW.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(1, manager));
@@ -141,7 +143,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
         //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
         
-        EntityRenderers.register(FUREntityRegistry.PIRANHA_LAUNCHER, manager -> new PiranhaLauncherRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.ACIDJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         EntityRenderers.register(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         EntityRenderers.register(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
