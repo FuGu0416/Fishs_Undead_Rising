@@ -10,6 +10,7 @@ import com.Fishmod.fur.events.FURClientEvents;
 import com.Fishmod.fur.events.FURServerEvents;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
+import com.Fishmod.fur.init.FURCarverRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURFeatureRegistry;
@@ -20,10 +21,8 @@ import com.Fishmod.fur.init.FURRecipeRegistry;
 import com.Fishmod.fur.init.FURRecipeTypeRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.misc.FURItemGroup;
-import com.Fishmod.fur.worldgen.FURBiomeProvider;
 import com.Fishmod.fur.worldgen.FURStructureModifier;
 import com.mojang.logging.LogUtils;
-import terrablender.api.Regions;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.resources.ResourceLocation;
@@ -97,6 +96,7 @@ public class mod_LavaCow {
         FURRecipeRegistry.DEF_REG.register(eventBus);
         FURMenuTypesRegistry.DEF_REG.register(eventBus);
         FURRecipeTypeRegistry.DEF_REG.register(eventBus);
+        FURCarverRegistry.DEF_REG.register(eventBus);
         FURFeatureRegistry.DEF_REG.register(eventBus);
         EventBusHandler.create(eventBus);       
         
@@ -121,7 +121,6 @@ public class mod_LavaCow {
     private void setup(final FMLCommonSetupEvent event) {
     	event.enqueueWork(() -> {
     		FURItemRegistry.SetCompostables();
-            Regions.register(new FURBiomeProvider());
         });
         PROXY.initNetwork();
     	FUREffectRegistry.onInitItems();

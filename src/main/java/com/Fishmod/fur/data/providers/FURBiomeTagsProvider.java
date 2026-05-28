@@ -32,6 +32,7 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     public static final TagKey<Biome> HAS_BANSHEE = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_banshee"));
     public static final TagKey<Biome> HAS_CACTOID = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_cactoid"));
     public static final TagKey<Biome> HAS_PTERA = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_ptera"));
+    public static final TagKey<Biome> HAS_SCARECROW = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_scarecrow"));
     
     public FURBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
@@ -49,5 +50,11 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(HAS_BANSHEE).addTag(BiomeTags.IS_HILL).addTag(BiomeTags.IS_MOUNTAIN);
         this.tag(HAS_CACTOID).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).add(Biomes.BASALT_DELTAS);
         this.tag(HAS_PTERA).addTag(BiomeTags.IS_JUNGLE).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_SAVANNA).addTag(Tags.Biomes.IS_LUSH);
+        this.tag(HAS_SCARECROW)
+                .addTag(BiomeTags.HAS_VILLAGE_PLAINS)
+                .addTag(BiomeTags.HAS_VILLAGE_DESERT)
+                .addTag(BiomeTags.HAS_VILLAGE_SAVANNA)
+                .addTag(BiomeTags.HAS_VILLAGE_SNOWY)
+                .addTag(BiomeTags.HAS_VILLAGE_TAIGA);
     }
 }

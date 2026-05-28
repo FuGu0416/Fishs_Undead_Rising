@@ -13,8 +13,6 @@ import net.minecraft.world.item.ItemStack;
 public class FURItemstackRenderer extends BlockEntityWithoutLevelRenderer  {
     /*private static final ModelBeastClaw BEAST_CLAW_MODEL = new ModelBeastClaw();
     private static final ResourceLocation BEAST_CLAW_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/wendigo.png");
-    private static final ModelSkeletonKingMace SKELETONKING_MACE_MODEL = new ModelSkeletonKingMace();
-    private static final ResourceLocation SKELETONKING_MACE_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/skeletonking.png");
     private static final ModelVespaShield VESPA_SHIELD_MODEL = new ModelVespaShield();
     private static final ResourceLocation VESPA_SHIELD_TEXTURE = new ResourceLocation("mod_lavacow:textures/mobs/vespa/vespa.png");
     private static final ModelIllagerNose<?> ILLAGER_NOSE_MODEL = new ModelIllagerNose<>(1.0F);
@@ -36,14 +34,6 @@ public class FURItemstackRenderer extends BlockEntityWithoutLevelRenderer  {
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(BEAST_CLAW_TEXTURE), false, itemStackIn.hasFoil());
             BEAST_CLAW_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder1, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
-            matrixStackIn.popPose();
-        }
-        
-        if (itemStackIn.getItem() == FURItemRegistry.SKELETONKING_MACE) {
-            matrixStackIn.pushPose();
-            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
-            IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, RenderType.entityCutoutNoCull(SKELETONKING_MACE_TEXTURE), false, itemStackIn.hasFoil());
-            SKELETONKING_MACE_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder1, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         

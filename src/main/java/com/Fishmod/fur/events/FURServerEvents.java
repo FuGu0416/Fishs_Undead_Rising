@@ -19,6 +19,9 @@ import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
+import com.Fishmod.fur.worldgen.biome.FURBiomeSourceAccessor;
+import com.Fishmod.fur.worldgen.biome.FURMultiNoiseBiomeSourceAccessor;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -964,6 +967,27 @@ public class FURServerEvents {
         }
     }
     
+    @SubscribeEvent
+    public void onLevelLoad(net.minecraftforge.event.level.LevelEvent.Load event) {
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+        if (serverLevel.dimension() != Level.OVERWORLD) return;
+        net.minecraft.world.level.biome.BiomeSource source = serverLevel.getChunkSource().getGenerator().getBiomeSource();
+        if (!(source instanceof FURMultiNoiseBiomeSourceAccessor noiseAccessor)) return;
+        noiseAccessor.fur_setWorldSeed(serverLevel.getSeed());
+        noiseAccessor.fur_setDimension(serverLevel.dimension());
+        serverLevel.registryAccess().registry(net.minecraft.core.registries.Registries.BIOME).ifPresent(reg ->
+            reg.getHolder(com.Fishmod.fur.init.FURBiomesRegistry.LUMINOUS_UNDERGROVE).ifPresent(holder -> {
+                noiseAccessor.fur_setLuminousHolder(holder);
+                if (source instanceof FURBiomeSourceAccessor accessor) {
+                    java.util.Map<net.minecraft.resources.ResourceKey<net.minecraft.world.level.biome.Biome>, net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome>> map = new java.util.HashMap<>();
+                    map.put(com.Fishmod.fur.init.FURBiomesRegistry.LUMINOUS_UNDERGROVE, holder);
+                    accessor.fur_setResourceKeyMap(map);
+                    accessor.fur_expandBiomesWith(java.util.Set.of(holder));
+                }
+            })
+        );
+    }
+
     @SubscribeEvent
     public void onPpickupXpEvent(PlayerXpEvent.PickupXp event) {
     	int Armor_Famine_lvl = 0;	    

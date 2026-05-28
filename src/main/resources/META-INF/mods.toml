@@ -73,12 +73,8 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
 	ordering="NONE"
 	side="CLIENT"
 
-[[dependencies.fur]]
-	modId="terrablender"
-	mandatory=true
-	versionRange="[3.0.1.4,)"
-	ordering="AFTER"
-	side="BOTH"
+[[mixins]]
+config="mixins.fur.json"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

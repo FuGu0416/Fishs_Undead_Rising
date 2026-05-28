@@ -69,8 +69,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTYRANT.get(), 8, 1, 2));    
         addSpawn(context, ADD_WENDIGO, biomes.getOrThrow(BiomeTags.IS_TAIGA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));     
-        addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(Tags.Biomes.IS_PLAINS),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));   
+        addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(FURBiomeTagsProvider.HAS_SCARECROW),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));
         addSpawn(context, ADD_WETA, biomes.getOrThrow(FURBiomeTagsProvider.HAS_WETA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),

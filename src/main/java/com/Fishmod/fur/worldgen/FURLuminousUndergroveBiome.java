@@ -1,5 +1,6 @@
 package com.Fishmod.fur.worldgen;
 
+import com.Fishmod.fur.init.FURCarvers;
 import com.Fishmod.fur.worldgen.feature.FURPlacedFeatures;
 
 import net.minecraft.core.HolderGetter;
@@ -38,8 +39,10 @@ public class FURLuminousUndergroveBiome {
         BiomeGenerationSettings.Builder genBuilder =
                 new BiomeGenerationSettings.Builder(placedFeatures, worldCarvers);
 
-        // Carvers — same cave + canyon carvers as Lush Caves
+        // Carvers — vanilla tunnels + our large grotto carver for open chambers
         BiomeDefaultFeatures.addDefaultCarversAndLakes(genBuilder);
+        genBuilder.addCarver(GenerationStep.Carving.AIR,
+                worldCarvers.getOrThrow(FURCarvers.LUMINOUS_GROTTO));
 
         // Ores, crystal formations, monster rooms, etc.
         BiomeDefaultFeatures.addDefaultCrystalFormations(genBuilder);

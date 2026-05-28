@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.Fishmod.fur.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.fur.refmap.json",
+  "mixins": [
+    "BiomeSourceMixin",
+    "ChunkStatusMixin",
+    "MultiNoiseBiomeSourceMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
