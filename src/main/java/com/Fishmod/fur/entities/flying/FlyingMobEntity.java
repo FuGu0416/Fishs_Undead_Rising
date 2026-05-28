@@ -123,7 +123,7 @@ public class FlyingMobEntity extends FURTameableEntity {
 	    			this.setNoGravity(this.getTarget() != null);
 	    		}
 
-	    		if (!this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
+	    		if (!this.isVehicle() && !this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
 	    			this.setNoGravity(true);
 	    			this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.25F, 0.0F));
 	    		}
@@ -158,9 +158,16 @@ public class FlyingMobEntity extends FURTameableEntity {
 	public int getLandTimer() {
 		return this.landTimer;
 	}
-    
+
 	public void setLandTimer(int i) {
 		this.landTimer = i;
+	}
+
+	@Override
+	public boolean onGround() {
+		if (super.onGround()) return true;
+		if (!this.isVehicle()) return false;
+		return !this.level().noCollision(this, this.getBoundingBox().move(0.0, -0.2, 0.0));
 	}
     
     /**
@@ -354,14 +361,15 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public boolean canUse() {
-            return this.parentEntity.getTarget() == null
+            return !this.parentEntity.isVehicle()
+                    && this.parentEntity.getTarget() == null
                     && !(this.parentEntity.getNavigation() instanceof GroundPathNavigation)
                     && !this.parentEntity.isInSittingPose();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return true;
+            return !this.parentEntity.isVehicle();
         }
 
         @Override
@@ -729,6 +737,13 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public void tick() {
+            // When ridden by a player, yield control entirely to the rider
+            if (this.parentEntity.isVehicle()) {
+                this.velocity = Vec3.ZERO;
+                this.operation = MoveControl.Operation.WAIT;
+                return;
+            }
+
             // Sitting with no target: glide downward
             if (this.parentEntity.isInSittingPose()
                     && this.parentEntity.getTarget() == null

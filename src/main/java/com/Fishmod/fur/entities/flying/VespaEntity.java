@@ -12,6 +12,7 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,6 +23,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -142,6 +145,29 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
             return false;
         }
         return super.canBeAffected(effect);
+    }
+    
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    	ItemStack itemstack = player.getItemInHand(hand);   	
+        
+        if (this.isOwnedBy(player) && itemstack.getItem() == Items.HONEY_BOTTLE && this.isAlive() && this.getSkin() == 0) {
+        	if (!player.isCreative()) {
+        		itemstack.shrink(1);
+        	}
+        	this.setSkin(1);      	
+        	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
+        	for (int i = 0; i < 16; ++i) {
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), d0, d1, d2);
+            }
+        	
+        	return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        
+		return super.mobInteract(player, hand);             
     }
 
     @Override

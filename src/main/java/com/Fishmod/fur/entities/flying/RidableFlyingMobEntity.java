@@ -141,11 +141,11 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
             this.setDeltaMovement(Vec3.ZERO);
         }
         
-    	if(this.isUp() && !this.isDown()) {
+    	if (this.isUp() && !this.isDown()) {
     		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.05F, 0.0F));
     	}
     	
-    	if(!this.isUp() && this.isDown()) {
+    	if (!this.isUp() && this.isDown()) {
     		this.setDeltaMovement(this.getDeltaMovement().add(0.0F, -0.05F, 0.0F));
     	}   	
     }
