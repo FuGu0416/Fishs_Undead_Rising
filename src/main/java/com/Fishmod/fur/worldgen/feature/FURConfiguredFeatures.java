@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
@@ -94,6 +95,10 @@ public class FURConfiguredFeatures {
     /** Underground water lake */
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER =
             key("lake_water");
+
+    /** Small shallow pool on cave floor (4×4–6×6, depth 1–2) */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_POOL =
+            key("small_pool");
 
     /** Underground water spring */
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
@@ -192,7 +197,7 @@ public class FURConfiguredFeatures {
                                                 .setValue(GlimmercapBlock.HALF, DoubleBlockHalf.UPPER)))
                         ),
                         Direction.UP,
-                        BlockPredicate.matchesBlocks(Blocks.AIR, Blocks.CAVE_AIR),
+                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
                         false
                 )));
 
@@ -302,6 +307,12 @@ public class FURConfiguredFeatures {
                         BlockStateProvider.simple(Blocks.WATER.defaultBlockState()),
                         BlockStateProvider.simple(Blocks.STONE.defaultBlockState())
                 )));
+
+        // ── Small shallow pool ────────────────────────────────────────────────
+        context.register(SMALL_POOL, new ConfiguredFeature<>(
+                FURFeatureRegistry.SMALL_POOL.get(),
+                NoneFeatureConfiguration.INSTANCE
+        ));
 
         // ── Underground water spring ──────────────────────────────────────────
         context.register(SPRING_WATER, new ConfiguredFeature<>(

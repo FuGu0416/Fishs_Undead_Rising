@@ -1,9 +1,6 @@
 package com.Fishmod.fur.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.block.blockentity.container.SoulFurnaceRecipe;
@@ -12,6 +9,7 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -30,14 +28,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(mod_LavaCow.MODID, "textures/gui/soul_furnace.png");
-    private final IDrawable bg;
     private final IDrawable icon;
     private final IDrawable timeIcon;
     private final IDrawable expIcon;
     private final IDrawableAnimated arrow;
 	
     public SoulFurnaceJeiCategory(IGuiHelper gui) {
-        bg = gui.createDrawable(TEXTURE, 29, 16, 116, 56);
         icon = gui.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(FURBlockRegistry.SOUL_FURNACE.get()));
 		timeIcon = gui.createDrawable(TEXTURE, 176, 32, 8, 11);
 		expIcon = gui.createDrawable(TEXTURE, 176, 43, 9, 9);
@@ -55,8 +51,13 @@ public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe
     }
 
     @Override
-    public IDrawable getBackground() {
-        return bg;
+    public int getWidth() {
+        return 116;
+    }
+
+    @Override
+    public int getHeight() {
+        return 56;
     }
 
     @Override
@@ -98,22 +99,16 @@ public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe
 	}
 	
 	@Override
-	public List<Component> getTooltipStrings(SoulFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-		if (SpawnUtil.isCursorInsideBounds(61, 2, 22, 28, mouseX, mouseY)) {
-			List<Component> tooltipStrings = new ArrayList<>();
+	public void getTooltip(ITooltipBuilder tooltip, SoulFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+		if (!SpawnUtil.isCursorInsideBounds(61, 2, 22, 28, mouseX, mouseY)) return;
 
-			int cookTime = recipe.getTime();
-			if (cookTime > 0) {
-				int cookTimeSeconds = cookTime / 20;
-				tooltipStrings.add(Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds));
-			}
-			float experience = recipe.getExperience();
-			if (experience > 0) {
-				tooltipStrings.add(Component.translatable("gui.jei.category.smelting.experience", experience));
-			}
-
-			return tooltipStrings;
+		int cookTime = recipe.getTime();
+		if (cookTime > 0) {
+			tooltip.add(Component.translatable("gui.jei.category.smelting.time.seconds", cookTime / 20));
 		}
-		return Collections.emptyList();
-	}	
+		float experience = recipe.getExperience();
+		if (experience > 0) {
+			tooltip.add(Component.translatable("gui.jei.category.smelting.experience", experience));
+		}
+	}
 }

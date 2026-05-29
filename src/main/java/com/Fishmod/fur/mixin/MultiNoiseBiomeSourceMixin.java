@@ -21,15 +21,16 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
     private Holder<Biome> fur_luminousHolder;
 
     // Jittered-grid / Voronoi-cell patch placement.
-    // Each cell is 8 biome quarts (32 blocks) per side.
+    // Each cell is 32 biome quarts (128 blocks) per side.
     // ~1 in 4 cells hosts a patch center (jittered within the cell).
-    // Radius = 2 biome quarts = 8 blocks → 16-block diameter.
-    // This keeps patches comfortably inside large cave rooms (~20+ blocks wide)
-    // and well clear of noodle tunnels (1–3 blocks wide).
-    private static final int  CELL_SIZE = 8;            // biome quarts per cell side
+    // Radius = 8 biome quarts = 32 blocks → 64-block diameter.
+    // The biome patch must fully enclose the carved grotto (primary up to ~30 blocks
+    // radius, satellite lobes up to ~32 blocks from center) so that vanilla biome
+    // features (e.g. lush cave vegetation) cannot generate inside the carved space.
+    private static final int  CELL_SIZE = 32;           // biome quarts per cell side
     private static final int  CELL_MASK = CELL_SIZE - 1;
     private static final long RARITY    = 4L;           // 1 in 4 cells has a patch
-    private static final int  RADIUS_SQ = 4;            // 2-quart radius = 8-block radius
+    private static final int  RADIUS_SQ = 64;           // 8-quart radius = 32-block radius
 
     @Inject(
         at = @At("HEAD"),

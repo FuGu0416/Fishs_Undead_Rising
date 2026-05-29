@@ -58,6 +58,8 @@ public class FURPlacedFeatures {
             key("large_glow_shroom");
     public static final ResourceKey<PlacedFeature> LAKE_WATER =
             key("lake_water");
+    public static final ResourceKey<PlacedFeature> SMALL_POOL =
+            key("small_pool");
     public static final ResourceKey<PlacedFeature> SPRING_WATER =
             key("spring_water");
 
@@ -271,6 +273,33 @@ public class FURPlacedFeatures {
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
                                         VerticalAnchor.absolute(56)),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Small shallow pool ─────────────────────────────────────────
+        // ~3× more frequent than LAKE_WATER; floor-scanning ensures placement on
+        // actual cave floor surfaces.
+        context.register(SMALL_POOL,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.SMALL_POOL),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(1),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
                                 BiomeFilter.biome()
                         )));
 

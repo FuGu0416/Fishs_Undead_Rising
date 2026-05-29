@@ -2,6 +2,7 @@ package com.Fishmod.fur.worldgen.carver;
 
 import java.util.function.Function;
 
+import com.Fishmod.fur.init.FURBiomesRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -31,33 +32,82 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
                          ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor,
                          RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask mask) {
 
-        int baseCy = config.y.sample(random, context);
+        int floorY = config.y.sample(random, context);
         double cx = chunkPos.getMiddleBlockX();
         double cz = chunkPos.getMiddleBlockZ();
 
-        // Primary chamber — larger than a single vanilla cave, anchors the room
-        double primaryH = (12.0 + random.nextDouble() * 6.0) * config.horizontalRadiusMultiplier.sample(random);
-        double primaryV = (4.0 + random.nextDouble() * 3.0) * config.verticalRadiusMultiplier.sample(random);
-        carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
-            cx, baseCy, cz, primaryH, primaryV, mask,
-            (ctx, relX, relY, relZ, y) -> false);
+        if (!biomeAccessor.apply(new BlockPos((int) cx, floorY, (int) cz))
+                          .is(FURBiomesRegistry.LUMINOUS_UNDERGROVE)) {
+            return false;
+        }
 
-        // Satellite lobes distributed evenly around the chamber.
-        // Each lobe is offset 8–18 blocks from the center so it reaches into neighboring
-        // start chunks' territory — adjacent rooms' primaries and lobes overlap and merge
-        // into one continuous open space rather than isolated bubbles.
+        double hMult = config.horizontalRadiusMultiplier.sample(random);
+        double vMult = config.verticalRadiusMultiplier.sample(random);
+
+        // ── Main volume: heterogeneous blob cluster ─────────────────────────────
+        // A mix of wide-flat blobs and narrow-tall blobs ensures the cave cross-section
+        // changes noticeably with height, eliminating the cylindrical appearance.
+        // Blobs also have varied floor offsets so neither floor nor ceiling is flat.
+        int    blobCount    = 6 + random.nextInt(4);           // 6–9
+        double clusterSpread = 8.0 + random.nextDouble() * 8.0;
+        for (int i = 0; i < blobCount; i++) {
+            double angle = i * (Math.PI * 2.0 / blobCount) + random.nextDouble() * 1.2;
+            double dist  = clusterSpread * (0.1 + random.nextDouble() * 0.9);
+            double bx    = cx + Math.cos(angle) * dist;
+            double bz    = cz + Math.sin(angle) * dist;
+
+            // 35 % of blobs are narrow-tall; the rest are wide-flat.
+            // This contrast is what breaks the constant-cross-section (cylinder) look.
+            double bH, bV;
+            if (random.nextFloat() < 0.35f) {
+                bH = (8.0  + random.nextDouble() * 6.0) * hMult;  // narrow: 8–14
+                bV = (8.0  + random.nextDouble() * 6.0) * vMult;  // tall:   8–14
+            } else {
+                bH = (14.0 + random.nextDouble() * 8.0) * hMult;  // wide:  14–22
+                bV = (4.0  + random.nextDouble() * 3.0) * vMult;  // short:  4–7
+            }
+
+            int    blobFloor = floorY + random.nextInt(8);   // 0–7 floor variation
+            double bCy       = blobFloor + bV;
+            carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
+                bx, bCy, bz, bH, bV, mask,
+                (ctx, rx, ry, rz, y) -> false);
+        }
+
+        // ── Wall nooks ─────────────────────────────────────────────────────────
+        // Tall, narrow ellipsoids placed at or just beyond the cluster perimeter.
+        // They carve vertical recesses (columns, alcoves) into the wall so that
+        // a side-on view of any wall section shows irregular notches instead of
+        // a smooth continuous surface — directly addressing the cylindrical look.
+        int nookCount = 3 + random.nextInt(3);                 // 3–5 nooks
+        for (int i = 0; i < nookCount; i++) {
+            double angle  = random.nextDouble() * Math.PI * 2.0;
+            double dist   = clusterSpread * (0.7 + random.nextDouble() * 0.5);
+            double nx     = cx + Math.cos(angle) * dist;
+            double nz     = cz + Math.sin(angle) * dist;
+            double nH     = (3.0 + random.nextDouble() * 5.0) * hMult;  // narrow: 3–8
+            double nV     = (7.0 + random.nextDouble() * 7.0) * vMult;  // tall:   7–14
+            int    nFloor = floorY + random.nextInt(6);
+            double nCy    = nFloor + nV;
+            carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
+                nx, nCy, nz, nH, nV, mask,
+                (ctx, rx, ry, rz, y) -> false);
+        }
+
+        // ── Satellite lobes ─────────────────────────────────────────────────────
         int lobeCount = 4 + random.nextInt(3);
         for (int i = 0; i < lobeCount; i++) {
-            double angle = i * (Math.PI * 2.0 / lobeCount) + random.nextDouble() * 0.5;
-            double dist  = 8.0 + random.nextDouble() * 10.0;
-            double lx    = cx + Math.cos(angle) * dist;
-            double lz    = cz + Math.sin(angle) * dist;
-            int    ly    = baseCy + random.nextInt(7) - 3;
-            double lh    = (5.0 + random.nextDouble() * 5.0) * config.horizontalRadiusMultiplier.sample(random);
-            double lv    = (2.5 + random.nextDouble() * 2.0) * config.verticalRadiusMultiplier.sample(random);
+            double angle     = i * (Math.PI * 2.0 / lobeCount) + random.nextDouble() * 0.5;
+            double dist      = 10.0 + random.nextDouble() * 12.0;
+            double lx        = cx + Math.cos(angle) * dist;
+            double lz        = cz + Math.sin(angle) * dist;
+            int    lobeFloor = floorY + random.nextInt(5) - 2;
+            double lh        = (7.0 + random.nextDouble() * 7.0) * hMult;
+            double lv        = (3.5 + random.nextDouble() * 3.0) * vMult;
+            double lobeCy    = lobeFloor + lv;
             carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
-                lx, ly, lz, lh, lv, mask,
-                (ctx, relX, relY, relZ, y) -> false);
+                lx, lobeCy, lz, lh, lv, mask,
+                (ctx, rx, ry, rz, y) -> false);
         }
 
         return true;

@@ -53,9 +53,11 @@ public class FURLuminousUndergroveBiome {
 
         // ── Luminous Undergrove exclusive features ────────────────────────────
 
-        // Water lakes and springs
+        // Water lakes, small pools, and springs
         genBuilder.addFeature(GenerationStep.Decoration.LAKES,
                 placedFeatures.getOrThrow(FURPlacedFeatures.LAKE_WATER));
+        genBuilder.addFeature(GenerationStep.Decoration.LAKES,
+                placedFeatures.getOrThrow(FURPlacedFeatures.SMALL_POOL));
         genBuilder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS,
                 placedFeatures.getOrThrow(FURPlacedFeatures.SPRING_WATER));
 
