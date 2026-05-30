@@ -32,8 +32,9 @@ public class FURLuminousUndergroveBiome {
             HolderGetter<ConfiguredWorldCarver<?>> worldCarvers) {
 
         // ── Mob spawns ────────────────────────────────────────────────────────
+        // Intentionally empty: all entity spawns are handled by FURBiomeModifier
+        // via the biome-modifier system, keeping spawn data out of the biome definition.
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        // Mob spawning populated later.
 
         // ── Generation ────────────────────────────────────────────────────────
         BiomeGenerationSettings.Builder genBuilder =
@@ -52,6 +53,13 @@ public class FURLuminousUndergroveBiome {
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
 
         // ── Luminous Undergrove exclusive features ────────────────────────────
+
+        // Terrain smoothing — fills stone ramps at height transitions between
+        // carver sections, eliminating hanging walls. Must run before LAKES so
+        // small pools assess the corrected floor, and before VEGETAL_DECORATION
+        // so mycelial mat naturally covers the ramp surface.
+        genBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                placedFeatures.getOrThrow(FURPlacedFeatures.CAVE_FLOOR_SMOOTHER));
 
         // Water lakes, small pools, and springs
         genBuilder.addFeature(GenerationStep.Decoration.LAKES,

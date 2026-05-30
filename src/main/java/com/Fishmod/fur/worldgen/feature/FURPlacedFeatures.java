@@ -62,6 +62,8 @@ public class FURPlacedFeatures {
             key("small_pool");
     public static final ResourceKey<PlacedFeature> SPRING_WATER =
             key("spring_water");
+    public static final ResourceKey<PlacedFeature> CAVE_FLOOR_SMOOTHER =
+            key("cave_floor_smoother");
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
@@ -283,7 +285,36 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.SMALL_POOL),
                         List.of(
-                                RarityFilter.onAverageOnceEvery(1),
+                                RarityFilter.onAverageOnceEvery(3),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Cave floor smoother ────────────────────────────────────────
+        // Runs in LOCAL_MODIFICATIONS (before LAKES and VEGETAL_DECORATION) so
+        // the ramp blocks are present when mat patches and small pools are placed.
+        // 3 attempts per chunk, each covering a 17×17 area; the high overlap
+        // ensures all carver-boundary cliffs within the biome get smoothed.
+        context.register(CAVE_FLOOR_SMOOTHER,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.CAVE_FLOOR_SMOOTHER),
+                        List.of(
+                                CountPlacement.of(3),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),

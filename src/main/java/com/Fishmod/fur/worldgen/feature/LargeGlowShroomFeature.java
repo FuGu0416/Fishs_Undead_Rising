@@ -15,8 +15,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 
 public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
-    private final List<BlockPos> GenCap = new ArrayList<BlockPos>();
-    
+
     public LargeGlowShroomFeature(Codec<HugeMushroomFeatureConfiguration> p_i231957_1_) {
         super(p_i231957_1_);
     }
@@ -66,22 +65,21 @@ public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
 		int y = position.getY();
 		int z = position.getZ();
 		
-		GenCap.clear();
-		
+		List<BlockPos> genCap = new ArrayList<>();
+
 		for (int px = -1; px <= 1; px++)
 			for (int pz = -1; pz <= 1; pz++)
-				GenCap.add(new BlockPos(x + px, y, z + pz));
+				genCap.add(new BlockPos(x + px, y, z + pz));
 
 		for (int py = 1; py <= sideHeight; py++)
 			for (int off = -1; off <= 1; off++) {
-				GenCap.add(new BlockPos(x + 2, y - py, z + off));
-				GenCap.add(new BlockPos(x - 2, y - py, z + off));
-				GenCap.add(new BlockPos(x + off, y - py, z + 2));
-				GenCap.add(new BlockPos(x + off, y - py, z - 2));
+				genCap.add(new BlockPos(x + 2, y - py, z + off));
+				genCap.add(new BlockPos(x - 2, y - py, z + off));
+				genCap.add(new BlockPos(x + off, y - py, z + 2));
+				genCap.add(new BlockPos(x + off, y - py, z - 2));
 			}
-		
-		//Generate Cap
-		for (BlockPos P : GenCap) {
+
+		for (BlockPos P : genCap) {
 			p_225564_5_.setWithOffset(P, 0, p_225564_4_, 0);
 			if (!worldIn.getBlockState(p_225564_5_).isSolidRender(worldIn, p_225564_5_)) {
 				worldIn.setBlock(p_225564_5_, p_225564_6_.capProvider.getState(rand, position), 3);

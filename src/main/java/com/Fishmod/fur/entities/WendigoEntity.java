@@ -131,7 +131,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
      */
     @Override
     public int getMaxSpawnClusterSize() {
-       return 1;
+        return 3;
     }
 	
     @Override

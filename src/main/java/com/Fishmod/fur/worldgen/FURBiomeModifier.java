@@ -46,7 +46,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_GHOUL = registerKey("add_ghoul");
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
 	
-    public static ResourceKey<BiomeModifier> registerKey(String name) {
+    private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
     }
     

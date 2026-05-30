@@ -100,6 +100,10 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_POOL =
             key("small_pool");
 
+    /** Cave floor smoother — fills height transitions between carver sections */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_FLOOR_SMOOTHER =
+            key("cave_floor_smoother");
+
     /** Underground water spring */
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
             key("spring_water");
@@ -108,25 +112,14 @@ public class FURConfiguredFeatures {
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
 
-        // ── Mycelial Mat patch (floor, similar to MOSS_PATCH) ─────────────────
-        // Uses VegetationPatch: replaces surface blocks with mycelial_mat in a radius,
-        // then seeds the patch with mixed floor vegetation (veil, tendrils, glowshroom, glimmercap).
+        // ── Mycelial Mat patch (floor) ────────────────────────────────────────
+        // Uses a custom feature so the patch boundary is an organic blob rather
+        // than the rectangular shape produced by vanilla VegetationPatch.
+        // Plant seeding is handled by the separate MIXED_FLOOR placed feature.
         context.register(MYCELIAL_MAT_PATCH, new ConfiguredFeature<>(
-                Feature.VEGETATION_PATCH,
-                new VegetationPatchConfiguration(
-                        // Surface block tag that can be replaced (stone, deepslate, etc.)
-                        net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
-                        BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
-                        context.lookup(Registries.PLACED_FEATURE)
-                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
-                        CaveSurface.FLOOR,
-                        UniformInt.of(1, 2),   // depth
-                        0.8F,                  // extraBottomBlockChance
-                        5,                     // verticalRange
-                        0.15F,                 // vegetationChance — 0 disables inline vegetation
-                        UniformInt.of(4, 7),   // xzRadius
-                        0.8F                   // extraEdgeColumnChance
-                )));
+                FURFeatureRegistry.MYCELIAL_MAT_PATCH.get(),
+                NoneFeatureConfiguration.INSTANCE
+        ));
 
         // ── Mycelial Mat patch (bonemeal version — tighter spread) ────────────
         context.register(MYCELIAL_MAT_PATCH_BONEMEAL, new ConfiguredFeature<>(
@@ -311,6 +304,12 @@ public class FURConfiguredFeatures {
         // ── Small shallow pool ────────────────────────────────────────────────
         context.register(SMALL_POOL, new ConfiguredFeature<>(
                 FURFeatureRegistry.SMALL_POOL.get(),
+                NoneFeatureConfiguration.INSTANCE
+        ));
+
+        // ── Cave floor smoother ───────────────────────────────────────────────
+        context.register(CAVE_FLOOR_SMOOTHER, new ConfiguredFeature<>(
+                FURFeatureRegistry.CAVE_FLOOR_SMOOTHER.get(),
                 NoneFeatureConfiguration.INSTANCE
         ));
 

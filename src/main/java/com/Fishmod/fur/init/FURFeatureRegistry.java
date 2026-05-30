@@ -1,7 +1,9 @@
 package com.Fishmod.fur.init;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.worldgen.feature.CaveFloorSmootherFeature;
 import com.Fishmod.fur.worldgen.feature.LargeGlowShroomFeature;
+import com.Fishmod.fur.worldgen.feature.MycelialMatPatchFeature;
 import com.Fishmod.fur.worldgen.feature.SmallPoolFeature;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,4 +21,10 @@ public class FURFeatureRegistry {
 
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SMALL_POOL = DEF_REG.register("small_pool",
 			() -> new SmallPoolFeature(NoneFeatureConfiguration.CODEC));
+
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> MYCELIAL_MAT_PATCH = DEF_REG.register("mycelial_mat_patch",
+			() -> new MycelialMatPatchFeature(NoneFeatureConfiguration.CODEC));
+
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> CAVE_FLOOR_SMOOTHER = DEF_REG.register("cave_floor_smoother",
+			() -> new CaveFloorSmootherFeature(NoneFeatureConfiguration.CODEC));
 }
