@@ -93,7 +93,7 @@ public class FURItemGroup {
                 output.accept(stack);
             	
             	// Melee Weapon
-            	output.accept(FURItemRegistry.FANG_DAGGER.get());
+            	output.accept(FURItemRegistry.FANG_DAGGER.get());            	          	
             	output.accept(FURItemRegistry.BONE_SWORD.get());
             	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
@@ -104,6 +104,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SOULFORGED_HAMMER.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
             	output.accept(FURItemRegistry.SKELETONKING_MACE.get());
+            	output.accept(FURItemRegistry.VESPA_DAGGER.get());
             	
             	// Range Weapon
             	output.accept(FURItemRegistry.WAR.get());
@@ -115,7 +116,10 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SONIC_BOMB.get());
             	output.accept(FURItemRegistry.GHOUL_ARROW.get());
             	output.accept(FURItemRegistry.FANG_ARROW.get());   
-            	
+
+        		// Shield
+        		output.accept(FURItemRegistry.VESPA_SHIELD.get());
+        		
             	// Armour
             	output.accept(FURItemRegistry.CHITIN_ARMOR_HELMET.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_CHESTPLATE.get());
@@ -137,7 +141,7 @@ public class FURItemGroup {
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_CHESTPLATE.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_LEGGINGS.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_BOOTS.get());
-        		
+        		        		
         		// Smithing Template
         		output.accept(FURItemRegistry.SOULFORGED_UPGRADE_SMITHING_TEMPLATE.get());
         		

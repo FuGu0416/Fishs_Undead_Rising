@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:poison_stinger"
+        },
+        "D": {
+            "tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:vespa_dagger"
+    }
+}

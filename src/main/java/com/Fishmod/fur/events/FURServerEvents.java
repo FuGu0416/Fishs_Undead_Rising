@@ -16,6 +16,7 @@ import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.item.ChitinArmorItem;
+import com.Fishmod.fur.item.VespaShieldItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
@@ -64,6 +65,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -460,20 +462,26 @@ public class FURServerEvents {
     
     @SubscribeEvent
     public void onEAttack(LivingAttackEvent event) {
-    	/*LivingEntity attacked = event.getEntity();
-    	
-    	for(Hand hand : Hand.values()) {
-			ItemStack stack = attacked.getItemInHand(hand);
-			if (!stack.isEmpty() && stack.getItem() instanceof VespaShieldItem) {
-				VespaShieldItem shield = (VespaShieldItem)stack.getItem();
-				
-				if(shield.canBlockDamageSource(stack, attacked, hand, event.getSource())) {
-					if(!attacked.level().isClientSide()) {
-						shield.onAttackBlocked(stack, attacked, event.getAmount(), event.getSource());
-					}
-				}
-			}
-    	}*/
+    }
+
+    /**
+     * Vespa shield counter-attack: when blocking with the vespa shield, deal 2 thorns damage
+     * and apply Poison I (6s) to the direct attacker.
+     *
+     * Uses ShieldBlockEvent (Forge 1.20.1), which fires only when a block actually succeeds —
+     * replacing the old canBlockDamageSource + LivingAttackEvent pattern from 1.16.5.
+     */
+    @SubscribeEvent
+    public void onShieldBlock(ShieldBlockEvent event) {
+        LivingEntity blocker = event.getEntity();
+        if (blocker.level().isClientSide()) return;
+        if (!(blocker.getUseItem().getItem() instanceof VespaShieldItem)) return;
+
+        DamageSource source = event.getDamageSource();
+        if (source.getDirectEntity() instanceof LivingEntity attacker) {
+            attacker.hurt(blocker.damageSources().thorns(blocker), 2.0F);
+            attacker.addEffect(new MobEffectInstance(MobEffects.POISON, 6 * 20, 0));
+        }
     }
         
     @SubscribeEvent

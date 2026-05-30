@@ -154,10 +154,9 @@ public class FURWeaponItem extends SwordItem {
 			((Player)attacker).getFoodData().eat(attacker.hasEffect(MobEffects.HUNGER) ? 2 : 1, 0.0F);
 		} else if (stack.getItem() == FURItemRegistry.SKELETONKING_MACE.get()) {
         	target.addEffect(new MobEffectInstance(FUREffectRegistry.FRAGILE.get(), 200, 4));
-		}/* else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER) {
-			int i = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS, stack);			
-			target.addEffect(new EffectInstance(Effects.POISON, 8 * 20, i + 1));
-		}*/
+		} else if (stack.getItem() == FURItemRegistry.VESPA_DAGGER.get()) {
+			target.addEffect(new MobEffectInstance(MobEffects.POISON, 8 * 20, 1));
+		}
 				
         return super.hurtEnemy(stack, target, attacker);
     }

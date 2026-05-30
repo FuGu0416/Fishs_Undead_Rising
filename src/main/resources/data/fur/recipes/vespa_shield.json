@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "CWC",
+        "CWC",
+        " C "
+    ],
+    "key": {
+        "C": {
+            "item": "fur:vespa_carapace"
+        },
+        "W": {
+            "tag": "minecraft:planks"
+        }
+    },
+    "result": {
+        "item": "fur:vespa_shield"
+    }
+}

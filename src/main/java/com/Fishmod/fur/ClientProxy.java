@@ -166,10 +166,10 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.SOUL_FURNACE.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLIMMERCAP.get(), RenderType.cutout());
         
-        /*ItemModelsProperties.register(FURItemRegistry.VESPA_SHIELD, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
-            return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
-        });*/
-        
+        ItemProperties.register(FURItemRegistry.VESPA_SHIELD.get(), new ResourceLocation("blocking"),
+                (stack, level, entity, seed) ->
+                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
     	ItemProperties.register(FURItemRegistry.PARASITE_RAW.get(), new ResourceLocation(mod_LavaCow.MODID, "variant"),
     		    (stack, level, entity, seed) -> {
     		        if (!stack.hasTag()) return 0.0f;
