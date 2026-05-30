@@ -21,6 +21,7 @@ import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.FangDaggerItem;
 import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
+import com.Fishmod.fur.item.GoldenHeartItem;
 import com.Fishmod.fur.item.InfusedBandageItem;
 import com.Fishmod.fur.item.BloatedIntestineItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
@@ -101,6 +102,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_LEGGINGS = DEF_REG.register("soulforged_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_BOOTS = DEF_REG.register("soulforged_armor_boots", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> UNDYING_HEART = DEF_REG.register("undying_heart", () -> new UndyingHeartItem(new Item.Properties().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> GOLDEN_HEART = DEF_REG.register("golden_heart", () -> new GoldenHeartItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(250)));
 	public static final RegistryObject<Item> MOOTEN_HEART = DEF_REG.register("mooten_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
 	public static final RegistryObject<Item> SOULFORGED_HEART = DEF_REG.register("soulforged_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
 	public static final RegistryObject<Item> ACIDIC_HEART = DEF_REG.register("acidic_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 0));
@@ -163,7 +165,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ENIGMOTH_LARVA_COOKED = DEF_REG.register("enigmoth_larva_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
 	public static final RegistryObject<Item> USHABTI = DEF_REG.register("ushabti", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> POISON_STINGER = DEF_REG.register("poison_stinger", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> VESPA_DAGGER = DEF_REG.register("vespa_dagger", () -> new FURWeaponItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, 0.0D, FURItemRegistry.POISON_STINGER.get(), true));
+	public static final RegistryObject<Item> VESPA_DAGGER = DEF_REG.register("vespa_dagger", () -> new FangDaggerItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, -1.0D, FURItemRegistry.POISON_STINGER.get(), true));
 	public static final RegistryObject<Item> VESPA_SHIELD = DEF_REG.register("vespa_shield", () -> new VespaShieldItem(new Item.Properties().durability(504)));
 	public static final RegistryObject<Item> ADVANCEMENT_ICON = DEF_REG.register("advancement_icon", () -> new Item(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> INFUSED_BANDAGE = DEF_REG.register("infused_bandage", () -> new InfusedBandageItem(new Item.Properties(), 32, UseAnim.BOW, 0));

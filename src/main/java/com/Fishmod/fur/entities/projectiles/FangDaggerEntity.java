@@ -2,6 +2,7 @@ package com.Fishmod.fur.entities.projectiles;
 
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.Direction;
@@ -139,7 +140,11 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
         	   if (this.corrosive > 0) {
         		   livingentity.addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20, this.corrosive - 1));
         	   }
-        	   
+
+        	   if (this.getRenderItem().getItem() == FURItemRegistry.VESPA_DAGGER.get()) {
+        		   livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 8 * 20, 1));
+        	   }
+
         	   if (this.lifesteal > 0) {
         		   if (entity1 instanceof LivingEntity) {
         			   ((LivingEntity)entity1).heal((this.baseDamage + this.getBonusDamage(entity)) * this.lifesteal * 0.05F);

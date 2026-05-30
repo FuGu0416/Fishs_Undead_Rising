@@ -142,6 +142,10 @@ repositories {
         name = "JEI"
         url = "https://maven.blamejared.com/"
     }
+    maven {
+        name = "Curios maven"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -171,6 +175,10 @@ dependencies {
     //JEI COMPAT
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
 	runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}")
+
+    //CURIOS COMPAT
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

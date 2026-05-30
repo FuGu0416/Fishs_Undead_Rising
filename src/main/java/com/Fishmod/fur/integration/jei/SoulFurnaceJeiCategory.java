@@ -28,12 +28,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(mod_LavaCow.MODID, "textures/gui/soul_furnace.png");
+    private final IDrawable background;
     private final IDrawable icon;
     private final IDrawable timeIcon;
     private final IDrawable expIcon;
     private final IDrawableAnimated arrow;
-	
+
     public SoulFurnaceJeiCategory(IGuiHelper gui) {
+        background = gui.createDrawable(TEXTURE, 29, 16, 116, 56);
         icon = gui.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(FURBlockRegistry.SOUL_FURNACE.get()));
 		timeIcon = gui.createDrawable(TEXTURE, 176, 32, 8, 11);
 		expIcon = gui.createDrawable(TEXTURE, 176, 43, 9, 9);
@@ -61,6 +63,11 @@ public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe
     }
 
     @Override
+    public IDrawable getBackground() {
+        return background;
+    }
+
+    @Override
     public IDrawable getIcon() {
         return icon;
     }
@@ -69,7 +76,8 @@ public class SoulFurnaceJeiCategory implements IRecipeCategory<SoulFurnaceRecipe
     public void setRecipe(IRecipeLayoutBuilder builder, SoulFurnaceRecipe recipe, IFocusGroup focuses) {
 		NonNullList<Ingredient> recipeIngredients = recipe.getIngredients();
 		ItemStack resultStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
-		ItemStack containerStack = recipe.getContainer().getItems()[0];
+		ItemStack[] containerItems = recipe.getContainer().getItems();
+		ItemStack containerStack = containerItems.length > 0 ? containerItems[0] : ItemStack.EMPTY;
 
 		int borderSlotSize = 18;
 		for (int row = 0; row < 2; ++row) {

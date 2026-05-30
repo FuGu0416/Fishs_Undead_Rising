@@ -69,6 +69,7 @@ public class FURItemGroup {
                 
             	// Heart
             	output.accept(FURItemRegistry.UNDYING_HEART.get());
+            	output.accept(FURItemRegistry.GOLDEN_HEART.get());
             	output.accept(FURItemRegistry.MOOTEN_HEART.get());
             	output.accept(FURItemRegistry.SOULFORGED_HEART.get());
             	output.accept(FURItemRegistry.ACIDIC_HEART.get());

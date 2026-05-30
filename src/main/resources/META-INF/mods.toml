@@ -73,6 +73,13 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
 	ordering="NONE"
 	side="CLIENT"
 
+[[dependencies.fur]]
+	modId="curios"
+	mandatory=false
+	versionRange="[5.0,)"
+	ordering="AFTER"
+	side="BOTH"
+
 [[mixins]]
 config="mixins.fur.json"
 
