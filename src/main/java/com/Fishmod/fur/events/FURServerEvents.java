@@ -384,6 +384,11 @@ public class FURServerEvents {
     	// Only triggers on melee attacks (mob attack, mob attack no aggro, player attack)
     	if (source.is(DamageTypes.MOB_ATTACK) || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || source.is(DamageTypes.PLAYER_ATTACK)) {
     		MoltenArmorItem.applyRetaliationBurn(Attacked, source.getDirectEntity(), event.getAmount());
+
+    		if (Attacker instanceof LivingEntity attackerLiving && attackerLiving.hasEffect(FUREffectRegistry.SOUL_SIPHON.get())) {
+    			int siphonLevel = attackerLiving.getEffect(FUREffectRegistry.SOUL_SIPHON.get()).getAmplifier() + 1;
+    			attackerLiving.heal(event.getAmount() * 0.05F * siphonLevel);
+    		}
     	}
 
     	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf wolf) {

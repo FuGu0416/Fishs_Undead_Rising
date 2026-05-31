@@ -75,10 +75,16 @@ public class FURWeaponItem extends SwordItem {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entityIn, int itemSlot, boolean isSelected) {				
-		/*if (entityIn instanceof LivingEntity && stack.getItem() == FURItemRegistry.FROZEN_DAGGER && entityIn.isInWaterRainOrBubble() && level.random.nextInt(50) < 2) {
-			stack.setDamageValue(java.lang.Math.max(stack.getDamageValue() - 1, 0));
-		}*/
+	public void inventoryTick(ItemStack stack, Level level, Entity entityIn, int itemSlot, boolean isSelected) {
+		if (!level.isClientSide() && stack.getItem() == FURItemRegistry.REAPERS_SCYTHE.get() && entityIn instanceof LivingEntity living) {
+			long now = level.getGameTime();
+			CompoundTag tag = stack.getOrCreateTag();
+			long cdEnd = tag.getLong("soul_siphon_cd");
+			if (now >= cdEnd && living.getHealth() <= living.getMaxHealth() * 0.3F) {
+				living.addEffect(new MobEffectInstance(FUREffectRegistry.SOUL_SIPHON.get(), 200, 2));
+				tag.putLong("soul_siphon_cd", now + 2400L);
+			}
+		}
 	}
 	
 	/**
