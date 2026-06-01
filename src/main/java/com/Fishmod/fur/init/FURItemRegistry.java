@@ -275,8 +275,7 @@ public class FURItemRegistry {
     	spawnEgg(FUREntityRegistry.SKELETONKING, 0x2F2A2A, 0xA2A1A1, new Item.Properties()).setRegistryName("fur:spawn_egg_skeletonking"));
     	spawnEgg(FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties()).setRegistryName("fur:spawn_egg_warpedfirefly"));
     	spawnEgg(FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties()).setRegistryName("fur:spawn_egg_graverobber"));
-    	spawnEgg(FUREntityRegistry.GRAVEROBBERGHOST, 0x7AF2FF, 0x40433E, new Item.Properties()).setRegistryName("fur:spawn_egg_graverobberghost"));
-    	spawnEgg(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties()).setRegistryName("fur:spawn_egg_beelzebub"));    	
+    	spawnEgg(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties()).setRegistryName("fur:spawn_egg_beelzebub"));
     	*/
     }
     

@@ -154,9 +154,6 @@ public final class FURConfig {
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobber_Attack;
-	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_GraveRobberGhost;
-	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Health;
-	public static final ForgeConfigSpec.ConfigValue<Double> GraveRobberGhost_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Wraith_Attack;
@@ -187,9 +184,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Ghoul_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ghoul_targetHPThreshold;
 
-	//public static final ForgeConfigSpec.ConfigValue<Double> Living_Armor_Health;
-	//public static final ForgeConfigSpec.ConfigValue<Double> Living_Armor_Attack;
-	
 	public static final ForgeConfigSpec.ConfigValue<Boolean> MoltenHammer_PVP;
 	public static final ForgeConfigSpec.ConfigValue<Double> MoltenHammer_Damage;
 	public static final ForgeConfigSpec.ConfigValue<Integer> MoltenHammer_Cooldown;
@@ -460,10 +454,7 @@ public final class FURConfig {
 
 		BUILDER.push("Grave Robber");
 		GraveRobber_Health = BUILDER.comment("Maximum Grave Robber health [1-1000]").defineInRange("grave robber health", 20.0D, 1.0D, 1000.0D);
-		GraveRobber_Attack = BUILDER.comment("Grave Robber strength [1-1000]").defineInRange("grave robber attack", 5.0D, 1.0D, 1000.0D);	
-		pSpawnRate_GraveRobberGhost = BUILDER.comment("Set the spawn rate of Ghost of Grave Robber [0-100]").defineInRange("grave robber ghost spawn rate", 40, 0, 100);
-		GraveRobberGhost_Health = BUILDER.comment("Maximum Ghost of Grave Robber health [1-1000]").defineInRange("grave robber ghost health", 8.0D, 1.0D, 1000.0D);
-		GraveRobberGhost_Attack = BUILDER.comment("Ghost of Grave Robber strength [1-1000]").defineInRange("grave robber ghost attack", 5.0D, 1.0D, 1000.0D);	
+		GraveRobber_Attack = BUILDER.comment("Grave Robber strength [1-1000]").defineInRange("grave robber attack", 5.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Wraith");
@@ -506,11 +497,6 @@ public final class FURConfig {
 		Ghoul_Attack = BUILDER.comment("Ghoul strength [1-1000]").defineInRange("ghoul attack", 3.0D, 1.0D, 1000.0D);
 		Ghoul_targetHPThreshold = BUILDER.comment("Set the health threshold of becoming Ghoul's target [0-100]").defineInRange("ghoul target health threshold", 40, 0, 100);
 		BUILDER.pop();
-		
-		//BUILDER.push("Living Armor");
-		//Living_Armor_Health = BUILDER.comment("Maximum Living Armor health [1-1000]").defineInRange("living armor health", 40.0D, 1.0D, 1000.0D);
-		//Living_Armor_Attack = BUILDER.comment("Living Armor strength [1-1000]").defineInRange("living armor attack", 8.0D, 1.0D, 1000.0D);
-		//BUILDER.pop();
 		
 		BUILDER.push("Item");
 		MoltenHammer_PVP = BUILDER.comment("Allow Molten Hammer active effect to hit players [false/true]").define("allow molten hammer pvp", false);

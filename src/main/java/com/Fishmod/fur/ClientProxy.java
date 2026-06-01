@@ -137,12 +137,10 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY, manager -> new WarpedFireflyRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));  
-        EntityRenderers.register(FUREntityRegistry.GRAVEROBBERGHOST, manager -> new GraveRobberGhostRenderer(manager));  
-        EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager)); 
-        EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager)); 
-        //EntityRenderers.register(FUREntityRegistry.LIVING_ARMOR, manager -> new LivingArmorRenderer(manager)); 
-        
+        EntityRenderers.register(FUREntityRegistry.GRAVEROBBER, manager -> new GraveRobberRenderer(manager));
+        EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager));
+        EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager));
+
         EntityRenderers.register(FUREntityRegistry.ACIDJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         EntityRenderers.register(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
         EntityRenderers.register(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
