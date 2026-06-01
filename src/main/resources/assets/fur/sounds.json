@@ -230,25 +230,25 @@
 		"sounds": ["fur:entity/sludgelord/death0","fur:entity/sludgelord/death1","fur:entity/sludgelord/death2"]
 	},
 	
-	"lilsludge_ambient":
+	"shroomling_ambient":
 	{
 		"category": "hostile",
-		"subtitle": "entity_lilsludge_ambient",
-		"sounds": [{"name": "fur:entity/lilsludge/ambient","stream": true}]
+		"subtitle": "entity_shroomling_ambient",
+		"sounds": [{"name": "fur:entity/shroomling/ambient","stream": true}]
 	},
-	
-	"lilsludge_hurt":
+
+	"shroomling_hurt":
 	{
 		"category": "hostile",
-		"subtitle": "entity_lilsludge_hurt",
-		"sounds": [{"name": "fur:entity/lilsludge/hurt","stream": true}]
+		"subtitle": "entity_shroomling_hurt",
+		"sounds": [{"name": "fur:entity/shroomling/hurt","stream": true}]
 	},
-	
-	"lilsludge_death":
+
+	"shroomling_death":
 	{
 		"category": "hostile",
-		"subtitle": "entity_lilsludge_death",
-		"sounds": [{"name": "fur:entity/lilsludge/death","stream": true}]
+		"subtitle": "entity_shroomling_death",
+		"sounds": [{"name": "fur:entity/shroomling/death","stream": true}]
 	},
 	
 	"raven_ambient":

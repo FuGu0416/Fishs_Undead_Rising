@@ -406,7 +406,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.LILSLUDGE_AMBIENT.get();
+        return FURSoundRegistry.SHROOMLING_AMBIENT.get();
     }
 
     @Override

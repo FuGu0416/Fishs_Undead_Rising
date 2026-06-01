@@ -101,9 +101,9 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Avaton_Ability_Max;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Avaton_Ability_Cooldown;
 	
-	public static final ForgeConfigSpec.ConfigValue<Double> LilSludge_Health;
-	public static final ForgeConfigSpec.ConfigValue<Double> LilSludge_Attack;
-	public static final ForgeConfigSpec.ConfigValue<Integer> LilSludge_Lifespan;
+	public static final ForgeConfigSpec.ConfigValue<Double> Shroomling_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Shroomling_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Shroomling_Lifespan;
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> Unburied_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Unburied_Attack;
@@ -286,10 +286,10 @@ public final class FURConfig {
 		SludgeLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Lil'Sludge [0-100]").defineInRange("sludge lord summon cooldown", 17, 0, 100);
 		BUILDER.pop();
 		
-		BUILDER.push("Lil'Sludge");
-		LilSludge_Lifespan = BUILDER.comment("Lil'Sludge lifespan [false/true]").defineInRange("lil'sludge lifespan", 60, 0, 10000);
-		LilSludge_Health = BUILDER.comment("Maximum Lil'Sludge health [1-1000]").defineInRange("lil'sludge health", 20.0D, 1.0D, 1000.0D);
-		LilSludge_Attack = BUILDER.comment("Lil'Sludge strength [1-1000]").defineInRange("lil'sludge attack", 3.0D, 1.0D, 1000.0D);
+		BUILDER.push("Shroomling");
+		Shroomling_Lifespan = BUILDER.comment("Shroomling lifespan [false/true]").defineInRange("shroomling lifespan", 60, 0, 10000);
+		Shroomling_Health = BUILDER.comment("Maximum Shroomling health [1-1000]").defineInRange("shroomling health", 20.0D, 1.0D, 1000.0D);
+		Shroomling_Attack = BUILDER.comment("Shroomling strength [1-1000]").defineInRange("shroomling attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Raven");

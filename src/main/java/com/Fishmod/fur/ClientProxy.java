@@ -9,6 +9,7 @@ import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRender
 import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
+import com.Fishmod.fur.client.renderer.entity.ShroomlingRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
 import com.Fishmod.fur.client.renderer.entity.CocoonRenderer;
@@ -96,6 +97,7 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.UNDERTAKER.get(), UndertakerRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BANSHEE.get(), BansheeRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.CACTOID.get(), CactoidRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SHROOMLING.get(), ShroomlingRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MIMIC.get(), MimicRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.PTERA.get(), PteraRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SALAMANDER.get(), SalamanderRenderer::new);        

@@ -49,9 +49,9 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> SLUDGELORD_HURT = addSoundEvent("sludgelord_hurt");
 	public static final RegistryObject<SoundEvent> SLUDGELORD_DEATH = addSoundEvent("sludgelord_death");
 	
-	public static final RegistryObject<SoundEvent> LILSLUDGE_AMBIENT = addSoundEvent("lilsludge_ambient");
-	public static final RegistryObject<SoundEvent> LILSLUDGE_HURT = addSoundEvent("lilsludge_hurt");
-	public static final RegistryObject<SoundEvent> LILSLUDGE_DEATH = addSoundEvent("lilsludge_death");
+	public static final RegistryObject<SoundEvent> SHROOMLING_AMBIENT = addSoundEvent("shroomling_ambient");
+	public static final RegistryObject<SoundEvent> SHROOMLING_HURT = addSoundEvent("shroomling_hurt");
+	public static final RegistryObject<SoundEvent> SHROOMLING_DEATH = addSoundEvent("shroomling_death");
 	
 	public static final RegistryObject<SoundEvent> RAVEN_AMBIENT = addSoundEvent("raven_ambient");
 	public static final RegistryObject<SoundEvent> RAVEN_CALL = addSoundEvent("raven_call");

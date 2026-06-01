@@ -250,6 +250,7 @@ public class FURItemRegistry {
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
         spawnEgg("banshee", FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A);
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
+        spawnEgg("shroomling", FUREntityRegistry.SHROOMLING, 0x5A6E3D, 0xA8C57A);
         spawnEgg("mimic", FUREntityRegistry.MIMIC, 0xE168FF, 0x070000);
         spawnEgg("ptera", FUREntityRegistry.PTERA, 0x208938, 0xD61717);
         spawnEgg("salamander", FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142);

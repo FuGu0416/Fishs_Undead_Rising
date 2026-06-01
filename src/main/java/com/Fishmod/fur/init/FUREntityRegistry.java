@@ -37,6 +37,7 @@ import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.entities.tameable.RavenEntity;
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.entities.tameable.ScarabEntity;
+import com.Fishmod.fur.entities.tameable.ShroomlingEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
@@ -86,6 +87,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<UndertakerEntity>> UNDERTAKER = DEF_REG.register("undertaker", () -> (EntityType<UndertakerEntity>) EntityType.Builder.of(UndertakerEntity::new, MobCategory.MONSTER).sized(1.8F, 2.4F).setTrackingRange(8).build("undertaker"));
 	public static final RegistryObject<EntityType<BansheeEntity>> BANSHEE = DEF_REG.register("banshee", () -> (EntityType<BansheeEntity>) EntityType.Builder.of(BansheeEntity::new, MobCategory.MONSTER).sized(0.75F, 1.75F).setTrackingRange(8).build("banshee"));
 	public static final RegistryObject<EntityType<CactoidEntity>> CACTOID = DEF_REG.register("cactoid", () -> (EntityType<CactoidEntity>) EntityType.Builder.of(CactoidEntity::new, MobCategory.MONSTER).sized(0.5F, 1.1F).setTrackingRange(8).build("cactoid"));
+	public static final RegistryObject<EntityType<ShroomlingEntity>> SHROOMLING = DEF_REG.register("shroomling", () -> (EntityType<ShroomlingEntity>) EntityType.Builder.of(ShroomlingEntity::new, MobCategory.MONSTER).sized(0.6F, 1.0F).setTrackingRange(8).build("shroomling"));
 	public static final RegistryObject<EntityType<MimicEntity>> MIMIC = DEF_REG.register("mimic", () -> (EntityType<MimicEntity>) EntityType.Builder.of(MimicEntity::new, MobCategory.MONSTER).sized(1.0F, 1.0F).setTrackingRange(8).build("mimic"));
 	public static final RegistryObject<EntityType<PteraEntity>> PTERA = DEF_REG.register("ptera", () -> (EntityType<PteraEntity>) EntityType.Builder.of(PteraEntity::new, MobCategory.MONSTER).sized(1.6F, 0.8F).setTrackingRange(8).build("ptera"));
 	public static final RegistryObject<EntityType<SalamanderEntity>> SALAMANDER = DEF_REG.register("salamander", () -> (EntityType<SalamanderEntity>) EntityType.Builder.of(SalamanderEntity::new, MobCategory.MONSTER).sized(1.95F, 1.6F).setTrackingRange(8).fireImmune().build("salamander"));
@@ -208,6 +210,7 @@ public class FUREntityRegistry {
         event.put(UNDERTAKER.get(), UndertakerEntity.createAttributes().build());
         event.put(BANSHEE.get(), BansheeEntity.createAttributes().build());
         event.put(CACTOID.get(), CactoidEntity.createAttributes().build());
+        event.put(SHROOMLING.get(), ShroomlingEntity.createAttributes().build());
         event.put(MIMIC.get(), MimicEntity.createAttributes().build());
         event.put(PTERA.get(), PteraEntity.createAttributes().build());
         event.put(SALAMANDER.get(), SalamanderEntity.createAttributes().build());   

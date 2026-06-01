@@ -167,30 +167,29 @@ public class FURWeaponItem extends SwordItem {
         return super.hurtEnemy(stack, target, attacker);
     }
 	
-	public static <T extends FURTameableEntity> void SummonMinion(Player player, int[] enchantmentIn, Level level, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
+	public static <T extends FURTameableEntity> void SummonMinion(Player player, ItemStack stack, Level level, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
 		if (level instanceof ServerLevel) {
-			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) level), blockpos);  
-			
-			if (entity != null) {	
+			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) level), blockpos);
+
+			if (entity != null) {
 				CompoundTag data = entity.getPersistentData();
-		             	              
-				data.putInt("fire_aspect", enchantmentIn[0]);
-				data.putInt("sharpness", enchantmentIn[1]);
-				data.putInt("knockback", enchantmentIn[2]);
-				data.putInt("bane_of_arthropods", enchantmentIn[3]);
-				data.putInt("smite", enchantmentIn[4]);
-				data.putInt("unbreaking", enchantmentIn[8]);
-				data.putInt("corrosive", enchantmentIn[7]);
-		    	
-		    	entity.tame(player);
-		        entity.setLimitedLife(limitLife);
-		        entity.setSkin(skin);		       		        
-		        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
-		        entity.setHealth(entity.getMaxHealth());
-		        		        
-		        if (entity instanceof UnburiedEntity) {
-		        	((UnburiedEntity)entity).setSpellcasting();
-		        }
+
+				data.putInt("fire_aspect",        stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT));
+				data.putInt("sharpness",          stack.getEnchantmentLevel(Enchantments.SHARPNESS));
+				data.putInt("knockback",          stack.getEnchantmentLevel(Enchantments.KNOCKBACK));
+				data.putInt("bane_of_arthropods", stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS));
+				data.putInt("smite",              stack.getEnchantmentLevel(Enchantments.SMITE));
+				data.putInt("unbreaking",         stack.getEnchantmentLevel(Enchantments.UNBREAKING));
+				data.putInt("corrosive",          0);
+
+				entity.tame(player);
+				entity.setLimitedLife(limitLife);
+				entity.setSkin(skin);
+				entity.setHealth(entity.getMaxHealth());
+
+				if (entity instanceof UnburiedEntity) {
+					((UnburiedEntity)entity).setSpellcasting();
+				}
 			}
 		}
 	}
@@ -200,15 +199,7 @@ public class FURWeaponItem extends SwordItem {
      */
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		int[] enchantment_list = new int[10];		
-		enchantment_list[0] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.FIRE_ASPECT);
-		enchantment_list[1] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.SHARPNESS);
-		enchantment_list[2] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.KNOCKBACK);
-		enchantment_list[3] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
-		enchantment_list[4] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.SMITE);
-		//enchantment_list[7] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
-		enchantment_list[8] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.UNBREAKING);
-		//enchantment_list[9] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.DOMINION);
+		ItemStack stack = player.getItemInHand(hand);
 		
     	/*if (player.getItemInHand(hand).getItem() == FURItemRegistry.SLUDGE_WAND && level instanceof ServerWorld) { 
     		BlockPos blockpos = new BlockPos(player.getX() + player.getLookAngle().x, player.getY() + 0.2F, player.getZ() + player.getLookAngle().z);
@@ -254,24 +245,19 @@ public class FURWeaponItem extends SwordItem {
 			return InteractionResultHolder.pass(player.getItemInHand(hand));
 		}*/
         
-        if (player.getItemInHand(hand).getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && level instanceof ServerLevel) {
-            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
+        if (stack.getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && level instanceof ServerLevel) {
+            for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.UNBURIED.get(), FURConfig.Unburied_Lifespan.get() * 20, 0);
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.UNBURIED.get(), FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
-            
-            player.getItemInHand(hand).hurtAndBreak(63, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            //player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            //player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
+
+            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
             player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            //player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            //player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            //player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-			
-        	return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}
+
+            return InteractionResultHolder.pass(stack);
+        }
         
         /*if (player.getItemInHand(hand).getItem() == FURItemRegistry.SCARAB_SCEPTER && level instanceof ServerWorld) {       
         	Vector3d lookVec = player.getLookAngle();
