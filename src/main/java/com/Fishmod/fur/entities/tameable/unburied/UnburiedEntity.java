@@ -84,7 +84,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	private int knockback;
 	protected int bane_of_arthropods;
 	protected int smite;
-	private int lifesteal;
 	protected int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
@@ -143,10 +142,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     	return (0.5f * this.sharpness + 0.5f)
 				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
 				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
-    }
-    
-    public int getLifestealLevel() {
-    	return this.lifesteal;
     }
     
     public void setSpellcasting() {
@@ -400,7 +395,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     	this.knockback = compound.getInt("knockback");
     	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
     	this.smite = compound.getInt("fire_aspect");
-    	this.lifesteal = compound.getInt("lifesteal");
     	this.corrosive = compound.getInt("corrosive");
     	this.unbreaking = compound.getInt("unbreaking");  
     	this.setSkin(compound.getInt("Variant"));
@@ -419,7 +413,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         compound.putInt("knockback", this.knockback);
         compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
         compound.putInt("smite", this.smite);
-        compound.putInt("lifesteal", this.lifesteal);
         compound.putInt("corrosive", this.corrosive);
         compound.putInt("unbreaking", this.unbreaking);     
         compound.putInt("Variant", this.getSkin());

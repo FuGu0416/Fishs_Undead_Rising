@@ -73,8 +73,6 @@ public class MoltenHammerItem extends FURWeaponItem {
 		enchantment_list[2] = stack.getEnchantmentLevel(Enchantments.KNOCKBACK);
 		enchantment_list[3] = stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
 		enchantment_list[4] = stack.getEnchantmentLevel(Enchantments.SMITE);
-		//enchantment_list[5] = stack.getEnchantmentLevel(FUREnchantmentRegistry.LIFESTEAL);
-		//enchantment_list[6] = stack.getEnchantmentLevel(FUREnchantmentRegistry.POISONOUS);
 		//enchantment_list[7] = stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
 		enchantment_list[8] = stack.getEnchantmentLevel(Enchantments.UNBREAKING);
 		//enchantment_list[9] = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION);

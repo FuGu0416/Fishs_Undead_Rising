@@ -77,8 +77,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	private int knockback;
 	private int bane_of_arthropods;
 	private int smite;
-	private int lifesteal;
-	private int poisonous;
 	private int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
@@ -130,10 +128,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	return (0.5f * this.sharpness + 0.5f)
 				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
 				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
-    }
-    
-    public int getLifestealLevel() {
-    	return this.lifesteal;
     }
     
     public int getSkin() {
@@ -212,9 +206,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	                int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
 	                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
 	            }
-	            
-	            if(this.poisonous > 0)
-	    			((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, this.poisonous - 1));
 	            
 	            if(this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, this.corrosive - 1));
@@ -332,8 +323,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	this.knockback = compound.getInt("knockback");
     	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
     	this.smite = compound.getInt("fire_aspect");
-    	this.lifesteal = compound.getInt("lifesteal");
-    	this.poisonous = compound.getInt("poisonous");
     	this.corrosive = compound.getInt("corrosive");
     	this.unbreaking = compound.getInt("unbreaking");   
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get() + ((float)this.unbreaking * 2.0F));
@@ -352,8 +341,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         compound.putInt("knockback", this.knockback);
         compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
         compound.putInt("smite", this.smite);
-        compound.putInt("lifesteal", this.lifesteal);
-        compound.putInt("poisonous", this.poisonous);
         compound.putInt("corrosive", this.corrosive);
         compound.putInt("unbreaking", this.unbreaking);     
     }

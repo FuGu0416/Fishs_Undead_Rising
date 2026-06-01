@@ -180,7 +180,6 @@ public class FURWeaponItem extends SwordItem {
 				data.putInt("bane_of_arthropods", enchantmentIn[3]);
 				data.putInt("smite", enchantmentIn[4]);
 				data.putInt("unbreaking", enchantmentIn[8]);
-				data.putInt("lifesteal", enchantmentIn[5]);
 				data.putInt("corrosive", enchantmentIn[7]);
 		    	
 		    	entity.tame(player);
@@ -207,7 +206,6 @@ public class FURWeaponItem extends SwordItem {
 		enchantment_list[2] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.KNOCKBACK);
 		enchantment_list[3] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
 		enchantment_list[4] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.SMITE);
-		//enchantment_list[5] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.LIFESTEAL);
 		//enchantment_list[7] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
 		enchantment_list[8] = player.getItemInHand(hand).getEnchantmentLevel(Enchantments.UNBREAKING);
 		//enchantment_list[9] = player.getItemInHand(hand).getEnchantmentLevel(FUREnchantmentRegistry.DOMINION);

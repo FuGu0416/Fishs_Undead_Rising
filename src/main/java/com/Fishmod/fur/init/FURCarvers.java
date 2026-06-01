@@ -1,5 +1,7 @@
 package com.Fishmod.fur.init;
 
+import com.Fishmod.fur.mod_LavaCow;
+
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -17,7 +19,7 @@ public class FURCarvers {
 
     public static final ResourceKey<ConfiguredWorldCarver<?>> LUMINOUS_GROTTO =
         ResourceKey.create(Registries.CONFIGURED_CARVER,
-            new ResourceLocation("fur", "luminous_grotto"));
+            new ResourceLocation(mod_LavaCow.MODID, "luminous_grotto"));
 
     public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
         HolderSet<Block> replaceables = context.lookup(Registries.BLOCK)

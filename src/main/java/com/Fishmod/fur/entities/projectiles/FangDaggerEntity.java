@@ -44,7 +44,6 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	public int knockback = 0;
 	public int bane_of_arthropods = 0;
 	public int smite = 0;
-	public int lifesteal = 0;
 	public int corrosive = 0;
 	public int baseDamage = 0;
 	
@@ -143,12 +142,6 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 
         	   if (this.getRenderItem().getItem() == FURItemRegistry.VESPA_DAGGER.get()) {
         		   livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 8 * 20, 1));
-        	   }
-
-        	   if (this.lifesteal > 0) {
-        		   if (entity1 instanceof LivingEntity) {
-        			   ((LivingEntity)entity1).heal((this.baseDamage + this.getBonusDamage(entity)) * this.lifesteal * 0.05F);
-        		   }
         	   }
 
         	   if (!this.level().isClientSide && entity1 instanceof LivingEntity) {

@@ -338,22 +338,6 @@ public class FURServerEvents {
 		if ((Armor_Chitin_lvl >= 2) && source.is(DamageTypeTags.IS_FALL)) {
 			event.setAmount(event.getAmount() * 0.5F);
 		}
-		
-		if (Attacker != null) {		
-			/*if (Attacker instanceof LilSludgeEntity) {
-				LivingEntity Owner = ((LilSludgeEntity)Attacker).getOwner();					
-				if(Owner != null)
-					Owner.heal(event.getAmount() * ((LilSludgeEntity)Attacker).getLifestealLevel() * 0.05f);
-			} else if (Attacker instanceof UnburiedEntity) {
-				LivingEntity Owner = ((UnburiedEntity)Attacker).getOwner();				
-				if(Owner != null)
-					Owner.heal(event.getAmount() * ((UnburiedEntity)Attacker).getLifestealLevel() * 0.05f);
-			} else if (Attacker instanceof ScarabEntity) {
-				LivingEntity Owner = ((ScarabEntity)Attacker).getOwner();				
-				if(Owner != null)
-					Owner.heal(event.getAmount() * ((ScarabEntity)Attacker).getLifestealLevel() * 0.05f);
-			}*/
-		}
     	
     	// Molten Armor full-set bonus: 50% fire damage reduction
     	if (source.is(DamageTypeTags.IS_FIRE)) {
