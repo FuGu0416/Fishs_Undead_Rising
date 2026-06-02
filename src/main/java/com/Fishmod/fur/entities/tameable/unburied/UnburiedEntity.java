@@ -162,7 +162,12 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     protected boolean isCommandable() {
     	return false;
     }
-    
+
+    @Override
+    public boolean isSummonedMinion() {
+    	return true;
+    }
+
     @Override
     public double getMyRidingOffset() {
         return this.isBaby() ? 0.0D : -0.25D;

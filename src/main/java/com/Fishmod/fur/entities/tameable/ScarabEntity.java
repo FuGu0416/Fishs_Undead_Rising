@@ -142,7 +142,12 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     protected boolean isCommandable() {
     	return false;
     }
-	
+
+	@Override
+    public boolean isSummonedMinion() {
+    	return true;
+    }
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.

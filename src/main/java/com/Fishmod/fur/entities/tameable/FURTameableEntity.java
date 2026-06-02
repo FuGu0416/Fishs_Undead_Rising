@@ -113,42 +113,65 @@ public class FURTameableEntity extends TamableAnimal {
     protected boolean isCommandable() {
     	return true;
     }
-    
+
     protected boolean canSitCondition() {
     	return true;
     }
+
+    /**
+     * True for temporary, player-summoned minions (e.g. Scarab, Shroomling, Unburied)
+     * that should be dismissed when their summoner logs off instead of lingering in the
+     * world. Permanent tamed pets return false so they persist across sessions.
+     */
+    public boolean isSummonedMinion() {
+    	return false;
+    }
     
-    public void doSitCommand(Player playerIn) {    	
+    public void doSitCommand(Player playerIn) {
+    	this.switchState(FURTameableEntity.State.SITTING, playerIn);
+    }
+
+    public void doFollowCommand(Player playerIn) {
+    	this.switchState(FURTameableEntity.State.FOLLOWING, playerIn);
+    }
+
+    public void doWanderCommand(Player playerIn) {
+    	this.switchState(FURTameableEntity.State.WANDERING, playerIn);
+    }
+
+    /**
+     * Centralized wandering/sitting/following transition. Drops whichever movement
+     * goal is currently active, stops navigation, then installs the goal that matches
+     * {@code newState}. The movement goal is rebuilt through {@link #wanderGoal()} /
+     * {@link #followGoal()} so subclasses can vary it with the entity's current state
+     * (e.g. baby vs. adult). Pass a non-null player to echo the state-change message.
+     */
+    protected void switchState(FURTameableEntity.State newState, @Nullable Player playerIn) {
     	this.goalSelector.removeGoal(this.wander);
     	this.goalSelector.removeGoal(this.follow);
-        this.jumping = false;
-        this.getNavigation().stop();
-		this.state = FURTameableEntity.State.SITTING;		
-		this.setInSittingPose(true);
-		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.fur.sitting", this.getName()), true);
-    }
-    
-    public void doFollowCommand(Player playerIn) {
-    	this.goalSelector.removeGoal(this.wander);
-		this.follow = this.followGoal();
-		this.goalSelector.addGoal(6, this.follow);
-		this.getNavigation().stop();
-		this.state = FURTameableEntity.State.FOLLOWING;
-		this.setInSittingPose(false);
-		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.fur.following", this.getName()), true);
-    }
-    
-    public void doWanderCommand(Player playerIn) {
-		this.goalSelector.removeGoal(this.follow);
-		this.wander = this.wanderGoal();
-		this.goalSelector.addGoal(7, this.wander);
-		this.getNavigation().stop();
-		this.state = FURTameableEntity.State.WANDERING;
-		this.setInSittingPose(false);
-		if (playerIn != null)
-			playerIn.displayClientMessage(Component.translatable("command.fur.wandering", this.getName()), true);
+    	this.getNavigation().stop();
+    	this.state = newState;
+
+    	switch (newState) {
+    		case SITTING:
+    			this.jumping = false;
+    			this.setInSittingPose(true);
+    			break;
+    		case FOLLOWING:
+    			this.follow = this.followGoal();
+    			this.goalSelector.addGoal(6, this.follow);
+    			this.setInSittingPose(false);
+    			break;
+    		case WANDERING:
+    		default:
+    			this.wander = this.wanderGoal();
+    			this.goalSelector.addGoal(7, this.wander);
+    			this.setInSittingPose(false);
+    			break;
+    	}
+
+    	if (playerIn != null)
+    		playerIn.displayClientMessage(Component.translatable(newState.message, this.getName()), true);
     }
     
     protected Goal wanderGoal() {
@@ -376,15 +399,7 @@ public class FURTameableEntity extends TamableAnimal {
 	@Override
     public void addAdditionalSaveData(CompoundTag compound) {
        super.addAdditionalSaveData(compound);
-       if(this.state.equals(FURTameableEntity.State.WANDERING)) {
-    	    compound.putByte("state", (byte)0);
-		}
-		else if(this.state.equals(FURTameableEntity.State.SITTING)) {
-			compound.putByte("state", (byte)1);
-		}
-		else if(this.state.equals(FURTameableEntity.State.FOLLOWING)) {
-			compound.putByte("state", (byte)2);
-		}
+       compound.putByte("state", this.state.saveId);
     }
 
     /**
@@ -393,25 +408,43 @@ public class FURTameableEntity extends TamableAnimal {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
        super.readAdditionalSaveData(compound);
-       switch(compound.getByte("state")) {
-	       case (byte)0:
-	       		this.doWanderCommand(null);
-	  			break;
-	       case (byte)1:
+       switch(FURTameableEntity.State.byId(compound.getByte("state"))) {
+	       case SITTING:
 	       		this.doSitCommand(null);
 	    	   	break;
-	       case (byte)2:
+	       case FOLLOWING:
 	       		this.doFollowCommand(null);
 	       	   	break;
-	   		default:
-	   			break;
+	       case WANDERING:
+	       default:
+	       		this.doWanderCommand(null);
+	  			break;
        }
     }
-	
+
     static enum State
     {
-        SITTING,
-        WANDERING,
-        FOLLOWING;
+        SITTING((byte)1, "command.fur.sitting"),
+        WANDERING((byte)0, "command.fur.wandering"),
+        FOLLOWING((byte)2, "command.fur.following");
+
+        /** Persisted NBT id; kept stable for save compatibility. */
+        private final byte saveId;
+        /** Translation key shown when the owner toggles into this state. */
+        private final String message;
+
+        State(byte saveId, String message) {
+            this.saveId = saveId;
+            this.message = message;
+        }
+
+        static FURTameableEntity.State byId(byte id) {
+            for (FURTameableEntity.State state : values()) {
+                if (state.saveId == id) {
+                    return state;
+                }
+            }
+            return WANDERING;
+        }
     }
 }

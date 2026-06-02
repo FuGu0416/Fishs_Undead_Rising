@@ -1,6 +1,8 @@
 package com.Fishmod.fur.events;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
@@ -28,6 +30,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -78,6 +81,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -1000,5 +1004,37 @@ public class FURServerEvents {
 		if (event.getEntity() != null && Armor_Famine_lvl >= 2) {
 			event.getEntity().heal(1.0F);
 		}
+    }
+
+    /**
+     * Dismiss player-summoned minions (Scarab, Shroomling, Unburied, ...) when their
+     * summoner logs off, so temporary summons do not linger in the world. Permanent
+     * tamed pets are left untouched (isSummonedMinion() == false).
+     */
+    @SubscribeEvent
+    public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+    	MinecraftServer server = event.getEntity().getServer();
+    	if (server == null) {
+    		return;
+    	}
+
+    	UUID ownerId = event.getEntity().getUUID();
+    	List<FURTameableEntity> toDiscard = new ArrayList<>();
+
+    	for (ServerLevel level : server.getAllLevels()) {
+    		for (Entity entity : level.getAllEntities()) {
+    			if (entity instanceof FURTameableEntity minion
+    					&& minion.isSummonedMinion()
+    					&& ownerId.equals(minion.getOwnerUUID())) {
+    				toDiscard.add(minion);
+    			}
+    		}
+    	}
+
+    	// Discard after iterating to avoid mutating the entity list mid-traversal.
+    	for (FURTameableEntity minion : toDiscard) {
+    		minion.level().broadcastEntityEvent(minion, (byte)11);
+    		minion.discard();
+    	}
     }
 }

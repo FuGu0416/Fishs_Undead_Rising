@@ -111,10 +111,14 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
+        // Static defaults only (must match the FURConfig defaults): config values cannot be
+        // read here, since createAttributes() runs at registration before configs are loaded
+        // (and crashes datagen otherwise). The real values are applied from config in
+        // finalizeSpawn() and readAdditionalSaveData().
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
-        		.add(Attributes.MAX_HEALTH, FURConfig.Shroomling_Health.get())
-        		.add(Attributes.ATTACK_DAMAGE, FURConfig.Shroomling_Attack.get());
+        		.add(Attributes.MAX_HEALTH, 20.0D)
+        		.add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -145,6 +149,11 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     protected boolean isCommandable() {
     	return false;
+    }
+
+	@Override
+    public boolean isSummonedMinion() {
+    	return true;
     }
 
     /**

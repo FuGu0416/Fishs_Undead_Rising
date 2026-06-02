@@ -294,37 +294,7 @@ public class FlyingMobEntity extends FURTameableEntity {
     	}
         return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
-       
-    class WanderGoal extends Goal {
-        WanderGoal() {
-           this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
 
-        public boolean canUse() {
-           return FlyingMobEntity.this.navigation.isDone() && FlyingMobEntity.this.random.nextInt(10) == 0;
-        }
-
-        public boolean canContinueToUse() {
-           return FlyingMobEntity.this.navigation.isInProgress();
-        }
-
-        public void start() {
-           Vec3 vector3d = this.findPos();
-           if (vector3d != null) {
-              FlyingMobEntity.this.navigation.moveTo(FlyingMobEntity.this.navigation.createPath(new BlockPos((int)vector3d.x, (int)vector3d.y, (int)vector3d.z), 1), 1.0D);
-           }
-
-        }
-
-        @Nullable
-        private Vec3 findPos() {
-           Vec3 vector3d;
-           vector3d = FlyingMobEntity.this.getViewVector(0.0F);
-           Vec3 vector3d2 = HoverRandomPos.getPos(FlyingMobEntity.this, 8, 7, vector3d.x, vector3d.z, ((float)Math.PI / 2F), 2, 1);
-           return vector3d2 != null ? vector3d2 : AirAndWaterRandomPos.getPos(FlyingMobEntity.this, 8, 4, -2, vector3d.x, vector3d.y, vector3d.z);
-        }
-	}
-    
     static class AIRandomFly extends Goal {
         private final FlyingMobEntity parentEntity;
         private final double speed;
@@ -339,6 +309,13 @@ public class FlyingMobEntity extends FURTameableEntity {
         private int stuckTicks = 0;
         private static final int STUCK_THRESHOLD = 20; // Lowered: escape sooner
         private static final double MIN_MOVE_SQ = 0.01D; // Raised: ignore micro-jitter from wall lerp
+
+        // Backoff after a failed target search. pickNewTarget() runs a 10-candidate
+        // ray-sampling scan; when boxed in (every candidate rejected) MoveControl
+        // parks at WAIT, which would otherwise make tick() re-run that scan every
+        // single tick. This delays the retry so the scan can't thrash the CPU.
+        private int repickCooldown = 0;
+        private static final int REPICK_FAIL_COOLDOWN = 10;
 
         // Ground Y cache (~5 sec refresh)
         private double cachedGroundY = Double.NaN;
@@ -369,13 +346,19 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public boolean canContinueToUse() {
-            return !this.parentEntity.isVehicle();
+            // Mirror the runtime conditions of canUse() so the goal releases the
+            // MOVE flag promptly when the mob gains a target or is told to sit,
+            // instead of holding it until another goal preempts it.
+            return !this.parentEntity.isVehicle()
+                    && this.parentEntity.getTarget() == null
+                    && !this.parentEntity.isInSittingPose();
         }
 
         @Override
         public void start() {
             this.lastPos = this.parentEntity.position();
             this.stuckTicks = 0;
+            this.repickCooldown = 0;
             this.pickNewTarget();
         }
 
@@ -394,6 +377,12 @@ public class FlyingMobEntity extends FURTameableEntity {
             if (this.stuckTicks > STUCK_THRESHOLD) {
                 this.escape(current);
                 this.stuckTicks = 0;
+                return;
+            }
+
+            // Back off after a failed search instead of re-scanning every tick
+            if (this.repickCooldown > 0) {
+                this.repickCooldown--;
                 return;
             }
 
@@ -437,10 +426,9 @@ public class FlyingMobEntity extends FURTameableEntity {
             // ── Phase 1: upward burst ────────────────────────────────────────
             // Check 4 blocks directly above. If they are all clear (and not lava),
             // inject a direct upward impulse, bypassing MoveControl's lerp entirely.
-            BlockPos above = this.parentEntity.blockPosition();
             boolean canGoUp = true;
             for (int i = 1; i <= 4; i++) {
-                BlockPos check = above.above(i);
+                BlockPos check = origin.above(i);
                 if (!level.isEmptyBlock(check)
                         || level.getBlockState(check).is(net.minecraft.world.level.block.Blocks.LAVA)) {
                     canGoUp = false;
@@ -537,7 +525,10 @@ public class FlyingMobEntity extends FURTameableEntity {
                         candidate.x, candidate.y, candidate.z, 180.0F, 20.0F);
                 return;
             }
-            // No valid target found this tick; keep current target until next tick.
+            // No valid target found (likely boxed in): back off before retrying so
+            // this scan does not run every tick. Stuck detection still escalates to
+            // escape() independently if the mob is also physically pinned.
+            this.repickCooldown = REPICK_FAIL_COOLDOWN;
         }
 
         @Nullable
