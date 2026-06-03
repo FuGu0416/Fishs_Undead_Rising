@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.data.providers.FURBannerPatternTagsProvider;
+import com.Fishmod.fur.item.BeastcallHornItem;
 import com.Fishmod.fur.item.CactusFruitItem;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.DiseasedBreadItem;
@@ -108,6 +109,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ACIDIC_HEART = DEF_REG.register("acidic_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 0));
 	public static final RegistryObject<Item> FOUL_BRISTLE = DEF_REG.register("foul_bristle", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FOUL_HIDE = DEF_REG.register("foul_hide", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SPORE_GEL = DEF_REG.register("spore_gel", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FAMINE_ARMOR_HELMET = DEF_REG.register("famine_armor_helmet", () -> new FamineArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FAMINE_ARMOR_CHESTPLATE = DEF_REG.register("famine_armor_chestplate", () -> new FamineArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FAMINE_ARMOR_LEGGINGS = DEF_REG.register("famine_armor_leggings", () -> new FamineArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE)));
@@ -115,6 +117,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SCYTHE_CLAW = DEF_REG.register("scythe_claw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> REAPERS_SCYTHE = DEF_REG.register("reapers_scythe", () -> new FURWeaponItem(new Item.Properties(), Tiers.DIAMOND, 8, -3.1F, 1.0D, FURItemRegistry.SCYTHE_CLAW.get(), true));
 	public static final RegistryObject<Item> FAMINE = DEF_REG.register("famine", () -> new FURWeaponItem(new Item.Properties(), Tiers.DIAMOND, 0, -1.2F, -1.0D, FURItemRegistry.SCYTHE_CLAW.get(), true));
+	public static final RegistryObject<Item> BEAST_CLAW = DEF_REG.register("beast_claw", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.DIAMOND, 3, -2.4F, 0.0D, FURItemRegistry.SCYTHE_CLAW.get(), false));
+	public static final RegistryObject<Item> BEASTCALL_HORN = DEF_REG.register("beastcall_horn", () -> new BeastcallHornItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> IMP_HORN = DEF_REG.register("imp_horn", () -> new FURItem(new Item.Properties()));
 	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
@@ -208,7 +212,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("fur:stained_kings_crown");
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
 	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
-	public static final RegistryObject<Item> BEAST_CLAW = new FURWeaponItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties().rarity(Rarity.EPIC)), "fur:beast_claw", ItemTier.DIAMOND, 3, -2.4F, FURItemRegistry.SCYTHE_CLAW);
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties()).setRegistryName("fur:sinister_whetstone");
 	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties())).setRegistryName("fur:illager_nose");
@@ -263,6 +266,7 @@ public class FURItemRegistry {
     	spawnEgg("lamprey", FUREntityRegistry.LAMPREY, 0x0A1822, 0xA0C3CF);
     	spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
     	spawnEgg("raven", FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E);
+    	spawnEgg("ghostray", FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD);
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));

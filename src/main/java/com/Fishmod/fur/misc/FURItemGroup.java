@@ -49,6 +49,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.FEATHER_BLACK.get());
             	output.accept(FURItemRegistry.HYPHAE.get());
             	output.accept(FURItemRegistry.POISON_SPORE.get());
+            	output.accept(FURItemRegistry.SPORE_GEL.get());
             	output.accept(FURItemRegistry.GHOUL_CLAW.get());
             	output.accept(FURItemRegistry.VESPA_CARAPACE.get());
             	output.accept(FURItemRegistry.POISON_STINGER.get());
@@ -99,6 +100,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
             	output.accept(FURItemRegistry.FAMINE.get());
+            	output.accept(FURItemRegistry.BEAST_CLAW.get());
+            	output.accept(FURItemRegistry.BEASTCALL_HORN.get());
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
             	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());  
             	output.accept(FURItemRegistry.SOULFORGED_AXE.get());

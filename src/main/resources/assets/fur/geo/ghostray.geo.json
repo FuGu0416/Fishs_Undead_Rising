@@ -1,0 +1,49 @@
+{
+	"__comment": "PLACEHOLDER geo. The 1.16.5 Ghost Ray used a hand-coded Java model (GhostRayModel) that cannot be auto-converted to GeckoLib. This is a rough manta-ray stand-in (flat body + two wings + tail) mapped onto the ported 128x128 ghostray texture. Replace with a Blockbench export of geometry.ghostray. See PLACEHOLDERS.md item 4.",
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.ghostray",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 2,
+				"visible_bounds_offset": [0, 0, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-6, 0, -6], "size": [12, 1, 12], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "wing_right",
+					"parent": "body",
+					"pivot": [-6, 0, 0],
+					"cubes": [
+						{"origin": [-14, 0, -4], "size": [8, 1, 8], "uv": [0, 14]}
+					]
+				},
+				{
+					"name": "wing_left",
+					"parent": "body",
+					"pivot": [6, 0, 0],
+					"cubes": [
+						{"origin": [6, 0, -4], "size": [8, 1, 8], "uv": [0, 24]}
+					]
+				},
+				{
+					"name": "tail",
+					"parent": "body",
+					"pivot": [0, 0, 6],
+					"cubes": [
+						{"origin": [-1, 0, 6], "size": [2, 1, 10], "uv": [0, 34]}
+					]
+				}
+			]
+		}
+	]
+}

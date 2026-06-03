@@ -17,8 +17,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -68,6 +71,32 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("shroomling.attack");
 
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
+	/** Index into {@link #SPORE_EFFECTS} of the spore effect this shroomling carries. Synced so the client can tint the ambient particles. */
+	private static final EntityDataAccessor<Integer> SPORE_EFFECT = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
+
+	/**
+	 * The pool of spore effects a wild shroomling may carry. Each entry bakes in its own
+	 * amplifier and duration. When an untamed shroomling is killed, its carried effect is
+	 * released onto the killer (see {@link #die}). Kept as a fixed table so the synced index
+	 * stays stable across save/load.
+	 */
+	private static final java.util.function.Supplier<MobEffectInstance>[] SPORE_EFFECTS = makeSporeEffects();
+
+	@SuppressWarnings("unchecked")
+	private static java.util.function.Supplier<MobEffectInstance>[] makeSporeEffects() {
+		return new java.util.function.Supplier[] {
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.POISON, 7 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 8 * 20, 1),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.BLINDNESS, 6 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.WEAKNESS, 10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.HUNGER, 12 * 20, 1),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 8 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 6 * 20, 0),
+		};
+	}
+
 	private int limitedLifeTicks;
 	private int fire_aspect;
 	private int sharpness;
@@ -89,7 +118,30 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+		this.entityData.define(SPORE_EFFECT, Integer.valueOf(0));
     }
+
+	public int getSporeEffect() {
+		return this.entityData.get(SPORE_EFFECT).intValue();
+	}
+
+	public void setSporeEffect(int index) {
+		this.entityData.set(SPORE_EFFECT, Mth.clamp(index, 0, SPORE_EFFECTS.length - 1));
+	}
+
+	/** Fresh instance of the carried spore effect, or {@code null} if the index is somehow out of range. */
+	@Nullable
+	private MobEffectInstance buildSporeEffect() {
+		int i = this.getSporeEffect();
+		return (i >= 0 && i < SPORE_EFFECTS.length) ? SPORE_EFFECTS[i].get() : null;
+	}
+
+	public static boolean checkShroomlingSpawnRules(EntityType<? extends ShroomlingEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+		// Luminous Undergrove is a naturally-lit cave biome, so the usual darkness check is
+		// skipped here (mirrors MycosisEntity). Shroomling only spawns in that biome anyway.
+		return world.getDifficulty() != Difficulty.PEACEFUL
+				&& FURTameableEntity.checkMobSpawnRules(type, world, reason, pos, rand);
+	}
 
     @Override
     protected void registerGoals() {
@@ -153,7 +205,9 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 
 	@Override
     public boolean isSummonedMinion() {
-    	return true;
+    	// Shroomling is now a wild, tameable neutral mob rather than a player summon, so it
+    	// must NOT be dismissed on owner logout — a tamed one should persist like any pet.
+    	return false;
     }
 
     /**
@@ -179,6 +233,23 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     	if (!FURConfig.SunScreen_Mode.get() && !(this.getOwner() instanceof Player) && this.isSunBurnTick()) {
     		this.setSecondsOnFire(8);
         }
+
+    	// Wisps of the carried spore effect drift off the cap, tinted to the effect's colour.
+    	if (this.level().isClientSide() && this.random.nextInt(6) == 0) {
+    		MobEffectInstance carried = this.buildSporeEffect();
+    		if (carried != null) {
+    			MobEffect effect = carried.getEffect();
+    			int color = effect.getColor();
+    			double r = ((color >> 16) & 0xFF) / 255.0D;
+    			double g = ((color >> 8) & 0xFF) / 255.0D;
+    			double b = (color & 0xFF) / 255.0D;
+    			this.level().addParticle(ParticleTypes.ENTITY_EFFECT,
+    					this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
+    					this.getY() + this.getBbHeight() * (0.6D + this.random.nextDouble() * 0.4D),
+    					this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
+    					r, g, b);
+    		}
+    	}
 
     	super.aiStep();
     }
@@ -247,6 +318,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Shroomling_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setSkin(this.random.nextInt(2));
+    	this.setSporeEffect(this.random.nextInt(SPORE_EFFECTS.length));
 
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
     }
@@ -321,6 +393,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
        super.readAdditionalSaveData(compound);
         this.setLimitedLife(compound.getInt("LifeTicks"));
         this.setSkin(compound.getInt("Variant"));
+        this.setSporeEffect(compound.getInt("SporeEffect"));
     	this.fire_aspect = compound.getInt("fire_aspect");
     	this.sharpness = compound.getInt("sharpness");
     	this.knockback = compound.getInt("knockback");
@@ -341,6 +414,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putInt("LifeTicks", this.limitedLifeTicks - this.tickCount);
         compound.putInt("Variant", getSkin());
+        compound.putInt("SporeEffect", this.getSporeEffect());
         compound.putInt("fire_aspect", this.fire_aspect);
         compound.putInt("sharpness", this.sharpness);
         compound.putInt("knockback", this.knockback);
@@ -358,6 +432,23 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public MobType getMobType() {
         return MobType.UNDEAD;
+    }
+
+    /**
+     * On death, a wild (untamed) shroomling bursts its spore sac: the carried effect is
+     * applied to whatever living entity killed it. Tamed shroomlings keep their spores to
+     * themselves.
+     */
+    @Override
+    public void die(DamageSource cause) {
+        if (!this.level().isClientSide() && !this.isTame()) {
+            MobEffectInstance carried = this.buildSporeEffect();
+            if (carried != null && cause.getEntity() instanceof LivingEntity killer) {
+                killer.addEffect(carried);
+            }
+        }
+
+        super.die(cause);
     }
 
     @Override

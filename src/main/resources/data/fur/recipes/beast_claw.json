@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "YDY"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:scythe_claw"
+        },
+        "Y": {
+            "item": "fur:foul_bristle"
+        },
+        "D": {
+            "tag": "forge:ingots/iron"
+        }
+    },
+    "result": {
+        "item": "fur:beast_claw"
+    }
+}

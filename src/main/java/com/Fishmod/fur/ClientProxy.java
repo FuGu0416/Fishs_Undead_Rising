@@ -26,6 +26,7 @@ import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.ParasiteRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
 import com.Fishmod.fur.client.renderer.entity.RavenRenderer;
+import com.Fishmod.fur.client.renderer.entity.GhostRayRenderer;
 import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarabRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarecrowRenderer;
@@ -111,6 +112,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GHOUL.get(), GhoulRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.RAVEN.get(), RavenRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.GHOSTRAY.get(), GhostRayRenderer::new);
 
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);

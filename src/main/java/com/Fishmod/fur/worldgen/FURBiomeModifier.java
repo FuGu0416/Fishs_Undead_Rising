@@ -5,6 +5,7 @@ import java.util.List;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURBiomesRegistry;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -45,7 +46,9 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_MUMMIFIED_COD = registerKey("add_mummified_cod");
 	public static final ResourceKey<BiomeModifier> ADD_GHOUL = registerKey("add_ghoul");
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
-	
+	public static final ResourceKey<BiomeModifier> ADD_SHROOMLING = registerKey("add_shroomling");
+	public static final ResourceKey<BiomeModifier> ADD_GHOSTRAY = registerKey("add_ghostray");
+
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
     }
@@ -102,7 +105,12 @@ public class FURBiomeModifier {
         addSpawn(context, ADD_GHOUL, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOUL.get(), 40, 4, 8));
         addSpawn(context, ADD_VESPA, biomes.getOrThrow(BiomeTags.IS_JUNGLE),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));   
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
+        addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
+        // Ghost Ray — End-only (TODO item 7: Overworld/Nether spawns removed).
+        addSpawn(context, ADD_GHOSTRAY, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOSTRAY.get(), 10, 1, 1));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

@@ -7,7 +7,7 @@
             "entries":[
                 {
                     "type":"item",
-                    "name":"minecraft:slime_ball",
+                    "name":"fur:spore_gel",
                     "weight":1,
                     "functions":[
                         {

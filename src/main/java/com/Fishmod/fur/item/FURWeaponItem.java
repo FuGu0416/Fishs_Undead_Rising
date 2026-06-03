@@ -49,6 +49,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
@@ -245,6 +246,23 @@ public class FURWeaponItem extends SwordItem {
 			return InteractionResultHolder.pass(player.getItemInHand(hand));
 		}*/
         
+        if (stack.getItem() == FURItemRegistry.BEAST_CLAW.get() && player.onGround()) {
+        	Vec3 lookVec = player.getLookAngle();
+
+        	if (player.getOffhandItem().getItem() == FURItemRegistry.BEAST_CLAW.get() && player.getMainHandItem().getItem() == FURItemRegistry.BEAST_CLAW.get()) {
+        		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 3 * 20, 0));
+        		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3 * 20, 0));
+        	}
+
+        	player.setDeltaMovement(player.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D));
+            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
+    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+    		});
+			player.getCooldowns().addCooldown(this, 120);
+
+			return InteractionResultHolder.pass(stack);
+		}
+
         if (stack.getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && level instanceof ServerLevel) {
             for (int i = 0; i < 4; ++i) {
                 BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
@@ -350,9 +368,9 @@ public class FURWeaponItem extends SwordItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (stack.getItem().equals(FURItemRegistry.BONE_SWORD.get())) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc", FURConfig.BoneSword_Damage.get(), FURConfig.BoneSword_DamageCap.get()).withStyle(ChatFormatting.YELLOW));
-		/*} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW)) {
-			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc0").withStyle(TextFormatting.YELLOW));
-			tooltip.add(new TranslationTextComponent(this.Tooltip + ".desc1").withStyle(TextFormatting.YELLOW));*/
+		} else if (stack.getItem().equals(FURItemRegistry.BEAST_CLAW.get())) {
+			tooltip.add(Component.translatable(this.getDescriptionId() + ".desc0").withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(this.getDescriptionId() + ".desc1").withStyle(ChatFormatting.YELLOW));
 		} else if (this.hasDesc)
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 	}
