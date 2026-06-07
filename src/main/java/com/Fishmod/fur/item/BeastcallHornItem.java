@@ -25,6 +25,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Beastcall Horn — a binding/recall tool for a single pet.
@@ -32,7 +34,7 @@ import net.minecraft.world.level.Level;
  * <ul>
  *   <li>Right-click a pet: bind that pet.</li>
  *   <li>Right-click the air (unbound): auto-bind the nearest owned pet.</li>
- *   <li>Right-click the air (bound): summon the bound pet to your side and set it to follow.</li>
+ *   <li>Right-click the air (bound): summon the bound pet to a clear spot at your side and sit it down.</li>
  *   <li>Sneak + right-click a pet: override the current binding with that pet.</li>
  *   <li>Sneak + right-click the air: clear the binding.</li>
  * </ul>
@@ -102,7 +104,7 @@ public class BeastcallHornItem extends Item {
         if (bound != null) {
             Entity entity = ((ServerLevel) level).getEntity(bound);
             if (entity instanceof TamableAnimal pet && pet.isAlive() && pet.isOwnedBy(player)) {
-                summonToSide(pet, player);
+                summonToSide(pet, player, level);
                 player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.summon", pet.getDisplayName()), true);
                 playHorn(player, SoundEvents.RAID_HORN.value(), 1.0F);
                 player.getCooldowns().addCooldown(this, 40);
@@ -126,16 +128,37 @@ public class BeastcallHornItem extends Item {
 
     // ── Behaviour helpers ────────────────────────────────────────────────────
 
-    /** Teleports the pet next to the player and switches it into follow mode. */
-    private static void summonToSide(TamableAnimal pet, Player player) {
-        double rx = player.getX() + (player.getRandom().nextDouble() - 0.5D) * 2.0D;
-        double rz = player.getZ() + (player.getRandom().nextDouble() - 0.5D) * 2.0D;
-        pet.moveTo(rx, player.getY(), rz, player.getYRot(), 0.0F);
+    /** Teleports the pet to a clear spot next to the player and sits it down. */
+    private static void summonToSide(TamableAnimal pet, Player player, Level level) {
+        Vec3 spot = findSafeSpot(level, player, pet);
+        pet.moveTo(spot.x, spot.y, spot.z, player.getYRot(), 0.0F);
         pet.getNavigation().stop();
-        pet.setOrderedToSit(false);
+        pet.setOrderedToSit(true);
         if (pet instanceof FURTameableEntity furPet) {
-            furPet.doFollowCommand(player);
+            furPet.doSitCommand(player);
         }
+    }
+
+    /**
+     * Picks a spot beside the player where the pet's whole body fits without overlapping
+     * blocks, so it can't be teleported into a wall and suffocate. Tries a ring of spots
+     * around the player and falls back to the player's own position (always clear, since
+     * the player is standing there).
+     */
+    private static Vec3 findSafeSpot(Level level, Player player, TamableAnimal pet) {
+        double w = pet.getBbWidth();
+        double h = pet.getBbHeight();
+        double y = player.getY();
+        for (int i = 0; i < 8; i++) {
+            double angle = (Math.PI * 2.0D / 8.0D) * i;
+            double x = player.getX() + Math.cos(angle) * 1.5D;
+            double z = player.getZ() + Math.sin(angle) * 1.5D;
+            AABB box = new AABB(x - w / 2.0D, y, z - w / 2.0D, x + w / 2.0D, y + h, z + w / 2.0D);
+            if (level.noCollision(pet, box)) {
+                return new Vec3(x, y, z);
+            }
+        }
+        return player.position();
     }
 
     @Nullable

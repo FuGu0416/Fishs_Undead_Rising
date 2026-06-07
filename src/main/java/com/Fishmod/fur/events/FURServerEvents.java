@@ -719,7 +719,7 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SILKY_SLUDGE, 4, 1, 12, 1));
+	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SPORE_GEL, 4, 1, 12, 1));
 	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
 
     		rareTrades.add((trader, rand) -> new MerchantOffer(

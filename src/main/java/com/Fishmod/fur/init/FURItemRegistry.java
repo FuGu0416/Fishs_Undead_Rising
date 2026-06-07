@@ -151,6 +151,10 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOST_JELLY = DEF_REG.register("ghost_jelly", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.SLOW_FALLING, 6*20, 2), 1.0F).build()), UseAnim.EAT, 1));
 	public static final RegistryObject<Item> MAGMACHO = DEF_REG.register("magmacho", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(1.2F).alwaysEat().effect(() -> new MobEffectInstance(FUREffectRegistry.IMMOLATION.get(), 30*20, 1), 1.0F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10*20, 1), 1.0F).build()), UseAnim.EAT, 0));
 	public static final RegistryObject<Item> UNDERTAKER_SHOVEL = DEF_REG.register("undertaker_shovel", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
+	public static final RegistryObject<Item> ANKH_SCEPTER = DEF_REG.register("ankh_scepter", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
+	public static final RegistryObject<Item> FUNGAL_STAFF = DEF_REG.register("fungal_staff", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
+	public static final RegistryObject<Item> FROZEN_GRIP = DEF_REG.register("frozen_grip", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
+	public static final RegistryObject<Item> SLUDGE_WAND = DEF_REG.register("sludge_wand", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.SPORE_GEL.get(), true));
 	public static final RegistryObject<Item> SHRIEK_CORD = DEF_REG.register("shriek_cord", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> PTERA_WING_RAW = DEF_REG.register("ptera_wing_raw", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).meat().effect(() -> new MobEffectInstance(MobEffects.HUNGER, 30*20, 2), 0.8F).build()), 64, UseAnim.EAT, 0));
 	public static final RegistryObject<Item> PTERA_WING_COOKED = DEF_REG.register("ptera_wing_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build()), 64, UseAnim.EAT, 0));
@@ -165,6 +169,9 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> EMBLEM_OF_KING = DEF_REG.register("emblem_of_king", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> SKELETONKING_MACE = DEF_REG.register("skeletonking_mace", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.DIAMOND, 12, -3.2F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), false));
 	public static final RegistryObject<Item> ANCIENT_AMBER = DEF_REG.register("ancient_amber", () -> new Item(new Item.Properties()));
+	// Declared after ANCIENT_AMBER on purpose: its supplier calls ANCIENT_AMBER.get() (repair material),
+	// and DeferredRegister runs suppliers in declaration order, so the repair item must register first.
+	public static final RegistryObject<Item> SCARAB_SCEPTER = DEF_REG.register("scarab_scepter", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.ANCIENT_AMBER.get(), true));
 	public static final RegistryObject<Item> ENIGMOTH_LARVA_RAW = DEF_REG.register("enigmoth_larva_raw", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.3F).effect(() -> new MobEffectInstance(FUREffectRegistry.VOID_DUST.get(), 20*20, 3), 0.3F).build())));
 	public static final RegistryObject<Item> ENIGMOTH_LARVA_COOKED = DEF_REG.register("enigmoth_larva_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
 	public static final RegistryObject<Item> USHABTI = DEF_REG.register("ushabti", () -> new Item(new Item.Properties()));
@@ -199,8 +206,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("fur:green_bacon_and_eggs");
 	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties()).setRegistryName("fur:pigboarhide");
-	public static final RegistryObject<Item> SILKY_SLUDGE = new Item(new Item.Properties()).setRegistryName("fur:silky_sludge");
-	public static final RegistryObject<Item> SLUDGE_WAND = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "fur:sludge_wand", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.SILKY_SLUDGE);
 	public static final RegistryObject<Item> SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties())).setRegistryName("fur:swinearmor_helmet");
 	public static final RegistryObject<Item> SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties())).setRegistryName("fur:swinearmor_chestplate");
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
@@ -219,9 +224,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> PHEROMONE_GLAND = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("fur:pheromone_gland");
 	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("fur:charming_catalyst");
 	public static final RegistryObject<Item> PARASITE_OVUM = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 12 * 20, 0), 0.8F).build())).setRegistryName("fur:parasite_ovum");
-	public static final RegistryObject<Item> ANKH_SCEPTER = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:ankh_scepter", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
-	public static final RegistryObject<Item> FUNGAL_STAFF = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:fungal_staff", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);
-	public static final RegistryObject<Item> FROZEN_GRIP = new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), "fur:frozen_grip", ItemTier.IRON, 2, -3.0F, FURItemRegistry.HATRED_SHARD);	
 	*/
 	
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));

@@ -56,6 +56,8 @@ public class FURPlacedFeatures {
             key("luminous_filament");
     public static final ResourceKey<PlacedFeature> LARGE_GLOW_SHROOM =
             key("large_glow_shroom");
+    public static final ResourceKey<PlacedFeature> GIANT_GLIMMERCAP =
+            key("giant_glimmercap");
     public static final ResourceKey<PlacedFeature> LAKE_WATER =
             key("lake_water");
     public static final ResourceKey<PlacedFeature> SMALL_POOL =
@@ -239,6 +241,37 @@ public class FURPlacedFeatures {
         context.register(LARGE_GLOW_SHROOM,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LARGE_GLOW_SHROOM),
+                        List.of(
+                                CountPlacement.of(180),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BlockPredicateFilter.forPredicate(
+                                        BlockPredicate.matchesBlocks(
+                                                new BlockPos(0, -1, 0),
+                                                FURBlockRegistry.MYCELIAL_MAT.get())),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Giant Glimmercap (tree) ────────────────────────────────────
+        // Same placement strategy as the large glow shroom: scan to a mat-covered
+        // cave floor, then grow the flat-capped huge mushroom there.
+        context.register(GIANT_GLIMMERCAP,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.GIANT_GLIMMERCAP),
                         List.of(
                                 CountPlacement.of(180),
                                 InSquarePlacement.spread(),

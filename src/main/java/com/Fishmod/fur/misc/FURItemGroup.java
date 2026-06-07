@@ -107,6 +107,11 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SOULFORGED_AXE.get());
             	output.accept(FURItemRegistry.SOULFORGED_HAMMER.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
+            	output.accept(FURItemRegistry.SLUDGE_WAND.get());
+            	output.accept(FURItemRegistry.SCARAB_SCEPTER.get());
+            	output.accept(FURItemRegistry.ANKH_SCEPTER.get());
+            	output.accept(FURItemRegistry.FUNGAL_STAFF.get());
+            	output.accept(FURItemRegistry.FROZEN_GRIP.get());
             	output.accept(FURItemRegistry.SKELETONKING_MACE.get());
             	output.accept(FURItemRegistry.VESPA_DAGGER.get());
             	
@@ -201,6 +206,8 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.SOUL_FURNACE.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get());
             	output.accept(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get());
+            	output.accept(FURBlockRegistry.GLIMMERCAP_BLOCK_STEM.get());
+            	output.accept(FURBlockRegistry.GLIMMERCAP_BLOCK_CAP.get());
             	output.accept(FURBlockRegistry.LUMINOUS_MYCELIUM.get());
             	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
             	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());           	

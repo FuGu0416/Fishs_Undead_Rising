@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        " Y ",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "fur:ancient_amber"
+        },
+        "X": {
+            "tag": "forge:rods/wooden"
+        },
+        "D": {
+            "item": "minecraft:dead_bush"
+        },
+        "Y": {
+            "item": "fur:sludge_wand"
+        }
+    },
+    "result": {
+        "item": "fur:scarab_scepter"
+    }
+}

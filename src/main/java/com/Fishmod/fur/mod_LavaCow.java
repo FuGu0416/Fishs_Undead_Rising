@@ -12,6 +12,7 @@ import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FURCarverRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FUREnchantmentRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURFeatureRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -93,6 +94,7 @@ public class mod_LavaCow {
         FURParticleRegistry.DEF_REG.register(eventBus);
         FUREffectRegistry.EFFECT_DEF_REG.register(eventBus);
         FUREffectRegistry.POTION_DEF_REG.register(eventBus);
+        FUREnchantmentRegistry.DEF_REG.register(eventBus);
         FURRecipeRegistry.DEF_REG.register(eventBus);
         FURMenuTypesRegistry.DEF_REG.register(eventBus);
         FURRecipeTypeRegistry.DEF_REG.register(eventBus);

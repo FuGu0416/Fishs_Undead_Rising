@@ -108,7 +108,6 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
         addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
-        // Ghost Ray — End-only (TODO item 7: Overworld/Nether spawns removed).
         addSpawn(context, ADD_GHOSTRAY, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOSTRAY.get(), 10, 1, 1));
     }

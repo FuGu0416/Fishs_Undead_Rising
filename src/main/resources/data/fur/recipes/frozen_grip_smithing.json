@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": { "item": "fur:soulforged_upgrade_smithing_template" },
+  "base":     { "item": "fur:undertaker_shovel" },
+  "addition": { "item": "fur:frozen_thigh" },
+  "result":   { "item": "fur:frozen_grip" }
+}

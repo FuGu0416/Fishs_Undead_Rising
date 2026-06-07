@@ -12,6 +12,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FUREnchantmentRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.google.common.collect.ImmutableMultimap;
@@ -20,6 +21,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -183,9 +185,14 @@ public class FURWeaponItem extends SwordItem {
 				data.putInt("unbreaking",         stack.getEnchantmentLevel(Enchantments.UNBREAKING));
 				data.putInt("corrosive",          0);
 
+				int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+
 				entity.tame(player);
 				entity.setLimitedLife(limitLife);
 				entity.setSkin(skin);
+				if (dominion > 0 && entity.getAttribute(Attributes.MAX_HEALTH) != null) {
+					entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)dominion) / 10.0D));
+				}
 				entity.setHealth(entity.getMaxHealth());
 
 				if (entity instanceof UnburiedEntity) {
@@ -200,52 +207,8 @@ public class FURWeaponItem extends SwordItem {
      */
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-		
-    	/*if (player.getItemInHand(hand).getItem() == FURItemRegistry.SLUDGE_WAND && level instanceof ServerWorld) { 
-    		BlockPos blockpos = new BlockPos(player.getX() + player.getLookAngle().x, player.getY() + 0.2F, player.getZ() + player.getLookAngle().z);
-    		for (int i = 0; i < 1 + enchantment_list[9]; i++) {
-    			FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.LILSLUDGE, FURConfig.LilSludge_Lifespan.get() * 20, (enchantment_list[0] > 0) ? 1 : 0);
-    		}
-    		
-            for (int j = 0; j < 4; ++j) {
-            	double d0 = blockpos.getX() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
-            	double d1 = blockpos.getY() + (player.getRandom().nextDouble() * 2.0D);
-            	double d2 = blockpos.getZ() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
-            	((ServerWorld) level).sendParticles(enchantment_list[0] > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);            	
-            }
-            
-            player.getItemInHand(hand).hurtAndBreak(8, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-            
-			return InteractionResultHolder.pass(player.getItemInHand(hand));
-        }*/
-        
-       /*        
-        if (player.getItemInHand(hand).getItem() == FURItemRegistry.BEAST_CLAW && player.isOnGround()) {
-        	Vector3d lookVec = player.getLookAngle();
-        	
-        	if(player.getOffhandItem().getItem() == FURItemRegistry.BEAST_CLAW && player.getMainHandItem().getItem() == FURItemRegistry.BEAST_CLAW) {
-        		player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 3 * 20, 0));
-        		player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 3 * 20, 0));
-        	}
-        	
-        	player.setDeltaMovement(player.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D));
-            player.getItemInHand(hand).hurtAndBreak(8, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-			player.getCooldowns().addCooldown(this, 120);
-			
-			return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}*/
-        
+		ItemStack stack = player.getItemInHand(hand);	
+               
         if (stack.getItem() == FURItemRegistry.BEAST_CLAW.get() && player.onGround()) {
         	Vec3 lookVec = player.getLookAngle();
 
@@ -264,7 +227,8 @@ public class FURWeaponItem extends SwordItem {
 		}
 
         if (stack.getItem() == FURItemRegistry.UNDERTAKER_SHOVEL.get() && level instanceof ServerLevel) {
-            for (int i = 0; i < 4; ++i) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            for (int i = 0; i < 4 + dominion; ++i) {
                 BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.UNBURIED.get(), FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
@@ -276,84 +240,90 @@ public class FURWeaponItem extends SwordItem {
 
             return InteractionResultHolder.pass(stack);
         }
-        
-        /*if (player.getItemInHand(hand).getItem() == FURItemRegistry.SCARAB_SCEPTER && level instanceof ServerWorld) {       
-        	Vector3d lookVec = player.getLookAngle();
-        	
-            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
-                BlockPos blockpos = player.blockPosition().offset(lookVec.x * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D), 0, lookVec.z * 3.0D + (Item.random.nextDouble() * 4.0D - 2.0D));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.SCARAB, FURConfig.Scarab_Lifespan.get() * 20, 0);
+
+        if (stack.getItem() == FURItemRegistry.SLUDGE_WAND.get() && level instanceof ServerLevel) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            int skin = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0 ? 1 : 0;
+            BlockPos blockpos = BlockPos.containing(player.getX() + player.getLookAngle().x, player.getY() + 0.2D, player.getZ() + player.getLookAngle().z);
+            for (int i = 0; i < 1 + dominion; i++) {
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SHROOMLING.get(), FURConfig.Shroomling_Lifespan.get() * 20, skin);
             }
-			
-            player.getItemInHand(hand).hurtAndBreak(8, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-            
-			return InteractionResultHolder.pass(player.getItemInHand(hand));
+
+            for (int j = 0; j < 4; ++j) {
+                double d0 = blockpos.getX() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
+                double d1 = blockpos.getY() + (player.getRandom().nextDouble() * 2.0D);
+                double d2 = blockpos.getZ() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
+                ((ServerLevel) level).sendParticles(skin > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+            }
+
+            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND.get(), FURConfig.SludgeWand_Cooldown.get() * 20);
+
+            return InteractionResultHolder.pass(stack);
         }
-        
-        if (player.getItemInHand(hand).getItem() == FURItemRegistry.ANKH_SCEPTER && level instanceof ServerWorld) {
-            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
-                BlockPos blockpos = player.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.MUMMY, FURConfig.Mummy_Lifespan.get() * 20, 0);
+
+        if (stack.getItem() == FURItemRegistry.SCARAB_SCEPTER.get() && level instanceof ServerLevel) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            Vec3 lookVec = player.getLookAngle();
+            for (int i = 0; i < 4 + dominion; ++i) {
+                BlockPos blockpos = player.blockPosition().offset((int)(lookVec.x * 3.0D + (player.getRandom().nextDouble() * 4.0D - 2.0D)), 0, (int)(lookVec.z * 3.0D + (player.getRandom().nextDouble() * 4.0D - 2.0D)));
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SCARAB.get(), FURConfig.Scarab_Lifespan.get() * 20, 0);
             }
-            
-            player.getItemInHand(hand).hurtAndBreak(63, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-			
-        	return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}
-        
-        if (player.getItemInHand(hand).getItem() == FURItemRegistry.FUNGAL_STAFF && level instanceof ServerWorld) {
-            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
-                BlockPos blockpos = player.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.MYCOSIS, FURConfig.ZombieMushroom_Lifespan.get() * 20, 0);
+
+            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER.get(), FURConfig.ScarabScepter_Cooldown.get() * 20);
+
+            return InteractionResultHolder.pass(stack);
+        }
+
+        if (stack.getItem() == FURItemRegistry.ANKH_SCEPTER.get() && level instanceof ServerLevel) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            for (int i = 0; i < 4 + dominion; ++i) {
+                BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.MUMMY.get(), FURConfig.Mummy_Lifespan.get() * 20, 0);
             }
-            
-            player.getItemInHand(hand).hurtAndBreak(63, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-			
-        	return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}
-        
-        if (player.getItemInHand(hand).getItem() == FURItemRegistry.FROZEN_GRIP && level instanceof ServerWorld) {
-            for (int i = 0; i < 4 + enchantment_list[9]; ++i) {
-                BlockPos blockpos = player.blockPosition().offset(-6 + Item.random.nextInt(12), 0, -6 + Item.random.nextInt(12));
-                FURWeaponItem.SummonMinion(player, enchantment_list, level, blockpos, FUREntityRegistry.FRIGID, FURConfig.ZombieFrozen_Lifespan.get() * 20, 0);
+
+            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER.get(), FURConfig.Ankh_Scepter_Cooldown.get() * 20);
+
+            return InteractionResultHolder.pass(stack);
+        }
+
+        if (stack.getItem() == FURItemRegistry.FUNGAL_STAFF.get() && level instanceof ServerLevel) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            for (int i = 0; i < 4 + dominion; ++i) {
+                BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.MYCOSIS.get(), FURConfig.Mycosis_Lifespan.get() * 20, 0);
             }
-            
-            player.getItemInHand(hand).hurtAndBreak(63, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-    		});
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND, FURConfig.SludgeWand_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER, FURConfig.ScarabScepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER, FURConfig.Ankh_Scepter_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF, FURConfig.Fungal_Staff_Cooldown.get() * 20);
-            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP, FURConfig.Frozen_Grip_Cooldown.get() * 20);
-			
-        	return InteractionResultHolder.pass(player.getItemInHand(hand));
-		}*/        
+
+            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF.get(), FURConfig.Fungal_Staff_Cooldown.get() * 20);
+
+            return InteractionResultHolder.pass(stack);
+        }
+
+        if (stack.getItem() == FURItemRegistry.FROZEN_GRIP.get() && level instanceof ServerLevel) {
+            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
+            for (int i = 0; i < 4 + dominion; ++i) {
+                BlockPos blockpos = player.blockPosition().offset(-6 + player.getRandom().nextInt(12), 0, -6 + player.getRandom().nextInt(12));
+                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.FRIGID.get(), FURConfig.Frigid_Lifespan.get() * 20, 0);
+            }
+
+            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
+                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
+            player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP.get(), FURConfig.Frozen_Grip_Cooldown.get() * 20);
+
+            return InteractionResultHolder.pass(stack);
+        }
 
     	return super.use(level, player, hand);
     }

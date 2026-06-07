@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "D#D",
+        " X ",
+        " X "
+    ],
+    "key": {
+        "#": {
+            "item": "fur:spore_gel"
+        },
+        "X": {
+            "tag": "forge:rods/wooden"
+        },
+        "D": {
+            "item": "minecraft:vine"
+        }
+    },
+    "result": {
+        "item": "fur:sludge_wand"
+    }
+}

@@ -4,10 +4,12 @@ import com.Fishmod.fur.init.FURCarvers;
 import com.Fishmod.fur.worldgen.feature.FURPlacedFeatures;
 
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -85,12 +87,16 @@ public class FURLuminousUndergroveBiome {
         // Landmark: large glow shroom tree (rare, ~1 per 6 chunks)
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.LARGE_GLOW_SHROOM));
 
+        // Landmark: giant glimmercap (flat brown-mushroom-shaped huge mushroom)
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.GIANT_GLIMMERCAP));
+
         // ── Visual effects ────────────────────────────────────────────────────
         BiomeSpecialEffects.Builder effectsBuilder = new BiomeSpecialEffects.Builder()
                 .fogColor(0x1A2B2B)
                 .waterColor(0x3BA7A0)
                 .waterFogColor(0x1F5F5A)
                 .skyColor(calculateSkyColor(0.5F))
+                .ambientParticle(new AmbientParticleSettings(ParticleTypes.WARPED_SPORE, 0.01428F))
                 .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                 .backgroundMusic(net.minecraft.sounds.Musics.createGameMusic(
                         SoundEvents.MUSIC_BIOME_LUSH_CAVES));

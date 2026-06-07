@@ -80,6 +80,10 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_GLOW_SHROOM =
             key("large_glow_shroom");
 
+    /** Giant Glimmercap — flat brown-mushroom-shaped huge mushroom, reuses the same feature */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_GLIMMERCAP =
+            key("giant_glimmercap");
+
     /** Mixed floor vegetation — RANDOM_SELECTOR picking between all floor plants */
     public static final ResourceKey<ConfiguredFeature<?, ?>> MIXED_FLOOR_RANDOM =
             key("mixed_floor_random");
@@ -235,6 +239,17 @@ public class FURConfiguredFeatures {
                         BlockStateProvider.simple(FURBlockRegistry.GLOWSHROOM_BLOCK_CAP.get()),
                         // Stem provider — uses glowshroom_block_stem
                         BlockStateProvider.simple(FURBlockRegistry.GLOWSHROOM_BLOCK_STEM.get()),
+                        3  // foliageRadius — side height of the cap skirt
+                )));
+
+        // ── Giant Glimmercap (flat brown-mushroom-shaped huge mushroom) ───────
+        // Same custom huge-mushroom feature as the glow shroom (flat cap, brown-
+        // mushroom silhouette), but built from the glimmercap cap/stem blocks.
+        context.register(GIANT_GLIMMERCAP, new ConfiguredFeature<>(
+                FURFeatureRegistry.HUGE_GLOWSHROOM.get(),
+                new HugeMushroomFeatureConfiguration(
+                        BlockStateProvider.simple(FURBlockRegistry.GLIMMERCAP_BLOCK_CAP.get()),
+                        BlockStateProvider.simple(FURBlockRegistry.GLIMMERCAP_BLOCK_STEM.get()),
                         3  // foliageRadius — side height of the cap skirt
                 )));
 
