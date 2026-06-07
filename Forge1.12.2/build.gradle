@@ -13,34 +13,35 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 minecraft {
     mappings channel: mappings_channel, version: mappings_version
 
-    // Always seems to break with dependencies for me
-    // Test with a build instead of gradlew run
-    /*
     runs {
         client {
-            args "--username=InDev"
-
-            jvmArg "-Dmixin.hotSwap=true"
-            jvmArg "-Dmixin.checks.interfaces=true"
-
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+
+            // Without this the mod's own classes aren't registered with the dev
+            // launch, which is what made the old run config "break with dependencies".
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
         }
 
         server {
-
-            jvmArg "-Dmixin.hotSwap=true"
-            jvmArg "-Dmixin.checks.interfaces=true"
-
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
         }
     }
-     */
 }
 
 repositories {
@@ -53,13 +54,21 @@ dependencies {
 
     implementation fg.deobf( "curse.maven:baubles-${baubles_version}")
     implementation fg.deobf( "curse.maven:mantle-${mantle_version}")
-    implementation fg.deobf( "curse.maven:tinkers-antique-${tinkers_antique_version}")
-    implementation fg.deobf( "curse.maven:antique-armory-${antique_armory_version}")
-    implementation fg.deobf( "curse.maven:jer-${jer_version}")
-    implementation fg.deobf( "curse.maven:jei-${jei_version}")
-
-    implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
     implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
+
+    // compileOnly: optional integrations that can't load in the deobf dev runtime, so they're
+    // compiled against but kept off the dev client classpath. Our compat/ code is all
+    // Loader.isModLoaded-gated, so compile-time access is enough; the shipped jar is unaffected
+    // (production users still get these mods normally). Reasons they break in dev:
+    //   - RLCombat needs fermiumbooter+reachfix; the Tinkers addons need tconstruct
+    //     -> as `implementation` they tripped FML MissingModsException (error screen).
+    //   - JEI crashes in dev with IllegalAccessError on TextureMap.initMissingImage()
+    //     (dev-mapping access mismatch); JER depends on JEI, so both are excluded.
+    compileOnly fg.deobf( "curse.maven:tinkers-antique-${tinkers_antique_version}")
+    compileOnly fg.deobf( "curse.maven:antique-armory-${antique_armory_version}")
+    compileOnly fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
+    compileOnly fg.deobf( "curse.maven:jei-${jei_version}")
+    compileOnly fg.deobf( "curse.maven:jer-${jer_version}")
 }
 
 processResources {

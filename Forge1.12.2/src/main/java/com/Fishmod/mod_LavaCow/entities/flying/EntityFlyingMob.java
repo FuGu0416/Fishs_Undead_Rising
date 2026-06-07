@@ -139,7 +139,10 @@ public class EntityFlyingMob extends EntityFishTameable {
                 }
             }
 
-            if (this.isSitting() && this.getAttackTarget() == null && !this.onGround && SpawnUtil.getHeight(this).getY() > 0) {
+            // Slowly settle a sitting pet that is hovering. SpawnUtil.getHeight() returns
+            // the entity's own position, so the old `getHeight(this).getY() > 0` was just a
+            // y-above-void check - done here without the per-tick ground scan it used to run.
+            if (this.isSitting() && this.getAttackTarget() == null && !this.onGround && this.posY > 0.0D) {
                 this.motionY += -0.025F;
             }
         }
@@ -355,6 +358,13 @@ public class EntityFlyingMob extends EntityFishTameable {
 
     static class AIRandomFly extends EntityAIBase {
         private final EntityFlyingMob parentEntity;
+        /**
+         * Throttles target re-picks. {@link #startExecuting()} runs an expensive
+         * ground scan ({@link SpawnUtil#getHeight}); without this, a move helper
+         * parked at WAIT (e.g. boxed in) would make {@link #shouldExecute()} return
+         * true every single tick, re-running that scan continuously.
+         */
+        private int cooldown;
 
         public AIRandomFly(EntityFlyingMob entityFlyingMob) {
             this.parentEntity = entityFlyingMob;
@@ -365,6 +375,26 @@ public class EntityFlyingMob extends EntityFishTameable {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean shouldExecute() {
+            // A tamed pet only wander-flies while explicitly set to "wander". When it
+            // is sitting or following its owner this goal must stay idle; otherwise it
+            // keeps re-running an expensive ground scan every tick, even though the
+            // tameable state machine never removes the copy registered in initEntityAI.
+            // (issue #227: Vespa/Enigmoth cause constant stutter while following/sitting,
+            // which persists after sitting them down.)
+            if (this.parentEntity.isSitting()
+                    || (this.parentEntity.isTamed()
+                        && !this.parentEntity.isWandering()
+                        && this.parentEntity.getAttackTarget() == null)) {
+                return false;
+            }
+
+            // Back off between picks so a parked move helper can't trigger a fresh
+            // ground scan on every tick.
+            if (this.cooldown > 0) {
+                this.cooldown--;
+                return false;
+            }
+
             EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
 
             if (this.parentEntity.getNavigator() instanceof PathNavigateGround) {
@@ -395,6 +425,9 @@ public class EntityFlyingMob extends EntityFishTameable {
          * Execute a one shot task or start executing a continuous task
          */
         public void startExecuting() {
+            // Don't re-pick (and re-scan the ground) again for ~0.5-1.5s.
+            this.cooldown = 10 + this.parentEntity.getRNG().nextInt(20);
+
             Random random = this.parentEntity.getRNG();
             BlockPos blockpos = new BlockPos(parentEntity).add(random.nextInt(15) - 7, 0, random.nextInt(15) - 7);
             double y = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
@@ -402,13 +435,15 @@ public class EntityFlyingMob extends EntityFishTameable {
             // Stop calculating height in end dimension
             // TODO: A way to calculate other modded dimensions with floating islands?
             if (this.parentEntity.world.provider.getDimension() != 1) {
+                // The scan is expensive: compute the ground height once and reuse it
+                // for both clamps instead of calling SpawnUtil.getHeight up to 3 times.
                 int groundHeight = SpawnUtil.getHeight(this.parentEntity).getY();
 
                 if (groundHeight > 0) {
                     if (this.parentEntity.isWet()) {
-                        y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + 3, y);
+                        y = Math.min(groundHeight + 3, y);
                     } else if (heightLimit != 0) {
-                        y = Math.min(SpawnUtil.getHeight(parentEntity).getY() + heightLimit, y);
+                        y = Math.min(groundHeight + heightLimit, y);
                     }
                 }
             }
