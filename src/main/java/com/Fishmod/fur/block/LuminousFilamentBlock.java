@@ -2,8 +2,11 @@ package com.Fishmod.fur.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +37,19 @@ public class LuminousFilamentBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(SEGMENT, MIRRORED);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        // Only the hanging tip (LOWER segment) drips end-rod motes.
+        if (state.getValue(SEGMENT) != Segment.LOWER) {
+            return;
+        }
+
+        double x = pos.getX() + 0.5D + (random.nextDouble() - 0.5D) * 0.3D;
+        double y = pos.getY() + random.nextDouble() * 0.4D;
+        double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.3D;
+        level.addParticle(ParticleTypes.END_ROD, x, y, z, 0.0D, -0.015D, 0.0D);
     }
 
     @Override

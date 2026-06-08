@@ -1,8 +1,11 @@
 package com.Fishmod.fur.block;
 
 import com.Fishmod.fur.init.FURBlockRegistry;
+import com.Fishmod.fur.mod_LavaCow;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -208,12 +211,15 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
     // ── Bonemeal support ──────────────────────────────────────────────────────
 
     /**
-     * Bonemeal is valid only on the lower half of a single-tall glimmercap
-     * when there is space above.
+     * Bonemeal targets: a 1-tall glimmercap (lower half, space above) grows into a 2-tall glimmercap;
+     * a 2-tall glimmercap (either half) grows into the Giant Glimmercap.
      */
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
-        return state.getValue(HALF) == DoubleBlockHalf.LOWER && !state.getValue(TALL) && level.isEmptyBlock(pos.above());
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER && !state.getValue(TALL)) {
+            return level.isEmptyBlock(pos.above());
+        }
+        return state.getValue(TALL);
     }
 
     @Override
@@ -222,13 +228,35 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
     }
 
     /**
-     * Grow the single-tall glimmercap into a 2-tall glimmercap.
+     * 1-tall → grow into a 2-tall glimmercap. 2-tall → grow into the Giant Glimmercap feature.
      */
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        // Update lower half to tall
-        level.setBlock(pos, state.setValue(TALL, true), Block.UPDATE_ALL);
-        // Place upper half
-        level.setBlock(pos.above(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(TALL, true), Block.UPDATE_ALL);
+        if (!state.getValue(TALL)) {
+            // 1-tall -> 2-tall
+            level.setBlock(pos, state.setValue(TALL, true), Block.UPDATE_ALL);
+            level.setBlock(pos.above(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(TALL, true), Block.UPDATE_ALL);
+            return;
+        }
+
+        // 2-tall -> Giant Glimmercap, grown from the lower (ground) half's position
+        BlockPos lowerPos = state.getValue(HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos;
+        BlockPos upperPos = lowerPos.above();
+
+        var feature = level.registryAccess()
+                .registryOrThrow(Registries.CONFIGURED_FEATURE)
+                .get(new ResourceLocation(mod_LavaCow.MODID, "giant_glimmercap"));
+        if (feature == null) {
+            return;
+        }
+
+        // Clear both halves, then try to grow the feature; restore the 2-tall if it can't fit.
+        level.removeBlock(upperPos, false);
+        level.removeBlock(lowerPos, false);
+
+        if (!feature.place(level, level.getChunkSource().getGenerator(), random, lowerPos)) {
+            level.setBlock(lowerPos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER).setValue(TALL, true), Block.UPDATE_ALL);
+            level.setBlock(upperPos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(TALL, true), Block.UPDATE_ALL);
+        }
     }
 }

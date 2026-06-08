@@ -62,6 +62,8 @@ public class FURPlacedFeatures {
             key("lake_water");
     public static final ResourceKey<PlacedFeature> SMALL_POOL =
             key("small_pool");
+    public static final ResourceKey<PlacedFeature> GROTTO_STREAM =
+            key("grotto_stream");
     public static final ResourceKey<PlacedFeature> SPRING_WATER =
             key("spring_water");
     public static final ResourceKey<PlacedFeature> CAVE_FLOOR_SMOOTHER =
@@ -242,7 +244,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LARGE_GLOW_SHROOM),
                         List.of(
-                                CountPlacement.of(180),
+                                CountPlacement.of(144),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -273,7 +275,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.GIANT_GLIMMERCAP),
                         List.of(
-                                CountPlacement.of(180),
+                                CountPlacement.of(144),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -312,13 +314,40 @@ public class FURPlacedFeatures {
                         )));
 
         // ── World: Small shallow pool ─────────────────────────────────────────
-        // ~3× more frequent than LAKE_WATER; floor-scanning ensures placement on
-        // actual cave floor surfaces.
+        // Once every 2 chunks on average (50% more frequent than before); floor-scanning
+        // ensures placement on actual cave floor surfaces.
         context.register(SMALL_POOL,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.SMALL_POOL),
                         List.of(
-                                RarityFilter.onAverageOnceEvery(3),
+                                RarityFilter.onAverageOnceEvery(2),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Grotto stream (meandering still-water river) ───────────────
+        // Once every ~8 chunks on average; floor-scanning lands it on the cave floor, then the
+        // feature traces a winding water channel from there (kept local to avoid far-chunk writes).
+        context.register(GROTTO_STREAM,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.GROTTO_STREAM),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(8),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),

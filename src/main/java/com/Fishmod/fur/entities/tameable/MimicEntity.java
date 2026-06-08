@@ -78,6 +78,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -171,7 +172,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
 
     public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) { 	
-    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null;
+    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_, p_223316_1_.getLevel().dimension() == Level.NETHER)
+    			&& SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null
+    			&& p_223316_1_.getLevel().getEntitiesOfClass(MimicEntity.class, new AABB(p_223316_3_.getX(), p_223316_3_.getY(), p_223316_3_.getZ(), p_223316_3_.getX() + 1, p_223316_3_.getY() + 1, p_223316_3_.getZ() + 1).inflate(FURConfig.Mimic_SpawnRadius.get().doubleValue())).size() < FURConfig.Mimic_SpawnCap.get();
     }
     
     /**

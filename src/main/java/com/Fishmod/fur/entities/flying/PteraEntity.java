@@ -140,8 +140,12 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	}
 	
 	@Override
-    public void tick() {       	
+    public void tick() {
     	super.tick();
+    	// The carried rider hangs below us and intercepts attacks; drop it the moment it takes a hit so it can't shield us
+    	if (!this.level().isClientSide() && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity rider && rider.hurtTime > 0) {
+    		this.ejectPassengers();
+    	}
 	}
 
 	@Override

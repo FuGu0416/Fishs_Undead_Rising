@@ -1,16 +1,5 @@
 {
-  "multipart": [
-    { "when": { "north": "true" },  "apply": { "model": "fur:block/glimmercap_block_cap" } },
-    { "when": { "east": "true" },   "apply": { "model": "fur:block/glimmercap_block_cap", "y": 90, "uvlock": true } },
-    { "when": { "south": "true" },  "apply": { "model": "fur:block/glimmercap_block_cap", "y": 180, "uvlock": true } },
-    { "when": { "west": "true" },   "apply": { "model": "fur:block/glimmercap_block_cap", "y": 270, "uvlock": true } },
-    { "when": { "up": "true" },     "apply": { "model": "fur:block/glimmercap_block_cap", "x": 270, "uvlock": true } },
-    { "when": { "down": "true" },   "apply": { "model": "fur:block/glimmercap_block_cap", "x": 90, "uvlock": true } },
-    { "when": { "north": "false" }, "apply": { "model": "fur:block/glimmercap_block_cap" } },
-    { "when": { "east": "false" },  "apply": { "model": "fur:block/glimmercap_block_cap", "y": 90, "uvlock": false } },
-    { "when": { "south": "false" }, "apply": { "model": "fur:block/glimmercap_block_cap", "y": 180, "uvlock": false } },
-    { "when": { "west": "false" },  "apply": { "model": "fur:block/glimmercap_block_cap", "y": 270, "uvlock": false } },
-    { "when": { "up": "false" },    "apply": { "model": "fur:block/glimmercap_block_cap", "x": 270, "uvlock": false } },
-    { "when": { "down": "false" },  "apply": { "model": "fur:block/glimmercap_block_cap", "x": 90, "uvlock": false } }
-  ]
+  "variants": {
+    "": { "model": "fur:block/glimmercap_block_cap" }
+  }
 }

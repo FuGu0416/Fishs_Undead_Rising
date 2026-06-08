@@ -42,7 +42,10 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
         }
 
         double hMult = config.horizontalRadiusMultiplier.sample(random);
-        double vMult = config.verticalRadiusMultiplier.sample(random);
+        // Halve the vertical radius so cave height is ~50% of before. Each blob's floor is
+        // (centerY - vRadius) = blobFloor, which is independent of the radius, so the floor level is
+        // unchanged and only the ceiling drops — the cave gets shorter, not shallower.
+        double vMult = config.verticalRadiusMultiplier.sample(random) * 0.5D;
 
         // ── Main volume: heterogeneous blob cluster ─────────────────────────────
         // A mix of wide-flat blobs and narrow-tall blobs ensures the cave cross-section

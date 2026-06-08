@@ -231,7 +231,10 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 
     private void handleRidingEffects() {
         if (this.getVehicle() instanceof LivingEntity mount && !this.level().isClientSide()) {
-            if (!mount.hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
+            if (mount instanceof Player player && player.isCrouching()) {
+                // A crouching host shakes the parasite off by hand
+                this.stopRiding();
+            } else if (!mount.hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
                 this.stopRiding();
                 this.kill();
             } else if (mount.isAlive() && mount.isOnFire()) {
@@ -344,7 +347,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	@Override
 	public void playerTouch(Player playerIn) {
 		super.playerTouch(playerIn);
-		if (!playerIn.isCreative() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
+		if (!playerIn.isCreative() && !playerIn.isCrouching() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
 			if (!this.isSummoned()) {
 				playerIn.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
 			}

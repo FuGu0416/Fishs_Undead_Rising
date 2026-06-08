@@ -68,6 +68,8 @@ public class FURLuminousUndergroveBiome {
                 placedFeatures.getOrThrow(FURPlacedFeatures.LAKE_WATER));
         genBuilder.addFeature(GenerationStep.Decoration.LAKES,
                 placedFeatures.getOrThrow(FURPlacedFeatures.SMALL_POOL));
+        genBuilder.addFeature(GenerationStep.Decoration.LAKES,
+                placedFeatures.getOrThrow(FURPlacedFeatures.GROTTO_STREAM));
         genBuilder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS,
                 placedFeatures.getOrThrow(FURPlacedFeatures.SPRING_WATER));
 

@@ -31,11 +31,11 @@ public class FURFogHandler {
     private static final Vec3 UNIT = new Vec3(1.0D, 1.0D, 1.0D);
 
     // ── Tunables ─────────────────────────────────────────────────────────────
-    // Fog colour (teal mist). Lower these toward 0 for a darker fog, which makes the
+    // Fog colour (dark teal #0B1E24). Lower these toward 0 for a darker fog, which makes the
     // emissive grove blocks contrast/"glow" harder against it.
-    private static final double FOG_RED = 0.05D;
-    private static final double FOG_GREEN = 0.18D;
-    private static final double FOG_BLUE = 0.22D;
+    private static final double FOG_RED = 0.043137D;   // 0x0B / 255
+    private static final double FOG_GREEN = 0.117647D; // 0x1E / 255
+    private static final double FOG_BLUE = 0.141176D;  // 0x24 / 255
     // Fog planes. NEAR is how close the mist starts: anything nearer than this renders
     // fog-free, so raising NEAR lets the glow blocks around you stay vivid (at the cost of a
     // less dense close mist). FAR is where the mist becomes fully opaque.
@@ -83,7 +83,7 @@ public class FURFogHandler {
         event.setCanceled(true);
     }
 
-    /** Tint the fog teal (0.05, 0.18, 0.22), eased from vanilla's computed colour by the biome weight. */
+    /** Tint the fog dark teal #0B1E24 (0.043, 0.118, 0.141), eased from vanilla's computed colour by the biome weight. */
     @SubscribeEvent
     public static void onFogColor(ViewportEvent.ComputeFogColor event) {
         double w = undergroveWeight(event.getCamera());

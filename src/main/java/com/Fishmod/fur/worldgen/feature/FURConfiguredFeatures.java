@@ -104,6 +104,10 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_POOL =
             key("small_pool");
 
+    /** Meandering still-water stream ("river") along the grotto floor */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GROTTO_STREAM =
+            key("grotto_stream");
+
     /** Cave floor smoother — fills height transitions between carver sections */
     public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_FLOOR_SMOOTHER =
             key("cave_floor_smoother");
@@ -243,10 +247,10 @@ public class FURConfiguredFeatures {
                 )));
 
         // ── Giant Glimmercap (flat brown-mushroom-shaped huge mushroom) ───────
-        // Same custom huge-mushroom feature as the glow shroom (flat cap, brown-
-        // mushroom silhouette), but built from the glimmercap cap/stem blocks.
+        // Dedicated feature with a wide, flat single-layer cap (vanilla giant brown
+        // mushroom silhouette), built from the glimmercap cap/stem blocks.
         context.register(GIANT_GLIMMERCAP, new ConfiguredFeature<>(
-                FURFeatureRegistry.HUGE_GLOWSHROOM.get(),
+                FURFeatureRegistry.HUGE_GLIMMERCAP.get(),
                 new HugeMushroomFeatureConfiguration(
                         BlockStateProvider.simple(FURBlockRegistry.GLIMMERCAP_BLOCK_CAP.get()),
                         BlockStateProvider.simple(FURBlockRegistry.GLIMMERCAP_BLOCK_STEM.get()),
@@ -319,6 +323,12 @@ public class FURConfiguredFeatures {
         // ── Small shallow pool ────────────────────────────────────────────────
         context.register(SMALL_POOL, new ConfiguredFeature<>(
                 FURFeatureRegistry.SMALL_POOL.get(),
+                NoneFeatureConfiguration.INSTANCE
+        ));
+
+        // ── Grotto stream (meandering still-water river) ──────────────────────
+        context.register(GROTTO_STREAM, new ConfiguredFeature<>(
+                FURFeatureRegistry.GROTTO_STREAM.get(),
                 NoneFeatureConfiguration.INSTANCE
         ));
 
