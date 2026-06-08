@@ -51,6 +51,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -143,7 +144,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
     @Override
     public boolean getCanSpawnHere() {
-        BlockPos NearbyChest = SpawnUtil.isNearBlock(this.world, Blocks.CHEST, new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ), 2);
+        BlockPos NearbyChest = SpawnUtil.isNearBlock(this.world, Blocks.CHEST, new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ), 4);
 
         if (NearbyChest != null) {
             this.rotationAngle = this.getEntityWorld().getBlockState(NearbyChest).getValue(BlockChest.FACING).getIndex() - 2;
@@ -151,7 +152,21 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
             return false;
         }
 
+        if (this.world.getEntitiesWithinAABB(EntityMimic.class, new AxisAlignedBB(this.getPosition()).grow(Modconfig.Mimic_SpawnRadius), e -> e != this).size() >= Modconfig.Mimic_SpawnCap) {
+            return false;
+        }
+
         return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
+    }
+
+    // Nether Fortress chests sit over lava and are brightly lit, so skip the darkness check there (vanilla fortress mobs do the same)
+    @Override
+    protected boolean isValidLightLevel() {
+        if (BiomeDictionary.hasType(this.getEntityWorld().getBiome(this.getPosition()), Type.NETHER)) {
+            return true;
+        }
+
+        return super.isValidLightLevel();
     }
 
     /**

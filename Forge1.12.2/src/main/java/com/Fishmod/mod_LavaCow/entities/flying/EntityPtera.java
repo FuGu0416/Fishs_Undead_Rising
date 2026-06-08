@@ -10,6 +10,7 @@ import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -104,8 +105,17 @@ public class EntityPtera extends EntityFlyingMob {
    public boolean attackEntityFrom(DamageSource source, float amount) {
        if(!this.getPassengers().isEmpty())
     	   this.removePassengers();
-    	   
+
 	   return super.attackEntityFrom(source, amount);
+   }
+
+   @Override
+   public void onLivingUpdate() {
+	   super.onLivingUpdate();
+	   // The carried rider hangs below us and intercepts attacks; drop it the moment it takes a hit so it can't shield us
+	   if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityLivingBase && ((EntityLivingBase) this.getPassengers().get(0)).hurtTime > 0) {
+		   this.removePassengers();
+	   }
    }
    
    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {

@@ -211,7 +211,11 @@ public class EntityParasite extends EntityFishTameable {
         if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityLivingBase && this.isServerWorld()) {
             Entity mount = this.getRidingEntity();
 
-            if (((EntityLivingBase) mount).getActivePotionEffect(ModMobEffects.INFESTED) == null) {
+            if (mount instanceof EntityPlayer && ((EntityPlayer) mount).isSneaking()) {
+                // A sneaking host shakes the parasite off by hand
+                this.dismountEntity(mount);
+                this.dismountRidingEntity();
+            } else if (((EntityLivingBase) mount).getActivePotionEffect(ModMobEffects.INFESTED) == null) {
                 this.dismountEntity(mount);
                 this.dismountRidingEntity();
                 this.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageIsAbsolute(), this.getMaxHealth());
@@ -271,7 +275,7 @@ public class EntityParasite extends EntityFishTameable {
     }
 
     protected void collideWithEntity(Entity entityIn) {
-        if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative()) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite)) {
+        if (!this.world.isRemote && entityIn instanceof EntityLivingBase && ((entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative()) || LootTableHandler.PARASITE_HOSTLIST.contains(EntityList.getKey(entityIn)) || Modconfig.Parasite_Plague) && Modconfig.Parasite_Attach && !(entityIn instanceof EntityParasite) && !(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isSneaking())) {
             ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(ModMobEffects.INFESTED, 8 * 20, 0));
             this.startRiding(entityIn);
             this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityIn));

@@ -74,6 +74,8 @@ public class Modconfig {
     public static int pSpawnRate_Mimic;
     public static double Mimic_Health;
     public static double Mimic_Attack;
+    public static int Mimic_SpawnRadius;
+    public static int Mimic_SpawnCap;
     public static double pSpawnRate_DeathMimic;
 
     public static int pSpawnRate_SludgeLord;
@@ -444,6 +446,8 @@ public class Modconfig {
         pSpawnRate_Mimic = config.get("Mimicrab", "mimicrab spawn rate", 20, "Set the spawn rate of Mimicrab [0-10000]", 0, 10000).getInt(20);
         Mimic_Health = config.get("Mimicrab", "mimicrab health", 50.0D, "Maximum Mimicrab health [1-1000]", 1, 1000).getDouble(50.0D);
         Mimic_Attack = config.get("Mimicrab", "mimicrab attack", 8.0D, "Mimicrab strength [1-1000]", 1, 1000).getDouble(8.0D);
+        Mimic_SpawnRadius = config.get("Mimicrab", "mimicrab spawn radius", 8, "Radius in blocks for the Mimicrab population cap at natural spawn [1-64]", 1, 64).getInt(8);
+        Mimic_SpawnCap = config.get("Mimicrab", "mimicrab max nearby", 1, "Max Mimicrabs allowed within the spawn radius; none spawn naturally once this many are already nearby [1-100]", 1, 100).getInt(1);
         pSpawnRate_DeathMimic = config.get("Mimicrab", "mimicrab spawn rate near player death", 0.0D, "Set the spawn rate of Mimicrab near player death [0-1]", 0, 1).getDouble(0.0D);
 
         pSpawnRate_SludgeLord = config.get("Sludge Lord", "sludge lord spawn rate", 15, "Set the spawn rate of Sludge Lord [0-10000]", 0, 10000).getInt(15);
