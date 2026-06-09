@@ -11,13 +11,17 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import com.Fishmod.fur.data.providers.FURBlockTagsProvider;
 
 /**
  * Places a mycelial-mat patch on the cave floor.
  * Shape is organically irregular via 8-sector angular noise (same algorithm as
  * SmallPoolFeature) instead of the rectangular base of vanilla VegetationPatch.
- * Only replaces blocks in BlockTags.MOSS_REPLACEABLE; plants are seeded by the
- * separate MIXED_FLOOR placed feature rather than inline.
+ * Only replaces blocks in MAT_REPLACEABLE.
+ *
+ * <p>It also seeds mycelial_tendrils onto the mat at a low per-block "vegetation chance"
+ * as ambient ground cover. The showy plants (glowshroom / glimmercap / emberwick fungus)
+ * are NOT seeded here — they grow as clusters around the giant mushrooms.
  */
 public class MycelialMatPatchFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -47,10 +51,12 @@ public class MycelialMatPatchFeature extends Feature<NoneFeatureConfiguration> {
         int radius = 4 + random.nextInt(4);
         int side   = 2 * radius + 1;
 
-        // Resolve inline vegetation once; mirrors VegetationPatch vegetationChance=0.15.
-        PlacedFeature vegFeature = context.level().registryAccess()
+        // Ambient ground cover: mycelial_tendrils seeded onto the mat at a low chance per
+        // block (the mat-equivalent of VegetationPatch's vegetationChance). Resolve the
+        // tendrils placed feature once. Showy plants are handled by the cluster features.
+        PlacedFeature tendrils = level.registryAccess()
                 .registryOrThrow(Registries.PLACED_FEATURE)
-                .getHolderOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER)
+                .getHolderOrThrow(FURPlacedFeatures.MYCELIAL_TENDRILS_PLACED)
                 .value();
 
         // Organic boundary: 8 angular sectors, each with a randomly perturbed
@@ -95,15 +101,19 @@ public class MycelialMatPatchFeature extends Feature<NoneFeatureConfiguration> {
                 }
                 if (localFloor == null) continue;
 
-                // Only replace blocks that vanilla moss/vegetation-patch targets.
-                if (!level.getBlockState(localFloor).is(BlockTags.MOSS_REPLACEABLE)) continue;
+                // Replace moss/vegetation-patch targets PLUS any ore exposed at the
+                // floor surface (MAT_REPLACEABLE = #moss_replaceable + #forge:ores) —
+                // otherwise ores poke through the mat. Ores are only capped here at
+                // the surface; deeper veins below the mat are left intact for mining
+                // (the depth pass below stays on MOSS_REPLACEABLE).
+                if (!level.getBlockState(localFloor).is(FURBlockTagsProvider.MAT_REPLACEABLE)) continue;
 
                 level.setBlock(localFloor, FURBlockRegistry.MYCELIAL_MAT.get().defaultBlockState(), 3);
                 placed = true;
 
-                // Inline vegetation seeding — mirrors VegetationPatch vegetationChance=0.15.
-                if (random.nextFloat() < 0.15f) {
-                    vegFeature.place(level, context.chunkGenerator(), random, localFloor.above());
+                // Ambient tendrils ground cover (vegetationChance 4% per mat block; -50%).
+                if (random.nextFloat() < 0.04f) {
+                    tendrils.place(level, context.chunkGenerator(), random, localFloor.above());
                 }
 
                 // Replicate VegetationPatch depth behaviour: optionally replace

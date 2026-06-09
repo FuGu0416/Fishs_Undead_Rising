@@ -34,6 +34,8 @@ public class FURPlacedFeatures {
             key("mycelial_veil_bonemeal");
     public static final ResourceKey<PlacedFeature> MYCELIAL_TENDRILS_PLACED =
             key("mycelial_tendrils_placed");
+    public static final ResourceKey<PlacedFeature> EMBERWICK_INNER =
+            key("emberwick_inner");
     public static final ResourceKey<PlacedFeature> GLIMMERCAP_SHORT_INNER =
             key("glimmercap_short_inner");
     public static final ResourceKey<PlacedFeature> GLIMMERCAP_TALL_INNER =
@@ -42,8 +44,6 @@ public class FURPlacedFeatures {
             key("glowshroom_inner");
     public static final ResourceKey<PlacedFeature> MIXED_FLOOR_INNER =
             key("mixed_floor_inner");
-    public static final ResourceKey<PlacedFeature> MIXED_FLOOR =
-            key("mixed_floor");
 
     // World-level placements (added to biome generation)
     public static final ResourceKey<PlacedFeature> MYCELIAL_MAT_PATCH =
@@ -54,6 +54,9 @@ public class FURPlacedFeatures {
             key("mycelial_mat_ceiling_patch");
     public static final ResourceKey<PlacedFeature> LUMINOUS_FILAMENT =
             key("luminous_filament");
+    /** +50% filament top-up pass (CountPlacement caps at 256, so the extra count lives here) */
+    public static final ResourceKey<PlacedFeature> LUMINOUS_FILAMENT_EXTRA =
+            key("luminous_filament_extra");
     public static final ResourceKey<PlacedFeature> LARGE_GLOW_SHROOM =
             key("large_glow_shroom");
     public static final ResourceKey<PlacedFeature> GIANT_GLIMMERCAP =
@@ -91,6 +94,12 @@ public class FURPlacedFeatures {
         context.register(MYCELIAL_TENDRILS_PLACED,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.MYCELIAL_TENDRILS_SIMPLE),
+                        List.of(PlacementUtils.isEmpty())));
+
+        // ── Internal: Emberwick Fungus simple-block (used by the cluster selector) ──
+        context.register(EMBERWICK_INNER,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.EMBERWICK_SIMPLE),
                         List.of(PlacementUtils.isEmpty())));
 
         // ── Internal: Glimmercap short (1-tall) ───────────────────────────────
@@ -239,10 +248,37 @@ public class FURPlacedFeatures {
                                 BiomeFilter.biome()
                         )));
 
-        // ── World: Large Glow Shroom (tree) ───────────────────────────────────
+        // ── World: Luminous Filament — +50% top-up pass ───────────────────────
+        // Same placement as above with 128 extra attempts (255 + 128 = 383 ≈ +50%),
+        // because a single CountPlacement is capped at 256.
+        context.register(LUMINOUS_FILAMENT_EXTRA,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.LUMINOUS_FILAMENT),
+                        List.of(
+                                CountPlacement.of(128),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        12),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                BlockPredicateFilter.forPredicate(
+                                        BlockPredicate.matchesBlocks(
+                                                new BlockPos(0, 1, 0),
+                                                FURBlockRegistry.MYCELIAL_MAT.get())),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Large Glow Shroom cluster ──────────────────────────────────
+        // Places the glow-shroom CLUSTER (mushroom + a vegetation clump around it), not a
+        // bare mushroom, so every giant glow shroom comes with its own patch of plants.
         context.register(LARGE_GLOW_SHROOM,
                 new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.LARGE_GLOW_SHROOM),
+                        features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLOWSHROOM),
                         List.of(
                                 CountPlacement.of(144),
                                 InSquarePlacement.spread(),
@@ -268,12 +304,12 @@ public class FURPlacedFeatures {
                                 BiomeFilter.biome()
                         )));
 
-        // ── World: Giant Glimmercap (tree) ────────────────────────────────────
-        // Same placement strategy as the large glow shroom: scan to a mat-covered
-        // cave floor, then grow the flat-capped huge mushroom there.
+        // ── World: Giant Glimmercap cluster ───────────────────────────────────
+        // Same placement strategy as the glow shroom, and likewise places the glimmercap
+        // CLUSTER (mushroom + vegetation clump) so every giant glimmercap has its patch.
         context.register(GIANT_GLIMMERCAP,
                 new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.GIANT_GLIMMERCAP),
+                        features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLIMMERCAP),
                         List.of(
                                 CountPlacement.of(144),
                                 InSquarePlacement.spread(),
@@ -410,36 +446,11 @@ public class FURPlacedFeatures {
                                 BiomeFilter.biome()
                         )));
 
-        // ── World: Mixed floor vegetation ─────────────────────────────────────
-        // Restricted to mycelial_mat surface only — creating dense plant clusters
-        // on mat patches. Count is high since the mat filter discards most attempts.
-        context.register(MIXED_FLOOR,
-                new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.MIXED_FLOOR_PATCH),
-                        List.of(
-                                CountPlacement.of(32),
-                                InSquarePlacement.spread(),
-                                HeightRangePlacement.uniform(
-                                        VerticalAnchor.absolute(-64),
-                                        VerticalAnchor.absolute(128)),
-                                EnvironmentScanPlacement.scanningFor(
-                                        Direction.UP,
-                                        BlockPredicate.solid(),
-                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
-                                        32),
-                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
-                                EnvironmentScanPlacement.scanningFor(
-                                        Direction.DOWN,
-                                        BlockPredicate.solid(),
-                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
-                                        32),
-                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
-                                BlockPredicateFilter.forPredicate(
-                                        BlockPredicate.matchesBlocks(
-                                                new BlockPos(0, -1, 0),
-                                                FURBlockRegistry.MYCELIAL_MAT.get())),
-                                BiomeFilter.biome()
-                        )));
+        // ── World: Luminous floor clusters ────────────────────────────────────
+        // Rare, dense hero clusters instead of a uniform per-chunk scatter. The dark
+        // space between clusters is intentional. Floor vegetation is no longer a
+        // standalone placed feature — it now grows as a clump around each giant mushroom
+        // (see LARGE_GLOW_SHROOM / GIANT_GLIMMERCAP above, which place the cluster features).
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────

@@ -12,6 +12,7 @@ import com.Fishmod.fur.block.LuminousFilamentBlock;
 import com.Fishmod.fur.block.LuminousMyceliumBlock;
 import com.Fishmod.fur.block.MycelialMatBlock;
 import com.Fishmod.fur.block.MycelialTendrilsBlock;
+import com.Fishmod.fur.block.EmberwickFungusBlock;
 import com.Fishmod.fur.block.MycelialVeinBlock;
 import com.Fishmod.fur.block.EnigmothEggBlock;
 import com.Fishmod.fur.block.SalamanderEggBlock;
@@ -58,13 +59,10 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> LUMINOUS_MYCELIUM = registerBlocks("luminous_mycelium", () -> new LuminousMyceliumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> MYCELIAL_MAT = registerBlocks("mycelial_mat", () -> new MycelialMatBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY)));
 	public static final RegistryObject<Block> MYCELIAL_VEIL = registerBlocks("mycelial_veil", () -> new MycelialVeinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS_CARPET).pushReaction(PushReaction.DESTROY)));
-	public static final RegistryObject<Block> MYCELIAL_TENDRILS = registerBlocks("mycelial_tendrils", () -> new MycelialTendrilsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).replaceable().noCollission().instabreak().sound(SoundType.NETHER_SPROUTS).offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));	
+	public static final RegistryObject<Block> MYCELIAL_TENDRILS = registerBlocks("mycelial_tendrils", () -> new MycelialTendrilsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).replaceable().noCollission().instabreak().sound(SoundType.NETHER_SPROUTS).offsetType(BlockBehaviour.OffsetType.XZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 1)));
+	public static final RegistryObject<Block> EMBERWICK_FUNGUS = registerBlocks("emberwick_fungus", () -> new EmberwickFungusBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> LUMINOUS_FILAMENT = registerBlocks("luminous_filament", () -> new LuminousFilamentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIAMOND).noCollission().instabreak().sound(SoundType.VINE).noOcclusion().offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).emissiveRendering((state, world, pos) -> true)));
-	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));
-	
-	/*
-	public static final Block SLUDGEPILE = new CarpetBlock(DyeColor.WHITE, AbstractBlock.Properties.of(Material.WEB, MaterialColor.SNOW).strength(0.2F).sound(SoundType.SLIME_BLOCK).speedFactor(1.3F)).setRegistryName("mod_lavacow:sludgepile");
-	 */	
+	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));	
 	
 	private static RegistryObject<Block> registerBlocks(String name, Supplier<Block> block) {
         RegistryObject<Block> blockObj = DEF_REG.register(name, block);

@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "fur:block/mycelial_tendrils2"
+    "cross": "fur:block/emberwick_fungus"
   },
   "render_type": "cutout"
 }

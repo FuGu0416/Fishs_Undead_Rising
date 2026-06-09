@@ -1,8 +1,0 @@
-{
-    "parent": "minecraft:block/cube_bottom_top",
-    "textures": {
-        "top": "fur:block/glimmercap_block_cap",
-        "side": "fur:block/glimmercap_block_cap",
-        "bottom": "fur:block/glimmercap_block_cap_bottom"
-    }
-}

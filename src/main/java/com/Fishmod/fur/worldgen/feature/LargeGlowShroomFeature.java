@@ -1,7 +1,9 @@
 package com.Fishmod.fur.worldgen.feature;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import com.mojang.serialization.Codec;
 
 import com.Fishmod.fur.init.FURBlockRegistry;
@@ -12,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -70,10 +73,22 @@ public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
 	
 	@Override
 	public void makeCap(LevelAccessor worldIn, RandomSource rand, BlockPos position, int height, BlockPos.MutableBlockPos mutable, HugeMushroomFeatureConfiguration config) {
-		for (BlockPos P : capShape(position.getX(), position.getY() + height, position.getZ(), config.foliageRadius)) {
+		List<BlockPos> shape = capShape(position.getX(), position.getY() + height, position.getZ(), config.foliageRadius);
+		// Track which positions are cap blocks so each block can show the "inside" face
+		// (mushroom_block_inside) where it touches another cap block, and the cap skin on
+		// its exposed faces — the standard huge-mushroom look.
+		Set<BlockPos> capSet = new HashSet<>(shape);
+		for (BlockPos P : shape) {
 			mutable.set(P);
 			if (!worldIn.getBlockState(mutable).isSolidRender(worldIn, mutable)) {
-				worldIn.setBlock(mutable, config.capProvider.getState(rand, position), 3);
+				BlockState capState = config.capProvider.getState(rand, position)
+						.setValue(HugeMushroomBlock.NORTH, !capSet.contains(P.north()))
+						.setValue(HugeMushroomBlock.SOUTH, !capSet.contains(P.south()))
+						.setValue(HugeMushroomBlock.WEST,  !capSet.contains(P.west()))
+						.setValue(HugeMushroomBlock.EAST,  !capSet.contains(P.east()))
+						.setValue(HugeMushroomBlock.UP,    !capSet.contains(P.above()))
+						.setValue(HugeMushroomBlock.DOWN,  !capSet.contains(P.below()));
+				worldIn.setBlock(mutable, capState, 3);
 			}
 		}
     }

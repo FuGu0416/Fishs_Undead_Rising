@@ -27,7 +27,7 @@ public class MycelialMatBlock extends Block implements BonemealableBlock {
 
 	public void performBonemeal(ServerLevel p_221533_, RandomSource p_221534_, BlockPos p_221535_, BlockState p_221536_) {
 		p_221533_.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap((p_258973_) -> {
-			return p_258973_.getHolder(FURConfiguredFeatures.MIXED_FLOOR_PATCH);
+			return p_258973_.getHolder(FURConfiguredFeatures.LUMINOUS_CLUSTER_PATCH_SMALL);
 		}).ifPresent((p_255669_) -> {
 			p_255669_.value().place(p_221533_, p_221533_.getChunkSource().getGenerator(), p_221534_, p_221535_.above());
 		});

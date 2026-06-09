@@ -305,6 +305,7 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_MAT.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get().asItem(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.EMBERWICK_FUNGUS.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.LUMINOUS_FILAMENT.get().asItem(), 0.50F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLIMMERCAP.get().asItem(), 0.65F);
     }

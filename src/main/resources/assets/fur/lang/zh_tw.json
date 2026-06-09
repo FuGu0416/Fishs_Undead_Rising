@@ -277,6 +277,7 @@
 	"block.fur.mycelial_mat": "菌絲墊層",
 	"block.fur.mycelial_veil": "覆地菌絲",
 	"block.fur.mycelial_tendrils": "菌絲觸鬚",
+	"block.fur.emberwick_fungus": "餘燼芯菌",
 	"block.fur.luminous_filament": "垂廉螢絲",
 	"block.fur.glimmercap": "幽輝蕈",
 	"block.fur.enigmoth_egg": "謎影蛾蛋",
@@ -329,6 +330,7 @@
 	"entity.fur.ghoul": "食屍鬼",
 	
 	"entity.fur.warsmallfireball": "火球",
+	"entity.fur.molten_glob": "熔岩團",
 	"entity.fur.piranhalauncher": "群獵者",
 	"entity.fur.swarmer_launcher": "群獵者",
 	"entity.fur.acidjet": "胃酸液",

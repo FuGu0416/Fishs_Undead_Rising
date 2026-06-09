@@ -60,6 +60,10 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_TENDRILS_SIMPLE =
             key("mycelial_tendrils_simple");
 
+    /** Emberwick Fungus — single-block placement used by EMBERWICK_INNER (cluster-only) */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EMBERWICK_SIMPLE =
+            key("emberwick_simple");
+
     /** Luminous Filament — ceiling-hanging vines, similar to Cave Vines */
     public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_FILAMENT =
             key("luminous_filament");
@@ -88,9 +92,21 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MIXED_FLOOR_RANDOM =
             key("mixed_floor_random");
 
-    /** Mixed floor patch — RANDOM_PATCH using MIXED_FLOOR_RANDOM as inner feature */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MIXED_FLOOR_PATCH =
-            key("mixed_floor_patch");
+    /** Dense floor clump (small) — tight RANDOM_PATCH of mixed plants; bonemeal + glimmercap cluster */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_CLUSTER_PATCH_SMALL =
+            key("luminous_cluster_patch_small");
+
+    /** Dense floor clump (large) — tight RANDOM_PATCH of mixed plants; glow-shroom cluster */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_CLUSTER_PATCH_LARGE =
+            key("luminous_cluster_patch_large");
+
+    /** Glow-shroom cluster — HUGE_GLOWSHROOM centerpiece + large vegetation clump around it */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_CLUSTER_GLOWSHROOM =
+            key("luminous_cluster_glowshroom");
+
+    /** Glimmercap cluster — GIANT_GLIMMERCAP centerpiece + small vegetation clump around it */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_CLUSTER_GLIMMERCAP =
+            key("luminous_cluster_glimmercap");
 
     /** Mycelial Mat ceiling patch — places mat on cave ceilings (no inner vegetation) */
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_MAT_CEILING_PATCH =
@@ -123,7 +139,7 @@ public class FURConfiguredFeatures {
         // ── Mycelial Mat patch (floor) ────────────────────────────────────────
         // Uses a custom feature so the patch boundary is an organic blob rather
         // than the rectangular shape produced by vanilla VegetationPatch.
-        // Plant seeding is handled by the separate MIXED_FLOOR placed feature.
+        // Plant seeding is handled by the separate LUMINOUS_CLUSTER placed feature.
         context.register(MYCELIAL_MAT_PATCH, new ConfiguredFeature<>(
                 FURFeatureRegistry.MYCELIAL_MAT_PATCH.get(),
                 NoneFeatureConfiguration.INSTANCE
@@ -133,7 +149,7 @@ public class FURConfiguredFeatures {
         context.register(MYCELIAL_MAT_PATCH_BONEMEAL, new ConfiguredFeature<>(
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
-                        net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
+                        com.Fishmod.fur.data.providers.FURBlockTagsProvider.MAT_REPLACEABLE,
                         BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
                         context.lookup(Registries.PLACED_FEATURE)
                                 .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
@@ -141,7 +157,9 @@ public class FURConfiguredFeatures {
                         ConstantInt.of(1),
                         0.6F,
                         5,
-                        0.15F,                 // vegetationChance
+                        0.0F,                  // vegetationChance — mat only; plants come
+                                               // exclusively from LUMINOUS_CLUSTER so they
+                                               // form rare clusters, not a uniform scatter
                         UniformInt.of(2, 4),
                         0.8F                   // extraEdgeColumnChance
                 )));
@@ -160,8 +178,13 @@ public class FURConfiguredFeatures {
                                 SimpleWeightedRandomList.<BlockState>builder()
                                         .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 0), 1)
                                         .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 1), 1)
-                                        .add(FURBlockRegistry.MYCELIAL_TENDRILS.get().defaultBlockState().setValue(MycelialTendrilsBlock.VARIANT, 2), 1)
                                         .build()))));
+
+        // Emberwick Fungus — single block (was mycelial_tendrils variant 2); cluster-only.
+        context.register(EMBERWICK_SIMPLE, new ConfiguredFeature<>(
+                Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(
+                        BlockStateProvider.simple(FURBlockRegistry.EMBERWICK_FUNGUS.get()))));
 
         context.register(GLOWSHROOM_SIMPLE, new ConfiguredFeature<>(
                 Feature.SIMPLE_BLOCK,
@@ -257,11 +280,13 @@ public class FURConfiguredFeatures {
                         3  // foliageRadius — side height of the cap skirt
                 )));
 
-        // ── Mixed floor vegetation ────────────────────────────────────────────
+        // ── Mixed floor vegetation (cluster contents) ─────────────────────────
         // RANDOM_SELECTOR: sequential independent chances (first match wins):
-        //   25% → mycelial_veil  |  25% → mycelial_tendrils
+        //   25% → mycelial_veil  |  25% → emberwick fungus
         //   33% → glowshroom  |  10% → glimmercap tall  |  8% → glimmercap short
-        //   default → mycelial_tendrils (glimmercap is now an explicit low-weight entry)
+        //   default → mycelial_veil
+        // Note: mycelial_tendrils is NOT here — it is ambient ground cover seeded onto
+        // the mat (see MycelialMatPatchFeature). Emberwick fungus is cluster-only.
         context.register(MIXED_FLOOR_RANDOM, new ConfiguredFeature<>(
                 Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(
@@ -272,7 +297,7 @@ public class FURConfiguredFeatures {
                                         0.25F),
                                 new WeightedPlacedFeature(
                                         context.lookup(Registries.PLACED_FEATURE)
-                                                .getOrThrow(FURPlacedFeatures.MYCELIAL_TENDRILS_PLACED),
+                                                .getOrThrow(FURPlacedFeatures.EMBERWICK_INNER),
                                         0.25F),
                                 new WeightedPlacedFeature(
                                         context.lookup(Registries.PLACED_FEATURE)
@@ -299,7 +324,7 @@ public class FURConfiguredFeatures {
         context.register(MYCELIAL_MAT_CEILING_PATCH, new ConfiguredFeature<>(
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
-                        net.minecraft.tags.BlockTags.MOSS_REPLACEABLE,
+                        com.Fishmod.fur.data.providers.FURBlockTagsProvider.MAT_REPLACEABLE,
                         BlockStateProvider.simple(FURBlockRegistry.MYCELIAL_MAT.get()),
                         context.lookup(Registries.PLACED_FEATURE)
                                 .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
@@ -351,14 +376,43 @@ public class FURConfiguredFeatures {
                         )
                 )));
 
-        context.register(MIXED_FLOOR_PATCH, new ConfiguredFeature<>(
+        // ── Vegetation clumps (the patch around each giant mushroom) ──────────
+        // Tight RandomPatch clumps of mixed plants (cyan glowshroom + purple glimmercap
+        // + glow plants); the inner feature keeps its own floor/air placement predicate.
+        // Two sizes so the glow-shroom and glimmercap clusters look different.
+        context.register(LUMINOUS_CLUSTER_PATCH_SMALL, new ConfiguredFeature<>(
                 Feature.RANDOM_PATCH,
                 new RandomPatchConfiguration(
-                        48,   // tries per patch
-                        6,   // xz spread
+                        96,  // tries — smaller clump (+200% fungus density: was 32)
+                        4,   // xz spread (tight)
+                        1,   // y spread (tight)
+                        context.lookup(Registries.PLACED_FEATURE)
+                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER))));
+
+        context.register(LUMINOUS_CLUSTER_PATCH_LARGE, new ConfiguredFeature<>(
+                Feature.RANDOM_PATCH,
+                new RandomPatchConfiguration(
+                        240, // tries — denser/larger clump (+200% fungus density: was 80)
+                        5,   // xz spread (still tight)
                         2,   // y spread
                         context.lookup(Registries.PLACED_FEATURE)
                                 .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER))));
+
+        // Each giant mushroom IS a cluster: the mushroom centerpiece at the origin +
+        // a dense clump of mixed plants around it (see LuminousClusterFeature, which
+        // only grows the clump where the mushroom actually placed). These replace the
+        // bare huge-mushroom features in the biome's giant-mushroom placements.
+        context.register(LUMINOUS_CLUSTER_GLOWSHROOM, new ConfiguredFeature<>(
+                FURFeatureRegistry.LUMINOUS_CLUSTER.get(),
+                new com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration(
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LARGE_GLOW_SHROOM),
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LUMINOUS_CLUSTER_PATCH_LARGE))));
+
+        context.register(LUMINOUS_CLUSTER_GLIMMERCAP, new ConfiguredFeature<>(
+                FURFeatureRegistry.LUMINOUS_CLUSTER.get(),
+                new com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration(
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(GIANT_GLIMMERCAP),
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LUMINOUS_CLUSTER_PATCH_SMALL))));
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────

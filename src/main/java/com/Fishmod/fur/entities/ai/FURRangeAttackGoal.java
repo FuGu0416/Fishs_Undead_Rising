@@ -122,6 +122,12 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
         return this;
     }
 
+    /** Upward launch bias: aims higher with distance so a gravity-affected shot arcs onto the target. */
+    public FURRangeAttackGoal<T> withCurve(double curveIn) {
+        this.curve = curveIn;
+        return this;
+    }
+
 	/**
      * Returns whether the EntityAIBase should begin execution.
      */

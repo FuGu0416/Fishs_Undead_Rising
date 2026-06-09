@@ -81,15 +81,14 @@ public class FURLuminousUndergroveBiome {
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.MYCELIAL_MAT_CEILING_PATCH));
 
         // Ceiling: luminous filament — only grows from mycelial_mat ceiling blocks
+        // (two passes: base + a +50% top-up, since one CountPlacement caps at 256)
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.LUMINOUS_FILAMENT));
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.LUMINOUS_FILAMENT_EXTRA));
 
-        // Floor: mixed vegetation patch (mycelial_veil / tendrils / glowshroom / glimmercap)
-        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.MIXED_FLOOR));
-
-        // Landmark: large glow shroom tree (rare, ~1 per 6 chunks)
+        // Floor: each giant mushroom is a cluster — the huge mushroom plus a dense clump
+        // of mixed plants around it. Vegetation only grows where a mushroom grows, so the
+        // plants read as clusters rather than a uniform scatter.
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.LARGE_GLOW_SHROOM));
-
-        // Landmark: giant glimmercap (flat brown-mushroom-shaped huge mushroom)
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.GIANT_GLIMMERCAP));
 
         // ── Visual effects ────────────────────────────────────────────────────

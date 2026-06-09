@@ -31,6 +31,8 @@ import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.projectiles.SwarmerLauncherEntity;
 import com.Fishmod.fur.entities.projectiles.LocustSwarmEntity;
+import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
+import com.Fishmod.fur.entities.projectiles.MoltenPoolEntity;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
@@ -113,6 +115,8 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<FURArrowEntity>> FANG_ARROW = DEF_REG.register("fang_arrow", () -> (EntityType) EntityType.Builder.of(FURArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_arrow"));
 	public static final RegistryObject<EntityType<FangDaggerEntity>> FANG_DAGGER = DEF_REG.register("fang_dagger", () -> (EntityType) EntityType.Builder.of(FangDaggerEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("fang_dagger"));
 	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("warsmallfireball"));
+	public static final RegistryObject<EntityType<MoltenGlobEntity>> MOLTEN_GLOB = DEF_REG.register("molten_glob", () -> (EntityType) EntityType.Builder.of(MoltenGlobEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("molten_glob"));
+	public static final RegistryObject<EntityType<MoltenPoolEntity>> MOLTEN_POOL = DEF_REG.register("molten_pool", () -> (EntityType) EntityType.Builder.<MoltenPoolEntity>of(MoltenPoolEntity::new, MobCategory.MISC).fireImmune().sized(6.0F, 0.5F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE).build("molten_pool"));
 	public static final RegistryObject<EntityType<MothScalesEntity>> MOTH_SCALES = DEF_REG.register("moth_scales", () -> (EntityType) EntityType.Builder.of(MothScalesEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("moth_scales"));
 	public static final RegistryObject<EntityType<LocustSwarmEntity>> LOCUST_SWARM = DEF_REG.register("locust_swarm", () -> (EntityType) EntityType.Builder.of(LocustSwarmEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("locust_swarm"));
 	public static final RegistryObject<EntityType<SwarmerLauncherEntity>> SWARMER_LAUNCHER = DEF_REG.register("swarmer_launcher", () -> (EntityType) EntityType.Builder.of(SwarmerLauncherEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("swarmer_launcher"));

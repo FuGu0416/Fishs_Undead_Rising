@@ -278,6 +278,7 @@
 	"block.fur.mycelial_mat": "Mycelial Mat",
 	"block.fur.mycelial_veil": "Mycelial Veil",
 	"block.fur.mycelial_tendrils": "Mycelial Tendrils",
+	"block.fur.emberwick_fungus": "Emberwick Fungus",
 	"block.fur.luminous_filament": "Luminous Filament",
 	"block.fur.glimmercap": "Glimmercap",
 	"block.fur.enigmoth_egg": "Enigmoth Egg",
@@ -331,6 +332,7 @@
 	"entity.fur.ghoul": "Ghoul",
 			
 	"entity.fur.warsmallfireball": "Fireball",
+	"entity.fur.molten_glob": "Molten Glob",
 	"entity.fur.swarmer_launcher": "Swarmer",
 	"entity.fur.acidjet": "Gastric Fluid",
 	"entity.fur.holy_grenade": "Holy Grenade",

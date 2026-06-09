@@ -5,6 +5,8 @@ import com.Fishmod.fur.worldgen.feature.CaveFloorSmootherFeature;
 import com.Fishmod.fur.worldgen.feature.GiantGlimmercapFeature;
 import com.Fishmod.fur.worldgen.feature.GrottoStreamFeature;
 import com.Fishmod.fur.worldgen.feature.LargeGlowShroomFeature;
+import com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration;
+import com.Fishmod.fur.worldgen.feature.LuminousClusterFeature;
 import com.Fishmod.fur.worldgen.feature.MycelialMatPatchFeature;
 import com.Fishmod.fur.worldgen.feature.SmallPoolFeature;
 
@@ -35,4 +37,9 @@ public class FURFeatureRegistry {
 
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> CAVE_FLOOR_SMOOTHER = DEF_REG.register("cave_floor_smoother",
 			() -> new CaveFloorSmootherFeature(NoneFeatureConfiguration.CODEC));
+
+	// Hero-cluster feature: centerpiece + dense surrounding patch, for the
+	// Luminous Undergrove floor flora "focal point" clusters.
+	public static final RegistryObject<Feature<LuminousClusterConfiguration>> LUMINOUS_CLUSTER = DEF_REG.register("luminous_cluster",
+			() -> new LuminousClusterFeature(LuminousClusterConfiguration.CODEC));
 }

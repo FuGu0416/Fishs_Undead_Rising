@@ -9,6 +9,8 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
+import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
+import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -109,7 +111,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	private static final int RANGE = 2;
 	public static final int ATTACK_TIMER = 20;
 	
-	private FURRangeAttackGoal<WarSmallFireballEntity> range_atk;
+	// Holds either a war-fireball goal (nymph/child) or a molten-glob goal (adult),
+	// so it is typed to their shared base rather than a single projectile.
+	private FURRangeAttackGoal<? extends EnchantableFireBallEntity> range_atk;
 	private AvoidEntityGoal<Player> avoid_entity;
 	private int barrage_CD;
 	@Nullable
@@ -520,7 +524,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	    	
     	    	this.goalSelector.removeGoal(this.avoid_entity);
     	    	this.goalSelector.removeGoal(this.range_atk);
-    	    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D).withWindup(11);
+    	    	// Adults lob a single Molten Glob (times = 1) in a parabolic arc (curve compensates
+    	    	// for the glob's gravity) instead of a straight war-fireball barrage.
+    	    	this.range_atk = new FURRangeAttackGoal<MoltenGlobEntity>(this, FUREntityRegistry.MOLTEN_GLOB.get(), 1, 5, 2.5D, 1.0D, 2.5D).withWindup(11).withCurve(4.0D);
     	    	this.goalSelector.addGoal(4, this.range_atk);
     	    	
     	        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.23D);
