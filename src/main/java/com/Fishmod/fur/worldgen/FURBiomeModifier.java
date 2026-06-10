@@ -48,6 +48,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLING = registerKey("add_shroomling");
 	public static final ResourceKey<BiomeModifier> ADD_GHOSTRAY = registerKey("add_ghostray");
+	public static final ResourceKey<BiomeModifier> ADD_WARPEDFIREFLY = registerKey("add_warpedfirefly");
+	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -110,6 +112,13 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
         addSpawn(context, ADD_GHOSTRAY, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOSTRAY.get(), 10, 1, 1));
+        addSpawn(context, ADD_WARPEDFIREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WARPEDFIREFLY.get(), 2, 4, 8));
+        // 1.16.5 spawned the Grave Robber only at desert structures (pyramid / desert tomb) via
+        // StructureSpawnListGatherEvent. Those structures aren't ported, so this approximates it with a
+        // sparse ambient desert spawn (the Grave Robber also appears in raids as a Raider).
+        addSpawn(context, ADD_GRAVEROBBER, biomes.getOrThrow(Tags.Biomes.IS_DESERT),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.GRAVEROBBER.get(), 8, 1, 1));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

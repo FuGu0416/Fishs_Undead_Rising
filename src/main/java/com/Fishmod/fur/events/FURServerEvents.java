@@ -17,6 +17,7 @@ import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
+import com.Fishmod.fur.integration.curios.CurioIntegration;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.VespaShieldItem;
 import com.Fishmod.fur.item.FamineArmorItem;
@@ -43,14 +44,18 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -87,6 +92,7 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber
@@ -187,11 +193,10 @@ public class FURServerEvents {
     	/**
          * Add bonus loot (Intestine) to various entities.
          **/
-    	/*    	
-    	if (event.isRecentlyHit() && event.getEntity() instanceof AbstractIllagerEntity && event.getEntity().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_IllagerNose.get()) {          
-            event.getEntity().spawnAtLocation(FURItemRegistry.ILLAGER_NOSE, 1);
-        }*/
-    	
+    	if (event.isRecentlyHit() && event.getEntity() instanceof AbstractIllager && event.getEntity().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_IllagerNose.get()) {
+            event.getEntity().spawnAtLocation(FURItemRegistry.ILLAGER_NOSE.get(), 1);
+        }
+
     	if (event.getEntity().getTags().contains("FUR_noLoot")) {
     		event.setCanceled(true);
     	}
@@ -445,12 +450,12 @@ public class FURServerEvents {
     		skeleton.removeTag("FUR_tameSkeleton");
     	}
     	
-    	/*if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
+    	if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
     		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (p_210136_0_) -> {
-				boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY); 
-    			return p_210136_0_.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE) || noseInCurios;
-			}));	
-    	}*/
+				boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE.get(), p_210136_0_) != ItemStack.EMPTY);
+    			return p_210136_0_.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get()) || noseInCurios;
+			}));
+    	}
     }
     
     @SubscribeEvent
@@ -830,16 +835,16 @@ public class FURServerEvents {
         
     	// Neutral
         if (newTarget != null && entity.getLastHurtByMob() != newTarget) {
-        	/*Boolean hasNose = newTarget.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE);
-        	
-    		if (ModList.get().isLoaded("curios") && !hasNose) {
-    			hasNose = (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, newTarget) != ItemStack.EMPTY);
-    		}
-    		
+        	boolean hasNose = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get());
+
+        	if (ModList.get().isLoaded("curios") && !hasNose) {
+        		hasNose = CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE.get(), newTarget) != ItemStack.EMPTY;
+        	}
+
         	if (entity.getMobType().equals(MobType.ILLAGER) && hasNose) {
-        		((MobEntity) mob).setTarget(null);
-        	}*/
-        	
+        		event.setCanceled(true);
+        	}
+
         	if (entity instanceof Mob mob && mob.getMobType().equals(MobType.ARTHROPOD) && newTarget.hasEffect(FUREffectRegistry.CHARMING_PHEROMONE.get())) {
         		mob.setTarget(null);
         		mob.getNavigation().moveTo(newTarget.getX(), newTarget.getY(), newTarget.getZ(), mob.getMoveControl().getSpeedModifier());

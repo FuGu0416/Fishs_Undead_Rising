@@ -23,6 +23,7 @@ import com.Fishmod.fur.item.FangDaggerItem;
 import com.Fishmod.fur.item.FrozenThighItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.GoldenHeartItem;
+import com.Fishmod.fur.item.IllagerNoseItem;
 import com.Fishmod.fur.item.InfusedBandageItem;
 import com.Fishmod.fur.item.BloatedIntestineItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
@@ -201,7 +202,10 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> BLOATED_INTESTINE = DEF_REG.register("bloated_intestine", () -> new BloatedIntestineItem());
 	public static final RegistryObject<Item> SAUSAGE_ROLL = DEF_REG.register("sausage_roll", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
-	
+	public static final RegistryObject<Item> ILLAGER_NOSE = DEF_REG.register("illager_nose", () -> new IllagerNoseItem(new Item.Properties()));
+	public static final RegistryObject<Item> PHEROMONE_GLAND = DEF_REG.register("pheromone_gland", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CHARMING_PHEROMONE.get(), 60 * 20, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1));
+	public static final RegistryObject<Item> CHARMING_CATALYST = DEF_REG.register("charming_catalyst", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART));
+
 	/*
 	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("fur:green_bacon_and_eggs");
@@ -211,7 +215,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("fur:dreamcatcher");	
-	public static final RegistryObject<Item> RAVEN_WHISTLE = new RavenWhistleItem(new Item.Properties().stacksTo(1)).setRegistryName("fur:raven_whistle");
 	public static final RegistryObject<Item> FROZEN_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "fur:frozen_dagger", ItemTier.WOOD, 2, -2.4F, FURItemRegistry.SHATTERED_ICE);
 	public static final RegistryObject<Item> SPECTRAL_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "fur:spectral_dagger", FURItemTier.SPECTRAL, -1, -2.4F, FURItemRegistry.ECTOPLASM);
 	public static final RegistryObject<Item> STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("fur:stained_kings_crown");
@@ -219,10 +222,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties()).setRegistryName("fur:sinister_whetstone");
-	public static final RegistryObject<Item> ILLAGER_NOSE = new IllagerNoseItem(mod_LavaCow.PROXY.setupISTER(new Item.Properties())).setRegistryName("fur:illager_nose");
-	public static final RegistryObject<Item> SCARAB_SCEPTER = new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), "fur:scarab_scepter", ItemTier.GOLD, -2, -3.3F, FURItemRegistry.ANCIENT_AMBER);	
-	public static final RegistryObject<Item> PHEROMONE_GLAND = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 60 * 20, 0), 1.0F).effect(() -> new EffectInstance(Effects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1).setRegistryName("fur:pheromone_gland");
-	public static final RegistryObject<Item> CHARMING_CATALYST = new FissionPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.HONEY_DRINK, ParticleTypes.HEART).setRegistryName("fur:charming_catalyst");
 	public static final RegistryObject<Item> PARASITE_OVUM = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 12 * 20, 0), 0.8F).build())).setRegistryName("fur:parasite_ovum");
 	*/
 	
@@ -255,7 +254,7 @@ public class FURItemRegistry {
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
         spawnEgg("banshee", FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A);
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
-        spawnEgg("shroomling", FUREntityRegistry.SHROOMLING, 0x5A6E3D, 0xA8C57A);
+        spawnEgg("shroomling", FUREntityRegistry.SHROOMLING, 0x9046C1, 0x32FFF9);
         spawnEgg("mimic", FUREntityRegistry.MIMIC, 0xE168FF, 0x070000);
         spawnEgg("ptera", FUREntityRegistry.PTERA, 0x208938, 0xD61717);
         spawnEgg("salamander", FUREntityRegistry.SALAMANDER, 0x260606, 0xF4F142);
@@ -269,6 +268,8 @@ public class FURItemRegistry {
     	spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
     	spawnEgg("raven", FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E);
     	spawnEgg("ghostray", FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD);
+    	spawnEgg("warpedfirefly", FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738);
+    	spawnEgg("graverobber", FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B);
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
@@ -277,11 +278,8 @@ public class FURItemRegistry {
     	spawnEgg(FUREntityRegistry.SEAGULL, 0xEEEEEE, 0x121212, new Item.Properties()).setRegistryName("fur:spawn_egg_seagull"));
     	spawnEgg(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties()).setRegistryName("fur:spawn_egg_boneworm"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties()).setRegistryName("fur:spawn_egg_pingu"));
-    	spawnEgg(FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD, new Item.Properties()).setRegistryName("fur:spawn_egg_ghostray"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties()).setRegistryName("fur:spawn_egg_forsaken"));
     	spawnEgg(FUREntityRegistry.SKELETONKING, 0x2F2A2A, 0xA2A1A1, new Item.Properties()).setRegistryName("fur:spawn_egg_skeletonking"));
-    	spawnEgg(FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738, new Item.Properties()).setRegistryName("fur:spawn_egg_warpedfirefly"));
-    	spawnEgg(FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B, new Item.Properties()).setRegistryName("fur:spawn_egg_graverobber"));
     	spawnEgg(FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE, new Item.Properties()).setRegistryName("fur:spawn_egg_beelzebub"));
     	*/
     }
@@ -305,7 +303,7 @@ public class FURItemRegistry {
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_MAT.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_VEIL.get().asItem(), 0.30F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.MYCELIAL_TENDRILS.get().asItem(), 0.30F);
-        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.EMBERWICK_FUNGUS.get().asItem(), 0.30F);
+        ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.EMBERWICK_FUNGUS.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.LUMINOUS_FILAMENT.get().asItem(), 0.50F);
         ComposterBlock.COMPOSTABLES.put(FURBlockRegistry.GLIMMERCAP.get().asItem(), 0.65F);
     }

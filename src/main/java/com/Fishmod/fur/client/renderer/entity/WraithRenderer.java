@@ -25,6 +25,7 @@ public class WraithRenderer extends GeoEntityRenderer<WraithEntity> {
     	return super.getTextureLocation(entity);
     }    
     
+    @Override
     protected int getBlockLightLevel(WraithEntity p_225624_1_, BlockPos p_225624_2_) {
         return 8;
     }

@@ -16,8 +16,7 @@ import software.bernie.geckolib.model.data.EntityModelData;
 
 public class ShroomlingModel extends GeoModel<ShroomlingEntity> {
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
-			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/shroomling/shroomling.png"),
-			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/shroomling/shroomling1.png")
+			new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/shroomling/shroomling.png")
 	};
 
     private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/shroomling.animation.json");
@@ -26,7 +25,7 @@ public class ShroomlingModel extends GeoModel<ShroomlingEntity> {
 
     @Override
     public ResourceLocation getTextureResource(ShroomlingEntity object) {
-        return TEXTURES[object.getSkin()];
+        return TEXTURES[0];
     }
 
     @Override

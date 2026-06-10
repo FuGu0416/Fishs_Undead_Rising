@@ -7,6 +7,7 @@ import com.Fishmod.fur.client.model.block.ModelScarecrowHead_common;
 import com.Fishmod.fur.client.model.block.ModelScarecrowHead_plague;
 import com.Fishmod.fur.client.model.block.ModelScarecrowHead_straw;
 import com.Fishmod.fur.client.model.item.ModelVespaShield;
+import com.Fishmod.fur.client.model.GraveRobberModel;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -17,6 +18,7 @@ public class FURModelLayers {
 	public static final ModelLayerLocation MOLTEN_ARMOR = createLocation("molten_armor", "main");
 	public static final ModelLayerLocation FAMINE_ARMOR = createLocation("famine_armor", "main");
 	public static final ModelLayerLocation VESPA_SHIELD = createLocation("vespa_shield", "main");
+	public static final ModelLayerLocation GRAVEROBBER = createLocation("graverobber", "main");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MOLTEN_ARMOR, () -> MoltenArmorModel.createArmorLayer(new CubeDeformation(0.75F)));
@@ -25,6 +27,7 @@ public class FURModelLayers {
         event.registerLayerDefinition(ModelScarecrowHead_straw.LAYER_LOCATION, ModelScarecrowHead_straw::createBodyLayer);
         event.registerLayerDefinition(ModelScarecrowHead_plague.LAYER_LOCATION, ModelScarecrowHead_plague::createBodyLayer);
         event.registerLayerDefinition(VESPA_SHIELD, ModelVespaShield::createBodyLayer);
+        event.registerLayerDefinition(GRAVEROBBER, GraveRobberModel::createBodyLayer);
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {

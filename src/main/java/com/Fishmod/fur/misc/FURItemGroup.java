@@ -55,6 +55,8 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.POISON_STINGER.get());
             	output.accept(FURItemRegistry.BLOATED_INTESTINE.get());
             	output.accept(FURItemRegistry.ENIGMOTH_DUST.get());
+            	output.accept(FURItemRegistry.PHEROMONE_GLAND.get());
+            	output.accept(FURItemRegistry.ILLAGER_NOSE.get());
             	output.accept(FURItemRegistry.ANCIENT_AMBER.get());
             	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());            	           	
             	output.accept(FURItemRegistry.USHABTI.get());
@@ -78,6 +80,7 @@ public class FURItemGroup {
             	// Potion
             	output.accept(FURItemRegistry.POTION_OF_FISSION.get());
             	output.accept(FURItemRegistry.POTION_OF_MOOTEN_LAVA.get());
+            	output.accept(FURItemRegistry.CHARMING_CATALYST.get());
             	
             	// Bucket
             	output.accept(FURItemRegistry.WISP_IN_A_BOTTLE.get());

@@ -112,8 +112,8 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
 
     // ── fur:enigmoth_targets ─────────────────────────────────────────────────
     private void addEnigmothTargetsTag() {
-        tag(ENIGMOTH_TARGETS);
-        	// .add(FUREntityRegistry.WARPEDFIREFLY.get())
+        tag(ENIGMOTH_TARGETS)
+        	.add(FUREntityRegistry.WARPEDFIREFLY.get());
     }
 
     // ── fur:lamprey_targets ──────────────────────────────────────────────────

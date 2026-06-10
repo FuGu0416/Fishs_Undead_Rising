@@ -1,9 +1,11 @@
 package com.Fishmod.fur.client.renderer.entity;
 
 import com.Fishmod.fur.entities.tameable.ShroomlingEntity;
+import com.Fishmod.fur.client.layer.ShroomlingBubbleLayer;
 import com.Fishmod.fur.client.model.ShroomlingModel;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,10 +17,16 @@ public class ShroomlingRenderer extends GeoEntityRenderer<ShroomlingEntity> {
     public ShroomlingRenderer(EntityRendererProvider.Context rendermanagerIn) {
     	super(rendermanagerIn, new ShroomlingModel());
         this.shadowRadius = 0.3F;
+        this.addRenderLayer(new ShroomlingBubbleLayer<>(this));
     }
 
     @Override
     public ResourceLocation getTextureLocation(ShroomlingEntity entity) {
     	return super.getTextureLocation(entity);
     }
+    
+    @Override
+    protected int getBlockLightLevel(ShroomlingEntity p_225624_1_, BlockPos p_225624_2_) {
+        return 15;
+    }    
 }

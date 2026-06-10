@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.LavaCowEntity;
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 
@@ -209,9 +210,9 @@ public class FURPotionItem extends FURItem {
         		entityLiving.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 225, 2));
         	} else if (stack.getItem().equals(FURItemRegistry.POTION_OF_MOOTEN_LAVA.get())) {
         		entityLiving.setSecondsOnFire(12);
-        	}/* else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST)) {      
-        		entityLiving.addEffect(new MobEffectInstance(FUREffectRegistry.CHARMING_PHEROMONE, 30 * 20, 0));
-        	}*/
+        	} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST.get())) {
+        		entityLiving.addEffect(new MobEffectInstance(FUREffectRegistry.CHARMING_PHEROMONE.get(), 30 * 20, 0));
+        	}
         }
 
         return this.returnItem(stack, worldIn, entityLiving); 

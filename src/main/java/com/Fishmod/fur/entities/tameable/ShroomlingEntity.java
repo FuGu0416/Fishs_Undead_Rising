@@ -21,7 +21,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -136,6 +135,16 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 		return (i >= 0 && i < SPORE_EFFECTS.length) ? SPORE_EFFECTS[i].get() : null;
 	}
 
+	/**
+	 * Packed RGB colour of the carried spore effect — used client-side to tint the
+	 * {@code shroomling_bubble} render layer. Derived from the synced {@link #SPORE_EFFECT} index,
+	 * so it is valid on the client. Falls back to white if there is no effect.
+	 */
+	public int getSporeColor() {
+		MobEffectInstance carried = this.buildSporeEffect();
+		return carried != null ? carried.getEffect().getColor() : 0xFFFFFF;
+	}
+
 	public static boolean checkShroomlingSpawnRules(EntityType<? extends ShroomlingEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		// Luminous Undergrove is a naturally-lit cave biome, so the usual darkness check is
 		// skipped here (mirrors MycosisEntity). Shroomling only spawns in that biome anyway.
@@ -229,27 +238,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	            world.addParticle(enumparticletypes, d0, this.getBoundingBox().minY + (double)f1, d1, 0.0D, 0.05D, 0.0D);
 	        }
         }
-
-    	if (!FURConfig.SunScreen_Mode.get() && !(this.getOwner() instanceof Player) && this.isSunBurnTick()) {
-    		this.setSecondsOnFire(8);
-        }
-
-    	// Wisps of the carried spore effect drift off the cap, tinted to the effect's colour.
-    	if (this.level().isClientSide() && this.random.nextInt(6) == 0) {
-    		MobEffectInstance carried = this.buildSporeEffect();
-    		if (carried != null) {
-    			MobEffect effect = carried.getEffect();
-    			int color = effect.getColor();
-    			double r = ((color >> 16) & 0xFF) / 255.0D;
-    			double g = ((color >> 8) & 0xFF) / 255.0D;
-    			double b = (color & 0xFF) / 255.0D;
-    			this.level().addParticle(ParticleTypes.ENTITY_EFFECT,
-    					this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
-    					this.getY() + this.getBbHeight() * (0.6D + this.random.nextDouble() * 0.4D),
-    					this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
-    					r, g, b);
-    		}
-    	}
 
     	super.aiStep();
     }
