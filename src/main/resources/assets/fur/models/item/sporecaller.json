@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "fur:item/sporecaller",
+        "layer1": "fur:item/sporecaller_overlay"
+    }
+}

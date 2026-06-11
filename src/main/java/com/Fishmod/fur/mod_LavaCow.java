@@ -6,7 +6,6 @@ import com.Fishmod.fur.client.layer.FURModelLayers;
 import com.Fishmod.fur.client.recipebook.RecipeCategories;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.events.EventBusHandler;
-import com.Fishmod.fur.events.FURClientEvents;
 import com.Fishmod.fur.events.FURServerEvents;
 import com.Fishmod.fur.init.FURBlockEntityRegistry;
 import com.Fishmod.fur.init.FURBlockRegistry;
@@ -30,8 +29,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.StructureModifier;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
@@ -73,12 +74,9 @@ public class mod_LavaCow {
     	eventBus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
     	//eventBus.addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
-    	eventBus.addListener(this::doClientStuff); 
     	//eventBus.addListener(this::setupParticleEvent);
         /*eventBus.addGenericListener(Feature.class, EventPriority.LOW,
                 (final RegistryEvent.Register<Feature<?>> event) -> FURWorldRegistry.register());*/
-    	eventBus.addListener(this::registerLayerDefinitions);
         // Register ourselves for server and other game events we are interested in
     	
         MinecraftForge.EVENT_BUS.register(this);      
@@ -105,10 +103,16 @@ public class mod_LavaCow {
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, mod_LavaCow.MODID);
         structureModifiers.register(eventBus);
         structureModifiers.register("structure_spawns", FURStructureModifier.Modifier::makeCodec);
-        eventBus.addListener(FURStructureModifier::generateStructureModifiers);                    
-        eventBus.addListener(FURClientEvents::clientSetup);                    
-        eventBus.addListener(FURClientEvents::registerItemColors);    
-        eventBus.addListener(RecipeCategories::init);
+        eventBus.addListener(FURStructureModifier::generateStructureModifiers);
+        // Client-only mod-bus listeners. Guarded so the dedicated server never links the client-only
+        // event classes (e.g. EntityRenderersEvent / RegisterRecipeBookCategoriesEvent), which would
+        // otherwise crash mod construction under FML's dist check. The FURClientEvents handlers
+        // (clientSetup / registerItemColors) self-register via its @EventBusSubscriber(Dist.CLIENT).
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            eventBus.addListener(this::doClientStuff);
+            eventBus.addListener(this::registerLayerDefinitions);
+            eventBus.addListener(RecipeCategories::init);
+        }
         
 	    // Register the configuration GUI factory
         /*ModLoadingContext.get().registerExtensionPoint(

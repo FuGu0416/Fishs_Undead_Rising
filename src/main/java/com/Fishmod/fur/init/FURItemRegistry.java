@@ -32,6 +32,8 @@ import com.Fishmod.fur.item.MoltenHammerItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
 import com.Fishmod.fur.item.ParasiteRawItem;
 import com.Fishmod.fur.item.SalamanderBucketItem;
+import com.Fishmod.fur.item.SporecallerItem;
+import com.Fishmod.fur.item.UndergroveHeartItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
 import com.Fishmod.fur.item.VespaShieldItem;
 import com.Fishmod.fur.item.WetaHoeItem;
@@ -111,6 +113,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> FOUL_BRISTLE = DEF_REG.register("foul_bristle", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FOUL_HIDE = DEF_REG.register("foul_hide", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SPORE_GEL = DEF_REG.register("spore_gel", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> UNDERGROVE_HEART = DEF_REG.register("undergrove_heart", () -> new UndergroveHeartItem(new Item.Properties()));
 	public static final RegistryObject<Item> FAMINE_ARMOR_HELMET = DEF_REG.register("famine_armor_helmet", () -> new FamineArmorItem(ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FAMINE_ARMOR_CHESTPLATE = DEF_REG.register("famine_armor_chestplate", () -> new FamineArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FAMINE_ARMOR_LEGGINGS = DEF_REG.register("famine_armor_leggings", () -> new FamineArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.RARE)));
@@ -155,7 +158,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> ANKH_SCEPTER = DEF_REG.register("ankh_scepter", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
 	public static final RegistryObject<Item> FUNGAL_STAFF = DEF_REG.register("fungal_staff", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
 	public static final RegistryObject<Item> FROZEN_GRIP = DEF_REG.register("frozen_grip", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD.get(), true));
-	public static final RegistryObject<Item> SLUDGE_WAND = DEF_REG.register("sludge_wand", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.SPORE_GEL.get(), true));
+	public static final RegistryObject<Item> SPORECALLER = DEF_REG.register("sporecaller", () -> new SporecallerItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.SPORE_GEL.get(), true));
 	public static final RegistryObject<Item> SHRIEK_CORD = DEF_REG.register("shriek_cord", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> PTERA_WING_RAW = DEF_REG.register("ptera_wing_raw", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).meat().effect(() -> new MobEffectInstance(MobEffects.HUNGER, 30*20, 2), 0.8F).build()), 64, UseAnim.EAT, 0));
 	public static final RegistryObject<Item> PTERA_WING_COOKED = DEF_REG.register("ptera_wing_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build()), 64, UseAnim.EAT, 0));

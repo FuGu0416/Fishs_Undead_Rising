@@ -27,7 +27,7 @@ public class EnchantmentDominion extends Enchantment {
 	public boolean canEnchant(ItemStack stack) {
 		return FURConfig.Enchantment_Enable.get()
 				&& (stack.getItem().equals(FURItemRegistry.UNDERTAKER_SHOVEL.get())
-				|| stack.getItem().equals(FURItemRegistry.SLUDGE_WAND.get())
+				|| stack.getItem().equals(FURItemRegistry.SPORECALLER.get())
 				|| stack.getItem().equals(FURItemRegistry.SCARAB_SCEPTER.get())
 				|| stack.getItem().equals(FURItemRegistry.ANKH_SCEPTER.get())
 				|| stack.getItem().equals(FURItemRegistry.FUNGAL_STAFF.get())

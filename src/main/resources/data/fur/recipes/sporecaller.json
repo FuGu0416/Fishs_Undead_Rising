@@ -1,22 +1,25 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "D#D",
-        " X ",
-        " X "
+        " #D",
+        " A#",
+        "X  "
     ],
     "key": {
-        "#": {
+        "D": {
             "item": "fur:spore_gel"
         },
         "X": {
             "tag": "forge:rods/wooden"
         },
-        "D": {
-            "item": "minecraft:vine"
+        "#": {
+            "item": "fur:hyphae"
+        },
+        "A": {
+            "item": "fur:undergrove_heart"
         }
     },
     "result": {
-        "item": "fur:sludge_wand"
+        "item": "fur:sporecaller"
     }
 }

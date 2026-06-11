@@ -29,28 +29,35 @@ public class ShroomlingBubbleLayer<T extends ShroomlingEntity> extends GeoRender
 		super(renderer);
 	}
 
-	/** Saturation multiplier (push channels away from grey). Brightness comes from the additive eyes pass. */
+	/** Saturation multiplier (push channels away from grey) so muted effect colours stay a vivid hue. */
 	private static final float SATURATION = 1.8F;
 
 	@Override
 	public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 		if (!animatable.isInvisible()) {
-			// "eyes" render type = emissive, full-bright, additive blending → the bubble glows.
-			RenderType bubbleType = RenderType.eyes(BUBBLE_LOCATION);
 			int color = animatable.getSporeColor();
 			float r = ((color >> 16) & 0xFF) / 255.0F;
 			float g = ((color >> 8) & 0xFF) / 255.0F;
 			float b = (color & 0xFF) / 255.0F;
 
-			// Boost saturation (push away from luminance grey) so muted effect colours glow as a vivid
-			// hue rather than washing out to white under additive blending. Clamped to [0,1].
+			// Boost saturation (push away from luminance grey) so muted effect colours read as a vivid
+			// hue rather than washing out to white under the additive glow pass. Clamped to [0,1].
 			float lum = 0.3F * r + 0.59F * g + 0.11F * b;
 			r = Mth.clamp(lum + (r - lum) * SATURATION, 0.0F, 1.0F);
 			g = Mth.clamp(lum + (g - lum) * SATURATION, 0.0F, 1.0F);
 			b = Mth.clamp(lum + (b - lum) * SATURATION, 0.0F, 1.0F);
 
-			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, bubbleType,
-								   bufferSource.getBuffer(bubbleType), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+			// Two passes so the bubble is BOTH solid and bright:
+			// 1) emissive translucent (alpha-blended) lays down an opaque coloured shell so the bubble
+			//    doesn't go see-through / wash out against bright backgrounds.
+			RenderType solidType = RenderType.entityTranslucentEmissive(BUBBLE_LOCATION);
+			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, solidType,
+								   bufferSource.getBuffer(solidType), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+								   r, g, b, 1.0F);
+			// 2) additive "eyes" pass on top adds the glow/bloom back, restoring the previous brightness.
+			RenderType glowType = RenderType.eyes(BUBBLE_LOCATION);
+			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, glowType,
+								   bufferSource.getBuffer(glowType), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
 								   r, g, b, 1.0F);
 		}
 	}

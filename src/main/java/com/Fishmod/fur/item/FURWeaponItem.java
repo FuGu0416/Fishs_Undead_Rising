@@ -21,7 +21,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -170,7 +169,7 @@ public class FURWeaponItem extends SwordItem {
         return super.hurtEnemy(stack, target, attacker);
     }
 	
-	public static <T extends FURTameableEntity> void SummonMinion(Player player, ItemStack stack, Level level, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
+	public static <T extends FURTameableEntity> FURTameableEntity SummonMinion(Player player, ItemStack stack, Level level, BlockPos blockpos, EntityType<T> entityIn, int limitLife, int skin) {
 		if (level instanceof ServerLevel) {
 			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) level), blockpos);
 
@@ -199,7 +198,11 @@ public class FURWeaponItem extends SwordItem {
 					((UnburiedEntity)entity).setSpellcasting();
 				}
 			}
+
+			return entity;
 		}
+
+		return null;
 	}
 	
     /**
@@ -237,29 +240,6 @@ public class FURWeaponItem extends SwordItem {
                 p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
-
-            return InteractionResultHolder.pass(stack);
-        }
-
-        if (stack.getItem() == FURItemRegistry.SLUDGE_WAND.get() && level instanceof ServerLevel) {
-            int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
-            int skin = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0 ? 1 : 0;
-            BlockPos blockpos = BlockPos.containing(player.getX() + player.getLookAngle().x, player.getY() + 0.2D, player.getZ() + player.getLookAngle().z);
-            for (int i = 0; i < 1 + dominion; i++) {
-                FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SHROOMLING.get(), FURConfig.Shroomling_Lifespan.get() * 20, skin);
-            }
-
-            for (int j = 0; j < 4; ++j) {
-                double d0 = blockpos.getX() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
-                double d1 = blockpos.getY() + (player.getRandom().nextDouble() * 2.0D);
-                double d2 = blockpos.getZ() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
-                ((ServerLevel) level).sendParticles(skin > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
-            }
-
-            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-            });
-            player.getCooldowns().addCooldown(FURItemRegistry.SLUDGE_WAND.get(), FURConfig.SludgeWand_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }

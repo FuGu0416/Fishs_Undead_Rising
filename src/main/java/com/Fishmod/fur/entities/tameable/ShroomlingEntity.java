@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -72,6 +73,8 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
 	/** Index into {@link #SPORE_EFFECTS} of the spore effect this shroomling carries. Synced so the client can tint the ambient particles. */
 	private static final EntityDataAccessor<Integer> SPORE_EFFECT = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
+	/** Packed RGB colour of an injected custom spore effect, or {@code -1} when this shroomling uses its table effect. Synced so the bubble layer can tint to the injected potion. */
+	private static final EntityDataAccessor<Integer> INJECTED_SPORE_COLOR = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
 
 	/**
 	 * The pool of spore effects a wild shroomling may carry. Each entry bakes in its own
@@ -107,6 +110,9 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	private int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
+	/** Server-side custom spore effect injected via the Sporecaller; overrides the table effect for the death burst. {@code null} when none is injected. */
+	@Nullable
+	private MobEffectInstance customSporeEffect = null;
 
 	public ShroomlingEntity(EntityType<? extends ShroomlingEntity> p_i48549_1_, Level worldIn) {
         super(p_i48549_1_, worldIn);
@@ -118,6 +124,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 		super.defineSynchedData();
 		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 		this.entityData.define(SPORE_EFFECT, Integer.valueOf(0));
+		this.entityData.define(INJECTED_SPORE_COLOR, Integer.valueOf(-1));
     }
 
 	public int getSporeEffect() {
@@ -128,21 +135,69 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 		this.entityData.set(SPORE_EFFECT, Mth.clamp(index, 0, SPORE_EFFECTS.length - 1));
 	}
 
-	/** Fresh instance of the carried spore effect, or {@code null} if the index is somehow out of range. */
+	/**
+	 * Strips this shroomling of any spore effect: no table effect, no injected effect. {@link #buildSporeEffect}
+	 * then returns {@code null} (no death burst) and the bubble falls back to {@link #DEFAULT_BUBBLE_COLOR}.
+	 * Used for shroomlings summoned by an un-injected Sporecaller. The {@code -1} index is a sentinel
+	 * outside the {@link #SPORE_EFFECTS} table range.
+	 */
+	public void clearSporeEffect() {
+		this.customSporeEffect = null;
+		this.entityData.set(SPORE_EFFECT, -1);
+		this.entityData.set(INJECTED_SPORE_COLOR, -1);
+	}
+
+	/**
+	 * Tints the bubble to a given colour without giving the shroomling any burst payload. Used when a
+	 * beneficial injected potion is handed to the summoner instead of becoming a spore: the shroomling
+	 * shows the potion's colour but releases nothing on death.
+	 */
+	public void setSporeColorOnly(int color) {
+		this.customSporeEffect = null;
+		this.entityData.set(SPORE_EFFECT, -1);
+		this.entityData.set(INJECTED_SPORE_COLOR, color);
+	}
+
+	/**
+	 * Sets the potion effect this shroomling releases onto its target when its spores burst (see
+	 * {@link #die}). This does NOT apply the effect to the shroomling itself; it only stores the
+	 * payload, overriding the random table effect. The Sporecaller only ever holds one potion, so a
+	 * later injection replaces this in place.
+	 */
+	public void setSporeEffect(MobEffectInstance effect) {
+		this.customSporeEffect = new MobEffectInstance(effect);
+		this.entityData.set(INJECTED_SPORE_COLOR, effect.getEffect().getColor());
+	}
+
+	/**
+	 * Fresh instance of the spore-burst payload: the injected custom effect when present, otherwise the
+	 * table effect for the synced index. {@code null} only if the index is somehow out of range.
+	 */
 	@Nullable
 	private MobEffectInstance buildSporeEffect() {
+		if (this.customSporeEffect != null) {
+			return new MobEffectInstance(this.customSporeEffect);
+		}
 		int i = this.getSporeEffect();
 		return (i >= 0 && i < SPORE_EFFECTS.length) ? SPORE_EFFECTS[i].get() : null;
 	}
 
+	/** Default bubble tint for a shroomling carrying no spore effect. */
+	private static final int DEFAULT_BUBBLE_COLOR = 0x1EFFF7;
+
 	/**
 	 * Packed RGB colour of the carried spore effect — used client-side to tint the
-	 * {@code shroomling_bubble} render layer. Derived from the synced {@link #SPORE_EFFECT} index,
-	 * so it is valid on the client. Falls back to white if there is no effect.
+	 * {@code shroomling_bubble} render layer. Uses the synced injected colour when a potion has been
+	 * injected, otherwise the colour of the table effect for the synced {@link #SPORE_EFFECT} index.
+	 * Falls back to {@link #DEFAULT_BUBBLE_COLOR} when there is no effect.
 	 */
 	public int getSporeColor() {
+		int injected = this.entityData.get(INJECTED_SPORE_COLOR);
+		if (injected != -1) {
+			return injected;
+		}
 		MobEffectInstance carried = this.buildSporeEffect();
-		return carried != null ? carried.getEffect().getColor() : 0xFFFFFF;
+		return carried != null ? carried.getEffect().getColor() : DEFAULT_BUBBLE_COLOR;
 	}
 
 	public static boolean checkShroomlingSpawnRules(EntityType<? extends ShroomlingEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
@@ -281,6 +336,17 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 
 	            if(this.corrosive > 0)
 	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, this.corrosive - 1));
+
+	            // Summoned/tamed shroomlings deliver their carried spore effect to the target on hit
+	            // (instead of the wild death burst). buildSporeEffect() is null for spore-less /
+	            // beneficial-only shroomlings, so only one carrying a (negative) spore actually applies it.
+	            // Wild shroomlings are excluded here — they still burst on death (see die()).
+	            if (this.isTame()) {
+	            	MobEffectInstance spore = this.buildSporeEffect();
+	            	if (spore != null) {
+	            		((LivingEntity)entityIn).addEffect(spore);
+	            	}
+	            }
             }
         }
 
@@ -381,7 +447,8 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
        super.readAdditionalSaveData(compound);
         this.setLimitedLife(compound.getInt("LifeTicks"));
         this.setSkin(compound.getInt("Variant"));
-        this.setSporeEffect(compound.getInt("SporeEffect"));
+        // Set the raw saved index (don't clamp) so the "no spore effect" sentinel (-1) survives a reload.
+        this.entityData.set(SPORE_EFFECT, compound.getInt("SporeEffect"));
     	this.fire_aspect = compound.getInt("fire_aspect");
     	this.sharpness = compound.getInt("sharpness");
     	this.knockback = compound.getInt("knockback");
@@ -392,6 +459,11 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     	this.corrosive = compound.getInt("corrosive");
     	this.unbreaking = compound.getInt("unbreaking");
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get() + ((float)this.unbreaking * 2.0F));
+    	if (compound.contains("CustomSporeEffect", Tag.TAG_COMPOUND)) {
+    		this.customSporeEffect = MobEffectInstance.load(compound.getCompound("CustomSporeEffect"));
+    	}
+    	// Bubble colour is persisted directly so the colour-only (beneficial) state survives a reload.
+    	this.entityData.set(INJECTED_SPORE_COLOR, compound.contains("InjectedSporeColor", Tag.TAG_INT) ? compound.getInt("InjectedSporeColor") : -1);
     }
 
     /**
@@ -412,6 +484,10 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         compound.putInt("poisonous", this.poisonous);
         compound.putInt("corrosive", this.corrosive);
         compound.putInt("unbreaking", this.unbreaking);
+        compound.putInt("InjectedSporeColor", this.entityData.get(INJECTED_SPORE_COLOR));
+        if (this.customSporeEffect != null) {
+            compound.put("CustomSporeEffect", this.customSporeEffect.save(new CompoundTag()));
+        }
     }
 
     /**
@@ -422,17 +498,26 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         return MobType.UNDEAD;
     }
 
+    /** Max distance (blocks) a wild shroomling's burst spores can reach the last-hit target. */
+    private static final double SPORE_BURST_RANGE = 2.0D;
+
     /**
-     * On death, a wild (untamed) shroomling bursts its spore sac: the carried effect is
-     * applied to whatever living entity killed it. Tamed shroomlings keep their spores to
-     * themselves.
+     * On death, a WILD (untamed) shroomling bursts its spore sac onto the last entity it hit, provided
+     * that entity is still within {@link #SPORE_BURST_RANGE} blocks (plays a spore-burst sound). This is
+     * left unchanged. Summoned/tamed shroomlings do NOT burst — they deliver their spore on attack
+     * instead (see {@link #doHurtTarget}).
      */
     @Override
     public void die(DamageSource cause) {
         if (!this.level().isClientSide() && !this.isTame()) {
             MobEffectInstance carried = this.buildSporeEffect();
-            if (carried != null && cause.getEntity() instanceof LivingEntity killer) {
-                killer.addEffect(carried);
+            if (carried != null) {
+                LivingEntity target = this.getLastHurtMob();
+                if (target != null && target.isAlive() && this.distanceTo(target) <= SPORE_BURST_RANGE) {
+                    target.addEffect(carried);
+                    this.level().playSound(null, target.getX(), target.getY(), target.getZ(),
+                            SoundEvents.PUFFER_FISH_BLOW_UP, this.getSoundSource(), 1.0F, 1.0F);
+                }
             }
         }
 

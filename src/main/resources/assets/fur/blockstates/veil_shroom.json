@@ -5,6 +5,9 @@
     },
     "age=1": {
       "model": "fur:block/veil_shroom_s"
+    },
+    "age=2": {
+      "model": "fur:block/veil_shroom"
     }
   }
 }

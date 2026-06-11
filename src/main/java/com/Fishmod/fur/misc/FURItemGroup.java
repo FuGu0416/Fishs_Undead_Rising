@@ -75,6 +75,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MOOTEN_HEART.get());
             	output.accept(FURItemRegistry.SOULFORGED_HEART.get());
             	output.accept(FURItemRegistry.ACIDIC_HEART.get());
+            	output.accept(FURItemRegistry.UNDERGROVE_HEART.get());
             	output.accept(FURItemRegistry.GOLDEN_HEART.get());
             	
             	// Potion
@@ -110,7 +111,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SOULFORGED_AXE.get());
             	output.accept(FURItemRegistry.SOULFORGED_HAMMER.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
-            	output.accept(FURItemRegistry.SLUDGE_WAND.get());
+            	output.accept(FURItemRegistry.SPORECALLER.get());
             	output.accept(FURItemRegistry.SCARAB_SCEPTER.get());
             	output.accept(FURItemRegistry.ANKH_SCEPTER.get());
             	output.accept(FURItemRegistry.FUNGAL_STAFF.get());
