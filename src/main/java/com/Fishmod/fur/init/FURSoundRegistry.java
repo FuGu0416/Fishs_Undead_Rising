@@ -27,6 +27,7 @@ public class FURSoundRegistry {
 	
 	public static final RegistryObject<SoundEvent> SALAMANDER_AMBIENT = addSoundEvent("salamander_ambient");
 	public static final RegistryObject<SoundEvent> SALAMANDER_ATTACK = addSoundEvent("salamander_attack");
+	public static final RegistryObject<SoundEvent> SALAMANDER_ATTACK_RANGE = addSoundEvent("salamander_attack_range");
 	public static final RegistryObject<SoundEvent> SALAMANDER_HURT = addSoundEvent("salamander_hurt");
 	public static final RegistryObject<SoundEvent> SALAMANDER_DEATH = addSoundEvent("salamander_death");
 	
@@ -143,6 +144,8 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> RANDOM_THORN_SHOOT = addSoundEvent("random_thorn_shoot");
 	public static final RegistryObject<SoundEvent> RANDOM_FANG_DAGGER_HIT = addSoundEvent("random_fang_dagger_hit");
 	public static final RegistryObject<SoundEvent> RANDOM_FANG_DAGGER_THROW = addSoundEvent("random_fang_dagger_throw");
+	public static final RegistryObject<SoundEvent> RANDOM_MOLTEN_GLOB_IMPACT = addSoundEvent("random_molten_glob_impact");
+	public static final RegistryObject<SoundEvent> RANDOM_BEASTCALL_HORN_BLOW = addSoundEvent("random_beastcall_horn_blow");
 	
 	public static final RegistryObject<SoundEvent> LAMPREY_AMBIENT = addSoundEvent("lamprey_ambient");
 	public static final RegistryObject<SoundEvent> LAMPREY_HURT = addSoundEvent("lamprey_hurt");

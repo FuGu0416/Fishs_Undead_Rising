@@ -86,8 +86,8 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 	public int lifespawn;
 	
-	public ParasiteEntity(EntityType<? extends ParasiteEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public ParasiteEntity(EntityType<? extends ParasiteEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.lifespawn = FURConfig.Parasite_Lifespan.get() * 20; // Can live for 16s only, poor little one :(
         this.xpReward = 1;
     }
@@ -105,11 +105,11 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	
     protected void applyEntityAI() {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 0, true, true, (p_213440_0_) -> {
-            	return !p_213440_0_.isPassenger() && !this.isTame();
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 0, true, true, (target) -> {
+            	return !target.isPassenger() && !this.isTame();
         	}));
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isTame();
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, true, (target) -> {
+    		return ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isTame();
     	}));	
     }
     
@@ -136,8 +136,8 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     } 
 	
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
-		return !(this.isTame() && this.getOwner() instanceof Player);
+	public boolean removeWhenFarAway(double distance) {
+		return !this.isTame();
 	}
 	
 	@Override
@@ -146,28 +146,28 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	}
     
     @Override
-	public boolean canBeLeashed(Player p_184652_1_) {
+	public boolean canBeLeashed(Player player) {
     	return !this.isLeashed() && this.isTame();
 	}
     
     @Override
-    public boolean canBeAffected(MobEffectInstance p_70687_1_) {
-        if (p_70687_1_.getEffect() == FUREffectRegistry.INFESTED.get()) {
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == FUREffectRegistry.INFESTED.get()) {
         	return false;
         }
         
-        return super.canBeAffected(p_70687_1_);
+        return super.canBeAffected(effect);
 	}
 	
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Parasite_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Parasite_Attack.get());
     	this.setHealth(this.getMaxHealth());    	
     	this.setSkin(this.random.nextInt(4));
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
 	
     @Override
@@ -393,9 +393,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 		}
 	}
 	
-	public void tame(Player p_193101_1_) {
+	public void tame(Player player) {
 		this.setTame(true);
-		this.setOwnerUUID(p_193101_1_.getUUID());
+		this.setOwnerUUID(player.getUUID());
 	}
 
 	@Nullable
@@ -403,8 +403,8 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 		return this.entityData.get(DATA_OWNERUUID_ID).orElse((UUID)null);
 	}
 
-	public void setOwnerUUID(@Nullable UUID p_184754_1_) {
-		this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(p_184754_1_));
+	public void setOwnerUUID(@Nullable UUID uuid) {
+		this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(uuid));
 	}
 	
 	@Nullable
@@ -460,7 +460,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     }
     
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.1F;
     }
 	
@@ -513,8 +513,8 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     }
     
     static class AttackGoal extends MeleeAttackGoal {
-        public AttackGoal(ParasiteEntity p_i46676_1_) {
-           super(p_i46676_1_, 1.0D, true);
+        public AttackGoal(ParasiteEntity mob) {
+           super(mob, 1.0D, true);
         }
 
         public boolean canUse() {
@@ -531,8 +531,8 @@ public class ParasiteEntity extends Spider implements GeoEntity {
            }
         }
 
-        protected double getAttackReachSqr(LivingEntity p_179512_1_) {
-           return (double)(0.1F + p_179512_1_.getBbWidth());
+        protected double getAttackReachSqr(LivingEntity target) {
+           return (double)(0.1F + target.getBbWidth());
         }
      }
 

@@ -32,15 +32,15 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 public class PiranhaEntity extends SwarmerEntity {
 	
-    public PiranhaEntity(EntityType<? extends PiranhaEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn); 
+    public PiranhaEntity(EntityType<? extends PiranhaEntity> entityType, Level worldIn) {
+        super(entityType, worldIn); 
     }
     
     @Override
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PIRANHA_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (target) -> {
+    		return !this.requiresCustomPersistence() && target instanceof LivingEntity && ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.PIRANHA_TARGETS) && ((LivingEntity)target).getHealth() < ((LivingEntity)target).getMaxHealth();
     	}));
     	this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
@@ -53,8 +53,8 @@ public class PiranhaEntity extends SwarmerEntity {
         		.add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
     
-    public static boolean checkPiranhaSpawnRules(EntityType<? extends PiranhaEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return WaterAnimal.checkSurfaceWaterAnimalSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
+    public static boolean checkPiranhaSpawnRules(EntityType<? extends PiranhaEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return WaterAnimal.checkSurfaceWaterAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public int getMaxSchoolSize() {
@@ -67,12 +67,12 @@ public class PiranhaEntity extends SwarmerEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Piranha_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Piranha_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
     
     /**
@@ -96,7 +96,7 @@ public class PiranhaEntity extends SwarmerEntity {
         return SoundEvents.SALMON_DEATH;
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+    protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.SALMON_HURT;
     }
 

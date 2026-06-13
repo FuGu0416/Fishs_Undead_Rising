@@ -356,8 +356,8 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     }
     
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.0D, false, 32);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.0D, false, 32);
         }
 
     	protected int atkTimerMax() {

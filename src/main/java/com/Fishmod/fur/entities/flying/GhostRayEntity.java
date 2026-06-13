@@ -64,8 +64,8 @@ public class GhostRayEntity extends FlyingMobEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("ghostray.idle");
 
-	public GhostRayEntity(EntityType<? extends GhostRayEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public GhostRayEntity(EntityType<? extends GhostRayEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 	}
 
 	@Override
@@ -117,8 +117,8 @@ public class GhostRayEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-		return p_213348_2_.height * 0.7F;
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return dimensions.height * 0.7F;
 	}
 
 	/** Lashing out at a Ghost Ray weakens the attacker. */
@@ -139,12 +139,12 @@ public class GhostRayEntity extends FlyingMobEntity implements GeoEntity {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GhostRay_Health.get());
 		this.setHealth(this.getMaxHealth());
 		this.setSkin(2); // End variant only.
 
-		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, p_213386_5_);
+		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, tag);
 	}
 
 	public int getSkin() {

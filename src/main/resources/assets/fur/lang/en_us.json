@@ -28,8 +28,6 @@
 	"item.fur.mimic_claw_raw": "Raw Mimicrab Claw",
 	"item.fur.mimic_claw_cooked": "Baked Mimicrab Claw",
 	"item.fur.sporecaller": "Sporecaller",
-	"item.fur.sporecaller.empty": "No potion injected",
-	"item.fur.sporecaller.inject": "Right-click a potion to inject its effect (water bottle to clear)",
 	"item.fur.combustive_gland": "Combustive Gland",
 	"item.fur.war": "\"War\"",
 	"item.fur.molten_armor_helmet": "Molten Helmet",
@@ -141,7 +139,6 @@
 	"item.fur.foul_hide": "Foul Hide",
 	"item.fur.spore_gel": "Spore Gel",
 	"item.fur.undergrove_heart": "Undergrove Heart",
-	"item.fur.undergrove_heart.desc": "Right-click the ground to spread mycelial mat and a cluster of luminous flora (consumed on use)",
 	"item.fur.parasite_ovum": "Parasite Ovum",
 	"item.fur.ushabti": "Ushabti",
 	"item.fur.ankh_scepter": "Ankh Scepter",
@@ -371,6 +368,7 @@
 
 	"entity_salamander_ambient": "Salamander groans",
 	"entity_salamander_attack": "Salamander chomps",
+	"entity_salamander_attack_range": "Salamander fires",
 	"entity_salamander_death": "Salamander dies",
 	"entity_salamander_hurt": "Salamander hurts",
 
@@ -485,6 +483,8 @@
 	"random_thorn_shoot": "Thorn shot",
 	"random_fang_dagger_hit": "Fang Dagger hit",
 	"random_fang_dagger_throw": "Fang Dagger shot",
+	"random_molten_glob_impact": "Molten Glob splatters",
+	"random_beastcall_horn_blow": "Beastcall Horn blows",
 
 	"entity_lamprey_ambient": "Lamprey chirps",
 	"entity_lamprey_death": "Lamprey dies",
@@ -512,6 +512,9 @@
 	"item.fur.famine.desc": "Restore 1 hunger point when hitting an entity, 2 when in hunger state.",    
 	"item.fur.frozen_thigh.desc": "Is edible. Attacks give target SlownessIII(0:04)",
 	"item.fur.sporecaller.desc": "Right-click to summon a loyal Shroomling",
+	"item.fur.sporecaller.empty": "No potion injected",
+	"item.fur.sporecaller.inject": "Right-click a potion to inject its effect (water bottle to clear)",
+	"item.fur.undergrove_heart.desc": "Right-click the ground to spread mycelial mat and a cluster of luminous flora (consumed on use)",
 	"item.fur.war.desc": "A fire-charge launcher: shoots explosive fireballs (uses Fire Charges as ammunition).",
 	"item.fur.bloated_intestine.desc": "Right-click to see what writhes inside.",
 	"item.fur.molten_armor.desc0": "Set Bonus (2): Retaliates with 3 seconds of fire on attackers.",

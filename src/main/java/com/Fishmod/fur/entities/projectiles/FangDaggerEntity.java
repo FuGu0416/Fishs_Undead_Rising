@@ -48,8 +48,8 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	public int baseDamage = 0;
 	
 	@SuppressWarnings("unchecked")
-	public FangDaggerEntity(EntityType<?> p_i50158_1_, Level worldIn) {
-		super((EntityType<? extends FangDaggerEntity>) p_i50158_1_, worldIn);
+	public FangDaggerEntity(EntityType<?> entityType, Level worldIn) {
+		super((EntityType<? extends FangDaggerEntity>) entityType, worldIn);
 	}
 	
 	public FangDaggerEntity(Level worldIn, LivingEntity shooter) {
@@ -90,9 +90,9 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 				+ (livingentity.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
     }
     
-	protected void onHitEntity(EntityHitResult p_36757_) {
-		super.onHitEntity(p_36757_);
-        Entity entity = p_36757_.getEntity();
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+        Entity entity = result.getEntity();
         float f = (float)this.getDeltaMovement().length() * 0.67F;
         int i = Mth.ceil(Mth.clamp((double)f * (this.baseDamage + this.getBonusDamage(entity)), 0.0D, (double)Integer.MAX_VALUE));
 

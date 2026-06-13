@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
+import com.Fishmod.fur.entities.LavaCowEntity;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
 import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
@@ -61,6 +62,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -119,8 +121,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	@Nullable
 	public BlockPos savedFurnacePos = null;
 	
-	public SalamanderEntity(EntityType<? extends SalamanderEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public SalamanderEntity(EntityType<? extends SalamanderEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
@@ -140,7 +142,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     protected void registerGoals() {   	
     	super.registerGoals();
     	if (this.isNymph()) {
-    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D).withWindup(11);
+    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D).withWindup(9);
     	} else {
     		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D).withWindup(13);
     	}
@@ -161,8 +163,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     	}
     	this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-    	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
-    		return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof SalamanderEntity);
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LavaCowEntity.class, true));
+    	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (candidate) -> {
+    		return !(candidate.isPassenger() && candidate.getVehicle() instanceof SalamanderEntity);
     	}));    	
     }
     
@@ -186,8 +189,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 		return 1.0F;
 	}
 	
-    public static boolean checkSalamanderSpawnRules(EntityType<? extends SalamanderEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (ServerLevelAccessor) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);        
+    public static boolean checkSalamanderSpawnRules(EntityType<? extends SalamanderEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
+    	return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, (ServerLevelAccessor) level, spawnType, pos, randomSource);        
     }
     
     /**
@@ -308,8 +311,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     }
     
     @Override
-    public void positionRider(Entity passenger, Entity.MoveFunction p_19958_) {
-        super.positionRider(passenger, p_19958_);
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        super.positionRider(passenger, moveFunction);
         if (passenger instanceof Mob) {
         	this.yBodyRot = ((Mob)passenger).yBodyRot;
             this.setYRot(passenger.getYRot());
@@ -420,12 +423,12 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         }
     }
     
-    public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
-    	if (p_225503_1_ > 1.0F) {
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier) {
+    	if (fallDistance > 1.0F) {
     		this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
     	}
 
-    	int i = this.calculateFallDamage(p_225503_1_, p_225503_2_);
+    	int i = this.calculateFallDamage(fallDistance, damageMultiplier);
     	if (i <= 0) {
     		return false;
     	} else {
@@ -441,8 +444,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	}
 	}
 
-	protected int calculateFallDamage(float p_225508_1_, float p_225508_2_) {
-		return (int) Math.ceil((p_225508_1_ * 0.5F - 3.0F) * p_225508_2_);
+	protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
+		return (int) Math.ceil((fallDistance * 0.5F - 3.0F) * damageMultiplier);
 	}
     
     @OnlyIn(Dist.CLIENT)
@@ -456,12 +459,12 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     }
     
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> p_184206_1_) {
-        if (GROWING_STAGE.equals(p_184206_1_)) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (GROWING_STAGE.equals(key)) {
            this.refreshDimensions();
         }
 
-        super.onSyncedDataUpdated(p_184206_1_);
+        super.onSyncedDataUpdated(key);
 	}
     
     public boolean isTame() {
@@ -526,7 +529,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	    	this.goalSelector.removeGoal(this.range_atk);
     	    	// Adults lob a single Molten Glob (times = 1) in a parabolic arc (curve compensates
     	    	// for the glob's gravity) instead of a straight war-fireball barrage.
-    	    	this.range_atk = new FURRangeAttackGoal<MoltenGlobEntity>(this, FUREntityRegistry.MOLTEN_GLOB.get(), 1, 5, 2.5D, 1.0D, 2.5D).withWindup(11).withCurve(4.0D);
+    	    	this.range_atk = new FURRangeAttackGoal<MoltenGlobEntity>(this, FUREntityRegistry.MOLTEN_GLOB.get(), FURSoundRegistry.SALAMANDER_ATTACK_RANGE.get(), 1, 5, 4.0D, this.getAttribute(Attributes.FOLLOW_RANGE).getValue(), 2.5D, 1.0D, 2.5D).withWindup(9);
     	    	this.goalSelector.addGoal(4, this.range_atk);
     	    	
     	        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.23D);
@@ -600,9 +603,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         return (this.entityData.get(DATA_FLAGS) & 2) != 0;
 	}
 
-	public void setBoostingFurnace(boolean p_233686_1_) {
+	public void setBoostingFurnace(boolean boosting) {
 		byte b0 = this.entityData.get(DATA_FLAGS);
-        if (p_233686_1_) {
+        if (boosting) {
            this.entityData.set(DATA_FLAGS, (byte)(b0 | 2));
         } else {
            this.entityData.set(DATA_FLAGS, (byte)(b0 & -3));
@@ -610,7 +613,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	}
     
     @Override
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
         if (this.isAlive()) {
 	        if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
 	        	LivingEntity controller = (LivingEntity)this.getControllingPassenger();
@@ -629,21 +632,21 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	                	this.setDeltaMovement(this.getDeltaMovement().x * 1.5F, this.getDeltaMovement().y + 0.02F, this.getDeltaMovement().z * 1.5F);
 	                }
 	                this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-	                super.travel(new Vec3((double)f, p_213352_1_.y, (double)f1));
+	                super.travel(new Vec3((double)f, travelVector.y, (double)f1));
 	            } else {
 	            	this.setDeltaMovement(Vec3.ZERO);
 	            }
 	
 	            this.calculateEntityAnimation(false);
 	        } else {
-	            super.travel(p_213352_1_);
+	            super.travel(travelVector);
 	        }
         }
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
        float chance_to_spawn_as_child = 0.0F;
 
        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
@@ -673,11 +676,11 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
        
        this.setBaby(this.level().getRandom().nextFloat() <= chance_to_spawn_as_child);
        
-       return super.finalizeSpawn(world, difficulty, p_213386_3_, livingdata, p_213386_5_);
+       return super.finalizeSpawn(world, difficulty, spawnTypeIn, livingdata, tag);
     }
     
 	@Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return this.isBaby() ? 0.2F : 0.8F;
     }
 
@@ -723,10 +726,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	}
     
     @Override
-    public void equipSaddle(@Nullable SoundSource p_230266_1_) {
+    public void equipSaddle(@Nullable SoundSource source) {
     	this.setSaddled(true);
-        if (p_230266_1_ != null) {
-           this.level().playSound((Player)null, this, SoundEvents.HORSE_SADDLE, p_230266_1_, 0.5F, 1.0F);
+        if (source != null) {
+           this.level().playSound((Player)null, this, SoundEvents.HORSE_SADDLE, source, 0.5F, 1.0F);
         }
 	}
     
@@ -822,8 +825,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	public class LookatFurnaceGoal extends Goal {
 		private final SalamanderEntity mob;
 
-		public LookatFurnaceGoal(SalamanderEntity p_i1647_1_) {
-			this.mob = p_i1647_1_;
+		public LookatFurnaceGoal(SalamanderEntity salamander) {
+			this.mob = salamander;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 		}
 
@@ -851,8 +854,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	}
 	
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.0D, true);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.0D, true);
         }
         
         @Override
@@ -917,6 +920,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	}
 
 	@Override
-	public void performRangedAttack(LivingEntity p_33317_, float p_33318_) {
+	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 	}
 }

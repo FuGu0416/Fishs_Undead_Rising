@@ -37,8 +37,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 public class MycosisEntity extends UnburiedEntity {	
 	private static final Vector3f[] SPORE_COLOR = {new Vector3f(0.83F, 0.73F, 0.5F), new Vector3f(0.0F, 0.98F, 0.93F)};
 		
-    public MycosisEntity(EntityType<? extends MycosisEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+    public MycosisEntity(EntityType<? extends MycosisEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
     
     @Override
@@ -57,14 +57,14 @@ public class MycosisEntity extends UnburiedEntity {
         		.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
     }
     
-    public static boolean checkMycosisSpawnRules(EntityType<? extends MycosisEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
+    public static boolean checkMycosisSpawnRules(EntityType<? extends MycosisEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
         // Luminous Undergrove is a naturally-lit cave biome — skip the darkness
         // check so Mycosis can still spawn in its home biome.
-        if (p_223316_1_.getBiome(p_223316_3_).is(FURBiomesRegistry.LUMINOUS_UNDERGROVE)) {
-            return p_223316_1_.getDifficulty() != Difficulty.PEACEFUL
-                    && FURTameableEntity.checkMobSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+        if (level.getBiome(pos).is(FURBiomesRegistry.LUMINOUS_UNDERGROVE)) {
+            return level.getDifficulty() != Difficulty.PEACEFUL
+                    && FURTameableEntity.checkMobSpawnRules(entityTypeIn, level, spawnType, pos, randomSource);
         }
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+        return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource);
     }
     
     protected boolean convertsInWater() {
@@ -106,14 +106,14 @@ public class MycosisEntity extends UnburiedEntity {
         			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);
     }
     
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {         
-    	entityLivingData = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {         
+    	entityLivingData = super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, entityLivingData, tag);
  
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mycosis_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mycosis_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+    	if (spawnTypeIn == MobSpawnType.COMMAND || spawnTypeIn == MobSpawnType.SPAWN_EGG || spawnTypeIn == MobSpawnType.SPAWNER || spawnTypeIn == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(2) + 1));
         } else if (worldIn.getBiome(this.blockPosition()).is(FURBiomesRegistry.LUMINOUS_UNDERGROVE)) {
         	this.setSkin(2);

@@ -96,8 +96,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	private int dustCooldown = 0;
 	private static final int DUST_COOLDOWN_TIME = 6000; // 5 minutes
 	
-	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);		
+	public EnigmothEntity(EntityType<? extends EnigmothEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);		
 	}
 	
 	@Override
@@ -111,12 +111,12 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 		
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));		
 		
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
-            return !(p_213440_0_.isPassenger() && p_213440_0_.getVehicle() instanceof EnigmothEntity);
+        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (target) -> {
+            return !(target.isPassenger() && target.getVehicle() instanceof EnigmothEntity);
         }).setUnseenMemoryTicks(160));        
         
-    	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, (p_210136_0_) -> {
-    		return !this.isBaby() && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.ENIGMOTH_TARGETS);
+    	this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, (target) -> {
+    		return !this.isBaby() && ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.ENIGMOTH_TARGETS);
     	}).setUnseenMemoryTicks(160));
 	}
 	
@@ -135,10 +135,10 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));   	   	
     }
     
-    public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> p_223316_0_, ServerLevelAccessor level, MobSpawnType p_223316_2_, BlockPos pos, RandomSource p_223316_4_) {
-    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (p_223316_4_.nextInt(3) == 0) : (p_223316_4_.nextInt(20) == 0);
+    public static boolean checkEnigmothSpawnRules(EntityType<? extends EnigmothEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    	boolean flag = ((level instanceof ServerLevel serverLevel) && (serverLevel.dimension() == Level.END)) ? (random.nextInt(3) == 0) : (random.nextInt(20) == 0);
     	BlockPos ground = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
-    	return flag && (pos.getY() >= ground.getY() - 2) && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(p_223316_0_, level, p_223316_2_, pos, p_223316_4_);
+    	return flag && (pos.getY() >= ground.getY() - 2) && FlyingMobEntity.checkFlyerSpawnRulesNoRestriction(entityType, level, spawnType, pos, random);
     }
     
     /**
@@ -150,8 +150,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     }
 
     @Override
-    public void setBaby(boolean p_82227_1_) {
-        super.setBaby(p_82227_1_);
+    public void setBaby(boolean baby) {
+        super.setBaby(baby);
         
     	if (this.isWandering()) {
     		this.goalSelector.removeGoal(this.wander);
@@ -296,17 +296,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     	}
     }   
     
-    public boolean canBeAffected(MobEffectInstance p_70687_1_) {
-        if (p_70687_1_.getEffect() == MobEffects.POISON || p_70687_1_.getEffect() == FUREffectRegistry.VOID_DUST.get()) {
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == FUREffectRegistry.VOID_DUST.get()) {
            return false;
         }
         
-        return super.canBeAffected(p_70687_1_);
+        return super.canBeAffected(effect);
 	}
     
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-    	return p_213348_2_.height * 0.45F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    	return dimensions.height * 0.45F;
     }
     
     @Override
@@ -372,17 +372,17 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Enigmoth_Health.get() * (this.isBaby() ? 0.2F : 1.0F));
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
     	this.setHealth(this.getMaxHealth());
  
     	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS)) 
-    			&& (p_213386_3_ != MobSpawnType.SPAWN_EGG && p_213386_3_ != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
+    			&& (spawnType != MobSpawnType.SPAWN_EGG && spawnType != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
 		    this.setBaby(true);   		
     	}
     	
-    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
       
     public int getSkin() {
@@ -403,11 +403,11 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	}
     
 	@Override
-    public float getWalkTargetValue(BlockPos p_205022_1_, LevelReader p_205022_2_) {
-    	if (p_205022_2_.getBlockState(p_205022_1_).getBlock().equals(Blocks.END_ROD)) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    	if (level.getBlockState(pos).getBlock().equals(Blocks.END_ROD)) {
     		return 20.0F;
     	} else {
-    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    		return super.getWalkTargetValue(pos, level);
     	}
     }
     

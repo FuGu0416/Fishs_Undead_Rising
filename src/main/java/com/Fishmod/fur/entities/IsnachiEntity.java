@@ -34,8 +34,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class IsnachiEntity extends FogletEntity {	
-	public IsnachiEntity(EntityType<? extends IsnachiEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public IsnachiEntity(EntityType<? extends IsnachiEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -60,8 +60,8 @@ public class IsnachiEntity extends FogletEntity {
         		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }   
     
-    public static boolean checkIsnachiSpawnRules(EntityType<? extends IsnachiEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkIsnachiSpawnRules(EntityType<? extends IsnachiEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }    
 	
     /**
@@ -77,12 +77,12 @@ public class IsnachiEntity extends FogletEntity {
     }
 	
 	@Override
-    public boolean causeFallDamage(float p_150093_, float p_150094_, DamageSource p_150095_) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
     	if(this.getTarget() != null) {
     		return false;
     	}  	
     	
-    	return super.causeFallDamage(p_150093_, p_150094_, p_150095_);
+    	return super.causeFallDamage(fallDistance, multiplier, source);
     }
     
     /**
@@ -114,17 +114,17 @@ public class IsnachiEntity extends FogletEntity {
      */
 	@Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
 		this.setSkin(1);
     	
- 	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+ 	   	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
  	}
         
 	@Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         if(getIsHanging())
         	return this.getBbHeight() * 0.0F;
         else
@@ -132,11 +132,11 @@ public class IsnachiEntity extends FogletEntity {
     }
 		
 	@Override
-    public float getWalkTargetValue(BlockPos p_205022_1_, LevelReader p_205022_2_) {
-    	if (p_205022_2_.getBlockState(p_205022_1_).is(BlockTags.LOGS)) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    	if (level.getBlockState(pos).is(BlockTags.LOGS)) {
     		return 10.0F;
     	} else {
-    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    		return super.getWalkTargetValue(pos, level);
     	}
     }
     
@@ -203,12 +203,12 @@ public class IsnachiEntity extends FogletEntity {
     }
     
     public class DropGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
-		public DropGoal(Mob p_26064_, Class<T> p_26065_, boolean p_26066_) {
-			super(p_26064_, p_26065_, p_26066_);
+		public DropGoal(Mob mob, Class<T> targetType, boolean mustSee) {
+			super(mob, targetType, mustSee);
 		}
 		
-		protected AABB getTargetSearchArea(double p_26069_) {
-			return this.mob.getBoundingBox().inflate(p_26069_, 64.0D, p_26069_);
+		protected AABB getTargetSearchArea(double targetDistance) {
+			return this.mob.getBoundingBox().inflate(targetDistance, 64.0D, targetDistance);
 		}   	
 		
 		public void start() {

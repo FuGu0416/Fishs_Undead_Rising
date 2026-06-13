@@ -67,8 +67,8 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(SeaHagEntity.class, EntityDataSerializers.INT);
 	public static final int SPELL_TIMER = 45;
 	
-	public SeaHagEntity(EntityType<? extends SeaHagEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public SeaHagEntity(EntityType<? extends SeaHagEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, 8.0F);      
     }
 	
@@ -104,10 +104,10 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         		.add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
     
-	public static boolean checkSeaHagSpawnRules(EntityType<SeaHagEntity> p_223332_0_, ServerLevelAccessor p_223332_1_, MobSpawnType p_223332_2_, BlockPos p_223332_3_, RandomSource p_223332_4_) {
-        boolean flag = p_223332_1_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_223332_1_, p_223332_3_, p_223332_4_) && (p_223332_2_ == MobSpawnType.SPAWNER || p_223332_1_.getFluidState(p_223332_3_).is(FluidTags.WATER));
+	public static boolean checkSeaHagSpawnRules(EntityType<SeaHagEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        boolean flag = level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && (spawnType == MobSpawnType.SPAWNER || level.getFluidState(pos).is(FluidTags.WATER));
 
-    	return p_223332_4_.nextInt(5) == 0 && flag;
+    	return random.nextInt(5) == 0 && flag;
 	}
     
     @Override
@@ -117,8 +117,8 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
     }
     
     @Override
-    public boolean checkSpawnObstruction(LevelReader p_205019_1_) {
-        return p_205019_1_.isUnobstructed(this);
+    public boolean checkSpawnObstruction(LevelReader level) {
+        return level.isUnobstructed(this);
     }
     
     /**
@@ -127,12 +127,12 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.SeaHag_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.SeaHag_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
     
     @Override
@@ -279,10 +279,10 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         private final double speedModifier;
         private final Level level;
 
-        public GoToWaterGoal(SeaHagEntity p_i48910_1_, double p_i48910_2_) {
-           this.mob = p_i48910_1_;
-           this.speedModifier = p_i48910_2_;
-           this.level = p_i48910_1_.level();
+        public GoToWaterGoal(SeaHagEntity mob, double speed) {
+           this.mob = mob;
+           this.speedModifier = speed;
+           this.level = mob.level();
            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 

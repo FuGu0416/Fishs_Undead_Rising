@@ -129,8 +129,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         TAME_ACTIVE		// tamed only
     }
 
-	public MimicEntity(EntityType<? extends MimicEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public MimicEntity(EntityType<? extends MimicEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.inventory = new SimpleContainer(27);
     }
 	
@@ -171,10 +171,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	return new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false);
     }
 
-    public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) { 	
-    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_, p_223316_1_.getLevel().dimension() == Level.NETHER)
-    			&& SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null
-    			&& p_223316_1_.getLevel().getEntitiesOfClass(MimicEntity.class, new AABB(p_223316_3_.getX(), p_223316_3_.getY(), p_223316_3_.getZ(), p_223316_3_.getX() + 1, p_223316_3_.getY() + 1, p_223316_3_.getZ() + 1).inflate(FURConfig.Mimic_SpawnRadius.get().doubleValue())).size() < FURConfig.Mimic_SpawnCap.get();
+    public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) { 	
+    	return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource, level.getLevel().dimension() == Level.NETHER)
+    			&& SpawnUtil.isNearBlock(level, Blocks.CHEST, pos, 4) != null
+    			&& level.getLevel().getEntitiesOfClass(MimicEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(FURConfig.Mimic_SpawnRadius.get().doubleValue())).size() < FURConfig.Mimic_SpawnCap.get();
     }
     
     /**
@@ -191,8 +191,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	}
     
     @Override
-    public boolean checkSpawnObstruction(LevelReader p_205019_1_) {
-        return p_205019_1_.isUnobstructed(this);
+    public boolean checkSpawnObstruction(LevelReader levelReader) {
+        return levelReader.isUnobstructed(this);
     }
     
     @Override
@@ -246,12 +246,12 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	return -1;
     }
     
-	public void setInSittingPose(boolean p_21838_) {
-		super.setInSittingPose(p_21838_);
+	public void setInSittingPose(boolean sitting) {
+		super.setInSittingPose(sitting);
 
-		if (!this.isInSittingPose() && p_21838_) {
+		if (!this.isInSittingPose() && sitting) {
 			this.level().broadcastEntityEvent(this, (byte)9);
-		} else if (this.isInSittingPose() && !p_21838_) {
+		} else if (this.isInSittingPose() && !sitting) {
 			this.level().broadcastEntityEvent(this, (byte)10);
 		}
 	}
@@ -379,11 +379,11 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	}
 	
     @Override
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
 		if (this.isInSittingPose()) {
             this.setDeltaMovement(Vec3.ZERO);
 	    } else {
-			super.travel(p_213352_1_);
+			super.travel(travelVector);
 		}
 	}
     
@@ -459,8 +459,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         	if (player.isCrouching()) {
         		if (this.getSkin() == MimicModel.getVoidSkin()) {	
         			PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
-					player.openMenu(new SimpleMenuProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
-						return ChestMenu.threeRows(p_226928_1_, p_226928_2_, enderchestinventory);
+					player.openMenu(new SimpleMenuProvider((containerId, playerInventory, menuPlayer) -> {
+						return ChestMenu.threeRows(containerId, playerInventory, enderchestinventory);
     	            }, CONTAINER_TITLE));
     				this.playSound(SoundEvents.ENDER_CHEST_OPEN, 1.0F, 1.0F);
     			} else {
@@ -565,7 +565,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
     
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {   	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {   	
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
@@ -668,7 +668,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.7F;
     }
     

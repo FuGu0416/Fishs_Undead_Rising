@@ -88,8 +88,8 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	private int unbreaking;
 	private boolean isSmoking = false;
 	
-	public UnburiedEntity(EntityType<? extends UnburiedEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public UnburiedEntity(EntityType<? extends UnburiedEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.limitedLifeTicks = -1;
     }
 	
@@ -112,13 +112,13 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)));
     	this.targetSelector.addGoal(4, new AICopyOwnerTarget(this));
-    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (target) -> {
 	  	      return !(this.getOwner() instanceof Player);
 	   }));
-    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, 10, true, false, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, 10, true, false, (target) -> {
 	  	      return !(this.getOwner() instanceof Player);
   	   }));
-    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, IronGolem.class, 10, true, false, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, IronGolem.class, 10, true, false, (target) -> {
 	  	      return !(this.getOwner() instanceof Player);
 	   }));
     }
@@ -255,11 +255,11 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     }
     
     @Override
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
 		if (this.isSpellcasting()) {	
 			this.setDeltaMovement(0.0D, -2.0D, 0.0D);
 		} else {
-			super.travel(p_213352_1_);
+			super.travel(travelVector);
 		}
 	}
     
@@ -311,8 +311,8 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        livingdata = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);       
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+        livingdata = super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, livingdata, tag);       
 
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Unburied_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Unburied_Attack.get());

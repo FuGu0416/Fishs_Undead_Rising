@@ -22,16 +22,16 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class WarSmallFireballEntity extends EnchantableFireBallEntity {
 	@SuppressWarnings("unchecked")
-	public WarSmallFireballEntity(EntityType<?> p_i50158_1_, Level worldIn) {
-		super((EntityType<? extends WarSmallFireballEntity>) p_i50158_1_, worldIn);
+	public WarSmallFireballEntity(EntityType<?> entityType, Level worldIn) {
+		super((EntityType<? extends WarSmallFireballEntity>) entityType, worldIn);
 	}
 
-	public WarSmallFireballEntity(EntityType<? extends WarSmallFireballEntity> p_i50163_1_, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, shooter, accelX, accelY, accelZ, worldIn);
+	public WarSmallFireballEntity(EntityType<? extends WarSmallFireballEntity> entityType, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, shooter, accelX, accelY, accelZ, worldIn);
 	}
 
-	public WarSmallFireballEntity(EntityType<? extends WarSmallFireballEntity> p_i50163_1_, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, x, y, z, accelX, accelY, accelZ, worldIn);
+	public WarSmallFireballEntity(EntityType<? extends WarSmallFireballEntity> entityType, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, x, y, z, accelX, accelY, accelZ, worldIn);
 	}
 	    
 	/**

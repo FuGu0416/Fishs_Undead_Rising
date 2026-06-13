@@ -76,8 +76,8 @@ public class FogletEntity extends Monster implements GeoEntity {
 	public static final int SPELL_TIMER = 20;
 	protected int spellTicks;
 	
-	public FogletEntity(EntityType<? extends FogletEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public FogletEntity(EntityType<? extends FogletEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -110,8 +110,8 @@ public class FogletEntity extends Monster implements GeoEntity {
         		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
     
-    public static boolean checkFogletSpawnRules(EntityType<? extends FogletEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkFogletSpawnRules(EntityType<? extends FogletEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
     @Override
@@ -177,12 +177,12 @@ public class FogletEntity extends Monster implements GeoEntity {
      */
 	@Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {	   	   
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {	   	   
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Foglet_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Foglet_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-		return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+		return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
  	}
     
     public int getSkin() {
@@ -215,7 +215,7 @@ public class FogletEntity extends Monster implements GeoEntity {
     }
     
 	@Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
     	return this.getBbHeight() * 0.8F;
     }
     
@@ -426,8 +426,8 @@ public class FogletEntity extends Monster implements GeoEntity {
     }
 
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.0D, true);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.0D, true);
         }       
 
     	protected int atkTimerMax() {

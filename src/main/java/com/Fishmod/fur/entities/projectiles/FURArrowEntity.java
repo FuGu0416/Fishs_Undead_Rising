@@ -21,26 +21,26 @@ public class FURArrowEntity extends AbstractArrow implements IEntityAdditionalSp
 	Item getDefaultItem = FURItemRegistry.BASIC_BOMB.get();
 	
 	@SuppressWarnings("unchecked")
-	public FURArrowEntity(EntityType<?> p_i50158_1_, Level LevelIn) {
-		super((EntityType<? extends FURArrowEntity>) p_i50158_1_, LevelIn);
+	public FURArrowEntity(EntityType<?> entityType, Level LevelIn) {
+		super((EntityType<? extends FURArrowEntity>) entityType, LevelIn);
 		
-    	if (p_i50158_1_.equals(FUREntityRegistry.GHOUL_ARROW.get())) {
+    	if (entityType.equals(FUREntityRegistry.GHOUL_ARROW.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOUL_ARROW.get();
-    	} else if (p_i50158_1_.equals(FUREntityRegistry.FANG_ARROW.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.FANG_ARROW.get())) {
     		this.getDefaultItem = FURItemRegistry.FANG_ARROW.get();
     	}
 	}
 
-	public FURArrowEntity(EntityType<? extends FURArrowEntity> p_i50158_1_, Level LevelIn, LivingEntity shooter) {
-		super(p_i50158_1_, shooter, LevelIn);
+	public FURArrowEntity(EntityType<? extends FURArrowEntity> entityType, Level LevelIn, LivingEntity shooter) {
+		super(entityType, shooter, LevelIn);
 	}
 
-	public FURArrowEntity(EntityType<? extends FURArrowEntity> p_i50158_1_, Level LevelIn, double posX, double posY, double posZ) {
-		super(p_i50158_1_, posX, posY, posZ, LevelIn);
+	public FURArrowEntity(EntityType<? extends FURArrowEntity> entityType, Level LevelIn, double posX, double posY, double posZ) {
+		super(entityType, posX, posY, posZ, LevelIn);
 	}
 	
-	protected void doPostHurtEffects(LivingEntity p_184548_1_) {
-		super.doPostHurtEffects(p_184548_1_);
+	protected void doPostHurtEffects(LivingEntity target) {
+		super.doPostHurtEffects(target);
 	}
 	
 	@Override

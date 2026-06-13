@@ -83,8 +83,8 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
 	
-	public CactyrantEntity(EntityType<? extends CactyrantEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public CactyrantEntity(EntityType<? extends CactyrantEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.xpReward = 12;
 	}
 	
@@ -106,7 +106,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, true, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, true, (target) -> {
 	  	      return !this.isSilent();
 	  	   }));
     }
@@ -130,17 +130,17 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
-    public static boolean checkCactyrantSpawnRules(EntityType<? extends CactyrantEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());
+    public static boolean checkCactyrantSpawnRules(EntityType<? extends CactyrantEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random) && (level.canSeeSky(pos) || level.dimensionType().hasCeiling());
     }
  
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> p_184206_1_) {
-        if (GROWING_STAGE.equals(p_184206_1_)) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (GROWING_STAGE.equals(key)) {
            this.refreshDimensions();
         }
 
-        super.onSyncedDataUpdated(p_184206_1_);
+        super.onSyncedDataUpdated(key);
 	}
     
     public int getSkin() {
@@ -155,16 +155,16 @@ public class CactyrantEntity extends Monster implements GeoEntity {
        return this.entityData.get(DATA_IS_CAMOUFLAGING);
     }
 
-    public void setCamouflaging(boolean p_175454_1_) {
-       this.entityData.set(DATA_IS_CAMOUFLAGING, p_175454_1_);
+    public void setCamouflaging(boolean camouflaging) {
+       this.entityData.set(DATA_IS_CAMOUFLAGING, camouflaging);
     }
     
     public boolean isShaking() {
     	return this.entityData.get(DATA_IS_SHAKING);
 	}
 
-	public void setShaking(boolean p_175454_1_) {
-		this.entityData.set(DATA_IS_SHAKING, p_175454_1_);
+	public void setShaking(boolean shaking) {
+		this.entityData.set(DATA_IS_SHAKING, shaking);
 	}
     
     /**
@@ -254,7 +254,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     }
     
     @Override
-    public void positionRider(Entity passenger, Entity.MoveFunction p_289551_) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
         if (this.hasPassenger(passenger)) {
             float r = 0.4F;
             float angle = (float) ((Math.PI / 180.0F) * this.yBodyRot);
@@ -284,8 +284,8 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     }
     
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.85F;
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.85F;
     }
     
     /**
@@ -315,12 +315,12 @@ public class CactyrantEntity extends Monster implements GeoEntity {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactyrant_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactyrant_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-		if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
+		if (level.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_HOT_NETHER)) {
     		this.setSkin(1);
     	}
 		
@@ -335,12 +335,12 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     }
 	
 	@OnlyIn(Dist.CLIENT)
-	protected void addParticlesAroundSelf(SimpleParticleType p_213718_1_) {
+	protected void addParticlesAroundSelf(SimpleParticleType particle) {
 		for(int i = 0; i < 5; ++i) {
 			double d0 = this.random.nextGaussian() * 0.02D;
 			double d1 = this.random.nextGaussian() * 0.02D;
 			double d2 = this.random.nextGaussian() * 0.02D;
-			this.level().addParticle(p_213718_1_, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
+			this.level().addParticle(particle, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
 		}
 	}
     
@@ -533,8 +533,8 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     }
     
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.25D, false);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.25D, false);
         }
         
     	protected int atkTimerMax() {

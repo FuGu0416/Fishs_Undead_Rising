@@ -33,8 +33,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ImpEntity extends FogletEntity {	
-	public ImpEntity(EntityType<? extends ImpEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public ImpEntity(EntityType<? extends ImpEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -52,8 +52,8 @@ public class ImpEntity extends FogletEntity {
         		.add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
     
-    public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
     /**
@@ -80,13 +80,13 @@ public class ImpEntity extends FogletEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Imp_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Imp_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setSkin(2);
     	
- 	   	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+ 	   	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
  	}
        
     public class AISelfImmolation extends Goal {

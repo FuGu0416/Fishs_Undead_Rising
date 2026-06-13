@@ -1,9 +1,13 @@
 package com.Fishmod.fur.entities.projectiles;
 
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
+import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
@@ -39,18 +43,58 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 	 */
 	private static final double GRAVITY = 0.03D;
 
+	/**
+	 * Visual variant, mirroring the shooter Salamander's skin (0 = flame, 1 = soul). Fixed when the
+	 * glob is launched and carried to the client in the spawn packet so the renderer can pick the
+	 * matching cube texture without resolving the (possibly unloaded) owner client-side.
+	 */
+	private int variant = 0;
+
 	@SuppressWarnings("unchecked")
-	public MoltenGlobEntity(EntityType<?> p_i50158_1_, Level worldIn) {
-		super((EntityType<? extends MoltenGlobEntity>) p_i50158_1_, worldIn);
+	public MoltenGlobEntity(EntityType<?> entityType, Level worldIn) {
+		super((EntityType<? extends MoltenGlobEntity>) entityType, worldIn);
 		this.yPower = -GRAVITY;
 	}
 
-	public MoltenGlobEntity(EntityType<? extends MoltenGlobEntity> p_i50163_1_, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, shooter, accelX, accelY, accelZ, worldIn);
+	public MoltenGlobEntity(EntityType<? extends MoltenGlobEntity> entityType, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, shooter, accelX, accelY, accelZ, worldIn);
 	}
 
-	public MoltenGlobEntity(EntityType<? extends MoltenGlobEntity> p_i50163_1_, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, x, y, z, accelX, accelY, accelZ, worldIn);
+	public MoltenGlobEntity(EntityType<? extends MoltenGlobEntity> entityType, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, x, y, z, accelX, accelY, accelZ, worldIn);
+	}
+
+	/** Visual variant (0 = flame, 1 = soul); set from the shooter's skin and synced to the client. */
+	public int getVariant() {
+		return this.variant;
+	}
+
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		// Owner is already set by the time the spawn packet is built, so derive the variant here.
+		if (this.getOwner() instanceof SalamanderEntity salamander) {
+			this.variant = salamander.getSkin();
+		}
+		buffer.writeInt(this.variant);
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf additionalData) {
+		super.readSpawnData(additionalData);
+		this.variant = additionalData.readInt();
+	}
+
+	/**
+	 * Whether this is the soul-skin glob (variant 1), which trails soul/soul-fire particles instead
+	 * of lava/flame. Prefers the live owner skin (authoritative on the server); falls back to the
+	 * synced variant when the owner isn't available (e.g. on the client).
+	 */
+	private boolean isSoul() {
+		if (this.getOwner() instanceof SalamanderEntity salamander) {
+			return salamander.getSkin() == 1;
+		}
+		return this.variant == 1;
 	}
 
 	/**
@@ -60,8 +104,9 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 	@Override
 	public void tick() {
 		if (this.level().isClientSide) {
-			this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
-			this.level().addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
+			boolean soul = this.isSoul();
+			this.level().addParticle(soul ? ParticleTypes.SOUL : ParticleTypes.LAVA, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(soul ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
 		}
 
 		super.tick();
@@ -121,8 +166,12 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.level().isClientSide) {
-			this.spawnMoltenPool(result.getLocation());
+		if (this.level() instanceof ServerLevel serverLevel) {
+			Vec3 loc = result.getLocation();
+			serverLevel.playSound(null, loc.x, loc.y, loc.z, FURSoundRegistry.RANDOM_MOLTEN_GLOB_IMPACT.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+			// Lava-splatter burst at the point of impact (the in-flight trail stops once the glob is discarded).
+			serverLevel.sendParticles(this.isSoul() ? ParticleTypes.SOUL : ParticleTypes.LAVA, loc.x, loc.y, loc.z, 12, 0.2D, 0.2D, 0.2D, 0.0D);
+			this.spawnMoltenPool(loc);
 		}
 	}
 
@@ -132,7 +181,7 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 		if (this.getOwner() instanceof LivingEntity owner) {
 			pool.setOwner(owner);
 		}
-		pool.setParticle(ParticleTypes.LAVA);   // lava-splatter disc
+		pool.setParticle(this.isSoul() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME);   // flame disc (soul-fire for variant 1)
 		pool.setRadius(2.0F);
 		pool.setDuration(60);                    // 3 seconds (20 ticks/s)
 		pool.setWaitTime(0);                     // active immediately

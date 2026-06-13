@@ -40,16 +40,16 @@ public class MothScalesEntity extends Fireball {
 	private float damage = 6.0F;	
 	
 	@SuppressWarnings("unchecked")
-	public MothScalesEntity(EntityType<?> p_i48540_1_, Level worldIn) {
-		super((EntityType<? extends MothScalesEntity>)p_i48540_1_, worldIn);
+	public MothScalesEntity(EntityType<?> entityType, Level worldIn) {
+		super((EntityType<? extends MothScalesEntity>)entityType, worldIn);
 	}
 
-	public MothScalesEntity(EntityType<? extends MothScalesEntity> p_i48540_1_, LivingEntity shooter, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i48540_1_, x, y, z, accelX, accelY, accelZ, worldIn);
+	public MothScalesEntity(EntityType<? extends MothScalesEntity> entityType, LivingEntity shooter, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, x, y, z, accelX, accelY, accelZ, worldIn);
 	}
 
-	public MothScalesEntity(EntityType<? extends MothScalesEntity> p_i48540_1_, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i48540_1_, shooter, accelX, accelY, accelZ, worldIn);
+	public MothScalesEntity(EntityType<? extends MothScalesEntity> entityType, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, shooter, accelX, accelY, accelZ, worldIn);
 	}
 	
     @Override
@@ -74,9 +74,9 @@ public class MothScalesEntity extends Fireball {
 	}
 	
 	@Override
-	protected void onHitEntity(EntityHitResult p_213868_1_) {
-		super.onHitEntity(p_213868_1_);
-		Entity entity = p_213868_1_.getEntity();
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		Entity entity = result.getEntity();
 		
 		if (!this.level().isClientSide && this.getScaleType() == 1) {
 			Entity entity1 = this.getOwner();
@@ -120,11 +120,11 @@ public class MothScalesEntity extends Fireball {
 	 * Called when this EntityFireball hits a block or entity.
 	*/
     @Override
-    protected void onHit(HitResult p_70227_1_) {
-        super.onHit(p_70227_1_);
+    protected void onHit(HitResult result) {
+        super.onHit(result);
         Entity entity = this.getOwner();
                 
-		if (!this.level().isClientSide && (p_70227_1_.getType() != HitResult.Type.MISS || !((EntityHitResult)p_70227_1_).getEntity().is(entity))) {
+		if (!this.level().isClientSide && (result.getType() != HitResult.Type.MISS || !((EntityHitResult)result).getEntity().is(entity))) {
 			switch (this.getScaleType()) {    		   
 				case 0 :					
 				case 2 :
@@ -243,16 +243,16 @@ public class MothScalesEntity extends Fireball {
         }
     }
     
-    public void addAdditionalSaveData(CompoundTag p_213281_1_) {
-    	super.addAdditionalSaveData(p_213281_1_);
-        p_213281_1_.putInt("ScaleType", this.getScaleType());
+    public void addAdditionalSaveData(CompoundTag compound) {
+    	super.addAdditionalSaveData(compound);
+        compound.putInt("ScaleType", this.getScaleType());
         this.level().broadcastEntityEvent(this, (byte) (this.getScaleType() + 6));
 	}
 
-	public void readAdditionalSaveData(CompoundTag p_70037_1_) {
-		super.readAdditionalSaveData(p_70037_1_);
-		if (p_70037_1_.contains("ScaleType", 99)) {
-			this.setScaleType(p_70037_1_.getInt("ScaleType"));
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		if (compound.contains("ScaleType", 99)) {
+			this.setScaleType(compound.getInt("ScaleType"));
 		}
 	}
 }

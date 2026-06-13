@@ -44,8 +44,8 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 	
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(UndeadFishEntity.class, EntityDataSerializers.INT);
 	
-	public UndeadFishEntity(EntityType<? extends UndeadFishEntity> p_i50279_1_, Level p_i50279_2_) {
-		super(p_i50279_1_, p_i50279_2_);
+	public UndeadFishEntity(EntityType<? extends UndeadFishEntity> entityType, Level level) {
+		super(entityType, level);
 	}
 	
 	@Override
@@ -54,12 +54,12 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
     }
 	
-    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor p_223323_0_, BlockPos p_223323_1_, RandomSource p_223323_2_) {
-        if (p_223323_0_.getBrightness(LightLayer.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
+    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
            return false;
         } else {
-           int i = p_223323_0_.getLevel().isThundering() ? p_223323_0_.getMaxLocalRawBrightness(p_223323_1_, 10) : p_223323_0_.getMaxLocalRawBrightness(p_223323_1_);
-           return i <= p_223323_2_.nextInt(8);
+           int i = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+           return i <= random.nextInt(8);
         }
 	}
 	
@@ -77,7 +77,7 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 				&& pos.getY() <= server.getSeaLevel() - 33;
 	}
 	
-    protected void handleAirSupply(int p_209207_1_) {    	
+    protected void handleAirSupply(int air) {    	
     }
 
     @Override
@@ -97,14 +97,14 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {   	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {   	
 		if (this.getType().equals(FUREntityRegistry.MUMMIFIED_COD.get())) {
 			this.setSkin(1);
 		} else if (this.getType().equals(FUREntityRegistry.BONE_TROUT.get())) {
     		this.setSkin(0);
     	}
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
     
     public int getSkin() {
@@ -123,7 +123,7 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 		return SoundEvents.COD_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.COD_HURT;
 	}
 

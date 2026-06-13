@@ -45,8 +45,8 @@ public class FloatingMobEntity extends Monster implements ICharging {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(FloatingMobEntity.class, EntityDataSerializers.BYTE);
 	protected int spellTicks;
 	
-	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.moveControl = new FloatingMoveControl(this);
     }
 	
@@ -54,8 +54,8 @@ public class FloatingMobEntity extends Monster implements ICharging {
      * Tries to move the entity towards the specified location.
      */
 	@Override
-    public void move(MoverType type, Vec3 p_213315_2_) {
-        super.move(type, p_213315_2_);
+    public void move(MoverType type, Vec3 movement) {
+        super.move(type, movement);
         this.checkInsideBlocks();
     }
 	
@@ -82,8 +82,8 @@ public class FloatingMobEntity extends Monster implements ICharging {
         return Monster.createMobAttributes();
     }
     
-    public static boolean checkBansheeSpawnRules(EntityType<? extends FloatingMobEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkBansheeSpawnRules(EntityType<? extends FloatingMobEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
     @Override
@@ -97,9 +97,9 @@ public class FloatingMobEntity extends Monster implements ICharging {
     	return null;
     }
 
-	private boolean getFloaterFlag(int p_190656_1_) {
+	private boolean getFloaterFlag(int flag) {
         int i = this.entityData.get(DATA_FLAGS_ID);
-        return (i & p_190656_1_) != 0;
+        return (i & flag) != 0;
 	}
 
 	private void setFloaterFlag(int byte_loc, boolean bool) {
@@ -193,26 +193,26 @@ public class FloatingMobEntity extends Monster implements ICharging {
 	}
 
     @Override
-	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
+	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
 	}
 	
 	@Override
-	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 	}
 	
 	@Override
-    public float getWalkTargetValue(BlockPos p_205022_1_, LevelReader p_205022_2_) {
-    	if (p_205022_2_.getBrightness(LightLayer.BLOCK, p_205022_1_) > 11) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+    	if (level.getBrightness(LightLayer.BLOCK, pos) > 11) {
     		return -1.0F;
     	} else {
-    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    		return super.getWalkTargetValue(pos, level);
     	}
     }
 	
-    protected PathNavigation createNavigation(Level p_175447_1_) {
-    	FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, p_175447_1_) {
-           public boolean isStableDestination(BlockPos p_188555_1_) {
-              return !this.level.getBlockState(p_188555_1_.below()).isAir();
+    protected PathNavigation createNavigation(Level level) {
+    	FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, level) {
+           public boolean isStableDestination(BlockPos pos) {
+              return !this.level.getBlockState(pos.below()).isAir();
            }
         };
         flyingpathnavigator.setCanOpenDoors(false);
@@ -261,7 +261,7 @@ public class FloatingMobEntity extends Monster implements ICharging {
     }       
     
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.8F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.8F;
     }
 }

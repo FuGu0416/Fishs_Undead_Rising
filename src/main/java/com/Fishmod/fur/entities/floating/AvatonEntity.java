@@ -56,8 +56,8 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(AvatonEntity.class, EntityDataSerializers.INT);
 	public static final int SPELL_TIMER = 45;
 	
-	public AvatonEntity(EntityType<? extends AvatonEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public AvatonEntity(EntityType<? extends AvatonEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
     @Override
@@ -81,8 +81,8 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
         		.add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
     
-    public static boolean checkAvatonSpawnRules(EntityType<? extends AvatonEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkAvatonSpawnRules(EntityType<? extends AvatonEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
         
     @Override
@@ -97,12 +97,12 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Avaton_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Avaton_Attack.get());
     	this.setHealth(this.getMaxHealth());  
     	
-    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
     
     @Override

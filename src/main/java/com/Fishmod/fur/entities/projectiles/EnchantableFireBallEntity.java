@@ -15,19 +15,19 @@ public class EnchantableFireBallEntity extends Fireball implements IEntityAdditi
 	protected int knockbackStrength;
 	protected int flame = 0;
 	
-	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> p_i50163_1_, Level worldIn) {
-		super(p_i50163_1_, worldIn);
+	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.xPower = 0.0D;
 		this.yPower = 0.0D;
 		this.zPower = 0.0D;
 	}
 
-	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> p_i50163_1_, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, shooter, accelX, accelY, accelZ, worldIn);
+	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> entityType, LivingEntity shooter, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, shooter, accelX, accelY, accelZ, worldIn);
 	}
 
-	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> p_i50163_1_, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
-		super(p_i50163_1_, x, y, z, accelX, accelY, accelZ, worldIn);
+	public EnchantableFireBallEntity(EntityType<? extends EnchantableFireBallEntity> entityType, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {
+		super(entityType, x, y, z, accelX, accelY, accelZ, worldIn);
 	}
 	
 	@Override

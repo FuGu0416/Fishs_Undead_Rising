@@ -49,8 +49,8 @@ public class LampreyEntity extends SwarmerEntity {
     
 	public int lifespawn;
 	
-    public LampreyEntity(EntityType<? extends LampreyEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn); 
+    public LampreyEntity(EntityType<? extends LampreyEntity> entityType, Level worldIn) {
+        super(entityType, worldIn); 
         this.lifespawn = FURConfig.Lamprey_Lifespan.get() * 20;
         this.xpReward = 1;        
     }
@@ -67,11 +67,11 @@ public class LampreyEntity extends SwarmerEntity {
     @Override
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (target) -> {
             return !this.requiresCustomPersistence();
     	}));
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS) && !this.requiresCustomPersistence();
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> {
+    		return ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.LAMPREY_TARGETS) && !this.requiresCustomPersistence();
     	}));	
     }
  
@@ -88,12 +88,12 @@ public class LampreyEntity extends SwarmerEntity {
     }
     
     @Override
-    public boolean canBeAffected(MobEffectInstance p_70687_1_) {
-        if (p_70687_1_.getEffect() == FUREffectRegistry.INFESTED.get()) {
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == FUREffectRegistry.INFESTED.get()) {
         	return false;
         }
         
-        return super.canBeAffected(p_70687_1_);
+        return super.canBeAffected(effect);
 	}
     
 	@Override
@@ -171,12 +171,12 @@ public class LampreyEntity extends SwarmerEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {    	
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Lamprey_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Lamprey_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
     
     /**
@@ -205,7 +205,7 @@ public class LampreyEntity extends SwarmerEntity {
         return FURSoundRegistry.LAMPREY_DEATH.get();
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+    protected SoundEvent getHurtSound(DamageSource source) {
         return FURSoundRegistry.LAMPREY_HURT.get();
     }
 
@@ -219,16 +219,16 @@ public class LampreyEntity extends SwarmerEntity {
 	}
     
     static class AttackGoal extends MeleeAttackGoal {
-    	public AttackGoal(LampreyEntity p_i46676_1_) {
-           super(p_i46676_1_, 1.2D, true);
+    	public AttackGoal(LampreyEntity mob) {
+           super(mob, 1.2D, true);
         }
 
         public boolean canUse() {
            return super.canUse() && !this.mob.isPassenger();
         }
 
-        protected double getAttackReachSqr(LivingEntity p_179512_1_) {
-           return (double)(0.1F + p_179512_1_.getBbWidth());
+        protected double getAttackReachSqr(LivingEntity target) {
+           return (double)(0.1F + target.getBbWidth());
         }
 	}
     

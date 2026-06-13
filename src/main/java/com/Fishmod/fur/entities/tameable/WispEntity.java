@@ -130,7 +130,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
     	this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
+        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (candidate) -> {
             return true;
         }));
     }
@@ -154,8 +154,8 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
 	}
 
-    public static boolean checkWispSpawnRules(EntityType<? extends WispEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkWispSpawnRules(EntityType<? extends WispEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
+        return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource);
     }
 
 	@Override
@@ -242,7 +242,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	}
 
     @Override
-	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
+	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
 	}
 
 	/**
@@ -332,18 +332,18 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	}
 
     @Override
-    public float getWalkTargetValue(BlockPos p_205022_1_, LevelReader p_205022_2_) {
-    	if (p_205022_2_.getBrightness(LightLayer.BLOCK, p_205022_1_) > 11) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader levelReader) {
+    	if (levelReader.getBrightness(LightLayer.BLOCK, pos) > 11) {
     		return -1.0F;
     	} else {
-    		return super.getWalkTargetValue(p_205022_1_, p_205022_2_);
+    		return super.getWalkTargetValue(pos, levelReader);
     	}
     }
     
-    protected PathNavigation createNavigation(Level p_175447_1_) {
-    	FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, p_175447_1_) {
-           public boolean isStableDestination(BlockPos p_188555_1_) {
-              return !this.level.getBlockState(p_188555_1_.below()).isAir();
+    protected PathNavigation createNavigation(Level level) {
+    	FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, level) {
+           public boolean isStableDestination(BlockPos pos) {
+              return !this.level.getBlockState(pos.below()).isAir();
            }
         };
         flyingpathnavigator.setCanOpenDoors(false);
@@ -367,16 +367,16 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 		}
     }
     
-    public float getSwelling(float p_70831_1_) {
-       return Mth.lerp(p_70831_1_, (float)this.oldSwell, (float)this.swell) / (float)(this.maxSwell - 2);
+    public float getSwelling(float partialTicks) {
+       return Mth.lerp(partialTicks, (float)this.oldSwell, (float)this.swell) / (float)(this.maxSwell - 2);
     }
 
     public int getSwellDir() {
        return this.entityData.get(DATA_SWELL_DIR);
     }
 
-    public void setSwellDir(int p_70829_1_) {
-       this.entityData.set(DATA_SWELL_DIR, p_70829_1_);
+    public void setSwellDir(int swellDir) {
+       this.entityData.set(DATA_SWELL_DIR, swellDir);
     }
     
     public int getSkin() {
@@ -396,8 +396,8 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	}
     
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.5F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.5F;
     }
     
     private boolean isGastly() {

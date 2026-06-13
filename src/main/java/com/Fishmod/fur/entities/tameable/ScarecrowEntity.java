@@ -100,8 +100,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
 	
-	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);        
+	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);        
     }
 	
 	@Override
@@ -127,7 +127,7 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     	this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (p_213440_0_) -> {
+        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false, (candidate) -> {
             return true;
         }));
     }
@@ -140,8 +140,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
-    public static boolean checkScarecrowSpawnRules(EntityType<? extends ScarecrowEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().hasCeiling());
+    public static boolean checkScarecrowSpawnRules(EntityType<? extends ScarecrowEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
+        return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource) && (level.canSeeSky(pos) || level.dimensionType().hasCeiling());
     }
     
     @Override
@@ -351,8 +351,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-        livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+        livingdata = super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, livingdata, tag);
 
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarecrow_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
@@ -365,7 +365,7 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     		this.level.addFreshEntity(crowpet);
     	}*/
         
-        if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+        if (spawnTypeIn == MobSpawnType.COMMAND || spawnTypeIn == MobSpawnType.SPAWN_EGG || spawnTypeIn == MobSpawnType.SPAWNER || spawnTypeIn == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(3)));
         } else {       
         	this.setSkin(Integer.valueOf(this.random.nextInt(2)));
@@ -392,8 +392,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         return DyeColor.byId(this.entityData.get(DATA_COLLAR_COLOR));
 	}
 
-	public void setCollarColor(DyeColor p_175547_1_) {
-		this.entityData.set(DATA_COLLAR_COLOR, p_175547_1_.getId());
+	public void setCollarColor(DyeColor color) {
+		this.entityData.set(DATA_COLLAR_COLOR, color.getId());
 	}
     
     /**
@@ -416,7 +416,7 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 2.6F;
     }
     
@@ -440,9 +440,9 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	}
 	
     @Override
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
     	if (!this.isSilent() || !this.level().getBlockState(this.blockPosition().below()).isSolid()) {
-    		super.travel(p_213352_1_);
+    		super.travel(travelVector);
     	}
     }
     
@@ -544,8 +544,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	}
    
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.0D, true);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.0D, true);
         }
         
         public boolean canUse() {
@@ -589,8 +589,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     		}   		  		         
     	}
     	
-        protected double getAttackReachSqr(LivingEntity p_179512_1_) {
-            return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + p_179512_1_.getBbWidth());
+        protected double getAttackReachSqr(LivingEntity target) {
+            return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + target.getBbWidth());
         }
 	}
     

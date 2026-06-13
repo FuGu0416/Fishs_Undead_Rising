@@ -57,8 +57,8 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
  
 	public static final int SPELL_TIMER = 45;
 	
-	public BansheeEntity(EntityType<? extends BansheeEntity> p_i48549_1_, Level LevelIn) {
-        super(p_i48549_1_, LevelIn);
+	public BansheeEntity(EntityType<? extends BansheeEntity> entityType, Level LevelIn) {
+        super(entityType, LevelIn);
     }
 		
 	@Override
@@ -106,12 +106,12 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {        
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {        
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Banshee_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Banshee_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
     
     /**
@@ -212,8 +212,8 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
     }
        
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.8F;
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.8F;
     }
     
     @Override

@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
+import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -106,7 +107,7 @@ public class BeastcallHornItem extends Item {
             if (entity instanceof TamableAnimal pet && pet.isAlive() && pet.isOwnedBy(player)) {
                 summonToSide(pet, player, level);
                 player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.summon", pet.getDisplayName()), true);
-                playHorn(player, SoundEvents.RAID_HORN.value(), 1.0F);
+                playHorn(player, FURSoundRegistry.RANDOM_BEASTCALL_HORN_BLOW.get(), 1.0F);
                 player.getCooldowns().addCooldown(this, 40);
             } else {
                 player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.notfound"), true);

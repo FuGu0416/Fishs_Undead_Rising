@@ -28,8 +28,8 @@ public class LocustSwarmEntity extends Fireball {
     private float damage = 6.0F;
 
     @SuppressWarnings("unchecked")
-    public LocustSwarmEntity(EntityType<?> p_i48540_1_, Level worldIn) {
-        super((EntityType<? extends LocustSwarmEntity>) p_i48540_1_, worldIn);
+    public LocustSwarmEntity(EntityType<?> entityType, Level worldIn) {
+        super((EntityType<? extends LocustSwarmEntity>) entityType, worldIn);
     }
 
     public LocustSwarmEntity(EntityType<? extends LocustSwarmEntity> type, LivingEntity shooter, double x, double y, double z, double accelX, double accelY, double accelZ, Level worldIn) {

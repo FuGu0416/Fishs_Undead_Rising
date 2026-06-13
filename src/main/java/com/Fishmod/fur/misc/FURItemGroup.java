@@ -97,15 +97,17 @@ public class FURItemGroup {
                 ItemStack stack = new ItemStack(FURItemRegistry.INFUSED_BANDAGE.get());
                 PotionUtils.setPotion(stack, Potions.WATER);
                 output.accept(stack);
-            	
+
+        		// Misc Equipment
+        		output.accept(FURItemRegistry.BEASTCALL_HORN.get());
+        		
             	// Melee Weapon
             	output.accept(FURItemRegistry.FANG_DAGGER.get());            	          	
             	output.accept(FURItemRegistry.BONE_SWORD.get());
             	output.accept(FURItemRegistry.WETA_HOE.get());
             	output.accept(FURItemRegistry.REAPERS_SCYTHE.get());
             	output.accept(FURItemRegistry.FAMINE.get());
-            	output.accept(FURItemRegistry.BEAST_CLAW.get());
-            	output.accept(FURItemRegistry.BEASTCALL_HORN.get());
+            	output.accept(FURItemRegistry.BEAST_CLAW.get());           	
             	output.accept(FURItemRegistry.MOLTEN_AXE.get());
             	output.accept(FURItemRegistry.MOLTEN_HAMMER.get());  
             	output.accept(FURItemRegistry.SOULFORGED_AXE.get());
@@ -132,7 +134,7 @@ public class FURItemGroup {
 
         		// Shield
         		output.accept(FURItemRegistry.VESPA_SHIELD.get());
-        		
+        		      		
             	// Armour
             	output.accept(FURItemRegistry.CHITIN_ARMOR_HELMET.get());
             	output.accept(FURItemRegistry.CHITIN_ARMOR_CHESTPLATE.get());

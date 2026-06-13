@@ -221,7 +221,13 @@ public class FURConfiguredFeatures {
                                                 .setValue(GlimmercapBlock.HALF, DoubleBlockHalf.UPPER)))
                         ),
                         Direction.UP,
-                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                        // Treat cave air as empty too (mirrors vanilla isEmptyBlock used by
+                        // SimpleBlockFeature for double plants). Vanilla ONLY_IN_AIR_PREDICATE
+                        // matches Blocks.AIR ONLY, so in carved cave-air space it would place
+                        // the LOWER half but reject the UPPER half at pos+1, leaving an orphan
+                        // lower with no cap. The placed feature already requires AIR|CAVE_AIR at
+                        // pos and pos+1, so matching both here guarantees both halves are placed.
+                        BlockPredicate.matchesBlocks(Blocks.AIR, Blocks.CAVE_AIR),
                         false
                 )));
 

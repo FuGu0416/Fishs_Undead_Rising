@@ -39,8 +39,8 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
 	public int abilityCooldown;
 	protected int spellTicks;
 	
-	public RidableFlyingMobEntity(EntityType<? extends FlyingMobEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public RidableFlyingMobEntity(EntityType<? extends FlyingMobEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.abilityCooldown = 0;
 	}
 
@@ -95,8 +95,8 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     }
     
     @Override
-    public void positionRider(Entity passenger, Entity.MoveFunction p_19958_) {
-        super.positionRider(passenger, p_19958_);
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        super.positionRider(passenger, moveFunction);
         if (passenger instanceof Mob) {
         	this.yBodyRot = ((Mob)passenger).yBodyRot;
         	this.setYRot(passenger.getYRot());
@@ -214,7 +214,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     }
     
     @Override
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
         if (this.isAlive()) {
 	        if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
 	        	LivingEntity controller = (LivingEntity)this.getControllingPassenger();
@@ -229,14 +229,14 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
 	            float f1 = controller.zza;
 	
 	            if (this.isControlledByLocalInstance()) {
-	                super.travel(new Vec3((double)f, p_213352_1_.y, (double)f1));
+	                super.travel(new Vec3((double)f, travelVector.y, (double)f1));
 	            } else {
 	            	this.setDeltaMovement(Vec3.ZERO);
 	            }         
 	            
 	            this.calculateEntityAnimation(false);
 	        } else {
-	            super.travel(p_213352_1_);
+	            super.travel(travelVector);
 	        }
         }
     }
@@ -255,10 +255,10 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
 	}
     
     @Override
-    public void equipSaddle(@Nullable SoundSource p_230266_1_) {
+    public void equipSaddle(@Nullable SoundSource sound) {
     	this.setSaddled(true);
-        if (p_230266_1_ != null) {
-           this.level().playSound((Player)null, this, SoundEvents.HORSE_SADDLE, p_230266_1_, 0.5F, 1.0F);
+        if (sound != null) {
+           this.level().playSound((Player)null, this, SoundEvents.HORSE_SADDLE, sound, 0.5F, 1.0F);
         }
 	}
     

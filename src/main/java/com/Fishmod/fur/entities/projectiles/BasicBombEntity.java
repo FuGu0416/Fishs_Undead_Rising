@@ -27,80 +27,80 @@ public class BasicBombEntity extends ThrowableItemProjectile {
 	float radius = 2.0F;
 
     @SuppressWarnings("unchecked")
-	public BasicBombEntity(EntityType<?> p_i48540_1_, Level worldIn) {
-    	super((EntityType<? extends BasicBombEntity>) p_i48540_1_, worldIn);
+	public BasicBombEntity(EntityType<?> entityType, Level worldIn) {
+    	super((EntityType<? extends BasicBombEntity>) entityType, worldIn);
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
-    public BasicBombEntity(EntityType<? extends BasicBombEntity> p_i48540_1_, LivingEntity throwerIn, Level worldIn) {
-    	super(p_i48540_1_, throwerIn, worldIn);
+    public BasicBombEntity(EntityType<? extends BasicBombEntity> entityType, LivingEntity throwerIn, Level worldIn) {
+    	super(entityType, throwerIn, worldIn);
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
-    public BasicBombEntity(EntityType<? extends BasicBombEntity> p_i48540_1_, double x, double y, double z, Level worldIn) {
-    	super(p_i48540_1_, x, y, z, worldIn);
+    public BasicBombEntity(EntityType<? extends BasicBombEntity> entityType, double x, double y, double z, Level worldIn) {
+    	super(entityType, x, y, z, worldIn);
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
     
-    public BasicBombEntity(EntityType<? extends BasicBombEntity> p_i48540_1_, Level worldIn, SoundEvent soundIn, float radiusIn) {
-    	super(p_i48540_1_, worldIn);
+    public BasicBombEntity(EntityType<? extends BasicBombEntity> entityType, Level worldIn, SoundEvent soundIn, float radiusIn) {
+    	super(entityType, worldIn);
     	this.usedSound = soundIn;
     	this.radius = radiusIn;
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
-    public BasicBombEntity(EntityType<? extends BasicBombEntity> p_i48540_1_, LivingEntity throwerIn, Level worldIn, SoundEvent soundIn, float radiusIn) {
-    	super(p_i48540_1_, throwerIn, worldIn);
+    public BasicBombEntity(EntityType<? extends BasicBombEntity> entityType, LivingEntity throwerIn, Level worldIn, SoundEvent soundIn, float radiusIn) {
+    	super(entityType, throwerIn, worldIn);
     	this.usedSound = soundIn;
     	this.radius = radiusIn;
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }
 
-    public BasicBombEntity(EntityType<? extends BasicBombEntity> p_i48540_1_, double x, double y, double z, Level worldIn, SoundEvent soundIn, float radiusIn) {
-    	super(p_i48540_1_, x, y, z, worldIn);
+    public BasicBombEntity(EntityType<? extends BasicBombEntity> entityType, double x, double y, double z, Level worldIn, SoundEvent soundIn, float radiusIn) {
+    	super(entityType, x, y, z, worldIn);
     	this.usedSound = soundIn;
     	this.radius = radiusIn;
     	
-    	if (p_i48540_1_.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
+    	if (entityType.equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     		this.getDefaultItem = FURItemRegistry.HOLY_GRENADE.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.GHOST_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.GHOST_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.GHOST_BOMB.get();
-    	} else if (p_i48540_1_.equals(FUREntityRegistry.SONIC_BOMB.get())) {
+    	} else if (entityType.equals(FUREntityRegistry.SONIC_BOMB.get())) {
     		this.getDefaultItem = FURItemRegistry.SONIC_BOMB.get();
     	}
     }

@@ -40,9 +40,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class LavaCowEntity extends Cow {	
-	public LavaCowEntity(EntityType<? extends LavaCowEntity> p_i48567_1_, Level worldIn)
+	public LavaCowEntity(EntityType<? extends LavaCowEntity> entityType, Level worldIn)
     {
-        super(p_i48567_1_, worldIn);
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -61,7 +61,7 @@ public class LavaCowEntity extends Cow {
 		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
 	}	
 		
-    public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
+    public static boolean checkLavaCowSpawnRules(EntityType<? extends LavaCowEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return true;
     }
 	
@@ -110,11 +110,11 @@ public class LavaCowEntity extends Cow {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {    	
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Lavacow_Health.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
 		
 	@Override

@@ -73,8 +73,8 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 	public static final int SPELL_TIMER = 40;
 	protected int spellTicks;
 	
-	public UndertakerEntity(EntityType<? extends UndertakerEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public UndertakerEntity(EntityType<? extends UndertakerEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.xpReward = 12;
 	}
 	
@@ -108,8 +108,8 @@ public class UndertakerEntity extends Monster implements GeoEntity {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
-    public static boolean checkUndertakerSpawnRules(EntityType<? extends UndertakerEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkUndertakerSpawnRules(EntityType<? extends UndertakerEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
     /**
@@ -179,8 +179,8 @@ public class UndertakerEntity extends Monster implements GeoEntity {
     }
     
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.75F;
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.75F;
     }
     
     /**
@@ -206,7 +206,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
      */
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {    	
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {    	
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Undertaker_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Undertaker_Attack.get());
     	this.setHealth(this.getMaxHealth());
@@ -214,7 +214,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 		this.populateDefaultEquipmentSlots(this.random, difficulty);
         this.populateDefaultEquipmentEnchantments(this.random, difficulty);
                
-        return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+        return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
 
     /**
@@ -412,8 +412,8 @@ public class UndertakerEntity extends Monster implements GeoEntity {
     }
     
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.25D, false, 32);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.25D, false, 32);
         }
 
     	protected int atkTimerMax() {

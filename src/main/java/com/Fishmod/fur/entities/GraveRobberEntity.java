@@ -81,8 +81,8 @@ public class GraveRobberEntity extends AbstractIllager {
 
 	public int tradeTimer = 0;
 
-	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> p_i48556_1_, Level p_i48556_2_) {
-		super(p_i48556_1_, p_i48556_2_);
+	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> entityType, Level level) {
+		super(entityType, level);
 		this.setCanPickUpLoot(true);
 	}
 
@@ -107,8 +107,8 @@ public class GraveRobberEntity extends AbstractIllager {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-		this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (p_210136_0_) -> {
-			return this.getHealth() > this.getMaxHealth() * 0.5F && p_210136_0_.getMobType().equals(MobType.UNDEAD);
+		this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (target) -> {
+			return this.getHealth() > this.getMaxHealth() * 0.5F && target.getMobType().equals(MobType.UNDEAD);
 		}));
 		this.goalSelector.addGoal(7, new GraveRobberEntity.TradeGoal(this));
 		this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.6D));
@@ -169,11 +169,11 @@ public class GraveRobberEntity extends AbstractIllager {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance p_213386_2_, MobSpawnType p_213386_3_, @Nullable SpawnGroupData p_213386_4_, @Nullable CompoundTag p_213386_5_) {
-		SpawnGroupData ilivingentitydata = super.finalizeSpawn(p_213386_1_, p_213386_2_, p_213386_3_, p_213386_4_, p_213386_5_);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
+		SpawnGroupData ilivingentitydata = super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
 		((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
-		this.populateDefaultEquipmentSlots(this.getRandom(), p_213386_2_);
-		this.populateDefaultEquipmentEnchantments(this.getRandom(), p_213386_2_);
+		this.populateDefaultEquipmentSlots(this.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(this.getRandom(), difficulty);
 
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.GraveRobber_Health.get());
 		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.GraveRobber_Attack.get());
@@ -183,7 +183,7 @@ public class GraveRobberEntity extends AbstractIllager {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(RandomSource p_217055_, DifficultyInstance p_180481_1_) {
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
 		if (this.getCurrentRaid() == null) {
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
 		}
@@ -203,11 +203,11 @@ public class GraveRobberEntity extends AbstractIllager {
 	}
 
 	@Override
-	public boolean isAlliedTo(Entity p_184191_1_) {
-		if (super.isAlliedTo(p_184191_1_)) {
+	public boolean isAlliedTo(Entity other) {
+		if (super.isAlliedTo(other)) {
 			return true;
-		} else if (p_184191_1_ instanceof LivingEntity && ((LivingEntity) p_184191_1_).getMobType() == MobType.ILLAGER) {
-			return this.getTeam() == null && p_184191_1_.getTeam() == null;
+		} else if (other instanceof LivingEntity && ((LivingEntity) other).getMobType() == MobType.ILLAGER) {
+			return this.getTeam() == null && other.getTeam() == null;
 		} else {
 			return false;
 		}
@@ -286,16 +286,16 @@ public class GraveRobberEntity extends AbstractIllager {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.VINDICATOR_HURT;
 	}
 
 	@Override
-	public void applyRaidBuffs(int p_213660_1_, boolean p_213660_2_) {
+	public void applyRaidBuffs(int wave, boolean unused) {
 		ItemStack itemstack = new ItemStack(Items.IRON_SHOVEL);
 		Raid raid = this.getCurrentRaid();
 		int i = 1;
-		if (p_213660_1_ > raid.getNumGroups(Difficulty.NORMAL)) {
+		if (wave > raid.getNumGroups(Difficulty.NORMAL)) {
 			i = 2;
 		}
 

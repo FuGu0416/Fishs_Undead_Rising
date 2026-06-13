@@ -64,6 +64,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -77,6 +78,7 @@ public class ClientProxy extends CommonProxy {
     	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     	bus.addListener(ClientProxy::setupParticles);
     	bus.addListener(this::registerKeybinds);
+    	bus.addListener(ClientProxy::registerAdditionalModels);
     }
     
     public void clientInit() {
@@ -203,6 +205,12 @@ public class ClientProxy extends CommonProxy {
         return new FURItemRenderProperties();
     }
     
+    public static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+    	// Standalone cube models for the Molten Glob projectile (no block/item owns them).
+    	event.register(MoltenGlobRenderer.MODEL);
+    	event.register(MoltenGlobRenderer.MODEL_SOUL);
+    }
+
     public static void setupParticles(RegisterParticleProvidersEvent registry) {
 		registry.registerSpriteSet(FURParticleRegistry.GASTRO_ACID.get(), GastroAcidParticle.GastroAcidFactory::new);
 		registry.registerSpriteSet(FURParticleRegistry.LOCUST_SWARM.get(), LocustSwarmParticle.Factory::new);

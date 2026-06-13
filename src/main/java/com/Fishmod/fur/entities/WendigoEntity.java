@@ -82,8 +82,8 @@ public class WendigoEntity extends Monster implements GeoEntity {
 	/** 40: Attack with both hands 41: right hand 42: left hand */
 	public byte AttackStance;
 	
-	public WendigoEntity(EntityType<? extends WendigoEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public WendigoEntity(EntityType<? extends WendigoEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.xpReward = 20;
     }
 	
@@ -108,8 +108,8 @@ public class WendigoEntity extends Monster implements GeoEntity {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     	this.targetSelector.addGoal(2, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.WENDIGO_TARGETS);
+    	this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (target) -> {
+    		return ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.WENDIGO_TARGETS);
     	}));	 	
     }
     
@@ -122,8 +122,8 @@ public class WendigoEntity extends Monster implements GeoEntity {
         		.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
     
-    public static boolean checkWendigoSpawnRules(EntityType<? extends WendigoEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return Monster.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkWendigoSpawnRules(EntityType<? extends WendigoEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
     /**
@@ -175,12 +175,12 @@ public class WendigoEntity extends Monster implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {        
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {        
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wendigo_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Wendigo_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
         
     public void setAttackStance(byte byteIn) {
@@ -297,7 +297,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
     }
 
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 2.4F;
     }
     
@@ -343,8 +343,8 @@ public class WendigoEntity extends Monster implements GeoEntity {
     }
     
     static class AttackGoal extends FURMeleeAttackGoal {
-        public AttackGoal(PathfinderMob p_i46676_1_) {
-           super(p_i46676_1_, 1.25D, false, ATTACK_TIMER);
+        public AttackGoal(PathfinderMob mob) {
+           super(mob, 1.25D, false, ATTACK_TIMER);
         }
 
     	protected int atkTimerMax() {

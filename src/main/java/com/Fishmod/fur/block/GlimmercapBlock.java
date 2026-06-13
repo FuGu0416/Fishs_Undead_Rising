@@ -93,22 +93,6 @@ public class GlimmercapBlock extends Block implements BonemealableBlock {
         return this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER).setValue(TALL, false);
     }
 
-    // ── onPlace — auto-place UPPER half during worldgen ──────────────────────
-
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (!isMoving
-                && state.getValue(HALF) == DoubleBlockHalf.LOWER
-                && state.getValue(TALL)
-                && level.isEmptyBlock(pos.above())) {
-            level.setBlock(pos.above(),
-                this.defaultBlockState()
-                    .setValue(HALF, DoubleBlockHalf.UPPER)
-                    .setValue(TALL, true),
-                Block.UPDATE_ALL);
-        }
-    }
-
     // ── Survival / neighbor updates ──────────────────────────────────────────
 
     /**

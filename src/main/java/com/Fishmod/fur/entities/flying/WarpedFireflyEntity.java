@@ -72,8 +72,8 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("warpedfirefly.idle");
 
-	public WarpedFireflyEntity(EntityType<? extends WarpedFireflyEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public WarpedFireflyEntity(EntityType<? extends WarpedFireflyEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
+	public boolean removeWhenFarAway(double distance) {
 		return !this.isLeashed();
 	}
 
@@ -112,14 +112,14 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
-	public boolean canBeLeashed(Player p_184652_1_) {
+	public boolean canBeLeashed(Player player) {
 		return !this.isLeashed();
 	}
 
 	@Override
-	public void setLeashedTo(Entity p_110162_1_, boolean p_110162_2_) {
+	public void setLeashedTo(Entity leashHolder, boolean sendPacket) {
 		this.setPersistenceRequired();
-		super.setLeashedTo(p_110162_1_, p_110162_2_);
+		super.setLeashedTo(leashHolder, sendPacket);
 	}
 
 	@Override
@@ -179,17 +179,17 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-		return p_213348_2_.height * 0.5F;
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return dimensions.height * 0.5F;
 	}
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.WarpedFirefly_Health.get());
 		this.setHealth(this.getMaxHealth());
 
-		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, p_213386_5_);
+		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, tag);
 	}
 
 	public BlockPos getGlowingPos() {

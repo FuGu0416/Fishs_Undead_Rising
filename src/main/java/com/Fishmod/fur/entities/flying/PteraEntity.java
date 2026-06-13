@@ -67,8 +67,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
     
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(PteraEntity.class, EntityDataSerializers.INT);
 	
-	public PteraEntity(EntityType<? extends PteraEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public PteraEntity(EntityType<? extends PteraEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 	}
 
     @Override
@@ -85,8 +85,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 			this.goalSelector.addGoal(1, new EntityAIDropRider(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true).setUnseenMemoryTicks(160));
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 120, true, true, (p_210136_0_) -> {
-    		return ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.PTERA_TARGETS);
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 120, true, true, (target) -> {
+    		return ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.PTERA_TARGETS);
     	}).setUnseenMemoryTicks(160));
 	}
 	
@@ -99,8 +99,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
         		.add(Attributes.FLYING_SPEED, 1.0D);
     }
     
-    public static boolean checkPteraSpawnRules(EntityType<? extends PteraEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FlyingMobEntity.checkFlyerSpawnRulesNoSky(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.getBiome(p_223316_3_).is(Biomes.LUSH_CAVES));
+    public static boolean checkPteraSpawnRules(EntityType<? extends PteraEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return FlyingMobEntity.checkFlyerSpawnRulesNoSky(entityType, level, spawnType, pos, random) && (level.canSeeSky(pos) || level.getBiome(pos).is(Biomes.LUSH_CAVES));
     }
 	
     @Override
@@ -125,8 +125,8 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
         return super.getPassengersRidingOffset();
     }
     
-	protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-    	return p_213348_2_.height * 0.35F;
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+    	return dimensions.height * 0.35F;
     }
   
 	/**
@@ -176,12 +176,12 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 		return super.hurt(source, amount);
 	}
    
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag nbt) {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Ptera_Health.get());
        	this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Ptera_Attack.get());
        	this.setHealth(this.getMaxHealth());
 	   
-		if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+		if (spawnType == MobSpawnType.COMMAND || spawnType == MobSpawnType.SPAWN_EGG || spawnType == MobSpawnType.SPAWNER || spawnType == MobSpawnType.DISPENSER) {
 			this.setSkin(Integer.valueOf(this.random.nextInt(6)));
 		} else if (worldIn.getBiome(this.blockPosition()).containsTag(BiomeTags.IS_SAVANNA)) {
 			this.setSkin(2);
@@ -258,7 +258,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 		    }
 		}
 	   	   
-		return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
+		return super.finalizeSpawn(worldIn, difficulty, spawnType, entityLivingData, nbt);
 	}  
 	
     /**

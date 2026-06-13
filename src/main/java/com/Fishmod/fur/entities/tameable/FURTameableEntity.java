@@ -49,8 +49,8 @@ public class FURTameableEntity extends TamableAnimal {
 	protected Goal follow;
 	protected SitWhenOrderedToGoal aiSit;
 	
-	public FURTameableEntity(EntityType<? extends FURTameableEntity> p_i50240_1_, Level worldIn) {
-		super(p_i50240_1_, worldIn);
+	public FURTameableEntity(EntityType<? extends FURTameableEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.setTame(false);
 	}
 	
@@ -69,47 +69,51 @@ public class FURTameableEntity extends TamableAnimal {
 	}
 	
 	@Override
-	public float getWalkTargetValue(BlockPos pos, LevelReader p_205022_2_) {
+	public float getWalkTargetValue(BlockPos pos, LevelReader level) {
 		return 10.0F;
 	}
 	
-	public static boolean isDarkEnoughToSpawn(ServerLevelAccessor p_223323_0_, BlockPos pos, RandomSource p_223323_2_) {
-		if (p_223323_0_.getBrightness(LightLayer.SKY, pos) > p_223323_2_.nextInt(32)) {
+	public static boolean isDarkEnoughToSpawn(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+		if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			DimensionType dimensiontype = p_223323_0_.dimensionType();
+			DimensionType dimensiontype = level.dimensionType();
 			int i = dimensiontype.monsterSpawnBlockLightLimit();
-			if (i < 15 && p_223323_0_.getBrightness(LightLayer.BLOCK, pos) > i) {
+			if (i < 15 && level.getBrightness(LightLayer.BLOCK, pos) > i) {
 				return false;
 			} else {
-				int j = p_223323_0_.getLevel().isThundering() ? p_223323_0_.getMaxLocalRawBrightness(pos, 10) : p_223323_0_.getMaxLocalRawBrightness(pos);
-				return j <= dimensiontype.monsterSpawnLightTest().sample(p_223323_2_);
+				int j = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+				return j <= dimensiontype.monsterSpawnLightTest().sample(random);
 			}
 		}
 	}
 
-	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, RandomSource p_223325_4_) {
-		return checkMonsterSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_, false);
+	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+		return checkMonsterSpawnRules(entityType, level, spawnType, pos, random, false);
 	}
 
 	// ignoreLight skips the darkness requirement (e.g. Nether Fortress chests sit over lava and are brightly lit)
-	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, RandomSource p_223325_4_, boolean ignoreLight) {
-		return p_223325_1_.getDifficulty() != Difficulty.PEACEFUL && (ignoreLight || isDarkEnoughToSpawn(p_223325_1_, p_223325_3_, p_223325_4_)) && checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random, boolean ignoreLight) {
+		return level.getDifficulty() != Difficulty.PEACEFUL && (ignoreLight || isDarkEnoughToSpawn(level, pos, random)) && checkMobSpawnRules(entityType, level, spawnType, pos, random);
+	}
+
+	// Keepability is decided by isTame() alone — NOT by getOwner() being resolvable. The owner is a
+	// player whose entity is null while offline / not-yet-loaded (e.g. on a Peaceful-world login),
+	// so requiring "getOwner() instanceof Player" would wrongly despawn a tamed pet. isTame() is
+	// restored from NBT on load and is the reliable signal.
+	@Override
+	public boolean removeWhenFarAway(double distance) {
+		return !this.isTame();
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
-		return !(this.isTame() && this.getOwner() instanceof Player);
-	}
-	
-	@Override
     protected boolean shouldDespawnInPeaceful() {
-	    return !(this.isTame() && this.getOwner() instanceof Player);
-    }   
-	
+	    return !this.isTame();
+    }
+
 	@Override
 	public boolean requiresCustomPersistence() {
-		return (this.isTame() && this.getOwner() instanceof Player) || super.requiresCustomPersistence();
+		return this.isTame() || super.requiresCustomPersistence();
 	}
 	
 	public void setLimitedLife(int limitedLifeTicksIn) {    	
@@ -161,17 +165,20 @@ public class FURTameableEntity extends TamableAnimal {
     		case SITTING:
     			this.jumping = false;
     			this.setInSittingPose(true);
+    			this.setOrderedToSit(true);
     			break;
     		case FOLLOWING:
     			this.follow = this.followGoal();
     			this.goalSelector.addGoal(6, this.follow);
     			this.setInSittingPose(false);
+    			this.setOrderedToSit(false);
     			break;
     		case WANDERING:
     		default:
     			this.wander = this.wanderGoal();
     			this.goalSelector.addGoal(7, this.wander);
     			this.setInSittingPose(false);
+    			this.setOrderedToSit(false);
     			break;
     	}
 
@@ -281,17 +288,17 @@ public class FURTameableEntity extends TamableAnimal {
         }
     }      
     
-    public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
-        if (this.isInvulnerableTo(p_70097_1_)) {
+    public boolean hurt(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
            return false;
         } else {
-           Entity entity = p_70097_1_.getEntity();
+           Entity entity = source.getEntity();
            this.setOrderedToSit(false);
            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
-              p_70097_2_ = (p_70097_2_ + 1.0F) / 2.0F;
+              amount = (amount + 1.0F) / 2.0F;
            }
 
-           return super.hurt(p_70097_1_, p_70097_2_);
+           return super.hurt(source, amount);
         }
 	}
     

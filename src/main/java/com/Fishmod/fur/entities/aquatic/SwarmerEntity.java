@@ -75,8 +75,8 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     private static final RawAnimation LAND = RawAnimation.begin().thenPlay("swarmer.model.onland");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("swarmer.model.attacking");
     
-    public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);   
+    public SwarmerEntity(EntityType<? extends SwarmerEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);   
     }
     
 	@Override
@@ -97,11 +97,11 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     
     protected void applyEntityAI() {
     	this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, true, false, (p_210136_0_) -> {
+    	this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, true, false, (target) -> {
             return !this.requiresCustomPersistence();
     	}));
-    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (p_210136_0_) -> {
-    		return !this.requiresCustomPersistence() && p_210136_0_ instanceof LivingEntity && ((LivingEntity)p_210136_0_).attackable() && p_210136_0_.getType().is(FUREntityTypeTagsProvider.SWARMER_TARGETS) && ((LivingEntity)p_210136_0_).getHealth() < ((LivingEntity)p_210136_0_).getMaxHealth();
+    	this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 10, true, false, (target) -> {
+    		return !this.requiresCustomPersistence() && target instanceof LivingEntity && ((LivingEntity)target).attackable() && target.getType().is(FUREntityTypeTagsProvider.SWARMER_TARGETS) && ((LivingEntity)target).getHealth() < ((LivingEntity)target).getMaxHealth();
     	}));
     	this.targetSelector.addGoal(5, new EntityAIPickupMeat<>(this, ItemEntity.class, true));
     }
@@ -124,26 +124,26 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
        return 2;
     }
     
-    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor p_223323_0_, BlockPos p_223323_1_, RandomSource p_223323_2_) {
-        if (p_223323_0_.getBrightness(LightLayer.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
+    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor level, BlockPos pos, RandomSource random) {
+        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
            return false;
         } else {
-           int i = p_223323_0_.getLevel().isThundering() ? p_223323_0_.getMaxLocalRawBrightness(p_223323_1_, 10) : p_223323_0_.getMaxLocalRawBrightness(p_223323_1_);
-           return i <= p_223323_2_.nextInt(8);
+           int i = level.getLevel().isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+           return i <= random.nextInt(8);
         }
 	}
     
-    public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return isDarkEnoughToSpawn(p_223316_1_, p_223316_3_, p_223316_4_) && WaterAnimal.checkSurfaceWaterAnimalSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && p_223316_1_.getDifficulty() != Difficulty.PEACEFUL;
+    public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return isDarkEnoughToSpawn(level, pos, random) && WaterAnimal.checkSurfaceWaterAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getDifficulty() != Difficulty.PEACEFUL;
     }
     
     public int getMaxSchoolSize() {
         return 12;
     }
     
-    protected void handleAirSupply(int p_209207_1_) {   
+    protected void handleAirSupply(int air) {   
     	if (!this.getType().equals(FUREntityRegistry.SWARMER.get())) {
-    		super.handleAirSupply(p_209207_1_);
+    		super.handleAirSupply(air);
     	}
     }
     
@@ -166,10 +166,10 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     	}
     }
     
-    public boolean doHurtTarget(Entity p_70652_1_) {
-        boolean flag = p_70652_1_.hurt(this.damageSources().mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+    public boolean doHurtTarget(Entity target) {
+        boolean flag = target.hurt(this.damageSources().mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
-           this.doEnchantDamageEffects(this, p_70652_1_);
+           this.doEnchantDamageEffects(this, target);
            this.level().broadcastEntityEvent(this, (byte)4);
            if (!this.getType().equals(FUREntityRegistry.LAMPREY.get())) {
         	   this.playSound(FURSoundRegistry.SWARMER_ATTACK.get(), 1.0F, 1.0F);
@@ -185,7 +185,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
     	if (this.getType().equals(FUREntityRegistry.SWARMER.get())) {
 	    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Swarmer_Health.get());
 	        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Swarmer_Attack.get());
@@ -195,21 +195,21 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     	if (!this.getIsAmmo()) {
     		if (this.getType().equals(FUREntityRegistry.PIRANHA.get())) {
     			this.setSkin(0);
-    		} else if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
-    			this.setSkin(p_213386_5_.getInt("BucketVariantTag"));
+    		} else if (spawnType == MobSpawnType.BUCKET && tag != null && tag.contains("BucketVariantTag", 3)) {
+    			this.setSkin(tag.getInt("BucketVariantTag"));
     			return livingdata;
-    	    } else if (p_213386_1_.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_SWAMP)) {
+    	    } else if (level.getBiome(this.blockPosition()).containsTag(Tags.Biomes.IS_SWAMP)) {
 	    		this.setSkin(2);
-	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.DEEP_LUKEWARM_OCEAN)) {
+	    	} else if (level.getBiome(this.blockPosition()).is(Biomes.DEEP_LUKEWARM_OCEAN)) {
 	    		this.setSkin(3);
-	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.LUKEWARM_OCEAN)) {
+	    	} else if (level.getBiome(this.blockPosition()).is(Biomes.LUKEWARM_OCEAN)) {
 	    		this.setSkin(4);
-	    	} else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.DEEP_DARK)) {
+	    	} else if (level.getBiome(this.blockPosition()).is(Biomes.DEEP_DARK)) {
 	    		this.setSkin(6);
 	    	}
     	}
     	
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(level, difficulty, spawnType, livingdata, tag);
     }
 
     /**
@@ -276,9 +276,9 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     }
     
     @Override
-    public void saveToBucketTag(ItemStack p_30049_) {
-        super.saveToBucketTag(p_30049_);
-        CompoundTag compoundtag = p_30049_.getOrCreateTag();
+    public void saveToBucketTag(ItemStack stack) {
+        super.saveToBucketTag(stack);
+        CompoundTag compoundtag = stack.getOrCreateTag();
         compoundtag.putInt("BucketVariantTag", this.getSkin());
 	}
     
@@ -317,7 +317,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     }
 	
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return this.getBbHeight() * 0.5F;
 	}
 	

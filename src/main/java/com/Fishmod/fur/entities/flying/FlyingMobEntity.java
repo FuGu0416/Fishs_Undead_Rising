@@ -47,8 +47,8 @@ public class FlyingMobEntity extends FURTameableEntity {
 	private int hoverTimer;
 	private int landTimer;
 	
-	public FlyingMobEntity(EntityType<? extends FlyingMobEntity> p_i48549_1_, Level worldIn) {
-		super(p_i48549_1_, worldIn);
+	public FlyingMobEntity(EntityType<? extends FlyingMobEntity> entityType, Level worldIn) {
+		super(entityType, worldIn);
 		this.moveControl = new FlyingMobEntity.FlyingMoveHelper(this);
 	    this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
 	    this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
@@ -68,42 +68,23 @@ public class FlyingMobEntity extends FURTameableEntity {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
 	
-    public static boolean checkFlyerSpawnRules(EntityType<? extends FlyingMobEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_)
-        		&& (p_223316_1_.canSeeSky(p_223316_3_) || ((Level) p_223316_1_).dimension() != Level.OVERWORLD);
+    public static boolean checkFlyerSpawnRules(EntityType<? extends FlyingMobEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    	return FURTameableEntity.checkMonsterSpawnRules(entityType, level, spawnType, pos, random)
+        		&& (level.canSeeSky(pos) || ((Level) level).dimension() != Level.OVERWORLD);
     }
     
-    public static boolean checkFlyerSpawnRulesNoSky(EntityType<? extends FlyingMobEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);
+    public static boolean checkFlyerSpawnRulesNoSky(EntityType<? extends FlyingMobEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    	return FURTameableEntity.checkMonsterSpawnRules(entityType, level, spawnType, pos, random);
     }
     
-    public static boolean checkFlyerSpawnRulesNoRestriction(EntityType<? extends FlyingMobEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-    	return p_223316_1_.getDifficulty() != Difficulty.PEACEFUL && FURTameableEntity.isDarkEnoughToSpawn(p_223316_1_, p_223316_3_, p_223316_4_);
+    public static boolean checkFlyerSpawnRulesNoRestriction(EntityType<? extends FlyingMobEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    	return level.getDifficulty() != Difficulty.PEACEFUL && FURTameableEntity.isDarkEnoughToSpawn(level, pos, random);
     }
-    
-    @Override
-    public void doSitCommand(Player playerIn) {
-    	super.doSitCommand(playerIn);
-    }
-    
-    @Override
-    public void doFollowCommand(Player playerIn) {
-    	if (!this.isBaby()) {
-    		this.setNoGravity(true);
-    	}
-    	
-    	super.doFollowCommand(playerIn);
-    }
-    
-    @Override
-    public void doWanderCommand(Player playerIn) {
-    	if (!this.isBaby()) {
-    		this.setNoGravity(true);
-    	}
-    	
-    	super.doWanderCommand(playerIn);
-    }
-	
+
+    // Gravity for a tamed flying mount is driven entirely by aiStep() from its sit/follow/wander
+    // state, so the old per-command setNoGravity() overrides (doSit/doFollow/doWander) were dropped
+    // as redundant — the base FURTameableEntity versions (pure state switches) are used directly.
+
     /**
      * Called to update the entity's position/logic.
      */
@@ -119,13 +100,20 @@ public class FlyingMobEntity extends FURTameableEntity {
 	    			this.level().broadcastEntityEvent(this, (byte)40);
 	    		}
 
-	    		if (this.isNoGravity()) {
-	    			this.setNoGravity(this.getTarget() != null);
-	    		}
+	    		if (this.isTame()) {
+	    			// Commanded mount: SITTING settles onto the ground; otherwise stay airborne so
+	    			// AIRandomFly / FlyerFollowOwnerGoal can lift it off the ground and fly.
+	    			this.setNoGravity(!this.isInSittingPose());
+	    		} else {
+	    			// Wild flyer ambient: rest on the ground, occasionally hop back into the air.
+	    			if (this.isNoGravity()) {
+	    				this.setNoGravity(this.getTarget() != null);
+	    			}
 
-	    		if (!this.isVehicle() && !this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
-	    			this.setNoGravity(true);
-	    			this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.25F, 0.0F));
+	    			if (!this.isVehicle() && !this.isNoGravity() && !this.isInSittingPose() && this.getRandom().nextFloat() < 0.15F) {
+	    				this.setNoGravity(true);
+	    				this.setDeltaMovement(this.getDeltaMovement().add(0.0F, 0.25F, 0.0F));
+	    			}
 	    		}
 	    	} else {
 	    		int lt = this.getLandTimer();
@@ -134,7 +122,10 @@ public class FlyingMobEntity extends FURTameableEntity {
 	    			this.level().broadcastEntityEvent(this, (byte)41);
 	    		}
 	    		
-	    		if (!this.isNoGravity()) {
+	    		if (this.isTame()) {
+	    			// Sitting tamed mount descends to land; otherwise keep it airborne.
+	    			this.setNoGravity(!this.isInSittingPose());
+	    		} else if (!this.isNoGravity()) {
 	    			this.setNoGravity(true);
 	    		}
 	    	}
@@ -166,7 +157,12 @@ public class FlyingMobEntity extends FURTameableEntity {
 	@Override
 	public boolean onGround() {
 		if (super.onGround()) return true;
-		if (!this.isVehicle()) return false;
+		// Treat a block within 0.2 below as grounded. The vanilla flag is unreliable for a
+		// no-gravity flyer — it never presses into the floor — so it stays false even while the
+		// mob is resting on the ground. This matters most while ridden and right after dismounting:
+		// without it, onGround() flips back to false the instant the rider leaves, snapping the
+		// animation back to "fly" and re-hovering a mount that had already landed. Free flyers
+		// cruise at >= groundY+2, so this only registers when they are actually touching down.
 		return !this.level().noCollision(this, this.getBoundingBox().move(0.0, -0.2, 0.0));
 	}
     
@@ -192,7 +188,7 @@ public class FlyingMobEntity extends FURTameableEntity {
     }
 	
     @Override
-	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
+	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
 	}
     
 	@Override
@@ -218,23 +214,23 @@ public class FlyingMobEntity extends FURTameableEntity {
         return lowestPassenger;
     }
 	
-	public void makeStuckInBlock(BlockState p_213295_1_, Vec3 p_213295_2_) {
-		if (p_213295_1_.is(Blocks.COBWEB)) {
+	public void makeStuckInBlock(BlockState state, Vec3 motion) {
+		if (state.is(Blocks.COBWEB)) {
 			this.getMoveControl().setWantedPosition(this.getX(), this.getY() - 1, this.getZ(), 1.0D);
 		}
 			
-		super.makeStuckInBlock(p_213295_1_, p_213295_2_);
+		super.makeStuckInBlock(state, motion);
 	}
 	
 	@Override
-	protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 	}
 	
 	protected double VehicleSpeedMod() {
 		return 1.0D;
 	}
 
-    public void travel(Vec3 p_213352_1_) {
+    public void travel(Vec3 travelVector) {
     	// If the lowest passenger is colliding with the ground, get them out!
         Entity lowestPassenger = this.getLowestPassenger();
 
@@ -247,23 +243,23 @@ public class FlyingMobEntity extends FURTameableEntity {
         }
         
         if (!this.isNoGravity() && !this.isVehicle() && !(this.getControllingPassenger() instanceof Player)) {
-        	this.moveRelative(0.02F, p_213352_1_);
+        	this.moveRelative(0.02F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().x, -0.15D, this.getDeltaMovement().z);
         }
     	
     	if (this.getTarget() != null) {
-            this.moveRelative(0.02F, p_213352_1_);
+            this.moveRelative(0.02F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(1.05D));
     	}
     	
     	if (this.isInWater()) {
-            this.moveRelative(0.02F, p_213352_1_);
+            this.moveRelative(0.02F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale((double)0.8F));
         } else if (this.isInLava()) {
-            this.moveRelative(0.02F, p_213352_1_);
+            this.moveRelative(0.02F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
@@ -272,7 +268,7 @@ public class FlyingMobEntity extends FURTameableEntity {
                     ? this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F
                     : 0.91F;
             float f1 = 0.16277137F / (f * f * f);
-            this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, p_213352_1_);
+            this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement().scale(this.VehicleSpeedMod()));
             this.setDeltaMovement(this.getDeltaMovement().scale((double)f));
         }
@@ -288,11 +284,11 @@ public class FlyingMobEntity extends FURTameableEntity {
         return this.isBaby() ? super.onClimbable() : false;
     }
     
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag p_213386_5_) {         
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {         
     	if (!this.isBaby()) {
     		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));       
     	}
-        return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
+        return super.finalizeSpawn(worldIn, difficulty, spawnType, entityLivingData, tag);
     }
 
     static class AIRandomFly extends Goal {
@@ -735,12 +731,15 @@ public class FlyingMobEntity extends FURTameableEntity {
                 return;
             }
 
-            // Sitting with no target: glide downward
-            if (this.parentEntity.isInSittingPose()
-                    && this.parentEntity.getTarget() == null
-                    && !this.parentEntity.onGround()) {
-                Vec3 motion = this.parentEntity.getDeltaMovement();
-                this.parentEntity.setDeltaMovement(motion.x * 0.5D, motion.y - 0.03D, motion.z * 0.5D);
+            // Sitting (no combat target): halt horizontal movement immediately so a sit command
+            // aborts the current wander/path right away instead of coasting to the old target.
+            // AIRandomFly drives this MoveControl directly, so switchState's navigation.stop()
+            // alone won't stop it — we must zero the velocity here. Keep sinking while airborne
+            // so it still settles onto the ground.
+            if (this.parentEntity.isInSittingPose() && this.parentEntity.getTarget() == null) {
+                double vy = this.parentEntity.getDeltaMovement().y;
+                this.parentEntity.setDeltaMovement(0.0D, this.parentEntity.onGround() ? vy : vy - 0.03D, 0.0D);
+                this.velocity = Vec3.ZERO;
                 this.operation = MoveControl.Operation.WAIT;
                 return;
             }

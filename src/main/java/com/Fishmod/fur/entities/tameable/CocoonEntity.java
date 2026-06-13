@@ -43,8 +43,8 @@ public class CocoonEntity extends FURTameableEntity implements GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(CocoonEntity.class, EntityDataSerializers.INT);
 	private int Lifespan = 8 * 20;
 	
-	public CocoonEntity(EntityType<? extends CocoonEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public CocoonEntity(EntityType<? extends CocoonEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -175,7 +175,7 @@ public class CocoonEntity extends FURTameableEntity implements GeoEntity {
     public void push(Entity entityIn) {
     }
 
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.8F;
     }
     

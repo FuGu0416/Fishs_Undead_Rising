@@ -2,15 +2,15 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "U# ",
-        "#D ",
-        "  A"
+        "#D#",
+        " #A"
     ],
     "key": {
         "U": {
             "item": "minecraft:goat_horn"
         },
         "#": {
-            "item": "fur:foul_hide"
+            "item": "fur:foul_bristle"
         },
         "D": {
             "item": "fur:shriek_cord"

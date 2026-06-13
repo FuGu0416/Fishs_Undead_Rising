@@ -28,18 +28,18 @@ public class FURMeleeAttackGoal extends Goal {
     private boolean canPenalize = false;
     private int attackTimer = 0;
     
-	public FURMeleeAttackGoal(PathfinderMob p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_, int attackIntervalIn) {
-		this.mob = p_i1636_1_;
-		this.speedModifier = p_i1636_2_;
-		this.followingTargetEvenIfNotSeen = p_i1636_4_;
+	public FURMeleeAttackGoal(PathfinderMob mobIn, double speedModifierIn, boolean followIfNotSeenIn, int attackIntervalIn) {
+		this.mob = mobIn;
+		this.speedModifier = speedModifierIn;
+		this.followingTargetEvenIfNotSeen = followIfNotSeenIn;
 		this.attackInterval = attackIntervalIn;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
    
-	public FURMeleeAttackGoal(PathfinderMob p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_) {
-		this.mob = p_i1636_1_;
-		this.speedModifier = p_i1636_2_;
-		this.followingTargetEvenIfNotSeen = p_i1636_4_;
+	public FURMeleeAttackGoal(PathfinderMob mobIn, double speedModifierIn, boolean followIfNotSeenIn) {
+		this.mob = mobIn;
+		this.speedModifier = speedModifierIn;
+		this.followingTargetEvenIfNotSeen = followIfNotSeenIn;
 		this.attackInterval = 20;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
@@ -168,13 +168,13 @@ public class FURMeleeAttackGoal extends Goal {
 		this.checkAndPerformAttack(livingentity, d0);
 	}
 
-	protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
-		double d0 = this.getAttackReachSqr(p_190102_1_);
+	protected void checkAndPerformAttack(LivingEntity target, double distToTargetSqr) {
+		double d0 = this.getAttackReachSqr(target);
 		if (this.ticksUntilNextAttack <= 0) {							
-			if (this.attackTimer == this.atkTimerHit() && p_190102_2_ <= (d0 * 1.2D)) {
+			if (this.attackTimer == this.atkTimerHit() && distToTargetSqr <= (d0 * 1.2D)) {
 				this.resetAttackCooldown();
-				this.dmgEvent(p_190102_1_);
-			} else if (this.attackTimer == 0 && p_190102_2_ <= d0) {	
+				this.dmgEvent(target);
+			} else if (this.attackTimer == 0 && distToTargetSqr <= d0) {	
 				this.mob.level().broadcastEntityEvent(this.mob, this.atkTimerEvent());
 				this.attackTimer = this.atkTimerMax();
 			}
@@ -193,8 +193,8 @@ public class FURMeleeAttackGoal extends Goal {
 		return this.ticksUntilNextAttack;
 	}
 
-	protected double getAttackReachSqr(LivingEntity p_179512_1_) {
-		return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + p_179512_1_.getBbWidth());
+	protected double getAttackReachSqr(LivingEntity target) {
+		return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + target.getBbWidth());
 	}
 	
 	protected int atkTimerMax() {

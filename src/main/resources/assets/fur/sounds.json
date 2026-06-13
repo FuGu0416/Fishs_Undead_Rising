@@ -89,7 +89,14 @@
 		"subtitle": "entity_salamander_attack",
 		"sounds": [{"name": "fur:entity/salamander/attack","stream": true}]
 	},
-		
+
+	"salamander_attack_range":
+	{
+		"category": "hostile",
+		"subtitle": "entity_salamander_attack_range",
+		"sounds": [{"name": "fur:entity/salamander/attack_range","stream": true}]
+	},
+
 	"salamander_hurt":
 	{
 		"category": "hostile",
@@ -725,7 +732,21 @@
 		"subtitle": "random_fang_dagger_throw",
 		"sounds": [{"name": "fur:random/fang_dagger_throw","stream": true}]
 	},
-			
+
+	"random_molten_glob_impact":
+	{
+		"category": "neutral",
+		"subtitle": "random_molten_glob_impact",
+		"sounds": ["fur:random/molten_glob_impact0", "fur:random/molten_glob_impact1"]
+	},
+
+	"random_beastcall_horn_blow":
+	{
+		"category": "neutral",
+		"subtitle": "random_beastcall_horn_blow",
+		"sounds": [{"name": "fur:random/beastcall_horn_blow","stream": true}]
+	},
+
 	"lamprey_ambient":
 	{
 		"category": "hostile",

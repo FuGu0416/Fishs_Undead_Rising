@@ -12,20 +12,20 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 
 public class AvoidOrFrightEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
-	public AvoidOrFrightEntityGoal(PathfinderMob p_25027_, Class<T> p_25028_, float p_25029_, double p_25030_, double p_25031_) {
-		this(p_25027_, p_25028_, (p_25052_) -> {
+	public AvoidOrFrightEntityGoal(PathfinderMob mob, Class<T> entityClassToAvoid, float maxDistance, double walkSpeedModifier, double sprintSpeedModifier) {
+		this(mob, entityClassToAvoid, (livingEntity) -> {
 			return true;
-		}, p_25029_, p_25030_, p_25031_, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+		}, maxDistance, walkSpeedModifier, sprintSpeedModifier, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
 	}
 
-	public AvoidOrFrightEntityGoal(PathfinderMob p_25040_, Class<T> p_25041_, Predicate<LivingEntity> p_25042_, float p_25043_, double p_25044_, double p_25045_, Predicate<LivingEntity> p_25046_) {
-		super(p_25040_, p_25041_, p_25042_, p_25043_, p_25044_, p_25045_, p_25046_);
+	public AvoidOrFrightEntityGoal(PathfinderMob mob, Class<T> entityClassToAvoid, Predicate<LivingEntity> avoidPredicate, float maxDistance, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> predicateOnAvoidEntity) {
+		super(mob, entityClassToAvoid, avoidPredicate, maxDistance, walkSpeedModifier, sprintSpeedModifier, predicateOnAvoidEntity);
 	}
 
-	public AvoidOrFrightEntityGoal(PathfinderMob p_25033_, Class<T> p_25034_, float p_25035_, double p_25036_, double p_25037_, Predicate<LivingEntity> p_25038_) {
-		this(p_25033_, p_25034_, (p_25049_) -> {
+	public AvoidOrFrightEntityGoal(PathfinderMob mob, Class<T> entityClassToAvoid, float maxDistance, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> predicateOnAvoidEntity) {
+		this(mob, entityClassToAvoid, (livingEntity) -> {
 			return true;
-		}, p_25035_, p_25036_, p_25037_, p_25038_);
+		}, maxDistance, walkSpeedModifier, sprintSpeedModifier, predicateOnAvoidEntity);
 	}
 	
 	public boolean canUse() {

@@ -28,8 +28,6 @@
 	"item.fur.mimic_claw_raw": "生擬箱蟹爪",
 	"item.fur.mimic_claw_cooked": "嫩烤蟹爪",
 	"item.fur.sporecaller": "蕈靈之杖",
-	"item.fur.sporecaller.empty": "未注入藥水",
-	"item.fur.sporecaller.inject": "右鍵點擊藥水以注入其效果（水瓶可清除）",
 	"item.fur.combustive_gland": "燃化腺體",
 	"item.fur.war": "『戰爭』",
 	"item.fur.molten_armor_helmet": "熔核戰盔",
@@ -141,7 +139,6 @@
 	"item.fur.foul_hide": "惡臭皮革",
 	"item.fur.spore_gel": "孢子凝膠",
 	"item.fur.undergrove_heart": "菌林之心",
-	"item.fur.undergrove_heart.desc": "對地面右鍵，蔓生菌絲毯與一叢發光植被（使用後消耗）",
 	"item.fur.parasite_ovum": "屍蛆卵塊",
 	"item.fur.ushabti": "巫沙布提俑",
 	"item.fur.ankh_scepter": "安卡權杖",
@@ -371,6 +368,7 @@
 
 	"entity_salamander_ambient": "炎熔螈低吼聲",
 	"entity_salamander_attack": "炎熔螈啃咬聲",
+	"entity_salamander_attack_range": "炎熔螈射擊聲",
 	"entity_salamander_death": "炎熔螈死亡",
 	"entity_salamander_hurt": "炎熔螈受傷",
 
@@ -485,6 +483,8 @@
 	"random_thorn_shoot": "尖刺發射",
 	"random_fang_dagger_hit": "利牙匕首命中",
 	"random_fang_dagger_throw": "利牙匕首投擲",
+	"random_molten_glob_impact": "熔岩團濺射",
+	"random_beastcall_horn_blow": "喚獸號角鳴響",
 
 	"entity_lamprey_ambient": "七鰓鰻窸窣聲",
 	"entity_lamprey_death": "七鰓鰻死亡",
@@ -512,6 +512,9 @@
 	"item.fur.famine.desc": "對單位造成傷害時能回復1飽食度，飢餓狀態時則回復2飽食度",    
 	"item.fur.frozen_thigh.desc": "可以食用，攻擊能同時賦予目標緩慢III(0:04)",
 	"item.fur.sporecaller.desc": "右鍵點擊以召喚聽命於玩家的光菇靈",
+	"item.fur.sporecaller.empty": "未注入藥水",
+	"item.fur.sporecaller.inject": "右鍵點擊藥水以注入其效果（水瓶可清除）",
+	"item.fur.undergrove_heart.desc": "對地面右鍵，蔓生菌絲毯與一叢發光植被（使用後消耗）",
 	"item.fur.war.desc": "射出會爆炸的火球；以火焰彈作為彈藥",
 	"item.fur.bloated_intestine.desc": "右鍵查看裡頭蠢動著什麼。",
 	"item.fur.molten_armor.desc0": "套裝(2)：受到近戰攻擊時，使攻擊者燃燒3秒。",

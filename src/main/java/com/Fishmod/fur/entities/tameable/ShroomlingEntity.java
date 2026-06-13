@@ -114,8 +114,8 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	@Nullable
 	private MobEffectInstance customSporeEffect = null;
 
-	public ShroomlingEntity(EntityType<? extends ShroomlingEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public ShroomlingEntity(EntityType<? extends ShroomlingEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.limitedLifeTicks = -1;
     }
 
@@ -367,18 +367,18 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Shroomling_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setSkin(this.random.nextInt(2));
     	this.setSporeEffect(this.random.nextInt(SPORE_EFFECTS.length));
 
-    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
 
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.6F;
     }
 

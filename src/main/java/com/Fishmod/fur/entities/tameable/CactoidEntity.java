@@ -77,8 +77,8 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
 	
-	public CactoidEntity(EntityType<? extends CactoidEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public CactoidEntity(EntityType<? extends CactoidEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
     }
 	
 	@Override
@@ -118,25 +118,25 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
         		.add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
     
-    public static boolean checkCactoidSpawnRules(EntityType<? extends CactoidEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_) && (p_223316_1_.canSeeSky(p_223316_3_) || p_223316_1_.dimensionType().ultraWarm());
+    public static boolean checkCactoidSpawnRules(EntityType<? extends CactoidEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
+        return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource) && (level.canSeeSky(pos) || level.dimensionType().ultraWarm());
     }
     
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> p_184206_1_) {
-        if (GROWING_STAGE.equals(p_184206_1_)) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (GROWING_STAGE.equals(key)) {
            this.refreshDimensions();
         }
 
-        super.onSyncedDataUpdated(p_184206_1_);
+        super.onSyncedDataUpdated(key);
 	}    
 	
     public boolean isShaking() {
     	return this.entityData.get(DATA_IS_SHAKING);
 	}
 
-	public void setShaking(boolean p_175454_1_) {
-		this.entityData.set(DATA_IS_SHAKING, p_175454_1_);
+	public void setShaking(boolean shaking) {
+		this.entityData.set(DATA_IS_SHAKING, shaking);
 	}
     
     /**
@@ -321,28 +321,28 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Cactoid_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Cactoid_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	this.setAge(-24000);
     	
-    	if (p_213386_3_ == MobSpawnType.BUCKET && p_213386_5_ != null && p_213386_5_.contains("BucketVariantTag", 3)) {
-			this.setSkin(p_213386_5_.getInt("BucketVariantTag"));
-    	} else if (p_213386_3_ == MobSpawnType.COMMAND || p_213386_3_ == MobSpawnType.SPAWN_EGG || p_213386_3_ == MobSpawnType.SPAWNER || p_213386_3_ == MobSpawnType.DISPENSER) {
+    	if (spawnTypeIn == MobSpawnType.BUCKET && tag != null && tag.contains("BucketVariantTag", 3)) {
+			this.setSkin(tag.getInt("BucketVariantTag"));
+    	} else if (spawnTypeIn == MobSpawnType.COMMAND || spawnTypeIn == MobSpawnType.SPAWN_EGG || spawnTypeIn == MobSpawnType.SPAWNER || spawnTypeIn == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(4)));
-        } else if (p_213386_1_.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
+        } else if (worldIn.getBiome(this.blockPosition()).is(Biomes.BASALT_DELTAS)) {
         	this.setSkin(3);
         } else {       
         	this.setSkin(Integer.valueOf(this.random.nextInt(3)));
         }
     	        
-    	return super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, livingdata, tag);
     }	
     
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.5F;
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.5F;
     }
 	
     /**
@@ -365,12 +365,12 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	protected void addParticlesAroundSelf(SimpleParticleType p_213718_1_) {
+	protected void addParticlesAroundSelf(SimpleParticleType particle) {
 		for(int i = 0; i < 5; ++i) {
 			double d0 = this.random.nextGaussian() * 0.02D;
 			double d1 = this.random.nextGaussian() * 0.02D;
 			double d2 = this.random.nextGaussian() * 0.02D;
-			this.level().addParticle(p_213718_1_, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
+			this.level().addParticle(particle, this.getRandomX(1.0D), this.getRandomY() + 1.0D, this.getRandomZ(1.0D), d0, d1, d2);
 		}
 	}
 	

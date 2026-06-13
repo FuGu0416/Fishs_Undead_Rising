@@ -81,8 +81,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	private int unbreaking;
 	private boolean isSmoking = false;
 	
-	public ScarabEntity(EntityType<? extends ScarabEntity> p_i48549_1_, Level worldIn) {
-        super(p_i48549_1_, worldIn);
+	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
+        super(entityType, worldIn);
         this.limitedLifeTicks = -1;
     }
 	
@@ -236,17 +236,17 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {        
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {        
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarab_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }	
     
 	@Override
-    public float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.6F;
+    public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.6F;
     }
 	
 	/**

@@ -32,8 +32,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 public class MummyEntity extends UnburiedEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(MummyEntity.class, EntityDataSerializers.INT);
 
-    public MummyEntity(EntityType<? extends MummyEntity> p_i48549_1_, Level LevelIn) {
-        super(p_i48549_1_, LevelIn);
+    public MummyEntity(EntityType<? extends MummyEntity> entityType, Level LevelIn) {
+        super(entityType, LevelIn);
     }
     
     @Override
@@ -63,8 +63,8 @@ public class MummyEntity extends UnburiedEntity {
         return this.isBaby() ? 0.0D : -0.25D;
     }
     
-    public static boolean checkMummySpawnRules(EntityType<? extends MummyEntity> p_223316_0_, ServerLevelAccessor p_223316_1_, MobSpawnType p_223316_2_, BlockPos p_223316_3_, RandomSource p_223316_4_) {
-        return FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+    public static boolean checkMummySpawnRules(EntityType<? extends MummyEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
+        return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
     @Override
@@ -109,8 +109,8 @@ public class MummyEntity extends UnburiedEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_213386_1_, DifficultyInstance difficulty, MobSpawnType p_213386_3_, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag p_213386_5_) {
-    	livingdata = super.finalizeSpawn(p_213386_1_, difficulty, p_213386_3_, livingdata, p_213386_5_);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+    	livingdata = super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, livingdata, tag);
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mummy_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mummy_Attack.get());
     	this.setHealth(this.getMaxHealth());
