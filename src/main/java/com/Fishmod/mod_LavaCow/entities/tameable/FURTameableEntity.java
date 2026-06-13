@@ -79,22 +79,27 @@ public class FURTameableEntity extends TameableEntity {
 	}
 
 	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> p_223325_0_, IServerWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
-		return p_223325_1_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_223325_1_, p_223325_3_, p_223325_4_) && checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+		return checkMonsterSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_, false);
+	}
+
+	// ignoreLight skips the darkness requirement (e.g. Nether Fortress chests sit over lava and are brightly lit)
+	public static boolean checkMonsterSpawnRules(EntityType<? extends FURTameableEntity> p_223325_0_, IServerWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_, boolean ignoreLight) {
+		return p_223325_1_.getDifficulty() != Difficulty.PEACEFUL && (ignoreLight || isDarkEnoughToSpawn(p_223325_1_, p_223325_3_, p_223325_4_)) && checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
 	}
 
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
-		return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
+		return !this.isTame();
 	}
-	
+
 	@Override
     protected boolean shouldDespawnInPeaceful() {
-	    return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
+	    return !this.isTame();
     }   
 	
 	@Override
 	public boolean requiresCustomPersistence() {
-		return (this.isTame() && this.getOwner() instanceof PlayerEntity) || super.requiresCustomPersistence();
+		return this.isTame() || super.requiresCustomPersistence();
 	}
 	
 	public void setLimitedLife(int limitedLifeTicksIn) {    	

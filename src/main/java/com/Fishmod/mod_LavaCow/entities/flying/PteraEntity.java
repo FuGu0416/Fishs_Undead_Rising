@@ -133,8 +133,17 @@ public class PteraEntity extends FlyingMobEntity {
        if (!this.getPassengers().isEmpty()) {
     	   this.ejectPassengers();
        }
-    	   
+
 	   return super.hurt(source, amount);
+   }
+
+   @Override
+   public void tick() {
+	   super.tick();
+	   // The carried rider hangs below us and intercepts attacks; drop it the moment it takes a hit so it can't shield us
+	   if (!this.level.isClientSide() && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity && ((LivingEntity) this.getPassengers().get(0)).hurtTime > 0) {
+		   this.ejectPassengers();
+	   }
    }
    
    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {

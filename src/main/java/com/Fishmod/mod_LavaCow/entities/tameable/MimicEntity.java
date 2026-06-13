@@ -69,6 +69,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -154,7 +155,9 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     }
 
     public static boolean checkMimicSpawnRules(EntityType<? extends MimicEntity> p_223316_0_, IWorld p_223316_1_, SpawnReason p_223316_2_, BlockPos p_223316_3_, Random p_223316_4_) { 	
-    	return SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null && FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
+    	return SpawnUtil.isNearBlock(p_223316_1_, Blocks.CHEST, p_223316_3_, 4) != null
+    			&& ((IServerWorld) p_223316_1_).getLevel().getEntitiesOfClass(MimicEntity.class, new AxisAlignedBB(p_223316_3_).inflate(FURConfig.Mimic_SpawnRadius.get().doubleValue())).size() < FURConfig.Mimic_SpawnCap.get()
+    			&& FURTameableEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_, ((IServerWorld) p_223316_1_).getLevel().dimension() == World.NETHER);//SpawnUtil.isAllowedDimension(this.dimension); Nether Fortress chests are brightly lit, so skip the darkness check there
     }
     
     /**
@@ -252,7 +255,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     	
 		if (!this.level.isClientSide()) {
 			if (!this.isAggressive() && !this.isTame()) {
-				if (!this.isSilent()) {
+				if (!this.isSilent() || !this.isInSittingPose()) {
 					this.setInSittingPose(true);
 					this.level.broadcastEntityEvent(this, (byte)(41 + this.getRandom().nextInt(4)));
 				}

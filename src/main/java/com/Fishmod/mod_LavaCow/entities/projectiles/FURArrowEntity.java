@@ -65,7 +65,7 @@ public class FURArrowEntity extends AbstractArrowEntity implements IEntityAdditi
 
 	@Override
 	protected ItemStack getPickupItem() {
-		return new ItemStack(FURItemRegistry.GHOUL_ARROW);
+		return new ItemStack(this.getDefaultItem);
 	}
 	
     @Override

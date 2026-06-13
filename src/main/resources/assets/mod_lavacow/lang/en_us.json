@@ -505,7 +505,7 @@
 	"tooltip.mod_lavacow:faminearmor.l2": "Set Bonus (4): +2 damage vs entity, but afflicted with permanent Hunger X.",
 	"tooltip.mod_lavacow:ghostjelly": "Soaring up! Or feed it to your Raven to transform it into Ghost Raven.",
 	"tooltip.mod_lavacow:ghostbomb": "Throw at target location and cause explosion. Entities within also receive Levitate(0:01)",
-	"tooltip.mod_lavacow:sonicbomb": "Throw at target location and cause explosion. Entities within also receive WeaknessIII(0:04)",
+	"tooltip.mod_lavacow:sonicbomb": "Throw at target location and cause explosion. Entities within also receive FearIII(0:04)",
 	"tooltip.mod_lavacow:parasite_item_common": "Common",
 	"tooltip.mod_lavacow:parasite_item_desert": "Desert",
 	"tooltip.mod_lavacow:parasite_item_jungle": "Jungle",
@@ -787,6 +787,8 @@
 	"advancements.mod_lavacow.kill_ghoul.description": "Slay a Ghoul",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.title": "I Will Not Eat Them Anywhere",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.description": "Obtain a Green Bacon & Eggs",												
-						
+	"advancements.mod_lavacow.kill_enigmoth.title": "Mothman of the Outer End",
+	"advancements.mod_lavacow.kill_enigmoth.description": "Slay an Enigmoth",
+							
 	"death.mod_lavacow.timeup": "%1$s return to dust"
 }

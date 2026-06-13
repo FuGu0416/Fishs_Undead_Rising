@@ -506,7 +506,7 @@
 	"tooltip.mod_lavacow:faminearmor.l2": "套裝(4)：賦予常駐的飢餓X，造成傷害+2",
 	"tooltip.mod_lavacow:ghostjelly": "使你竄向高空，或是將你的渡鴉轉化為鬼靈渡鴉",
 	"tooltip.mod_lavacow:ghostbomb": "投向目標地點，造成範圍傷害並賦予漂浮(0:01)",
-	"tooltip.mod_lavacow:sonicbomb": "投向目標地點，造成範圍傷害並賦予虛弱III(0:04)",
+	"tooltip.mod_lavacow:sonicbomb": "投向目標地點，造成範圍傷害並賦予恐懼III(0:04)",
 	"tooltip.mod_lavacow:parasite_item_common": "普通",
 	"tooltip.mod_lavacow:parasite_item_desert": "沙地",
 	"tooltip.mod_lavacow:parasite_item_jungle": "叢林",

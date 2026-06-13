@@ -252,7 +252,7 @@ public class FUREntityRegistry {
         event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());
         event.put(MUMMY, MummyEntity.createAttributes().build());
         event.put(CACTYRANT, CactyrantEntity.createAttributes().build());
-        event.put(CACTOID, CactyrantEntity.createAttributes().build());
+        event.put(CACTOID, CactoidEntity.createAttributes().build());
         event.put(WARPEDFIREFLY, WarpedFireflyEntity.createAttributes().build());
         event.put(SEAHAG, SeaHagEntity.createAttributes().build());
         event.put(WISP, WispEntity.createAttributes().build());
@@ -263,7 +263,7 @@ public class FUREntityRegistry {
         event.put(SCARAB, ScarabEntity.createAttributes().build());
         event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
         event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());
-        event.put(ENIGMOTH, BeelzebubEntity.createAttributes().build());
+        event.put(ENIGMOTH, EnigmothEntity.createAttributes().build());
         event.put(MUMMIFIEDCOD, CodEntity.createAttributes().build());
         event.put(BONETROUT, CodEntity.createAttributes().build());
         event.put(LAMPREY, LampreyEntity.createAttributes().build());

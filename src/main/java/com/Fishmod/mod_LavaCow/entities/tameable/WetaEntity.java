@@ -62,7 +62,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class WetaEntity extends FURTameableEntity implements IAggressive {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(WetaEntity.class, DataSerializers.INT);
 	private int attackTimer = 0;
-	private EntityAIDestroyCrops DestroyCrops;
 	
 	public WetaEntity(EntityType<? extends WetaEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
@@ -71,8 +70,6 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 	
 	@Override
     protected void registerGoals() {
-		this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTame());
-		
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -80,7 +77,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PLAGUED_PORKCHOP), false));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.GREEN_BACON_AND_EGGS), false));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
-        this.goalSelector.addGoal(5, this.DestroyCrops);
+        this.goalSelector.addGoal(5, new EntityAIDestroyCrops(this, 1.1D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.applyEntityAI();
@@ -134,22 +131,17 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     
     @Override
 	public void doSitCommand(PlayerEntity playerIn) {
-    	this.goalSelector.removeGoal(this.DestroyCrops);
     	super.doSitCommand(playerIn);
     }
     
     @Override
 	public void doWanderCommand(PlayerEntity playerIn) {
-    	this.DestroyCrops = new EntityAIDestroyCrops(this, 1.1D, this.isTame());
-    	this.goalSelector.addGoal(5, this.DestroyCrops);
     	super.doWanderCommand(playerIn);
     }
         
     @Override
     protected void reassessTameGoals() {
-    	if (this.isTame() && !this.isWandering() && this.DestroyCrops != null && this.getOwner() instanceof PlayerEntity) {
-    		this.goalSelector.removeGoal(this.DestroyCrops);
-    	}
+    	super.reassessTameGoals();
     }
     
     @Override

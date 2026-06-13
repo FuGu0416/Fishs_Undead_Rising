@@ -131,53 +131,56 @@ public class RavenModel<T extends RavenEntity> extends FURBaseModel<T> implement
     	this.prepare(getState(entityIn));    	
     }
     
-    private void setupAnim(RavenModel.State p_217162_1_, int p_217162_2_, float p_217162_3_, float p_217162_4_, float p_217162_5_, float p_217162_6_, float p_217162_7_) {
-        this.head.xRot = p_217162_7_ * ((float)Math.PI / 180F);
-        this.head.yRot = p_217162_6_ * ((float)Math.PI / 180F);
+    private void setupAnim(RavenModel.State state, int ticksExisted, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.head.xRot = headPitch * ((float)Math.PI / 180F);
+        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         this.head.zRot = 0.0F;
         this.head.x = 0.0F;
         this.body.x = 0.0F;
         this.tail.x = 0.0F;
         this.wingRight.x = -1.5F;
         this.wingLeft.x = 1.5F;
-        switch(p_217162_1_) {
+        switch(state) {
         case SITTING:
         	break;
         case PARTY:
-        	float f = MathHelper.cos((float)p_217162_2_);
-           	float f1 = MathHelper.sin((float)p_217162_2_);
+        	float f = MathHelper.cos((float)ticksExisted);
+           	float f1 = MathHelper.sin((float)ticksExisted);
            	this.head.x = f;
            	this.head.y = 15.69F + f1;
            	this.head.xRot = 0.0F;
            	this.head.yRot = 0.0F;
-           	this.head.zRot = MathHelper.sin((float)p_217162_2_) * 0.4F;
+           	this.head.zRot = MathHelper.sin((float)ticksExisted) * 0.4F;
            	this.body.x = f;
            	this.body.y = 16.5F + f1;
-           	this.wingLeft.zRot = -0.0873F - p_217162_5_;
+           	this.wingLeft.zRot = -0.0873F - ageInTicks;
            	this.wingLeft.x = 1.5F + f;
            	this.wingLeft.y = 16.94F + f1;
-           	this.wingRight.zRot = 0.0873F + p_217162_5_;
+           	this.wingRight.zRot = 0.0873F + ageInTicks;
            	this.wingRight.x = -1.5F + f;
            	this.wingRight.y = 16.94F + f1;
            	this.tail.x = f;
            	this.tail.y = 21.07F + f1;
            	break;
         case STANDING:
-        	this.legLeft.xRot += MathHelper.cos(p_217162_3_ * 0.6662F) * 1.4F * p_217162_4_;
-           	this.legRight.xRot += MathHelper.cos(p_217162_3_ * 0.6662F + (float)Math.PI) * 1.4F * p_217162_4_;
+        	this.legLeft.xRot += MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+           	this.legRight.xRot += MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
         case FLYING:
         default:
-        	float f2 = p_217162_5_ * 0.3F;
-           	this.head.y = 15.69F + f2;
-           	this.tail.xRot = 1.015F + MathHelper.cos(p_217162_3_ * 0.6662F) * 0.3F * p_217162_4_;
-           	this.tail.y = 21.07F + f2;
-           	this.body.y = 16.5F + f2;
-           	this.wingLeft.zRot = -0.0873F - p_217162_5_;
-           	this.wingLeft.y = 16.94F + f2;
-           	this.wingRight.zRot = 0.0873F + p_217162_5_;
-           	this.wingRight.y = 16.94F + f2;
-           	this.legLeft.y = 22.0F + f2;
-           	this.legRight.y = 22.0F + f2;
+        	float speed = 1.5F;
+        	float amplitude = 0.6F;
+        	float flap = MathHelper.cos(ageInTicks * speed) * amplitude;
+        	
+           	this.head.y = 15.69F;
+           	this.tail.xRot = 1.015F + MathHelper.cos(limbSwing * 0.6662F) * 0.3F * limbSwingAmount;
+           	this.tail.y = 21.07F;
+           	this.body.y = 16.5F;
+           	this.wingLeft.zRot = -1.5934F + flap;
+           	this.wingLeft.y = 16.94F + MathHelper.cos(ageInTicks * speed) * 0.3F;
+           	this.wingRight.zRot = 1.5934F - flap;
+           	this.wingRight.y = 16.94F + MathHelper.cos(ageInTicks * speed) * 0.3F;
+           	this.legLeft.y = 22.0F;
+           	this.legRight.y = 22.0F;
         }
 	}
 

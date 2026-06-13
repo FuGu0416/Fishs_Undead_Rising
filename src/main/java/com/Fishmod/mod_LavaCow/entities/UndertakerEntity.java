@@ -326,7 +326,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Undertaker_Ability_Num.get(); ++i) {
             	if (UndertakerEntity.this.level instanceof ServerWorld) {
-	                BlockPos blockpos = UndertakerEntity.this.blockPosition().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
+	                BlockPos blockpos = UndertakerEntity.this.blockPosition().below().offset(-6 + UndertakerEntity.this.getRandom().nextInt(12), 0, -6 + UndertakerEntity.this.getRandom().nextInt(12));
 	                UnburiedEntity entity;
 	                Set<Type> Biome = BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(UndertakerEntity.this.level.getBiome(UndertakerEntity.this.blockPosition())));
 	                
@@ -341,11 +341,10 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
 	                }
 	
 	                if (entity != null) {
-		                entity.setOwnerUUID(UndertakerEntity.this.getUUID());
-		                	                
-		                UndertakerEntity.this.level.broadcastEntityEvent(UndertakerEntity.this, (byte)32);
+		                entity.setOwnerUUID(UndertakerEntity.this.getUUID());      
+		                UndertakerEntity.this.level.broadcastEntityEvent(entity, (byte)32);
 		                
-		                if(UndertakerEntity.this.getTarget() != null) {
+		                if (UndertakerEntity.this.getTarget() != null) {
 		                	entity.setTarget(UndertakerEntity.this.getTarget());
 		                }
 	                }

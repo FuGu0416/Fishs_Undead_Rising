@@ -241,7 +241,7 @@ public class FURWeaponItem extends SwordItem {
 		        entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)enchantmentIn[9]) / 10.0D));
 		        entity.setHealth(entity.getMaxHealth());
 		        		        
-		        if (entity instanceof UnburiedEntity) {
+		        if (entity instanceof UnburiedEntity) {		        	
 		        	entity.level.broadcastEntityEvent(entity, (byte)32);
 		        }
 			}

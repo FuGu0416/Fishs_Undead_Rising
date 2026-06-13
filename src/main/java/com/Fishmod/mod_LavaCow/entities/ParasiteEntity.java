@@ -125,12 +125,12 @@ public class ParasiteEntity extends SpiderEntity {
 	
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
-		return !(this.isTame() && this.getOwner() instanceof PlayerEntity);
+		return !this.isTame();
 	}
 	
 	@Override
 	public boolean requiresCustomPersistence() {
-		return (this.isTame() && this.getOwner() instanceof PlayerEntity) || super.requiresCustomPersistence();
+		return this.isTame() || super.requiresCustomPersistence();
 	}
     
     @Override
@@ -218,8 +218,11 @@ public class ParasiteEntity extends SpiderEntity {
         if (this.getVehicle() != null && this.getVehicle() instanceof LivingEntity && this.getVehicle().isAlive() && !this.level.isClientSide()) {
         	Entity mount = this.getVehicle();
         	
-        	if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED) && !this.isSummoned()) {
-        		this.stopRiding();   		
+        	if (mount instanceof PlayerEntity && ((PlayerEntity) mount).isCrouching()) {
+        		// A crouching host shakes the parasite off by hand
+        		this.stopRiding();
+        	} else if (!((LivingEntity) mount).hasEffect(FUREffectRegistry.INFESTED) && !this.isSummoned()) {
+        		this.stopRiding();
         		this.hurt(DamageSource.mobAttack(this).bypassInvul().bypassArmor() , this.getMaxHealth());
         	} else if (mount.isAlive() && mount.isOnFire()) {
         		this.setRemainingFireTicks(20);
@@ -320,7 +323,7 @@ public class ParasiteEntity extends SpiderEntity {
 	@Override
 	public void playerTouch(PlayerEntity playerIn) {
 		super.playerTouch(playerIn);
-		if (!playerIn.isCreative() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
+		if (!playerIn.isCreative() && !playerIn.isCrouching() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
 			if (!this.isSummoned()) {
 				playerIn.addEffect(new EffectInstance(FUREffectRegistry.INFESTED, 8*20, 0));
 			}

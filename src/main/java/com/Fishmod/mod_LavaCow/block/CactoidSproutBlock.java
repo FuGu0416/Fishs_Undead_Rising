@@ -49,7 +49,7 @@ public class CactoidSproutBlock extends Block {
                 cactoidentity.moveTo((double)pos.getX() + 0.3D, (double)pos.getY(), (double)pos.getZ() + 0.3D, 0.0F, 0.0F);
                 cactoidentity.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
-                if(worldIn.dimensionType().ultraWarm() || blockstate.getBlock().equals(Blocks.SOUL_SAND)) {
+                if(worldIn.dimensionType().ultraWarm() || worldIn.getBlockState(pos.below()).getBlock().equals(Blocks.SOUL_SAND)) {
                 	cactoidentity.setSkin(3);
                 }
                 

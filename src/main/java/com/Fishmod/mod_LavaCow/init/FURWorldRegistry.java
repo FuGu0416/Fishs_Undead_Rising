@@ -298,7 +298,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}
 		
-		if (FURConfig.pSpawnRate_Ghoul.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+		if (FURConfig.pSpawnRate_Beelzebub.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
 				!(BiomeDictionary.getTypes(biomeKey).contains(Type.MUSHROOM))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BEELZEBUB, FURConfig.pSpawnRate_Beelzebub.get(), 1, 2));
 		}
@@ -311,7 +311,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.MUMMIFIEDCOD, FURConfig.pSpawnRate_MummifiedCod.get(), 3, 6));
 		}
 		
-		if (FURConfig.pSpawnRate_MummifiedCod.get() > 0 && biomeKey.equals(Biomes.RIVER)) {
+		if (FURConfig.pSpawnRate_BoneTrout.get() > 0 && biomeKey.equals(Biomes.RIVER)) {
 			event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(FUREntityRegistry.BONETROUT, FURConfig.pSpawnRate_BoneTrout.get(), 3, 6));
 		}
 		
@@ -322,12 +322,12 @@ public class FURWorldRegistry {
 	}
 	
 	public static void onStructuresLoad(StructureSpawnListGatherEvent event) {
-		if (FURConfig.pSpawnRate_Mummy.get() > 0 && event.getStructure().equals(Structure.DESERT_PYRAMID) ||
-				event.getStructure().equals(DESERT_TOMB.get())) {
+		if (FURConfig.pSpawnRate_Mummy.get() > 0 && (event.getStructure().equals(Structure.DESERT_PYRAMID) ||
+				event.getStructure().equals(DESERT_TOMB.get()))) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MUMMY, FURConfig.pSpawnRate_Mummy.get(), 4, 8));
 		}
 		
-		if (FURConfig.pSpawnRate_Mimic.get() > 0 && event.getStructure().equals(Structure.BASTION_REMNANT) || 
+		if (FURConfig.pSpawnRate_Mimic.get() > 0 && (event.getStructure().equals(Structure.BASTION_REMNANT) ||
 				event.getStructure().equals(Structure.JUNGLE_TEMPLE) ||
 				event.getStructure().equals(Structure.MINESHAFT) ||
 				event.getStructure().equals(Structure.NETHER_BRIDGE) ||
@@ -336,7 +336,7 @@ public class FURWorldRegistry {
 				event.getStructure().equals(Structure.WOODLAND_MANSION) ||
 				event.getStructure().equals(Structure.SHIPWRECK) ||
 				event.getStructure().equals(Structure.OCEAN_RUIN) ||
-				event.getStructure().equals(DESERT_TOMB.get())) {
+				event.getStructure().equals(DESERT_TOMB.get()))) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, FURConfig.pSpawnRate_Mimic.get(), 1, 1));
 		}
 		
@@ -344,13 +344,13 @@ public class FURWorldRegistry {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.MIMIC, 1, 1, 1));
 		}
 				
-		if (FURConfig.pSpawnRate_SeaHag.get() > 0 && event.getStructure().equals(Structure.OCEAN_RUIN) || 
-				event.getStructure().equals(Structure.SHIPWRECK)) {
+		if (FURConfig.pSpawnRate_SeaHag.get() > 0 && (event.getStructure().equals(Structure.OCEAN_RUIN) ||
+				event.getStructure().equals(Structure.SHIPWRECK))) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.SEAHAG, FURConfig.pSpawnRate_SeaHag.get(), 1, 2));
 		}
 		
-		if (FURConfig.pSpawnRate_GraveRobber.get() > 0 && event.getStructure().equals(Structure.DESERT_PYRAMID) ||
-				event.getStructure().equals(DESERT_TOMB.get())) {
+		if (FURConfig.pSpawnRate_GraveRobber.get() > 0 && (event.getStructure().equals(Structure.DESERT_PYRAMID) ||
+				event.getStructure().equals(DESERT_TOMB.get()))) {
 			event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(FUREntityRegistry.GRAVEROBBER, FURConfig.pSpawnRate_GraveRobber.get(), 4, 8));
 		}
 		

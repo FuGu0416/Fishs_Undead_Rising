@@ -53,6 +53,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_Mimic;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mimic_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mimic_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Mimic_SpawnRadius;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Mimic_SpawnCap;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_SludgeLord;
 	public static final ForgeConfigSpec.ConfigValue<Double> SludgeLord_Health;
@@ -352,6 +354,8 @@ public final class FURConfig {
 		pSpawnRate_Mimic = BUILDER.comment("Set the spawn rate of Mimicrab [0-10000]").defineInRange("mimicrab spawn rate", 10, 0, 10000);
 		Mimic_Health = BUILDER.comment("Maximum Mimicrab health [1-1000]").defineInRange("mimicrab health", 10.0D, 1.0D, 1000.0D);
 		Mimic_Attack = BUILDER.comment("Mimicrab strength [1-1000]").defineInRange("mimicrab attack", 8.0D, 1.0D, 1000.0D);
+		Mimic_SpawnRadius = BUILDER.comment("Radius in blocks for the Mimicrab population cap at natural spawn [1-64]").defineInRange("mimicrab spawn radius", 8, 1, 64);
+		Mimic_SpawnCap = BUILDER.comment("Max Mimicrabs allowed within the spawn radius; none spawn naturally once this many are already nearby [1-100]").defineInRange("mimicrab max nearby", 1, 1, 100);
 		pSpawnRate_DeathMimic = BUILDER.comment("Set the spawn rate of Mimicrab near player death [0-1000]").defineInRange("mimicrab spawn rate near player death", 250, 0, 1000);
 		BUILDER.pop();
 

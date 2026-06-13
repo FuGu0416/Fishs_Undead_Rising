@@ -506,7 +506,7 @@
 	"tooltip.mod_lavacow:faminearmor.l2": "套装(4):赋予常驻的饥饿X,造成伤害+2",
 	"tooltip.mod_lavacow:ghostjelly": "使你窜向高空，或是将你的渡鸦转化为鬼灵渡鸦",
 	"tooltip.mod_lavacow:ghostbomb": "投向目标地点，造成范围伤害并赋予飘浮(0:01)",
-	"tooltip.mod_lavacow:sonicbomb": "投向目标地点，造成范围伤害并赋予虚弱III(0:04)",
+	"tooltip.mod_lavacow:sonicbomb": "投向目标地点，造成范围伤害并赋予恐惧III(0:04)",
 	"tooltip.mod_lavacow:parasite_item_common": "普通",
 	"tooltip.mod_lavacow:parasite_item_desert": "沙漠",
 	"tooltip.mod_lavacow:parasite_item_jungle": "丛林",
@@ -780,6 +780,8 @@
 	"advancements.mod_lavacow.kill_ghoul.description": "杀死一只食尸鬼",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.title": "我在哪儿都不想吃",
 	"advancements.mod_lavacow.get_green_bacon_and_eggs.description": "获得绿培根蛋",	
-									
+	"advancements.mod_lavacow.kill_enigmoth.title": "终界边际的天蛾人",
+	"advancements.mod_lavacow.kill_enigmoth.description": "杀死一只谜影蛾",
+										
 	"death.mod_lavacow.timeup": "%1$s的生命消逝于尘土之中"
 }

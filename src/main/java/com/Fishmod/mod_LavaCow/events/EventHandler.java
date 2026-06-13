@@ -130,7 +130,7 @@ public class EventHandler {
          * Give a chance to spawn horde of Parasites when a listed target dies.
          **/
     	if (world instanceof ServerWorld && tag_parasite != null && !entity.isInWaterOrBubble() &&
-    			(((entity instanceof LivingEntity && entity.getType().is(tag_parasite)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get()))
+    			((entity instanceof LivingEntity && entity.getType().is(tag_parasite)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Parasite.get())
     			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.PARASITE) != null)
     			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
@@ -170,7 +170,7 @@ public class EventHandler {
          * Give a chance to spawn horde of Lampreys when a listed target dies.
          **/
     	if (world instanceof ServerWorld && tag_lamprey != null && entity.isInWaterOrBubble() &&
-    			(((entity instanceof LivingEntity && entity.getType().is(tag_lamprey)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get()))
+    			((entity instanceof LivingEntity && entity.getType().is(tag_lamprey)) && (new Random().nextInt(100) < FURConfig.pSpawnRate_Lamprey.get())
     			|| (SpawnUtil.gotRiderEntity(entity.getPassengers(), FUREntityRegistry.LAMPREY) != null)
     			|| event.getEntityLiving().hasEffect(FUREffectRegistry.INFESTED))) {
     		int var2 = 3 + new Random().nextInt(3), var6 = 0;
