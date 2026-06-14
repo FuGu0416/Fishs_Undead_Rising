@@ -75,6 +75,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.WeightedRandom;
@@ -84,6 +85,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraft.world.storage.loot.LootEntry;
@@ -109,6 +111,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -134,6 +137,42 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 @EventBusSubscriber
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 public class ModEventHandler {
+
+    /**
+     * Draws custom in-world particles for FEAR / IMMOLATION so their vanilla potion swirl can stay
+     * hidden (the swirl is suppressed via ModMobEffects.fear/immolation). Server-side spawn broadcasts
+     * to nearby clients. IMMOLATION uses flame (matching 1.16.5); FEAR uses a pale spell particle as a
+     * vanilla stand-in for the newer versions' custom ghost particle (1.12.2 has no custom particle
+     * system that World.spawnParticle can broadcast).
+     *
+     * Spread note: WorldServer.spawnParticle's xOffset/yOffset/zOffset are the per-particle gaussian
+     * spread radius (client does base + gaussian*offset), NOT a literal position delta. So we pass the
+     * entity's half-dimensions there to scatter the particles around the whole body like the swirl did;
+     * an earlier version passed a tiny pre-randomized value, collapsing them all to one point inside the
+     * mob. Base point is the body centre; speed 0 (flame rises on its own).
+     */
+    @SubscribeEvent
+    public void onELiving(LivingUpdateEvent event) {
+        EntityLivingBase living = event.getEntityLiving();
+        World world = living.world;
+        if (world.isRemote || !(world instanceof WorldServer) || living.ticksExisted % 5 != 0)
+            return;
+        WorldServer ws = (WorldServer) world;
+        double cx = living.posX;
+        double cy = living.posY + (double) living.height * 0.5D;
+        double cz = living.posZ;
+        double sx = (double) living.width * 0.6D;
+        double sy = (double) living.height * 0.4D;
+        double sz = (double) living.width * 0.6D;
+
+        if (living.isPotionActive(ModMobEffects.FEAR)) {
+            ws.spawnParticle(EnumParticleTypes.SPELL_INSTANT, cx, cy, cz, 6, sx, sy, sz, 0.0D);
+        }
+
+        if (living.isPotionActive(ModMobEffects.IMMOLATION)) {
+            ws.spawnParticle(EnumParticleTypes.FLAME, cx, cy, cz, 6, sx, sy, sz, 0.0D);
+        }
+    }
 
     /**
      * Custom entity death event, using for manipulating vanilla entities loots or onDeath triggers.
@@ -728,7 +767,7 @@ public class ModEventHandler {
                 event.setAmount(event.getAmount() * 0.3F);
             } else if (event.getSource().getTrueSource().getName().equals("Sonic Grenade")) {
                 if (event.getEntityLiving().isNonBoss() && !event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD))
-                    event.getEntityLiving().addPotionEffect(new PotionEffect(ModMobEffects.FEAR, 8 * 20, 2, false, true));
+                    event.getEntityLiving().addPotionEffect(ModMobEffects.fear(8 * 20, 2));
                 event.setAmount(event.getAmount() * 0.35F);
             } else {
                 event.setAmount(event.getAmount() * 0.2F);
@@ -875,9 +914,8 @@ public class ModEventHandler {
 
         if (event.getEntity() != null && event.getEntity() instanceof EntityIronGolem) {
             ((EntityIronGolem) event.getEntity()).targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(((EntityIronGolem) event.getEntity()), EntityLiving.class, 0, true, false, new Predicate<Entity>() {
-                // TODO: Baubles support
-                //boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY);
-
+                // Baubles N/A here: this AI only targets EntityLiving (mobs), which cannot wear
+                // Baubles (player-only API). Player nose disguise is handled in onESetTarget below.
                 @Override
                 public boolean apply(Entity input) {
                     EntityLiving target = (EntityLiving) input;
@@ -938,10 +976,9 @@ public class ModEventHandler {
         if (event.getTarget() != null && event.getEntityLiving().getLastAttackedEntity() != event.getTarget()) {
             Boolean hasNose = event.getTarget().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE);
 
-            // TODO: Baubles support
-    		/*if (ModList.get().isLoaded("curios") && !hasNose) {
-    			hasNose = (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, event.getTarget()) != ItemStack.EMPTY);
-    		}*/
+            if (!hasNose && event.getTarget() instanceof EntityPlayer && Loader.isModLoaded("baubles")) {
+                hasNose = baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) event.getTarget(), FishItems.ILLAGER_NOSE) != -1;
+            }
 
             if (event.getEntityLiving().getCreatureAttribute().equals(EnumCreatureAttribute.ILLAGER) && event.getEntityLiving().isNonBoss() && hasNose) {
                 ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);

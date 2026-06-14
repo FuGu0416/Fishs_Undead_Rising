@@ -1,5 +1,7 @@
-#Ru-Translated by Doctor Wratch
-#Updated by Astard Grimoire
+﻿language.name=Русский
+language.region=RU
+language.code=ru_ru
+
 #########
 # ITEMS #
 #########
@@ -26,6 +28,7 @@ item.mod_lavacow.poisonspore.name=Ядовитые споры
 item.mod_lavacow.undyingheart.name=Вечноживое сердце
 item.mod_lavacow.goldenheart.name=Золотое сердце
 item.mod_lavacow.moltenbeef.name=Пламенное мясо
+item.mod_lavacow.molten_alloy.name=Расплавленный сплав
 item.mod_lavacow.moltenaxe.name=Пламенный топор
 item.mod_lavacow.moltenhammer.name=Пламенный молот
 item.mod_lavacow.mootenheart.name=Пламенное сердце
@@ -98,12 +101,73 @@ item.mod_lavacow.beast_claw.name=Чудовищные когти
 item.mod_lavacow.hatred_shard.name=Воспоминания Тысячи Армий
 item.mod_lavacow.curseweave_cloth.name=Проклятая ткань
 item.mod_lavacow.skeletonking_mace.name=Булава Смерти
+item.mod_lavacow.imp_horn.name=Рог огненного беса
+item.mod_lavacow.chitinarmor_helmet.name=Шлем вета
+item.mod_lavacow.chitinarmor_chestplate.name=Нагрудник вета
+item.mod_lavacow.chitinarmor_leggings.name=Поножи вета
+item.mod_lavacow.chitinarmor_boots.name=Ботинки вета
+item.mod_lavacow.cactus_thorn.name=Кактусовый шип
+item.mod_lavacow.cactus_fruit.name=Колючая груша
+item.mod_lavacow.thorn_shooter.name=Шипомёт
+item.mod_lavacow.cactoid_pot.name=Горшок с кактоидом
+item.mod_lavacow.baobing.name=Баобин
+item.mod_lavacow.kung_pao_chicken.name=Курица гунбао
+item.mod_lavacow.ectoplasm_mass.name=Масса эктоплазмы
+item.mod_lavacow.ectoplasm_ingot.name=Слиток эктоплазмы
+item.mod_lavacow.soulforged_heart.name=Душекованое сердце
+item.mod_lavacow.soulforged_hammer.name=Душекованый боевой молот
+item.mod_lavacow.soulforged_axe.name=Душекованый топор
+item.mod_lavacow.soulforged_pan.name=Душекованая сковорода
+item.mod_lavacow.ghostlyarmor_helmet.name=Призрачный шлем
+item.mod_lavacow.ghostlyarmor_chestplate.name=Призрачный нагрудник
+item.mod_lavacow.ghostlyarmor_leggings.name=Призрачные поножи
+item.mod_lavacow.ghostlyarmor_boots.name=Призрачные ботинки
+item.mod_lavacow.soulforgedarmor_helmet.name=Душекованый шлем
+item.mod_lavacow.soulforgedarmor_chestplate.name=Душекованый нагрудник
+item.mod_lavacow.soulforgedarmor_leggings.name=Душекованые поножи
+item.mod_lavacow.soulforgedarmor_boots.name=Душекованые ботинки
+item.mod_lavacow.ghost_swarmer_item.name=Призрачный роевик
+item.mod_lavacow.forsaken_staff.name=Посох отверженного
+item.mod_lavacow.sinister_whetstone.name=Зловещий точильный камень
+item.mod_lavacow.illager_nose.name=Нос разбойника
+item.mod_lavacow.ancient_amber.name=Древний янтарь
+item.mod_lavacow.scarab_wand.name=Скипетр скарабея
+item.mod_lavacow.diseased_wheat.name=Заражённая пшеница
+item.mod_lavacow.diseased_bread.name=Заражённый хлеб
+item.mod_lavacow.pheromone_gland.name=Феромонная железа
+item.mod_lavacow.charming_catalyst.name=Чарующий катализатор
+item.mod_lavacow.enigmoth_larva_item.name=Сырая гусеница энигмота
+item.mod_lavacow.enigmoth_larva_item_cooked.name=Жареная гусеница энигмота
+item.mod_lavacow.holy_water.name=Святая вода
+item.mod_lavacow.basicbomb.name=Простая граната
+item.mod_lavacow.foul_hide.name=Зловонная шкура
+item.mod_lavacow.mummified_cod.name=Мумифицированная треска
+item.mod_lavacow.bone_trout.name=Костяная форель
+item.mod_lavacow.lamprey.name=Сырая минога
+item.mod_lavacow.lamprey_cooked.name=Приготовленная минога
+item.mod_lavacow.lamprey_kabayaki.name=Минога кабаяки
+item.mod_lavacow.ushabti.name=Ушебти
+item.mod_lavacow.ankh_wand.name=Скипетр анкх
+item.mod_lavacow.fungal_rod.name=Грибной жезл
+item.mod_lavacow.frozen_grip.name=Ледяная хватка
+item.mod_lavacow.ghoul_claw.name=Коготь гуля
+item.mod_lavacow.ghoul_arrow.name=Стрела гуля
+item.mod_lavacow.fang_arrow.name=Клыкастая стрела
 
-#Tconstruct Integration
+# Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Пламенное мясо
+material.mod_lavacow.chitin.name=Хитин
 material.mod_lavacow.vespa_carapace.name=Панцирь веспы
 material.mod_lavacow.scythe_claw.name=Лезвие косы
 material.mod_lavacow.ectoplasm.name=Эктоплазма
+material.mod_lavacow.holy_sludge.name=Святая слизь
+material.mod_lavacow.ancient_amber.name=Древний янтарь
+material.mod_lavacow.curseweave_fabric.name=Проклятая ткань
+material.mod_lavacow.hyphae.name=Гифы
+material.mod_lavacow.mossy_stick.name=Замшелая палка
+material.mod_lavacow.cactus_thorn.name=Кактусовый шип
+material.mod_lavacow.poison_stinger.name=Ядовитое жало
+material.mod_lavacow.black_feather.name=Чёрное перо
 
 modifier.mod_lavacow.broodmother.name=Зов Матриарха
 modifier.mod_lavacow.broodmother.desc=Призывает личинку веспы во время боя или добычи блока.
@@ -111,6 +175,24 @@ modifier.mod_lavacow.famine.name=Клинок вечного голода
 modifier.mod_lavacow.famine.desc=Накладывает эффект голода, но восстанавливает 1 ед. сытости при убийстве существ, не являющихся нежитью.
 modifier.mod_lavacow.unholytouch.name=Прикосновение нежити
 modifier.mod_lavacow.unholytouch.desc=§oБудь ты проклят, смертный!§r\nНаносит дополнительный урон всем живым существам и делает их слабыми.
+modifier.mod_lavacow.amber_pharaoh.name=Янтарный фараон
+modifier.mod_lavacow.amber_pharaoh.desc=§oУдарь сквозь пески!§r\nВаш инструмент с шансом призывает верного янтарного скарабея и даёт Регенерацию II во время боя или при добыче блока.
+
+# Construct's Armory Integration
+modifier.mod_lavacow.broodmother_armor.name=Мать выводка
+modifier.mod_lavacow.broodmother_armor.desc=§oОбнимашки с червём!§r\nВаша броня с шансом призывает верный выводок веспы, когда вы получаете урон.
+modifier.mod_lavacow.feeding_frenzy_armor.name=Пищевое безумие
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§oПрожорливость!§r\nУрон по мобам увеличен на 40% за каждый надетый предмет брони, но постоянно действует Голод V.
+modifier.mod_lavacow.unholy_aura_armor.name=Нечестивая аура
+modifier.mod_lavacow.unholy_aura_armor.desc=§oПроклятье живым!§r\nВаша броня даёт дополнительную защиту от не-нежити и ослабляет её, когда вы получаете урон.
+modifier.mod_lavacow.vespa_ward_armor.name=Защита веспы
+modifier.mod_lavacow.vespa_ward_armor.desc=§oТолько не веспы!§r\nПолучение урона наносит урон и накладывает Отравление на атакующего ценой прочности.
+modifier.mod_lavacow.amber_pharaoh_armor.name=Янтарный фараон
+modifier.mod_lavacow.amber_pharaoh_armor.desc=§oУдарь сквозь пески!§r\nВаша броня с шансом призывает верного янтарного скарабея и даёт Регенерацию II, когда вы получаете урон.
+
+# JER Integration
+JER.catagory.mod_lavacow.cemetery_chest=Маленькое кладбище
+JER.catagory.mod_lavacow.desert_tomb_chest=Пустынная гробница
 
 ###########
 # BANNERS #
@@ -148,6 +230,13 @@ tile.mod_lavacow.scarecrowhead_common.name=Голова пугала
 tile.mod_lavacow.scarecrowhead_straw.name=Голова пугала
 tile.mod_lavacow.scarecrowhead_plague.name=Голова пугала
 tile.mod_lavacow.tombstone.name=Могильный камень
+tile.mod_lavacow.cactoid_sprout.name=Росток кактоида
+tile.mod_lavacow.diseased_hay_block.name=Блок заражённого сена
+tile.mod_lavacow.ectoplasm_block.name=Блок эктоплазмы
+tile.mod_lavacow.molten_alloy_block.name=Блок расплавленного сплава
+tile.mod_lavacow.scythe_claw_block.name=Бочка с когтями-косами
+tile.mod_lavacow.vespa_carapace_block.name=Бочка с панцирями веспы
+tile.mod_lavacow.molten_meat_block.name=Бочка с расплавленным мясом
 
 ############
 # Entities #
@@ -156,13 +245,17 @@ tile.mod_lavacow.tombstone.name=Могильный камень
 entity.mod_lavacow.lavacow.name=Лавовая корова
 entity.mod_lavacow.zombiemushroom.name=Пораженный грибком зомби
 entity.mod_lavacow.parasite.name=Паразит
+entity.mod_lavacow.vespa_brood.name=Выводок веспы
 entity.mod_lavacow.foglet.name=Туманник
+entity.mod_lavacow.isnachi.name=Исначи
+entity.mod_lavacow.imp.name=Огненный бес
 entity.mod_lavacow.zombiefrozen.name=Обмороженный зомби
 entity.mod_lavacow.undeadswine.name=Чумная свинья
 entity.mod_lavacow.salamander.name=Саламандра
 entity.mod_lavacow.ithaqua.name=Вендиго
 entity.mod_lavacow.mimic.name=Мимик
 entity.mod_lavacow.sludgelord.name=Чумной монстр
+entity.mod_lavacow.amberlord.name=Янтарный лорд
 entity.mod_lavacow.lilsludge.name=Небольшой чумной монстр
 entity.mod_lavacow.raven.name=Ворон
 entity.mod_lavacow.ptera.name=Птера
@@ -172,6 +265,7 @@ entity.mod_lavacow.vespacocoon.name=Кокон веспы
 entity.mod_lavacow.zombiepiranha.name=Мертвая пиранья
 entity.mod_lavacow.piranha.name=Пиранья
 entity.mod_lavacow.boneworm.name=Некрочервь
+entity.mod_lavacow.soulworm.name=Osvermis Spiritus
 entity.mod_lavacow.raven.seagull=Чайка
 entity.mod_lavacow.pingu.name=Мертвый пингвин
 entity.mod_lavacow.undertaker.name=Гробовщик
@@ -183,6 +277,34 @@ entity.mod_lavacow.avaton.name=Полуденница
 entity.mod_lavacow.skeletonking.name=Король Скелетов
 entity.mod_lavacow.mummy.name=Муммия
 entity.mod_lavacow.forsaken.name=Забвенный
+entity.mod_lavacow.cactoid.name=Кактоид
+entity.mod_lavacow.cactyrant.name=Кактотиран
+entity.mod_lavacow.sea_hag.name=Морская ведьма
+entity.mod_lavacow.grave_robber.name=Расхититель могил
+entity.mod_lavacow.grave_robber_ghost.name=Призрак расхитителя могил
+entity.mod_lavacow.wraith.name=Ревенант
+entity.mod_lavacow.ghost_swarmer.name=Призрачный роевик
+entity.mod_lavacow.amber_scarab.name=Янтарный скарабей
+entity.mod_lavacow.enigmoth.name=Энигмот
+entity.mod_lavacow.enigmoth_larva.name=Гусеница энигмота
+entity.mod_lavacow.ghoul.name=Гуль
+
+entity.mod_lavacow.sludgejet.name=Струя слизи
+entity.mod_lavacow.warsmallfireball.name=Огненный шар
+entity.mod_lavacow.piranhalauncher.name=Запущенный роевик
+entity.mod_lavacow.acidjet.name=Струя кислоты
+entity.mod_lavacow.flamejet.name=Эктошар
+entity.mod_lavacow.holygrenade.name=Святая граната
+entity.mod_lavacow.ghostbomb.name=Призрачная граната
+entity.mod_lavacow.sonicbomb.name=Звуковая граната
+entity.mod_lavacow.sandburst.name=Песчаный взрыв
+entity.mod_lavacow.deathcoil.name=Кольцо смерти
+entity.mod_lavacow.cactusthorn.name=Кактусовый шип
+entity.mod_lavacow.sapjet.name=Рой саранчи
+entity.mod_lavacow.moth_scales.name=Чешуя энигмота
+entity.mod_lavacow.basicbomb.name=Простая граната
+entity.mod_lavacow.kings_wrath.name=Гнев короля
+entity.mod_lavacow.fish_custom_arrow.name=Стрела нежити
 
 ##########
 # Sounds #
@@ -191,6 +313,7 @@ entity.mod_lavacow.forsaken.name=Забвенный
 entity_parasite_ambient=Паразит извивается
 entity_parasite_death=Паразит погибает
 entity_parasite_hurt=Паразит ранен
+entity_parasite_weave=Паразит плетёт
 
 entity_foglet_ambient=Туманник стонет
 entity_foglet_death=Туманник погибает
@@ -204,6 +327,7 @@ entity_undeadswine_hurt=Чумной свинья ранена
 entity_salamander_ambient=Саламандра рычит
 entity_salamander_death=Саламандра погибает
 entity_salamander_hurt=Саламандра ранена
+entity_salamander_shoot=Вармандер стреляет
 
 entity_zombiepiranha_attack=Мертвая пиранья кусает
 
@@ -241,6 +365,8 @@ entity_vespa_hurt=Веспа ранена
 entity_scarecrow_ambient=Чучело пытается что-то сказать
 entity_scarecrow_death=Чучело погибает
 entity_scarecrow_hurt=Чучело ранено
+entity_scarecrow_scythe=Коса рассекает
+entity_scarecrow_spin=Пугало вращается
 
 entity_zombiepiranha_ambient=Мертвая пиранья щелкает
 entity_zombiepiranha_death=Мертвая пиранья погибает
@@ -282,25 +408,66 @@ entity_weta_death=Саранча погибает
 entity_weta_hurt=Саранча ранена
 
 entity_avaton_ambient=Полуденница что-то шепчет
-entity_avaton_spell=Полуденница произносит заклинание
 entity_avaton_death=Полуденница погибает
+entity_avaton_hurt=Аватон ранен
+entity_avaton_spell=Полуденница произносит заклинание
 
+entity_skeletonking_ambient=Король скелетов гремит
 entity_skeletonking_attack=Король Скелетов атакует
 entity_skeletonking_death=Король Скелетов погибает
+entity_skeletonking_hurt=Король скелетов ранен
+entity_skeletonking_knockback=Король скелетов сокрушает
+entity_skeletonking_spell_skeleton_army=Король скелетов читает заклинание
 entity_skeletonking_spell_summon=Король Скелетов колдует
 entity_skeletonking_spell_teleport=Король Скелетов телепортируется
 entity_skeletonking_spell_toss=SКороль Скелетов колдует
+entity_skeletonking_spawn=Тревожный звук
+
+entity_cactyrant_ambient=Кактотиран шипит
+entity_cactyrant_death=Кактотиран умирает
+entity_cactyrant_grow=Растение растёт
+
+entity_sea_hag_ambient=Морская ведьма шепчет
+entity_sea_hag_screech=Морская ведьма визжит
+
+entity_wraith_ambient=Ревенант шепчет
+entity_wraith_attack=Ревенант кричит
+entity_wraith_death=Ревенант умирает
+
+entity_graverobberghost_ambient=Призрак расхитителя могил бормочет
+entity_graverobberghost_death=Призрак расхитителя могил умирает
+entity_graverobberghost_hurt=Призрак расхитителя могил ранен
+
+entity_scarab_ambient=Скарабей стрекочет
+entity_scarab_death=Скарабей умирает
+entity_scarab_hurt=Скарабей ранен
+
+entity_enigmoth_ambient=Энигмот стрекочет
+entity_enigmoth_flap=Энигмот машет крыльями
+entity_enigmoth_death=Энигмот умирает
+entity_enigmoth_hurt=Энигмот ранен
+
+entity_ghoul_ambient=Гуль стонет
+entity_ghoul_death=Гуль умирает
+entity_ghoul_hurt=Гуль ранен
+
+random_death_coil_shoot=Выпущено кольцо смерти
+random_piranha_shoot=Выпущена пиранья
+random_thorn_shoot=Выпущен шип
+random_spin=Звук вращения
 
 ############
 # Tooltips #
 ############
 
 tootip.mod_lavacow.bonesword=Наносит доп. урон в размере %d%% от максимального здоровья цели (Макс. %d).
+tootip.mod_lavacow.bonesword.warning=Не действует на боссов.
 tootip.mod_lavacow.canebeef=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит саламандра.
 tootip.mod_lavacow.canepork=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит саранча.
 tootip.mod_lavacow.canerottenmeat=Накладывает эффект регенерации на 8 сек. Эту вкусняшку любит мимик.
 tootip.mod_lavacow.netherstew=Накладывает случайный эффект на 40 сек.
-tootip.mod_lavacow.goldenheart=Накладывает эффект регенерации и восстанавливает броню 1 ед./сек.
+tootip.mod_lavacow.goldenheart.regeneration=Даёт Регенерацию (%d сек) при получении урона.
+tootip.mod_lavacow.goldenheart.repair=Чинит всё надетое снаряжение (+%d/сек).
 tootip.mod_lavacow.moltenaxe=Позволяет получать уголь при рубке дерева.
 tootip.mod_lavacow.moltenhammer=Наносит круговой урон существам.
 tootip.mod_lavacow.potion_of_mooten_lava=Не поите этим корову.
@@ -310,7 +477,7 @@ tootip.mod_lavacow.reapers_scythe=Наносит 9 ед. урона, игнор�
 tootip.mod_lavacow.famine=Накладывает эффект голода, но восстанавливает 1 ед. сытости при убийстве существ, не являющихся нежитью.
 tootip.mod_lavacow.frozenthigh=Накладывает эффект замедления 3 ур. на 4 сек.
 tootip.mod_lavacow.sludge_wand=Призывает дружественного чумного монстра.
-tootip.mod_lavacow.war=Выбрасывает огненный шар.
+tootip.mod_lavacow.war=Пусковая установка огненных зарядов: стреляет взрывными огненными шарами (боеприпасы — огненные заряды).
 tootip.mod_lavacow.moltenpan=Используется для приготовления всяких вкусных штук.
 tootip.mod_lavacow.intestine=Кажется, содержит что-то внутри. Возможно, что это даже не остатки пищи...
 tootip.mod_lavacow.felarmor=Наносит доп. урон горящим в агонии существам.
@@ -340,6 +507,10 @@ tootip.mod_lavacow.weta_hoe=При вспахивании земли можно 
 tootip.mod_lavacow.parasite.0=Обычный
 tootip.mod_lavacow.parasite.1=Пустынный
 tootip.mod_lavacow.parasite.2=Тропический
+tootip.mod_lavacow.ptera.0=Джунгли
+tootip.mod_lavacow.ptera.1=Пустыня
+tootip.mod_lavacow.ptera.2=Саванна
+tootip.mod_lavacow.ptera.3=Болото
 tootip.mod_lavacow.bonestew=Накладывает сопротивление и поглощение урона на 20 сек.
 tootip.mod_lavacow.mootenheart=Умньшает урон от огня на %d%%. Может использоваться в зельеварении 
 tootip.mod_lavacow.vespa_shield=Блокируя урон, наносит 2 ед. урна атакующему и накладывает эффект отравления на 6 сек.
@@ -357,6 +528,33 @@ tootip.mod_lavacow.skeletonking_crown=Скелеты будут защищать
 tootip.mod_lavacow.beast_claw.desc0=Делает рывок вперёд.
 tootip.mod_lavacow.beast_claw.desc1=Когда в обоих руках: Даёт силу и спешку на 3 сек. после рывка
 tootip.mod_lavacow.skeletonking_mace=Накладывает на атакованных сильный эффект прикосновения Смерти на 10сек.
+tootip.mod_lavacow.chitinarmor=Бонус набора (2): -50%% урона от падения
+tootip.mod_lavacow.chitinarmor.l2=Бонус набора (4): Даёт Скорость (0:03) после прыжка.
+tootip.mod_lavacow.cactus_fruit=Можно использовать для варки зелья Шипов или как семя для посадки в песок (присядьте и щёлкните правой кнопкой).
+tootip.mod_lavacow.thorn_shooter=Обстреливайте кактусовыми шипами с высокой скоростью! (Боеприпасы: кактусовый шип)
+tootip.mod_lavacow.baobing=Даёт Шипы II (2:00) и тушит огонь при употреблении.
+tootip.mod_lavacow.kung_pao_chicken=Даёт Самовозгорание II (2:00) при употреблении.
+tootip.mod_lavacow.soulforged_heart=Защита от урона огнём: +%d%%
+tootip.mod_lavacow.soulforged_heart.l2=Получаемое лечение: +%d%%
+tootip.mod_lavacow.soulforged_hammer=Щёлкните правой кнопкой, чтобы нанести огненный и иссушающий урон существам в радиусе.
+tootip.mod_lavacow.soulforged_axe=Автоматически переплавляет срубленные блоки и даёт опыт, как печь.
+tootip.mod_lavacow.soulforged_pan=Используется для приготовления особых блюд.
+tootip.mod_lavacow.ghostlyarmor=Бонус набора (2): Восстанавливает здоровье, равное 20%% полученного урона.
+tootip.mod_lavacow.ghostlyarmor.l2=Бонус набора (4): +20%% урона по противникам с большим максимальным здоровьем, чем у вас.
+tootip.mod_lavacow.soulforgedarmor=Дополнительный урон огнём: +
+tootip.mod_lavacow.soulforgedarmor.l2=Защита от урона огнём: +
+tootip.mod_lavacow.soulforgedarmor.l3=Бонус набора (4): Полный иммунитет к урону от огня и иссушения.
+tootip.mod_lavacow.illager_nose=Оденьтесь как разбойник! Разбойники станут нейтральными, пока он надет.
+tootip.mod_lavacow.forsaken_staff=Щёлкните правой кнопкой, чтобы выпустить кольцо смерти.
+tootip.mod_lavacow.scarab_wand=Щёлкните правой кнопкой, чтобы призвать рой янтарных скарабеев.
+tootip.mod_lavacow.diseased_bread=Съесть это или скормить вета может иметь последствия...
+tootip.mod_lavacow.pheromone_gland=Даёт Феромонные чары (0:30) и Тошноту II (0:10) при употреблении.
+tootip.mod_lavacow.charming_catalyst=Даёт Феромонные чары (0:45) при употреблении или используется для приручения и ускорения роста некоторых личинок.
+tootip.mod_lavacow.basicbomb=Вызывает взрыв в месте попадания. Бросай!
+tootip.mod_lavacow.crabcake=Даёт Сопротивление (0:30) при употреблении.
+tootip.mod_lavacow.ankh_wand=Щёлкните правой кнопкой, чтобы призвать армию мумий.
+tootip.mod_lavacow.fungal_rod=Щёлкните правой кнопкой, чтобы призвать армию микозов.
+tootip.mod_lavacow.frozen_grip=Щёлкните правой кнопкой, чтобы призвать армию фригидов.
 
 message.mod_lavacow.metamorphosis= эволюционирует!
 command.mod_lavacow.sitting= ждет.
@@ -366,6 +564,7 @@ command.mod_lavacow.whistle= свистит.
 command.mod_lavacow.whistle_err= цель слишком далеко.
 itemGroup.mod_lavacow_items=Нашествие чумы
 key.mod_lavacow.special=Способность ездового животного
+key.mod_lavacow.down=Спуск летающего питомца (Fish's Undead Rising)
 
 ################
 # Enchantments #
@@ -377,6 +576,10 @@ enchantment.mod_lavacow.lifesteal=Поглощение жизни
 enchantment.mod_lavacow.lifesteal.desc=Восстанавливает ваше здоровье за счет здоровья цели.
 enchantment.mod_lavacow.corrosive=Разложение
 enchantment.mod_lavacow.corrosive.desc=Ослабляет цель, позволяя наносить ей больше урона.
+enchantment.mod_lavacow.critical_boost=Усиление крита
+enchantment.mod_lavacow.critical_boost.desc=Наносит больше урона при критическом ударе.
+enchantment.mod_lavacow.dominion=Господство
+enchantment.mod_lavacow.dominion.desc=Увеличивает количество прислужников от призывающих предметов Fish's Undead Rising.
 
 ##############
 # MobEffects #
@@ -384,12 +587,40 @@ enchantment.mod_lavacow.corrosive.desc=Ослабляет цель, позвол
 
 mob_effect.mod_lavacow:corroded=Разложение
 description.mob_effect.mod_lavacow:corroded=Увеличивает получаемый урон.
+mob_effect.mod_lavacow:corroded.4.desc=Усиливает любой входящий урон на +20%% за уровень.
 mob_effect.mod_lavacow:soiled=Грязный
 description.mob_effect.mod_lavacow:soiled=Не даёт есть и пить.
+mob_effect.mod_lavacow:soiled.4.desc=Полностью не даёт есть и пить. Уменьшает восстанавливаемое здоровье.
 mob_effect.mod_lavacow:infested=Заражение
 description.mob_effect.mod_lavacow:infested=Накладывает голод и замедление. После смерти с этим эффетом плявятся нескольео паразитов.
+mob_effect.mod_lavacow:infested.4.desc=Что-то ползает внутри... -10%% скорости за уровень и отнимает 1 единицу голода каждые (40/ур) секунд.
 mob_effect.mod_lavacow:fragile=Прикосновение Смерти
 description.mob_effect.mod_lavacow:fragile=Мнгновенно убивает жертву, когда у неё мало здоровья.
+mob_effect.mod_lavacow:fragile.4.desc=Мгновенно убивает, когда здоровье падает ниже (5*ур)% от максимума. Не действует на боссов.
+mob_effect.mod_lavacow:fragile_king=Прикосновение короля
+description.mob_effect.mod_lavacow:fragile_king=Вызывает мгновенную смерть, когда здоровье становится достаточно низким. Уменьшает урон в ближнем бою.
+mob_effect.mod_lavacow:fragile_king.4.desc=Мгновенно убивает, когда здоровье падает ниже (5*ур)% от максимума. -10%% урона в ближнем бою за уровень.
+mob_effect.mod_lavacow:fear=Страх
+description.mod_lavacow:fear=Уменьшает скорость передвижения и урон в ближнем бою. Живые существа, кроме игроков, паникуют.
+mob_effect.mod_lavacow:fear.4.desc=БуУуУуУу! -20%% урона и скорости за уровень.
+mob_effect.mod_lavacow:thorned=Шипы
+description.mob_effect.mod_lavacow:thorned=Даёт иммунитет к урону от кактуса и зачарования «Шипы». Атакующие сами покрываются шипами.
+mob_effect.mod_lavacow:thorned.4.desc=Иммунитет к урону от кактуса и зачарования «Шипы». Существа, наносящие урон, получают урон (1*ур).
+mob_effect.mod_lavacow:immolation=Самовозгорание
+description.mob_effect.mod_lavacow:immolation=Даёт иммунитет к огню и лаве. Существа вокруг игрока воспламеняются.
+mob_effect.mod_lavacow:immolation.4.desc=Огнестойкость. Существа вокруг вас горят (3*ур) секунд.
+mob_effect.mod_lavacow:charming_pheromone=Феромонные чары
+description.mob_effect.mod_lavacow:charming_pheromone=Все членистоногие становятся пассивными к игроку и следуют за ним. Не действует на сильных членистоногих и боссов.
+mob_effect.mod_lavacow:charming_pheromone.4.desc=Членистоногие пассивны к вам и следуют за вами. Не действует на сильных членистоногих и боссов.
+mob_effect.mod_lavacow:flourished=Процветание
+description.mob_effect.mod_lavacow:flourished=Усиливает всё получаемое лечение.
+mob_effect.mod_lavacow:flourished.4.desc=Всё лечение усилено на (25*ур)%.
+mob_effect.mod_lavacow:void_dust=Пыль бездны
+description.mob_effect.mod_lavacow:void_dust=Периодически телепортирует цель в случайное место поблизости.
+mob_effect.mod_lavacow:void_dust.4.desc=Периодически телепортирует вас в случайное место поблизости.
+mob_effect.mod_lavacow:ravens_grace=Милость ворона
+description.mob_effect.mod_lavacow:ravens_grace=Замедляет падение игрока и делает его невосприимчивым к урону от падения.
+mob_effect.mod_lavacow:ravens_grace.4.desc=Замедляет падение и делает невосприимчивым к урону от падения.
 
 ##############
 # Potions #
@@ -411,6 +642,26 @@ potion.effect.mod_lavacow:fragile=Зелье прикосновения Смер
 splash_potion.effect.mod_lavacow:fragile=Взрывное зелье прикосновения Смерти
 lingering_potion.effect.mod_lavacow:fragile=Туманное зелье прикосновения Смерти
 tipped_arrow.effect.mod_lavacow:fragile=Обработанная зельем прикосновения Смерти стрела
+potion.effect.mod_lavacow:thorned=Зелье шипов
+splash_potion.effect.mod_lavacow:thorned=Взрывное зелье шипов
+lingering_potion.effect.mod_lavacow:thorned=Оседающее зелье шипов
+tipped_arrow.effect.mod_lavacow:thorned=Стрела шипов
+potion.effect.mod_lavacow:immolation=Зелье самовозгорания
+splash_potion.effect.mod_lavacow:immolation=Взрывное зелье самовозгорания
+lingering_potion.effect.mod_lavacow:immolation=Оседающее зелье самовозгорания
+tipped_arrow.effect.mod_lavacow:immolation=Стрела самовозгорания
+potion.effect.mod_lavacow:flourished=Зелье процветания
+splash_potion.effect.mod_lavacow:flourished=Взрывное зелье процветания
+lingering_potion.effect.mod_lavacow:flourished=Оседающее зелье процветания
+tipped_arrow.effect.mod_lavacow:flourished=Стрела процветания
+potion.effect.mod_lavacow:void_dust=Зелье разлома бездны
+splash_potion.effect.mod_lavacow:void_dust=Взрывное зелье разлома бездны
+lingering_potion.effect.mod_lavacow:void_dust=Оседающее зелье разлома бездны
+tipped_arrow.effect.mod_lavacow:void_dust=Стрела разлома бездны
+potion.effect.mod_lavacow:ravens_grace=Зелье милости ворона
+splash_potion.effect.mod_lavacow:ravens_grace=Взрывное зелье милости ворона
+lingering_potion.effect.mod_lavacow:ravens_grace=Оседающее зелье милости ворона
+tipped_arrow.effect.mod_lavacow:ravens_grace=Стрела милости ворона
 
 ################
 # Advancements #
@@ -432,6 +683,8 @@ advancements.mod_lavacow.kill_zombiepiranha.title=Круиз по странны
 advancements.mod_lavacow.kill_zombiepiranha.description=Убейте мертвую пиранью.
 advancements.mod_lavacow.kill_undertaker.title=Пора на кремацию.
 advancements.mod_lavacow.kill_undertaker.description=Убейте Гробовщика.
+advancements.mod_lavacow.kill_unburied.title=Ходячие мертвецы
+advancements.mod_lavacow.kill_unburied.description=Убейте Непогребённого
 advancements.mod_lavacow.get_fissionpotion.title=Период полураспада
 advancements.mod_lavacow.get_fissionpotion.description=Создайте зелье распада.
 advancements.mod_lavacow.summon_lavacow.title=Все сгорит дотла!
@@ -450,6 +703,8 @@ advancements.mod_lavacow.kill_mimic.title=Сундучок с сюрпризом
 advancements.mod_lavacow.kill_mimic.description=Убейте мимика.
 advancements.mod_lavacow.kill_sludgelord.title=Да что ты, черт побери, такое?
 advancements.mod_lavacow.kill_sludgelord.description=Убейте чумного монстра.
+advancements.mod_lavacow.kill_amberlord.title=Повелитель скарабеев
+advancements.mod_lavacow.kill_amberlord.description=Убейте Янтарного лорда
 advancements.mod_lavacow.kill_scarecrow.title=Бу!
 advancements.mod_lavacow.kill_scarecrow.description=Убейте чучело.
 advancements.mod_lavacow.tame_raven.title=Кар!
@@ -462,6 +717,8 @@ advancements.mod_lavacow.kill_ptera.title=Парк Юрского периода
 advancements.mod_lavacow.kill_ptera.description=Убейте птеру.
 advancements.mod_lavacow.kill_boneworm.title=Вырезать под корень
 advancements.mod_lavacow.kill_boneworm.description=Убейте некрочервя.
+advancements.mod_lavacow.kill_soulworm.title=Снова в костях
+advancements.mod_lavacow.kill_soulworm.description=Убейте Osvermis Spiritus
 advancements.mod_lavacow.kill_ghostray.title=Нет кошмарикам!
 advancements.mod_lavacow.kill_ghostray.description=Убейте Вестника кошмаров
 advancements.mod_lavacow.kill_banshee.title=Не кричи
@@ -478,9 +735,48 @@ advancements.mod_lavacow.kill_forsaken.title=Я помню...
 advancements.mod_lavacow.kill_forsaken.description=Убейте забвенного
 advancements.mod_lavacow.get_hatred_shard.title=В глубинах памяти
 advancements.mod_lavacow.get_hatred_shard.description=Получите воспоминания Тысячи Армий
+advancements.mod_lavacow.kill_isnachi.title=Не говори зла
+advancements.mod_lavacow.kill_isnachi.description=Убейте Исначи
+advancements.mod_lavacow.kill_imp.title=Не делай зла
+advancements.mod_lavacow.kill_imp.description=Убейте Огненного беса
+advancements.mod_lavacow.kill_cactyrant.title=Кактусто
+advancements.mod_lavacow.kill_cactyrant.description=Убейте Кактотирана
+advancements.mod_lavacow.tame_cactoid.title=Пустынное земледелие
+advancements.mod_lavacow.tame_cactoid.description=Приручите Кактоида
+advancements.mod_lavacow.get_thorn_shooter.title=Поздоровайся с моим маленьким другом...
+advancements.mod_lavacow.get_thorn_shooter.description=Получите всемогущий Шипомёт!
+advancements.mod_lavacow.get_piranha_launcher.title=Выстрелило из пушки
+advancements.mod_lavacow.get_piranha_launcher.description=Получите Пускатель роевиков
+advancements.mod_lavacow.kill_sea_hag.title=Утонувшая колдунья
+advancements.mod_lavacow.kill_sea_hag.description=Убейте Морскую ведьму
+advancements.mod_lavacow.kill_grave_robber.title=Когда Джонни берёт лопату
+advancements.mod_lavacow.kill_grave_robber.description=Убейте Расхитителя могил
+advancements.mod_lavacow.kill_grave_robber_ghost.title=Только не снова!
+advancements.mod_lavacow.kill_grave_robber_ghost.description=Убейте Призрака расхитителя могил
+advancements.mod_lavacow.kill_wraith.title=Охотник за привидениями
+advancements.mod_lavacow.kill_wraith.description=Убейте Ревенанта
+advancements.mod_lavacow.kill_ghost_swarmer.title=Круиз по джунглям III: Возмездие
+advancements.mod_lavacow.kill_ghost_swarmer.description=Убейте Призрачного роевика
+advancements.mod_lavacow.kill_enigmoth.title=Человек-мотылёк Внешнего Края
+advancements.mod_lavacow.kill_enigmoth.description=Убейте Энигмота
+advancements.mod_lavacow.get_molten_alloy.title=Чистый белок
+advancements.mod_lavacow.get_molten_alloy.description=Получите слиток Расплавленного сплава
+advancements.mod_lavacow.get_molten_armor.title=Разжигай!
+advancements.mod_lavacow.get_molten_armor.description=Улучшите свои алмазы и получите расплавленную броню!
+advancements.mod_lavacow.get_molten_tool.title=Расплавленный воин
+advancements.mod_lavacow.get_molten_tool.description=Получите расплавленный инструмент!
+advancements.mod_lavacow.get_soulforged_armor.title=Разжигай снова!
+advancements.mod_lavacow.get_soulforged_armor.description=Улучшите расплавленную броню до душекованой!
+advancements.mod_lavacow.get_soulforged_tool.title=Элитный расплавленный воин
+advancements.mod_lavacow.get_soulforged_tool.description=Получите душекованый инструмент!
+advancements.mod_lavacow.tame_scarecrow.title=Хочешь слепить Пугало?
+advancements.mod_lavacow.tame_scarecrow.description=Создайте Пугало
+advancements.mod_lavacow.get_illager_nose.title=Я взял твой нос!
+advancements.mod_lavacow.get_illager_nose.description=Получите нос разбойника.
 
 #################
 # Death Message #
 #################
 
 death.mod_lavacow.timeup=%1$s обратился в пыль
+tootip.mod_lavacow.goldenheart=Накладывает эффект регенерации и восстанавливает броню 1 ед./сек.

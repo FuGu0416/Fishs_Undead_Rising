@@ -141,8 +141,20 @@ item.mod_lavacow.enigmoth_larva_item_cooked.name=炙燒謎影蛾幼蟲
 item.mod_lavacow.holy_water.name=聖水
 item.mod_lavacow.basicbomb.name=基礎炸彈
 item.mod_lavacow.foul_hide.name=惡臭皮革
+item.mod_lavacow.mummified_cod.name=木乃伊魚
+item.mod_lavacow.bone_trout.name=骷髏鱒
+item.mod_lavacow.lamprey.name=生七鰓鰻
+item.mod_lavacow.lamprey_cooked.name=烤七鰓鰻
+item.mod_lavacow.lamprey_kabayaki.name=蒲燒七鰓鰻
+item.mod_lavacow.ushabti.name=巫沙布提俑
+item.mod_lavacow.ankh_wand.name=安卡權杖
+item.mod_lavacow.fungal_rod.name=猛毒菇杖
+item.mod_lavacow.frozen_grip.name=寒霜之攫
+item.mod_lavacow.ghoul_claw.name=屍鬼之爪
+item.mod_lavacow.ghoul_arrow.name=屍鬼之箭
+item.mod_lavacow.fang_arrow.name=利牙之箭
 
-#Tconstruct Integration
+# Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.chitin.name=幾丁質
 material.mod_lavacow.vespa_carapace.name=巨蜂殼
@@ -178,18 +190,18 @@ modifier.mod_lavacow.vespa_ward_armor.desc=§o不要是巨蜂！§r\n受到傷�
 modifier.mod_lavacow.amber_pharaoh_armor.name=琥珀法老
 modifier.mod_lavacow.amber_pharaoh_armor.desc=§o蟲族聽我號令！§r\n在受傷害時有機會誕生出對你忠誠的琥珀聖甲蟲並賦予再生II(0:05)
 
-#JER Integration
+# JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=小型墓地
 JER.catagory.mod_lavacow.desert_tomb_chest=沙漠墓穴
 
 ###########
 # BANNERS #
-###########
+###########    
 
 item.banner.skeletonking.white=白色骷髏王
 item.banner.skeletonking.orange=橙色骷髏王
 item.banner.skeletonking.magenta=品紅骷髏王
-item.banner.skeletonking.light_blue=淺藍骷髏王
+item.banner.skeletonking.lightBlue=淺藍骷髏王圖紋
 item.banner.skeletonking.yellow=黃色骷髏王
 item.banner.skeletonking.lime=淡綠骷髏王
 item.banner.skeletonking.pink=粉色骷髏王
@@ -219,6 +231,7 @@ tile.mod_lavacow.scarecrowhead_straw.name=稻草人頭
 tile.mod_lavacow.scarecrowhead_plague.name=稻草人頭
 tile.mod_lavacow.tombstone.name=墓碑
 tile.mod_lavacow.cactoid_sprout.name=幼人掌苗
+tile.mod_lavacow.diseased_hay_block.name=染疫乾草捆
 tile.mod_lavacow.ectoplasm_block.name=靈質磚
 tile.mod_lavacow.molten_alloy_block.name=熔核錠磚
 tile.mod_lavacow.scythe_claw_block.name=鐮刀爪桶
@@ -274,6 +287,7 @@ entity.mod_lavacow.ghost_swarmer.name=鬼靈群獵者
 entity.mod_lavacow.amber_scarab.name=琥珀聖甲蟲
 entity.mod_lavacow.enigmoth.name=謎影蛾
 entity.mod_lavacow.enigmoth_larva.name=謎影蛾幼蟲
+entity.mod_lavacow.ghoul.name=食屍鬼
 
 entity.mod_lavacow.sludgejet.name=泥漿彈
 entity.mod_lavacow.warsmallfireball.name=火球
@@ -290,6 +304,7 @@ entity.mod_lavacow.sapjet.name=蝗蟲群
 entity.mod_lavacow.moth_scales.name=蛾鱗粉
 entity.mod_lavacow.basicbomb.name=炸彈
 entity.mod_lavacow.kings_wrath.name=王之怒
+entity.mod_lavacow.fish_custom_arrow.name=不死之箭
 
 ##########
 # Sounds #
@@ -432,6 +447,10 @@ entity_enigmoth_flap=謎影蛾拍翼聲
 entity_enigmoth_death=謎影蛾死亡
 entity_enigmoth_hurt=謎影蛾受傷
 
+entity_ghoul_ambient=食屍鬼哀嚎聲
+entity_ghoul_death=食屍鬼死亡
+entity_ghoul_hurt=食屍鬼受傷
+
 random_death_coil_shoot=死影纏發射
 random_piranha_shoot=群獵者發射
 random_thorn_shoot=尖刺發射
@@ -458,7 +477,7 @@ tootip.mod_lavacow.reapers_scythe=必定為橫掃攻擊，所造成的傷害無�
 tootip.mod_lavacow.famine=對單位造成傷害時能回復1飽食度，飢餓狀態時則回復2飽食度 
 tootip.mod_lavacow.frozenthigh=可以食用，攻擊能同時賦予目標緩慢III(0:04)
 tootip.mod_lavacow.sludge_wand=右鍵點擊以召喚聽命於玩家的小樹軟泥
-tootip.mod_lavacow.war=掀起你與你那剛建好木屋的朋友之間的一場戰爭 (需要火焰彈作為彈藥)
+tootip.mod_lavacow.war=射出會爆炸的火球；以火焰彈作為彈藥
 tootip.mod_lavacow.moltenpan=用以烹製特殊料理
 tootip.mod_lavacow.intestine=右鍵點擊以拾取腸內物品
 tootip.mod_lavacow.felarmor=對燃燒中的單位造成傷害+
@@ -533,6 +552,9 @@ tootip.mod_lavacow.pheromone_gland=食用後獲得迷情費洛蒙(1:00)與噁心
 tootip.mod_lavacow.charming_catalyst=食用後獲得抗性迷情費洛蒙(0:45)，或是用於馴服並觸發某些幼蟲的變態
 tootip.mod_lavacow.basicbomb=投擲出去！在接觸地面後爆炸
 tootip.mod_lavacow.crabcake=食用後獲得抗性(0:30)
+tootip.mod_lavacow.ankh_wand=右鍵點擊以召喚聽命於玩家的木乃伊軍團
+tootip.mod_lavacow.fungal_rod=右鍵點擊以召喚聽命於玩家的菌屍軍團
+tootip.mod_lavacow.frozen_grip=右鍵點擊以召喚聽命於玩家的凍屍軍團
 
 message.mod_lavacow.metamorphosis=的外型正在變化！
 command.mod_lavacow.sitting=現在於原地待命
@@ -556,6 +578,8 @@ enchantment.mod_lavacow.corrosive=酸蝕性
 enchantment.mod_lavacow.corrosive.desc=攻擊時能侵蝕目標，提高它接下來所受到的傷害
 enchantment.mod_lavacow.critical_boost=弱點爆擊
 enchantment.mod_lavacow.critical_boost.desc=提高跳躍攻擊時爆擊所能造成的傷害
+enchantment.mod_lavacow.dominion=統御
+enchantment.mod_lavacow.dominion.desc=增加 Fish's Undead Rising 召喚道具產生的召喚物數量。
 
 ##############
 # MobEffects #
@@ -749,9 +773,10 @@ advancements.mod_lavacow.tame_scarecrow.title=你想要一起堆稻草人嗎？
 advancements.mod_lavacow.tame_scarecrow.description=製造一隻稻草人
 advancements.mod_lavacow.get_illager_nose.title=哈哈！鼻子！
 advancements.mod_lavacow.get_illager_nose.description=獲得窳鼻
-	
+
 #################
 # Death Message #
 #################
 
 death.mod_lavacow.timeup=%1$s的生命消逝於塵土之中
+item.banner.skeletonking.light_blue=淺藍骷髏王

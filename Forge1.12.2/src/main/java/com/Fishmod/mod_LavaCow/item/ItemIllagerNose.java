@@ -18,10 +18,14 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemIllagerNose extends ItemArmor {
+import baubles.api.IBauble;
+
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
+public class ItemIllagerNose extends ItemArmor implements IBauble {
     private ModelIllagerNose modelIllagerNose;
 
     public ItemIllagerNose(String registryName, int renderIndexIn, EntityEquipmentSlot equipmentSlotIn) {
@@ -63,6 +67,34 @@ public class ItemIllagerNose extends ItemArmor {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
         list.add(TextFormatting.YELLOW + I18n.format("tootip.mod_lavacow.illager_nose"));
+    }
+
+    /**
+     * Baubles support: the nose can be worn in the Baubles HEAD slot (in addition to the vanilla
+     * head armor slot), mirroring the Curios integration in the newer versions. Disguise detection
+     * checks both slots (see EntityGraveRobber / ModEventHandler).
+     */
+    @Override
+    @Optional.Method(modid = "baubles")
+    public baubles.api.BaubleType getBaubleType(ItemStack stack) {
+        return baubles.api.BaubleType.HEAD;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public void onWornTick(ItemStack stack, EntityLivingBase entity) {
     }
 
 }

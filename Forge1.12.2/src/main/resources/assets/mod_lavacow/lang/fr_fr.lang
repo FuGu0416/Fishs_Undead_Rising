@@ -1,3 +1,6 @@
+﻿language.name=Français
+language.region=FR
+language.code=fr_fr
 
 #########
 # ITEMS #
@@ -25,6 +28,7 @@ item.mod_lavacow.poisonspore.name=Spore toxique
 item.mod_lavacow.undyingheart.name=Coeur sans-repos
 item.mod_lavacow.goldenheart.name=Coeur doré
 item.mod_lavacow.moltenbeef.name=Viande brûlante
+item.mod_lavacow.molten_alloy.name=Alliage en fusion
 item.mod_lavacow.moltenaxe.name=Hache ardente
 item.mod_lavacow.moltenhammer.name=Marteau ardent
 item.mod_lavacow.mootenheart.name=Coeur ardent
@@ -69,16 +73,147 @@ item.mod_lavacow.feather_black.name=Plume noire
 item.mod_lavacow.shattered_ice.name=Glace brisée
 item.mod_lavacow.halo_necklace.name=Pendentif du Halo
 item.mod_lavacow.dreamcatcher.name=Attrape-rêves
+item.mod_lavacow.undertaker_shovel.name=Deuil de Minuit
+item.mod_lavacow.raven_whistle.name=Sifflet à corbeau
+item.mod_lavacow.acidicheart.name=Cœur acide
+item.mod_lavacow.faminearmor_helmet.name=Casque de la Famine
+item.mod_lavacow.faminearmor_chestplate.name=Tunique de la Famine
+item.mod_lavacow.faminearmor_leggings.name=Pantalon de la Famine
+item.mod_lavacow.faminearmor_boots.name=Bottes de la Famine
+item.mod_lavacow.foul_bristle.name=Soie fétide
+item.mod_lavacow.crabcake.name=Croquette de crabe
+item.mod_lavacow.ectoplasm.name=Ectoplasme
+item.mod_lavacow.ghostjelly.name=Gelée fantôme
+item.mod_lavacow.banshee_vocal_cord.name=Corde hurlante
+item.mod_lavacow.weta_jaw.name=Mandibule de weta
+item.mod_lavacow.chitin.name=Chitine
+item.mod_lavacow.ghostbomb.name=Grenade fantôme
+item.mod_lavacow.sonicbomb.name=Grenade sonique
+item.mod_lavacow.weta_hoe.name=Houe de weta
+item.mod_lavacow.bonestew.name=Ragoût d'os
+item.mod_lavacow.vespa_shield.name=Bouclier de vespa
+item.mod_lavacow.frozen_dagger.name=Dague gelée
+item.mod_lavacow.spectral_dagger.name=Dague spectrale
+item.mod_lavacow.kings_crown.name=Couronne du roi
+item.mod_lavacow.skeletonking_crown.name=La Couronne du Pouvoir
+item.mod_lavacow.emblem_of_king.name=Emblème du roi
+item.mod_lavacow.beast_claw.name=Griffe de bête
+item.mod_lavacow.hatred_shard.name=Éclat de réminiscence
+item.mod_lavacow.curseweave_cloth.name=Étoffe maudite tissée
+item.mod_lavacow.skeletonking_mace.name="Mort"
+item.mod_lavacow.imp_horn.name=Corne de diablotin de flammes
+item.mod_lavacow.chitinarmor_helmet.name=Casque de weta
+item.mod_lavacow.chitinarmor_chestplate.name=Plastron de weta
+item.mod_lavacow.chitinarmor_leggings.name=Jambières de weta
+item.mod_lavacow.chitinarmor_boots.name=Bottes de weta
+item.mod_lavacow.cactus_thorn.name=Épine de cactus
+item.mod_lavacow.cactus_fruit.name=Figue de Barbarie
+item.mod_lavacow.thorn_shooter.name=Lance-épines
+item.mod_lavacow.cactoid_pot.name=Pot de cactoïde
+item.mod_lavacow.baobing.name=Baobing
+item.mod_lavacow.kung_pao_chicken.name=Poulet Kung Pao
+item.mod_lavacow.ectoplasm_mass.name=Masse d'ectoplasme
+item.mod_lavacow.ectoplasm_ingot.name=Lingot d'ectoplasme
+item.mod_lavacow.soulforged_heart.name=Cœur forgé-âme
+item.mod_lavacow.soulforged_hammer.name=Marteau de guerre forgé-âme
+item.mod_lavacow.soulforged_axe.name=Hache forgée-âme
+item.mod_lavacow.soulforged_pan.name=Poêle forgée-âme
+item.mod_lavacow.ghostlyarmor_helmet.name=Casque spectral
+item.mod_lavacow.ghostlyarmor_chestplate.name=Plastron spectral
+item.mod_lavacow.ghostlyarmor_leggings.name=Jambières spectrales
+item.mod_lavacow.ghostlyarmor_boots.name=Bottes spectrales
+item.mod_lavacow.soulforgedarmor_helmet.name=Casque forgé-âme
+item.mod_lavacow.soulforgedarmor_chestplate.name=Plastron forgé-âme
+item.mod_lavacow.soulforgedarmor_leggings.name=Jambières forgées-âme
+item.mod_lavacow.soulforgedarmor_boots.name=Bottes forgées-âme
+item.mod_lavacow.ghost_swarmer_item.name=Essaimeur fantôme
+item.mod_lavacow.forsaken_staff.name=Bâton du déchu
+item.mod_lavacow.sinister_whetstone.name=Pierre à aiguiser sinistre
+item.mod_lavacow.illager_nose.name=Nez d'illageois
+item.mod_lavacow.ancient_amber.name=Ambre ancien
+item.mod_lavacow.scarab_wand.name=Sceptre du scarabée
+item.mod_lavacow.diseased_wheat.name=Blé malade
+item.mod_lavacow.diseased_bread.name=Pain malade
+item.mod_lavacow.pheromone_gland.name=Glande à phéromones
+item.mod_lavacow.charming_catalyst.name=Catalyseur charmeur
+item.mod_lavacow.enigmoth_larva_item.name=Chenille d'énigmothe crue
+item.mod_lavacow.enigmoth_larva_item_cooked.name=Chenille d'énigmothe cuite
+item.mod_lavacow.holy_water.name=Eau bénite
+item.mod_lavacow.basicbomb.name=Grenade simple
+item.mod_lavacow.foul_hide.name=Peau fétide
+item.mod_lavacow.mummified_cod.name=Morue momifiée
+item.mod_lavacow.bone_trout.name=Truite d'os
+item.mod_lavacow.lamprey.name=Lamproie crue
+item.mod_lavacow.lamprey_cooked.name=Lamproie cuite
+item.mod_lavacow.lamprey_kabayaki.name=Lamproie kabayaki
+item.mod_lavacow.ushabti.name=Ouchebti
+item.mod_lavacow.ankh_wand.name=Sceptre ankh
+item.mod_lavacow.fungal_rod.name=Tige fongique
+item.mod_lavacow.frozen_grip.name=Poigne glaciale
+item.mod_lavacow.ghoul_claw.name=Griffe de goule
+item.mod_lavacow.ghoul_arrow.name=Flèche de goule
+item.mod_lavacow.fang_arrow.name=Flèche à croc
 
-#Tconstruct Integration
+# Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=Viande brûlante
+material.mod_lavacow.chitin.name=Chitine
 material.mod_lavacow.vespa_carapace.name=Carapace de Vespa
 material.mod_lavacow.scythe_claw.name=Lame de faux
+material.mod_lavacow.ectoplasm.name=Ectoplasme
+material.mod_lavacow.holy_sludge.name=Boue sacrée
+material.mod_lavacow.ancient_amber.name=Ambre ancien
+material.mod_lavacow.curseweave_fabric.name=Tissu maudit
+material.mod_lavacow.hyphae.name=Hyphes
+material.mod_lavacow.mossy_stick.name=Bâton moussu
+material.mod_lavacow.cactus_thorn.name=Épine de cactus
+material.mod_lavacow.poison_stinger.name=Dard venimeux
+material.mod_lavacow.black_feather.name=Plume noire
 
 modifier.mod_lavacow.broodmother.name=Broodmother
 modifier.mod_lavacow.broodmother.desc=§r\nInvoque une larve de vespa en combat ou lorsque un bloc est brisé.
 modifier.mod_lavacow.famine.name=Famine
 modifier.mod_lavacow.famine.desc=§oCavalier de l'Apocalypse§r\nGives Hunger. Restore un point de faim quand une créature vivante est tuée.      
+modifier.mod_lavacow.unholytouch.name=Toucher impie
+modifier.mod_lavacow.unholytouch.desc=§oMalédiction aux vivants !§r\nInflige des dégâts bonus et applique Faiblesse aux mobs vivants.
+modifier.mod_lavacow.amber_pharaoh.name=Pharaon d'ambre
+modifier.mod_lavacow.amber_pharaoh.desc=§oFrappe à travers les sables !§r\nVotre outil a une chance d'invoquer un Scarabée d'ambre loyal et confère Régénération II en combat ou lorsqu'il récolte un bloc.
+
+# Construct's Armory Integration
+modifier.mod_lavacow.broodmother_armor.name=Mère pondeuse
+modifier.mod_lavacow.broodmother_armor.desc=§oSavoure un câlin vermiforme !§r\nVotre armure a une chance d'invoquer une Couvée de vespas loyale quand vous êtes blessé.
+modifier.mod_lavacow.feeding_frenzy_armor.name=Frénésie alimentaire
+modifier.mod_lavacow.feeding_frenzy_armor.desc=§oVorace !§r\nLes dégâts infligés aux mobs sont augmentés de 40% supplémentaires par pièce d'armure portée, mais Faim V est toujours active.
+modifier.mod_lavacow.unholy_aura_armor.name=Aura impie
+modifier.mod_lavacow.unholy_aura_armor.desc=§oMalédiction aux vivants !§r\nVotre armure offre une protection supplémentaire contre les mobs vivants et les affaiblit quand vous êtes blessé.
+modifier.mod_lavacow.vespa_ward_armor.name=Garde de la vespa
+modifier.mod_lavacow.vespa_ward_armor.desc=§oPas les vespas !§r\nÊtre blessé inflige des dégâts et applique Poison à l'attaquant au prix de durabilité.
+modifier.mod_lavacow.amber_pharaoh_armor.name=Pharaon d'ambre
+modifier.mod_lavacow.amber_pharaoh_armor.desc=§oFrappe à travers les sables !§r\nVotre armure a une chance d'invoquer un Scarabée d'ambre loyal et confère Régénération II quand vous êtes blessé.
+
+# JER Integration
+JER.catagory.mod_lavacow.cemetery_chest=Petit cimetière
+JER.catagory.mod_lavacow.desert_tomb_chest=Tombe du désert
+
+###########
+# BANNERS #
+###########    
+
+item.banner.skeletonking.white=Roi squelette blanc
+item.banner.skeletonking.orange=Roi squelette orange
+item.banner.skeletonking.magenta=Roi squelette magenta
+item.banner.skeletonking.lightBlue=Roi squelette bleu clair
+item.banner.skeletonking.yellow=Roi squelette jaune
+item.banner.skeletonking.lime=Roi squelette vert clair
+item.banner.skeletonking.pink=Roi squelette rose
+item.banner.skeletonking.gray=Roi squelette gris
+item.banner.skeletonking.silver=Roi squelette gris clair
+item.banner.skeletonking.cyan=Roi squelette cyan
+item.banner.skeletonking.purple=Roi squelette violet
+item.banner.skeletonking.blue=Roi squelette bleu
+item.banner.skeletonking.brown=Roi squelette marron
+item.banner.skeletonking.green=Roi squelette vert
+item.banner.skeletonking.red=Roi squelette rouge
+item.banner.skeletonking.black=Roi squelette noir
 
 ##########
 # BLOCKS #
@@ -95,6 +230,13 @@ tile.mod_lavacow.scarecrowhead_common.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_straw.name=Scarecrow Head
 tile.mod_lavacow.scarecrowhead_plague.name=Scarecrow Head
 tile.mod_lavacow.tombstone.name=Tombstone
+tile.mod_lavacow.cactoid_sprout.name=Pousse de cactoïde
+tile.mod_lavacow.diseased_hay_block.name=Bloc de foin malade
+tile.mod_lavacow.ectoplasm_block.name=Bloc d'ectoplasme
+tile.mod_lavacow.molten_alloy_block.name=Bloc d'alliage en fusion
+tile.mod_lavacow.scythe_claw_block.name=Tonneau de griffes-faux
+tile.mod_lavacow.vespa_carapace_block.name=Tonneau de carapaces de vespa
+tile.mod_lavacow.molten_meat_block.name=Tonneau de viande en fusion
 
 ############
 # Entities #
@@ -103,13 +245,17 @@ tile.mod_lavacow.tombstone.name=Tombstone
 entity.mod_lavacow.lavacow.name=Meuhgma
 entity.mod_lavacow.zombiemushroom.name=Ciuperca
 entity.mod_lavacow.parasite.name=Parasite
+entity.mod_lavacow.vespa_brood.name=Couvée de vespas
 entity.mod_lavacow.foglet.name=Brumelin
+entity.mod_lavacow.isnachi.name=Isnachi
+entity.mod_lavacow.imp.name=Diablotin de flammes
 entity.mod_lavacow.zombiefrozen.name=Ingheta
 entity.mod_lavacow.undeadswine.name=Porc corrompu
 entity.mod_lavacow.salamander.name=Salamandre
 entity.mod_lavacow.ithaqua.name=Ithaqua
 entity.mod_lavacow.mimic.name=Mimicrabe
 entity.mod_lavacow.sludgelord.name=Seigneur de la Boue
+entity.mod_lavacow.amberlord.name=Seigneur d'ambre
 entity.mod_lavacow.lilsludge.name=Ptite Boue
 entity.mod_lavacow.raven.name=Corbeau
 entity.mod_lavacow.ptera.name=Ptera
@@ -119,8 +265,46 @@ entity.mod_lavacow.vespacocoon.name=Cocon de Vespa
 entity.mod_lavacow.zombiepiranha.name=Swarmeur
 entity.mod_lavacow.piranha.name=Piranha
 entity.mod_lavacow.boneworm.name=Osvermis
+entity.mod_lavacow.soulworm.name=Osvermis Spiritus
 entity.mod_lavacow.raven.seagull=Seagull
 entity.mod_lavacow.pingu.name=Gelguin
+entity.mod_lavacow.undertaker.name=Croque-mort
+entity.mod_lavacow.unburied.name=Non-enterré
+entity.mod_lavacow.ghostray.name=Raie fantôme
+entity.mod_lavacow.banshee.name=Banshee
+entity.mod_lavacow.weta.name=Weta empereur
+entity.mod_lavacow.avaton.name=Avaton
+entity.mod_lavacow.skeletonking.name=Roi squelette
+entity.mod_lavacow.mummy.name=Momie
+entity.mod_lavacow.forsaken.name=Déchu
+entity.mod_lavacow.cactoid.name=Cactoïde
+entity.mod_lavacow.cactyrant.name=Cactyran
+entity.mod_lavacow.sea_hag.name=Sorcière des mers
+entity.mod_lavacow.grave_robber.name=Pilleur de tombes
+entity.mod_lavacow.grave_robber_ghost.name=Fantôme de pilleur de tombes
+entity.mod_lavacow.wraith.name=Revenant
+entity.mod_lavacow.ghost_swarmer.name=Essaimeur fantôme
+entity.mod_lavacow.amber_scarab.name=Scarabée d'ambre
+entity.mod_lavacow.enigmoth.name=Énigmothe
+entity.mod_lavacow.enigmoth_larva.name=Chenille d'énigmothe
+entity.mod_lavacow.ghoul.name=Goule
+
+entity.mod_lavacow.sludgejet.name=Jet de boue
+entity.mod_lavacow.warsmallfireball.name=Boule de feu
+entity.mod_lavacow.piranhalauncher.name=Essaimeur lancé
+entity.mod_lavacow.acidjet.name=Jet d'acide
+entity.mod_lavacow.flamejet.name=Ectoballe
+entity.mod_lavacow.holygrenade.name=Grenade sacrée
+entity.mod_lavacow.ghostbomb.name=Grenade fantôme
+entity.mod_lavacow.sonicbomb.name=Grenade sonique
+entity.mod_lavacow.sandburst.name=Explosion de sable
+entity.mod_lavacow.deathcoil.name=Spirale de mort
+entity.mod_lavacow.cactusthorn.name=Épine de cactus
+entity.mod_lavacow.sapjet.name=Nuée de criquets
+entity.mod_lavacow.moth_scales.name=Écailles d'énigmothe
+entity.mod_lavacow.basicbomb.name=Grenade simple
+entity.mod_lavacow.kings_wrath.name=Courroux du roi
+entity.mod_lavacow.fish_custom_arrow.name=Flèche morte-vivante
 
 ##########
 # Sounds #
@@ -129,6 +313,7 @@ entity.mod_lavacow.pingu.name=Gelguin
 entity_parasite_ambient=Parasite se tortille
 entity_parasite_death=Parasite qui meurt
 entity_parasite_hurt=Parasite blessé
+entity_parasite_weave=Le parasite tisse
 
 entity_foglet_ambient=Brumelin grogne
 entity_foglet_death=Brumelin qui meurt
@@ -142,6 +327,7 @@ entity_undeadswine_hurt=Porc corrompu blessé
 entity_salamander_ambient=Salamandre grogne
 entity_salamander_death=Salamandre qui meurt
 entity_salamander_hurt=Salamandre blessé
+entity_salamander_shoot=Le warmander tire
 
 entity_zombiepiranha_attack=Mord
 
@@ -155,6 +341,7 @@ entity_mimic_death=Mimicrabe qui meurt
 entity_mimic_hurt=Mimicrabe blessé
 
 entity_sludgelord_ambient=Seigneur de la Boue grogne
+entity_sludgelord_attack=Le seigneur de boue vomit
 entity_sludgelord_death=Seigneur de la Boue qui meurt
 entity_sludgelord_hurt=Seigneur de la Boue blessé
 
@@ -163,6 +350,7 @@ entity_lilsludge_death=Ptite Boue qui meurt
 entity_lilsludge_hurt=Ptite Boue blessée
 
 entity_raven_ambient=Corbeau croasse
+entity_raven_call=Le sifflet appelle
 entity_raven_death=Corbeau qui meurt
 entity_raven_hurt=Corbeau blessé
 
@@ -177,6 +365,8 @@ entity_vespa_hurt=Vespa blessé
 entity_scarecrow_ambient=Épouvantail ricane
 entity_scarecrow_death=Épouvantail qui meurt
 entity_scarecrow_hurt=Épouvantail blessé
+entity_scarecrow_scythe=La faux tranche
+entity_scarecrow_spin=L'épouvantail tournoie
 
 entity_zombiepiranha_ambient=Swarmeur claque des dents
 entity_zombiepiranha_death=Swarmeur qui meurt
@@ -188,6 +378,7 @@ entity_zombiefrozen_hurt=Ingheta blessé
 
 entity_boneworm_ambient=Osvermis grogne
 entity_boneworm_attack=Osvermis crache
+entity_boneworm_burrow=L'osvermis creuse
 entity_boneworm_death=Osvermis qui meurt
 entity_boneworm_hurt=Osvermis blessé
 
@@ -199,16 +390,84 @@ entity_pingu_ambient=Penghoul calls
 entity_pingu_death=Penghoul dies
 entity_pingu_hurt=Penghoul blessé
 
+entity_undertaker_ambient=Le croque-mort grogne
+entity_undertaker_death=Le croque-mort meurt
+entity_undertaker_hurt=Le croque-mort est blessé
+
+entity_ghostray_ambient=La raie fantôme chante
+entity_ghostray_death=La raie fantôme meurt
+entity_ghostray_hurt=La raie fantôme est blessée
+
+entity_banshee_ambient=La banshee murmure
+entity_banshee_attack=La banshee hurle
+entity_banshee_death=La banshee meurt
+entity_banshee_hurt=La banshee est blessée
+
+entity_weta_ambient=Le weta stridule
+entity_weta_death=Le weta meurt
+entity_weta_hurt=Le weta est blessé
+
+entity_avaton_ambient=L'avaton murmure
+entity_avaton_death=L'avaton meurt
+entity_avaton_hurt=L'avaton est blessé
+entity_avaton_spell=L'insecte stridule
+
+entity_skeletonking_ambient=Le roi squelette cliquette
+entity_skeletonking_attack=Le roi squelette frappe
+entity_skeletonking_death=Le roi squelette meurt
+entity_skeletonking_hurt=Le roi squelette est blessé
+entity_skeletonking_knockback=Le roi squelette fracasse
+entity_skeletonking_spell_skeleton_army=Le roi squelette lance un sort
+entity_skeletonking_spell_summon=Le roi squelette lance un sort
+entity_skeletonking_spell_teleport=Le roi squelette se téléporte
+entity_skeletonking_spell_toss=Le roi squelette lance un sort
+entity_skeletonking_spawn=Son inquiétant
+
+entity_cactyrant_ambient=Le cactyran siffle
+entity_cactyrant_death=Le cactyran meurt
+entity_cactyrant_grow=La plante pousse
+
+entity_sea_hag_ambient=La sorcière des mers chuchote
+entity_sea_hag_screech=La sorcière des mers crie
+
+entity_wraith_ambient=Le revenant murmure
+entity_wraith_attack=Le revenant hurle
+entity_wraith_death=Le revenant meurt
+
+entity_graverobberghost_ambient=Le fantôme de pilleur de tombes marmonne
+entity_graverobberghost_death=Le fantôme de pilleur de tombes meurt
+entity_graverobberghost_hurt=Le fantôme de pilleur de tombes est blessé
+
+entity_scarab_ambient=Le scarabée crisse
+entity_scarab_death=Le scarabée meurt
+entity_scarab_hurt=Le scarabée est blessé
+
+entity_enigmoth_ambient=L'énigmothe crisse
+entity_enigmoth_flap=L'énigmothe bat des ailes
+entity_enigmoth_death=L'énigmothe meurt
+entity_enigmoth_hurt=L'énigmothe est blessée
+
+entity_ghoul_ambient=La goule gémit
+entity_ghoul_death=La goule meurt
+entity_ghoul_hurt=La goule est blessée
+
+random_death_coil_shoot=Spirale de mort tirée
+random_piranha_shoot=Piranha tiré
+random_thorn_shoot=Épine tirée
+random_spin=Bruit de rotation
+
 ############
 # Tooltips #
 ############
 
 tootip.mod_lavacow.bonesword=Fais subir %d%% de vie maximale en dégats supplémentaires à la cible
+tootip.mod_lavacow.bonesword.warning=Ne s'applique pas aux boss.
 tootip.mod_lavacow.canebeef=Donne Régénération(0:08) quand mangé.
 tootip.mod_lavacow.canepork=Donne Régénération(0:08) quand mangé.
 tootip.mod_lavacow.canerottenmeat=Donne Régénération(0:08) quand mangé, les mimicrabes en raffolent.
 tootip.mod_lavacow.netherstew=Donne des effets aléatoires(0:40) quand mangé.
-tootip.mod_lavacow.goldenheart=Donne Régénération and repairs(+1/sec) all equipments when equipped.
+tootip.mod_lavacow.goldenheart.regeneration=Confère Régénération (%d sec) en cas de dégâts.
+tootip.mod_lavacow.goldenheart.repair=Répare tout l'équipement porté (+%d/sec).
 tootip.mod_lavacow.moltenaxe=Brûle le bois coupé.
 tootip.mod_lavacow.moltenhammer=Clic droit pour faire des dégats aux créatures autour du joueur.
 tootip.mod_lavacow.potion_of_mooten_lava=Essayer de faire boire ceci à une vache. :)
@@ -218,7 +477,7 @@ tootip.mod_lavacow.reapers_scythe=Tranche les ennemis et ignore l'armure.
 tootip.mod_lavacow.famine=Donne Faim. Restore 1 point de faim quand frappe un animal non mort-vivant.      
 tootip.mod_lavacow.frozenthigh=Comestible. Donne Lenteur III(0:04) quand utilisé comme arme.
 tootip.mod_lavacow.sludge_wand=Clic droit invoque une "Ptite Boue"
-tootip.mod_lavacow.war=Lève une guerre entre toi et ton ami avec une maison en bois (Boule de Feu comme munition)
+tootip.mod_lavacow.war=Un lance-charges de feu : tire des boules de feu explosives (utilise des Charges de feu comme munitions).
 tootip.mod_lavacow.moltenpan=Utilisé pour des plats exotiques
 tootip.mod_lavacow.intestine=Clic droit pour trouver ce qu'il y'a à l'intérieur
 tootip.mod_lavacow.felarmor=Dégats aux mobs en feu+
@@ -226,21 +485,299 @@ tootip.mod_lavacow.felarmor.l2=Dégats lié au feu-
 tootip.mod_lavacow.swinearmor=Set(2): Porc corrompu deviendra neutre au joueur
 tootip.mod_lavacow.swinearmor.l2=Set(4): Donne au joueur une immunité au poison.
 tootip.mod_lavacow.piranhalauncher=Clic droit lance un Swarmeur. (Swarmeur comme munition)
-tootip.mod_lavacow.cursed_bandage=Soigne de 2 HP votre animal de compagnie
+tootip.mod_lavacow.cursed_bandage.0.desc0=Soin
+tootip.mod_lavacow.cursed_bandage.0.desc1=Rend 2 points de vie à votre familier.
+tootip.mod_lavacow.cursed_bandage.1.desc0=Force
+tootip.mod_lavacow.cursed_bandage.1.desc1=Rend 2 points de vie et inflige Force (3:00) à votre familier.
+tootip.mod_lavacow.cursed_bandage.2.desc0=Soin+
+tootip.mod_lavacow.cursed_bandage.2.desc1=Rend 6 points de vie à votre familier.
+tootip.mod_lavacow.cursed_bandage.3.desc0=Résistance
+tootip.mod_lavacow.cursed_bandage.3.desc1=Rend 2 points de vie et inflige Résistance (3:00) à votre familier.
 tootip.mod_lavacow.holy_grenade=Se lance sur la cible et explose. Les mort vivants reçoivent 300%% de dégats et s'enflamment(0:08)
 tootip.mod_lavacow.halo_necklace=Dégats au mort-viants+%d%%
 tootip.mod_lavacow.dreamcatcher=Attrape les créatures cauchemardesques de vos rêves.
+tootip.mod_lavacow.undertaker_shovel=Clic droit pour invoquer une armée de Non-enterrés.
+tootip.mod_lavacow.raven_whistle=Clic droit pour lier un corbeau et lui ordonner de se rendre à un endroit cible.
+tootip.mod_lavacow.faminearmor=Bonus de panoplie (2) : Rend 1 point de vie par orbe d'expérience ramassé.
+tootip.mod_lavacow.faminearmor.l2=Bonus de panoplie (4) : +2 dégâts, mais afflige de Faim X permanente.
+tootip.mod_lavacow.ghostjelly=Transformez votre corbeau en Corbeau fantôme ! Ou bien envolez-vous !
+tootip.mod_lavacow.ghostbomb=Provoque une explosion au point d'impact. Les entités touchées reçoivent Lévitation (0:01).
+tootip.mod_lavacow.sonicbomb=Provoque une explosion au point d'impact. Les entités touchées reçoivent Peur III (0:08).
+tootip.mod_lavacow.weta_hoe=Clic droit pour récolter les cultures ou l'herbe dans une zone 3x3 et les replanter.
+tootip.mod_lavacow.parasite.0=Commun
+tootip.mod_lavacow.parasite.1=Désert
+tootip.mod_lavacow.parasite.2=Jungle
+tootip.mod_lavacow.ptera.0=Jungle
+tootip.mod_lavacow.ptera.1=Désert
+tootip.mod_lavacow.ptera.2=Savane
+tootip.mod_lavacow.ptera.3=Marais
+tootip.mod_lavacow.bonestew=Confère Résistance (1:00) et Absorption II (1:00) quand mangé.
+tootip.mod_lavacow.mootenheart=Protection contre les dégâts de feu : +%d%%
+tootip.mod_lavacow.vespa_shield=Bloque les dégâts comme un bouclier normal, tout en infligeant 2 dégâts et Poison (0:06) à l'attaquant.
+tootip.mod_lavacow.frozen_dagger=Régénère sa durabilité dans l'eau.
+tootip.mod_lavacow.spectral_dagger=Durabilité infinie, +2 dégâts contre les vivants !
+tootip.mod_lavacow.kings_crown.0=Tachée
+tootip.mod_lavacow.kings_crown.0.desc0=Avec une gemme convoitée de tous.
+tootip.mod_lavacow.kings_crown.0.desc1=Emplie de souvenirs du passé.
+tootip.mod_lavacow.kings_crown.0.desc2=Le roi régnera de nouveau sur son royaume.
+tootip.mod_lavacow.kings_crown.1=Maudite
+tootip.mod_lavacow.kings_crown.1.desc0=Un roi n'a pas besoin de son corps
+tootip.mod_lavacow.kings_crown.1.desc1=Tant que l'âme est infusée dans sa couronne
+tootip.mod_lavacow.kings_crown.1.desc2=Même un cadavre peut réaliser son ambition
+tootip.mod_lavacow.skeletonking_crown=Force les squelettes proches à devenir vos serviteurs loyaux.
+tootip.mod_lavacow.beast_claw.desc0=Clic droit pour bondir en avant.
+tootip.mod_lavacow.beast_claw.desc1=Bonus de panoplie (2) : Confère Force (0:03) et Célérité (0:03) après un bond.
+tootip.mod_lavacow.skeletonking_mace=Inflige Toucher mortel V (0:10) et Flétrissement III (0:15) à la cible !
+tootip.mod_lavacow.chitinarmor=Bonus de panoplie (2) : -50%% dégâts de chute
+tootip.mod_lavacow.chitinarmor.l2=Bonus de panoplie (4) : Confère Vitesse (0:03) après un saut.
+tootip.mod_lavacow.cactus_fruit=Peut servir à brasser une Potion d'épines ou de graine à planter dans le sable (accroupi + clic droit).
+tootip.mod_lavacow.thorn_shooter=Mitraille des épines de cactus à grande vitesse ! (Munitions : Épine de cactus)
+tootip.mod_lavacow.baobing=Confère Épines II (2:00) et éteint le feu quand mangé.
+tootip.mod_lavacow.kung_pao_chicken=Confère Immolation II (2:00) quand mangé.
+tootip.mod_lavacow.soulforged_heart=Protection contre les dégâts de feu : +%d%%
+tootip.mod_lavacow.soulforged_heart.l2=Soins reçus : +%d%%
+tootip.mod_lavacow.soulforged_hammer=Clic droit pour infliger des dégâts de feu et de flétrissement aux créatures dans un rayon.
+tootip.mod_lavacow.soulforged_axe=Fond automatiquement les blocs abattus et fournit l'expérience d'un four.
+tootip.mod_lavacow.soulforged_pan=Sert à préparer des plats spéciaux.
+tootip.mod_lavacow.ghostlyarmor=Bonus de panoplie (2) : Soigne des points de vie égaux à 20%% des dégâts reçus.
+tootip.mod_lavacow.ghostlyarmor.l2=Bonus de panoplie (4) : +20%% de dégâts contre les adversaires ayant plus de vie maximale que vous.
+tootip.mod_lavacow.soulforgedarmor=Dégâts de feu bonus : +
+tootip.mod_lavacow.soulforgedarmor.l2=Protection contre les dégâts de feu : +
+tootip.mod_lavacow.soulforgedarmor.l3=Bonus de panoplie (4) : Immunité totale aux dégâts de feu et de flétrissement.
+tootip.mod_lavacow.illager_nose=Habillez-vous en illageois ! Les illageois deviennent neutres lorsqu'il est porté.
+tootip.mod_lavacow.forsaken_staff=Clic droit pour tirer une spirale de mort.
+tootip.mod_lavacow.scarab_wand=Clic droit pour invoquer un essaim de Scarabées d'ambre.
+tootip.mod_lavacow.diseased_bread=Le manger ou le donner aux wetas pourrait avoir des conséquences...
+tootip.mod_lavacow.pheromone_gland=Confère Charme phéromonal (0:30) et Nausée II (0:10) quand mangé.
+tootip.mod_lavacow.charming_catalyst=Confère Charme phéromonal (0:45) quand consommé, ou sert à apprivoiser et déclencher la croissance de certaines larves.
+tootip.mod_lavacow.basicbomb=Provoque une explosion au point d'impact. Feu !
+tootip.mod_lavacow.crabcake=Confère Résistance (0:30) quand mangé.
+tootip.mod_lavacow.ankh_wand=Clic droit pour invoquer une armée de Momies.
+tootip.mod_lavacow.fungal_rod=Clic droit pour invoquer une armée de Mycoses.
+tootip.mod_lavacow.frozen_grip=Clic droit pour invoquer une armée de Frigides.
 
 message.mod_lavacow.metamorphosis= évolue!
 command.mod_lavacow.sitting= attend
 command.mod_lavacow.following= vous suit
 command.mod_lavacow.wandering= se promène
+command.mod_lavacow.whistle= est désormais la cible du sifflet.
+command.mod_lavacow.whistle_err= est trop loin.
 itemGroup.mod_lavacow_items=Fish's Undead Rising
 key.mod_lavacow.special=Mount Special Ability
+key.mod_lavacow.down=Descente de la monture volante (Fish's Undead Rising)
 
 ################
 # Enchantments #
 ################
 
 enchantment.mod_lavacow.poisonous=Toxique
+enchantment.mod_lavacow.poisonous.desc=Inflige du poison quand utilisé pour attaquer un mob.
 enchantment.mod_lavacow.lifesteal=Vol de vie
+enchantment.mod_lavacow.lifesteal.desc=Vous soigne lorsque vous infligez des dégâts.
+enchantment.mod_lavacow.corrosive=Corrosif
+enchantment.mod_lavacow.corrosive.desc=Affaiblit la cible et lui fait subir plus de dégâts de toute source.
+enchantment.mod_lavacow.critical_boost=Boost critique
+enchantment.mod_lavacow.critical_boost.desc=Inflige plus de dégâts lors d'un coup critique.
+enchantment.mod_lavacow.dominion=Domination
+enchantment.mod_lavacow.dominion.desc=Augmente le nombre de sbires des objets d'invocation de Fish's Undead Rising.
+
+##############
+# MobEffects #
+##############
+
+mob_effect.mod_lavacow:corroded=Corrodé
+description.mob_effect.mod_lavacow:corroded=Augmente les dégâts subis.
+mob_effect.mod_lavacow:corroded.4.desc=Amplifie tout dégât entrant de +20%% par niveau.
+mob_effect.mod_lavacow:soiled=Souillé
+description.mob_effect.mod_lavacow:soiled=Empêche de manger et boire. -25%% PV soignés par niveau.
+mob_effect.mod_lavacow:soiled.4.desc=Empêche totalement de manger ou boire. Réduit les points de vie soignés.
+mob_effect.mod_lavacow:infested=Infesté
+description.mob_effect.mod_lavacow:infested=Afflige de faim et lenteur. Des parasites apparaissent à la mort.
+mob_effect.mod_lavacow:infested.4.desc=Quelque chose rampe à l'intérieur... -10%% Vitesse par niveau et affame de 1 point toutes les (40/lvl) secondes.
+mob_effect.mod_lavacow:fragile=Toucher mortel
+description.mob_effect.mod_lavacow:fragile=Provoque une mort instantanée quand la vie devient assez basse. N'affecte pas les boss.
+mob_effect.mod_lavacow:fragile.4.desc=Tue instantanément quand la vie descend sous (5*lvl)% des PV max. N'affecte pas les boss.
+mob_effect.mod_lavacow:fragile_king=Toucher du roi
+description.mob_effect.mod_lavacow:fragile_king=Provoque une mort instantanée quand la vie devient assez basse. Réduit les dégâts d'attaque.
+mob_effect.mod_lavacow:fragile_king.4.desc=Tue instantanément quand la vie descend sous (5*lvl)% des PV max. -10%% dégâts d'attaque par niveau.
+mob_effect.mod_lavacow:fear=Peur
+description.mod_lavacow:fear=Réduit la vitesse de déplacement et les dégâts d'attaque. Les créatures vivantes hormis les joueurs paniquent.
+mob_effect.mod_lavacow:fear.4.desc=BouOuOuh ! -20%% dégâts d'attaque et vitesse par niveau.
+mob_effect.mod_lavacow:thorned=Épines
+description.mob_effect.mod_lavacow:thorned=Confère l'immunité aux dégâts de cactus et à l'enchantement Épines. Les attaquants finissent épinés.
+mob_effect.mod_lavacow:thorned.4.desc=Immunisé aux dégâts de cactus et à l'enchantement Épines. Les entités infligeant des dégâts en subissent aussi (1*lvl).
+mob_effect.mod_lavacow:immolation=Immolation
+description.mob_effect.mod_lavacow:immolation=Confère l'immunité au feu et à la lave. Les entités proches du joueur prennent feu.
+mob_effect.mod_lavacow:immolation.4.desc=Résistance au feu. Les entités autour de vous brûlent pendant (3*lvl) secondes.
+mob_effect.mod_lavacow:charming_pheromone=Charme phéromonal
+description.mob_effect.mod_lavacow:charming_pheromone=Tous les arthropodes deviennent passifs envers le joueur et tentent de le suivre. N'affecte pas les arthropodes plus forts ni les boss.
+mob_effect.mod_lavacow:charming_pheromone.4.desc=Les arthropodes deviennent passifs envers vous et tentent de vous suivre. N'affecte pas les arthropodes plus forts ni les boss.
+mob_effect.mod_lavacow:flourished=Florissant
+description.mob_effect.mod_lavacow:flourished=Améliore tous les soins reçus.
+mob_effect.mod_lavacow:flourished.4.desc=Tous les soins sont augmentés de (25*lvl)%.
+mob_effect.mod_lavacow:void_dust=Poussière du néant
+description.mob_effect.mod_lavacow:void_dust=Téléporte périodiquement l'utilisateur affecté vers un lieu aléatoire proche.
+mob_effect.mod_lavacow:void_dust.4.desc=Vous téléporte périodiquement vers un lieu aléatoire proche.
+mob_effect.mod_lavacow:ravens_grace=Grâce du corbeau
+description.mob_effect.mod_lavacow:ravens_grace=Ralentit la vitesse de chute du joueur et le rend immunisé aux dégâts de chute.
+mob_effect.mod_lavacow:ravens_grace.4.desc=Ralentit la vitesse de chute et rend immunisé aux dégâts de chute.
+
+##############
+# Potions #
+##############
+
+potion.effect.mod_lavacow:corrosive=Potion de corrosion
+splash_potion.effect.mod_lavacow:corrosive=Potion jetable de corrosion
+lingering_potion.effect.mod_lavacow:corrosive=Potion persistante de corrosion
+tipped_arrow.effect.mod_lavacow:corrosive=Flèche de corrosion
+potion.effect.mod_lavacow:foulodor=Potion d'odeur fétide
+splash_potion.effect.mod_lavacow:foulodor=Potion jetable d'odeur fétide
+lingering_potion.effect.mod_lavacow:foulodor=Potion persistante d'odeur fétide
+tipped_arrow.effect.mod_lavacow:foulodor=Flèche d'odeur fétide
+potion.effect.mod_lavacow:infestation=Potion d'infestation
+splash_potion.effect.mod_lavacow:infestation=Potion jetable d'infestation
+lingering_potion.effect.mod_lavacow:infestation=Potion persistante d'infestation
+tipped_arrow.effect.mod_lavacow:infestation=Flèche d'infestation
+potion.effect.mod_lavacow:fragile=Potion de toucher mortel
+splash_potion.effect.mod_lavacow:fragile=Potion jetable de toucher mortel
+lingering_potion.effect.mod_lavacow:fragile=Potion persistante de toucher mortel
+tipped_arrow.effect.mod_lavacow:fragile=Flèche de toucher mortel
+potion.effect.mod_lavacow:thorned=Potion d'épines
+splash_potion.effect.mod_lavacow:thorned=Potion jetable d'épines
+lingering_potion.effect.mod_lavacow:thorned=Potion persistante d'épines
+tipped_arrow.effect.mod_lavacow:thorned=Flèche d'épines
+potion.effect.mod_lavacow:immolation=Potion d'immolation
+splash_potion.effect.mod_lavacow:immolation=Potion jetable d'immolation
+lingering_potion.effect.mod_lavacow:immolation=Potion persistante d'immolation
+tipped_arrow.effect.mod_lavacow:immolation=Flèche d'immolation
+potion.effect.mod_lavacow:flourished=Potion de floraison
+splash_potion.effect.mod_lavacow:flourished=Potion jetable de floraison
+lingering_potion.effect.mod_lavacow:flourished=Potion persistante de floraison
+tipped_arrow.effect.mod_lavacow:flourished=Flèche de floraison
+potion.effect.mod_lavacow:void_dust=Potion de faille du néant
+splash_potion.effect.mod_lavacow:void_dust=Potion jetable de faille du néant
+lingering_potion.effect.mod_lavacow:void_dust=Potion persistante de faille du néant
+tipped_arrow.effect.mod_lavacow:void_dust=Flèche de faille du néant
+potion.effect.mod_lavacow:ravens_grace=Potion de grâce du corbeau
+splash_potion.effect.mod_lavacow:ravens_grace=Potion jetable de grâce du corbeau
+lingering_potion.effect.mod_lavacow:ravens_grace=Potion persistante de grâce du corbeau
+tipped_arrow.effect.mod_lavacow:ravens_grace=Flèche de grâce du corbeau
+
+################
+# Advancements #
+################
+
+advancements.mod_lavacow.root.title=La nuit noire
+advancements.mod_lavacow.root.description=Entrez dans un monde de morts-vivants
+advancements.mod_lavacow.slimy_tasty.title=Gluant mais satisfaisant
+advancements.mod_lavacow.slimy_tasty.description=Mangez un parasite cru
+advancements.mod_lavacow.kill_parasite.title=Enlève-le-MOIII !
+advancements.mod_lavacow.kill_parasite.description=Tuez un parasite
+advancements.mod_lavacow.kill_vespa.title=PAS LES ABEILLES !
+advancements.mod_lavacow.kill_vespa.description=Tuez une vespa
+advancements.mod_lavacow.kill_zombiemushroom.title=Le dernier d'entre moi
+advancements.mod_lavacow.kill_zombiemushroom.description=Tuez une mycose
+advancements.mod_lavacow.kill_piranha.title=Croisière dans la jungle
+advancements.mod_lavacow.kill_piranha.description=Tuez un piranha
+advancements.mod_lavacow.kill_zombiepiranha.title=Croisière dans la jungle II : Mutation
+advancements.mod_lavacow.kill_zombiepiranha.description=Tuez un essaimeur
+advancements.mod_lavacow.kill_undertaker.title=C'est mon jardin
+advancements.mod_lavacow.kill_undertaker.description=Mettez K.O. un croque-mort
+advancements.mod_lavacow.kill_unburied.title=The Walking Dead
+advancements.mod_lavacow.kill_unburied.description=Tuez un Non-enterré
+advancements.mod_lavacow.get_fissionpotion.title=Diviser pour...
+advancements.mod_lavacow.get_fissionpotion.description=Obtenez une Potion de fission
+advancements.mod_lavacow.summon_lavacow.title=Je t'invoque
+advancements.mod_lavacow.summon_lavacow.description=Obtenez une Potion de Lave MEUHten
+advancements.mod_lavacow.kill_zombiefrozen.title=Libérée, délivrée
+advancements.mod_lavacow.kill_zombiefrozen.description=Tuez un frigide
+advancements.mod_lavacow.kill_foglet.title=Ne rien voir de mal
+advancements.mod_lavacow.kill_foglet.description=Tuez un foglet
+advancements.mod_lavacow.kill_wendigo.title=Plus rapide que le vent
+advancements.mod_lavacow.kill_wendigo.description=Tuez un Ithaqua
+advancements.mod_lavacow.kill_undeadswine.title=VOILÀ LE TRAIN DE LA DOULEUR !
+advancements.mod_lavacow.kill_undeadswine.description=Tuez un porc mort-vivant
+advancements.mod_lavacow.kill_salamander.title=Boum, bébé !
+advancements.mod_lavacow.kill_salamander.description=Tuez un warmander
+advancements.mod_lavacow.kill_mimic.title=Le coffre qui pince
+advancements.mod_lavacow.kill_mimic.description=Tuez un mimic
+advancements.mod_lavacow.kill_sludgelord.title=Crise botanique
+advancements.mod_lavacow.kill_sludgelord.description=Tuez un seigneur de boue
+advancements.mod_lavacow.kill_amberlord.title=Seigneur des scarabées
+advancements.mod_lavacow.kill_amberlord.description=Tuez un Seigneur d'ambre
+advancements.mod_lavacow.kill_scarecrow.title=Pas encore Halloween
+advancements.mod_lavacow.kill_scarecrow.description=Tuez un épouvantail
+advancements.mod_lavacow.tame_raven.title=Corbeau, pas corneille
+advancements.mod_lavacow.tame_raven.description=Apprivoisez un corbeau
+advancements.mod_lavacow.tame_salamander.title=Le bœuf, c'est bon
+advancements.mod_lavacow.tame_salamander.description=Apprivoisez un warmander
+advancements.mod_lavacow.kill_pingu.title=Cassons de la glace
+advancements.mod_lavacow.kill_pingu.description=Tuez un pingoule
+advancements.mod_lavacow.kill_ptera.title=Vautoursaure
+advancements.mod_lavacow.kill_ptera.description=Tuez un ptéra
+advancements.mod_lavacow.kill_boneworm.title=L'os ressuscité
+advancements.mod_lavacow.kill_boneworm.description=Tuez un Osvermis
+advancements.mod_lavacow.kill_soulworm.title=L'os ressuscité, encore
+advancements.mod_lavacow.kill_soulworm.description=Tuez un Osvermis Spiritus
+advancements.mod_lavacow.kill_ghostray.title=Nuit de poisson
+advancements.mod_lavacow.kill_ghostray.description=Tuez une raie fantôme
+advancements.mod_lavacow.kill_banshee.title=Frissons silencieux
+advancements.mod_lavacow.kill_banshee.description=Tuez une banshee
+advancements.mod_lavacow.kill_weta.title=Survivant de la fosse aux insectes
+advancements.mod_lavacow.kill_weta.description=Tuez un weta
+advancements.mod_lavacow.kill_avaton.title=Lutte antiparasitaire
+advancements.mod_lavacow.kill_avaton.description=Tuez un avaton
+advancements.mod_lavacow.kill_skeletonking.title=Longue vie au roi squelette
+advancements.mod_lavacow.kill_skeletonking.description=Vainquez et chassez le roi squelette
+advancements.mod_lavacow.kill_mummy.title=La mort n'est qu'un début
+advancements.mod_lavacow.kill_mummy.description=Tuez une momie
+advancements.mod_lavacow.kill_forsaken.title=Je me souviens...
+advancements.mod_lavacow.kill_forsaken.description=Tuez un déchu
+advancements.mod_lavacow.get_hatred_shard.title=Dans les profondeurs de la mémoire
+advancements.mod_lavacow.get_hatred_shard.description=Obtenez un Éclat de réminiscence
+advancements.mod_lavacow.kill_isnachi.title=Ne rien dire de mal
+advancements.mod_lavacow.kill_isnachi.description=Tuez un Isnachi
+advancements.mod_lavacow.kill_imp.title=Ne rien faire de mal
+advancements.mod_lavacow.kill_imp.description=Tuez un diablotin de flammes
+advancements.mod_lavacow.kill_cactyrant.title=Cactsus
+advancements.mod_lavacow.kill_cactyrant.description=Tuez un cactyran
+advancements.mod_lavacow.tame_cactoid.title=Agriculture du désert
+advancements.mod_lavacow.tame_cactoid.description=Apprivoisez un cactoïde
+advancements.mod_lavacow.get_thorn_shooter.title=Dis bonjour à mon petit ami...
+advancements.mod_lavacow.get_thorn_shooter.description=Procurez-vous le tout-puissant Lance-épines !
+advancements.mod_lavacow.get_piranha_launcher.title=Ça a tiré du pistolet
+advancements.mod_lavacow.get_piranha_launcher.description=Obtenez le Lance-essaimeurs
+advancements.mod_lavacow.kill_sea_hag.title=Sorcière noyée
+advancements.mod_lavacow.kill_sea_hag.description=Tuez une sorcière des mers
+advancements.mod_lavacow.kill_grave_robber.title=Quand Johnny prend une pelle
+advancements.mod_lavacow.kill_grave_robber.description=Tuez un pilleur de tombes
+advancements.mod_lavacow.kill_grave_robber_ghost.title=Pas encore !
+advancements.mod_lavacow.kill_grave_robber_ghost.description=Tuez le fantôme d'un pilleur de tombes
+advancements.mod_lavacow.kill_wraith.title=SOS Fantômes
+advancements.mod_lavacow.kill_wraith.description=Tuez un revenant
+advancements.mod_lavacow.kill_ghost_swarmer.title=Croisière dans la jungle III : Vengeance
+advancements.mod_lavacow.kill_ghost_swarmer.description=Tuez un essaimeur fantôme
+advancements.mod_lavacow.kill_enigmoth.title=L'homme-papillon de l'End extérieur
+advancements.mod_lavacow.kill_enigmoth.description=Tuez une énigmothe
+advancements.mod_lavacow.get_molten_alloy.title=Protéine pure
+advancements.mod_lavacow.get_molten_alloy.description=Obtenez un lingot d'alliage en fusion
+advancements.mod_lavacow.get_molten_armor.title=Allumez le feu !
+advancements.mod_lavacow.get_molten_armor.description=Améliorez vos diamants et obtenez une armure en fusion !
+advancements.mod_lavacow.get_molten_tool.title=Guerrier en fusion
+advancements.mod_lavacow.get_molten_tool.description=Obtenez un outil en fusion !
+advancements.mod_lavacow.get_soulforged_armor.title=Rallumez le feu !
+advancements.mod_lavacow.get_soulforged_armor.description=Améliorez votre armure en fusion en armure forgée-âme !
+advancements.mod_lavacow.get_soulforged_tool.title=Guerrier en fusion d'élite
+advancements.mod_lavacow.get_soulforged_tool.description=Obtenez un outil forgé-âme !
+advancements.mod_lavacow.tame_scarecrow.title=Veux-tu bâtir un épouvantail ?
+advancements.mod_lavacow.tame_scarecrow.description=Construisez un épouvantail
+advancements.mod_lavacow.get_illager_nose.title=J'ai pris ton nez !
+advancements.mod_lavacow.get_illager_nose.description=Obtenez le nez d'un illageois.
+
+#################
+# Death Message #
+#################
+
+death.mod_lavacow.timeup=%1$s est retourné en poussière
+tootip.mod_lavacow.goldenheart=Donne Régénération and repairs(+1/sec) all equipments when equipped.
+tootip.mod_lavacow.cursed_bandage=Soigne de 2 HP votre animal de compagnie

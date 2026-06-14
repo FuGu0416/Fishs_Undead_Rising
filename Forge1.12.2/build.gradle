@@ -54,7 +54,6 @@ dependencies {
 
     implementation fg.deobf( "curse.maven:baubles-${baubles_version}")
     implementation fg.deobf( "curse.maven:mantle-${mantle_version}")
-    implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
 
     // compileOnly: optional integrations that can't load in the deobf dev runtime, so they're
     // compiled against but kept off the dev client classpath. Our compat/ code is all
@@ -64,6 +63,10 @@ dependencies {
     //     -> as `implementation` they tripped FML MissingModsException (error screen).
     //   - JEI crashes in dev with IllegalAccessError on TextureMap.initMissingImage()
     //     (dev-mapping access mismatch); JER depends on JEI, so both are excluded.
+    //   - SoManyEnchantments' Mixins (IEntityPlayerMixin) don't apply in this dev runClient,
+    //     so every player tick threw ClassCastException in EnchantmentUnsheathing -> crash on
+    //     entering a world. Kept compileOnly so the client is runnable for testing.
+    compileOnly fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
     compileOnly fg.deobf( "curse.maven:tinkers-antique-${tinkers_antique_version}")
     compileOnly fg.deobf( "curse.maven:antique-armory-${antique_armory_version}")
     compileOnly fg.deobf("curse.maven:rlcombat-${rlcombat_version}")

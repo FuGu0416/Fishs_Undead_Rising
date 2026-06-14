@@ -1,4 +1,4 @@
-language.name=简体中文
+﻿language.name=简体中文
 language.region=中国
 language.code=zh_CN
 
@@ -148,13 +148,13 @@ item.mod_lavacow.lamprey_cooked.name=熟七鳃鳗
 item.mod_lavacow.lamprey_kabayaki.name=蒲烧七鳃鳗
 item.mod_lavacow.ushabti.name=巫沙布提俑
 item.mod_lavacow.ankh_wand.name=安卡权杖
-item.mod_lavacow.fungal_rod.name=真菌法杖
+item.mod_lavacow.fungal_rod.name=猛毒菇杖
 item.mod_lavacow.frozen_grip.name=凛寒之握
 item.mod_lavacow.ghoul_claw.name=食尸鬼爪
 item.mod_lavacow.ghoul_arrow.name=食尸鬼箭
 item.mod_lavacow.fang_arrow.name=尖牙箭
 
-#Tconstruct Integration
+# Tinkers' Construct Integration
 material.mod_lavacow.moltenbeef.name=熔核肉
 material.mod_lavacow.chitin.name=几丁质
 material.mod_lavacow.vespa_carapace.name=巨蜂壳
@@ -190,18 +190,18 @@ modifier.mod_lavacow.vespa_ward_armor.desc=§o不要是巨蜂！ §r\n受到伤�
 modifier.mod_lavacow.amber_pharaoh_armor.name=琥珀法老
 modifier.mod_lavacow.amber_pharaoh_armor.desc=§o虫族听我号令！ §r\n在受伤害时有机会诞生出对你忠诚的琥珀圣甲虫并赋予生命恢复II(0:05)
 
-#JER Integration
+# JER Integration
 JER.catagory.mod_lavacow.cemetery_chest=小型墓地
 JER.catagory.mod_lavacow.desert_tomb_chest=沙漠墓穴
 
 ###########
 # BANNERS #
-###########
+###########    
 
 item.banner.skeletonking.white=白色骷髅王
 item.banner.skeletonking.orange=橙色骷髅王
 item.banner.skeletonking.magenta=品红骷髅王
-item.banner.skeletonking.light_blue=浅蓝骷髅王
+item.banner.skeletonking.lightBlue=淡蓝色骷髅王徽标
 item.banner.skeletonking.yellow=黄色骷髅王
 item.banner.skeletonking.lime=淡绿骷髅王
 item.banner.skeletonking.pink=粉色骷髅王
@@ -477,7 +477,7 @@ tootip.mod_lavacow.reapers_scythe=必定为横扫攻击，所造成的伤害无�
 tootip.mod_lavacow.famine=对单位造成伤害时能回复1饱食度，饥饿状态时则回复2饱食度
 tootip.mod_lavacow.frozenthigh=可以食用，攻击能同时赋予目标缓慢III(0:04)
 tootip.mod_lavacow.sludge_wand=右键点击以召唤听命于玩家的小树软泥
-tootip.mod_lavacow.war=掀起你与你那刚建好木屋的朋友之间的一场战争 (需要火焰弹作为弹药)
+tootip.mod_lavacow.war=射出会爆炸的火球；以火焰弹作为弹药
 tootip.mod_lavacow.moltenpan=用以烹制特殊料理
 tootip.mod_lavacow.intestine=右键点击以拾取肠内物品
 tootip.mod_lavacow.felarmor=对燃烧中的单位造成伤害+
@@ -773,9 +773,10 @@ advancements.mod_lavacow.tame_scarecrow.title=你想要一起堆稻草人吗？
 advancements.mod_lavacow.tame_scarecrow.description=制造一只稻草人
 advancements.mod_lavacow.get_illager_nose.title=哈哈！鼻子！
 advancements.mod_lavacow.get_illager_nose.description=获得灾厄之鼻
-	
+
 #################
 # Death Message #
 #################
 
 death.mod_lavacow.timeup=%1$s的生命消逝于尘土之中
+item.banner.skeletonking.light_blue=浅蓝骷髅王

@@ -15,6 +15,7 @@ import com.Fishmod.mod_LavaCow.mobeffect.MobEffectVoidDust;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.Constants.AttributeModifierOperation;
 
 public class ModMobEffects {
@@ -30,4 +31,19 @@ public class ModMobEffects {
 	public static final Potion FLOURISHED = new MobEffectFlourished();
 	public static final Potion VOID_DUST = new MobEffectVoidDust();
 	public static final Potion RAVENS_GRACE = new MobEffectRavensGrace();
+
+	/**
+	 * Builds a FEAR PotionEffect with the vanilla potion swirl hidden (ambient off, particles off).
+	 * The in-world effect is drawn with a custom particle in ModEventHandler#onELiving, so the swirl
+	 * is suppressed here - always create FEAR through this so no application site re-shows it.
+	 * (1.12.2 PotionEffect has no showIcon arg; the custom status icon comes from MobEffectMod.)
+	 */
+	public static PotionEffect fear(int duration, int amplifier) {
+		return new PotionEffect(FEAR, duration, amplifier, false, false);
+	}
+
+	/** As fear() but for IMMOLATION - swirl hidden, custom flame particle drawn instead. */
+	public static PotionEffect immolation(int duration, int amplifier) {
+		return new PotionEffect(IMMOLATION, duration, amplifier, false, false);
+	}
 }

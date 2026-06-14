@@ -21,9 +21,9 @@ public class ModPotions {
 	public static final PotionType THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 1800)).setRegistryName(mod_LavaCow.MODID + ":thorn");
 	public static final PotionType STRONG_THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_thorn");
 	public static final PotionType LONG_THORN = new PotionType(mod_LavaCow.MODID + ":thorned", new PotionEffect(ModMobEffects.THORNED, 3600)).setRegistryName(mod_LavaCow.MODID + ":long_thorn");
-	public static final PotionType IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", new PotionEffect(ModMobEffects.IMMOLATION, 1800)).setRegistryName(mod_LavaCow.MODID + ":immolation");
-	public static final PotionType STRONG_IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", new PotionEffect(ModMobEffects.IMMOLATION, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_immolation");
-	public static final PotionType LONG_IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", new PotionEffect(ModMobEffects.IMMOLATION, 3600)).setRegistryName(mod_LavaCow.MODID + ":long_immolation");
+	public static final PotionType IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", ModMobEffects.immolation(1800, 0)).setRegistryName(mod_LavaCow.MODID + ":immolation");
+	public static final PotionType STRONG_IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", ModMobEffects.immolation(900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_immolation");
+	public static final PotionType LONG_IMMOLATION = new PotionType(mod_LavaCow.MODID + ":immolation", ModMobEffects.immolation(3600, 0)).setRegistryName(mod_LavaCow.MODID + ":long_immolation");
 	public static final PotionType FLOURISHED = new PotionType(mod_LavaCow.MODID + ":flourished", new PotionEffect(ModMobEffects.FLOURISHED, 3600)).setRegistryName(mod_LavaCow.MODID + ":flourished");
 	public static final PotionType STRONG_FLOURISHED = new PotionType(mod_LavaCow.MODID + ":flourished", new PotionEffect(ModMobEffects.FLOURISHED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_flourished");
 	public static final PotionType LONG_FLOURISHED = new PotionType(mod_LavaCow.MODID + ":flourished", new PotionEffect(ModMobEffects.FLOURISHED, 9600)).setRegistryName(mod_LavaCow.MODID + ":long_flourished");

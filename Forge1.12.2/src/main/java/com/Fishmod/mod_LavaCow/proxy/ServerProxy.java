@@ -20,22 +20,15 @@ public class ServerProxy implements IProxy {
     }
 
 	@Override
-	public void spawnCustomParticle(String particleName, World world, double x, double y, double z, double vecX,
-			double vecY, double vecZ, float r, float g, float b) {
-		// TODO Auto-generated method stub
-		
+	public void spawnCustomParticle(String particleName, World world, double x, double y, double z, double vecX, double vecY, double vecZ, float r, float g, float b) {
 	}
 
 	@Override
 	public void preRender() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void registerItemAndBlockRenderers() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

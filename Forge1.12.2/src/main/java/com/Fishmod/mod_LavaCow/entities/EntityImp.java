@@ -24,7 +24,6 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -170,7 +169,7 @@ public class EntityImp extends EntityFoglet implements IAggressive {
             if (this.spellWarmup == 0) {
                 this.castSpell();
                 EntityImp.this.playSound(EntityImp.this.getSpellSound(), 1.0F, 1.0F);
-            	EntityImp.this.addPotionEffect(new PotionEffect(ModMobEffects.IMMOLATION, 8 * 20));
+            	EntityImp.this.addPotionEffect(ModMobEffects.immolation(8 * 20, 0));
             }
         }
 

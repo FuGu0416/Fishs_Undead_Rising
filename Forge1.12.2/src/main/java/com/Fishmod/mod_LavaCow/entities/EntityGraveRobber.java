@@ -49,6 +49,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -67,13 +68,13 @@ public class EntityGraveRobber extends AbstractIllager {
     @Override
     protected void initEntityAI() {
     	this.avoid = new EntityAIAvoidEntity<>(this, EntityPlayer.class, new Predicate<Entity>() {
-            // TODO: Baubles support
-            //boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE, p_210136_0_) != ItemStack.EMPTY);
-
             @Override
             public boolean apply(Entity input) {
             	EntityPlayer target = (EntityPlayer) input;
-                return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE));
+            	boolean hasNose = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.ILLAGER_NOSE);
+            	if (!hasNose && Loader.isModLoaded("baubles"))
+            		hasNose = baubles.api.BaublesApi.isBaubleEquipped(target, FishItems.ILLAGER_NOSE) != -1;
+                return !hasNose;
             }
         }, 4.5F, 1.0D, 1.2D);
     	

@@ -148,7 +148,7 @@ public class EntityBanshee extends EntityFloatingMob implements IAggressive {
                     if (((EntityLivingBase) entity1).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD) {
                         if (((EntityLivingBase) entity1).attackEntityFrom(DamageSource.causeMobDamage(EntityBanshee.this).setMagicDamage(), (float) EntityBanshee.this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 1.0F)) {
                             float local_difficulty = EntityBanshee.this.world.getDifficultyForLocation(new BlockPos(EntityBanshee.this)).getAdditionalDifficulty();
-                            ((EntityLivingBase) entity1).addPotionEffect(new PotionEffect(ModMobEffects.FEAR, 7 * 20 * (int) local_difficulty, 2));
+                            ((EntityLivingBase) entity1).addPotionEffect(ModMobEffects.fear(7 * 20 * (int) local_difficulty, 2));
                         }
                     }
                 }

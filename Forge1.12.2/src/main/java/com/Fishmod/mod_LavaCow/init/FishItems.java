@@ -159,7 +159,7 @@ public class FishItems {
     public static final Item CACTUS_FRUIT = new ItemCactusFruit("cactus_fruit", 4, 0.2F, false, 32, true).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 30 * 20, 0), 1.0F);
     public static final Item THORN_SHOOTER = new ItemPiranhaLauncher("thorn_shooter", CACTUS_THORN, EntityCactusThorn.class, new ItemStack(Blocks.CACTUS).getItem(), EnumRarity.RARE).setCreativeTab(mod_LavaCow.TAB_ITEMS).setMaxDamage(768);
     public static final Item BAOBING = new ItemNetherStew("baobing", 10, 1.2F).setPotionEffect(new PotionEffect(ModMobEffects.THORNED, 120 * 20, 1), 1.0F);
-    public static final Item KUNG_PAO_CHICKEN = new ItemNetherStew("kung_pao_chicken", 10, 1.2F).setPotionEffect(new PotionEffect(ModMobEffects.IMMOLATION, 120 * 20, 1), 1.0F);
+    public static final Item KUNG_PAO_CHICKEN = new ItemNetherStew("kung_pao_chicken", 10, 1.2F).setPotionEffect(ModMobEffects.immolation(120 * 20, 1), 1.0F);
     public static final Item ECTOPLASM_MASS = new ItemFishCustom("ectoplasm_mass", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item ECTOPLASM_INGOT = new ItemFishCustom("ectoplasm_ingot", null, mod_LavaCow.TAB_ITEMS, false);
     public static final Item SOULFORGED_HEART = new ItemBaubleTrinket("soulforged_heart", mod_LavaCow.TAB_ITEMS, EnumRarity.RARE, true);
