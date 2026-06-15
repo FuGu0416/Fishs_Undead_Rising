@@ -100,7 +100,7 @@ public class SpawnUtil {
         return null;
     }
     
-    public static BlockPos isNearBlock(ServerLevelAccessor p_223316_1_, Block BlockIn, BlockPos pos, int r) {
+    public static BlockPos isNearBlock(ServerLevelAccessor level, Block BlockIn, BlockPos pos, int r) {
         int dx = pos.getX();
         int dy = pos.getY();
         int dz = pos.getZ();
@@ -109,7 +109,7 @@ public class SpawnUtil {
         for (int i = dx - r; i < dx + r; i++)
         	for (int j = dy - r; j < dy + r; j++)
         		for (int k = dz - r; k < dz + r; k++)
-        			if (p_223316_1_.getBlockState(mp.set(i, j, k)).getBlock().equals(BlockIn))
+        			if (level.getBlockState(mp.set(i, j, k)).getBlock().equals(BlockIn))
                 		return mp.immutable();
 
     	return null;
@@ -144,8 +144,8 @@ public class SpawnUtil {
 	}
 
 	@Nullable
-	private static BlockPos findSpawnPositionInColumn(ServerLevel worldIn, BlockPos p_241433_1_, int p_241433_2_, int p_241433_4_) {
-		BlockPos blockpos = p_241433_1_.offset(p_241433_2_, 6, p_241433_4_);
+	private static BlockPos findSpawnPositionInColumn(ServerLevel worldIn, BlockPos pos, int xOffset, int zOffset) {
+		BlockPos blockpos = pos.offset(xOffset, 6, zOffset);
 		BlockState blockstate = worldIn.getBlockState(blockpos);
 		
 		if (blockstate.liquid()) {

@@ -616,8 +616,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         if (!this.level().isClientSide && (!this.hasPassenger(playerIn))) {
             NetworkHooks.openScreen((ServerPlayer) playerIn, new MenuProvider() {
 				@Override
-				public AbstractContainerMenu createMenu(int p_createMenu_1_, Inventory p_createMenu_2_, Player p_createMenu_3_) {
-					return ChestMenu.threeRows(p_createMenu_1_, p_createMenu_2_, inventory);
+				public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+					return ChestMenu.threeRows(containerId, playerInventory, inventory);
 				}
 
                 @Override

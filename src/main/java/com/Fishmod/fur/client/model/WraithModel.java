@@ -54,7 +54,7 @@ public class WraithModel extends GeoModel<WraithEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(WraithEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(WraithEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

@@ -17,13 +17,13 @@ public class FURArrowRenderer extends ArrowRenderer<FURArrowEntity> {
 		new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/projectile/fang_arrow.png")
 	};
 	
-	public FURArrowRenderer(EntityRendererProvider.Context p_i46549_1_, int typeIn) {
-		super(p_i46549_1_);
+	public FURArrowRenderer(EntityRendererProvider.Context context, int typeIn) {
+		super(context);
 		this.skinType = typeIn;		
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(FURArrowEntity p_110775_1_) {
+	public ResourceLocation getTextureLocation(FURArrowEntity entity) {
 		return TEXTURES[this.skinType];
 	}
 }

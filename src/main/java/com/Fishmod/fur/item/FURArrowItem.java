@@ -37,8 +37,8 @@ public class FURArrowItem extends ArrowItem {
 		this.Tooltip = tooltip;
 	}
 	
-	public FURArrowItem(Properties p_i48487_1_) {
-		this(p_i48487_1_, 0);
+	public FURArrowItem(Properties properties) {
+		this(properties, 0);
 	}
 
 	@Override

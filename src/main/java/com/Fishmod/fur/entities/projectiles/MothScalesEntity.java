@@ -5,9 +5,9 @@ import java.util.List;
 import org.joml.Vector3f;
 
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.particle.MothScaleOptions;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -36,9 +36,10 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class MothScalesEntity extends Fireball {	
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(MothScalesEntity.class, EntityDataSerializers.INT);
-	private static final float[][] SCALECOLOR = {{0.42F, 0.4F, 1.00F}, {1.00F, 0.59F, 0.06F}, {0.99F, 0.0F, 0.32F}};
-	private float damage = 6.0F;	
-	
+	// Colors match each type's granted potion: type 0 = Void Dust 0xD146FF (209,70,255),
+	// type 2 = Strength/DAMAGE_BOOST 0xFFC700 (255,199,0).
+	private static final float[][] SCALECOLOR = {{0.82F, 0.275F, 1.00F}, {1.00F, 0.59F, 0.06F}, {1.00F, 0.78F, 0.0F}};
+
 	@SuppressWarnings("unchecked")
 	public MothScalesEntity(EntityType<?> entityType, Level worldIn) {
 		super((EntityType<? extends MothScalesEntity>)entityType, worldIn);
@@ -64,51 +65,59 @@ public class MothScalesEntity extends Fireball {
 		if(!this.horizontalCollision && !this.verticalCollision)
 			this.yPower -= 0.006D;
 		
-		if(this.level().isClientSide())
+		if(this.level().isClientSide()) {
+			int type = this.getScaleType();
 			for(int i = 0 ; i < 2 + this.random.nextInt(2) ; i++) {
-				this.level().addParticle(this.getParticleType(this.getScaleType()), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(this.getParticleType(type), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
+
 				if(this.random.nextFloat() < 0.15F) {
-					this.level().addParticle(this.getAdditionalParticle(this.getScaleType()), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
-				}
-			}
-	}
-	
-	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		Entity entity = result.getEntity();
-		
-		if (!this.level().isClientSide && this.getScaleType() == 1) {
-			Entity entity1 = this.getOwner();
-			if (entity1 == null || !(entity1 instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
-				BlockPos blockpos = entity.blockPosition();
-				for(int i = -2 ; i < 2 ; i++) {
-					for(int j = -2 ; j < 2 ; j++) {
-						for(int k = -2 ; k < 2 ; k++) {					
-				            if (this.random.nextFloat() < 0.15F && this.level().isEmptyBlock(blockpos.offset(i, j, k))) {
-				            	this.level().setBlockAndUpdate(blockpos.offset(i, j, k), BaseFireBlock.getState(this.level(), blockpos.offset(i, j, k)));
-				            }
-						}
-					}
+					this.level().addParticle(this.getAdditionalParticle(type), this.getX() + this.random.nextDouble() * 0.5D, this.getY() + 0.5D + this.random.nextDouble() * 0.5D, this.getZ() + this.random.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}
 	}
 	
 	@Override
+	protected boolean canHitEntity(Entity target) {
+		if (!super.canHitEntity(target)) {
+			return false;
+		}
+		// Vanilla only shields passengers that share the owner's vehicle; when the owner *is* the mount
+		// (a ridden Enigmoth), that leaves the mount and its rider hittable, so the volley would strike
+		// them on spawn and drop the effect cloud right on the Enigmoth. Exclude the whole mount stack.
+		Entity owner = this.getOwner();
+		return owner == null || target.getRootVehicle() != owner.getRootVehicle();
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (!this.level().isClientSide && this.getScaleType() == 1) {
+			this.igniteArea(result.getEntity().blockPosition());
+		}
+	}
+
+	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		
 		if (!this.level().isClientSide && this.getScaleType() == 1) {
-			Entity entity = this.getOwner();
-			if (entity == null || !(entity instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
-				BlockPos blockpos = result.getBlockPos().relative(result.getDirection());
-				for(int i = -2 ; i < 2 ; i++) {
-					for(int j = -2 ; j < 2 ; j++) {
-						for(int k = -2 ; k < 2 ; k++) {					
-				            if (this.random.nextFloat() < 0.15F && this.level().isEmptyBlock(blockpos.offset(i, j, k))) {
-				            	this.level().setBlockAndUpdate(blockpos.offset(i, j, k), BaseFireBlock.getState(this.level(), blockpos.offset(i, j, k)));
-				            }
+			this.igniteArea(result.getBlockPos().relative(result.getDirection()));
+		}
+	}
+
+	/**
+	 * Scatter fire in a 4x4x4 box around {@code center}, unless the owner is a mob and mob-griefing
+	 * is disabled for that mob.
+	 */
+	private void igniteArea(BlockPos center) {
+		Entity owner = this.getOwner();
+		if (!(owner instanceof Mob) || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), owner)) {
+			for (int i = -2 ; i < 2 ; i++) {
+				for (int j = -2 ; j < 2 ; j++) {
+					for (int k = -2 ; k < 2 ; k++) {
+						BlockPos pos = center.offset(i, j, k);
+						if (this.random.nextFloat() < 0.15F && this.level().isEmptyBlock(pos)) {
+							this.level().setBlockAndUpdate(pos, BaseFireBlock.getState(this.level(), pos));
 						}
 					}
 				}
@@ -149,6 +158,10 @@ public class MothScalesEntity extends Fireball {
 	             	
 	             	if (!list.isEmpty()) {
 	             		for(LivingEntity livingentity : list) {
+	             			// Never snap the cloud onto the firing mount or its rider.
+	             			if (entity != null && livingentity.getRootVehicle() == entity.getRootVehicle()) {
+	             				continue;
+	             			}
 	             			double d0 = this.distanceToSqr(livingentity);
 	             			if (d0 < 16.0D) {
 	             				areaeffectcloudentity.setPos(livingentity.getX(), livingentity.getY(), livingentity.getZ());
@@ -176,23 +189,15 @@ public class MothScalesEntity extends Fireball {
 		return 0.33F;
 	}
 	   
-	public void setDamage(float damageIn) {
-		this.damage = damageIn;
-	}
-
-	public float getDamage() {
-		return this.damage;
-	}	   
-	   
-	protected DustParticleOptions getParticleType(int Skin) {		
-		return new DustParticleOptions(new Vector3f(Math.max(0.0F, Math.min(1.0F, SCALECOLOR[Skin][0] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)), 
-										Math.max(0.0F, Math.min(1.0F, SCALECOLOR[Skin][1] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)), 
-										Math.max(0.0F, Math.min(1.0F, SCALECOLOR[Skin][2] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F))), 
-										0.66F + this.random.nextFloat() * 0.33F);
+	protected MothScaleOptions getParticleType(int skin) {
+		return new MothScaleOptions(new Vector3f(Math.max(0.0F, Math.min(1.0F, SCALECOLOR[skin][0] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)),
+										Math.max(0.0F, Math.min(1.0F, SCALECOLOR[skin][1] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)), 
+										Math.max(0.0F, Math.min(1.0F, SCALECOLOR[skin][2] + (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F))),
+										(0.66F + this.random.nextFloat() * 0.33F) * (0.3F + this.random.nextFloat() * 0.2F));
 	}	
 	
-	private ParticleOptions getAdditionalParticle(int Skin) {
-		switch (Skin) { 
+	private ParticleOptions getAdditionalParticle(int skin) {
+		switch (skin) { 
 			case 0 :
 				return ParticleTypes.PORTAL;
 		    case 1 :
@@ -215,7 +220,7 @@ public class MothScalesEntity extends Fireball {
 
     @Override
     protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.SMOKE;
+        return ParticleTypes.ASH;
 	}
     
     public int getScaleType() {

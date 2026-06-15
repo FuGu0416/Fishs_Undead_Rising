@@ -26,7 +26,7 @@ public class ShroomlingRenderer extends GeoEntityRenderer<ShroomlingEntity> {
     }
     
     @Override
-    protected int getBlockLightLevel(ShroomlingEntity p_225624_1_, BlockPos p_225624_2_) {
+    protected int getBlockLightLevel(ShroomlingEntity entity, BlockPos pos) {
         return 15;
     }    
 }

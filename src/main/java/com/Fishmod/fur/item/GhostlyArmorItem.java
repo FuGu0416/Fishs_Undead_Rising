@@ -29,11 +29,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GhostlyArmorItem extends ArmorItem {
-	private static final EnumMap<ArmorItem.Type, UUID> ARMOR_MODIFIER_UUID_PER_SLOT = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266744_) -> {
-		p_266744_.put(ArmorItem.Type.BOOTS, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
-		p_266744_.put(ArmorItem.Type.LEGGINGS, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
-		p_266744_.put(ArmorItem.Type.CHESTPLATE, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
-		p_266744_.put(ArmorItem.Type.HELMET, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
+	private static final EnumMap<ArmorItem.Type, UUID> ARMOR_MODIFIER_UUID_PER_SLOT = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+		map.put(ArmorItem.Type.BOOTS, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
+		map.put(ArmorItem.Type.LEGGINGS, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
+		map.put(ArmorItem.Type.CHESTPLATE, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
+		map.put(ArmorItem.Type.HELMET, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
 	});
 	private static final double[] HEALTH_ADDITION = new double[]{-2.0D, -3.0D, -3.0D, -2.0D};
 	private Multimap<Attribute, AttributeModifier> attributeMap;

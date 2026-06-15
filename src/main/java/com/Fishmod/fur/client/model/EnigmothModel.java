@@ -57,7 +57,7 @@ public class EnigmothModel extends GeoModel<EnigmothEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(EnigmothEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(EnigmothEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

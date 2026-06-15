@@ -18,21 +18,21 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public enum FURArmorMaterial implements ArmorMaterial {
-	CHITIN("chitin", 5, Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266655_) -> {
-		p_266655_.put(ArmorItem.Type.BOOTS, 2);
-		p_266655_.put(ArmorItem.Type.LEGGINGS, 5);
-		p_266655_.put(ArmorItem.Type.CHESTPLATE, 6);
-		p_266655_.put(ArmorItem.Type.HELMET, 2);
+	CHITIN("chitin", 5, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+		map.put(ArmorItem.Type.BOOTS, 2);
+		map.put(ArmorItem.Type.LEGGINGS, 5);
+		map.put(ArmorItem.Type.CHESTPLATE, 6);
+		map.put(ArmorItem.Type.HELMET, 2);
 	}), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> {
 		return Ingredient.of(FURItemRegistry.CHITIN.get());
 	});
 	   
 	public static final StringRepresentable.EnumCodec<ArmorMaterials> CODEC = StringRepresentable.fromEnum(ArmorMaterials::values);
-	private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266653_) -> {
-		p_266653_.put(ArmorItem.Type.BOOTS, 13);
-		p_266653_.put(ArmorItem.Type.LEGGINGS, 15);
-		p_266653_.put(ArmorItem.Type.CHESTPLATE, 16);
-		p_266653_.put(ArmorItem.Type.HELMET, 11);
+	private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+		map.put(ArmorItem.Type.BOOTS, 13);
+		map.put(ArmorItem.Type.LEGGINGS, 15);
+		map.put(ArmorItem.Type.CHESTPLATE, 16);
+		map.put(ArmorItem.Type.HELMET, 11);
 	});
 	private final String name;
 	private final int durabilityMultiplier;

@@ -49,12 +49,12 @@ public class EffectVoidDust extends MobEffect {
     }
     
     @Override
-    public boolean isDurationEffectTick(int p_76397_1_, int p_76397_2_) {
-        int i = (20 * 10) >> p_76397_2_;
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        int i = (20 * 10) >> amplifier;
         if (i > 0) {
-           return p_76397_1_ % i == 0;
+           return duration % i == 0;
         } else {
-           return p_76397_1_ % 20 == 0;
+           return duration % 20 == 0;
         }
     }
 }

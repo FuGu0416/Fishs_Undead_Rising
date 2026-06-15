@@ -59,7 +59,7 @@ public class UnburiedModel extends GeoModel<UnburiedEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(UnburiedEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(UnburiedEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

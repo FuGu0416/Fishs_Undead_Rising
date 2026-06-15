@@ -208,7 +208,11 @@ public class FURTameableEntity extends TamableAnimal {
         
         if (!itemstack.isEmpty()) {
         	InteractionResult actionresulttype = itemstack.interactLivingEntity(player, this, hand);
-        	if (actionresulttype.equals(InteractionResult.SUCCESS)) {
+        	// consumesAction() covers both SUCCESS (client) and CONSUME (server) — vanilla item
+        	// interactions like SaddleItem/name tag return sidedSuccess(), i.e. CONSUME on the
+        	// server. Returning only on SUCCESS let those fall through to the state-cycle branch
+        	// below, so saddling also flipped the pet's sit/wander/follow state.
+        	if (actionresulttype.consumesAction()) {
         		return actionresulttype;
         	}
         }

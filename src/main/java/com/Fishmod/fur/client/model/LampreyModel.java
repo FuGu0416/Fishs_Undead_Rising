@@ -39,7 +39,7 @@ public class LampreyModel extends GeoModel<LampreyEntity> {
 	
     @Nullable
     @Override
-	public RenderType getRenderType(LampreyEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(LampreyEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

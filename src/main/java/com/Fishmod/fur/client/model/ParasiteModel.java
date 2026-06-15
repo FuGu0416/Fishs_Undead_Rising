@@ -59,7 +59,7 @@ public class ParasiteModel extends GeoModel<ParasiteEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(ParasiteEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(ParasiteEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

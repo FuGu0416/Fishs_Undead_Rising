@@ -22,8 +22,8 @@ public class FURBannerPatternTagsProvider extends BannerPatternTagsProvider {
     public static final TagKey<BannerPattern> PATTERN_SKELETONKING = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(mod_LavaCow.MODID, "skeletonking"));
     public static final TagKey<BannerPattern> PATTERN_WENDIGO = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(mod_LavaCow.MODID, "wendigo"));
     
-	public FURBannerPatternTagsProvider(PackOutput p_256451_, CompletableFuture<Provider> p_256420_, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-		super(p_256451_, p_256420_, modId, existingFileHelper);
+	public FURBannerPatternTagsProvider(PackOutput output, CompletableFuture<Provider> lookupProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, modId, existingFileHelper);
 	}
 	
 	@Override

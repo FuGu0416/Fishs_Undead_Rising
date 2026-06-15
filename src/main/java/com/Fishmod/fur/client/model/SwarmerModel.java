@@ -45,7 +45,7 @@ public class SwarmerModel extends GeoModel<SwarmerEntity> {
 	
     @Nullable
     @Override
-	public RenderType getRenderType(SwarmerEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(SwarmerEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

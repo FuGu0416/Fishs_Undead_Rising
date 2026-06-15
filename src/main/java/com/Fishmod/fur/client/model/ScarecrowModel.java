@@ -104,7 +104,7 @@ public class ScarecrowModel extends GeoModel<ScarecrowEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(ScarecrowEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(ScarecrowEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

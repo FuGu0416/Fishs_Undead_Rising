@@ -23,10 +23,10 @@ public class EffectImmolation extends MobEffect {
     }
     
     @Override
-    public boolean isDurationEffectTick(int p_76397_1_, int p_76397_2_) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         int i = 20;
         if (i > 0) {
-           return p_76397_1_ % i == 0;
+           return duration % i == 0;
         } else {
            return true;
         }

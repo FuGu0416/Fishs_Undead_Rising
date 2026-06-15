@@ -189,8 +189,8 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
         compound.putInt("MaxProgress", this.maxProgress);
         ContainerHelper.saveAllItems(compound, this.items);
         CompoundTag compoundtag = new CompoundTag();
-        this.recipesUsed.forEach((p_187449_, p_187450_) -> {
-           compoundtag.putInt(p_187449_.toString(), p_187450_);
+        this.recipesUsed.forEach((recipeId, count) -> {
+           compoundtag.putInt(recipeId.toString(), count);
         });
         compound.put("RecipesUsed", compoundtag);
     }
@@ -289,18 +289,18 @@ public class SoulFurnaceBlockEntity extends BlockEntity implements MenuProvider,
 		List<Recipe<?>> list = Lists.newArrayList();
 
 		for(Object2IntMap.Entry<ResourceLocation> entry : this.recipesUsed.object2IntEntrySet()) {
-			level.getRecipeManager().byKey(entry.getKey()).ifPresent((p_155023_) -> {
-				list.add(p_155023_);
-				createExperience(level, vec3, entry.getIntValue(), ((AbstractCookingRecipe)p_155023_).getExperience());
+			level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
+				list.add(recipe);
+				createExperience(level, vec3, entry.getIntValue(), ((AbstractCookingRecipe)recipe).getExperience());
 			});
 		}
 
 		return list;
 	}
 
-	private static void createExperience(ServerLevel level, Vec3 vec3, int p_155001_, float p_155002_) {
-		int i = Mth.floor((float)p_155001_ * p_155002_);
-		float f = Mth.frac((float)p_155001_ * p_155002_);
+	private static void createExperience(ServerLevel level, Vec3 vec3, int count, float experience) {
+		int i = Mth.floor((float)count * experience);
+		float f = Mth.frac((float)count * experience);
 		if (f != 0.0F && Math.random() < (double)f) {
 			++i;
 		}

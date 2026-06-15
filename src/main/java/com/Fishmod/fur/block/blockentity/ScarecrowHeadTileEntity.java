@@ -16,13 +16,13 @@ public class ScarecrowHeadTileEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag p_189515_1_) {
-		super.saveAdditional(p_189515_1_);
+	protected void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 	}
 
 	@Override
-	public void load(CompoundTag p_230337_2_) {
-		super.load(p_230337_2_);
+	public void load(CompoundTag compound) {
+		super.load(compound);
 	}
 
 	@Nullable

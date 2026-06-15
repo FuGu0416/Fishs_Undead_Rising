@@ -181,7 +181,7 @@ public class CactoidModel extends GeoModel<CactoidEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(CactoidEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(CactoidEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

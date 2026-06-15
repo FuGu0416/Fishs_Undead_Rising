@@ -104,8 +104,8 @@ public class MoltenHammerItem extends FURWeaponItem {
 		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius, particle);
 		SpawnUtil.LavaBurst(level, player.getX(), player.getY() + 1.0D, player.getZ(), radius * 0.5D, particle1);
 
-        stack.hurtAndBreak(16, player, (p_220045_0_) -> {
-			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        stack.hurtAndBreak(16, player, (entity) -> {
+			entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
         
         player.playSound(SoundEvents.GENERIC_EXPLODE, 1.0F, 1.0F);

@@ -77,8 +77,8 @@ public class WetaHoeItem extends HoeItem {
 				}
 			}
 	    	
-	    	ctx.getPlayer().getItemInHand(ctx.getHand()).hurtAndBreak(1, ctx.getPlayer(), (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+	    	ctx.getPlayer().getItemInHand(ctx.getHand()).hurtAndBreak(1, ctx.getPlayer(), (entity) -> {
+    			entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
 		}
 

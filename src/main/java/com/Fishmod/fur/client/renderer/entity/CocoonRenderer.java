@@ -18,8 +18,8 @@ public class CocoonRenderer extends GeoEntityRenderer<CocoonEntity> {
     }
     
     @Override
-    protected void applyRotations(CocoonEntity entity, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-    	super.applyRotations(entity, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
-    	p_225621_2_.scale(1.5F, 1.5F, 1.5F);  	
+    protected void applyRotations(CocoonEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
+    	poseStack.scale(1.5F, 1.5F, 1.5F);  	
 	}
 }

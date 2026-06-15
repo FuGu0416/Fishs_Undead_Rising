@@ -11,8 +11,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FURHugeShroomBlock extends HugeMushroomBlock {	
-	public FURHugeShroomBlock(Properties p_i49982_1_) {
-		super(p_i49982_1_);
+	public FURHugeShroomBlock(Properties properties) {
+		super(properties);
 	}
 	
 	/**

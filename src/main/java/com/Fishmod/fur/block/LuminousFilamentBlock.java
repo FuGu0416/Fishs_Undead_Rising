@@ -1,8 +1,11 @@
 package com.Fishmod.fur.block;
 
+import org.joml.Vector3f;
+
+import com.Fishmod.fur.particle.MothScaleOptions;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -41,15 +44,19 @@ public class LuminousFilamentBlock extends Block {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        // Only the hanging tip (LOWER segment) drips end-rod motes.
+        // Only the hanging tip (LOWER segment) drips moth-scale motes.
         if (state.getValue(SEGMENT) != Segment.LOWER) {
             return;
         }
 
-        double x = pos.getX() + 0.5D + (random.nextDouble() - 0.5D) * 0.3D;
+        // Match the block's per-position XZ render offset (OffsetType.XZ) so motes line up with the model.
+        var offset = state.getOffset(level, pos);
+        double x = pos.getX() + 0.5D + offset.x + (random.nextDouble() - 0.5D) * 0.3D;
         double y = pos.getY() + random.nextDouble() * 0.4D;
-        double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.3D;
-        level.addParticle(ParticleTypes.END_ROD, x, y, z, 0.0D, -0.015D, 0.0D);
+        double z = pos.getZ() + 0.5D + offset.z + (random.nextDouble() - 0.5D) * 0.3D;
+        // Shrink each mote to 30%–50% of the base size.
+        float scale = 0.3F + random.nextFloat() * 0.2F;
+        level.addParticle(new MothScaleOptions(new Vector3f(0.859F, 1.0F, 0.996F), scale), x, y, z, 0.0D, -0.03D, 0.0D);
     }
 
     @Override

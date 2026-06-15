@@ -13,12 +13,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CactusThornRenderer extends ArrowRenderer<CactusThornEntity> {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/projectile/cactus_thorn.png");
 
-	public CactusThornRenderer(EntityRendererProvider.Context p_i46549_1_) {
-		super(p_i46549_1_);
+	public CactusThornRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CactusThornEntity p_110775_1_) {
+	public ResourceLocation getTextureLocation(CactusThornEntity entity) {
 		return TEXTURE;
 	}
 }

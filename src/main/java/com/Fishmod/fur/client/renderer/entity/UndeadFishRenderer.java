@@ -25,14 +25,14 @@ public class UndeadFishRenderer extends GeoEntityRenderer<UndeadFishEntity> {
     }
     
     @Override
-    protected void applyRotations(UndeadFishEntity entityLiving, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.applyRotations(entityLiving, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
+    protected void applyRotations(UndeadFishEntity entityLiving, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.applyRotations(entityLiving, poseStack, ageInTicks, rotationYaw, partialTicks);
         float f = (float) (4.3F * Math.sin(0.6F * ageInTicks));
-        p_225621_2_.mulPose(Axis.YP.rotationDegrees(f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(f));
         
 		if (!entityLiving.isInWater()) {
-			p_225621_2_.translate(0.1F, 0.1F, -0.1F);
-			p_225621_2_.mulPose(Axis.ZP.rotationDegrees(90.0F));
+			poseStack.translate(0.1F, 0.1F, -0.1F);
+			poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 }

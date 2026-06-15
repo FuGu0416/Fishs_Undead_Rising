@@ -75,8 +75,8 @@ public class FURRangedItem extends CrossbowItem {
 			
 	@Override		
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-	    return (p_220002_0_) -> {
-	        return p_220002_0_.getItem().equals(this.ammo);
+	    return (stack) -> {
+	        return stack.getItem().equals(this.ammo);
 	    };
 	}
 	
@@ -176,8 +176,8 @@ public class FURRangedItem extends CrossbowItem {
 				}
 				
 	            level.addFreshEntity(entitysnowball);
-	            player.getItemInHand(hand).hurtAndBreak(1, player, (p_220045_0_) -> {
-	    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+	            player.getItemInHand(hand).hurtAndBreak(1, player, (entity) -> {
+	    			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 	    		});
 				level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 				player.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));*/
@@ -301,8 +301,8 @@ public class FURRangedItem extends CrossbowItem {
         }
         
         if (player.getRandom().nextFloat() < 0.25F) {
-            stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-                p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+            stack.hurtAndBreak(1, player, (entity) -> {
+                entity.broadcastBreakEvent(player.getUsedItemHand());
             });
         }
         
@@ -349,8 +349,8 @@ public class FURRangedItem extends CrossbowItem {
 		 				 
 		level.addFreshEntity(entityammo);
         
-        stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-            p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+        stack.hurtAndBreak(1, player, (entity) -> {
+            entity.broadcastBreakEvent(player.getUsedItemHand());
         });
 	}
 
@@ -382,8 +382,8 @@ public class FURRangedItem extends CrossbowItem {
 
 		level.addFreshEntity(entityammo);
 
-		stack.hurtAndBreak(1, player, (p_220009_1_) -> {
-			p_220009_1_.broadcastBreakEvent(player.getUsedItemHand());
+		stack.hurtAndBreak(1, player, (entity) -> {
+			entity.broadcastBreakEvent(player.getUsedItemHand());
 		});
 	}
 

@@ -26,10 +26,10 @@ public class MimicRenderer extends GeoEntityRenderer<MimicEntity> {
     }    
     
     @Override
-    protected void applyRotations(MimicEntity entity, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-    	super.applyRotations(entity, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
+    protected void applyRotations(MimicEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
     	if (entity.isBaby()) {
-        	p_225621_2_.scale(0.5F, 0.5F, 0.5F);
+        	poseStack.scale(0.5F, 0.5F, 0.5F);
         }    	
     	
     	if (entity.isInSittingPose()) {

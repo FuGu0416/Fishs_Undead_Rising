@@ -357,10 +357,14 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
                 this.heal(1.0F);
             }
     		
-    		if (this.isVehicle() && this.getControllingPassenger() instanceof LivingEntity && this.tickCount % 40 == 0) {
-    			if (!((LivingEntity) this.getControllingPassenger()).hasEffect(MobEffects.FIRE_RESISTANCE)) {
-    				((LivingEntity) this.getControllingPassenger()).addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 3 * 20, 0));
-    			}
+    		// Top the rider's Fire Resistance up every tick so it never lapses while mounted. The old
+    		// 40-tick conditional refresh granted only 3s and re-applied just when the effect was gone,
+    		// leaving ~1s gaps where a lava-swimming Salamander could cook its rider. Re-applying each
+    		// tick with a duration well over the interval keeps it gap-free and the icon steady;
+    		// addEffect won't clobber a longer-lasting Fire Resistance from another source.
+    		LivingEntity rider = this.getControllingPassenger();
+    		if (this.isVehicle() && rider != null) {
+    			rider.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60, 0, false, false, true));
     		}
 
 	    	int age = this.getAge();

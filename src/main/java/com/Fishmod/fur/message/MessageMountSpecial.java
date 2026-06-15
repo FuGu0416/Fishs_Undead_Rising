@@ -5,9 +5,11 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
+import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
@@ -17,7 +19,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -26,22 +27,35 @@ public class MessageMountSpecial {
     private double posX;
     private double posY;
     private double posZ;
-    
+    private double motionX;
+    private double motionY;
+    private double motionZ;
+
 	public MessageMountSpecial() {
 	}
-	
-	public MessageMountSpecial(int Id, double posX, double posY, double posZ) {		
+
+	public MessageMountSpecial(int Id, double posX, double posY, double posZ) {
+		this(Id, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+	}
+
+	public MessageMountSpecial(int Id, double posX, double posY, double posZ, double motionX, double motionY, double motionZ) {
 		this.Id = Id;
 		this.posX = posX;
 		this.posY = posY;
 		this.posZ = posZ;
+		this.motionX = motionX;
+		this.motionY = motionY;
+		this.motionZ = motionZ;
 	}
 	
 	public static void serialize(final MessageMountSpecial message, final FriendlyByteBuf buf) {
         buf.writeInt(message.Id);
         buf.writeDouble(message.posX);
         buf.writeDouble(message.posY);
-        buf.writeDouble(message.posZ);		
+        buf.writeDouble(message.posZ);
+        buf.writeDouble(message.motionX);
+        buf.writeDouble(message.motionY);
+        buf.writeDouble(message.motionZ);
 	}
 	
 	public static MessageMountSpecial deserialize(final FriendlyByteBuf buf) {
@@ -50,7 +64,10 @@ public class MessageMountSpecial {
 		message.posX = buf.readDouble();
 		message.posY = buf.readDouble();
 		message.posZ = buf.readDouble();
-		
+		message.motionX = buf.readDouble();
+		message.motionY = buf.readDouble();
+		message.motionZ = buf.readDouble();
+
         return message;
 	}
        
@@ -61,13 +78,18 @@ public class MessageMountSpecial {
 		Vec3 lookVec = player.getLookAngle();
 		
 		if (entity instanceof SalamanderEntity) {
-	   	 	for (int i = 0 ; i < 8 ; i++) {
-	   	 		SmallFireball entityammo = new SmallFireball(entity.level(), (LivingEntity) entity, lookVec.x * (7.0D + new Random().nextGaussian() * 2.0D), lookVec.y * (-1.0D + new Random().nextGaussian() * 3.0D) - 0.25D, lookVec.z * (7.0D + new Random().nextGaussian() * 2.0D));
-	   	 		entityammo.setPos(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D);
-				entity.level().addFreshEntity(entityammo);	
-	   	 	}	
+			// Ridden special: lob a single Molten Glob along the rider's aim. The glob carries the
+			// lizard's own gravity (yPower set in its EntityType ctor), so add a slight upward bias to
+			// the launch velocity to counter the early drop and keep it tracking the crosshair.
+			MoltenGlobEntity glob = FUREntityRegistry.MOLTEN_GLOB.get().create(entity.level());
+			glob.setOwner(entity);
+			glob.moveTo(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D, entity.getYRot(), entity.getXRot());
+			double speed = 1.5D;
+			glob.setDeltaMovement(lookVec.x * speed, lookVec.y * speed + 0.15D, lookVec.z * speed);
+			glob.setFlame(true);
+			entity.level().addFreshEntity(glob);
 	   	 	entity.level().broadcastEntityEvent(entity, (byte)72);
-	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, FURSoundRegistry.SALAMANDER_ATTACK_RANGE.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 		} else if (entity instanceof VespaEntity vespa) {
 			vespa.abilityCooldown = vespa.abilityCooldown();
 			entity.level().broadcastEntityEvent(entity, (byte)4);					
@@ -77,12 +99,20 @@ public class MessageMountSpecial {
 			entity.playSound(((BeelzebubEntity) entity).getSpellSound(), 0.175F, 1.0F);
 			entity.level.broadcastEntityEvent(entity, (byte)10);					
 		}*/ else if (entity instanceof EnigmothEntity) {
+	   	 	// The ridden mount's server-side velocity is forced to zero (RidableFlyingMobEntity.travel zeroes
+	   	 	// it off the controlling client), so use the real flight velocity captured client-side in the packet.
+	   	 	Vec3 mountMotion = new Vec3(message.motionX, message.motionY, message.motionZ);
+	   	 	double launchSpeed = 1.25D;
 	   	 	for (int i = 0 ; i < 5 ; i++) {
-	   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES.get(), (LivingEntity)entity, entity.getDeltaMovement().x, 0.0D, entity.getDeltaMovement().z, entity.level());
-	   	 		entityammo.setPos(message.posX - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()), message.posY - (double)(entity.getBbHeight() / 2.0F), message.posZ - entity.getBbWidth() + (entity.getBbWidth() * player.getRandom().nextDouble()));		   	 			
-	   	 		entity.level().addFreshEntity(entityammo);	
+	   	 		MothScalesEntity entityammo = new MothScalesEntity(FUREntityRegistry.MOTH_SCALES.get(), (LivingEntity)entity, lookVec.x, lookVec.y, lookVec.z, entity.level());
+	   	 		// Spawn ~1 block ahead of the mount along the rider's aim (with a little scatter) so the
+	   	 		// volley always clears the Enigmoth instead of dropping onto it when hovering/slow.
+	   	 		entityammo.setPos(message.posX + lookVec.x + (player.getRandom().nextDouble() - 0.5D) * entity.getBbWidth(), message.posY + (double)(entity.getBbHeight() * 0.5F) + lookVec.y, message.posZ + lookVec.z + (player.getRandom().nextDouble() - 0.5D) * entity.getBbWidth());
+	   	 		entity.level().addFreshEntity(entityammo);
 	   	 		entityammo.setScaleType(((EnigmothEntity) entity).getSkin());
-	   	 	}	
+	   	 		// Launch along the rider's aim (so it leaves the mount) plus the mount's own forward momentum for inertia.
+	   	 		entityammo.setDeltaMovement(lookVec.scale(launchSpeed).add(mountMotion));
+	   	 	}
 	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 	   	 	entity.level().broadcastEntityEvent(entity, (byte)10);
 	   	 	

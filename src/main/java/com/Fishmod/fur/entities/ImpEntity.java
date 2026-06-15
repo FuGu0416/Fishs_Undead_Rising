@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -140,7 +139,7 @@ public class ImpEntity extends FogletEntity {
 
             if (this.spellWarmup == 0) {
                 this.castSpell();
-                ImpEntity.this.addEffect(new MobEffectInstance(FUREffectRegistry.IMMOLATION.get(), 8 * 20));
+                ImpEntity.this.addEffect(FUREffectRegistry.immolation(8 * 20, 0));
             }
         }
         

@@ -38,8 +38,8 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape X_AXIS_AABB = Block.box(2.0D, 0.0D, 4.0D, 14.0D, 16.0D, 12.0D);
 	protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 0.0D, 2.0D, 12.0D, 16.0D, 14.0D);
 	
-	public TombStoneBlock(Properties p_i48301_1_) {
-		super(p_i48301_1_);
+	public TombStoneBlock(Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(NATURAL, Boolean.valueOf(false)));
 	}
 
@@ -64,8 +64,8 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
     }
     
     @Override
-    public VoxelShape getShape(BlockState p_220053_1_, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
-    	Direction enumfacing = p_220053_1_.getValue(FACING);
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    	Direction enumfacing = state.getValue(FACING);
         return enumfacing.getAxis() == Direction.Axis.Z ? X_AXIS_AABB : Z_AXIS_AABB;
 	}
     
@@ -109,10 +109,10 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
      */
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext p_196258_1_) {
-        BlockPos blockpos = p_196258_1_.getClickedPos();
-        FluidState fluidstate = p_196258_1_.getLevel().getFluidState(blockpos);
-        BlockState blockstate = this.defaultBlockState().setValue(FACING, p_196258_1_.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)).setValue(NATURAL, Boolean.valueOf(false));
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        FluidState fluidstate = context.getLevel().getFluidState(blockpos);
+        BlockState blockstate = this.defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)).setValue(NATURAL, Boolean.valueOf(false));
         return blockstate;
     }
     
@@ -120,18 +120,18 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
      * Determines if an entity can path through this block
      */
     @Override
-    public boolean isPathfindable(BlockState p_196266_1_, BlockGetter p_196266_2_, BlockPos p_196266_3_, PathComputationType p_196266_4_) {
+    public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
         return false;
 	}
-    
+
     @Override
-    public FluidState getFluidState(BlockState p_204507_1_) {
-        return p_204507_1_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
-	
+
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
-		p_206840_1_.add(FACING, WATERLOGGED, NATURAL);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING, WATERLOGGED, NATURAL);
 	}
 	
     /**

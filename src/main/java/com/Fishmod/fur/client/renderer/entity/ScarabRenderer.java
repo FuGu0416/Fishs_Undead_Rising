@@ -26,8 +26,8 @@ public class ScarabRenderer extends GeoEntityRenderer<ScarabEntity> {
     }   
     
     @Override
-    protected void applyRotations(ScarabEntity entity, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-    	super.applyRotations(entity, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
-    	p_225621_2_.scale(0.75F, 0.75F, 0.75F);  	
+    protected void applyRotations(ScarabEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
+    	poseStack.scale(0.75F, 0.75F, 0.75F);  	
 	}
 }

@@ -26,7 +26,7 @@ public class WraithRenderer extends GeoEntityRenderer<WraithEntity> {
     }    
     
     @Override
-    protected int getBlockLightLevel(WraithEntity p_225624_1_, BlockPos p_225624_2_) {
+    protected int getBlockLightLevel(WraithEntity entity, BlockPos pos) {
         return 8;
     }
 }

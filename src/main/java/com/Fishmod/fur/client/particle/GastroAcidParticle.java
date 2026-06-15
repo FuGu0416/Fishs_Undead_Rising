@@ -12,19 +12,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GastroAcidParticle extends SimpleAnimatedParticle {
 
-	private GastroAcidParticle(ClientLevel p_i232435_1_, double p_i232435_2_, double p_i232435_4_, double p_i232435_6_, double p_i232435_8_, double p_i232435_10_, double p_i232435_12_, float Red, float Green, float Blue, float Offset, SpriteSet p_i232435_14_) {	
-		super(p_i232435_1_, p_i232435_2_, p_i232435_4_, p_i232435_6_, p_i232435_14_, 0.0F);
+	private GastroAcidParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float Red, float Green, float Blue, float Offset, SpriteSet sprites) {	
+		super(level, x, y, z, sprites, 0.0F);
 		float colorOffset = this.random.nextFloat() * Offset;
 		
 		this.quadSize = 0.5F;
 		this.setAlpha(1.0F);
 		this.setColor(Red, Green - colorOffset, Blue - colorOffset);
 		this.lifetime = (int)((double)(this.quadSize * 12.0F) / (Math.random() * (double)0.8F + (double)0.2F));
-		this.setSpriteFromAge(p_i232435_14_);
+		this.setSpriteFromAge(sprites);
 		this.hasPhysics = false;
-		this.xd = p_i232435_8_;
-		this.yd = p_i232435_10_;
-		this.zd = p_i232435_12_;
+		this.xd = xSpeed;
+		this.yd = ySpeed;
+		this.zd = zSpeed;
 		this.friction = 0.0F;
 	}
 
@@ -59,12 +59,12 @@ public class GastroAcidParticle extends SimpleAnimatedParticle {
 	public static class GastroAcidFactory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet sprites;
 
-		public GastroAcidFactory(SpriteSet p_i50599_1_) {
-			this.sprites = p_i50599_1_;
+		public GastroAcidFactory(SpriteSet sprites) {
+			this.sprites = sprites;
 		}
 
-		public Particle createParticle(SimpleParticleType p_199234_1_, ClientLevel p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-			return new GastroAcidParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 0.56F, 0.42F, 0.42F, 0.37F, this.sprites);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			return new GastroAcidParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 0.56F, 0.42F, 0.42F, 0.37F, this.sprites);
 		}
 	}
 	
@@ -72,12 +72,12 @@ public class GastroAcidParticle extends SimpleAnimatedParticle {
 	public static class SludgeJetFactory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet sprites;
 
-		public SludgeJetFactory(SpriteSet p_i50599_1_) {
-			this.sprites = p_i50599_1_;
+		public SludgeJetFactory(SpriteSet sprites) {
+			this.sprites = sprites;
 		}
 
-		public Particle createParticle(SimpleParticleType p_199234_1_, ClientLevel p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-			return new GastroAcidParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 0.0F, 0.3F, 0.5F, 0.12F, this.sprites);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			return new GastroAcidParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 0.0F, 0.3F, 0.5F, 0.12F, this.sprites);
 		}
 	}
 	

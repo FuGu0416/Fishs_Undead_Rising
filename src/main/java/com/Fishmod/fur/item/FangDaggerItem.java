@@ -43,8 +43,8 @@ public class FangDaggerItem extends FURWeaponItem {
         			
         	abstractarrowentity.pickup = AbstractArrow.Pickup.DISALLOWED;
         	level.addFreshEntity(abstractarrowentity);
-    		stack.hurtAndBreak(1, player, (p_289501_) -> {
-                p_289501_.broadcastBreakEvent(player.getUsedItemHand());
+    		stack.hurtAndBreak(1, player, (entity) -> {
+                entity.broadcastBreakEvent(player.getUsedItemHand());
              });
     		level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.RANDOM_FANG_DAGGER_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (living.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
     	}

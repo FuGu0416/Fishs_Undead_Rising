@@ -23,7 +23,7 @@ public class SeaHagRenderer extends GeoEntityRenderer<SeaHagEntity> {
     	return super.getTextureLocation(entity);
     }    
     
-    protected int getBlockLightLevel(SeaHagEntity p_225624_1_, BlockPos p_225624_2_) {
+    protected int getBlockLightLevel(SeaHagEntity entity, BlockPos pos) {
         return 8;
     }
 }

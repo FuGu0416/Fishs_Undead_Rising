@@ -28,13 +28,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
 	public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
 	
-	public FURShroomBlock(Properties p_i48363_1_) {
-		super(p_i48363_1_, TreeFeatures.HUGE_BROWN_MUSHROOM);
+	public FURShroomBlock(Properties properties) {
+		super(properties, TreeFeatures.HUGE_BROWN_MUSHROOM);
 		this.registerDefaultState(this.stateDefinition.any().setValue(this.getAgeProperty(), Integer.valueOf(0)));
     }
 	
 	@Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState p_220082_4_, boolean p_220082_5_) {
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		level.setBlock(pos, this.getStateForAge(level.random.nextInt(3)), 3);
 	}
 	
@@ -42,8 +42,8 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
 		return state.getValue(this.getAgeProperty());
 	}
 
-    public BlockState getStateForAge(int p_185528_1_) {
-        return this.defaultBlockState().setValue(this.getAgeProperty(), Integer.valueOf(p_185528_1_));
+    public BlockState getStateForAge(int age) {
+        return this.defaultBlockState().setValue(this.getAgeProperty(), Integer.valueOf(age));
     }
 	
     public IntegerProperty getAgeProperty() {
@@ -109,7 +109,7 @@ public class FURShroomBlock extends MushroomBlock implements BonemealableBlock {
     }
     
     @Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
-        p_206840_1_.add(AGE);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
     }
 }

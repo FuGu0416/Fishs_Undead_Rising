@@ -22,8 +22,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFea
 
 public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
 
-    public LargeGlowShroomFeature(Codec<HugeMushroomFeatureConfiguration> p_i231957_1_) {
-        super(p_i231957_1_);
+    public LargeGlowShroomFeature(Codec<HugeMushroomFeatureConfiguration> codec) {
+        super(codec);
     }
 
     // Override to accept any solid block as ground (vanilla requires MUSHROOM_GROW_BLOCK tag).
@@ -168,7 +168,7 @@ public class LargeGlowShroomFeature extends AbstractHugeMushroomFeature {
             || s.is(FURBlockRegistry.GLIMMERCAP_BLOCK_CAP.get());
     }
 
-    protected int getTreeRadiusForHeight(int p_225563_1_, int p_225563_2_, int p_225563_3_, int p_225563_4_) {
-        return p_225563_4_ <= 3 ? 0 : p_225563_3_;
+    protected int getTreeRadiusForHeight(int maxHeight, int randomMaxHeight, int foliageRadius, int y) {
+        return y <= 3 ? 0 : foliageRadius;
 	}
 }

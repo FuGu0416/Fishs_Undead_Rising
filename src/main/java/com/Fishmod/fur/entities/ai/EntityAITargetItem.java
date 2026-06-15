@@ -109,9 +109,9 @@ public class EntityAITargetItem<T extends ItemEntity> extends TargetGoal {
     		this.entity = entityIn;
     	}
 
-    	public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-    		double d0 = this.entity.distanceToSqr(p_compare_1_);
-    		double d1 = this.entity.distanceToSqr(p_compare_2_);
+    	public int compare(Entity entity1, Entity entity2) {
+    		double d0 = this.entity.distanceToSqr(entity1);
+    		double d1 = this.entity.distanceToSqr(entity2);
 
     		return Double.compare(d0, d1);
     	}

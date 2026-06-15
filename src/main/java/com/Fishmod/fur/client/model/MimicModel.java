@@ -59,7 +59,7 @@ public class MimicModel extends GeoModel<MimicEntity> {
 	
     @Nullable
     @Override
-	public RenderType getRenderType(MimicEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(MimicEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

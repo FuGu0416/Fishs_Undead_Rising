@@ -65,8 +65,8 @@ public class WispInaBottleRecipe extends CustomRecipe {
 		return stack2;
 	}
 
-	public boolean canCraftInDimensions(int p_194133_1_, int p_194133_2_) {
-		return p_194133_1_ >= 2 && p_194133_2_ >= 2;
+	public boolean canCraftInDimensions(int width, int height) {
+		return width >= 2 && height >= 2;
 	}
 
 	public RecipeSerializer<?> getSerializer() {

@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -187,7 +186,7 @@ public class BansheeEntity extends FloatingMobEntity implements GeoEntity {
         		if (entity1 instanceof LivingEntity livingentity) {     
     				if (livingentity.hurt(BansheeEntity.this.damageSources().sonicBoom(BansheeEntity.this), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
     					float local_difficulty = BansheeEntity.this.level().getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
-    					livingentity.addEffect(new MobEffectInstance(FUREffectRegistry.FEAR.get(), 2 * 20 * (int)local_difficulty, 2));       	
+    					livingentity.addEffect(FUREffectRegistry.fear(2 * 20 * (int)local_difficulty, 2));
     				}       							
         		}
         	} 

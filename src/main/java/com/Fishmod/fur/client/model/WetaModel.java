@@ -57,7 +57,7 @@ public class WetaModel extends GeoModel<WetaEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(WetaEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(WetaEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

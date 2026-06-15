@@ -52,7 +52,7 @@ public class WispRenderer extends GeoEntityRenderer<WispEntity> {
 	}
     
 	@Override
-    protected int getBlockLightLevel(WispEntity p_225624_1_, BlockPos p_225624_2_) {
+    protected int getBlockLightLevel(WispEntity entity, BlockPos pos) {
         return 15;
     }
 }

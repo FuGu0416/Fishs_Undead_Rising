@@ -81,8 +81,8 @@ public class InfusedBandageRecipe extends CustomRecipe {
     }
 
 	@Override
-	public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
-		return p_43999_ >= 2 && p_44000_ >= 2;
+	public boolean canCraftInDimensions(int width, int height) {
+		return width >= 2 && height >= 2;
 	}
 
 	@Override

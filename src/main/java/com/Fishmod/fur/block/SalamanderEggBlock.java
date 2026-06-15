@@ -112,7 +112,7 @@ public class SalamanderEggBlock extends BaseEntityBlock {
 	    }
 	}
 
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState p_277618_, boolean p_277819_) {
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		boolean flag = hatchBoost(level, pos);
 		if (!level.isClientSide() && flag) {
 			level.levelEvent(3009, pos, 0);
@@ -124,7 +124,7 @@ public class SalamanderEggBlock extends BaseEntityBlock {
 		level.scheduleTick(pos, this, j + level.random.nextInt(RANDOM_HATCH_OFFSET_TICKS));
 	}
 
-	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType p_279299_) {
+	public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
 		return false;
 	}
 

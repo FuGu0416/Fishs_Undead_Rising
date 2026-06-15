@@ -55,7 +55,7 @@ public class BansheeModel extends GeoModel<BansheeEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(BansheeEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(BansheeEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

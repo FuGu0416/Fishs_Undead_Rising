@@ -393,7 +393,7 @@ public class FURServerEvents {
     			Attacked.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
     		} else if (wolf.getName().equals(Component.translatable("entity.fur.sonicbomb"))) {
-    			Attacked.addEffect(new MobEffectInstance(FUREffectRegistry.FEAR.get(), 4 * 20, 2, false, false, true));
+    			Attacked.addEffect(FUREffectRegistry.fear(4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else {
     			event.setAmount(event.getAmount() * 0.15F);
@@ -451,9 +451,9 @@ public class FURServerEvents {
     	}
     	
     	if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
-    		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (p_210136_0_) -> {
-				boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE.get(), p_210136_0_) != ItemStack.EMPTY);
-    			return p_210136_0_.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get()) || noseInCurios;
+    		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (living) -> {
+				boolean noseInCurios = ModList.get().isLoaded("curios") && (CurioIntegration.findItem(FURItemRegistry.ILLAGER_NOSE.get(), living) != ItemStack.EMPTY);
+    			return living.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get()) || noseInCurios;
 			}));
     	}
     }
@@ -525,8 +525,8 @@ public class FURServerEvents {
 					world.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
 					
 					if (!player.isCreative()) {
-						have_DreamCatcher.hurtAndBreak(FURConfig.DreamCatcher_dur.get(), event.getEntity(), (p_220045_0_) -> {
-			    			p_220045_0_.broadcastBreakEvent(EquipmentSlotType.MAINHAND);			    			
+						have_DreamCatcher.hurtAndBreak(FURConfig.DreamCatcher_dur.get(), event.getEntity(), (entity) -> {
+			    			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);			    			
 			    		});
 					}
 				}

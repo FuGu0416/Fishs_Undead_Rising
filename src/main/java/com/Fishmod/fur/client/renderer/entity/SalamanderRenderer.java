@@ -24,20 +24,20 @@ public class SalamanderRenderer extends GeoEntityRenderer<SalamanderEntity> {
     }
     
     @Override
-    protected void applyRotations(SalamanderEntity entity, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-    	super.applyRotations(entity, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
+    protected void applyRotations(SalamanderEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
     	switch (entity.getGrowingStage()) {
 			case 0:
-				p_225621_2_.scale(1.0F, 1.0F, 1.0F);
+				poseStack.scale(1.0F, 1.0F, 1.0F);
 				break;
 			case 1:
-				p_225621_2_.scale(0.8F, 0.8F, 0.8F);
+				poseStack.scale(0.8F, 0.8F, 0.8F);
 				break;
 			case 2:
-				p_225621_2_.scale(1.25F, 1.25F, 1.25F);
+				poseStack.scale(1.25F, 1.25F, 1.25F);
 				break;
 			default:
-				p_225621_2_.scale(1.5F, 1.5F, 1.5F);
+				poseStack.scale(1.5F, 1.5F, 1.5F);
 				break;   			
 		}
 	}   	

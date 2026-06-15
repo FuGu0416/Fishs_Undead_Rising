@@ -171,7 +171,7 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     	
 		if (this.abilityCooldown == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player) && this.getLandTimer() <= 10) {
 			this.abilityCooldown = this.abilityCooldown();
-			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ()));
+			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ(), this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z));
 		}
     	
     	if (this.isRidingPlayer(game.player)) {

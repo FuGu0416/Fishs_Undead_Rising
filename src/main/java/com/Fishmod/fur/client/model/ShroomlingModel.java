@@ -52,7 +52,7 @@ public class ShroomlingModel extends GeoModel<ShroomlingEntity> {
 
     @Nullable
     @Override
-	public RenderType getRenderType(ShroomlingEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(ShroomlingEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

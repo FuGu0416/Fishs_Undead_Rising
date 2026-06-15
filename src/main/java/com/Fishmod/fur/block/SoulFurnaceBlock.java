@@ -84,8 +84,8 @@ public class SoulFurnaceBlock extends BaseEntityBlock {
 	}
     
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext p_48689_) {
-        return this.defaultBlockState().setValue(FACING, p_48689_.getHorizontalDirection().getOpposite());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
       
     @Override
@@ -118,13 +118,13 @@ public class SoulFurnaceBlock extends BaseEntityBlock {
     }
     
     @Override
-    public boolean hasAnalogOutputSignal(BlockState p_48700_) {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
 	}
-    
+
     @Override
-    public int getAnalogOutputSignal(BlockState p_48702_, Level p_48703_, BlockPos p_48704_) {
-        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(p_48703_.getBlockEntity(p_48704_));
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
 	}
     
     @Override
@@ -138,18 +138,18 @@ public class SoulFurnaceBlock extends BaseEntityBlock {
 	}
 	
 	@Override
-	public BlockState rotate(BlockState p_48722_, Rotation p_48723_) {
-		return p_48722_.setValue(FACING, p_48723_.rotate(p_48722_.getValue(FACING)));
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState p_48719_, Mirror p_48720_) {
-		return p_48719_.rotate(p_48720_.getRotation(p_48719_.getValue(FACING)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
-    
+
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_48725_) {
-		p_48725_.add(FACING, LIT);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING, LIT);
 	}
 	
     @Override

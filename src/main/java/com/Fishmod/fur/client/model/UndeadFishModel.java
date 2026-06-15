@@ -52,7 +52,7 @@ public class UndeadFishModel extends GeoModel<UndeadFishEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(UndeadFishEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(UndeadFishEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

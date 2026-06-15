@@ -26,13 +26,13 @@ public class SwarmerRenderer extends GeoEntityRenderer<SwarmerEntity> {
     }
     
     @Override
-    protected void applyRotations(SwarmerEntity entityLiving, PoseStack p_225621_2_, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.applyRotations(entityLiving, p_225621_2_, ageInTicks, rotationYaw, partialTicks);
+    protected void applyRotations(SwarmerEntity entityLiving, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.applyRotations(entityLiving, poseStack, ageInTicks, rotationYaw, partialTicks);
         float f = (float) (4.3F * Math.sin(0.6F * ageInTicks));
-        p_225621_2_.mulPose(Axis.YP.rotationDegrees(f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(f));
         
         if (entityLiving instanceof PiranhaEntity) {
-        	p_225621_2_.scale(0.8F, 0.8F, 0.8F);
+        	poseStack.scale(0.8F, 0.8F, 0.8F);
         }
 	}
 }

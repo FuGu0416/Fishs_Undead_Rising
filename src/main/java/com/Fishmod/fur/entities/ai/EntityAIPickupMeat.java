@@ -108,9 +108,9 @@ public class EntityAIPickupMeat<T extends ItemEntity> extends TargetGoal {
         }
 
         @Override
-        public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-            final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
-            final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+        public int compare(Entity entity1, Entity entity2) {
+            final double d0 = this.theEntity.distanceToSqr(entity1);
+            final double d1 = this.theEntity.distanceToSqr(entity2);
             return Double.compare(d0, d1);
         }
     }

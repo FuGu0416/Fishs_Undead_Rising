@@ -40,7 +40,7 @@ public class CocoonModel extends GeoModel<CocoonEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(CocoonEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(CocoonEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

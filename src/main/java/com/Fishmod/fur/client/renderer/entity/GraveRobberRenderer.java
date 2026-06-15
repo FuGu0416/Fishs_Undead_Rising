@@ -19,19 +19,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GraveRobberRenderer extends IllagerRenderer<GraveRobberEntity> {
 	private static final ResourceLocation GRAVEROBBER = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/graverobber/graverobber.png");
 
-	public GraveRobberRenderer(EntityRendererProvider.Context p_i47189_1_) {
-		super(p_i47189_1_, new GraveRobberModel<>(p_i47189_1_.bakeLayer(FURModelLayers.GRAVEROBBER)), 0.5F);
-		this.addLayer(new ItemInHandLayer<GraveRobberEntity, IllagerModel<GraveRobberEntity>>(this, p_i47189_1_.getItemInHandRenderer()) {
-			public void render(PoseStack p_225628_1_, MultiBufferSource p_225628_2_, int p_225628_3_, GraveRobberEntity p_225628_4_, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
-				if (p_225628_4_.isAggressive() || !p_225628_4_.getOffhandItem().isEmpty()) {
-					super.render(p_225628_1_, p_225628_2_, p_225628_3_, p_225628_4_, p_225628_5_, p_225628_6_, p_225628_7_, p_225628_8_, p_225628_9_, p_225628_10_);
+	public GraveRobberRenderer(EntityRendererProvider.Context context) {
+		super(context, new GraveRobberModel<>(context.bakeLayer(FURModelLayers.GRAVEROBBER)), 0.5F);
+		this.addLayer(new ItemInHandLayer<GraveRobberEntity, IllagerModel<GraveRobberEntity>>(this, context.getItemInHandRenderer()) {
+			public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, GraveRobberEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+				if (entity.isAggressive() || !entity.getOffhandItem().isEmpty()) {
+					super.render(poseStack, buffer, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 				}
 			}
 		});
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(GraveRobberEntity p_110775_1_) {
+	public ResourceLocation getTextureLocation(GraveRobberEntity entity) {
 		return GRAVEROBBER;
 	}
 }

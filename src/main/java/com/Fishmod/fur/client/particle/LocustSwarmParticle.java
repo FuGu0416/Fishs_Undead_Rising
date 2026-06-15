@@ -12,8 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 
 public class LocustSwarmParticle extends TextureSheetParticle  {
-	private LocustSwarmParticle(ClientLevel p_i232394_1_, double p_i232394_2_, double p_i232394_4_, double p_i232394_6_) {
-		super(p_i232394_1_, p_i232394_2_, p_i232394_4_, p_i232394_6_, 0.0D, 0.0D, 0.0D);
+	private LocustSwarmParticle(ClientLevel level, double x, double y, double z) {
+		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.xd *= 0.10000000149011612D;
 		this.yd *= 0.10000000149011612D;
 		this.zd *= 0.10000000149011612D;
@@ -27,8 +27,8 @@ public class LocustSwarmParticle extends TextureSheetParticle  {
 		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
-	public float getQuadSize(float p_217561_1_) {
-		return this.quadSize * Mth.clamp(((float)this.age + p_217561_1_) / (float)this.lifetime * 32.0F, 0.0F, 1.0F);
+	public float getQuadSize(float partialTick) {
+		return this.quadSize * Mth.clamp(((float)this.age + partialTick) / (float)this.lifetime * 32.0F, 0.0F, 1.0F);
 	}
 
 	public void tick() {
@@ -50,12 +50,12 @@ public class LocustSwarmParticle extends TextureSheetParticle  {
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet sprite;
 
-		public Factory(SpriteSet p_i50747_1_) {
-			this.sprite = p_i50747_1_;
+		public Factory(SpriteSet sprite) {
+			this.sprite = sprite;
 		}
 
-		public Particle createParticle(SimpleParticleType p_199234_1_, ClientLevel p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-			LocustSwarmParticle heartparticle = new LocustSwarmParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			LocustSwarmParticle heartparticle = new LocustSwarmParticle(level, x, y, z);
 			heartparticle.pickSprite(this.sprite);
 			return heartparticle;
 		}

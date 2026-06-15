@@ -23,7 +23,7 @@ public class CactoidRenderer extends GeoEntityRenderer<CactoidEntity> {
     }    
     
     @Override
-	public boolean isShaking(CactoidEntity p_116561_) {
-    	return super.isShaking(p_116561_) || p_116561_.isShaking();
+	public boolean isShaking(CactoidEntity entity) {
+    	return super.isShaking(entity) || entity.isShaking();
 	}
 }

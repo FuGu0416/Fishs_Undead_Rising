@@ -27,12 +27,12 @@ public class CactoidSproutBlock extends Block {
 	private static final VoxelShape SPROUT_AABB = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
 	public static final IntegerProperty HATCH = BlockStateProperties.AGE_25;
 	
-	public CactoidSproutBlock(Properties p_i48440_1_) {
-		super(p_i48440_1_);
+	public CactoidSproutBlock(Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)));
 	}
 	
-	protected boolean mayPlaceOn(BlockState blockstate, BlockGetter p_200014_2_, BlockPos pos) {
+	protected boolean mayPlaceOn(BlockState blockstate, BlockGetter getter, BlockPos pos) {
 		return blockstate.is(BlockTags.SAND) || blockstate.getBlock().equals(Blocks.SOUL_SAND);
 	}
 	   
@@ -59,22 +59,22 @@ public class CactoidSproutBlock extends Block {
 		}
 	}
 	
-	public static boolean onSand(ServerLevel p_203168_0_, BlockPos pos) {
-		return isSand(p_203168_0_, pos.below());
+	public static boolean onSand(ServerLevel level, BlockPos pos) {
+		return isSand(level, pos.below());
 	}
 
-	public static boolean isSand(ServerLevel p_241473_0_, BlockPos pos) {
-		return p_241473_0_.getBlockState(pos).is(BlockTags.SAND) || p_241473_0_.getBlockState(pos).getBlock().equals(Blocks.SOUL_SAND);
+	public static boolean isSand(ServerLevel level, BlockPos pos) {
+		return level.getBlockState(pos).is(BlockTags.SAND) || level.getBlockState(pos).getBlock().equals(Blocks.SOUL_SAND);
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState blockstate, BlockGetter p_220053_2_, BlockPos pos, CollisionContext p_220053_4_) {
-		Vec3 vector3d = blockstate.getOffset(p_220053_2_, pos);
+	public VoxelShape getShape(BlockState blockstate, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		Vec3 vector3d = blockstate.getOffset(getter, pos);
 		return SPROUT_AABB.move(vector3d.x(), vector3d.y(), vector3d.z());
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_206840_1_) {
-		p_206840_1_.add(HATCH);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(HATCH);
 	}
 }

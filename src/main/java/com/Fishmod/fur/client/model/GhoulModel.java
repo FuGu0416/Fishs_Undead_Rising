@@ -60,7 +60,7 @@ public class GhoulModel extends GeoModel<GhoulEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(GhoulEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(GhoulEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

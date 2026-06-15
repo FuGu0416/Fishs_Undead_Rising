@@ -84,7 +84,7 @@ public class SalamanderModel extends GeoModel<SalamanderEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(SalamanderEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(SalamanderEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

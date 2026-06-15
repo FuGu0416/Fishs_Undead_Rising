@@ -1,6 +1,8 @@
 package com.Fishmod.fur.init;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.particle.MothScaleOptions;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -18,4 +20,12 @@ public class FURParticleRegistry {
 	public static final RegistryObject<SimpleParticleType> WITHER_FLAME = DEF_REG.register("wither_flame", () -> new SimpleParticleType(false));
 public static final RegistryObject<SimpleParticleType> FEAR = DEF_REG.register("fear", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> BANSHEE_SHRIEK = DEF_REG.register("banshee_shriek", () -> new SimpleParticleType(false));
+
+	// END_ROD-styled particle that is tinted at spawn time via RGB + scale, like redstone dust.
+	public static final RegistryObject<ParticleType<MothScaleOptions>> MOTH_SCALE = DEF_REG.register("moth_scale",
+		() -> new ParticleType<MothScaleOptions>(false, MothScaleOptions.DESERIALIZER) {
+			public Codec<MothScaleOptions> codec() {
+				return MothScaleOptions.CODEC;
+			}
+		});
 }

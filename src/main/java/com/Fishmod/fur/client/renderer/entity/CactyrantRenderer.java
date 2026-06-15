@@ -23,7 +23,7 @@ public class CactyrantRenderer extends GeoEntityRenderer<CactyrantEntity> {
     }    
     
     @Override
-	public boolean isShaking(CactyrantEntity p_116561_) {
-    	return super.isShaking(p_116561_) || p_116561_.isShaking();
+	public boolean isShaking(CactyrantEntity entity) {
+    	return super.isShaking(entity) || entity.isShaking();
 	}
 }

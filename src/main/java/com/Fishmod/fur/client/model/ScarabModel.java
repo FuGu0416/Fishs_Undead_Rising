@@ -56,7 +56,7 @@ public class ScarabModel extends GeoModel<ScarabEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(ScarabEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(ScarabEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

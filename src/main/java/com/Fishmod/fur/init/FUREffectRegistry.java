@@ -49,7 +49,21 @@ public class FUREffectRegistry {
 	public static final RegistryObject<MobEffect> VENOMOUS = EFFECT_DEF_REG.register("venomous", ()-> new EffectVenomous());
 	public static final RegistryObject<MobEffect> POSSESSED = EFFECT_DEF_REG.register("possessed", ()-> new EffectPossessed().addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL).addAttributeModifier(Attributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, AttributeModifier.Operation.ADDITION));
 	public static final RegistryObject<MobEffect> SOUL_SIPHON = EFFECT_DEF_REG.register("soul_siphon", ()-> new EffectSoulSiphon());
-	
+
+	/**
+	 * Builds a FEAR instance with the vanilla potion swirl hidden (ambient off, particles off, icon on).
+	 * The in-world effect is drawn with a custom particle in {@code FURServerEvents#onELiving}, so the
+	 * swirl is suppressed here — always create FEAR through this so no application site re-shows it.
+	 */
+	public static MobEffectInstance fear(int duration, int amplifier) {
+		return new MobEffectInstance(FEAR.get(), duration, amplifier, false, false, true);
+	}
+
+	/** As {@link #fear} but for IMMOLATION — swirl hidden, custom flame particle drawn instead. */
+	public static MobEffectInstance immolation(int duration, int amplifier) {
+		return new MobEffectInstance(IMMOLATION.get(), duration, amplifier, false, false, true);
+	}
+
 	public static final RegistryObject<Potion> CORROSIVE_POTION = POTION_DEF_REG.register("corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900)));
 	public static final RegistryObject<Potion> STRONG_CORROSIVE_POTION = POTION_DEF_REG.register("strong_corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 900, 1)));
 	public static final RegistryObject<Potion> LONG_CORROSIVE_POTION = POTION_DEF_REG.register("long_corrosive", ()-> new Potion(new MobEffectInstance(CORRODED.get(), 1800)));
@@ -65,9 +79,9 @@ public class FUREffectRegistry {
 	public static final RegistryObject<Potion> THORN_POTION = POTION_DEF_REG.register("thorn", ()-> new Potion(new MobEffectInstance(THORNED.get(), 3600)));
 	public static final RegistryObject<Potion> STRONG_THORN_POTION = POTION_DEF_REG.register("strong_thorn", ()-> new Potion(new MobEffectInstance(THORNED.get(), 1800, 1)));
 	public static final RegistryObject<Potion> LONG_THORN_POTION = POTION_DEF_REG.register("long_thorn", ()-> new Potion(new MobEffectInstance(THORNED.get(), 9600)));
-	public static final RegistryObject<Potion> IMMOLATION_POTION = POTION_DEF_REG.register("immolation", ()-> new Potion(new MobEffectInstance(IMMOLATION.get(), 3600)));
-	public static final RegistryObject<Potion> STRONG_IMMOLATION_POTION = POTION_DEF_REG.register("strong_immolation", ()-> new Potion(new MobEffectInstance(IMMOLATION.get(), 1800, 1)));
-	public static final RegistryObject<Potion> LONG_IMMOLATION_POTION = POTION_DEF_REG.register("long_immolation", ()-> new Potion(new MobEffectInstance(IMMOLATION.get(), 9600)));
+	public static final RegistryObject<Potion> IMMOLATION_POTION = POTION_DEF_REG.register("immolation", ()-> new Potion(immolation(3600, 0)));
+	public static final RegistryObject<Potion> STRONG_IMMOLATION_POTION = POTION_DEF_REG.register("strong_immolation", ()-> new Potion(immolation(1800, 1)));
+	public static final RegistryObject<Potion> LONG_IMMOLATION_POTION = POTION_DEF_REG.register("long_immolation", ()-> new Potion(immolation(9600, 0)));
 	public static final RegistryObject<Potion> VOID_DUST_POTION = POTION_DEF_REG.register("void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 900)));
 	public static final RegistryObject<Potion> STRONG_VOID_DUST_POTION = POTION_DEF_REG.register("strong_void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 450, 2)));
 	public static final RegistryObject<Potion> LONG_VOID_DUST_POTION = POTION_DEF_REG.register("long_void_dust", ()-> new Potion(new MobEffectInstance(VOID_DUST.get(), 1800)));

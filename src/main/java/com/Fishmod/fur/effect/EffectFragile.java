@@ -24,7 +24,7 @@ public class EffectFragile extends MobEffect {
     }
     
     @Override
-    public boolean isDurationEffectTick(int p_76397_1_, int p_76397_2_) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
        return true;
     }
 

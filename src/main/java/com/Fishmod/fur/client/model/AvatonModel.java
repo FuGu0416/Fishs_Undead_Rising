@@ -56,7 +56,7 @@ public class AvatonModel extends GeoModel<AvatonEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(AvatonEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(AvatonEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

@@ -119,9 +119,9 @@ public class FURWeaponItem extends SwordItem {
 	* Called when this item is used when targeting a Block
 	*/
 	@Override
-	public InteractionResult useOn(UseOnContext p_195939_1_) {
-		if (!p_195939_1_.getLevel().isClientSide()) {
-			Holder<Biome> biome = p_195939_1_.getLevel().getBiome(p_195939_1_.getClickedPos());
+	public InteractionResult useOn(UseOnContext context) {
+		if (!context.getLevel().isClientSide()) {
+			Holder<Biome> biome = context.getLevel().getBiome(context.getClickedPos());
 			for (SpawnerData E: biome.get().getMobSettings().getMobs(MobCategory.MONSTER).unwrap()) {
 				System.out.println(biome.get().toString() + ": " + E.type.toString() + " " + E.getWeight());
 			}
@@ -139,7 +139,7 @@ public class FURWeaponItem extends SwordItem {
 			}
 		}
 		
-		return super.useOn(p_195939_1_);
+		return super.useOn(context);
 	}
 	
     @NotNull
@@ -221,8 +221,8 @@ public class FURWeaponItem extends SwordItem {
         	}
 
         	player.setDeltaMovement(player.getDeltaMovement().add(lookVec.x * 1.5D, lookVec.y * 0.15D + 0.4D, lookVec.z * 1.5D));
-            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
-    			p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(8, player, (entity) -> {
+    			entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
     		});
 			player.getCooldowns().addCooldown(this, 120);
 
@@ -236,8 +236,8 @@ public class FURWeaponItem extends SwordItem {
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.UNBURIED.get(), FURConfig.Unburied_Lifespan.get() * 20, 0);
             }
 
-            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(63, player, (entity) -> {
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
 
@@ -252,8 +252,8 @@ public class FURWeaponItem extends SwordItem {
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SCARAB.get(), FURConfig.Scarab_Lifespan.get() * 20, 0);
             }
 
-            stack.hurtAndBreak(8, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(8, player, (entity) -> {
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER.get(), FURConfig.ScarabScepter_Cooldown.get() * 20);
 
@@ -267,8 +267,8 @@ public class FURWeaponItem extends SwordItem {
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.MUMMY.get(), FURConfig.Mummy_Lifespan.get() * 20, 0);
             }
 
-            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(63, player, (entity) -> {
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.ANKH_SCEPTER.get(), FURConfig.Ankh_Scepter_Cooldown.get() * 20);
 
@@ -282,8 +282,8 @@ public class FURWeaponItem extends SwordItem {
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.MYCOSIS.get(), FURConfig.Mycosis_Lifespan.get() * 20, 0);
             }
 
-            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(63, player, (entity) -> {
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.FUNGAL_STAFF.get(), FURConfig.Fungal_Staff_Cooldown.get() * 20);
 
@@ -297,8 +297,8 @@ public class FURWeaponItem extends SwordItem {
                 FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.FRIGID.get(), FURConfig.Frigid_Lifespan.get() * 20, 0);
             }
 
-            stack.hurtAndBreak(63, player, (p_220045_0_) -> {
-                p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(63, player, (entity) -> {
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             player.getCooldowns().addCooldown(FURItemRegistry.FROZEN_GRIP.get(), FURConfig.Frozen_Grip_Cooldown.get() * 20);
 

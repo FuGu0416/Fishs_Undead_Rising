@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DiseasedHayBlock extends HayBlock {	
-	public DiseasedHayBlock(BlockBehaviour.Properties p_i49982_1_) {
-		super(p_i49982_1_);
+	public DiseasedHayBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 	
 	/**

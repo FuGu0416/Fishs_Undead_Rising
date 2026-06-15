@@ -533,7 +533,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         }
 
         protected int getCastWarmupTime() {
-            return EnigmothEntity.this.isBaby() ? 60 : 10;
+            return EnigmothEntity.this.isBaby() ? 60 : 15;
         }
 
         protected int getCastingTime() {

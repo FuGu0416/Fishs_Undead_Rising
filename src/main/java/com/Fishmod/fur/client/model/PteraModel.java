@@ -61,7 +61,7 @@ public class PteraModel extends GeoModel<PteraEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(PteraEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(PteraEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

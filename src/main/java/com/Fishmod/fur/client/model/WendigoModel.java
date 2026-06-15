@@ -56,7 +56,7 @@ public class WendigoModel extends GeoModel<WendigoEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(WendigoEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(WendigoEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

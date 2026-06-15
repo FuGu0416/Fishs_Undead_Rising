@@ -96,7 +96,7 @@ public class CactyrantModel extends GeoModel<CactyrantEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(CactyrantEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(CactyrantEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

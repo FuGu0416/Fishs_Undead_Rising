@@ -56,7 +56,7 @@ public class UndertakerModel extends GeoModel<UndertakerEntity> {
     
     @Nullable
     @Override
-	public RenderType getRenderType(UndertakerEntity p_230496_1_, ResourceLocation texture) {
-    	return RenderType.entityTranslucent(this.getTextureResource(p_230496_1_));
+	public RenderType getRenderType(UndertakerEntity entity, ResourceLocation texture) {
+    	return RenderType.entityTranslucent(this.getTextureResource(entity));
     }
 }

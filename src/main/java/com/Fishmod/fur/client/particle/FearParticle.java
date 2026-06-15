@@ -13,11 +13,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FearParticle extends RisingParticle {
 	private final SpriteSet sprites;
 
-	private FearParticle(ClientLevel p_i232426_1_, double p_i232426_2_, double p_i232426_4_, double p_i232426_6_, double p_i232426_8_, double p_i232426_10_, double p_i232426_12_, SpriteSet p_i232426_14_) {
-		super(p_i232426_1_, p_i232426_2_, p_i232426_4_, p_i232426_6_, p_i232426_8_, p_i232426_10_, p_i232426_12_);
-		this.sprites = p_i232426_14_;
+	private FearParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+		this.sprites = sprites;
 		this.scale(1.5F);
-		this.setSpriteFromAge(p_i232426_14_);
+		this.setSpriteFromAge(sprites);
 	}
 
 	public ParticleRenderType getRenderType() {
@@ -35,12 +35,12 @@ public class FearParticle extends RisingParticle {
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet sprite;
 
-		public Factory(SpriteSet p_i232428_1_) {
-			this.sprite = p_i232428_1_;
+		public Factory(SpriteSet sprite) {
+			this.sprite = sprite;
 		}
 
-		public Particle createParticle(SimpleParticleType p_199234_1_, ClientLevel p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-			FearParticle fearparticle = new FearParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, this.sprite);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			FearParticle fearparticle = new FearParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
 			fearparticle.setAlpha(1.0F);
 			return fearparticle;
 		}

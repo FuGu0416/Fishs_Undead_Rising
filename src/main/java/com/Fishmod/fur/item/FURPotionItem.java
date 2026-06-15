@@ -170,12 +170,12 @@ public class FURPotionItem extends FURItem {
         return InteractionResult.PASS;
     }
     
-    public UseAnim getUseAnimation(ItemStack p_77661_1_) {
+    public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.DRINK;
 	}
     
-    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
-        return ItemUtils.startUsingInstantly(p_77659_1_, p_77659_2_, p_77659_3_);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        return ItemUtils.startUsingInstantly(level, player, hand);
 	}
     
     private ItemStack returnItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
