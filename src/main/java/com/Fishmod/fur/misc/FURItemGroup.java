@@ -219,7 +219,8 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
             	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());           	
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
-            	
+            	output.accept(FURBlockRegistry.BONE_PILE.get());
+
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
             .build());

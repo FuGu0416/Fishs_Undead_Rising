@@ -1,0 +1,25 @@
+package com.Fishmod.fur.client.renderer.entity;
+
+import com.Fishmod.fur.client.model.BeelzebubPupaModel;
+import com.Fishmod.fur.entities.tameable.CocoonEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+
+@OnlyIn(Dist.CLIENT)
+public class BeelzebubPupaRenderer extends GeoEntityRenderer<CocoonEntity> {
+
+    public BeelzebubPupaRenderer(EntityRendererProvider.Context rendermanagerIn) {
+        super(rendermanagerIn, new BeelzebubPupaModel());
+        this.shadowRadius = 0.2F;
+    }
+
+    @Override
+    protected void applyRotations(CocoonEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
+        poseStack.scale(1.5F, 1.5F, 1.5F);
+    }
+}

@@ -1,0 +1,48 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.beelzebubpupa",
+				"texture_width": 64,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "base",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-4, 0, -4], "size": [8, 10, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Cocoon_top",
+					"parent": "base",
+					"pivot": [0, 10, 0],
+					"cubes": [
+						{"origin": [-3, 10, -3], "size": [6, 2, 6], "uv": [34, 0]}
+					]
+				},
+				{
+					"name": "silk0",
+					"pivot": [0, 0, 0],
+					"rotation": [0, -45, 0],
+					"cubes": [
+						{"origin": [0, 0, -12], "size": [0, 4, 24], "uv": [0, -4]}
+					]
+				},
+				{
+					"name": "silk1",
+					"pivot": [0, 0, 0],
+					"rotation": [0, 45, 0],
+					"cubes": [
+						{"origin": [0, 0, -12], "size": [0, 4, 24], "uv": [0, -4]}
+					]
+				}
+			]
+		}
+	]
+}

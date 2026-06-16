@@ -1,6 +1,7 @@
 package com.Fishmod.fur.entities.tameable;
 
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.flying.BeelzebubEntity;
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -89,14 +90,14 @@ public class CocoonEntity extends FURTameableEntity implements GeoEntity {
 		    			adult.setCustomName(this.getCustomName());
 		    		}
 		    		
-    			/*} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA)) {
-		    		BeelzebubEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUB, server, this.blockPosition());
-		    		
+    			} else if (this.getType().equals(FUREntityRegistry.BEELZEBUBPUPA.get())) {
+		    		BeelzebubEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUB.get(), server, this.blockPosition());
+
 		    		if (adult != null && this.isTame() && this.getOwner() instanceof Player) {
 		    			adult.tame((Player) this.getOwner());
 		    			adult.setCustomName(this.getCustomName());
-		    		}  */  		
-		    		
+		    		}
+
     			} else if (this.getType().equals(FUREntityRegistry.COCOON.get()) && this.getSkin() == 1) {
     				EnigmothEntity adult = SpawnUtil.trySpawnEntity(FUREntityRegistry.ENIGMOTH.get(), server, this.blockPosition());
     				

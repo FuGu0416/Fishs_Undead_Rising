@@ -77,7 +77,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(2, new AIUseSummonSpell());
         this.goalSelector.addGoal(3, new FURRangeAttackGoal<LocustSwarmEntity>(this, 
         		FUREntityRegistry.LOCUST_SWARM.get(), 
-        		FURSoundRegistry.AVATON_SPELL.get(), 1, 4, 0.2D, 8.0D, 1.2D, 0.6D, 1.2D).withWindup(20));
+        		FURSoundRegistry.AVATON_SPELL.get(), 1, 4, 0.0D, 8.0D, 1.2D, 0.6D, 1.2D).withWindup(20));
         this.goalSelector.addGoal(4, new AttackGoal(this));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));

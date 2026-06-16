@@ -14,6 +14,8 @@ import com.Fishmod.fur.client.renderer.entity.ShroomlingRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.MoltenGlobRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
+import com.Fishmod.fur.client.renderer.entity.BeelzebubPupaRenderer;
+import com.Fishmod.fur.client.renderer.entity.BeelzebubRenderer;
 import com.Fishmod.fur.client.renderer.entity.CocoonRenderer;
 import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
 import com.Fishmod.fur.client.renderer.entity.VespaRenderer;
@@ -122,6 +124,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GHOSTRAY.get(), GhostRayRenderer::new);
         EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY.get(), WarpedFireflyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER.get(), GraveRobberRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.BEELZEBUB.get(), BeelzebubRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA.get(), BeelzebubPupaRenderer::new);
 
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -176,7 +180,8 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.SOUL_FURNACE.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLIMMERCAP.get(), RenderType.cutout());
-        
+        ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.BONE_PILE.get(), RenderType.cutout());
+
         ItemProperties.register(FURItemRegistry.VESPA_SHIELD.get(), new ResourceLocation("blocking"),
                 (stack, level, entity, seed) ->
                         entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);

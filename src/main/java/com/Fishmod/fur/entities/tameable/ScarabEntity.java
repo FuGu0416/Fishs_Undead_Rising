@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.ai.ScarabReturnHomeGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -80,6 +81,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	private int corrosive;
 	private int unbreaking;
 	private boolean isSmoking = false;
+	@Nullable
+	private BlockPos homePos;   // set for Bone Pile scarabs; they walk back here at night
 	
 	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
@@ -97,6 +100,7 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	this.goalSelector.addGoal(1, new FloatGoal(this));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+    	this.goalSelector.addGoal(6, new ScarabReturnHomeGoal(this));
     	this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
@@ -136,6 +140,15 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 
     public void setSkin(int skinType) {
         this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
+    }
+
+    @Nullable
+    public BlockPos getHomePos() {
+        return this.homePos;
+    }
+
+    public void setHomePos(@Nullable BlockPos pos) {
+        this.homePos = pos;
     }
     
 	@Override
@@ -329,8 +342,9 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
     	this.smite = compound.getInt("fire_aspect");
     	this.corrosive = compound.getInt("corrosive");
-    	this.unbreaking = compound.getInt("unbreaking");   
+    	this.unbreaking = compound.getInt("unbreaking");
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get() + ((float)this.unbreaking * 2.0F));
+    	this.homePos = compound.contains("HomePos") ? BlockPos.of(compound.getLong("HomePos")) : null;
     }
 
     /**
@@ -347,7 +361,10 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
         compound.putInt("smite", this.smite);
         compound.putInt("corrosive", this.corrosive);
-        compound.putInt("unbreaking", this.unbreaking);     
+        compound.putInt("unbreaking", this.unbreaking);
+        if (this.homePos != null) {
+            compound.putLong("HomePos", this.homePos.asLong());
+        }
     }
 
     /**

@@ -21,6 +21,7 @@ import com.Fishmod.fur.entities.floating.BansheeEntity;
 import com.Fishmod.fur.entities.floating.FloatingMobEntity;
 import com.Fishmod.fur.entities.floating.SeaHagEntity;
 import com.Fishmod.fur.entities.floating.WraithEntity;
+import com.Fishmod.fur.entities.flying.BeelzebubEntity;
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
 import com.Fishmod.fur.entities.flying.FlyingMobEntity;
 import com.Fishmod.fur.entities.flying.GhostRayEntity;
@@ -111,6 +112,8 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<GhostRayEntity>> GHOSTRAY = DEF_REG.register("ghostray", () -> (EntityType<GhostRayEntity>) EntityType.Builder.of(GhostRayEntity::new, MobCategory.MONSTER).sized(1.6F, 0.25F).setTrackingRange(8).build("ghostray"));
 	public static final RegistryObject<EntityType<WarpedFireflyEntity>> WARPEDFIREFLY = DEF_REG.register("warpedfirefly", () -> (EntityType<WarpedFireflyEntity>) EntityType.Builder.of(WarpedFireflyEntity::new, MobCategory.MONSTER).sized(0.7F, 0.6F).fireImmune().setTrackingRange(8).build("warpedfirefly"));
 	public static final RegistryObject<EntityType<GraveRobberEntity>> GRAVEROBBER = DEF_REG.register("graverobber", () -> (EntityType<GraveRobberEntity>) EntityType.Builder.of(GraveRobberEntity::new, MobCategory.MONSTER).sized(0.6F, 1.95F).setTrackingRange(8).build("graverobber"));
+	public static final RegistryObject<EntityType<BeelzebubEntity>> BEELZEBUB = DEF_REG.register("beelzebub", () -> (EntityType<BeelzebubEntity>) EntityType.Builder.of(BeelzebubEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).setTrackingRange(8).build("beelzebub"));
+	public static final RegistryObject<EntityType<CocoonEntity>> BEELZEBUBPUPA = DEF_REG.register("beelzebubpupa", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).setTrackingRange(8).build("beelzebubpupa"));
 
 	public static final RegistryObject<EntityType<CactusThornEntity>> CACTUS_THORN = DEF_REG.register("cactus_thorn", () -> (EntityType) EntityType.Builder.of(CactusThornEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1).build("cactus_thorn"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -134,9 +137,7 @@ public class FUREntityRegistry {
 	public static final EntityType<PinguEntity> PINGU = registerEntity(EntityType.Builder.of(PinguEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.8F), "pingu");
 	public static final EntityType<ForsakenEntity> FORSAKEN = registerEntity(EntityType.Builder.of(ForsakenEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).fireImmune(), "forsaken");
 	public static final EntityType<SkeletonKingEntity> SKELETONKING = registerEntity(EntityType.Builder.of(SkeletonKingEntity::new, EntityClassification.MONSTER).sized(1.25F, 3.1F).fireImmune(), "skeletonking");
-	public static final EntityType<BeelzebubEntity> BEELZEBUB = registerEntity(EntityType.Builder.of(BeelzebubEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.0F), "beelzebub");
-	public static final EntityType<VespaCocoonEntity> BEELZEBUBPUPA = registerEntity(EntityType.Builder.of(VespaCocoonEntity::new, EntityClassification.MONSTER).sized(0.8F, 1.0F), "beelzebubpupa");
-	
+
 	public static final EntityType<AcidJetEntity> ACIDJET = registerEntity(EntityType.Builder.<AcidJetEntity>of(AcidJetEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10), "acidjet");
 	public static final EntityType<SludgeJetEntity> SLUDGEJET = registerEntity(EntityType.Builder.<SludgeJetEntity>of(SludgeJetEntity::new, EntityClassification.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1), "sludgejet");
 	public static final EntityType<SandBurstEntity> SANDBURST = registerEntity(EntityType.Builder.<SandBurstEntity>of(SandBurstEntity::new, EntityClassification.MISC).sized(0.5F, 0.8F).clientTrackingRange(6).updateInterval(2), "sandburst");
@@ -182,6 +183,7 @@ public class FUREntityRegistry {
         event.register(GHOSTRAY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GhostRayEntity::checkGhostRaySpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WARPEDFIREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GRAVEROBBER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(BEELZEBUB.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, BeelzebubEntity::checkBeelzebubSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
 
         /*
         event.register(UNDEADSWINE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
@@ -189,8 +191,7 @@ public class FUREntityRegistry {
         event.register(BONEWORM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BoneWormEntity::checkBoneWormSpawnRules);
         event.register(PINGU.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
         event.register(FORSAKEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ForsakenEntity::checkForsakenSpawnRules);
-        event.register(SKELETONKING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
-        event.register(BEELZEBUB.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, FlyingMobEntity::checkFlyerSpawnRules);*/
+        event.register(SKELETONKING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);*/
     }    
 
     @SubscribeEvent
@@ -234,6 +235,8 @@ public class FUREntityRegistry {
         event.put(GHOUL.get(), GhoulEntity.createAttributes().build());
         event.put(LAMPREY.get(), LampreyEntity.createAttributes().build());
         event.put(RAVEN.get(), RavenEntity.createAttributes().build());
+        event.put(BEELZEBUB.get(), BeelzebubEntity.createAttributes().build());
+        event.put(BEELZEBUBPUPA.get(), CocoonEntity.createAttributes().build());
 
         /*
         event.put(UNDEADSWINE, UndeadSwineEntity.createAttributes().build());
@@ -241,8 +244,6 @@ public class FUREntityRegistry {
         event.put(BONEWORM, BoneWormEntity.createAttributes().build());
         event.put(PINGU, PinguEntity.createAttributes().build());
         event.put(FORSAKEN, ForsakenEntity.createAttributes().build());
-        event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());
-        event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());
-        event.put(BEELZEBUBPUPA, VespaCocoonEntity.createAttributes().build());*/
+        event.put(SKELETONKING, SkeletonKingEntity.createAttributes().build());*/
     }
 }

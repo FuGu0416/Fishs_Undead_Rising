@@ -3,6 +3,7 @@ package com.Fishmod.fur.init;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.block.BonePileBlock;
 import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
 import com.Fishmod.fur.block.FURHugeShroomBlock;
@@ -62,7 +63,8 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> MYCELIAL_TENDRILS = registerBlocks("mycelial_tendrils", () -> new MycelialTendrilsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).replaceable().noCollission().instabreak().sound(SoundType.NETHER_SPROUTS).offsetType(BlockBehaviour.OffsetType.XZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 1)));
 	public static final RegistryObject<Block> EMBERWICK_FUNGUS = registerBlocks("emberwick_fungus", () -> new EmberwickFungusBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> LUMINOUS_FILAMENT = registerBlocks("luminous_filament", () -> new LuminousFilamentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIAMOND).noCollission().instabreak().sound(SoundType.VINE).noOcclusion().offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).emissiveRendering((state, world, pos) -> true)));
-	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));	
+	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3).emissiveRendering((state, world, pos) -> true)));
+	public static final RegistryObject<Block> BONE_PILE = registerBlocks("bone_pile", () -> new BonePileBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.BONE_BLOCK).noOcclusion().dynamicShape().offsetType(BlockBehaviour.OffsetType.XZ)));
 	
 	private static RegistryObject<Block> registerBlocks(String name, Supplier<Block> block) {
         RegistryObject<Block> blockObj = DEF_REG.register(name, block);

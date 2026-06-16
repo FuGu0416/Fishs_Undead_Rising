@@ -132,6 +132,14 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
             key("spring_water");
 
+    /** Bone Pile — single-block placement used by BONE_PILE_PATCH */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BONE_PILE_SIMPLE =
+            key("bone_pile_simple");
+
+    /** Bone Pile — scattered surface patch (desert decoration) */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BONE_PILE_PATCH =
+            key("bone_pile_patch");
+
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
@@ -419,6 +427,21 @@ public class FURConfiguredFeatures {
                 new com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration(
                         context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(GIANT_GLIMMERCAP),
                         context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LUMINOUS_CLUSTER_PATCH_SMALL))));
+
+        // ── Bone Pile (desert surface decoration) ─────────────────────────────
+        context.register(BONE_PILE_SIMPLE, new ConfiguredFeature<>(
+                Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(
+                        BlockStateProvider.simple(FURBlockRegistry.BONE_PILE.get()))));
+
+        context.register(BONE_PILE_PATCH, new ConfiguredFeature<>(
+                Feature.RANDOM_PATCH,
+                new RandomPatchConfiguration(
+                        24,  // tries
+                        4,   // xz spread
+                        2,   // y spread
+                        context.lookup(Registries.PLACED_FEATURE)
+                                .getOrThrow(FURPlacedFeatures.BONE_PILE_INNER))));
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────

@@ -1,0 +1,7 @@
+{
+	"__comment": "2D inventory icon — PLACEHOLDER. layer0 points at fur:item/bone_pile, which does not exist yet (renders as missing-texture until real art is supplied). See PLACEHOLDERS.md.",
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "fur:item/bone_pile"
+	}
+}

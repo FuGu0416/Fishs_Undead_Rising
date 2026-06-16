@@ -60,6 +60,7 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         this.addSwarmerTargetsTag();
         this.addWendigoTargetsTag();
         this.addVespaTargetsTag();
+        this.addBeelzebubTargetsTag();
     }
 
     // ── fur:fishes ───────────────────────────────────────────────────────────
@@ -214,6 +215,12 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
     // ── fur:vespa_targets ────────────────────────────────────────────────────
     private void addVespaTargetsTag() {
         tag(VESPA_TARGETS)
+                .addTag(ZOMBIES);
+    }
+
+    // ── fur:beelzebub_targets ────────────────────────────────────────────────
+    private void addBeelzebubTargetsTag() {
+        tag(BEELZEBUB_TARGETS)
                 .addTag(ZOMBIES);
     }
 }

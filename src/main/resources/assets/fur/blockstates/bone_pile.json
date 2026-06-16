@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"": [
+			{"model": "fur:block/bone_pile"},
+			{"model": "fur:block/bone_pile", "y": 90},
+			{"model": "fur:block/bone_pile", "y": 180},
+			{"model": "fur:block/bone_pile", "y": 270}
+		]
+	}
+}

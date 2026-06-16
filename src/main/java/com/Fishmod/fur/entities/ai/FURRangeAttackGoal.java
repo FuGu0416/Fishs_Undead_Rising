@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.ai;
 import java.util.EnumSet;
 
 import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
+import com.Fishmod.fur.entities.projectiles.LocustSwarmEntity;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -221,6 +222,10 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
                     
            				if (shotentity instanceof EnchantableFireBallEntity) {
            					((EnchantableFireBallEntity) shotentity).setFlame(true);
+           				}
+
+           				if (shotentity instanceof LocustSwarmEntity locust) {
+           					locust.setHomingTarget(this.target);
            				}
                     
            				this.shooter.level().addFreshEntity(shotentity);               

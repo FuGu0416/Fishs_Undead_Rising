@@ -4,9 +4,12 @@ import java.util.Random;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.LavaCowEntity;
+import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.tameable.CocoonEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleTypes;
@@ -107,46 +110,48 @@ public class FURPotionItem extends FURItem {
 	    			}
 	    			
 			        flag = true;
-	    		}/* else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST) && target.getType().equals(FUREntityRegistry.PARASITE)) {
-	    			VespaCocoonEntity pupa = null;
+	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST.get()) && target.getType().equals(FUREntityRegistry.PARASITE.get())) {
+	    			CocoonEntity pupa = null;
 	    			
 	    			switch(((ParasiteEntity)target).getSkin()) {
 	    				case 3:
-	    					pupa = FUREntityRegistry.BEELZEBUBPUPA.create(player.level);
+	    					pupa = FUREntityRegistry.BEELZEBUBPUPA.get().create(player.level());
 	    					break;
 	    				case 2:
-	    					pupa = FUREntityRegistry.VESPACOCOON.create(player.level);
-	    					pupa.setSkin(0);
+	    					pupa = FUREntityRegistry.COCOON.get().create(player.level());
+	    					if (pupa != null) {
+	    						pupa.setSkin(0);
+	    					}
 	    					break;
 	    				default:
 	    					break;
 	    			}
 	    			
 	    			if (pupa != null) {
-		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
 	        			
-			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 			    		pupa.tame(player);
-			    		player.level.addFreshEntity(pupa);
-			    		target.remove();
+			    		player.level().addFreshEntity(pupa);
+			    		target.discard();
 			    		
 		    			flag = true;
 	    			}
-	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST) && target.getType().equals(FUREntityRegistry.ENIGMOTH) && target.isBaby()) {
-	    			VespaCocoonEntity pupa = FUREntityRegistry.VESPACOCOON.create(player.level);
+	    		} else if (stack.getItem().equals(FURItemRegistry.CHARMING_CATALYST.get()) && target.getType().equals(FUREntityRegistry.ENIGMOTH.get()) && target.isBaby()) {
+	    			CocoonEntity pupa = FUREntityRegistry.COCOON.get().create(player.level());
 	    			
 	    			if (pupa != null) {
-		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE, 1.0F, 1.0F);
+		    			target.playSound(FURSoundRegistry.PARASITE_WEAVE.get(), 1.0F, 1.0F);
 	        			
-			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+			    		pupa.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 			    		pupa.tame(player);
 			    		pupa.setSkin(1);
-			    		player.level.addFreshEntity(pupa);
-			    		target.remove();
+			    		player.level().addFreshEntity(pupa);
+			    		target.discard();
 			    		
 		    			flag = true;
 	    			}
-	    		}*/            		
+	    		}
     		}
     		  		
     		if (flag) {		

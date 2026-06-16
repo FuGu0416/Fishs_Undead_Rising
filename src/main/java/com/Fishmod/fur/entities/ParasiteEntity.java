@@ -209,9 +209,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
                 
                 if (skinType == 2) {
                 	pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.COCOON.get(), server, this.blockPosition());
-                }/* else if (skinType == 3) {         
+                } else if (skinType == 3) {
                 	pupa = SpawnUtil.trySpawnEntity(FUREntityRegistry.BEELZEBUBPUPA.get(), server, this.blockPosition());
-                }*/
+                }
 
                 if (pupa != null) {
                     if (skinType == 2) {
