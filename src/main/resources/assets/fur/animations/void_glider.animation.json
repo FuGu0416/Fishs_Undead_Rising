@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"ghostray.idle": {
+		"void_glider.idle": {
 			"loop": true,
 			"animation_length": 3.0,
 			"bones": {

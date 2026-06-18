@@ -99,8 +99,6 @@ public class BeelzebubEntity extends RidableFlyingMobEntity implements GeoEntity
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        // Hardcoded defaults (config is not loaded at attribute-registration / datagen time); the
-        // configurable Beelzebub_Health / Beelzebub_Attack are applied later in finalizeSpawn.
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.08D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)

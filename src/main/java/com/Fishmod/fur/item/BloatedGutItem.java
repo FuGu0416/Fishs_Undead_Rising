@@ -19,23 +19,23 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
-public class BloatedIntestineItem extends FURItem {
-	
-	public BloatedIntestineItem() {
+public class BloatedGutItem extends FURItem {
+
+	public BloatedGutItem() {
 		super(new Item.Properties(), 0, UseAnim.NONE, 1);
     }
-	     
+
     /**
      * Called when the equipped item is right clicked.
      */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        
+
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SLIME_SQUISH, SoundSource.PLAYERS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-        
+
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            LootTable table = serverLevel.getServer().getLootData().getLootTable(new ResourceLocation(mod_LavaCow.MODID, "gameplay/bloated_intestine"));
+            LootTable table = serverLevel.getServer().getLootData().getLootTable(new ResourceLocation(mod_LavaCow.MODID, "gameplay/bloated_gut"));
 
             LootParams params = new LootParams.Builder(serverLevel)
                     .withParameter(LootContextParams.ORIGIN, player.position())
@@ -52,7 +52,7 @@ public class BloatedIntestineItem extends FURItem {
                 stack.shrink(1);
             }
         }
-        
+
     	return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }

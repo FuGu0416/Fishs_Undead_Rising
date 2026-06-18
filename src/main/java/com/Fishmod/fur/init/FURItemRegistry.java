@@ -25,7 +25,7 @@ import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.GoldenHeartItem;
 import com.Fishmod.fur.item.IllagerNoseItem;
 import com.Fishmod.fur.item.InfusedBandageItem;
-import com.Fishmod.fur.item.BloatedIntestineItem;
+import com.Fishmod.fur.item.BloatedGutItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenHammerItem;
@@ -202,7 +202,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> LAMPREY_COOKED = DEF_REG.register("lamprey_cooked", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> LAMPREY_KABAYAKI = DEF_REG.register("lamprey_kabayaki", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 0), 1.0F).build())));
 	public static final RegistryObject<Item> LAMPREY_BUCKET = DEF_REG.register("lamprey_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.LAMPREY.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
-	public static final RegistryObject<Item> BLOATED_INTESTINE = DEF_REG.register("bloated_intestine", () -> new BloatedIntestineItem());
+	public static final RegistryObject<Item> BLOATED_GUT = DEF_REG.register("bloated_gut", () -> new BloatedGutItem());
 	public static final RegistryObject<Item> SAUSAGE_ROLL = DEF_REG.register("sausage_roll", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
 	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> ILLAGER_NOSE = DEF_REG.register("illager_nose", () -> new IllagerNoseItem(new Item.Properties()));
@@ -270,7 +270,7 @@ public class FURItemRegistry {
     	spawnEgg("lamprey", FUREntityRegistry.LAMPREY, 0x0A1822, 0xA0C3CF);
     	spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
     	spawnEgg("raven", FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E);
-    	spawnEgg("ghostray", FUREntityRegistry.GHOSTRAY, 0x233A41, 0x7AFDFD);
+    	spawnEgg("void_glider", FUREntityRegistry.VOID_GLIDER, 0x233A41, 0x7AFDFD);
     	spawnEgg("warpedfirefly", FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738);
     	spawnEgg("graverobber", FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B);
     	spawnEgg("beelzebub", FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE);

@@ -55,7 +55,7 @@
 	            {
 	                "type": "item",
 	                "weight": 1,
-	                "name": "fur:bloated_intestine",
+	                "name": "fur:bloated_gut",
 					"conditions":[
 	                    {
 	

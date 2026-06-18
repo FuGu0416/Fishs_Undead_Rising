@@ -1,10 +1,10 @@
 {
-	"__comment": "PLACEHOLDER geo. The 1.16.5 Ghost Ray used a hand-coded Java model (GhostRayModel) that cannot be auto-converted to GeckoLib. This is a rough manta-ray stand-in (flat body + two wings + tail) mapped onto the ported 128x128 ghostray texture. Replace with a Blockbench export of geometry.ghostray. See PLACEHOLDERS.md item 4.",
+	"__comment": "PLACEHOLDER geo. The 1.16.5 Void Glider used a hand-coded Java model (VoidGliderModel) that cannot be auto-converted to GeckoLib. This is a rough manta-ray stand-in (flat body + two wings + tail) mapped onto the ported 128x128 void_glider texture. Replace with a Blockbench export of geometry.void_glider. See PLACEHOLDERS.md item 4.",
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.ghostray",
+				"identifier": "geometry.void_glider",
 				"texture_width": 128,
 				"texture_height": 128,
 				"visible_bounds_width": 4,

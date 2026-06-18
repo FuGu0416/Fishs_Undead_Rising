@@ -230,6 +230,16 @@ public class FlyingMobEntity extends FURTameableEntity {
 		return 1.0D;
 	}
 
+	/**
+	 * Whether AI-driven movement (the {@link FlyingMoveHelper} MoveControl and the {@link AIRandomFly}
+	 * goal) should stand down this tick because something else is driving motion. Default: while ridden —
+	 * a player-steered mount seizes control in {@code travel()}. Subclasses that only sometimes take over
+	 * (e.g. the Void Glider's End-City autopilot) can narrow this so the flight AI keeps running otherwise.
+	 */
+	protected boolean suspendAiMovement() {
+		return this.isVehicle();
+	}
+
     public void travel(Vec3 travelVector) {
     	// If the lowest passenger is colliding with the ground, get them out!
         Entity lowestPassenger = this.getLowestPassenger();
@@ -334,7 +344,7 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public boolean canUse() {
-            return !this.parentEntity.isVehicle()
+            return !this.parentEntity.suspendAiMovement()
                     && this.parentEntity.getTarget() == null
                     && !(this.parentEntity.getNavigation() instanceof GroundPathNavigation)
                     && !this.parentEntity.isInSittingPose();
@@ -345,7 +355,7 @@ public class FlyingMobEntity extends FURTameableEntity {
             // Mirror the runtime conditions of canUse() so the goal releases the
             // MOVE flag promptly when the mob gains a target or is told to sit,
             // instead of holding it until another goal preempts it.
-            return !this.parentEntity.isVehicle()
+            return !this.parentEntity.suspendAiMovement()
                     && this.parentEntity.getTarget() == null
                     && !this.parentEntity.isInSittingPose();
         }
@@ -724,8 +734,8 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         @Override
         public void tick() {
-            // When ridden by a player, yield control entirely to the rider
-            if (this.parentEntity.isVehicle()) {
+            // When something else is driving (e.g. a player-steered mount), yield control entirely
+            if (this.parentEntity.suspendAiMovement()) {
                 this.velocity = Vec3.ZERO;
                 this.operation = MoveControl.Operation.WAIT;
                 return;

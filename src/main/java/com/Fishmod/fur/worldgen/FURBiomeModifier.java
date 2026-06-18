@@ -50,7 +50,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_GHOUL = registerKey("add_ghoul");
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLING = registerKey("add_shroomling");
-	public static final ResourceKey<BiomeModifier> ADD_GHOSTRAY = registerKey("add_ghostray");
+	public static final ResourceKey<BiomeModifier> ADD_VOID_GLIDER = registerKey("add_void_glider");
 	public static final ResourceKey<BiomeModifier> ADD_WARPEDFIREFLY = registerKey("add_warpedfirefly");
 	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 	public static final ResourceKey<BiomeModifier> ADD_BEELZEBUB = registerKey("add_beelzebub");
@@ -116,8 +116,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
         addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
-        addSpawn(context, ADD_GHOSTRAY, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOSTRAY.get(), 10, 1, 1));
+        addSpawn(context, ADD_VOID_GLIDER, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VOID_GLIDER.get(), 10, 1, 1));
         addSpawn(context, ADD_WARPEDFIREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WARPEDFIREFLY.get(), 2, 4, 8));
         // 1.16.5 spawned the Grave Robber only at desert structures (pyramid / desert tomb) via

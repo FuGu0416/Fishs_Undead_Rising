@@ -24,7 +24,7 @@ import com.Fishmod.fur.entities.floating.WraithEntity;
 import com.Fishmod.fur.entities.flying.BeelzebubEntity;
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
 import com.Fishmod.fur.entities.flying.FlyingMobEntity;
-import com.Fishmod.fur.entities.flying.GhostRayEntity;
+import com.Fishmod.fur.entities.flying.VoidGliderEntity;
 import com.Fishmod.fur.entities.flying.PteraEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.flying.WarpedFireflyEntity;
@@ -109,7 +109,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<GhoulEntity>> GHOUL = DEF_REG.register("ghoul", () -> (EntityType<GhoulEntity>) EntityType.Builder.of(GhoulEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("ghoul"));
 	public static final RegistryObject<EntityType<LampreyEntity>> LAMPREY = DEF_REG.register("lamprey", () -> (EntityType<LampreyEntity>) EntityType.Builder.of(LampreyEntity::new, MobCategory.WATER_AMBIENT).sized(0.8F, 0.3F).setTrackingRange(8).build("lamprey"));
 	public static final RegistryObject<EntityType<RavenEntity>> RAVEN = DEF_REG.register("raven", () -> (EntityType<RavenEntity>) EntityType.Builder.of(RavenEntity::new, MobCategory.CREATURE).sized(0.5F, 0.9F).setTrackingRange(8).build("raven"));
-	public static final RegistryObject<EntityType<GhostRayEntity>> GHOSTRAY = DEF_REG.register("ghostray", () -> (EntityType<GhostRayEntity>) EntityType.Builder.of(GhostRayEntity::new, MobCategory.MONSTER).sized(1.6F, 0.25F).setTrackingRange(8).build("ghostray"));
+	public static final RegistryObject<EntityType<VoidGliderEntity>> VOID_GLIDER = DEF_REG.register("void_glider", () -> (EntityType<VoidGliderEntity>) EntityType.Builder.of(VoidGliderEntity::new, MobCategory.MONSTER).sized(1.6F, 0.25F).setTrackingRange(8).build("void_glider"));
 	public static final RegistryObject<EntityType<WarpedFireflyEntity>> WARPEDFIREFLY = DEF_REG.register("warpedfirefly", () -> (EntityType<WarpedFireflyEntity>) EntityType.Builder.of(WarpedFireflyEntity::new, MobCategory.MONSTER).sized(0.7F, 0.6F).fireImmune().setTrackingRange(8).build("warpedfirefly"));
 	public static final RegistryObject<EntityType<GraveRobberEntity>> GRAVEROBBER = DEF_REG.register("graverobber", () -> (EntityType<GraveRobberEntity>) EntityType.Builder.of(GraveRobberEntity::new, MobCategory.MONSTER).sized(0.6F, 1.95F).setTrackingRange(8).build("graverobber"));
 	public static final RegistryObject<EntityType<BeelzebubEntity>> BEELZEBUB = DEF_REG.register("beelzebub", () -> (EntityType<BeelzebubEntity>) EntityType.Builder.of(BeelzebubEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).setTrackingRange(8).build("beelzebub"));
@@ -180,7 +180,7 @@ public class FUREntityRegistry {
         event.register(LAMPREY.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SwarmerEntity::checkSwarmerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(RAVEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, RavenEntity::checkRavenSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(SHROOMLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, ShroomlingEntity::checkShroomlingSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(GHOSTRAY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GhostRayEntity::checkGhostRaySpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(VOID_GLIDER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, VoidGliderEntity::checkVoidGliderSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WARPEDFIREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GRAVEROBBER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(BEELZEBUB.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, BeelzebubEntity::checkBeelzebubSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
@@ -219,7 +219,7 @@ public class FUREntityRegistry {
         event.put(BANSHEE.get(), BansheeEntity.createAttributes().build());
         event.put(CACTOID.get(), CactoidEntity.createAttributes().build());
         event.put(SHROOMLING.get(), ShroomlingEntity.createAttributes().build());
-        event.put(GHOSTRAY.get(), GhostRayEntity.createAttributes().build());
+        event.put(VOID_GLIDER.get(), VoidGliderEntity.createAttributes().build());
         event.put(WARPEDFIREFLY.get(), WarpedFireflyEntity.createAttributes().build());
         event.put(GRAVEROBBER.get(), GraveRobberEntity.createAttributes().build());
         event.put(MIMIC.get(), MimicEntity.createAttributes().build());

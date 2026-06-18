@@ -30,7 +30,7 @@ import com.Fishmod.fur.client.renderer.entity.MycosisRenderer;
 import com.Fishmod.fur.client.renderer.entity.ParasiteRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
 import com.Fishmod.fur.client.renderer.entity.RavenRenderer;
-import com.Fishmod.fur.client.renderer.entity.GhostRayRenderer;
+import com.Fishmod.fur.client.renderer.entity.VoidGliderRenderer;
 import com.Fishmod.fur.client.renderer.entity.WarpedFireflyRenderer;
 import com.Fishmod.fur.client.renderer.entity.GraveRobberRenderer;
 import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
@@ -121,7 +121,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GHOUL.get(), GhoulRenderer::new); 
         EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.RAVEN.get(), RavenRenderer::new);
-        EntityRenderers.register(FUREntityRegistry.GHOSTRAY.get(), GhostRayRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.VOID_GLIDER.get(), VoidGliderRenderer::new);
         EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY.get(), WarpedFireflyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER.get(), GraveRobberRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB.get(), BeelzebubRenderer::new);
@@ -152,7 +152,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.GHOSTRAY, manager -> new GhostRayRenderer(manager));
+        EntityRenderers.register(FUREntityRegistry.VOID_GLIDER, manager -> new VoidGliderRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager));

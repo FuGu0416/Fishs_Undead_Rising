@@ -432,25 +432,25 @@
 		"sounds": [{"name": "fur:entity/undertaker/death","stream": true}]
 	},
 	
-	"ghostray_ambient":
+	"void_glider_ambient":
 	{
 		"category": "neutral",
-		"subtitle": "entity_ghostray_ambient",
-		"sounds": ["fur:entity/ghostray/ambient"]
+		"subtitle": "entity_void_glider_ambient",
+		"sounds": ["fur:entity/void_glider/ambient"]
 	},
-	
-	"ghostray_hurt":
+
+	"void_glider_hurt":
 	{
 		"category": "neutral",
-		"subtitle": "entity_ghostray_hurt",
-		"sounds": ["fur:entity/ghostray/hurt0","fur:entity/ghostray/hurt1"]
+		"subtitle": "entity_void_glider_hurt",
+		"sounds": ["fur:entity/void_glider/hurt0","fur:entity/void_glider/hurt1"]
 	},
-	
-	"ghostray_death":
+
+	"void_glider_death":
 	{
 		"category": "neutral",
-		"subtitle": "entity_ghostray_death",
-		"sounds": [{"name": "fur:entity/ghostray/death","stream": true}]
+		"subtitle": "entity_void_glider_death",
+		"sounds": [{"name": "fur:entity/void_glider/death","stream": true}]
 	},
 	
 	"banshee_ambient":

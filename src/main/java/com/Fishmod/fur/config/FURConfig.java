@@ -87,7 +87,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Ability_Max;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Ability_Cooldown;
 	
-	public static final ForgeConfigSpec.ConfigValue<Double> GhostRay_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> VoidGlider_Health;
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Banshee_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Banshee_Attack;
@@ -369,8 +369,8 @@ public final class FURConfig {
 		Unburied_Attack = BUILDER.comment("Unburied strength [1-1000]").defineInRange("unburied attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
-		BUILDER.push("Ghost Ray");
-		GhostRay_Health = BUILDER.comment("Maximum Ghost Ray health [1-1000]").defineInRange("ghost ray health", 20.0D, 1.0D, 1000.0D);
+		BUILDER.push("Void Glider");
+		VoidGlider_Health = BUILDER.comment("Maximum Void Glider health [1-1000]").defineInRange("void glider health", 20.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Banshee");

@@ -2,7 +2,7 @@
     "type": "minecraft:entity",
     "pools": [
         {
-            "name": "fur:ghostray",
+            "name": "fur:void_glider",
             "rolls": 1,
             "entries": [
                 {

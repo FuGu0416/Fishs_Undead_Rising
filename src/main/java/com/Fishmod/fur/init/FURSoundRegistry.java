@@ -90,9 +90,9 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> UNDERTAKER_HURT = addSoundEvent("undertaker_hurt");
 	public static final RegistryObject<SoundEvent> UNDERTAKER_DEATH = addSoundEvent("undertaker_death");
 	
-	public static final RegistryObject<SoundEvent> GHOSTRAY_AMBIENT = addSoundEvent("ghostray_ambient");
-	public static final RegistryObject<SoundEvent> GHOSTRAY_HURT = addSoundEvent("ghostray_hurt");
-	public static final RegistryObject<SoundEvent> GHOSTRAY_DEATH = addSoundEvent("ghostray_death");
+	public static final RegistryObject<SoundEvent> VOID_GLIDER_AMBIENT = addSoundEvent("void_glider_ambient");
+	public static final RegistryObject<SoundEvent> VOID_GLIDER_HURT = addSoundEvent("void_glider_hurt");
+	public static final RegistryObject<SoundEvent> VOID_GLIDER_DEATH = addSoundEvent("void_glider_death");
 	
 	public static final RegistryObject<SoundEvent> BANSHEE_AMBIENT = addSoundEvent("banshee_ambient");
 	public static final RegistryObject<SoundEvent> BANSHEE_ATTACK = addSoundEvent("banshee_attack");

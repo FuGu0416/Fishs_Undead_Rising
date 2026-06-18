@@ -641,7 +641,7 @@ public class FURServerEvents {
 	        
 	        if (event.getType() == VillagerProfession.BUTCHER) {
 	        	event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
-	        		    new ItemStack(FURItemRegistry.BLOATED_INTESTINE.get(), 4),  // player to trade
+	        		    new ItemStack(FURItemRegistry.BLOATED_GUT.get(), 4),  // player to trade
 	        		    new ItemStack(Items.EMERALD, 1),                            // player to get
 	        		    12,                                                         // max uses
 	        		    1,                                                          // xp
