@@ -2,6 +2,7 @@ package com.Fishmod.fur.item;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -57,13 +58,13 @@ import net.minecraftforge.common.ForgeMod;
 
 public class FURWeaponItem extends SwordItem {
     private static final UUID REACH_UUID = UUID.fromString("d4b8d5f2-9d6b-4a36-8c70-9f1db2b7e801");
-	private Item repair_material;
+	private Supplier<Item> repair_material;
 	private float Damage;
 	protected float efficiency;
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 	boolean hasDesc;
 	
-	public FURWeaponItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
+	public FURWeaponItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
 		super(material, damage, attackspeed, properties);
         this.Damage = (float)damage + 3.0F;
         this.repair_material = repair;
@@ -310,7 +311,7 @@ public class FURWeaponItem extends SwordItem {
 	
 	@Override
 	public boolean isValidRepairItem(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem().equals(this.repair_material);
+		return par2ItemStack.getItem().equals(this.repair_material.get());
 	}
 	
 	@Override

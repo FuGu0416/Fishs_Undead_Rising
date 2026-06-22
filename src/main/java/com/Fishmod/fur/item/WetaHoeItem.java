@@ -1,6 +1,7 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -25,9 +26,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WetaHoeItem extends HoeItem {
-	private Item repair_material;
-	
-	public WetaHoeItem(Properties properties, Tier material, int damage, float attackspeed, Item repair) {
+	private Supplier<Item> repair_material;
+
+	public WetaHoeItem(Properties properties, Tier material, int damage, float attackspeed, Supplier<Item> repair) {
 		super(material, damage, attackspeed, properties);
 		this.repair_material = repair;
 	}
@@ -87,7 +88,7 @@ public class WetaHoeItem extends HoeItem {
     
 	@Override
 	public boolean isValidRepairItem(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem().equals(this.repair_material);
+		return par2ItemStack.getItem().equals(this.repair_material.get());
 	}
 	
 	@Override

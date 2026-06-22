@@ -2,6 +2,7 @@ package com.Fishmod.fur.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -53,7 +54,7 @@ public class SporecallerItem extends FURWeaponItem {
 	/** Overlay tint used when no potion is injected (a pale cyan default). */
 	public static final int DEFAULT_OVERLAY_COLOR = 0x4EFFFF;
 
-	public SporecallerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
+	public SporecallerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
 		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
 

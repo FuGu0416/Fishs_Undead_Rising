@@ -22,7 +22,6 @@ public class RavenModel extends GeoModel<RavenEntity> {
         new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/raven/raven.png"),
         new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/raven/raven1.png"),
         new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/raven/raven2.png"),
-        new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/raven/raven3.png"),
     };
 
     private static final ResourceLocation ANIMATIONS =
@@ -48,80 +47,24 @@ public class RavenModel extends GeoModel<RavenEntity> {
 
     @Override
     public void setCustomAnimations(RavenEntity entity, long instanceId, AnimationState<RavenEntity> animationState) {
-        CoreGeoBone head     = getAnimationProcessor().getBone("head");
-        CoreGeoBone beak1    = getAnimationProcessor().getBone("beak1");
-        CoreGeoBone beak2    = getAnimationProcessor().getBone("beak2");
-        CoreGeoBone wingL    = getAnimationProcessor().getBone("wing_left");
-        CoreGeoBone wingR    = getAnimationProcessor().getBone("wing_right");
-        CoreGeoBone legL     = getAnimationProcessor().getBone("leg_left");
-        CoreGeoBone legR     = getAnimationProcessor().getBone("leg_right");
-        CoreGeoBone tail     = getAnimationProcessor().getBone("tail");
+        CoreGeoBone head = getAnimationProcessor().getBone("head");
 
-        EntityModelData modelData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        float limbSwing       = entity.walkAnimation.position();
-        float limbSwingAmount = entity.walkAnimation.speed();
+        // Head tracking. Skipped while perched on a player: the body yaw is forced to the rider's yaw
+        // every tick while the look goal keeps tracking the rider (at ~zero distance), so netHeadYaw
+        // flips between extremes each tick and the head jitters. Resting the head at its default pose
+        // (forward relative to the body, which already follows the player) avoids that.
+        if (head != null && !entity.isPassenger()) {
+        	EntityModelData modelData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-        // Head tracking
-        if (head != null) {
             head.setRotX(modelData.headPitch() * Mth.DEG_TO_RAD);
             head.setRotY(modelData.netHeadYaw() * Mth.DEG_TO_RAD);
-        }
-
-        // Beak: open when calling
-        if (beak1 != null && beak2 != null && entity.callTimer > 0) {
-            beak1.setRotX(0.18F);
-            beak2.setRotX(-0.18F);
-        }
-
-        boolean isSitting = entity.isInSittingPose();
-        boolean isFlying  = entity.isFlying();
-        float flap = Mth.cos(entity.tickCount * 1.5F) * 0.5F;
-
-        // Wings
-        if (wingL != null && wingR != null) {
-            if (isSitting) {
-                wingL.setRotZ(-0.0873F);
-                wingR.setRotZ(0.0873F);
-            } else if (isFlying) {
-                wingL.setRotZ(-1.5934F + flap);
-                wingR.setRotZ(1.5934F - flap);
-            } else {
-                float walkFlap = Mth.cos(limbSwing * 1.5F) * 0.2F * limbSwingAmount;
-                wingL.setRotZ(-1.5934F - walkFlap);
-                wingR.setRotZ(1.5934F + walkFlap);
-            }
-        }
-
-        // Legs
-        if (legL != null && legR != null) {
-            if (isSitting) {
-                legL.setRotX(0.9701F);
-                legR.setRotX(0.9701F);
-            } else if (isFlying) {
-                legL.setRotX(0.6682F);
-                legR.setRotX(0.6682F);
-            } else {
-                float swing = Mth.cos(limbSwing * 1.4F) * 0.5F * limbSwingAmount;
-                legL.setRotX(-0.0299F + swing);
-                legR.setRotX(-0.0299F - swing);
-            }
-        }
-
-        // Tail
-        if (tail != null) {
-            if (isSitting) {
-                tail.setRotX(1.5389F);
-            } else {
-                float tailSwing = Mth.cos(limbSwing * 1.4F) * 0.2F * limbSwingAmount;
-                tail.setRotX(1.015F + tailSwing);
-            }
         }
     }
 
     @Nullable
     @Override
     public RenderType getRenderType(RavenEntity entity, ResourceLocation texture) {
-        if (entity.getSkin() == 3) {
+        if (entity.getSkin() == 2) {
             return RenderType.entityTranslucent(this.getTextureResource(entity));
         }
         return super.getRenderType(entity, texture);

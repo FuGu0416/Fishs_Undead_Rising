@@ -41,10 +41,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FURRangedItem extends CrossbowItem {
 		
-	private Item ammo = null;
+	private Supplier<Item> ammo = null;
 	private final Supplier<EntityType<? extends Entity>> shot;
-	
-	public FURRangedItem(Item ammo, Supplier<EntityType<?>> shot, Item.Properties properties) {
+
+	public FURRangedItem(Supplier<Item> ammo, Supplier<EntityType<?>> shot, Item.Properties properties) {
 		super(properties);
         this.ammo = ammo;
         this.shot = shot;
@@ -68,7 +68,7 @@ public class FURRangedItem extends CrossbowItem {
 	               }
 	            }
 
-	            return player.getAbilities().instabuild ? new ItemStack(this.ammo) : ItemStack.EMPTY;
+	            return player.getAbilities().instabuild ? new ItemStack(this.ammo.get()) : ItemStack.EMPTY;
     	   }
        }
 	}
@@ -76,7 +76,7 @@ public class FURRangedItem extends CrossbowItem {
 	@Override		
     public Predicate<ItemStack> getAllSupportedProjectiles() {
 	    return (stack) -> {
-	        return stack.getItem().equals(this.ammo);
+	        return stack.getItem().equals(this.ammo.get());
 	    };
 	}
 	
@@ -126,7 +126,7 @@ public class FURRangedItem extends CrossbowItem {
         
      	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
      		if (itemstack.isEmpty()) {
-     			itemstack = new ItemStack(this.ammo);
+     			itemstack = new ItemStack(this.ammo.get());
  			}
 	    } else return;
      	
@@ -200,7 +200,7 @@ public class FURRangedItem extends CrossbowItem {
 
 	     	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
 	     		if (itemstack.isEmpty()) {
-	     			itemstack = new ItemStack(this.ammo);
+	     			itemstack = new ItemStack(this.ammo.get());
 	 			}
 		    } else return super.use(level, player, hand);
 
@@ -238,7 +238,7 @@ public class FURRangedItem extends CrossbowItem {
 
 	     	if (!itemstack.isEmpty() || (flag || this.ammo == null)) {
 	     		if (itemstack.isEmpty()) {
-	     			itemstack = new ItemStack(this.ammo);
+	     			itemstack = new ItemStack(this.ammo.get());
 	 			}
 		    } else return super.use(level, player, hand);
 

@@ -1,5 +1,7 @@
 package com.Fishmod.fur.item;
 
+import java.util.function.Supplier;
+
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -19,7 +21,7 @@ import net.minecraft.world.level.Level;
 
 public class FangDaggerItem extends FURWeaponItem {
 
-	public FangDaggerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
+	public FangDaggerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
 		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
 

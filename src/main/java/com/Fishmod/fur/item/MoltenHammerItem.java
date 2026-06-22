@@ -1,6 +1,7 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.Level;
 
 public class MoltenHammerItem extends FURWeaponItem {
 
-	public MoltenHammerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Item repair, Boolean hasDesc) {
+	public MoltenHammerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
 		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
 	

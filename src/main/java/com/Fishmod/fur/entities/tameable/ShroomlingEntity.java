@@ -66,9 +66,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("shroomling.idle");
-	private static final RawAnimation WALK = RawAnimation.begin().thenPlay("shroomling.walk");
-	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("shroomling.attack");
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("shroomling.model.idle");
+	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("shroomling.model.walk");
+	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("shroomling.model.attack_blend");
 
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
 	/** Index into {@link #SPORE_EFFECTS} of the spore effect this shroomling carries. Synced so the client can tint the ambient particles. */

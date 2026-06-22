@@ -1,10 +1,10 @@
 package com.Fishmod.fur.client.renderer.entity;
 
-import com.Fishmod.fur.client.layer.LayerRavenGlow;
 import com.Fishmod.fur.client.model.RavenModel;
 import com.Fishmod.fur.entities.tameable.RavenEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 import javax.annotation.Nullable;
@@ -25,13 +26,21 @@ import javax.annotation.Nullable;
 public class RavenRenderer extends GeoEntityRenderer<RavenEntity> {
     private static final String BEAK_BONE = "beak1";
 
+    private static final float BEAK_ITEM_SCALE = 0.8F;
+    private static final float BEAK_ITEM_ROT_X = -90.0F;
+    private static final float BEAK_ITEM_ROT_Y = 0.0F;
+    private static final float BEAK_ITEM_ROT_Z = 0.0F;
+    private static final float BEAK_ITEM_OFFSET_X = 0.0F;
+    private static final float BEAK_ITEM_OFFSET_Y = 0.0F;
+    private static final float BEAK_ITEM_OFFSET_Z = -0.1F;
+
     protected ItemStack mainHandItem;
 
     public RavenRenderer(EntityRendererProvider.Context context) {
         super(context, new RavenModel());
         this.shadowRadius = 0.3F;
 
-        this.addRenderLayer(new LayerRavenGlow(this));
+        this.addRenderLayer(new AutoGlowingGeoLayer<>(this));
 
         this.addRenderLayer(new BlockAndItemGeoLayer<>(this) {
             @Nullable
@@ -42,7 +51,18 @@ public class RavenRenderer extends GeoEntityRenderer<RavenEntity> {
 
             @Override
             protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, RavenEntity animatable) {
-                return ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+                return ItemDisplayContext.GROUND;
+            }
+
+            @Override
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, RavenEntity animatable,
+                                              MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+                poseStack.translate(BEAK_ITEM_OFFSET_X, BEAK_ITEM_OFFSET_Y, BEAK_ITEM_OFFSET_Z);
+                poseStack.mulPose(Axis.XP.rotationDegrees(BEAK_ITEM_ROT_X));
+                poseStack.mulPose(Axis.YP.rotationDegrees(BEAK_ITEM_ROT_Y));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(BEAK_ITEM_ROT_Z));
+                poseStack.scale(BEAK_ITEM_SCALE, BEAK_ITEM_SCALE, BEAK_ITEM_SCALE);
+                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
             }
         });
     }
@@ -61,14 +81,10 @@ public class RavenRenderer extends GeoEntityRenderer<RavenEntity> {
                         partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
         this.mainHandItem = animatable.getMainHandItem();
-
-        if (!isReRender && animatable.getSkin() == 1) {
-            poseStack.scale(1.2F, 1.2F, 1.2F);
-        }
     }
 
     @Override
     protected int getBlockLightLevel(RavenEntity entity, BlockPos pos) {
-        return entity.getSkin() == 3 ? 15 : super.getBlockLightLevel(entity, pos);
+        return entity.getSkin() == 2 ? 15 : super.getBlockLightLevel(entity, pos);
     }
 }

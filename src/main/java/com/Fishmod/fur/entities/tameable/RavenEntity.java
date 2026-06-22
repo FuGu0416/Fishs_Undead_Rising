@@ -1,5 +1,6 @@
 package com.Fishmod.fur.entities.tameable;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -24,7 +25,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -50,10 +50,11 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -70,36 +71,48 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.raven.idle");
+    private static final RawAnimation IDLE   = RawAnimation.begin().thenLoop("raven.model.idle");
+    private static final RawAnimation WALK   = RawAnimation.begin().thenLoop("raven.model.walk");
+    private static final RawAnimation FLY    = RawAnimation.begin().thenLoop("raven.model.fly");
+    private static final RawAnimation FLY_RIDING = RawAnimation.begin().thenLoop("raven.model.fly_riding");
+    private static final RawAnimation SIT    = RawAnimation.begin().thenLoop("raven.model.sit");
+    private static final RawAnimation JUKE   = RawAnimation.begin().thenLoop("raven.model.juke");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("raven.model.attack_blend");
+    private static final RawAnimation CAW    = RawAnimation.begin().thenPlay("raven.model.caw_blend");
 
     private static final EntityDataAccessor<Integer> SKIN_TYPE =
             SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.INT);
+    /** Synced so the client can play the juke (dance) animation; server-authoritative (see {@link #updateDanceState}). */
+    private static final EntityDataAccessor<Boolean> DANCING =
+            SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.BOOLEAN);
 
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
     public float oFlap;
     public float flapping = 1.0F;
-    private boolean partyParrot;
+    /** Cached position of the nearby playing jukebox this raven is dancing to, or {@code null}. Server-side only. */
     private BlockPos jukebox;
+    /** True once the owner has issued a follow/wander/sit command; a commanded tamed raven stops dancing. Persisted. */
+    private boolean commanded;
     private int ridingCooldown;
-    public int callTimer;
     private int moreCropTicks;
 
     private EntityAITargetItem<ItemEntity> AITargetItem;
@@ -116,8 +129,9 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
+        this.goalSelector.addGoal(0, new RavenEntity.DanceGoal());
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RavenEntity.RaidFarmGoal(this));
         this.goalSelector.addGoal(8, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
@@ -137,6 +151,8 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     protected void applyEntityAI() {
         this.AITargetItem = new EntityAITargetItem<>(this, ItemEntity.class, true);
         this.targetSelector.addGoal(1, this.AITargetItem);
+        // Neutral: don't attack unprovoked, but retaliate when hurt and rally nearby ravens.
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -195,16 +211,57 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public void aiStep() {
-        super.aiStep();
-        if (this.callTimer > 0) {
-            this.callTimer--;
+        // Compute the dance state before super (which ticks the goals) so DanceGoal sees it this tick.
+        if (!this.level().isClientSide()) {
+            this.updateDanceState();
         }
-        if (this.jukebox == null || !this.jukebox.closerToCenterThan(this.position(), 3.46D)
-                || !this.level().getBlockState(this.jukebox).is(Blocks.JUKEBOX)) {
-            this.partyParrot = false;
+        super.aiStep();
+        this.calculateFlapping();
+    }
+
+    /**
+     * Server-side juke detection. A raven dances next to a jukebox that has a record. Vanilla only
+     * notifies {@code Parrot.class} of nearby records, so we detect it ourselves and sync the flag.
+     * Untamed ravens always dance near a playing jukebox; a tamed raven dances only until the owner
+     * gives it a follow/wander/sit command ({@link #commanded}).
+     */
+    private void updateDanceState() {
+        if (this.jukebox != null && !this.isPlayingJukebox(this.jukebox)) {
             this.jukebox = null;
         }
-        this.calculateFlapping();
+        // Re-scan only periodically when none is cached (validating a cached one is cheap).
+        if (this.jukebox == null && this.tickCount % 20 == 0) {
+            this.jukebox = this.findNearbyPlayingJukebox();
+        }
+        this.setDancing(this.jukebox != null && !(this.isTame() && this.commanded));
+    }
+
+    private boolean isPlayingJukebox(BlockPos pos) {
+        // Use the block entity's actual playback state, not the HAS_RECORD blockstate: a disc left in
+        // the jukebox keeps HAS_RECORD true after the song ends, which would keep the raven dancing.
+        return this.level().getBlockState(pos).is(Blocks.JUKEBOX)
+                && pos.closerToCenterThan(this.position(), 3.46D)
+                && this.level().getBlockEntity(pos) instanceof JukeboxBlockEntity jukebox
+                && jukebox.isRecordPlaying();
+    }
+
+    @Nullable
+    private BlockPos findNearbyPlayingJukebox() {
+        BlockPos origin = this.blockPosition();
+        for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-3, -3, -3), origin.offset(3, 3, 3))) {
+            if (this.isPlayingJukebox(pos)) {
+                return pos.immutable();
+            }
+        }
+        return null;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    private void setDancing(boolean dancing) {
+        this.entityData.set(DANCING, dancing);
     }
 
     @Override
@@ -237,8 +294,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
                 if (chosenDrop == null) {
                     switch (this.getSkin()) {
                         case 1 -> chosenDrop = new ItemStack(Items.IRON_NUGGET, 1);
-                        case 2 -> chosenDrop = new ItemStack(Items.TROPICAL_FISH, 1);
-                        case 3 -> chosenDrop = new ItemStack(FURItemRegistry.ECTOPLASM.get(), 1);
+                        case 2 -> chosenDrop = new ItemStack(FURItemRegistry.ECTOPLASM.get(), 1);
                         default -> chosenDrop = new ItemStack(FURItemRegistry.FEATHER_BLACK.get(), 1);
                     }
                 }
@@ -247,7 +303,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
             }
         }
 
-        this.noPhysics = (this.getSkin() == 3
+        this.noPhysics = (this.getSkin() == 2
                 && this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D);
         super.tick();
         this.noPhysics = false;
@@ -255,7 +311,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     private ItemStack pickLootDrop() {
         List<? extends String> lootList = switch (this.getSkin()) {
-            case 3 -> FURConfig.Spectral_Raven_Loot.get();
+            case 2 -> FURConfig.Spectral_Raven_Loot.get();
             default -> FURConfig.Raven_Loot.get();
         };
         for (String entry : lootList) {
@@ -272,17 +328,6 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
             } catch (NumberFormatException ignored) {}
         }
         return null;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
-        this.jukebox = pos;
-        this.partyParrot = playing;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean isPartyParrot() {
-        return this.partyParrot;
     }
 
     private void calculateFlapping() {
@@ -311,6 +356,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         super.doSitCommand(playerIn);
         if (!this.level().isClientSide) {
             this.setOrderedToSit(true);
+            this.onCommanded(playerIn);
         }
     }
 
@@ -319,6 +365,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         super.doFollowCommand(playerIn);
         if (!this.level().isClientSide) {
             this.setOrderedToSit(false);
+            this.onCommanded(playerIn);
         }
     }
 
@@ -327,6 +374,19 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         super.doWanderCommand(playerIn);
         if (!this.level().isClientSide) {
             this.setOrderedToSit(false);
+            this.onCommanded(playerIn);
+        }
+    }
+
+    /**
+     * Marks the raven as commanded so it stops dancing. Only a real player command (non-null player)
+     * counts — programmatic state restores on load/dismiss pass {@code null} and must not flip it.
+     */
+    private void onCommanded(@Nullable Player playerIn) {
+        if (playerIn != null) {
+            this.commanded = true;
+            this.jukebox = null;
+            this.setDancing(false);
         }
     }
 
@@ -361,7 +421,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
                 if (!player.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
-                this.setSkin(3);
+                this.setSkin(2);
                 this.playSound(SoundEvents.PARROT_EAT, 1.0F, 1.0F);
                 this.playSound(SoundEvents.AMBIENT_CAVE.value(), 1.0F, 1.0F);
                 for (int i = 0; i < 8; ++i) {
@@ -383,11 +443,8 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public boolean isFood(ItemStack stack) {
-        if (this.getSkin() == 2)
-            return stack.is(ItemTags.FISHES);
-        else
-            return stack.getItem() == FURItemRegistry.PARASITE_RAW.get()
-                    || stack.getItem() == FURItemRegistry.PARASITE_COOKED.get();
+        return stack.getItem() == FURItemRegistry.PARASITE_RAW.get()
+                || stack.getItem() == FURItemRegistry.PARASITE_COOKED.get();
     }
 
     public static boolean checkRavenSpawnRules(EntityType<RavenEntity> type, ServerLevelAccessor level,
@@ -425,6 +482,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public boolean doHurtTarget(Entity entity) {
+        this.triggerAnim("trigger_controller", "attack");
         return entity.hurt(this.damageSources().mobAttack(this), 3.0F);
     }
 
@@ -446,8 +504,15 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public void playAmbientSound() {
+        // No ambient call (sound + caw animation) while dancing to a jukebox.
+        if (this.isDancing()) {
+            return;
+        }
         super.playAmbientSound();
-        this.callTimer = 10;
+        // The caw moves the beak/head, which clashes with an item carried in the beak — skip it then.
+        if (this.getMainHandItem().isEmpty()) {
+            this.triggerAnim("trigger_controller", "caw");
+        }
     }
 
     @Override
@@ -471,7 +536,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public MobType getMobType() {
-        return this.getSkin() == 3 ? MobType.UNDEAD : MobType.UNDEFINED;
+        return this.getSkin() == 2 ? MobType.UNDEAD : MobType.UNDEFINED;
     }
 
     @Override
@@ -481,7 +546,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source) || this.getSkin() == 3) {
+        if (this.isInvulnerableTo(source) || this.getSkin() == 2) {
             return false;
         }
         if (this.aiSit != null) {
@@ -502,7 +567,11 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SKIN_TYPE, this.getRandom().nextFloat() < 0.1F ? 1 : 0);
+        // Fixed default; the natural-spawn variant is rolled in finalizeSpawn. A randomised default
+        // here desyncs on relog: getNonDefaultValues() skips a value equal to the (random) default,
+        // so the client keeps its own differing random roll and the skin appears to change.
+        this.entityData.define(SKIN_TYPE, 0);
+        this.entityData.define(DANCING, false);
     }
 
     @Nullable
@@ -511,6 +580,9 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
             MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Raven_Health.get());
         this.setHealth(this.getMaxHealth());
+
+        // Roll the spawn variant here (not as the synched default) so it syncs/persists correctly.
+        this.setSkin(this.getRandom().nextFloat() < 0.1F ? 1 : 0);
 
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PARASITE_RAW.get()), false));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PARASITE_COOKED.get()), false));
@@ -537,6 +609,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         super.readAdditionalSaveData(tag);
         this.setSkin(tag.getInt("Variant"));
         this.moreCropTicks = tag.getInt("MoreCropTicks");
+        this.commanded = tag.getBoolean("Commanded");
     }
 
     @Override
@@ -544,6 +617,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         super.addAdditionalSaveData(tag);
         tag.putInt("Variant", this.getSkin());
         tag.putInt("MoreCropTicks", this.moreCropTicks);
+        tag.putBoolean("Commanded", this.commanded);
     }
 
     @Override
@@ -592,17 +666,64 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     // --- GeoEntity ---
 
+    private <E extends GeoAnimatable> PlayState animPredicate(AnimationState<E> state) {
+        if (this.isDancing()) {
+            state.getController().setAnimation(JUKE);
+        } else if (this.isInSittingPose()) {
+            state.getController().setAnimation(SIT);
+        } else if (this.isFlying()) {
+            // isFlying() is only true while a passenger when the ridden player is falling
+            // (see isFlying()), so use the riding flap variant in that case.
+            state.getController().setAnimation(this.isPassenger() ? FLY_RIDING : FLY);
+        } else if (state.isMoving() || !this.getNavigation().isDone()) {
+            state.getController().setAnimation(WALK);
+        } else {
+            state.getController().setAnimation(IDLE);
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 5, state -> {
-            state.getController().setAnimation(IDLE);
-            return PlayState.CONTINUE;
-        }));
+        controllers.add(new AnimationController<>(this, "controller", 5, this::animPredicate));
+        controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+                .triggerableAnim("attack", ATTACK)
+                .triggerableAnim("caw", CAW));
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    /**
+     * Holds the MOVE flag while the raven is dancing so no movement goal can run, and keeps the
+     * navigation stopped — the raven stays put (no movement) for as long as it dances.
+     */
+    class DanceGoal extends Goal {
+        DanceGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return RavenEntity.this.isDancing();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return RavenEntity.this.isDancing();
+        }
+
+        @Override
+        public void start() {
+            RavenEntity.this.getNavigation().stop();
+        }
+
+        @Override
+        public void tick() {
+            RavenEntity.this.getNavigation().stop();
+        }
     }
 
     static class RaidFarmGoal extends MoveToBlockGoal {

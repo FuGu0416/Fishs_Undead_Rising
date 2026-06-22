@@ -1,6 +1,7 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
@@ -25,10 +26,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class MoltenAxeItem extends AxeItem {
-	private Item repair_material;
+	private Supplier<Item> repair_material;
 	private SimpleParticleType particles;
-	
-	public MoltenAxeItem(Properties properties, Tier material, float damage, float attackspeed, Item repair, SimpleParticleType particles) {
+
+	public MoltenAxeItem(Properties properties, Tier material, float damage, float attackspeed, Supplier<Item> repair, SimpleParticleType particles) {
 		super(material, damage, attackspeed, properties);
 		this.repair_material = repair;
 		this.particles = particles;
@@ -65,7 +66,7 @@ public class MoltenAxeItem extends AxeItem {
 	
 	@Override
 	public boolean isValidRepairItem(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem().equals(this.repair_material);
+		return par2ItemStack.getItem().equals(this.repair_material.get());
 	}
 	
 	@Override
