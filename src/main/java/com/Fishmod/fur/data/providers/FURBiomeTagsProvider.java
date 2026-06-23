@@ -33,7 +33,8 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     public static final TagKey<Biome> HAS_CACTOID = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_cactoid"));
     public static final TagKey<Biome> HAS_PTERA = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_ptera"));
     public static final TagKey<Biome> HAS_SCARECROW = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_scarecrow"));
-    
+    public static final TagKey<Biome> HAS_RAVEN = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_raven"));
+
     public FURBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
     }
@@ -56,5 +57,11 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.HAS_VILLAGE_SAVANNA)
                 .addTag(BiomeTags.HAS_VILLAGE_SNOWY)
                 .addTag(BiomeTags.HAS_VILLAGE_TAIGA);
+        // 1.16.5 spawned ravens in SPOOKY (dark forest) + CONIFEROUS (taiga family); broadened here
+        // with forests and plains. IS_FOREST already includes dark_forest.
+        this.tag(HAS_RAVEN)
+                .addTag(BiomeTags.IS_FOREST)
+                .addTag(BiomeTags.IS_TAIGA)
+                .addTag(BiomeTags.HAS_VILLAGE_PLAINS);
     }
 }

@@ -4,9 +4,12 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
+import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -358,12 +361,15 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarecrow_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
-    	/*if (this.random.nextFloat() < 0.00625F * FURConfig.pSpawnRate_Raven.get() && !this.level.isClientSide) {
-    		RavenEntity crowpet = FUREntityRegistry.RAVEN.create(this.level);
-    		crowpet.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-    		crowpet.startRiding(this, true);
-    		this.level.addFreshEntity(crowpet);
-    	}*/
+    	// Only scarecrows that spawn in a biome where ravens occur (HAS_RAVEN) can come with a raven rider.
+    	if (this.random.nextFloat() < 0.05F && !this.level().isClientSide
+    			&& worldIn.getBiome(this.blockPosition()).is(FURBiomeTagsProvider.HAS_RAVEN)) {
+    		RavenEntity crowpet = SpawnUtil.trySpawnEntity(FUREntityRegistry.RAVEN.get(), worldIn.getLevel(), this.blockPosition());
+    		if (crowpet != null) {
+    			crowpet.startRiding(this, true);
+    			this.level().addFreshEntity(crowpet);
+    		}
+    	}
         
         if (spawnTypeIn == MobSpawnType.COMMAND || spawnTypeIn == MobSpawnType.SPAWN_EGG || spawnTypeIn == MobSpawnType.SPAWNER || spawnTypeIn == MobSpawnType.DISPENSER) {
         	this.setSkin(Integer.valueOf(this.random.nextInt(3)));

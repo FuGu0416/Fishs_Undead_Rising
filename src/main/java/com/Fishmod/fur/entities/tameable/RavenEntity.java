@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
@@ -36,6 +37,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -46,6 +48,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -55,15 +58,14 @@ import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -74,8 +76,12 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -97,17 +103,17 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("raven.model.attack_blend");
     private static final RawAnimation CAW    = RawAnimation.begin().thenPlay("raven.model.caw_blend");
 
-    private static final EntityDataAccessor<Integer> SKIN_TYPE =
-            SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.INT);
     /** Synced so the client can play the juke (dance) animation; server-authoritative (see {@link #updateDanceState}). */
-    private static final EntityDataAccessor<Boolean> DANCING =
-            SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(RavenEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public float flap;
-    public float flapSpeed;
-    public float oFlapSpeed;
-    public float oFlap;
-    public float flapping = 1.0F;
+    /** Gift loot tables (data/fur/loot_tables/gameplay/*) rolled for the items a tamed raven finds. */
+    private static final ResourceLocation RAVEN_GIFT = new ResourceLocation(mod_LavaCow.MODID, "gameplay/raven");
+    private static final ResourceLocation SPECTRAL_RAVEN_GIFT = new ResourceLocation(mod_LavaCow.MODID, "gameplay/spectral_raven");
+
+    /** Drives the wing-flap SOUND cadence via {@link #isFlapping()}/{@link #onFlap()} (Parrot-style). */
+    private float flapSpeed;
+    private float nextFlap = 1.0F;
     /** Cached position of the nearby playing jukebox this raven is dancing to, or {@code null}. Server-side only. */
     private BlockPos jukebox;
     /** True once the owner has issued a follow/wander/sit command; a commanded tamed raven stops dancing. Persisted. */
@@ -149,10 +155,31 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     }
 
     protected void applyEntityAI() {
-        this.AITargetItem = new EntityAITargetItem<>(this, ItemEntity.class, true);
+        this.AITargetItem = new RavenItemTargetGoal();
         this.targetSelector.addGoal(1, this.AITargetItem);
-        // Neutral: don't attack unprovoked, but retaliate when hurt and rally nearby ravens.
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, ScarabEntity.class, true));
+
+        Ingredient temptItems = Ingredient.of(FURItemRegistry.PARASITE_RAW.get(), FURItemRegistry.PARASITE_COOKED.get());
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, temptItems, false) {
+            @Override
+            public boolean canUse() {
+                return !RavenEntity.this.isTame() && super.canUse() && this.player != null && this.player.isCrouching();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return !RavenEntity.this.isTame() && super.canContinueToUse() && this.player != null && this.player.isCrouching();
+            }
+        });
+
+        // Skittish toward players: a wild raven flees a player that gets close, UNLESS the player is
+        // sneaking (a sneaking player draws no flee reaction, and with a tempt item can lure it in via
+        // the goal above). Tamed ravens and creative/spectator players are ignored.
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.0D, 1.4D,
+                living -> !this.isTame()
+                        && !living.isCrouching()
+                        && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(living)));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -216,7 +243,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
             this.updateDanceState();
         }
         super.aiStep();
-        this.calculateFlapping();
+        this.updateFlapState();
     }
 
     /**
@@ -266,7 +293,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     @Override
     public boolean canPickUpLoot() {
-        return super.canPickUpLoot() && this.getMainHandItem().isEmpty();
+        return super.canPickUpLoot() && this.getMainHandItem().isEmpty() && !this.isDancing();
     }
 
     @Override
@@ -275,75 +302,95 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
             if (this.ridingCooldown > 0) this.ridingCooldown--;
 
             if (this.isPassenger() && this.getVehicle() instanceof Player player) {
-                this.setRot(this.getVehicle().getYRot(), 0F);
+                this.setRot(player.getYRot(), 0F);
 
-                if (FURConfig.Raven_Slowfall.get() && !this.getVehicle().onGround()
-                        && this.getVehicle().getDeltaMovement().y < 0.0D
+                if (FURConfig.Raven_Slowfall.get() && !player.onGround()
+                        && player.getDeltaMovement().y < 0.0D
                         && !player.isFallFlying() && this.tickCount % 40 == 0) {
                     player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 3 * 20, 0));
                 }
 
-                if (this.ridingCooldown == 0 && (this.getVehicle().isCrouching() || this.getVehicle().isInWater())) {
-                    this.setDismount(this.getVehicle());
+                if (this.ridingCooldown == 0 && (player.isCrouching() || player.isInWater())) {
+                    this.setDismount(player);
                 }
             }
 
             if (!this.isInSittingPose() && !this.isPassenger() && this.getMainHandItem().isEmpty()
                     && this.tickCount % 200 == 0 && this.getRandom().nextFloat() < 0.02f) {
-                ItemStack chosenDrop = this.pickLootDrop();
-                if (chosenDrop == null) {
-                    switch (this.getSkin()) {
-                        case 1 -> chosenDrop = new ItemStack(Items.IRON_NUGGET, 1);
-                        case 2 -> chosenDrop = new ItemStack(FURItemRegistry.ECTOPLASM.get(), 1);
-                        default -> chosenDrop = new ItemStack(FURItemRegistry.FEATHER_BLACK.get(), 1);
-                    }
+                ItemStack gift = this.rollGift();
+                if (!gift.isEmpty()) {
+                    this.setItemInHand(InteractionHand.MAIN_HAND, gift);
                 }
-                int count = Math.max(1, this.getRandom().nextInt(chosenDrop.getCount()) + 1);
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(chosenDrop.getItem(), count));
             }
         }
 
-        this.noPhysics = (this.getSkin() == 2
-                && this.getY() > SpawnUtil.getHeight(this).getY() + 0.5D);
+        this.noPhysics = this.shouldPhaseThroughBlocks();
         super.tick();
         this.noPhysics = false;
     }
 
-    private ItemStack pickLootDrop() {
-        List<? extends String> lootList = switch (this.getSkin()) {
-            case 2 -> FURConfig.Spectral_Raven_Loot.get();
-            default -> FURConfig.Raven_Loot.get();
-        };
-        for (String entry : lootList) {
-            String[] parts = entry.split(",");
-            if (parts.length < 2) continue;
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parts[0].trim()));
-            if (item == null || item == Items.AIR) continue;
-            try {
-                float prob = Float.parseFloat(parts[1].trim());
-                if (this.getRandom().nextFloat() < prob) {
-                    int count = (parts.length >= 3) ? Integer.parseInt(parts[2].trim()) : 1;
-                    return new ItemStack(item, Math.max(1, count));
-                }
-            } catch (NumberFormatException ignored) {}
+    /**
+     * A spectral raven (skin 2) phases through blocks while airborne but should still land and walk
+     * on any solid surface — natural terrain OR an elevated floor/platform. It phases when there is
+     * no walkable floor within ~1 block below its feet, OR when its body is currently embedded in
+     * blocks (so it keeps going through a wall instead of getting stuck mid-descent). This is two
+     * small AABB collision probes per tick, and only for skin-2 ravens, so the cost is negligible.
+     */
+    private boolean shouldPhaseThroughBlocks() {
+        if (this.getSkin() != 2) {
+            return false;
         }
-        return null;
+        AABB box = this.getBoundingBox();
+        AABB groundProbe = new AABB(box.minX, box.minY - 1.0D, box.minZ, box.maxX, box.minY, box.maxZ);
+        boolean floorBelow = !this.level().noCollision(groundProbe);
+        boolean bodyEmbedded = !this.level().noCollision(box);
+        return !floorBelow || bodyEmbedded;
     }
 
-    private void calculateFlapping() {
-        this.oFlap = this.flap;
-        this.oFlapSpeed = this.flapSpeed;
-        this.flapSpeed = (float) ((double) this.flapSpeed + (double) (!this.onGround() ? 4 : -1) * 0.3D);
-        this.flapSpeed = Mth.clamp(this.flapSpeed, 0.0F, 1.0F);
-        if (!this.onGround() && this.flapping < 1.0F) {
-            this.flapping = 1.0F;
+    /**
+     * Rolls the raven's "gift" loot table to pick which item it found. The table's weighted entries
+     * decide the item and its built-in {@code set_count} functions decide the amount, so all of the
+     * selection logic lives in the data pack (data/fur/loot_tables/gameplay/*) rather than in code.
+     * Returns {@link ItemStack#EMPTY} on the client or if the table yields nothing.
+     */
+    private ItemStack rollGift() {
+        if (!(this.level() instanceof ServerLevel server)) {
+            return ItemStack.EMPTY;
         }
-        this.flapping = (float) ((double) this.flapping * 0.9D);
+        ResourceLocation tableId = this.getSkin() == 2 ? SPECTRAL_RAVEN_GIFT : RAVEN_GIFT;
+        LootTable table = server.getServer().getLootData().getLootTable(tableId);
+        LootParams params = new LootParams.Builder(server)
+                .withParameter(LootContextParams.ORIGIN, this.position())
+                .withParameter(LootContextParams.THIS_ENTITY, this)
+                .create(LootContextParamSets.GIFT);
+        List<ItemStack> items = table.getRandomItems(params);
+        return items.isEmpty() ? ItemStack.EMPTY : items.get(0);
+    }
+
+    /**
+     * Advances the flap-sound cadence and slows the raven's descent so it glides down rather than
+     * dropping like a stone (vanilla Parrot behaviour). Only {@code flapSpeed} is kept for the sound
+     * timing in {@link #onFlap()}; the wing-flap animation itself is handled by GeckoLib.
+     */
+    private void updateFlapState() {
+        this.flapSpeed += (!this.onGround() && !this.isPassenger() ? 4 : -1) * 0.3F;
+        this.flapSpeed = Mth.clamp(this.flapSpeed, 0.0F, 1.0F);
+
         Vec3 movement = this.getDeltaMovement();
         if (!this.onGround() && movement.y < 0.0D) {
             this.setDeltaMovement(movement.x, movement.y * 0.6D, movement.z);
         }
-        this.flap += this.flapping * 2.0F;
+    }
+
+    @Override
+    protected boolean isFlapping() {
+        return this.flyDist > this.nextFlap;
+    }
+
+    @Override
+    protected void onFlap() {
+        this.playSound(SoundEvents.PARROT_FLY, 0.15F, 1.0F);
+        this.nextFlap = this.flyDist + this.flapSpeed / 2.0F;
     }
 
     @Override
@@ -395,13 +442,18 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         ItemStack itemstack = player.getItemInHand(hand);
 
         if (this.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
-            if (!this.level().isClientSide() && itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {
-                player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
-                if (!player.getInventory().add(this.getMainHandItem().copy())) {
-                    player.spawnAtLocation(this.getMainHandItem().copy());
+            if (itemstack.isEmpty() && !this.getMainHandItem().isEmpty()) {
+                // Taking the item from the beak must win over perching, even while crouching. Select
+                // this branch on both sides so the client doesn't fall through to the perch branch;
+                // only perform the actual transfer on the server.
+                if (!this.level().isClientSide()) {
+                    player.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                    if (!player.getInventory().add(this.getMainHandItem().copy())) {
+                        player.spawnAtLocation(this.getMainHandItem().copy());
+                    }
+                    this.getMainHandItem().shrink(this.getMainHandItem().getCount());
                 }
-                this.getMainHandItem().shrink(this.getMainHandItem().getCount());
-                return InteractionResult.CONSUME;
+                return InteractionResult.sidedSuccess(this.level().isClientSide());
             } else if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
                 this.startRiding(player);
                 this.ridingCooldown = 20;
@@ -483,7 +535,12 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.triggerAnim("trigger_controller", "attack");
-        return entity.hurt(this.damageSources().mobAttack(this), 3.0F);
+        boolean hurt = entity.hurt(this.damageSources().mobAttack(this), 3.0F);
+
+        if (hurt && entity instanceof Player player && this.getRandom().nextFloat() < 0.2F) {
+            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 10 * 20, 0));
+        }
+        return hurt;
     }
 
     @Nullable
@@ -518,15 +575,6 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.PARROT_STEP, 0.15F, 1.0F);
-    }
-
-    protected float playFlySound(float f) {
-        this.playSound(SoundEvents.PARROT_FLY, 0.15F, 1.0F);
-        return f + this.flapSpeed / 2.0F;
-    }
-
-    protected boolean makeFlySound() {
-        return true;
     }
 
     @Override
@@ -584,9 +632,6 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         // Roll the spawn variant here (not as the synched default) so it syncs/persists correctly.
         this.setSkin(this.getRandom().nextFloat() < 0.1F ? 1 : 0);
 
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PARASITE_RAW.get()), false));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PARASITE_COOKED.get()), false));
-
         return super.finalizeSpawn(level, difficulty, reason, data, tag);
     }
 
@@ -625,12 +670,6 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         return (!this.onGround() && !this.isPassenger())
                 || (this.getVehicle() != null && !this.getVehicle().onGround()
                         && this.getVehicle().getDeltaMovement().y < 0.0D);
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getDefaultLootTable() {
-        return super.getDefaultLootTable();
     }
 
     @Override
@@ -697,6 +736,56 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
     }
 
     /**
+     * Item-fetching goal. Inherits the targeting logic from {@link EntityAITargetItem} but adds two
+     * raven behaviours: it never fires while dancing, and when the target item is within 4 blocks and
+     * the raven is standing on the ground it walks straight to it (driving the move control at ground
+     * level) instead of taking off to fly.
+     */
+    class RavenItemTargetGoal extends EntityAITargetItem<ItemEntity> {
+        RavenItemTargetGoal() {
+            super(RavenEntity.this, ItemEntity.class, true);
+        }
+
+        /** True when we should walk to the item rather than fly: on the ground and within 4 blocks. */
+        private boolean shouldWalkToItem() {
+            return RavenEntity.this.onGround()
+                    && this.targetEntity != null
+                    && this.targetEntity.isAlive()
+                    && RavenEntity.this.getMainHandItem().isEmpty()
+                    && RavenEntity.this.distanceToSqr(this.targetEntity) <= 16.0D;
+        }
+
+        @Override
+        public boolean canUse() {
+            return !RavenEntity.this.isDancing() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (RavenEntity.this.isDancing()
+                    || this.targetEntity == null
+                    || !this.targetEntity.isAlive()
+                    || !RavenEntity.this.getMainHandItem().isEmpty()) {
+                return false;
+            }
+            // While walking we stop the navigation, so don't require an active path to keep going.
+            return this.shouldWalkToItem() || !RavenEntity.this.getNavigation().isDone();
+        }
+
+        @Override
+        public void tick() {
+            if (this.shouldWalkToItem()) {
+                RavenEntity.this.getLookControl().setLookAt(this.targetEntity, 30.0F, 30.0F);
+                RavenEntity.this.getNavigation().stop();
+                RavenEntity.this.getMoveControl().setWantedPosition(
+                        this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1.0D);
+            } else {
+                super.tick();
+            }
+        }
+    }
+
+    /**
      * Holds the MOVE flag while the raven is dancing so no movement goal can run, and keeps the
      * navigation stopped — the raven stays put (no movement) for as long as it dances.
      */
@@ -744,7 +833,6 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
                 }
                 this.canRaid = false;
                 this.wantsToRaid = this.entity.wantsMoreFood();
-                this.wantsToRaid = true;
             }
             if (this.entity.isTame()) return false;
             return super.canUse();

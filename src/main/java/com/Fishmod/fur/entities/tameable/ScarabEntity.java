@@ -34,6 +34,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -98,6 +99,9 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     @Override
     protected void registerGoals() {
     	this.goalSelector.addGoal(1, new FloatGoal(this));
+    	// Scarabs are prey to ravens: flee on sight. High movement priority so fleeing wins over
+    	// attacking/leaping even if a raven manages to hurt the scarab.
+    	this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, RavenEntity.class, 8.0F, 1.0D, 1.4D));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
     	this.goalSelector.addGoal(6, new ScarabReturnHomeGoal(this));

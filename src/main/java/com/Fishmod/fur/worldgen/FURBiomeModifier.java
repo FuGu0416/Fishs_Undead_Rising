@@ -33,6 +33,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_CACTYRANT = registerKey("add_cactyrant");
 	public static final ResourceKey<BiomeModifier> ADD_WENDIGO = registerKey("add_wendigo");
 	public static final ResourceKey<BiomeModifier> ADD_SCARECROW = registerKey("add_scarecrow");
+	public static final ResourceKey<BiomeModifier> ADD_RAVEN = registerKey("add_raven");
 	public static final ResourceKey<BiomeModifier> ADD_WETA = registerKey("add_weta");
 	public static final ResourceKey<BiomeModifier> ADD_AVATON = registerKey("add_avaton");
 	public static final ResourceKey<BiomeModifier> ADD_WRAITH = registerKey("add_wraith");
@@ -82,6 +83,8 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WENDIGO.get(), 15, 1, 1));     
         addSpawn(context, ADD_SCARECROW, biomes.getOrThrow(FURBiomeTagsProvider.HAS_SCARECROW),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARECROW.get(), 15, 1, 1));
+        addSpawn(context, ADD_RAVEN, biomes.getOrThrow(FURBiomeTagsProvider.HAS_RAVEN),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.RAVEN.get(), 8, 2, 4));
         addSpawn(context, ADD_WETA, biomes.getOrThrow(FURBiomeTagsProvider.HAS_WETA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),

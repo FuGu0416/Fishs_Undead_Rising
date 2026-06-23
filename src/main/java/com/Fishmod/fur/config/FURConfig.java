@@ -198,8 +198,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> GoldenHeart_RepairsEquipment;
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Raven_Loot;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spectral_Raven_Loot;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pScarecrow_PlagueDoctor;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DreamCatcher_spawn;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeWand_Cooldown;
@@ -300,20 +298,7 @@ public final class FURConfig {
 		Raven_Health = BUILDER.comment("Maximum Raven health [1-1000]").defineInRange("raven health", 6.0D, 1.0D, 1000.0D);
 		Raven_Perch = BUILDER.comment("Should tamed Raven perch on owner's head [false/true]").define("raven perching", true);
 		Raven_Slowfall = BUILDER.comment("Should perching Raven slow down owner's falling speed [false/true]").define("raven slow down falling", true);
-		Raven_Loot = BUILDER.comment("Customize drop rates of the items which ravens can find. Ex. \\\"minecraft:tropical_fish,0.4,2\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for ravens", 
-				Lists.newArrayList(
-						"minecraft:beetroot_seeds,0.15",
-						"minecraft:wheat_seeds,0.15,2",
-						"minecraft:melon_seeds,0.15",
-						"minecraft:pumpkin_seeds,0.15",
-						"minecraft:gold_nugget,0.1,2",
-						"minecraft:iron_nugget,0.1,2"), 
-				o -> o instanceof String);
-		Spectral_Raven_Loot = BUILDER.comment("Customize drop rates of the items which spectral ravens can find. Ex. \\\"minecraft:tropical_fish,0.4,2\\\" or \\\"mod_lavacow:sharptooth,0.1\\\"").defineList("loot table for spectral ravens", 
-				Lists.newArrayList(
-						"minecraft:gold_nugget,0.15,3",
-						"minecraft:iron_nugget,0.15,3"), 
-				o -> o instanceof String);
+		// Raven find-drop tables moved out of this config into config/fur/raven_loot.json (see RavenLootConfig).
 		BUILDER.pop();
 		
 		BUILDER.push("Ptera");
