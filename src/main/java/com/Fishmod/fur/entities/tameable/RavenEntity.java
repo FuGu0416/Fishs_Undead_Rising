@@ -5,16 +5,21 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.joml.Vector3f;
+
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.particle.MothScaleOptions;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.item.BeastcallHornItem;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -70,6 +75,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
@@ -327,6 +334,37 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         this.noPhysics = this.shouldPhaseThroughBlocks();
         super.tick();
         this.noPhysics = false;
+
+        // Spectral raven (skin 2) trails ghostly motes off both wingtips while airborne.
+        // Only every other tick (-50% particle count vs. emitting every tick).
+        if (this.level().isClientSide() && this.getSkin() == 2 && this.isFlying() && this.tickCount % 2 == 0) {
+            this.spawnWingParticles();
+        }
+    }
+
+    /** Random positional scatter of each wingtip mote: base 0.1 widened by 150% → 0.25-block range. */
+    private static final double WING_PARTICLE_SPREAD = 0.25D;
+
+    /**
+     * Client-only: emits a {@code fur:moth_scale} mote at each wingtip. The wingtips sit to the
+     * raven's left and right, perpendicular to its body facing, so the trail follows the wings
+     * rather than the body centre.
+     */
+    private void spawnWingParticles() {
+        float yawRad = this.yBodyRot * ((float) Math.PI / 180.0F);
+        // Vector perpendicular to the facing direction (i.e. wing axis), in the XZ plane.
+        double perpX = Mth.cos(yawRad);
+        double perpZ = Mth.sin(yawRad);
+        double wingSpan = this.getBbWidth() * 0.75D;
+        double y = this.getY() + this.getBbHeight() * 0.5D;
+        for (int side = -1; side <= 1; side += 2) {
+            double x = this.getX() + perpX * wingSpan * side + (this.random.nextDouble() - 0.5D) * WING_PARTICLE_SPREAD;
+            double jy = y + (this.random.nextDouble() - 0.5D) * WING_PARTICLE_SPREAD;
+            double z = this.getZ() + perpZ * wingSpan * side + (this.random.nextDouble() - 0.5D) * WING_PARTICLE_SPREAD;
+            float scale = 0.3F + this.random.nextFloat() * 0.2F;
+            this.level().addParticle(new MothScaleOptions(new Vector3f(0.859F, 1.0F, 0.996F), scale),
+                    x, jy, z, 0.0D, -0.03D, 0.0D);
+        }
     }
 
     /**
@@ -454,7 +492,8 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
                     this.getMainHandItem().shrink(this.getMainHandItem().getCount());
                 }
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
-            } else if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
+            } else if (FURConfig.Raven_Perch.get() && player.isShiftKeyDown() && player.getPassengers().isEmpty()
+                    && !(itemstack.getItem() instanceof BeastcallHornItem)) {
                 this.startRiding(player);
                 this.ridingCooldown = 20;
                 return InteractionResult.SUCCESS;
@@ -630,7 +669,14 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
         this.setHealth(this.getMaxHealth());
 
         // Roll the spawn variant here (not as the synched default) so it syncs/persists correctly.
-        this.setSkin(this.getRandom().nextFloat() < 0.1F ? 1 : 0);
+        // Ravens that spawn in flower forest / cherry grove are always the white (skin 1) variant;
+        // elsewhere it's the usual 10% roll.
+        Holder<Biome> biome = level.getBiome(this.blockPosition());
+        if (biome.is(Biomes.FLOWER_FOREST) || biome.is(Biomes.CHERRY_GROVE)) {
+            this.setSkin(1);
+        } else {
+            this.setSkin(this.getRandom().nextFloat() < 0.1F ? 1 : 0);
+        }
 
         return super.finalizeSpawn(level, difficulty, reason, data, tag);
     }

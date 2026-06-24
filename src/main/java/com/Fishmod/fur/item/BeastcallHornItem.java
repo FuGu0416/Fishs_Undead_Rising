@@ -61,6 +61,15 @@ public class BeastcallHornItem extends Item {
             return InteractionResult.PASS;
         }
 
+        // Non-commandable / summoned-minion pets can't be bound. Consume the interaction so it
+        // doesn't fall through to the pet's other right-click behaviour, and tell the player why.
+        if (pet instanceof FURTameableEntity furPet && !furPet.canBeBoundByHorn()) {
+            if (!player.level().isClientSide) {
+                player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.unbindable", pet.getDisplayName()), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         if (player.level().isClientSide) {
             return InteractionResult.SUCCESS;
         }
@@ -166,7 +175,8 @@ public class BeastcallHornItem extends Item {
     private static TamableAnimal findNearestPet(Level level, Player player) {
         List<TamableAnimal> pets = level.getEntitiesOfClass(TamableAnimal.class,
                 player.getBoundingBox().inflate(BIND_RADIUS),
-                e -> e.isAlive() && e.isOwnedBy(player));
+                e -> e.isAlive() && e.isOwnedBy(player)
+                        && !(e instanceof FURTameableEntity fur && !fur.canBeBoundByHorn()));
 
         TamableAnimal nearest = null;
         double best = Double.MAX_VALUE;

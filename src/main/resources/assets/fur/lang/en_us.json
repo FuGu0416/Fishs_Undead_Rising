@@ -95,7 +95,7 @@
 	"item.fur.mummified_cod": "Mummified Cod",
 	"item.fur.mummified_cod_bucket": "Bucket of Mummified Cod",
 	"item.fur.parasite_cooked": "Cooked Parasite",
-	"item.fur.parasite_ovum": "Parasite Ovum",
+	"item.fur.vespa_ovum": "Vespa Ovum",
 	"item.fur.parasite_raw": "Raw Parasite",
 	"item.fur.pheromone_gland": "Pheromone Gland",
 	"item.fur.pigboarhide": "Plagued Hide",    
@@ -159,6 +159,7 @@
 	"message.fur.beastcall_horn.notfound": "The bound pet is too far away or in another dimension",
 	"message.fur.beastcall_horn.override": "Already bound to another pet — sneak + use to override",
 	"message.fur.beastcall_horn.summon": "Summoned %s to your side",
+	"message.fur.beastcall_horn.unbindable": "%s can't be bound to the horn",
 		
 	"item.fur.spawn_egg_lavacow": "Moogma Spawn Egg",
 	"item.fur.spawn_egg_mycosis": "Mycosis Spawn Egg",

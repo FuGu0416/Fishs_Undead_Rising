@@ -11,6 +11,7 @@ import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.item.BeastcallHornItem;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -271,7 +272,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	    		
 	    		return InteractionResult.SUCCESS;
 	    	
-	    	} else if (player.isCrouching() && !this.getMainHandItem().isEmpty()) {
+	    	} else if (player.isCrouching() && !this.getMainHandItem().isEmpty()
+	    			&& !(item instanceof BeastcallHornItem)) {
 	    		this.spawnAtLocation(this.getMainHandItem());
 	    		this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 	    		

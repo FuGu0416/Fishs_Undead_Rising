@@ -16,6 +16,7 @@ import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.item.BeastcallHornItem;
 import com.Fishmod.fur.init.FURKeybindRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.message.MessageMountSpecial;
@@ -268,8 +269,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     			this.setSaddled(false);  			
     			this.spawnAtLocation(Items.SADDLE, 1);      		
     			return InteractionResult.sidedSuccess(this.level().isClientSide);
-    		} else if (!player.isSecondaryUseActive() && !player.isPassenger()) {
-        	   player.startRiding(this);        	   
+    		} else if (!player.isSecondaryUseActive() && !player.isPassenger()
+    				&& !(itemstack.getItem() instanceof BeastcallHornItem)) {
+        	   player.startRiding(this);
         	   return InteractionResult.sidedSuccess(this.level().isClientSide);
     		}    	
         }

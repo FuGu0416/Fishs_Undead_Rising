@@ -6,6 +6,7 @@ import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.ai.AvoidOrFrightEntityGoal;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.item.BeastcallHornItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -256,7 +257,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 
             this.discard();            
             return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } if (this.isTame() && this.getGrowingStage() == 2) {
+        } if (this.isTame() && this.getGrowingStage() == 2 && !(itemstack.getItem() instanceof BeastcallHornItem)) {
     		this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
     		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get(), (this.getSkin() == 3) ? 2 : 1), 0.0F);    	    		
     		this.setGrowingStage(0);

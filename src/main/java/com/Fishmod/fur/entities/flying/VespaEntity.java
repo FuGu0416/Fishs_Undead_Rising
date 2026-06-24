@@ -9,6 +9,7 @@ import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -40,9 +41,12 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -90,6 +94,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new AttackGoal(this));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Player.class, false,
                 p -> !(p.isPassenger() && p.getVehicle() instanceof VespaEntity)).setUnseenMemoryTicks(160));
@@ -146,7 +151,24 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         }
         return super.canBeAffected(effect);
     }
-    
+
+    // Only tamed Vespa can breed (fed honeycomb -> in love). Untamed ones get tamed by the
+    // food instead of falling in love, so this mainly hard-guards against any other love source.
+    @Override
+    public boolean canMate(Animal target) {
+        return this.isTame() && super.canMate(target);
+    }
+
+    // Vespa lays a Vespa Ovum item instead of producing a live baby.
+    @Override
+    public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
+        ItemEntity ovum = new ItemEntity(level, this.getX(), this.getY() + this.getBbHeight() * 0.5D, this.getZ(),
+                new ItemStack(FURItemRegistry.VESPA_OVUM.get()));
+        ovum.setDefaultPickUpDelay();
+        level.addFreshEntity(ovum);
+        this.finalizeSpawnChildFromBreeding(level, partner, null);
+    }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);   	

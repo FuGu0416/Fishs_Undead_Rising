@@ -9,6 +9,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.item.BeastcallHornItem;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -456,7 +457,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         if (itemstack.getItem() instanceof SpawnEggItem) {
             return super.mobInteract(player, hand);
         } else if (this.isTame() && this.getOwner().equals(player)) {
-        	if (player.isCrouching()) {
+        	if (player.isCrouching() && !(item instanceof BeastcallHornItem)) {
         		if (this.getSkin() == MimicModel.getVoidSkin()) {	
         			PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
 					player.openMenu(new SimpleMenuProvider((containerId, playerInventory, menuPlayer) -> {

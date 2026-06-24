@@ -95,7 +95,7 @@
 	"item.fur.mummified_cod": "木乃伊魚",
 	"item.fur.mummified_cod_bucket": "木乃伊魚桶",
 	"item.fur.parasite_cooked": "炙燒蛆",
-	"item.fur.parasite_ovum": "屍蛆卵塊",
+	"item.fur.vespa_ovum": "巨蜂卵囊",
 	"item.fur.parasite_raw": "生屍蛆",
 	"item.fur.pheromone_gland": "費洛蒙腺體",
 	"item.fur.pigboarhide": "疫豬皮",    
@@ -159,6 +159,7 @@
 	"message.fur.beastcall_horn.notfound": "綁定的寵物太遠或不在此維度",
 	"message.fur.beastcall_horn.override": "已綁定其他寵物，潛行+右鍵以覆蓋",
 	"message.fur.beastcall_horn.summon": "已召喚 %s 回到身邊",
+	"message.fur.beastcall_horn.unbindable": "%s 無法以號角綁定",
 					
 	"item.fur.spawn_egg_lavacow": "熔岩牛生怪蛋",
 	"item.fur.spawn_egg_mycosis": "菌屍生怪蛋",

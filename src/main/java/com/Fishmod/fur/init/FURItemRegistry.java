@@ -200,6 +200,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> USHABTI = DEF_REG.register("ushabti", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VESPA_CARAPACE = DEF_REG.register("vespa_carapace", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VESPA_DAGGER = DEF_REG.register("vespa_dagger", () -> new FangDaggerItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, -1.0D, FURItemRegistry.POISON_STINGER, true));
+	public static final RegistryObject<Item> VESPA_OVUM = DEF_REG.register("vespa_ovum", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 12 * 20, 0), 0.8F).build())));
 	public static final RegistryObject<Item> VESPA_SHIELD = DEF_REG.register("vespa_shield", () -> new VespaShieldItem(new Item.Properties().durability(504)));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(() -> Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
 	public static final RegistryObject<Item> WETA_HOE = DEF_REG.register("weta_hoe", () -> new WetaHoeItem(new Item.Properties(), Tiers.IRON, -2, -1.0F, FURItemRegistry.CHITIN));
@@ -223,7 +224,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
 	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
 	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties()).setRegistryName("fur:sinister_whetstone");
-	public static final RegistryObject<Item> PARASITE_OVUM = new FURItem(new Item.Properties().food(new Food.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new EffectInstance(FUREffectRegistry.INFESTED, 12 * 20, 0), 0.8F).build())).setRegistryName("fur:parasite_ovum");
 	*/
 	
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));

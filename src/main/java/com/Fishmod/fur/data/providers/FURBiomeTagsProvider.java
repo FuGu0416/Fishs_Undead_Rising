@@ -59,9 +59,13 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.HAS_VILLAGE_TAIGA);
         // 1.16.5 spawned ravens in SPOOKY (dark forest) + CONIFEROUS (taiga family); broadened here
         // with forests and plains. IS_FOREST already includes dark_forest.
+        // Flower forest + cherry grove are added explicitly so ravens spawn there (cherry grove isn't
+        // in IS_FOREST); these biomes spawn the white "skin 1" variant (see RavenEntity#finalizeSpawn).
         this.tag(HAS_RAVEN)
                 .addTag(BiomeTags.IS_FOREST)
                 .addTag(BiomeTags.IS_TAIGA)
-                .addTag(BiomeTags.HAS_VILLAGE_PLAINS);
+                .addTag(BiomeTags.HAS_VILLAGE_PLAINS)
+                .add(Biomes.FLOWER_FOREST)
+                .add(Biomes.CHERRY_GROVE);
     }
 }

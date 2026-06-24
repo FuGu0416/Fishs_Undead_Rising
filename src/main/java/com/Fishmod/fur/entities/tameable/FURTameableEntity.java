@@ -135,7 +135,16 @@ public class FURTameableEntity extends TamableAnimal {
     public boolean isSummonedMinion() {
     	return false;
     }
-    
+
+    /**
+     * Whether a Beastcall Horn may bind/recall this pet. Pets that take no sit/wander/follow
+     * commands ({@link #isCommandable()} == false) or that are temporary player summons
+     * ({@link #isSummonedMinion()} == true) can't be bound to a horn.
+     */
+    public boolean canBeBoundByHorn() {
+    	return this.isCommandable() && !this.isSummonedMinion();
+    }
+
     public void doSitCommand(Player playerIn) {
     	this.switchState(FURTameableEntity.State.SITTING, playerIn);
     }
