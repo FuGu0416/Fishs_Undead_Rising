@@ -1,0 +1,22 @@
+{
+    "ambientocclusion": false,
+    "render_type": "cutout",
+    "textures": {
+        "particle": "#texture"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 0 ],
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture", "cullface": "north" }
+            }
+        },
+        {   "from": [ 0, 0, -0.1 ],
+            "to": [ 16, 16, -0.1 ],
+            "forge_data": { "block_light": 15, "sky_light": 15, "ambient_occlusion": false },
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture_e" }
+            }
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "fur:block/emissive_cross",
   "textures": {
-    "cross": "fur:block/mycelial_tendrils"
-  },
-  "render_type": "cutout"
+    "cross": "fur:block/mycelial_tendrils",
+    "cross_e": "fur:block/mycelial_tendrils_e"
+  }
 }

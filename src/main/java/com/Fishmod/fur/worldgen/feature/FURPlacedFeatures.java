@@ -357,12 +357,14 @@ public class FURPlacedFeatures {
                         )));
 
         // ── World: Small shallow pool ─────────────────────────────────────────
-        // Once every 2 chunks on average (50% more frequent than before); floor-scanning
-        // ensures placement on actual cave floor surfaces.
+        // 3 attempts per chunk, each kept once every 2 chunks on average → ~1.5/chunk
+        // (3× the previous 0.5/chunk, i.e. +200%); floor-scanning ensures placement on
+        // actual cave floor surfaces.
         context.register(SMALL_POOL,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.SMALL_POOL),
                         List.of(
+                                CountPlacement.of(3),
                                 RarityFilter.onAverageOnceEvery(2),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(

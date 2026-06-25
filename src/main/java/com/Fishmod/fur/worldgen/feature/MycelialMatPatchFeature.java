@@ -111,8 +111,8 @@ public class MycelialMatPatchFeature extends Feature<NoneFeatureConfiguration> {
                 level.setBlock(localFloor, FURBlockRegistry.MYCELIAL_MAT.get().defaultBlockState(), 3);
                 placed = true;
 
-                // Ambient tendrils ground cover (vegetationChance 4% per mat block; -50%).
-                if (random.nextFloat() < 0.04f) {
+                // Ambient tendrils ground cover (vegetationChance 2% per mat block; was 4%, another -50%).
+                if (random.nextFloat() < 0.02f) {
                     tendrils.place(level, context.chunkGenerator(), random, localFloor.above());
                 }
 

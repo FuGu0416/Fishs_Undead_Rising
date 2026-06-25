@@ -1,6 +1,7 @@
 {
-    "parent": "minecraft:block/template_single_face",
-    "textures": {
-        "texture": "fur:block/glimmercap_block_cap_side"
-    }
+  "parent": "fur:block/emissive_single_face",
+  "textures": {
+    "texture": "fur:block/glimmercap_block_cap_side",
+    "texture_e": "fur:block/glimmercap_block_cap_side_e"
+  }
 }

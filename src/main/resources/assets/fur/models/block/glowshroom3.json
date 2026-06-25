@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "fur:block/emissive_cross",
   "textures": {
-    "cross": "fur:block/glowshroom3"
+    "cross": "fur:block/glowshroom3",
+    "cross_e": "fur:block/glowshroom3_e"
   }
 }

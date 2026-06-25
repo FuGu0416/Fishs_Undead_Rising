@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "fur:block/emissive_cross",
   "textures": {
-    "cross": "fur:block/emberwick_fungus"
-  },
-  "render_type": "cutout"
+    "cross": "fur:block/emberwick_fungus",
+    "cross_e": "fur:block/emberwick_fungus_e"
+  }
 }

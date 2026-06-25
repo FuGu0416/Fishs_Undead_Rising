@@ -13,6 +13,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -56,6 +57,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 	public static final ResourceKey<BiomeModifier> ADD_BEELZEBUB = registerKey("add_beelzebub");
 	public static final ResourceKey<BiomeModifier> ADD_BONE_PILE = registerKey("add_bone_pile");
+	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_BAT = registerKey("add_luminous_bat");
+	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_GLOW_SQUID = registerKey("add_luminous_glow_squid");
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -119,6 +122,12 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
         addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
+        // Vanilla cave ambient spawns also occur in the Luminous Undergrove, using the same
+        // data as other cave biomes (Lush/Dripstone Caves): Bat + Glow Squid.
+        addSpawn(context, ADD_LUMINOUS_BAT, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
+                new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
+        addSpawn(context, ADD_LUMINOUS_GLOW_SQUID, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
+                new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
         addSpawn(context, ADD_VOID_GLIDER, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VOID_GLIDER.get(), 10, 1, 1));
         addSpawn(context, ADD_WARPEDFIREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
