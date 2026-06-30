@@ -18,8 +18,5 @@ public class FURRecipeRegistry {
 	public static final RegistryObject<RecipeSerializer<?>> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new SimpleCraftingRecipeSerializer<>(WispInaBottleRecipe::new));
 	public static final RegistryObject<RecipeSerializer<?>> INFUSED_BANDAGE = DEF_REG.register("infused_bandage", () -> new SimpleCraftingRecipeSerializer<>(InfusedBandageRecipe::new));
 	public static final RegistryObject<RecipeSerializer<?>> SOUL_FURNACE = DEF_REG.register("cooking", SoulFurnaceRecipe.Serializer::new);
-	
-	//public static final SpecialRecipeSerializer<SinisterWhetstoneRecipe> SINISTER_WHETSTONE = new SpecialRecipeSerializer<>(SinisterWhetstoneRecipe::new);  
-	//event.getRegistry().register(SINISTER_WHETSTONE.setRegistryName(mod_LavaCow.MODID, "crafting_sinister_whetstone"));
 
 }

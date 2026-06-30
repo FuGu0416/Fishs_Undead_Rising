@@ -56,6 +56,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_WARPEDFIREFLY = registerKey("add_warpedfirefly");
 	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 	public static final ResourceKey<BiomeModifier> ADD_BEELZEBUB = registerKey("add_beelzebub");
+	public static final ResourceKey<BiomeModifier> ADD_SHROOMLORD = registerKey("add_shroomlord");
 	public static final ResourceKey<BiomeModifier> ADD_BONE_PILE = registerKey("add_bone_pile");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_BAT = registerKey("add_luminous_bat");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_GLOW_SQUID = registerKey("add_luminous_glow_squid");
@@ -141,6 +142,10 @@ public class FURBiomeModifier {
         // here by the hostile-overworld biome tag at a low weight.
         addSpawn(context, ADD_BEELZEBUB, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BEELZEBUB.get(), 2, 1, 2));
+        // Re-themed as the Shroomlord: it now spawns in the Luminous Undergrove cave biome
+        // (alongside the Shroomling), not the original 1.16.5 swamp.
+        addSpawn(context, ADD_SHROOMLORD, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLORD.get(), 15, 1, 2));
 
         // Scatter Bone Piles across desert surfaces.
         context.register(ADD_BONE_PILE, new AddFeaturesBiomeModifier(

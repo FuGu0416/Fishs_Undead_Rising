@@ -47,11 +47,11 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Mimic_SpawnCap;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pSpawnRate_DeathMimic;
 	
-	public static final ForgeConfigSpec.ConfigValue<Double> SludgeLord_Health;
-	public static final ForgeConfigSpec.ConfigValue<Double> SludgeLord_Attack;
-	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeLord_Ability_Num;
-	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeLord_Ability_Max;
-	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeLord_Ability_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Double> ShroomLord_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> ShroomLord_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Integer> ShroomLord_Ability_Num;
+	public static final ForgeConfigSpec.ConfigValue<Integer> ShroomLord_Ability_Max;
+	public static final ForgeConfigSpec.ConfigValue<Integer> ShroomLord_Ability_Cooldown;
 	
 	public static final ForgeConfigSpec.ConfigValue<Double> Raven_Health;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Raven_Perch;
@@ -280,12 +280,12 @@ public final class FURConfig {
 		pSpawnRate_DeathMimic = BUILDER.comment("Set the spawn rate of Mimicrab near player death [0-1000]").defineInRange("mimicrab spawn rate near player death", 250, 0, 1000);
 		BUILDER.pop();
 
-		BUILDER.push("Sludge Lord");
-		SludgeLord_Health = BUILDER.comment("Maximum Sludge Lord health [1-1000]").defineInRange("sludge lord health", 70.0D, 1.0D, 1000.0D);
-		SludgeLord_Attack = BUILDER.comment("Sludge Lord strength [1-1000]").defineInRange("sludge lord attack", 5.0D, 1.0D, 1000.0D);
-		SludgeLord_Ability_Num = BUILDER.comment("Set the number of Lil'Sludge summoned per cast [0-100]").defineInRange("sludge lord summon number", 3, 0, 100);
-		SludgeLord_Ability_Max = BUILDER.comment("Set the max number of Lil'Sludge summoned [0-100]").defineInRange("sludge lord summon max", 8, 0, 100);
-		SludgeLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Lil'Sludge [0-100]").defineInRange("sludge lord summon cooldown", 17, 0, 100);
+		BUILDER.push("Shroomlord");
+		ShroomLord_Health = BUILDER.comment("Maximum Shroomlord health [1-1000]").defineInRange("shroomlord health", 70.0D, 1.0D, 1000.0D);
+		ShroomLord_Attack = BUILDER.comment("Shroomlord strength [1-1000]").defineInRange("shroomlord attack", 5.0D, 1.0D, 1000.0D);
+		ShroomLord_Ability_Num = BUILDER.comment("Set the number of Lil'Sludge summoned per cast [0-100]").defineInRange("shroomlord summon number", 3, 0, 100);
+		ShroomLord_Ability_Max = BUILDER.comment("Set the max number of Lil'Sludge summoned [0-100]").defineInRange("shroomlord summon max", 8, 0, 100);
+		ShroomLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Lil'Sludge [0-100]").defineInRange("shroomlord summon cooldown", 17, 0, 100);
 		BUILDER.pop();
 		
 		BUILDER.push("Shroomling");
@@ -505,7 +505,7 @@ public final class FURConfig {
 						"mod_lavacow:foglet,40,1,2",
 						"mod_lavacow:undeadswine,20,1,1",
 						"mod_lavacow:wendigo,20,1,1",
-						"mod_lavacow:sludgelord,20,1,1",
+						"mod_lavacow:shroomlord,20,1,1",
 						"mod_lavacow:vespa,20,1,1",
 						"mod_lavacow:scarecrow,20,1,1",
 						"mod_lavacow:boneworm,20,1,1",

@@ -1,0 +1,143 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.shroomlord",
+				"texture_width": 128,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 30, 0]
+				},
+				{
+					"name": "base",
+					"parent": "root",
+					"pivot": [0, 21, 0],
+					"cubes": [
+						{"origin": [-4, 20, -2], "size": [8, 12, 4], "uv": [0, 48]}
+					]
+				},
+				{
+					"name": "chest",
+					"parent": "base",
+					"pivot": [0, 31.2, 0],
+					"rotation": [7.5, 0, 0],
+					"cubes": [
+						{"origin": [-6, 30.17433, -3.10842], "size": [12, 8, 6], "uv": [0, 34]},
+						{"origin": [6, 30.17433, -3.10842], "size": [5, 8, 6], "uv": [30, 26]},
+						{"origin": [-11, 30.17433, -3.10842], "size": [5, 8, 6], "uv": [30, 26], "mirror": true}
+					]
+				},
+				{
+					"name": "arm_r",
+					"parent": "chest",
+					"pivot": [-5, 36.17433, -0.60842],
+					"rotation": [-7.5, 0, 0],
+					"cubes": [
+						{"origin": [-8, 13.17433, -1.60842], "size": [2, 24, 2], "uv": [68, 14], "mirror": true}
+					]
+				},
+				{
+					"name": "arm_l",
+					"parent": "chest",
+					"pivot": [5, 36.17433, -0.60842],
+					"rotation": [-7.5, 0, 0],
+					"cubes": [
+						{"origin": [6, 13.17433, -1.60842], "size": [2, 24, 2], "uv": [76, 14]}
+					]
+				},
+				{
+					"name": "scepter",
+					"parent": "arm_l",
+					"pivot": [7, 14.47433, -0.60842],
+					"cubes": [
+						{"origin": [6.5, 13.97433, -14.60842], "size": [1, 1, 28], "uv": [68, 35]},
+						{"origin": [5, 12.47433, -18.60842], "size": [4, 4, 4], "uv": [68, 55]},
+						{"origin": [5.5, 12.97433, -20.60842], "size": [3, 3, 4], "uv": [68, 48]}
+					]
+				},
+				{
+					"name": "neck_0",
+					"parent": "chest",
+					"pivot": [0, 36.17433, -1.60842],
+					"rotation": [41.74, 0, 0],
+					"cubes": [
+						{"origin": [-2, 36.17433, -3.60842], "size": [4, 5, 4], "uv": [0, 25]}
+					]
+				},
+				{
+					"name": "neck_1",
+					"parent": "neck_0",
+					"pivot": [0, 40.17433, -1.30842],
+					"rotation": [-57.39, 0, 0],
+					"cubes": [
+						{"origin": [0, 40.17433, -1.30842], "size": [0, 0, 0], "uv": [8, -8]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "neck_1",
+					"pivot": [0, 40.17433, -1.30842],
+					"rotation": [12.5, 0, 0],
+					"cubes": [
+						{"origin": [-3.5, 36.17433, -8.80842], "size": [7, 1, 4], "uv": [24, 1]},
+						{"origin": [-4, 36.17433, -4.80842], "size": [8, 10, 4], "uv": [46, 0]},
+						{"origin": [4, 34.17433, -4.80842], "size": [4, 10, 4], "uv": [70, 0]},
+						{"origin": [-8, 34.17433, -4.80842], "size": [4, 10, 4], "uv": [70, 0], "mirror": true},
+						{"origin": [-4, 37.17433, -9.30842], "size": [8, 6, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "jaw_0",
+					"parent": "head",
+					"pivot": [0, 37.17433, -3.30842],
+					"rotation": [41.74, 0, 0],
+					"cubes": [
+						{"origin": [-3.5, 34.59665, -5.48182], "size": [7, 5, 3], "uv": [0, 14]}
+					]
+				},
+				{
+					"name": "jaw_1",
+					"parent": "jaw_0",
+					"pivot": [0, 36.09665, -2.48182],
+					"rotation": [5.22, 0, 0],
+					"cubes": [
+						{"origin": [-2.5, 36.09665, -9.98182], "size": [5, 1, 4], "uv": [16, 24]},
+						{"origin": [-1, 34.09665, -14.23182], "size": [2, 2, 4], "uv": [38, 19]},
+						{"origin": [-3, 34.09665, -10.28182], "size": [6, 2, 6], "uv": [14, 16]}
+					]
+				},
+				{
+					"name": "leg_r",
+					"parent": "root",
+					"pivot": [-1.9, 20, 0.1],
+					"cubes": [
+						{"origin": [-2.9, 0, -0.9], "size": [2, 20, 2], "uv": [52, 14], "mirror": true}
+					]
+				},
+				{
+					"name": "leg_l",
+					"parent": "root",
+					"pivot": [1.9, 20, 0.1],
+					"cubes": [
+						{"origin": [0.9, 0, -0.9], "size": [2, 20, 2], "uv": [60, 14]}
+					]
+				},
+				{
+					"name": "skirt",
+					"parent": "root",
+					"pivot": [0, 24, 2],
+					"cubes": [
+						{"origin": [-5, 6, -3], "size": [10, 18, 6], "uv": [36, 40]}
+					]
+				}
+			]
+		}
+	]
+}

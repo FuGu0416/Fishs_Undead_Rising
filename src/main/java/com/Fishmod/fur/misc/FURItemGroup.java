@@ -51,6 +51,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.POISON_SPORE.get());
             	output.accept(FURItemRegistry.SPORE_GEL.get());
             	output.accept(FURItemRegistry.GHOUL_CLAW.get());
+            	output.accept(FURItemRegistry.PIGBOARHIDE.get());
             	output.accept(FURItemRegistry.VESPA_CARAPACE.get());
             	output.accept(FURItemRegistry.VESPA_OVUM.get());
             	output.accept(FURItemRegistry.POISON_STINGER.get());
@@ -130,6 +131,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.GHOST_BOMB.get());
             	output.accept(FURItemRegistry.HOLY_GRENADE.get());
             	output.accept(FURItemRegistry.SONIC_BOMB.get());
+            	output.accept(FURItemRegistry.FORSAKEN_STAFF.get());
             	output.accept(FURItemRegistry.GHOUL_ARROW.get());
             	output.accept(FURItemRegistry.FANG_ARROW.get());   
 
@@ -157,7 +159,8 @@ public class FURItemGroup {
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_CHESTPLATE.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_LEGGINGS.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_BOOTS.get());
-        		        		
+        		output.accept(FURItemRegistry.SKELETONKING_CROWN.get());
+
         		// Smithing Template
         		output.accept(FURItemRegistry.SOULFORGED_UPGRADE_SMITHING_TEMPLATE.get());
         		
@@ -177,6 +180,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SWARMER_COOKED.get());
             	output.accept(FURItemRegistry.MUMMIFIED_COD.get());
             	output.accept(FURItemRegistry.BONE_TROUT.get());
+            	output.accept(FURItemRegistry.PLAGUED_PORKCHOP.get());
 
                 // Raw Parasite variants
                 for (int i = 0; i < 4; i++) {
@@ -193,6 +197,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.BONE_STEW.get());
             	output.accept(FURItemRegistry.GHOST_JELLY.get());
+            	output.accept(FURItemRegistry.GREEN_BACON_AND_EGGS.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());
             	output.accept(FURItemRegistry.FISSION_REAGENT.get());

@@ -11,6 +11,7 @@ import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
 import com.Fishmod.fur.client.renderer.entity.ShroomlingRenderer;
+import com.Fishmod.fur.client.renderer.entity.ShroomLordRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
 import com.Fishmod.fur.client.renderer.entity.MoltenGlobRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactyrantRenderer;
@@ -126,6 +127,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER.get(), GraveRobberRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB.get(), BeelzebubRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA.get(), BeelzebubPupaRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.SHROOMLORD.get(), ShroomLordRenderer::new);
 
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -138,6 +140,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
         EntityRenderers.register(FUREntityRegistry.MOLTEN_GLOB.get(), MoltenGlobRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOLTEN_POOL.get(), NoopRenderer::new);
+        // Sludge Jet is purely particle-driven (the 1.16.5 sprite was rendered at zero scale).
+        EntityRenderers.register(FUREntityRegistry.SLUDGEJET.get(), NoopRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOTH_SCALES.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
         EntityRenderers.register(FUREntityRegistry.LOCUST_SWARM.get(), manager -> new ThrownItemRenderer<>(manager, 0.0F, true));
         EntityRenderers.register(FUREntityRegistry.SWARMER_LAUNCHER.get(), SwarmerLauncherRenderer::new);
@@ -148,7 +152,7 @@ public class ClientProxy extends CommonProxy {
         
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.SLUDGELORD, manager -> new SludgeLordRenderer(manager));
+        EntityRenderers.register(FUREntityRegistry.SHROOMLORD, manager -> new ShroomLordRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));

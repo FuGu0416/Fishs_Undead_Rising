@@ -10,6 +10,7 @@ import com.Fishmod.fur.entities.IsnachiEntity;
 import com.Fishmod.fur.entities.LavaCowEntity;
 import com.Fishmod.fur.entities.MummyLordEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.ShroomLordEntity;
 import com.Fishmod.fur.entities.UndertakerEntity;
 import com.Fishmod.fur.entities.WendigoEntity;
 import com.Fishmod.fur.entities.aquatic.LampreyEntity;
@@ -37,6 +38,7 @@ import com.Fishmod.fur.entities.projectiles.SwarmerLauncherEntity;
 import com.Fishmod.fur.entities.projectiles.LocustSwarmEntity;
 import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
 import com.Fishmod.fur.entities.projectiles.MoltenPoolEntity;
+import com.Fishmod.fur.entities.projectiles.SludgeJetEntity;
 import com.Fishmod.fur.entities.projectiles.WarSmallFireballEntity;
 import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.CocoonEntity;
@@ -104,6 +106,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<ScarecrowEntity>> SCARECROW = DEF_REG.register("scarecrow", () -> (EntityType<ScarecrowEntity>) EntityType.Builder.of(ScarecrowEntity::new, MobCategory.MONSTER).sized(0.8F, 3.0F).setTrackingRange(8).build("scarecrow"));
 	public static final RegistryObject<EntityType<SeaHagEntity>> SEAHAG = DEF_REG.register("seahag", () -> (EntityType<SeaHagEntity>) EntityType.Builder.of(SeaHagEntity::new, MobCategory.MONSTER).sized(0.75F, 1.75F).setTrackingRange(8).build("seahag"));
 	public static final RegistryObject<EntityType<ShroomlingEntity>> SHROOMLING = DEF_REG.register("shroomling", () -> (EntityType<ShroomlingEntity>) EntityType.Builder.of(ShroomlingEntity::new, MobCategory.MONSTER).sized(0.6F, 1.0F).setTrackingRange(8).build("shroomling"));
+	public static final RegistryObject<EntityType<ShroomLordEntity>> SHROOMLORD = DEF_REG.register("shroomlord", () -> (EntityType<ShroomLordEntity>) EntityType.Builder.of(ShroomLordEntity::new, MobCategory.MONSTER).sized(2.2F, 3.7F).setTrackingRange(8).build("shroomlord"));
 	public static final RegistryObject<EntityType<SwarmerEntity>> SWARMER = DEF_REG.register("swarmer", () -> (EntityType<SwarmerEntity>) EntityType.Builder.of(SwarmerEntity::new, MobCategory.WATER_AMBIENT).sized(1.0F, 0.8F).setTrackingRange(8).build("swarmer"));
 	public static final RegistryObject<EntityType<UnburiedEntity>> UNBURIED = DEF_REG.register("unburied", () -> (EntityType<UnburiedEntity>) EntityType.Builder.of(UnburiedEntity::new, MobCategory.MONSTER).sized(1.0F, 1.95F).setTrackingRange(8).build("unburied"));
 	public static final RegistryObject<EntityType<UndertakerEntity>> UNDERTAKER = DEF_REG.register("undertaker", () -> (EntityType<UndertakerEntity>) EntityType.Builder.of(UndertakerEntity::new, MobCategory.MONSTER).sized(1.8F, 2.4F).setTrackingRange(8).build("undertaker"));
@@ -126,13 +129,14 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<MoltenGlobEntity>> MOLTEN_GLOB = DEF_REG.register("molten_glob", () -> (EntityType) EntityType.Builder.of(MoltenGlobEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("molten_glob"));
 	public static final RegistryObject<EntityType<MoltenPoolEntity>> MOLTEN_POOL = DEF_REG.register("molten_pool", () -> (EntityType) EntityType.Builder.<MoltenPoolEntity>of(MoltenPoolEntity::new, MobCategory.MISC).fireImmune().sized(6.0F, 0.5F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE).build("molten_pool"));
 	public static final RegistryObject<EntityType<MothScalesEntity>> MOTH_SCALES = DEF_REG.register("moth_scales", () -> (EntityType) EntityType.Builder.of(MothScalesEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("moth_scales"));
+	public static final RegistryObject<EntityType<SludgeJetEntity>> SLUDGEJET = DEF_REG.register("sludgejet", () -> (EntityType) EntityType.Builder.of(SludgeJetEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("sludgejet"));
 	public static final RegistryObject<EntityType<BasicBombEntity>> SONIC_BOMB = DEF_REG.register("sonic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("sonicbomb"));
 	public static final RegistryObject<EntityType<SwarmerLauncherEntity>> SWARMER_LAUNCHER = DEF_REG.register("swarmer_launcher", () -> (EntityType) EntityType.Builder.of(SwarmerLauncherEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("swarmer_launcher"));
 	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("warsmallfireball"));
 	
 	/*
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
-	public static final EntityType<SludgeLordEntity> SLUDGELORD = registerEntity(EntityType.Builder.of(SludgeLordEntity::new, EntityClassification.MONSTER).sized(2.2F, 3.7F), "sludgelord");
+	public static final EntityType<ShroomLordEntity> SHROOMLORD = registerEntity(EntityType.Builder.of(ShroomLordEntity::new, EntityClassification.MONSTER).sized(2.2F, 3.7F), "shroomlord");
 	public static final EntityType<BoneWormEntity> BONEWORM = registerEntity(EntityType.Builder.of(BoneWormEntity::new, EntityClassification.MONSTER).sized(0.8F, 2.0F), "boneworm");
 	public static final EntityType<PinguEntity> PINGU = registerEntity(EntityType.Builder.of(PinguEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.8F), "pingu");
 	public static final EntityType<ForsakenEntity> FORSAKEN = registerEntity(EntityType.Builder.of(ForsakenEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).fireImmune(), "forsaken");
@@ -184,10 +188,11 @@ public class FUREntityRegistry {
         event.register(WARPEDFIREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GRAVEROBBER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(BEELZEBUB.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, BeelzebubEntity::checkBeelzebubSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(SHROOMLORD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ShroomLordEntity::checkShroomLordSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
 
         /*
         event.register(UNDEADSWINE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, UndeadSwineEntity::checkUndeadSwineSpawnRules);
-        event.register(SLUDGELORD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SludgeLordEntity::checkSludgeLordSpawnRules);
+        event.register(SHROOMLORD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ShroomLordEntity::checkShroomLordSpawnRules);
         event.register(BONEWORM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BoneWormEntity::checkBoneWormSpawnRules);
         event.register(PINGU.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
         event.register(FORSAKEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ForsakenEntity::checkForsakenSpawnRules);
@@ -237,10 +242,11 @@ public class FUREntityRegistry {
         event.put(RAVEN.get(), RavenEntity.createAttributes().build());
         event.put(BEELZEBUB.get(), BeelzebubEntity.createAttributes().build());
         event.put(BEELZEBUBPUPA.get(), CocoonEntity.createAttributes().build());
+        event.put(SHROOMLORD.get(), ShroomLordEntity.createAttributes().build());
 
         /*
         event.put(UNDEADSWINE, UndeadSwineEntity.createAttributes().build());
-        event.put(SLUDGELORD, SludgeLordEntity.createAttributes().build());
+        event.put(SHROOMLORD, ShroomLordEntity.createAttributes().build());
         event.put(BONEWORM, BoneWormEntity.createAttributes().build());
         event.put(PINGU, PinguEntity.createAttributes().build());
         event.put(FORSAKEN, ForsakenEntity.createAttributes().build());

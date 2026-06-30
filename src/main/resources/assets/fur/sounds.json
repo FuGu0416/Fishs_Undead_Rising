@@ -209,32 +209,32 @@
 		"sounds": [{"name": "fur:entity/mimic/death","stream": true}]
 	},
 	
-	"sludgelord_ambient":
+	"shroomlord_ambient":
 	{
 		"category": "hostile",
-		"subtitle": "entity_sludgelord_ambient",
-		"sounds": ["fur:entity/sludgelord/ambient0","fur:entity/sludgelord/ambient1"]
+		"subtitle": "entity_shroomlord_ambient",
+		"sounds": ["fur:entity/shroomlord/ambient0","fur:entity/shroomlord/ambient1"]
 	},
 	
-	"sludgelord_attack":
+	"shroomlord_attack":
 	{
 		"category": "hostile",
-		"subtitle": "entity_sludgelord_attack",
-		"sounds": [{"name": "fur:entity/sludgelord/attack","stream": true}]
+		"subtitle": "entity_shroomlord_attack",
+		"sounds": [{"name": "fur:entity/shroomlord/attack","stream": true}]
 	},
 	
-	"sludgelord_hurt":
+	"shroomlord_hurt":
 	{
 		"category": "hostile",
-		"subtitle": "entity_sludgelord_hurt",
-		"sounds": ["fur:entity/sludgelord/hurt0","fur:entity/sludgelord/hurt1"]
+		"subtitle": "entity_shroomlord_hurt",
+		"sounds": ["fur:entity/shroomlord/hurt0","fur:entity/shroomlord/hurt1"]
 	},
 	
-	"sludgelord_death":
+	"shroomlord_death":
 	{
 		"category": "hostile",
-		"subtitle": "entity_sludgelord_death",
-		"sounds": ["fur:entity/sludgelord/death0","fur:entity/sludgelord/death1","fur:entity/sludgelord/death2"]
+		"subtitle": "entity_shroomlord_death",
+		"sounds": ["fur:entity/shroomlord/death0","fur:entity/shroomlord/death1","fur:entity/shroomlord/death2"]
 	},
 	
 	"shroomling_ambient":

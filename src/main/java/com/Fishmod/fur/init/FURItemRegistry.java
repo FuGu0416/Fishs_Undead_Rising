@@ -32,6 +32,7 @@ import com.Fishmod.fur.item.MoltenHammerItem;
 import com.Fishmod.fur.item.MoltenMeatItem;
 import com.Fishmod.fur.item.ParasiteRawItem;
 import com.Fishmod.fur.item.SalamanderBucketItem;
+import com.Fishmod.fur.item.SkeletonKingCrownItem;
 import com.Fishmod.fur.item.SporecallerItem;
 import com.Fishmod.fur.item.UndergroveHeartItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
@@ -118,6 +119,8 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
 	public static final RegistryObject<Item> FOUL_BRISTLE = DEF_REG.register("foul_bristle", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FOUL_HIDE = DEF_REG.register("foul_hide", () -> new Item(new Item.Properties()));
+	// Shot type (DeathCoil) is part of the un-ported FORSAKEN entity; firing is deferred (see PLACEHOLDERS #11), so shot is null for now.
+	public static final RegistryObject<Item> FORSAKEN_STAFF = DEF_REG.register("forsaken_staff", () -> new FURRangedItem(null, null, new Item.Properties().durability(32)));
 	public static final RegistryObject<Item> FROZEN_GRIP = DEF_REG.register("frozen_grip", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD, true));
 	public static final RegistryObject<Item> FROZEN_THIGH = DEF_REG.register("frozen_thigh", () -> new FrozenThighItem(new Item.Properties().stacksTo(1).durability(64).food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4*20, 4), 0.6F).build())));
 	public static final RegistryObject<Item> FUNGAL_STAFF = DEF_REG.register("fungal_staff", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD, true));
@@ -130,6 +133,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> new FURArrowItem(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_CLAW = DEF_REG.register("ghoul_claw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> GOLDEN_HEART = DEF_REG.register("golden_heart", () -> new GoldenHeartItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(250)));
+	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = DEF_REG.register("green_bacon_and_eggs", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 60*20, 0), 1.0F).build()), UseAnim.EAT, 1));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> HOLY_GRENADE = DEF_REG.register("holy_grenade", () -> new FURThrowableItem(new Item.Properties()));
 	public static final RegistryObject<Item> HOLY_WATER = DEF_REG.register("holy_water", () -> new FURItem(new Item.Properties()));
@@ -161,9 +165,11 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> PARASITE_COOKED = DEF_REG.register("parasite_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
 	public static final RegistryObject<Item> PARASITE_RAW = DEF_REG.register("parasite_raw", () -> new ParasiteRawItem(new Item.Properties()));
 	public static final RegistryObject<Item> PHEROMONE_GLAND = DEF_REG.register("pheromone_gland", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CHARMING_PHEROMONE.get(), 60 * 20, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1), 1.0F).build()), 1));
+	public static final RegistryObject<Item> PIGBOARHIDE = DEF_REG.register("pigboarhide", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> PIRANHA_BUCKET = DEF_REG.register("piranha_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.PIRANHA.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> PIRANHA_COOKED = DEF_REG.register("piranha_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> PIRANHA_RAW = DEF_REG.register("piranha_raw", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build())));
+	public static final RegistryObject<Item> PLAGUED_PORKCHOP = DEF_REG.register("plagued_porkchop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())));
 	public static final RegistryObject<Item> POISON_SPORE = DEF_REG.register("poison_spore", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> POISON_STINGER = DEF_REG.register("poison_stinger", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> POTION_OF_FISSION = DEF_REG.register("potion_of_fission", () -> new FURPotionItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(1).rarity(Rarity.COMMON), SoundEvents.SLIME_SQUISH, ParticleTypes.HAPPY_VILLAGER));	
@@ -177,6 +183,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SCYTHE_CLAW = DEF_REG.register("scythe_claw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SHARP_FANG = DEF_REG.register("sharp_fang", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SHRIEK_CORD = DEF_REG.register("shriek_cord", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SKELETONKING_CROWN = DEF_REG.register("skeletonking_crown", () -> new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> SKELETONKING_MACE = DEF_REG.register("skeletonking_mace", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.DIAMOND, 12, -3.2F, 0.0D, FURItemRegistry.HATRED_SHARD, false));
 	public static final RegistryObject<Item> SONIC_BOMB = DEF_REG.register("sonic_bomb", () -> new FURThrowableItem(new Item.Properties()));
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_BOOTS = DEF_REG.register("soulforged_armor_boots", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
@@ -209,21 +216,14 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new EntityBucketItem(FUREntityRegistry.WISP::get, Items.GLASS_BOTTLE, new Item.Properties().stacksTo(1)));
 
 	/*
-	public static final RegistryObject<Item> PLAGUED_PORKCHOP = new Item(new Item.Properties().food(new Food.Builder().nutrition(3).saturationMod(0.3F).meat().effect(() -> new EffectInstance(Effects.DIG_SLOWDOWN, 30*20, 0), 0.8F).build())).setRegistryName("fur:plagued_porkchop");
-	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = new NetherStewItem(new Item.Properties().food(new Food.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new EffectInstance(Effects.DIG_SPEED, 60*20, 0), 1F).build()), UseAction.EAT, 1).setRegistryName("fur:green_bacon_and_eggs");
-	public static final RegistryObject<Item> PIGBOARHIDE = new Item(new Item.Properties()).setRegistryName("fur:pigboarhide");
 	public static final RegistryObject<Item> SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties())).setRegistryName("fur:swinearmor_helmet");
 	public static final RegistryObject<Item> SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties())).setRegistryName("fur:swinearmor_chestplate");
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
 	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("fur:dreamcatcher");	
-	public static final RegistryObject<Item> FROZEN_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "fur:frozen_dagger", ItemTier.WOOD, 2, -2.4F, FURItemRegistry.SHATTERED_ICE);
 	public static final RegistryObject<Item> SPECTRAL_DAGGER = new FURWeaponItem(new Item.Properties().rarity(Rarity.COMMON), "fur:spectral_dagger", FURItemTier.SPECTRAL, -1, -2.4F, FURItemRegistry.ECTOPLASM);
 	public static final RegistryObject<Item> STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("fur:stained_kings_crown");
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
-	public static final RegistryObject<Item> SKELETONKING_CROWN = new SkeletonKingCrownItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant()).setRegistryName("fur:skeletonking_crown");
-	public static final RegistryObject<Item> FORSAKEN_STAFF = new FURRangedItem("fur:forsaken_staff", null, FUREntityRegistry.DEATHCOIL, new Item.Properties().durability(32));
-	public static final RegistryObject<Item> SINISTER_WHETSTONE = new SinisterWhetstoneItem(new Item.Properties()).setRegistryName("fur:sinister_whetstone");
 	*/
 	
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));
@@ -272,12 +272,11 @@ public class FURItemRegistry {
     	spawnEgg("warpedfirefly", FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738);
     	spawnEgg("graverobber", FUREntityRegistry.GRAVEROBBER, 0x40433E, 0x959B9B);
     	spawnEgg("beelzebub", FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE);
+    	spawnEgg("shroomlord", FUREntityRegistry.SHROOMLORD, 0x282119, 0x81DDFF);
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
-    	spawnEgg(FUREntityRegistry.SLUDGELORD, 0x282119, 0x81DDFF, new Item.Properties()).setRegistryName("fur:spawn_egg_sludgelord"));
-    	spawnEgg(FUREntityRegistry.RAVEN, 0x130D19, 0x192B3E, new Item.Properties()).setRegistryName("fur:spawn_egg_raven"));
-    	spawnEgg(FUREntityRegistry.SEAGULL, 0xEEEEEE, 0x121212, new Item.Properties()).setRegistryName("fur:spawn_egg_seagull"));
+    	spawnEgg(FUREntityRegistry.SHROOMLORD, 0x282119, 0x81DDFF, new Item.Properties()).setRegistryName("fur:spawn_egg_shroomlord"));
     	spawnEgg(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties()).setRegistryName("fur:spawn_egg_boneworm"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties()).setRegistryName("fur:spawn_egg_pingu"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties()).setRegistryName("fur:spawn_egg_forsaken"));

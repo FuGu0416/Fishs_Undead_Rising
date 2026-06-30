@@ -76,7 +76,7 @@ public class FURRangedItem extends CrossbowItem {
 	@Override		
     public Predicate<ItemStack> getAllSupportedProjectiles() {
 	    return (stack) -> {
-	        return stack.getItem().equals(this.ammo.get());
+	        return this.ammo != null && stack.getItem().equals(this.ammo.get());
 	    };
 	}
 	
@@ -133,7 +133,7 @@ public class FURRangedItem extends CrossbowItem {
 	    if (!level.isClientSide && remaining % (7 - quick_charge_lvl) == 0) {
 			int multishot_lvl = stack.getEnchantmentLevel(Enchantments.MULTISHOT);
 			
-			if (this.shot.get().equals(FUREntityRegistry.CACTUS_THORN.get())) {
+			if (this.shot != null && this.shot.get().equals(FUREntityRegistry.CACTUS_THORN.get())) {
 				for (int step = 0; step <= multishot_lvl; step++) {
 	    	    	this.shoot_thorn_shooter(level, player, stack, flag, step);
 	    	    	
