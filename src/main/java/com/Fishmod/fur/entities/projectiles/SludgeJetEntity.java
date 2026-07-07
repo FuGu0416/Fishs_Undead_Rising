@@ -1,10 +1,10 @@
 package com.Fishmod.fur.entities.projectiles;
 
+import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -56,8 +56,7 @@ public class SludgeJetEntity extends EnchantableFireBallEntity {
 
 			if (victim.hurt(this.damageSources().indirectMagic(this, shooter), this.getDamage())) {
 				int local_difficulty = (int) this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
-				victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4 * 20 * local_difficulty, 3));
-				victim.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 4 * 20 * local_difficulty, 1));
+				victim.addEffect(new MobEffectInstance(FUREffectRegistry.SPOREROT.get(), 4 * 20 * local_difficulty, 3));
 				this.doEnchantDamageEffects(shooter, victim);
 			}
 		}

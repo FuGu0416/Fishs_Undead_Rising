@@ -10,6 +10,7 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FURBiomesRegistry;
+import com.Fishmod.fur.init.FUREffectRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -19,6 +20,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
@@ -93,8 +95,10 @@ public class MycosisEntity extends UnburiedEntity {
         		if (!this.isOwnedBy((LivingEntity) entity1)) {
         			float local_difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
                         
-        			if (!entity1.hasEffect(MobEffects.POISON))
-        				entity1.addEffect(new MobEffectInstance(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+        			// Skin 2 (Luminous Undergrove strain) spreads Sporerot instead of Poison.
+        			MobEffect effect = this.getSkin() == 2 ? FUREffectRegistry.SPOREROT.get() : MobEffects.POISON;
+        			if (!entity1.hasEffect(effect))
+        				entity1.addEffect(new MobEffectInstance(effect, 2 * 20 * (int)local_difficulty, 0));
         		}
         	}         		
         }
@@ -144,8 +148,14 @@ public class MycosisEntity extends UnburiedEntity {
         entityareaeffectcloud.setRadiusOnUse(-0.5F);
         entityareaeffectcloud.setWaitTime(10);
         entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
-        entityareaeffectcloud.setPotion(Potions.POISON);
-        entityareaeffectcloud.addEffect(new MobEffectInstance(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+        if (this.getSkin() == 2) {
+        	// Skin 2 spreads Sporerot; the cloud is tinted automatically from the potion's effect colour.
+        	entityareaeffectcloud.setPotion(FUREffectRegistry.SPOREROT_POTION.get());
+        	entityareaeffectcloud.addEffect(new MobEffectInstance(FUREffectRegistry.SPOREROT.get(), 2 * 20 * (int)local_difficulty, 0));
+        } else {
+        	entityareaeffectcloud.setPotion(Potions.POISON);
+        	entityareaeffectcloud.addEffect(new MobEffectInstance(MobEffects.POISON, 2 * 20 * (int)local_difficulty, 0));
+        }
 
         EntityIn.level().addFreshEntity(entityareaeffectcloud);
     }

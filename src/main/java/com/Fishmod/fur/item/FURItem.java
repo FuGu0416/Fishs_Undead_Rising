@@ -76,12 +76,17 @@ public class FURItem extends Item {
         if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.LAMPREY_KABAYAKI.get()) && living instanceof Player player && !player.isCreative()) {
         	living.removeEffect(MobEffects.POISON);
         	living.removeEffect(FUREffectRegistry.INFESTED.get());
-        	
+
         	if (!player.getInventory().add(new ItemStack(Items.STICK))) {
         		player.spawnAtLocation(new ItemStack(Items.STICK));
             }
         }
-		
+
+        // Spore Gel is the antidote to its own affliction: eating it clears Sporerot.
+        if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.SPORE_GEL.get())) {
+        	living.removeEffect(FUREffectRegistry.SPOREROT.get());
+        }
+
     	return super.finishUsingItem(stack, level, living);
     }
     

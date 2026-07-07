@@ -31,7 +31,17 @@ public class LayerMycosis extends GeoRenderLayer<UnburiedEntity> {
     public void renderForBone(PoseStack poseStack, UnburiedEntity entity, GeoBone model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
     	if (!(model.getName().equals("helmet") || model.getName().equals("Body_chest"))) return;
     	
-    	BlockState blockstate = entity.getSkin() == 2 ? FURBlockRegistry.GLOWSHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(1)) : FURBlockRegistry.CORDY_SHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(1));
+    	BlockState blockstate;
+    	if (entity.getSkin() == 2) {
+    		// Pick a Glowshroom variant (AGE_2 → glowshroom1/2/3) from the UUID mixed with the bone name,
+    		// so the helmet and Body_chest shrooms can differ while each stays stable per entity+bone
+    		// (no per-frame flicker).
+    		int seed = entity.getUUID().hashCode() * 31 + model.getName().hashCode();
+    		int age = Math.floorMod(seed, FURShroomBlock.AGE.getPossibleValues().size());
+    		blockstate = FURBlockRegistry.GLOWSHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(age));
+    	} else {
+    		blockstate = FURBlockRegistry.CORDY_SHROOM.get().defaultBlockState().setValue(FURShroomBlock.AGE, Integer.valueOf(1));
+    	}
     	
     	poseStack.pushPose();
     	RenderUtils.translateAndRotateMatrixForBone(poseStack, model);
@@ -43,7 +53,10 @@ public class LayerMycosis extends GeoRenderLayer<UnburiedEntity> {
     		poseStack.mulPose(Axis.XP.rotationDegrees(60.0F));
     	}
 
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, poseStack, bufferSource, entity.getSkin() == 2 ? LightTexture.FULL_BRIGHT : packedLight, packedOverlay, ModelData.EMPTY, null);
+        // Render at the entity's scene light (not FULL_BRIGHT): the Glowshroom model bakes its glow via
+        // forge_data fullbright faces on the "_e" overlay, so the emissive texture lights up on its own
+        // while the rest of the shroom is lit normally. Forcing FULL_BRIGHT would flatten that glow out.
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, poseStack, bufferSource, packedLight, packedOverlay, ModelData.EMPTY, null);
 
         poseStack.popPose();
     }

@@ -87,15 +87,12 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	@SuppressWarnings("unchecked")
 	private static java.util.function.Supplier<MobEffectInstance>[] makeSporeEffects() {
 		return new java.util.function.Supplier[] {
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.POISON, 7 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 8 * 20, 1),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.BLINDNESS, 6 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.WEAKNESS, 10 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.HUNGER, 12 * 20, 1),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 8 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 6 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.WEAKNESS, 				10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 			10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED,			10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 	10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.SPOREROT.get(), 	10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.FLOURISHED.get(),10 * 20, 0),
 		};
 	}
 
@@ -201,10 +198,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	}
 
 	public static boolean checkShroomlingSpawnRules(EntityType<? extends ShroomlingEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		// Luminous Undergrove is a naturally-lit cave biome, so the usual darkness check is
-		// skipped here (mirrors MycosisEntity). Shroomling only spawns in that biome anyway.
-		return world.getDifficulty() != Difficulty.PEACEFUL
-				&& FURTameableEntity.checkMobSpawnRules(type, world, reason, pos, rand);
+		return world.getDifficulty() != Difficulty.PEACEFUL && FURTameableEntity.checkMobSpawnRules(type, world, reason, pos, rand);
 	}
 
     @Override
@@ -227,10 +221,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        // Static defaults only (must match the FURConfig defaults): config values cannot be
-        // read here, since createAttributes() runs at registration before configs are loaded
-        // (and crashes datagen otherwise). The real values are applied from config in
-        // finalizeSpawn() and readAdditionalSaveData().
         return Monster.createMobAttributes()
         		.add(Attributes.MOVEMENT_SPEED, 0.25D)
         		.add(Attributes.MAX_HEALTH, 20.0D)

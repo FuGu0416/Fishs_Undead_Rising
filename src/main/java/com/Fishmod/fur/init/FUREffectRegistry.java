@@ -12,6 +12,7 @@ import com.Fishmod.fur.effect.EffectInfested;
 import com.Fishmod.fur.effect.EffectPossessed;
 import com.Fishmod.fur.effect.EffectSoiled;
 import com.Fishmod.fur.effect.EffectSoulSiphon;
+import com.Fishmod.fur.effect.EffectSporerot;
 import com.Fishmod.fur.effect.EffectThorned;
 import com.Fishmod.fur.effect.EffectVenomous;
 import com.Fishmod.fur.effect.EffectVoidDust;
@@ -49,6 +50,7 @@ public class FUREffectRegistry {
 	public static final RegistryObject<MobEffect> VENOMOUS = EFFECT_DEF_REG.register("venomous", ()-> new EffectVenomous());
 	public static final RegistryObject<MobEffect> POSSESSED = EFFECT_DEF_REG.register("possessed", ()-> new EffectPossessed().addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL).addAttributeModifier(Attributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, AttributeModifier.Operation.ADDITION));
 	public static final RegistryObject<MobEffect> SOUL_SIPHON = EFFECT_DEF_REG.register("soul_siphon", ()-> new EffectSoulSiphon());
+	public static final RegistryObject<MobEffect> SPOREROT = EFFECT_DEF_REG.register("sporerot", ()-> new EffectSporerot().addAttributeModifier(Attributes.MOVEMENT_SPEED, "0CAA59A6-6C88-4488-9518-CAC342D2D71B", (double)-0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	/**
 	 * Builds a FEAR instance with the vanilla potion swirl hidden (ambient off, particles off, icon on).
@@ -91,7 +93,10 @@ public class FUREffectRegistry {
 	public static final RegistryObject<Potion> SOUL_SIPHON_POTION = POTION_DEF_REG.register("soul_siphon", ()-> new Potion(new MobEffectInstance(SOUL_SIPHON.get(), 400)));
 	public static final RegistryObject<Potion> STRONG_SOUL_SIPHON_POTION = POTION_DEF_REG.register("strong_soul_siphon", ()-> new Potion(new MobEffectInstance(SOUL_SIPHON.get(), 200, 1)));
 	public static final RegistryObject<Potion> LONG_SOUL_SIPHON_POTION = POTION_DEF_REG.register("long_soul_siphon", ()-> new Potion(new MobEffectInstance(SOUL_SIPHON.get(), 800)));
-	
+	public static final RegistryObject<Potion> SPOREROT_POTION = POTION_DEF_REG.register("sporerot", ()-> new Potion(new MobEffectInstance(SPOREROT.get(), 900)));
+	public static final RegistryObject<Potion> STRONG_SPOREROT_POTION = POTION_DEF_REG.register("strong_sporerot", ()-> new Potion(new MobEffectInstance(SPOREROT.get(), 900, 1)));
+	public static final RegistryObject<Potion> LONG_SPOREROT_POTION = POTION_DEF_REG.register("long_sporerot", ()-> new Potion(new MobEffectInstance(SPOREROT.get(), 1800)));
+
     public static ItemStack createPotion(RegistryObject<Potion> potion){
         return  PotionUtils.setPotion(new ItemStack(Items.POTION), potion.get());
     }
@@ -209,5 +214,15 @@ public class FUREffectRegistry {
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, SOUL_SIPHON_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_SOUL_SIPHON_POTION.get())));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, SOUL_SIPHON_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_SOUL_SIPHON_POTION.get())));
         BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, SOUL_SIPHON_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_SOUL_SIPHON_POTION.get())));
+
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURBlockRegistry.GLOWSHROOM.get())), createPotion(Items.POTION, SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURBlockRegistry.GLOWSHROOM.get())), createPotion(Items.LINGERING_POTION, SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, Potions.AWKWARD)), Ingredient.of(new ItemStack(FURBlockRegistry.GLOWSHROOM.get())), createPotion(Items.SPLASH_POTION, SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.POTION, LONG_SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.LINGERING_POTION, LONG_SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.REDSTONE)), createPotion(Items.SPLASH_POTION, LONG_SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.POTION, STRONG_SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.LINGERING_POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.LINGERING_POTION, STRONG_SPOREROT_POTION.get())));
+        BrewingRecipeRegistry.addRecipe(new FURBrewingRecipe(Ingredient.of(createPotion(Items.SPLASH_POTION, SPOREROT_POTION.get())), Ingredient.of(new ItemStack(Items.GLOWSTONE_DUST)), createPotion(Items.SPLASH_POTION, STRONG_SPOREROT_POTION.get())));
     }
 }

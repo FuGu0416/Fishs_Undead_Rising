@@ -5,7 +5,6 @@ import com.Fishmod.fur.entities.tameable.ShroomlingEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -19,7 +18,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 /**
  * Collar-style overlay (modelled on {@link ScarecrowCollarLayer}) that re-renders the Shroomling with
- * the {@code shroomling_bubble} mask tinted by the colour of the potion effect it currently carries.
+ * the {@code shroomling_bubble} texture tinted by the colour of the potion effect it currently carries.
  */
 @OnlyIn(Dist.CLIENT)
 public class ShroomlingBubbleLayer<T extends ShroomlingEntity> extends GeoRenderLayer<T> {
@@ -40,24 +39,21 @@ public class ShroomlingBubbleLayer<T extends ShroomlingEntity> extends GeoRender
 			float g = ((color >> 8) & 0xFF) / 255.0F;
 			float b = (color & 0xFF) / 255.0F;
 
-			// Boost saturation (push away from luminance grey) so muted effect colours read as a vivid
-			// hue rather than washing out to white under the additive glow pass. Clamped to [0,1].
+			// Boost saturation (push away from luminance grey) so muted effect colours read as a vivid hue.
 			float lum = 0.3F * r + 0.59F * g + 0.11F * b;
 			r = Mth.clamp(lum + (r - lum) * SATURATION, 0.0F, 1.0F);
 			g = Mth.clamp(lum + (g - lum) * SATURATION, 0.0F, 1.0F);
 			b = Mth.clamp(lum + (b - lum) * SATURATION, 0.0F, 1.0F);
 
-			// Two passes so the bubble is BOTH solid and bright:
-			// 1) emissive translucent (alpha-blended) lays down an opaque coloured shell so the bubble
-			//    doesn't go see-through / wash out against bright backgrounds.
-			RenderType solidType = RenderType.entityTranslucentEmissive(BUBBLE_LOCATION);
-			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, solidType,
-								   bufferSource.getBuffer(solidType), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
-								   r, g, b, 1.0F);
-			// 2) additive "eyes" pass on top adds the glow/bloom back, restoring the previous brightness.
-			RenderType glowType = RenderType.eyes(BUBBLE_LOCATION);
-			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, glowType,
-								   bufferSource.getBuffer(glowType), partialTick, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+			// Single, normally-lit translucent pass. The bubble texture's own alpha gradient shapes a soft
+			// bubble and lets the Shroomling show through, tinted by the effect colour. The previous
+			// emissive + additive "eyes" second pass over-brightened the tint into an opaque, washed-out
+			// shell (and simply lowering its alpha instead caused translucent depth-sort artefacts), so
+			// both are dropped. ShroomlingRenderer already forces block-light 15, so the bubble stays
+			// bright without an emissive pass.
+			RenderType bubbleType = RenderType.entityTranslucent(BUBBLE_LOCATION);
+			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, bubbleType,
+								   bufferSource.getBuffer(bubbleType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
 								   r, g, b, 1.0F);
 		}
 	}
