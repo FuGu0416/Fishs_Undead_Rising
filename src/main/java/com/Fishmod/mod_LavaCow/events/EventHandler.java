@@ -305,19 +305,8 @@ public class EventHandler {
             return;
         }     
         
-    	if (player.hasEffect(FUREffectRegistry.FEAR) && (player.level instanceof ServerWorld)) {
-			double d0 = player.getRandom().nextGaussian() * 0.02D;
-			double d1 = player.getRandom().nextGaussian() * 0.02D;
-			double d2 = player.getRandom().nextGaussian() * 0.02D;
-			((ServerWorld) player.level).sendParticles(FURParticleRegistry.FEAR, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	}
-
-    	if (player.hasEffect(FUREffectRegistry.IMMOLATION) && (player.level instanceof ServerWorld)) {
-			double d0 = player.getRandom().nextGaussian() * 0.02D;
-			double d1 = player.getRandom().nextGaussian() * 0.02D;
-			double d2 = player.getRandom().nextGaussian() * 0.02D;
-			((ServerWorld) player.level).sendParticles(ParticleTypes.FLAME, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	}
+        // FEAR / IMMOLATION particles for players are emitted in onELiving (LivingUpdateEvent
+        // fires for players too on the server), so there is no separate per-player block here.
     	
 		if (player.level instanceof ServerWorld && player.level.getDifficulty() != Difficulty.PEACEFUL && player.level.random.nextFloat() < 0.1F) {
 			for (ItemEntity ItemEntity : player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(5.0F))) {
@@ -454,7 +443,7 @@ public class EventHandler {
     			Attacked.addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
     		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.sonicbomb"))) {
-    			Attacked.addEffect(new EffectInstance(FUREffectRegistry.FEAR, 4 * 20, 2, false, false, true, null));
+    			Attacked.addEffect(FUREffectRegistry.fear(4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else {
     			event.setAmount(event.getAmount() * 0.15F);
@@ -843,20 +832,27 @@ public class EventHandler {
     } 
     
     @SubscribeEvent
-    public void onELiving(LivingUpdateEvent event) { 
-    	if (event.getEntity() instanceof LivingEntity && !(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.FEAR) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
-			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			((ServerWorld) event.getEntityLiving().level).sendParticles(FURParticleRegistry.FEAR, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	}  
-    	
-    	if (event.getEntity() instanceof LivingEntity && !(event.getEntityLiving() instanceof PlayerEntity) && event.getEntityLiving().hasEffect(FUREffectRegistry.IMMOLATION) && (event.getEntityLiving().tickCount % 20 == 0) && (event.getEntityLiving().level instanceof ServerWorld)) {
-			double d0 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			double d1 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			double d2 = event.getEntityLiving().getRandom().nextGaussian() * 0.02D;
-			((ServerWorld) event.getEntityLiving().level).sendParticles(ParticleTypes.FLAME, event.getEntityLiving().getRandomX(1.0D), event.getEntityLiving().getRandomY() + 1.0D, event.getEntityLiving().getRandomZ(1.0D), 15, d0, d1, d2, 0.0D);
-    	}			
+    public void onELiving(LivingUpdateEvent event) {
+        LivingEntity living = event.getEntityLiving();
+        if (!(living.level instanceof ServerWorld))
+            return;
+        ServerWorld serverWorld = (ServerWorld) living.level;
+
+        // Frequent small bursts at a randomized body point (getRandomX/Y/Z) give a smooth aura
+        // instead of one clumped burst; handles players too (no separate per-player block).
+        if (living.hasEffect(FUREffectRegistry.FEAR) && living.getRandom().nextFloat() < 0.3F) {
+            double d0 = living.getRandom().nextGaussian() * 0.02D;
+            double d1 = living.getRandom().nextGaussian() * 0.02D;
+            double d2 = living.getRandom().nextGaussian() * 0.02D;
+            serverWorld.sendParticles(FURParticleRegistry.FEAR, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
+        }
+
+        if (living.hasEffect(FUREffectRegistry.IMMOLATION) && living.getRandom().nextFloat() < 0.3F) {
+            double d0 = living.getRandom().nextGaussian() * 0.3D;
+            double d1 = living.getRandom().nextGaussian() * 0.3D;
+            double d2 = living.getRandom().nextGaussian() * 0.3D;
+            serverWorld.sendParticles(ParticleTypes.FLAME, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
+        }
     }
     
     @SubscribeEvent

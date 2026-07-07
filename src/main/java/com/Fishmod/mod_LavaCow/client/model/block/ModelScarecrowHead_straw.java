@@ -42,10 +42,7 @@ public class ModelScarecrowHead_straw extends EntityModel<Entity> {
     }
 
 	@Override
-	public void setupAnim(Entity p_225597_1_, float p_225597_2_, float p_225597_3_, float p_225597_4_,
-			float p_225597_5_, float p_225597_6_) {
-		// TODO Auto-generated method stub
-		
+	public void setupAnim(Entity p_225597_1_, float p_225597_2_, float p_225597_3_, float p_225597_4_, float p_225597_5_, float p_225597_6_) {		
 	}
 
     /**

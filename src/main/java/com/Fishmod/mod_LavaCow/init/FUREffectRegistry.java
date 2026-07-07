@@ -44,6 +44,21 @@ public class FUREffectRegistry {
 	public static final Effect CHARMING_PHEROMONE = new EffectCharmingPheromone();
 	public static final Effect FLOURISHED = new EffectFlourished();
 	public static final Effect VOID_DUST = new EffectVoidDust();
+
+	/**
+	 * Builds a FEAR instance with the vanilla potion swirl hidden (ambient off, particles off, icon on).
+	 * The in-world effect is drawn with a custom particle in {@code EventHandler}, so the swirl is
+	 * suppressed here - always create FEAR through this so no application site re-shows it.
+	 */
+	public static EffectInstance fear(int duration, int amplifier) {
+		return new EffectInstance(FEAR, duration, amplifier, false, false, true, null);
+	}
+
+	/** As {@link #fear} but for IMMOLATION - swirl hidden, custom flame particle drawn instead. */
+	public static EffectInstance immolation(int duration, int amplifier) {
+		return new EffectInstance(IMMOLATION, duration, amplifier, false, false, true, null);
+	}
+
 	public static final Potion CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900)).setRegistryName(mod_LavaCow.MODID + ":corrosive");
 	public static final Potion STRONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 900, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_corrosive");
 	public static final Potion LONG_CORROSIVE_POTION = new Potion(new EffectInstance(CORRODED, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_corrosive");
@@ -59,9 +74,9 @@ public class FUREffectRegistry {
 	public static final Potion THORN_POTION = new Potion(new EffectInstance(THORNED, 3600)).setRegistryName(mod_LavaCow.MODID + ":thorn");
 	public static final Potion STRONG_THORN_POTION = new Potion(new EffectInstance(THORNED, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_thorn");
 	public static final Potion LONG_THORN_POTION = new Potion(new EffectInstance(THORNED, 9600)).setRegistryName(mod_LavaCow.MODID + ":long_thorn");
-	public static final Potion IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 3600)).setRegistryName(mod_LavaCow.MODID + ":immolation");
-	public static final Potion STRONG_IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_immolation");
-	public static final Potion LONG_IMMOLATION_POTION = new Potion(new EffectInstance(IMMOLATION, 9600)).setRegistryName(mod_LavaCow.MODID + ":long_immolation");
+	public static final Potion IMMOLATION_POTION = new Potion(immolation(3600, 0)).setRegistryName(mod_LavaCow.MODID + ":immolation");
+	public static final Potion STRONG_IMMOLATION_POTION = new Potion(immolation(1800, 1)).setRegistryName(mod_LavaCow.MODID + ":strong_immolation");
+	public static final Potion LONG_IMMOLATION_POTION = new Potion(immolation(9600, 0)).setRegistryName(mod_LavaCow.MODID + ":long_immolation");
 	public static final Potion VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 900)).setRegistryName(mod_LavaCow.MODID + ":void_dust");
 	public static final Potion STRONG_VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 450, 2)).setRegistryName(mod_LavaCow.MODID + ":strong_void_dust");
 	public static final Potion LONG_VOID_DUST_POTION = new Potion(new EffectInstance(VOID_DUST, 1800)).setRegistryName(mod_LavaCow.MODID + ":long_void_dust");

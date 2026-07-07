@@ -692,7 +692,7 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             if (this.spellWarmup == 0) {
                 this.castSpell();
                 FogletEntity.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
-                FogletEntity.this.addEffect(new EffectInstance(FUREffectRegistry.IMMOLATION, 8 * 20));
+                FogletEntity.this.addEffect(FUREffectRegistry.immolation(8 * 20, 0));
             }
         }
         

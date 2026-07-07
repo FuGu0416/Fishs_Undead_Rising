@@ -625,7 +625,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
     public void readAdditionalSaveData(CompoundNBT compound) {
         super.readAdditionalSaveData(compound);
         this.setSkin(compound.getInt("Variant"));
-        this.moreCropTicks = compound.getInt("MoreCarrotTicks");
+        this.moreCropTicks = compound.getInt("MoreCropTicks");
     }
 
     /**
@@ -756,7 +756,6 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 
               this.canRaid = false;
               this.wantsToRaid = this.entity.wantsMoreFood();
-              this.wantsToRaid = true;
            }
            
            if (this.entity.isTame()) {

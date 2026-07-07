@@ -28,7 +28,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
@@ -157,7 +156,7 @@ public class BansheeEntity extends FloatingMobEntity {
         			if (((LivingEntity)entity1).getMobType() != CreatureAttribute.UNDEAD) {        				
         				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(BansheeEntity.this).setMagic(), (float) BansheeEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
         					float local_difficulty = BansheeEntity.this.level.getCurrentDifficultyAt(BansheeEntity.this.blockPosition()).getEffectiveDifficulty();
-        					((LivingEntity)entity1).addEffect(new EffectInstance(FUREffectRegistry.FEAR, 2 * 20 * (int)local_difficulty, 2, false, false, true, null));       	
+        					((LivingEntity)entity1).addEffect(FUREffectRegistry.fear(2 * 20 * (int)local_difficulty, 2));
         				}       							
         			}
         		}

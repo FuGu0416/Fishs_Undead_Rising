@@ -129,7 +129,7 @@ public class SandBurstEntity extends Entity
         		   ForsakenEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FORSAKEN, ((ServerWorld) this.level), this.blockPosition());
                   
         		   if (entity != null) {
-	                   if (this.getOwner() != null && ((MobEntity) this.getOwner()).getTarget() != null) {
+	                   if (this.getOwner() instanceof MobEntity && ((MobEntity) this.getOwner()).getTarget() != null) {
 	                	   entity.setTarget(((MobEntity) this.getOwner()).getTarget());
 	                   }
                    
