@@ -201,12 +201,12 @@ JER.catagory.mod_lavacow.desert_tomb_chest=沙漠墓穴
 item.banner.skeletonking.white=白色骷髏王
 item.banner.skeletonking.orange=橙色骷髏王
 item.banner.skeletonking.magenta=品紅骷髏王
-item.banner.skeletonking.lightBlue=淺藍骷髏王圖紋
+item.banner.skeletonking.lightBlue=淺藍骷髏王
 item.banner.skeletonking.yellow=黃色骷髏王
 item.banner.skeletonking.lime=淡綠骷髏王
 item.banner.skeletonking.pink=粉色骷髏王
 item.banner.skeletonking.gray=灰色骷髏王
-item.banner.skeletonking.silver=銀色骷髏王
+item.banner.skeletonking.silver=淺灰骷髏王
 item.banner.skeletonking.cyan=青色骷髏王
 item.banner.skeletonking.purple=紫色骷髏王
 item.banner.skeletonking.blue=藍色骷髏王
@@ -779,4 +779,3 @@ advancements.mod_lavacow.get_illager_nose.description=獲得窳鼻
 #################
 
 death.mod_lavacow.timeup=%1$s的生命消逝於塵土之中
-item.banner.skeletonking.light_blue=淺藍骷髏王

@@ -63,7 +63,7 @@ public class EntitySapJet extends EntityFireball {
         if (!this.world.isRemote && result != null && result.typeOfHit != RayTraceResult.Type.MISS) {
             Vec3d pos = result.hitVec;
             EntityScarab entity = new EntityScarab(this.world);
-            EntityLivingBase target = ((EntityLiving) this.shootingEntity).getAttackTarget();
+            EntityLivingBase target = (this.shootingEntity instanceof EntityLiving) ? ((EntityLiving) this.shootingEntity).getAttackTarget() : null;
             entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
             entity.setHealth(entity.getMaxHealth());
             entity.setPositionAndRotation(pos.x, pos.y, pos.z, 0.0F, 0.0F);

@@ -894,6 +894,12 @@ public class ModEventHandler {
 
     @SubscribeEvent
     public void onEFall(LivingFallEvent event) {
+        // Raven's Grace fully negates fall damage. The potion's per-tick slow-fall / fallDistance
+        // reset alone can't reliably zero it (the landing tick computes damage before the effect
+        // runs), so cancel the fall event here, where it fires exactly as fall damage is applied.
+        if (event.getEntityLiving().isPotionActive(ModMobEffects.RAVENS_GRACE)) {
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent

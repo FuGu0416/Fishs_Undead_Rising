@@ -246,10 +246,25 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
 
     @Override
     public void onUpdate() {
+        // While mounted, the mount controls our position via updatePassenger. Letting our own
+        // flying AI / navigation / moveHelper keep running just fights that reset every tick,
+        // which makes the rider jitter and the mount look janky. Suspend AI while riding and
+        // snap our facing to the mount's. Re-enable AI once we are no longer a passenger.
+        boolean riding = this.getRidingEntity() != null;
+
+        if (!this.world.isRemote) {
+            if (riding && !this.isAIDisabled()) {
+                this.setNoAI(true);
+                this.navigator.clearPath();
+            } else if (!riding && this.isAIDisabled()) {
+                this.setNoAI(false);
+            }
+        }
+
         super.onUpdate();
 
-        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer) {
-            this.setRotation(getRidingEntity().rotationYaw, 0F);
+        if (riding) {
+            this.setRotation(this.getRidingEntity().rotationYaw, 0F);
         }
     }
 
@@ -558,6 +573,10 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
 
     @Override
     public void travel(float strafe, float vertical, float forward) {
+        // The mount keeps us pinned via updatePassenger; don't displace ourselves while riding.
+        if (this.isRiding())
+            return;
+
         if (!this.isSitting() || !this.getEntityWorld().getBlockState(this.getPosition().down()).isOpaqueCube())
             super.travel(strafe, vertical, forward);
     }
