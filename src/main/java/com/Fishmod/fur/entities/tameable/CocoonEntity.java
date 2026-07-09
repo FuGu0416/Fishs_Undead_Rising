@@ -16,6 +16,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -198,6 +200,15 @@ public class CocoonEntity extends FURTameableEntity implements GeoEntity {
     public MobType getMobType() {
 	    return MobType.ARTHROPOD;
 	}
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        // Cocoons are immune to Poison.
+        if (effect.getEffect() == MobEffects.POISON) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
         state.getController().setAnimation(IDLE);

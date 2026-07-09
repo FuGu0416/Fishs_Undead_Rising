@@ -197,6 +197,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BOABING.get());
             	output.accept(FURItemRegistry.BONE_STEW.get());
             	output.accept(FURItemRegistry.GHOST_JELLY.get());
+            	output.accept(FURItemRegistry.GLOWSHROOM_STEW.get());
             	output.accept(FURItemRegistry.GREEN_BACON_AND_EGGS.get());
             	output.accept(FURItemRegistry.MAGMACHO.get());
             	output.accept(FURItemRegistry.KUNG_PAO_CHICKEN.get());

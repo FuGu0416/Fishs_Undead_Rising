@@ -232,11 +232,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     private void handleRidingEffects() {
         if (this.getVehicle() instanceof LivingEntity mount && !this.level().isClientSide()) {
             if (mount instanceof Player player && player.isCrouching()) {
-                // A crouching host shakes the parasite off by hand
                 this.stopRiding();
-            } else if (!mount.hasEffect(FUREffectRegistry.INFESTED.get()) && !this.isSummoned()) {
-                this.stopRiding();
-                this.kill();
             } else if (mount.isAlive() && mount.isOnFire()) {
                 this.setRemainingFireTicks(20);
                 this.stopRiding();
@@ -319,9 +315,6 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 		
 		if (super.doHurtTarget(entity)) {
 			if (entity instanceof LivingEntity le) {
-				if (!this.isSummoned()) {
-					le.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
-				}
 				if (this.getSkin() == 2) {
 					le.addEffect(new MobEffectInstance(MobEffects.POISON, 4*20, 0));
 				}
@@ -336,10 +329,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		
-		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity le && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
-			if (!this.isSummoned()) {
-				le.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
-			}
+		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
     		this.startRiding(entityIn);
         }
     }
@@ -348,9 +338,6 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	public void playerTouch(Player playerIn) {
 		super.playerTouch(playerIn);
 		if (!playerIn.isCreative() && !playerIn.isCrouching() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
-			if (!this.isSummoned()) {
-				playerIn.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 8*20, 0));
-			}
     		this.startRiding(playerIn);
         } 	
 	}

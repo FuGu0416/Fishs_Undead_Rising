@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.core.VespaInfestation;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.GhoulEntity;
@@ -34,6 +35,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -885,11 +887,109 @@ public class FURServerEvents {
 			double d1 = rng.nextGaussian() * 0.3D;
 			double d2 = rng.nextGaussian() * 0.3D;
 			serverLevel.sendParticles(ParticleTypes.FLAME, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
-    	}			
+    	}
     }
-    
+
+    /**
+     * Vespa Ovum incubation tick. This fires for every living entity every tick, so the early-outs
+     * (client side, then the missing-tag check) are kept as cheap as possible.
+     */
     @SubscribeEvent
-    public void onELightning(EntityStruckByLightningEvent event) { 
+    public void onInfestTick(LivingTickEvent event) {
+    	if (event.getEntity().level().isClientSide) {
+    		return;
+    	}
+
+    	LivingEntity host = event.getEntity();
+    	CompoundTag data = host.getPersistentData();
+    	if (!data.contains(VespaInfestation.TICKS_KEY)) {
+    		return;
+    	}
+
+    	int ticks = data.getInt(VespaInfestation.TICKS_KEY) - 1;
+    	data.putInt(VespaInfestation.TICKS_KEY, ticks);
+    	data.putInt(VespaInfestation.STAGE_KEY, VespaInfestation.stageForTicks(ticks));
+
+    	// Cosmetic twitch: nudge the host upward so the client sees it convulse. No damage dealt.
+    	if (ticks % 40 == 0) {
+    		host.setDeltaMovement(host.getDeltaMovement().add(0.0D, 0.12D, 0.0D));
+    		host.hurtMarked = true;
+    	}
+
+    	if (ticks <= 0) {
+    		this.vespaEmergence(host);
+    	}
+    }
+
+    /**
+     * Emergence: the incubation finished, so the host bursts. Order matters — the infestation NBT is
+     * stripped BEFORE the host dies so the early-harvest handler (which keys off the tag) does not
+     * misread this death as an early harvest.
+     */
+    private void vespaEmergence(LivingEntity host) {
+    	Level level = host.level();
+
+    	// 1. Read the injector before clearing, then strip infestation state first.
+    	UUID ownerId = VespaInfestation.getOwner(host);
+    	VespaInfestation.clear(host);
+
+    	double ex = host.getX(), ey = host.getY(), ez = host.getZ();
+
+    	// 2. Kill the host (plain generic source; no custom damage type).
+    	host.hurt(host.damageSources().generic(), Float.MAX_VALUE);
+
+    	if (level instanceof ServerLevel serverLevel) {
+    		// The brood is tamed to the player who injected the ovum (if still online).
+    		Player owner = ownerId != null ? serverLevel.getPlayerByUUID(ownerId) : null;
+
+    		// 3. Spawn 1-3 skin-2 parasites with a small random outward nudge.
+    		int spawnCount = 1 + host.getRandom().nextInt(3);
+    		for (int i = 0; i < spawnCount; ++i) {
+    			ParasiteEntity parasite = FUREntityRegistry.PARASITE.get().create(level);
+    			if (parasite == null) {
+    				continue;
+    			}
+    			parasite.setSkin(2);
+    			parasite.moveTo(ex, ey, ez, level.random.nextFloat() * 360.0F, 0.0F);
+    			double dx = (host.getRandom().nextDouble() - 0.5D) * 0.4D;
+    			double dz = (host.getRandom().nextDouble() - 0.5D) * 0.4D;
+    			parasite.setDeltaMovement(dx, 0.3D, dz);
+    			if (owner != null) {
+    				parasite.tame(owner);
+    			}
+    			level.addFreshEntity(parasite);
+    		}
+
+    		// 4. Burst particles + sound.
+    		serverLevel.sendParticles(ParticleTypes.ITEM_SLIME, ex, ey + host.getBbHeight() * 0.5D, ez, 30, 0.2D, 0.2D, 0.2D, 0.05D);
+    		level.playSound(null, ex, ey, ez, SoundEvents.SLIME_SQUISH, SoundSource.HOSTILE, 1.0F, 0.8F);
+    	}
+    }
+
+    /**
+     * Early harvest: if the host dies while still carrying the infestation tag (i.e. before emergence
+     * stripped it), the incubating brood can be salvaged as raw parasites. LivingDeathEvent has no
+     * drops list, so this must be done here on LivingDropsEvent.
+     */
+    @SubscribeEvent
+    public void onInfestHarvest(LivingDropsEvent event) {
+    	LivingEntity entity = event.getEntity();
+    	if (entity.level().isClientSide || !entity.getPersistentData().contains(VespaInfestation.TICKS_KEY)) {
+    		return;
+    	}
+
+    	int dropCount = 1 + entity.getRandom().nextInt(3);
+    	for (int i = 0; i < dropCount; ++i) {
+    		ItemStack raw = new ItemStack(FURItemRegistry.PARASITE_RAW.get());
+    		raw.getOrCreateTag().putInt("variant", 2);
+    		event.getDrops().add(new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), raw));
+    	}
+
+    	VespaInfestation.clear(entity);
+    }
+
+    @SubscribeEvent
+    public void onELightning(EntityStruckByLightningEvent event) {
     	if (event.getEntity().level().getDifficulty() != Difficulty.PEACEFUL && event.getEntity() instanceof Bee bee && bee.getRandom().nextInt(100) < FURConfig.pBeeConvertRate_Vespa.get()) {
             VespaEntity entity = FUREntityRegistry.VESPA.get().create(event.getEntity().level());
             entity.finalizeSpawn((ServerLevel)event.getEntity().level(), event.getEntity().level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.CONVERSION, null, (CompoundTag)null);

@@ -77,7 +77,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     private static final EntityDataAccessor<Integer> SKIN_TYPE =
             SynchedEntityData.defineId(VespaEntity.class, EntityDataSerializers.INT);
 
-    // Mirrors the old FlyingMobEntity.attackTimer; set to 20 on hit, stinger fires at 6.
 	public static final int ATTACK_TIMER = 30;
 	public static final int ATTACK_HIT = 9;
 
@@ -141,7 +140,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return /*this.isTame() && */(stack.getItem().equals(Items.HONEYCOMB));
+        return this.isTame() && (stack.getItem().equals(FURItemRegistry.GLOWSHROOM_STEW.get()));
     }
 
     @Override
@@ -152,14 +151,11 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
         return super.canBeAffected(effect);
     }
 
-    // Only tamed Vespa can breed (fed honeycomb -> in love). Untamed ones get tamed by the
-    // food instead of falling in love, so this mainly hard-guards against any other love source.
     @Override
     public boolean canMate(Animal target) {
         return this.isTame() && super.canMate(target);
     }
 
-    // Vespa lays a Vespa Ovum item instead of producing a live baby.
     @Override
     public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
         ItemEntity ovum = new ItemEntity(level, this.getX(), this.getY() + this.getBbHeight() * 0.5D, this.getZ(),
@@ -255,7 +251,6 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
 
     @Override
     public boolean doHurtTarget(Entity target) {
-        // Double damage against VESPA_TARGETS.
         if (target.getType().is(FUREntityTypeTagsProvider.VESPA_TARGETS)) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Vespa_Attack.get() * 2.0D);
         } else {
@@ -264,12 +259,8 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
 
         if (super.doHurtTarget(target)) {
             if (target instanceof LivingEntity living) {
-                int duration = 6 * 20 * (int) this.level()
-                        .getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
+                int duration = 6 * 20 * (int) this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
                 living.addEffect(new MobEffectInstance(MobEffects.POISON, duration, 0));
-                if (this.getRandom().nextInt(5) == 0) {
-                    living.addEffect(new MobEffectInstance(FUREffectRegistry.INFESTED.get(), duration, 0));
-                }
             }
             return true;
         }

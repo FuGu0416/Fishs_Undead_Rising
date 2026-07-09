@@ -36,6 +36,7 @@ import com.Fishmod.fur.item.SkeletonKingCrownItem;
 import com.Fishmod.fur.item.SporecallerItem;
 import com.Fishmod.fur.item.UndergroveHeartItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
+import com.Fishmod.fur.item.VespaOvumItem;
 import com.Fishmod.fur.item.VespaShieldItem;
 import com.Fishmod.fur.item.WetaHoeItem;
 
@@ -132,6 +133,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> GHOSTLY_ARMOR_LEGGINGS = DEF_REG.register("ghostly_armor_leggings", () -> new GhostlyArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> GHOUL_ARROW = DEF_REG.register("ghoul_arrow", () -> new FURArrowItem(new Item.Properties()));
 	public static final RegistryObject<Item> GHOUL_CLAW = DEF_REG.register("ghoul_claw", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> GLOWSHROOM_STEW = DEF_REG.register("glowshroom_stew", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 120*20, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.GLOWING, 10*20, 0), 1.0F).build()), UseAnim.EAT, 1));
 	public static final RegistryObject<Item> GOLDEN_HEART = DEF_REG.register("golden_heart", () -> new GoldenHeartItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(250)));
 	public static final RegistryObject<Item> GREEN_BACON_AND_EGGS = DEF_REG.register("green_bacon_and_eggs", () -> new FURStewItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2F).meat().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 60*20, 0), 1.0F).build()), UseAnim.EAT, 1));
 	public static final RegistryObject<Item> HATRED_SHARD = DEF_REG.register("hatred_shard", () -> new Item(new Item.Properties()));
@@ -207,7 +209,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> USHABTI = DEF_REG.register("ushabti", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VESPA_CARAPACE = DEF_REG.register("vespa_carapace", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> VESPA_DAGGER = DEF_REG.register("vespa_dagger", () -> new FangDaggerItem(new Item.Properties(), Tiers.IRON, 2, -2.4F, -1.0D, FURItemRegistry.POISON_STINGER, true));
-	public static final RegistryObject<Item> VESPA_OVUM = DEF_REG.register("vespa_ovum", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 12 * 20, 0), 0.8F).build())));
+	public static final RegistryObject<Item> VESPA_OVUM = DEF_REG.register("vespa_ovum", () -> new VespaOvumItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.INFESTED.get(), 12 * 20, 0), 0.8F).build())));
 	public static final RegistryObject<Item> VESPA_SHIELD = DEF_REG.register("vespa_shield", () -> new VespaShieldItem(new Item.Properties().durability(504)));
 	public static final RegistryObject<Item> WAR = DEF_REG.register("war", () -> new FURRangedItem(() -> Items.FIRE_CHARGE, () -> FUREntityRegistry.WAR_SMALL_FIREBALL.get(), new Item.Properties().durability(384)));
 	public static final RegistryObject<Item> WETA_HOE = DEF_REG.register("weta_hoe", () -> new WetaHoeItem(new Item.Properties(), Tiers.IRON, -2, -1.0F, FURItemRegistry.CHITIN));
@@ -276,7 +278,6 @@ public class FURItemRegistry {
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
-    	spawnEgg(FUREntityRegistry.SHROOMLORD, 0x282119, 0x81DDFF, new Item.Properties()).setRegistryName("fur:spawn_egg_shroomlord"));
     	spawnEgg(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties()).setRegistryName("fur:spawn_egg_boneworm"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties()).setRegistryName("fur:spawn_egg_pingu"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties()).setRegistryName("fur:spawn_egg_forsaken"));

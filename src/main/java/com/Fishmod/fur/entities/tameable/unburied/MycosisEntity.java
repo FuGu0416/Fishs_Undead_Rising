@@ -159,7 +159,16 @@ public class MycosisEntity extends UnburiedEntity {
 
         EntityIn.level().addFreshEntity(entityareaeffectcloud);
     }
-    
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        // Only the Undergrove strain (skin 2, which spreads Sporerot) is immune to it; the Poison strain (skin 1) is not.
+        if (this.getSkin() == 2 && effect.getEffect() == FUREffectRegistry.SPOREROT.get()) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
     @Nullable
     @Override
     protected ResourceLocation getDefaultLootTable() {

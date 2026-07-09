@@ -252,6 +252,15 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
     }
 
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        // Shroomlings are fungal creatures — immune to the Sporerot affliction.
+        if (effect.getEffect() == FUREffectRegistry.SPOREROT.get()) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
 	@Override
     protected boolean isCommandable() {
     	return false;

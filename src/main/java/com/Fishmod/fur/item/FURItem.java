@@ -82,7 +82,6 @@ public class FURItem extends Item {
             }
         }
 
-        // Spore Gel is the antidote to its own affliction: eating it clears Sporerot.
         if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.SPORE_GEL.get())) {
         	living.removeEffect(FUREffectRegistry.SPOREROT.get());
         }

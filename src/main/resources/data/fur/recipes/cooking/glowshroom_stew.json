@@ -1,0 +1,23 @@
+{
+    "type": "fur:cooking",
+    "ingredients": [
+	    {
+			"item": "fur:glowshroom"
+	    },
+	    {
+			"item": "fur:glimmercap"
+	    },
+	    {
+			"item": "fur:emberwick_fungus"
+	    },
+	    {
+			"item": "fur:spore_gel"
+	    }
+    ],
+  	"container": { "item": "minecraft:bowl" },
+  	"result": {
+    	"item": "fur:glowshroom_stew"
+  	},
+  	"experience": 0.35,
+  	"time": 200
+}
