@@ -907,13 +907,25 @@ public class FURServerEvents {
     	}
 
     	int ticks = data.getInt(VespaInfestation.TICKS_KEY) - 1;
+    	int stage = VespaInfestation.stageForTicks(ticks);
     	data.putInt(VespaInfestation.TICKS_KEY, ticks);
-    	data.putInt(VespaInfestation.STAGE_KEY, VespaInfestation.stageForTicks(ticks));
+    	data.putInt(VespaInfestation.STAGE_KEY, stage);
 
     	// Cosmetic twitch: nudge the host upward so the client sees it convulse. No damage dealt.
     	if (ticks % 40 == 0) {
     		host.setDeltaMovement(host.getDeltaMovement().add(0.0D, 0.12D, 0.0D));
     		host.hurtMarked = true;
+    	}
+
+    	// Shaking: drive vanilla's built-in "fully frozen" shudder rather than nudging physics. Holding the
+    	// host at/above its freeze threshold makes LivingEntityRenderer#isShaking oscillate the whole model,
+    	// and DATA_TICKS_FROZEN syncs to clients on its own — no packets or client code needed, and it works
+    	// on vanilla hosts. baseTick() bleeds off 2/tick when the host is not in powder snow, so top it back
+    	// up every tick with a margin. Vanilla deals freeze damage to any fully-frozen entity, so onInfest-
+    	// FreezeImmunity cancels it while incubating to keep this cosmetic. Only from stage 1 (ticks < 800)
+    	// onward, so early incubation stays calm and the trembling ramps in as emergence nears.
+    	if (stage >= 1) {
+    		host.setTicksFrozen(host.getTicksRequiredToFreeze() + 5);
     	}
 
     	if (ticks <= 0) {
@@ -963,6 +975,20 @@ public class FURServerEvents {
     		// 4. Burst particles + sound.
     		serverLevel.sendParticles(ParticleTypes.ITEM_SLIME, ex, ey + host.getBbHeight() * 0.5D, ez, 30, 0.2D, 0.2D, 0.2D, 0.05D);
     		level.playSound(null, ex, ey, ez, SoundEvents.SLIME_SQUISH, SoundSource.HOSTILE, 1.0F, 0.8F);
+    	}
+    }
+
+    /**
+     * The Vespa Ovum "shaking" is driven by holding the host fully frozen, but vanilla deals 1 freeze
+     * damage every 40 ticks to ANY fully-frozen entity (LivingEntity.baseTick — not gated on powder snow).
+     * Left unchecked that whittles the host down and kills it before emergence, which then trips the
+     * early-harvest path instead of bursting. Suppress freeze damage while an infestation is incubating.
+     */
+    @SubscribeEvent
+    public void onInfestFreezeImmunity(LivingAttackEvent event) {
+    	if (event.getSource().is(DamageTypes.FREEZE)
+    			&& event.getEntity().getPersistentData().contains(VespaInfestation.TICKS_KEY)) {
+    		event.setCanceled(true);
     	}
     }
 

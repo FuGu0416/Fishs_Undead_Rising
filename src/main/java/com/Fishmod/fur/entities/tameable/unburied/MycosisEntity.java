@@ -95,10 +95,11 @@ public class MycosisEntity extends UnburiedEntity {
         		if (!this.isOwnedBy((LivingEntity) entity1)) {
         			float local_difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
                         
-        			// Skin 2 (Luminous Undergrove strain) spreads Sporerot instead of Poison.
         			MobEffect effect = this.getSkin() == 2 ? FUREffectRegistry.SPOREROT.get() : MobEffects.POISON;
         			if (!entity1.hasEffect(effect))
-        				entity1.addEffect(new MobEffectInstance(effect, 2 * 20 * (int)local_difficulty, 0));
+        				// Ambient (beacon-style) so the HUD icon doesn't flash: vanilla only runs the
+        				// low-duration blink on non-ambient effects, and this aura's effect is short-lived.
+        				entity1.addEffect(new MobEffectInstance(effect, 2 * 20 * (int)local_difficulty, 0, true, true));
         		}
         	}         		
         }
@@ -149,7 +150,6 @@ public class MycosisEntity extends UnburiedEntity {
         entityareaeffectcloud.setWaitTime(10);
         entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
         if (this.getSkin() == 2) {
-        	// Skin 2 spreads Sporerot; the cloud is tinted automatically from the potion's effect colour.
         	entityareaeffectcloud.setPotion(FUREffectRegistry.SPOREROT_POTION.get());
         	entityareaeffectcloud.addEffect(new MobEffectInstance(FUREffectRegistry.SPOREROT.get(), 2 * 20 * (int)local_difficulty, 0));
         } else {
@@ -162,7 +162,6 @@ public class MycosisEntity extends UnburiedEntity {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        // Only the Undergrove strain (skin 2, which spreads Sporerot) is immune to it; the Poison strain (skin 1) is not.
         if (this.getSkin() == 2 && effect.getEffect() == FUREffectRegistry.SPOREROT.get()) {
             return false;
         }
