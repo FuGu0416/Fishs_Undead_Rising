@@ -3,7 +3,6 @@ package com.Fishmod.fur.init;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.block.BonePileBlock;
 import com.Fishmod.fur.block.CactoidSproutBlock;
 import com.Fishmod.fur.block.DiseasedHayBlock;
 import com.Fishmod.fur.block.FURHugeShroomBlock;
@@ -39,7 +38,6 @@ public class FURBlockRegistry {
 	public static final DeferredRegister<Block> DEF_REG = DeferredRegister.create(ForgeRegistries.BLOCKS, mod_LavaCow.MODID);
 	
 	public static final RegistryObject<Block> BLOODTOOTH_SHROOM = registerBlocks("bloodtooth_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 1)));
-	public static final RegistryObject<Block> BONE_PILE = registerBlocks("bone_pile", () -> new BonePileBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.BONE_BLOCK).noOcclusion().dynamicShape().offsetType(BlockBehaviour.OffsetType.XZ)));
 	public static final RegistryObject<Block> CACTOID_SPROUT = registerBlocks("cactoid_sprout", () -> new CactoidSproutBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.4F).sound(SoundType.WOOL).noOcclusion().randomTicks().forceSolidOn().dynamicShape().pushReaction(PushReaction.DESTROY).offsetType(BlockBehaviour.OffsetType.XZ)));
 	public static final RegistryObject<Block> CORDY_SHROOM = registerBlocks("cordy_shroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 1)));
 	public static final RegistryObject<Block> DISEASED_HAY_BLOCK = registerBlocks("diseased_hay_block", () -> new DiseasedHayBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BANJO).strength(0.5F).sound(SoundType.GRASS)));

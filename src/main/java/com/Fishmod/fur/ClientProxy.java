@@ -184,7 +184,6 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.SOUL_FURNACE.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.GLIMMERCAP.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.BONE_PILE.get(), RenderType.cutout());
 
         ItemProperties.register(FURItemRegistry.VESPA_SHIELD.get(), new ResourceLocation("blocking"),
                 (stack, level, entity, seed) ->

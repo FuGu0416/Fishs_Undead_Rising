@@ -6,7 +6,6 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURBiomesRegistry;
-import com.Fishmod.fur.worldgen.feature.FURPlacedFeatures;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -17,10 +16,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers.AddFeaturesBiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers.AddSpawnsBiomeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -57,7 +54,6 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 	public static final ResourceKey<BiomeModifier> ADD_BEELZEBUB = registerKey("add_beelzebub");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLORD = registerKey("add_shroomlord");
-	public static final ResourceKey<BiomeModifier> ADD_BONE_PILE = registerKey("add_bone_pile");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_BAT = registerKey("add_luminous_bat");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_GLOW_SQUID = registerKey("add_luminous_glow_squid");
 
@@ -67,7 +63,6 @@ public class FURBiomeModifier {
     
     public static void bootstrap (BootstapContext<BiomeModifier> context) {
         var biomes = context.lookup(Registries.BIOME);
-        var placedFeatures = context.lookup(Registries.PLACED_FEATURE);
 
         addSpawn(context, ADD_FOGLET, biomes.getOrThrow(FURBiomeTagsProvider.HAS_FOGLET),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.FOGLET.get(), 20, 8, 16));
@@ -146,12 +141,6 @@ public class FURBiomeModifier {
         // (alongside the Shroomling), not the original 1.16.5 swamp.
         addSpawn(context, ADD_SHROOMLORD, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLORD.get(), 15, 1, 2));
-
-        // Scatter Bone Piles across desert surfaces.
-        context.register(ADD_BONE_PILE, new AddFeaturesBiomeModifier(
-                biomes.getOrThrow(Tags.Biomes.IS_DESERT),
-                HolderSet.direct(placedFeatures.getOrThrow(FURPlacedFeatures.BONE_PILE_PATCH)),
-                GenerationStep.Decoration.VEGETAL_DECORATION));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

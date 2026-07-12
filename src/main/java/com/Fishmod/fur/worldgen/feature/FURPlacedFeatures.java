@@ -11,7 +11,6 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -72,12 +71,6 @@ public class FURPlacedFeatures {
             key("spring_water");
     public static final ResourceKey<PlacedFeature> CAVE_FLOOR_SMOOTHER =
             key("cave_floor_smoother");
-    /** Internal: Bone Pile single-block (inner target of BONE_PILE_PATCH) */
-    public static final ResourceKey<PlacedFeature> BONE_PILE_INNER =
-            key("bone_pile_inner");
-    /** World: Bone Pile scattered patch (added to desert biomes) */
-    public static final ResourceKey<PlacedFeature> BONE_PILE_PATCH =
-            key("bone_pile_patch");
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
@@ -452,29 +445,6 @@ public class FURPlacedFeatures {
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
                                         VerticalAnchor.absolute(128)),
-                                BiomeFilter.biome()
-                        )));
-
-        // ── Internal: Bone Pile single-block (air at pos, sand below) ─────────
-        context.register(BONE_PILE_INNER,
-                new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.BONE_PILE_SIMPLE),
-                        List.of(
-                                BlockPredicateFilter.forPredicate(
-                                        BlockPredicate.allOf(
-                                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
-                                                BlockPredicate.matchesTag(
-                                                        new BlockPos(0, -1, 0), BlockTags.SAND))))));
-
-        // ── World: Bone Pile scattered patch (desert surface) ─────────────────
-        // Once every ~6 chunks on average; surface heightmap places it on top of the sand.
-        context.register(BONE_PILE_PATCH,
-                new PlacedFeature(
-                        features.getOrThrow(FURConfiguredFeatures.BONE_PILE_PATCH),
-                        List.of(
-                                RarityFilter.onAverageOnceEvery(6),
-                                InSquarePlacement.spread(),
-                                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                                 BiomeFilter.biome()
                         )));
 

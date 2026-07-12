@@ -1,7 +1,6 @@
 package com.Fishmod.fur.init;
 
 import com.Fishmod.fur.mod_LavaCow;
-import com.Fishmod.fur.block.blockentity.BonePileBlockEntity;
 import com.Fishmod.fur.block.blockentity.SalamanderEggBlockEntity;
 import com.Fishmod.fur.block.blockentity.ScarecrowHead_commonTileEntity;
 import com.Fishmod.fur.block.blockentity.ScarecrowHead_plagueTileEntity;
@@ -21,5 +20,4 @@ public class FURBlockEntityRegistry {
 	public static final RegistryObject<BlockEntityType<ScarecrowHead_plagueTileEntity>> SCARECROWHEAD_PLAGUE = DEF_REG.register("scarecrowhead_plague", () -> BlockEntityType.Builder.of(ScarecrowHead_plagueTileEntity::new, FURBlockRegistry.SCARECROWHEAD_PLAGUE.get()).build(null));  
 	public static final RegistryObject<BlockEntityType<SoulFurnaceBlockEntity>> SOUL_FURNACE = DEF_REG.register("soul_furnace", () -> BlockEntityType.Builder.of(SoulFurnaceBlockEntity::new, FURBlockRegistry.SOUL_FURNACE.get()).build(null));    
 	public static final RegistryObject<BlockEntityType<SalamanderEggBlockEntity>> SALAMANDER_EGG = DEF_REG.register("salamander_egg", () -> BlockEntityType.Builder.of(SalamanderEggBlockEntity::new, FURBlockRegistry.SALAMANDER_EGG.get()).build(null));
-	public static final RegistryObject<BlockEntityType<BonePileBlockEntity>> BONE_PILE = DEF_REG.register("bone_pile", () -> BlockEntityType.Builder.of(BonePileBlockEntity::new, FURBlockRegistry.BONE_PILE.get()).build(null));
 }
