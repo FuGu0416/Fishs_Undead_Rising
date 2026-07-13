@@ -46,6 +46,8 @@ import com.Fishmod.fur.client.renderer.entity.AbstractUnburiedRenderer;
 import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
+import com.Fishmod.fur.client.renderer.entity.DeathCoilRenderer;
+import com.Fishmod.fur.client.renderer.entity.SpectralDaggerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WispRenderer;
 import com.Fishmod.fur.client.renderer.entity.WraithRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
@@ -62,6 +64,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -99,7 +102,9 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.WETA.get(), WetaRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.AVATON.get(), AvatonRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.WRAITH.get(), WraithRenderer::new); 
-    	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);  
+    	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_DAGGER.get(), SpectralDaggerRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_DAGGER_ITEM.get(), ItemEntityRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.UNBURIED.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), MycosisRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
@@ -138,6 +143,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FANG_ARROW.get(), manager -> new FURArrowRenderer(manager, 1));
         EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);
         EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
+        EntityRenderers.register(FUREntityRegistry.DEATHCOIL.get(), DeathCoilRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOLTEN_GLOB.get(), MoltenGlobRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOLTEN_POOL.get(), NoopRenderer::new);
         // Sludge Jet is purely particle-driven (the 1.16.5 sprite was rendered at zero scale).

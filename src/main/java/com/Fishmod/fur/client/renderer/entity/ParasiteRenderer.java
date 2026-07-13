@@ -32,27 +32,39 @@ public class ParasiteRenderer extends GeoEntityRenderer<ParasiteEntity> {
     
     @Override
     protected void applyRotations(ParasiteEntity entityLiving, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+        Direction attached = entityLiving.getAttachedBlock();
+
+        // Wall-hug offset. An 0.8-wide AABB can't overlap the wall block, so the entity centre is pinned
+        // ~half a width (0.4) off the wall face and nothing on the entity side can close that gap. Push
+        // the model toward the attached face by half its width, in WORLD space and BEFORE the body-yaw,
+        // so the belly plane (model Y=0) meets the wall regardless of yaw or climb direction. Replaces the
+        // old implicit 0.25 nudge in the yaw-rotated frame, which under-reached and flipped with motion.
+        if (!entityLiving.isPassenger() && attached.getAxis().isHorizontal()) {
+            float hug = entityLiving.getBbWidth() * 0.5F;
+            poseStack.translate(attached.getStepX() * hug, 0.0D, attached.getStepZ() * hug);
+        }
+
         super.applyRotations(entityLiving, poseStack, ageInTicks, rotationYaw, partialTicks);
-    	
+
         if (entityLiving.isPassenger()) {
     		poseStack.scale(1.2F, 1.2F, 1.2F);
-			
-			if (!(entityLiving.getVehicle() instanceof Player 
-					|| entityLiving.getVehicle() instanceof Zombie 
-					|| entityLiving.getVehicle() instanceof AbstractVillager 
-					|| entityLiving.getVehicle() instanceof AbstractIllager 
-					|| entityLiving.getVehicle() instanceof AbstractSkeleton)) {				
+
+			if (!(entityLiving.getVehicle() instanceof Player
+					|| entityLiving.getVehicle() instanceof Zombie
+					|| entityLiving.getVehicle() instanceof AbstractVillager
+					|| entityLiving.getVehicle() instanceof AbstractIllager
+					|| entityLiving.getVehicle() instanceof AbstractSkeleton)) {
 				poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 			}
-		} else if (entityLiving.getAttachedBlock() == Direction.UP) {
+		} else if (attached == Direction.UP) {
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
             poseStack.translate(0.0D, -0.25D, 0.0D);
-        } else if (entityLiving.getAttachedBlock() != Direction.DOWN) {
+        } else if (attached != Direction.DOWN) {
             poseStack.translate(0.0D, 0.25D, 0.0D);
-            
-            switch (entityLiving.getAttachedBlock()) {
+
+            switch (attached) {
                 case NORTH:
                     poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
                     poseStack.mulPose(Axis.ZP.rotationDegrees(0));
@@ -71,13 +83,13 @@ public class ParasiteRenderer extends GeoEntityRenderer<ParasiteEntity> {
                     break;
                 default:
                 	break;
-            } 
-            
+            }
+
             if (entityLiving.getDeltaMovement().y > -0.001F) {
                 poseStack.mulPose(Axis.YP.rotationDegrees(-180.0F));
             }
-            
-            poseStack.translate(0.0D, -0.25D, 0.0D);
+            // (old implicit `translate(0, -0.25, 0)` wall nudge removed — the world-space hug above now
+            //  sets the wall distance deterministically.)
         }
 	}
 }

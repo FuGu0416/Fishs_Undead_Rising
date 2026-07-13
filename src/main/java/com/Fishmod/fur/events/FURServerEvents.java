@@ -10,6 +10,7 @@ import com.Fishmod.fur.core.VespaInfestation;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.entities.GhoulEntity;
+import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
@@ -61,6 +62,7 @@ import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -364,10 +366,10 @@ public class FURServerEvents {
     				}
     			}
 
-    			/*if (ModList.get().isLoaded("curios") && !have_Heart) {
-    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTENHEART, Attacked) != ItemStack.EMPTY);
-    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, Attacked) != ItemStack.EMPTY);
-    			}*/
+    			if (ModList.get().isLoaded("curios") && !have_Heart) {
+    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTEN_HEART.get(), Attacked) != ItemStack.EMPTY);
+    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFORGED_HEART.get(), Attacked) != ItemStack.EMPTY);
+    			}
 
     			if (have_Heart) {
     				effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
@@ -649,7 +651,13 @@ public class FURServerEvents {
 	        		    1,                                                          // xp
 	        		    0.05F                                                       // price multiplier
 	        		));
-	            //list.add(new ItemsForEmeraldsTrade(FURItemRegistry.PLAGUED_PORKCHOP, 2, 1, 12, 1));
+	        	event.getTrades().get(2).add((trader, rand) -> new MerchantOffer(
+	        		    new ItemStack(FURItemRegistry.PLAGUED_PORKCHOP.get(), 1),
+	        		    new ItemStack(Items.EMERALD, 1),
+	        		    12,
+	        		    1,
+	        		    0.05F
+	        		));	        	
 	        }
 	        
 	        if (event.getType() == VillagerProfession.CLERIC) {
@@ -726,8 +734,13 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.SPORE_GEL, 4, 1, 12, 1));
-	        //genericTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PIGBOARHIDE, 6, 1, 12, 1));
+    		genericTrades.add((trader, rand) -> new MerchantOffer(
+    	            new ItemStack(Items.EMERALD, 6),
+    	            new ItemStack(FURItemRegistry.PIGBOARHIDE.get(), 1),
+    	            12, 
+    	            1, 
+    	            0.05f
+    	        ));    		
 
     		rareTrades.add((trader, rand) -> new MerchantOffer(
     	            new ItemStack(Items.EMERALD, 24),
@@ -757,9 +770,14 @@ public class FURServerEvents {
     	            1, 
     	            0.05f
     	        ));
-    		
+    		rareTrades.add((trader, rand) -> new MerchantOffer(
+    	            new ItemStack(Items.EMERALD, 18),
+    	            new ItemStack(FURItemRegistry.PHEROMONE_GLAND.get(), 1),
+    	            4, 
+    	            20, 
+    	            0.05f
+    	        ));   		
 	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
-	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.PHEROMONE_GLAND, 18, 1, 4, 20));
     	}
     }
     
@@ -799,9 +817,9 @@ public class FURServerEvents {
     			}
     		}
     		
-    		/*if (ModList.get().isLoaded("curios") && !have_Heart) {
-    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.SOULFIREHEART, event.getEntity()) != ItemStack.EMPTY);
-    		}*/
+    		if (ModList.get().isLoaded("curios") && !have_Heart) {
+    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.SOULFORGED_HEART.get(), event.getEntity()) != ItemStack.EMPTY);
+    		}
     		
     		if (have_Heart) {
     			effectlevel += 0.25F;
@@ -822,12 +840,15 @@ public class FURServerEvents {
     
     @SubscribeEvent
     public void onInventoryOpen(final PlayerContainerEvent.Open event) {
-    	/*if (!event.getPlayer().isCreative() && event.getContainer() instanceof ChestContainer) {
-    		AxisAlignedBB axisalignedbb = AxisAlignedBB.unitCubeFromLowerCorner(event.getPlayer().position()).inflate(16.0D, 10.0D, 16.0D);
-    		for (MobEntity mobs : event.getPlayer().level().getLoadedEntitiesOfClass(GraveRobberEntity.class, axisalignedbb)) {
-    			mobs.setTarget(event.getPlayer());
+    	final Player player = event.getEntity();
+
+    	// Opening a chest while not in creative draws nearby Grave Robbers onto the looter.
+    	if (!player.level().isClientSide() && !player.isCreative() && event.getContainer() instanceof ChestMenu) {
+    		AABB area = AABB.unitCubeFromLowerCorner(player.position()).inflate(16.0D, 10.0D, 16.0D);
+    		for (GraveRobberEntity robber : player.level().getEntitiesOfClass(GraveRobberEntity.class, area)) {
+    			robber.setTarget(player);
     		}
-    	}*/
+    	}
     }
     
     @SubscribeEvent
@@ -854,17 +875,17 @@ public class FURServerEvents {
         }
         
         // Passive
-        /*if (newTarget != null) {
-        	Boolean hasCrown = newTarget.getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN);
+        if (newTarget != null) {
+        	Boolean hasCrown = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN.get());
         	
     		if (ModList.get().isLoaded("curios") && !hasCrown) {
-    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN, newTarget) != ItemStack.EMPTY);
+    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN.get(), newTarget) != ItemStack.EMPTY);
     		}
     		
-        	if (mob instanceof AbstractSkeletonEntity && hasCrown) {
-        		((MobEntity) mob).setTarget(null);
+        	if (entity instanceof AbstractSkeleton skeleton && hasCrown) {
+        		skeleton.setTarget(null);
         	}
-        }*/
+        }
     } 
     
     @SubscribeEvent
@@ -1058,10 +1079,9 @@ public class FURServerEvents {
 			
 	    	if (DirectAttacker instanceof LivingEntity living) {
 	    		Item heldItem = living.getMainHandItem().getItem();
-	    		if (heldItem.equals(FURItemRegistry.BONE_SWORD.get()))
+	    		if (heldItem.equals(FURItemRegistry.BONE_SWORD.get())) {
 	    			event.setAmount(event.getAmount() + Math.min((float)FURConfig.BoneSword_DamageCap.get(), Attacked.getMaxHealth() * ((float)FURConfig.BoneSword_Damage.get() * 0.01F)));
-	    		/*else if (heldItem.equals(FURItemRegistry.SPECTRAL_DAGGER) && !Attacked.getMobType().equals(CreatureAttribute.UNDEAD))
-	    			event.setAmount(event.getAmount() + 2.0F);*/
+	    		}
 	    	}
 	    	
 	    	if (Attacker instanceof LivingEntity living && (Attacker.equals(DirectAttacker) || source.is(DamageTypeTags.IS_PROJECTILE)) && living.hasEffect(FUREffectRegistry.VENOMOUS.get())) {

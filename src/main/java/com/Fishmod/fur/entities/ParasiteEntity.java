@@ -84,6 +84,13 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.BYTE);
 	protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(ParasiteEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+	/** How long (ticks) a resolved wall direction is held when a tick momentarily fails to find a face, so the model doesn't snap upright mid-climb. */
+	private static final int WALL_STICKY_TICKS = 6;
+	private Direction lastWallDir = Direction.DOWN;
+	private int wallStickyTicks = 0;
+	/** Brief grace after spawning so a parasite doesn't latch onto a host the instant it appears. */
+	private static final int SPAWN_ATTACH_GRACE = 20;
+	private int attachCooldown = SPAWN_ATTACH_GRACE;
 	public int lifespawn;
 	
 	public ParasiteEntity(EntityType<? extends ParasiteEntity> entityType, Level worldIn) {
@@ -172,6 +179,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	
     @Override
     public void tick() {
+        if (this.attachCooldown > 0) {
+            this.attachCooldown--;
+        }
         this.handleLifespanAndEvolution();
         this.handleRidingEffects();
         this.updateAttachedBlockDirection();
@@ -243,15 +253,38 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     }
 
     private void updateAttachedBlockDirection() {
-        if (!this.level().isClientSide()) {
-            if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
-                this.entityData.set(ATTACHED_BLK, Direction.DOWN);
-            } else if (this.verticalCollision) {
-                this.entityData.set(ATTACHED_BLK, Direction.UP);
+        if (this.level().isClientSide()) {
+            return;
+        }
+
+        Direction result;
+        if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
+            result = Direction.DOWN;
+            this.wallStickyTicks = 0;
+        } else if (this.verticalCollision) {
+            result = Direction.UP;
+            this.wallStickyTicks = 0;
+        } else {
+            Direction found = findClosestAttachableDirection();
+            if (found.getAxis().isHorizontal()) {
+                // Latched onto a wall this tick — remember it and refresh the sticky window.
+                this.lastWallDir = found;
+                this.wallStickyTicks = WALL_STICKY_TICKS;
+                result = found;
+            } else if (this.wallStickyTicks > 0 && this.horizontalCollision) {
+                // No face resolved this tick but we're still pressed against something while climbing;
+                // keep hugging the last wall for a few ticks so the model doesn't flicker upright (DOWN).
+                this.wallStickyTicks--;
+                result = this.lastWallDir;
             } else {
-                this.entityData.set(ATTACHED_BLK, findClosestAttachableDirection());
+                if (this.wallStickyTicks > 0) {
+                    this.wallStickyTicks--;
+                }
+                result = found;
             }
         }
+
+        this.entityData.set(ATTACHED_BLK, result);
     }
 
     private Direction findClosestAttachableDirection() {
@@ -329,7 +362,7 @@ public class ParasiteEntity extends Spider implements GeoEntity {
     public void push(Entity entityIn) {		
 		super.push(entityIn);
 		
-		if (FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
+		if (this.attachCooldown <= 0 && FURConfig.Parasite_Attach.get() && entityIn instanceof LivingEntity && !(entityIn instanceof Player) && entityIn.getType().is(FUREntityTypeTagsProvider.PARASITE_TARGETS) && !this.isPassenger()) {
     		this.startRiding(entityIn);
         }
     }
@@ -337,9 +370,9 @@ public class ParasiteEntity extends Spider implements GeoEntity {
 	@Override
 	public void playerTouch(Player playerIn) {
 		super.playerTouch(playerIn);
-		if (!playerIn.isCreative() && !playerIn.isCrouching() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
+		if (this.attachCooldown <= 0 && !playerIn.isCreative() && !playerIn.isCrouching() && FURConfig.Parasite_Attach.get() && !this.isPassenger()) {
     		this.startRiding(playerIn);
-        } 	
+        }
 	}
 	
     public Direction getAttachedBlock() {

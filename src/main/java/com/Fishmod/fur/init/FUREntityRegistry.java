@@ -31,6 +31,7 @@ import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
+import com.Fishmod.fur.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.fur.entities.projectiles.FURArrowEntity;
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
 import com.Fishmod.fur.entities.projectiles.MothScalesEntity;
@@ -48,7 +49,9 @@ import com.Fishmod.fur.entities.tameable.SalamanderEntity;
 import com.Fishmod.fur.entities.tameable.ScarabEntity;
 import com.Fishmod.fur.entities.tameable.ShroomlingEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
+import com.Fishmod.fur.entities.tameable.SpectralDaggerEntity;
 import com.Fishmod.fur.entities.tameable.WetaEntity;
+import com.Fishmod.fur.entities.misc.SpectralDaggerItemEntity;
 import com.Fishmod.fur.entities.tameable.WispEntity;
 import com.Fishmod.fur.entities.tameable.unburied.FrigidEntity;
 import com.Fishmod.fur.entities.tameable.unburied.MummyEntity;
@@ -116,6 +119,8 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<WendigoEntity>> WENDIGO = DEF_REG.register("wendigo", () -> (EntityType<WendigoEntity>) EntityType.Builder.of(WendigoEntity::new, MobCategory.MONSTER).sized(1.6F, 2.6F).setTrackingRange(8).build("wendigo"));
 	public static final RegistryObject<EntityType<WetaEntity>> WETA = DEF_REG.register("weta", () -> (EntityType<WetaEntity>) EntityType.Builder.of(WetaEntity::new, MobCategory.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS).setTrackingRange(8).build("scarecrow"));
 	public static final RegistryObject<EntityType<WispEntity>> WISP = DEF_REG.register("wisp", () -> (EntityType<WispEntity>) EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER).sized(0.525F, 0.525F).setTrackingRange(8).fireImmune().build("wisp"));
+	public static final RegistryObject<EntityType<SpectralDaggerEntity>> SPECTRAL_DAGGER = DEF_REG.register("spectral_dagger", () -> (EntityType<SpectralDaggerEntity>) EntityType.Builder.of(SpectralDaggerEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(10).fireImmune().build("spectral_dagger"));
+	public static final RegistryObject<EntityType<SpectralDaggerItemEntity>> SPECTRAL_DAGGER_ITEM = DEF_REG.register("spectral_dagger_item", () -> (EntityType<SpectralDaggerItemEntity>) EntityType.Builder.of(SpectralDaggerItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20).fireImmune().build("spectral_dagger_item"));
 	public static final RegistryObject<EntityType<WraithEntity>> WRAITH = DEF_REG.register("wraith", () -> (EntityType<WraithEntity>) EntityType.Builder.of(WraithEntity::new, MobCategory.MONSTER).sized(0.75F, 1.75F).setTrackingRange(8).build("wraith"));
 
 	public static final RegistryObject<EntityType<BasicBombEntity>> BASIC_BOMB = DEF_REG.register("basic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("basic_bomb"));
@@ -133,6 +138,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<BasicBombEntity>> SONIC_BOMB = DEF_REG.register("sonic_bomb", () -> (EntityType) EntityType.Builder.of(BasicBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(4).setShouldReceiveVelocityUpdates(true).setUpdateInterval(10).build("sonicbomb"));
 	public static final RegistryObject<EntityType<SwarmerLauncherEntity>> SWARMER_LAUNCHER = DEF_REG.register("swarmer_launcher", () -> (EntityType) EntityType.Builder.of(SwarmerLauncherEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("swarmer_launcher"));
 	public static final RegistryObject<EntityType<WarSmallFireballEntity>> WAR_SMALL_FIREBALL = DEF_REG.register("warsmallfireball", () -> (EntityType) EntityType.Builder.of(WarSmallFireballEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("warsmallfireball"));
+	public static final RegistryObject<EntityType<DeathCoilEntity>> DEATHCOIL = DEF_REG.register("deathcoil", () -> (EntityType) EntityType.Builder.<DeathCoilEntity>of(DeathCoilEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(1).build("deathcoil"));
 	
 	/*
 	public static final EntityType<UndeadSwineEntity> UNDEADSWINE = registerEntity(EntityType.Builder.of(UndeadSwineEntity::new, EntityClassification.MONSTER).sized(1.6F, 1.8F), "undeadswine");
@@ -212,6 +218,7 @@ public class FUREntityRegistry {
         event.put(AVATON.get(), AvatonEntity.createAttributes().build());
         event.put(WRAITH.get(), SeaHagEntity.createAttributes().build());
         event.put(WISP.get(), WispEntity.createAttributes().build());
+        event.put(SPECTRAL_DAGGER.get(), SpectralDaggerEntity.createAttributes().build());
         event.put(UNBURIED.get(), UnburiedEntity.createAttributes().build());
         event.put(MYCOSIS.get(), MycosisEntity.createAttributes().build());
         event.put(FRIGID.get(), FrigidEntity.createAttributes().build());

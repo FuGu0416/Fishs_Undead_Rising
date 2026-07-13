@@ -1,0 +1,506 @@
+package com.Fishmod.fur.entities.tameable;
+
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import com.Fishmod.fur.entities.ICharging;
+import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
+import com.Fishmod.fur.entities.ai.FloatingMoveControl;
+import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
+import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
+import com.Fishmod.fur.entities.misc.SpectralDaggerItemEntity;
+import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURItemRegistry;
+import com.Fishmod.fur.item.SpectralDaggerItem;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+/**
+ * A flying phantom blade summoned by the {@link SpectralDaggerItem}. Fights alongside its owner for
+ * {@link #lifeTicks} ticks, carrying the real dagger {@link ItemStack} in its main hand so that
+ * enchantments (Sharpness/Smite/Fire Aspect/Knockback/Looting) and item damage apply automatically
+ * through {@link #doHurtTarget(Entity)}.
+ *
+ * <h3>Core invariant: the carried ItemStack must NEVER be lost.</h3>
+ * Exactly one of two outcomes fires, guarded by {@link #itemReturned}:
+ * <ul>
+ *   <li><b>Killed by an attack</b> (a {@link LivingEntity} is the damage source's entity — melee,
+ *       arrows, creeper explosions): the dagger drops at the death location as a floating, glowing
+ *       {@link SpectralDaggerItemEntity}.</li>
+ *   <li><b>Everything else</b> (lifetime expiry, environmental death, /kill, void, owner
+ *       logout/death/dimension change, any destroying {@code remove()}): the dagger returns to the
+ *       owner's inventory, or drops at the owner's position if that isn't possible.</li>
+ * </ul>
+ */
+public class SpectralDaggerEntity extends FURTameableEntity implements ICharging, GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("spectral_dagger.model.idle");
+	private static final RawAnimation DASH = RawAnimation.begin().thenPlay("spectral_dagger.model.dash");
+	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("spectral_dagger.model.attack");
+
+	/** ~4 seconds: the client-side expiry pulse window (see PLACEHOLDER.md, deferred to Phase 2). */
+	public static final int EXPIRY_WARNING_TICKS = 80;
+
+	public boolean isCharging = false;
+	private int lifeTicks = SpectralDaggerItem.SUMMON_DURATION;
+	private int attackTimer = 0;
+	/** Guards the return/drop so it fires exactly once across die()/remove()/expiry paths. */
+	private boolean itemReturned = false;
+
+	public SpectralDaggerEntity(EntityType<? extends SpectralDaggerEntity> type, Level level) {
+		super(type, level);
+		this.moveControl = new FloatingMoveControl(this);
+		this.setNoGravity(true);
+		this.setPersistenceRequired();
+	}
+
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MOVEMENT_SPEED, 0.32D)
+				.add(Attributes.FOLLOW_RANGE, 24.0D)
+				.add(Attributes.MAX_HEALTH, 16.0D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+	}
+
+	@Override
+	protected void registerGoals() {
+		super.registerGoals(); // installs the base wander goal (FloatingMoveRandomGoal, see below)
+		this.goalSelector.addGoal(1, new FloatGoal(this));
+		this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, true));
+		this.goalSelector.addGoal(5, new FlyerFollowOwnerGoal(this, 1.0D, 10.0F, 4.0F, true, 24.0D));
+		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.applyEntityAI();
+	}
+
+	protected void applyEntityAI() {
+		// Owner-assist targeting only. wantsToAttack (from FURTameableEntity) already keeps the blade
+		// from striking the owner's other tamed mobs; no extra exclusion list (Creepers are fair game).
+		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+	}
+
+	@Override
+	protected net.minecraft.world.entity.ai.goal.Goal wanderGoal() {
+		return new FloatingMoveRandomGoal(this);
+	}
+
+	@Override
+	protected PathNavigation createNavigation(Level level) {
+		FlyingPathNavigation nav = new FlyingPathNavigation(this, level) {
+			@Override
+			public boolean isStableDestination(BlockPos pos) {
+				return !this.level.getBlockState(pos.below()).isAir();
+			}
+		};
+		nav.setCanOpenDoors(false);
+		nav.setCanFloat(true);
+		nav.setCanPassDoors(true);
+		return nav;
+	}
+
+	@Override
+	public void move(MoverType type, Vec3 pos) {
+		super.move(type, pos);
+		this.checkInsideBlocks();
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// Summon wiring
+	// ------------------------------------------------------------------------------------------
+
+	/** Give the blade the real dagger stack and make sure vanilla equipment-drop can never fire it. */
+	public void setCarriedStack(ItemStack stack) {
+		this.setItemSlot(EquipmentSlot.MAINHAND, stack);
+		this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+	}
+
+	public void setLifeTicks(int ticks) {
+		this.lifeTicks = ticks;
+	}
+
+	public int getLifeTicks() {
+		return this.lifeTicks;
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// Combat: durability drain + player-loot attribution
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public boolean doHurtTarget(Entity target) {
+		if (this.attackTimer > 0) {
+			return false;
+		}
+		this.attackTimer = 20; // ~1 hit / second
+
+		// Attribute kills/hits to the owner so player-only loot conditions (e.g. Looting) can apply.
+		if (target instanceof LivingEntity living && this.getOwner() instanceof Player owner) {
+			living.setLastHurtByPlayer(owner);
+		}
+
+		boolean flag = super.doHurtTarget(target);
+
+		if (flag && !this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 40); // play the attack animation on clients
+			ItemStack held = this.getMainHandItem();
+			if (!held.isEmpty() && held.isDamageableItem()) {
+				// ORDER MATTERS: check BEFORE draining. If this hit would reach the never-break
+				// threshold, clamp to maxDamage-1 and dissipate (item-RETURN path) instead of letting
+				// the drain destroy the stack.
+				if (held.getDamageValue() + 1 >= held.getMaxDamage() - 1) {
+					held.setDamageValue(held.getMaxDamage() - 1);
+					this.dissipate();
+				} else {
+					LivingEntity owner = this.getOwner();
+					held.hurtAndBreak(1, owner != null ? owner : this, e -> {});
+				}
+			}
+		}
+
+		return flag;
+	}
+
+	/** Trigger the return-path dissipation exactly once. */
+	private void dissipate() {
+		if (!this.itemReturned) {
+			this.discard(); // -> remove(DISCARDED) -> returnItemToOwner()
+		}
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// Lifecycle
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (this.attackTimer > 0) {
+			this.attackTimer--;
+		}
+
+		if (this.level().isClientSide()) {
+			return;
+		}
+
+		this.setNoGravity(true);
+
+		if (this.itemReturned) {
+			return;
+		}
+
+		// Owner logged out (offline -> null) or changed dimension (resolved but in another Level).
+		Player owner = this.resolveOnlineOwner();
+		if (owner == null || owner.level() != this.level()) {
+			this.discard(); // return path
+			return;
+		}
+
+		if (--this.lifeTicks <= 0) {
+			this.discard(); // expiry -> return path
+		}
+	}
+
+	@Override
+	public void die(DamageSource cause) {
+		if (!this.level().isClientSide() && !this.itemReturned) {
+			if (cause.getEntity() instanceof LivingEntity) {
+				this.dropItemAtDeath();
+			} else {
+				this.returnItemToOwner();
+			}
+			this.itemReturned = true;
+		}
+		super.die(cause);
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		if (!this.level().isClientSide() && !this.itemReturned && reason.shouldDestroy()) {
+			this.returnItemToOwner();
+			this.itemReturned = true;
+		}
+		super.remove(reason);
+	}
+
+	private void returnItemToOwner() {
+		ItemStack stack = this.getMainHandItem();
+		this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+		if (stack.isEmpty()) {
+			return;
+		}
+
+		Player owner = this.resolveOnlineOwner();
+		if (owner != null) {
+			boolean delivered = owner.isAlive() && owner.getInventory().add(stack);
+			if (!delivered) {
+				Vec3 p = owner.position();
+				this.spawnFloatingDagger(owner.level(), stack, p.x, p.y + 0.5D, p.z);
+			}
+			owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8F, 0.6F);
+			this.spawnReturnParticles(owner);
+		} else {
+			// Owner offline/absent: drop where the blade is, so the item is never lost.
+			this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+			this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8F, 0.6F);
+		}
+	}
+
+	private void dropItemAtDeath() {
+		ItemStack stack = this.getMainHandItem();
+		this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+		if (stack.isEmpty()) {
+			return;
+		}
+
+		this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 0.9F, 0.8F);
+		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.VEX_DEATH, SoundSource.PLAYERS, 0.9F, 1.2F);
+		if (this.level() instanceof ServerLevel sl) {
+			sl.sendParticles(ParticleTypes.SOUL, this.getX(), this.getY() + 0.3D, this.getZ(), 20, 0.25D, 0.35D, 0.25D, 0.02D);
+		}
+	}
+
+	private void spawnFloatingDagger(Level level, ItemStack stack, double x, double y, double z) {
+		if (level.isClientSide()) {
+			return;
+		}
+		SpectralDaggerItemEntity item = new SpectralDaggerItemEntity(FUREntityRegistry.SPECTRAL_DAGGER_ITEM.get(), level);
+		item.setPos(x, y, z);
+		item.setItem(stack);
+		item.setDeltaMovement(0.0D, 0.1D, 0.0D);
+		item.setPickUpDelay(20);
+		level.addFreshEntity(item);
+	}
+
+	private void spawnReturnParticles(Player owner) {
+		if (!(this.level() instanceof ServerLevel sl)) {
+			return;
+		}
+		Vec3 from = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
+		Vec3 dir = owner.position().add(0.0D, owner.getBbHeight() * 0.5D, 0.0D).subtract(from);
+		double len = dir.length();
+		if (len < 1.0E-4D) {
+			return;
+		}
+		dir = dir.normalize();
+		for (int i = 0; i < 12; i++) {
+			double dist = this.random.nextDouble() * Math.min(len, 6.0D);
+			sl.sendParticles(ParticleTypes.SOUL, from.x + dir.x * dist, from.y + dir.y * dist, from.z + dir.z * dist, 1, 0.05D, 0.05D, 0.05D, 0.01D);
+		}
+	}
+
+	@Nullable
+	private Player resolveOnlineOwner() {
+		UUID id = this.getOwnerUUID();
+		if (id == null || this.level().getServer() == null) {
+			return null;
+		}
+		return this.level().getServer().getPlayerList().getPlayer(id);
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// NBT — carried stack persists via Mob's HandItems; we persist lifeTicks + the return guard.
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putInt("LifeTicks", this.lifeTicks);
+		tag.putBoolean("ItemReturned", this.itemReturned);
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		this.lifeTicks = tag.contains("LifeTicks") ? tag.getInt("LifeTicks") : SpectralDaggerItem.SUMMON_DURATION;
+		this.itemReturned = tag.getBoolean("ItemReturned");
+		this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// Disabled tameable behaviours + flight/immunity tweaks
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		return InteractionResult.PASS; // no sit toggle, no feeding
+	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	@Nullable
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mate) {
+		return null;
+	}
+
+	@Override
+	public boolean canBeLeashed(Player player) {
+		return false;
+	}
+
+	@Override
+	protected boolean isCommandable() {
+		return false;
+	}
+
+	@Override
+	public boolean isSummonedMinion() {
+		return true;
+	}
+
+	@Override
+	public boolean removeWhenFarAway(double distance) {
+		return false;
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		if (source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.CRAMMING)) {
+			return true;
+		}
+		return super.isInvulnerableTo(source);
+	}
+
+	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		if (source.is(DamageTypeTags.IS_FALL)) {
+			return false;
+		}
+		return super.hurt(source, amount);
+	}
+
+	@Override
+	public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+		return false;
+	}
+
+	@Override
+	protected void checkFallDamage(double y, boolean onGround, net.minecraft.world.level.block.state.BlockState state, BlockPos pos) {
+	}
+
+	@Override
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return dimensions.height * 0.5F;
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return null;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return null;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return null;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// ICharging + GeckoLib (renderer/assets are placeholders for Phase 2 — see PLACEHOLDER.md)
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public boolean isCharging() {
+		return this.isCharging;
+	}
+
+	@Override
+	public void setIsCharging(boolean bool) {
+		this.isCharging = bool;
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void handleEntityEvent(byte id) {
+		if (id == 6) {
+			this.isCharging = true;
+		} else if (id == 40) {
+			this.triggerAnim("trigger_controller", "attack");
+		} else {
+			super.handleEntityEvent(id);
+		}
+	}
+
+	private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+		state.getController().setAnimation(this.isCharging ? DASH : IDLE);
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
+	}
+
+	/** Convenience for the (placeholder) renderer to reference the item's own model. */
+	public ItemStack getDisplayStack() {
+		ItemStack held = this.getMainHandItem();
+		return held.isEmpty() ? new ItemStack(FURItemRegistry.SPECTRAL_DAGGER.get()) : held;
+	}
+}

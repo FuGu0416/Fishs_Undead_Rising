@@ -557,7 +557,7 @@
 	"item.fur.soulforged_hammer.desc": "Inflicts target with burned(0:08), extending duration by 4 seconds for each level of Fire Aspect. Right-click to deal damage to creatures around player.",	
 	"item.fur.soulforged_heart.desc0": "Fire damage to player-%d%%", 	
 	"item.fur.soulforged_heart.desc1": "All healing received +%d%%", 	
-	"item.fur.spectral_dagger.desc": "Has infinite durability, +2 damage vs non-undead",
+	"item.fur.spectral_dagger.desc": "Right-click to release a spectral blade that fights alongside you for 30 seconds. The dagger returns to you when it fades, or drops where it falls if the blade is slain.",
 	"item.fur.spore_gel.desc": "Cures Sporerot when eaten.",
 	"item.fur.sporecaller.desc": "Right-click to summon a loyal Shroomling",
 	"item.fur.sporecaller.empty": "No potion injected",

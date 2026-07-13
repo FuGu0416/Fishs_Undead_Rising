@@ -122,6 +122,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.FROZEN_GRIP.get());
             	output.accept(FURItemRegistry.SKELETONKING_MACE.get());
             	output.accept(FURItemRegistry.VESPA_DAGGER.get());
+            	output.accept(FURItemRegistry.SPECTRAL_DAGGER.get());
             	
             	// Range Weapon
             	output.accept(FURItemRegistry.WAR.get());

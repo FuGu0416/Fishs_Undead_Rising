@@ -100,22 +100,14 @@ public class FURWeaponItem extends SwordItem {
 	   
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
-		/*if (stack.getItem() == FURItemRegistry.SPECTRAL_DAGGER) {
-			return this.getItemStackLimit(stack) == 1;
-		}*/
-		
 		return super.isEnchantable(stack);
 	}
-	
+
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-    	/*if (stack.getItem() == FURItemRegistry.SPECTRAL_DAGGER && enchantment.category.equals(EnchantmentType.BREAKABLE)) {
-    		return false;
-    	}*/
-    	
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
-	
+
 	/**
 	* Called when this item is used when targeting a Block
 	*/

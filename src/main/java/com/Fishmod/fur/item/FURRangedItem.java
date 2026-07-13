@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
+import com.Fishmod.fur.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.fur.entities.projectiles.EnchantableFireBallEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -98,6 +99,13 @@ public class FURRangedItem extends CrossbowItem {
 	        		(category.equals(EnchantmentCategory.BOW)
 	            || category.equals(EnchantmentCategory.CROSSBOW));
         } else if (stack.getItem().equals(FURItemRegistry.SWARMER_LAUNCHER.get())) {
+	        return enchantment != Enchantments.PIERCING &&
+	               enchantment != Enchantments.MULTISHOT &&
+	               (category.equals(EnchantmentCategory.BOW)
+	            || category.equals(EnchantmentCategory.CROSSBOW));
+        } else if (stack.getItem().equals(FURItemRegistry.FORSAKEN_STAFF.get())) {
+	        // Death Coil honours Power (damage), Punch (knockback) and Flame (fire) from shoot_forsaken_staff.
+	        // Piercing/Multishot don't apply — a single coil that removes itself on impact.
 	        return enchantment != Enchantments.PIERCING &&
 	               enchantment != Enchantments.MULTISHOT &&
 	               (category.equals(EnchantmentCategory.BOW)
@@ -194,6 +202,14 @@ public class FURRangedItem extends CrossbowItem {
 		stack.getOrCreateTag().putBoolean("Charged", true);
 		if (stack.getItem().equals(FURItemRegistry.THORN_SHOOTER.get())) {
 		    player.startUsingItem(hand);
+		} else if (stack.getItem().equals(FURItemRegistry.FORSAKEN_STAFF.get())) {
+			int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+
+			if (!level.isClientSide) {
+				this.shoot_forsaken_staff(level, player, stack);
+			}
+
+			player.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));
 		} else if (stack.getItem().equals(FURItemRegistry.WAR.get())) {
 			ItemStack itemstack = this.getProjectile(stack, player);
 			boolean flag = player.getAbilities().instabuild || stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) > 0;
@@ -385,6 +401,36 @@ public class FURRangedItem extends CrossbowItem {
 		stack.hurtAndBreak(1, player, (entity) -> {
 			entity.broadcastBreakEvent(player.getUsedItemHand());
 		});
+	}
+
+	private void shoot_forsaken_staff(Level level, Player player, ItemStack stack) {
+		int power_lvl = stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+		int punch_lvl = stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+		int flame_lvl = stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS);
+		Vec3 lookVec = player.getLookAngle();
+
+		DeathCoilEntity coil = new DeathCoilEntity(FUREntityRegistry.DEATHCOIL.get(), level);
+		coil.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double) player.getBbHeight(), player.getZ() + lookVec.z * 1.0D);
+		coil.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.75F, 1.0F);
+		coil.setOwner(player);
+
+		if (power_lvl > 0) {
+			coil.setDamage(coil.getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
+		}
+
+		if (punch_lvl > 0) {
+			coil.setKnockbackStrength(punch_lvl);
+		}
+
+		if (flame_lvl > 0) {
+			coil.setSecondsOnFire(100);
+		}
+
+		level.addFreshEntity(coil);
+		stack.hurtAndBreak(1, player, (entity) -> {
+			entity.broadcastBreakEvent(player.getUsedItemHand());
+		});
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
 	}
 
     /**

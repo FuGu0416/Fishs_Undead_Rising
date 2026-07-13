@@ -556,7 +556,7 @@
 	"item.fur.soulforged_hammer.desc": "攻擊同時賦予著火(0:08)，燃燒附魔可再延長4秒著火時間，右鍵點擊時可對玩家周遭單位造成傷害",	
 	"item.fur.soulforged_heart.desc0": "受到的火焰傷害-%d%%", 	
 	"item.fur.soulforged_heart.desc1": "醫療回復量+%d%%", 	
-	"item.fur.spectral_dagger.desc": "具有無限耐久度，並對非不死族的單位造成傷害+2",
+	"item.fur.spectral_dagger.desc": "右鍵釋放鬼靈之刃，為你並肩作戰30秒。刃消散時匕首會回到你身上；若鬼靈之刃被擊殺，則掉落於墜落之處。",
 	"item.fur.spore_gel.desc": "食用後解除菌蝕效果。",
 	"item.fur.sporecaller.desc": "右鍵點擊以召喚聽命於玩家的蕈靈",
 	"item.fur.sporecaller.empty": "未注入藥水",
