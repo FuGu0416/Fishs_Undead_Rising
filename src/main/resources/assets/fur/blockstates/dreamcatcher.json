@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "charge=0": { "model": "fur:block/dreamcatcher_0" },
+    "charge=1": { "model": "fur:block/dreamcatcher_1" },
+    "charge=2": { "model": "fur:block/dreamcatcher_1" },
+    "charge=3": { "model": "fur:block/dreamcatcher_2" },
+    "charge=4": { "model": "fur:block/dreamcatcher_2" },
+    "charge=5": { "model": "fur:block/dreamcatcher_2" }
+  }
+}

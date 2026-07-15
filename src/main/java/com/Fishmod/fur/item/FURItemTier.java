@@ -11,8 +11,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 /**
  * Custom weapon/tool tiers for Fish's Undead Rising.
  *
- * SPECTRAL powers the Spectral Dagger. Its durability ({@link #getUses()}) is the pool that the
- * summoned phantom blade spends while it fights; {@link SpectralDaggerItem} clamps wear so the
+ * SPECTRAL powers the Spectral Cutlass. Its durability ({@link #getUses()}) is the pool that the
+ * summoned phantom blade spends while it fights; {@link SpectralCutlassItem} clamps wear so the
  * value can never actually reach 0 (the item is designed to never break).
  */
 public enum FURItemTier implements Tier {

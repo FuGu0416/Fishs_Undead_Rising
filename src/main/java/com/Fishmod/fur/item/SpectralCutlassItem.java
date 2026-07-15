@@ -3,7 +3,7 @@ package com.Fishmod.fur.item;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import com.Fishmod.fur.entities.tameable.SpectralDaggerEntity;
+import com.Fishmod.fur.entities.tameable.SpectralCutlassEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,11 +18,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Spectral Dagger — right-click releases a flying phantom blade ({@link SpectralDaggerEntity}) that
+ * Spectral Cutlass — right-click releases a flying phantom blade ({@link SpectralCutlassEntity}) that
  * fights alongside the player for {@link #SUMMON_DURATION} ticks. The physical item leaves the
  * inventory during the summon (the entity carries the real {@link ItemStack}); it returns on expiry
  * or drops at the death location if the blade is slain.
@@ -31,12 +36,12 @@ import net.minecraft.world.phys.Vec3;
  * never break. {@link #damageItem(ItemStack, int, LivingEntity, Consumer)} clamps every point of wear
  * so the damage value can never exceed {@code maxDamage - 1}.
  */
-public class SpectralDaggerItem extends FURWeaponItem {
+public class SpectralCutlassItem extends FURWeaponItem {
 
 	/** 30 seconds — matches both the blade's lifetime and the per-item summon cooldown. */
 	public static final int SUMMON_DURATION = 600;
 
-	public SpectralDaggerItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
+	public SpectralCutlassItem(Properties properties, Tier material, int damage, float attackspeed, double reach, Supplier<Item> repair, Boolean hasDesc) {
 		super(properties, material, damage, attackspeed, reach, repair, hasDesc);
 	}
 
@@ -63,9 +68,16 @@ public class SpectralDaggerItem extends FURWeaponItem {
 		}
 
 		if (level instanceof ServerLevel serverLevel) {
+			// Spawn ~2 blocks in front of the player, but shorten the distance if a wall is in the way so
+			// the blade sits against the wall instead of inside/behind it.
 			Vec3 eye = player.getEyePosition();
-			SpectralDaggerEntity blade = new SpectralDaggerEntity(FUREntityRegistry.SPECTRAL_DAGGER.get(), level);
-			blade.moveTo(eye.x, eye.y, eye.z, player.getYRot(), 0.0F);
+			Vec3 look = player.getLookAngle();
+			Vec3 target = eye.add(look.scale(2.0D));
+			BlockHitResult hit = level.clip(new ClipContext(eye, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+			double dist = hit.getType() == HitResult.Type.BLOCK ? Math.max(0.0D, eye.distanceTo(hit.getLocation()) - 0.5D) : 2.0D;
+			Vec3 spawnPos = eye.add(look.scale(dist));
+			SpectralCutlassEntity blade = new SpectralCutlassEntity(FUREntityRegistry.SPECTRAL_CUTLASS.get(), level);
+			blade.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, player.getYRot(), 0.0F);
 			blade.setTame(true);
 			blade.setOwnerUUID(player.getUUID());
 			blade.setPersistenceRequired();
@@ -75,12 +87,20 @@ public class SpectralDaggerItem extends FURWeaponItem {
 			carried.setCount(1);
 			blade.setCarriedStack(carried);
 			blade.setLifeTicks(SUMMON_DURATION);
+			// Lock the creative flag at summon time: creative keeps its item and gets nothing back.
+			blade.setFromCreative(player.getAbilities().instabuild);
+			// Unbreaking on the item proportionally raises the blade's max health.
+			blade.applyUnbreakingHealthBonus(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack));
 			blade.setHealth(blade.getMaxHealth());
 			serverLevel.addFreshEntity(blade);
-			stack.setCount(0);
+			// Survival consumes the item; creative keeps it (setCount(0) is a no-op there anyway, but the
+			// blade's fromCreative flag ensures nothing is returned/dropped, so no net duplication).
+			if (!player.getAbilities().instabuild) {
+				stack.setCount(0);
+			}
 
-			serverLevel.playSound(null, eye.x, eye.y, eye.z, SoundEvents.SOUL_ESCAPE, SoundSource.PLAYERS, 1.0F, 1.0F);
-			serverLevel.sendParticles(ParticleTypes.SOUL, eye.x, eye.y, eye.z, 24, 0.3D, 0.3D, 0.3D, 0.02D);
+			serverLevel.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z, SoundEvents.SOUL_ESCAPE, SoundSource.PLAYERS, 1.0F, 1.0F);
+			serverLevel.sendParticles(ParticleTypes.SOUL, spawnPos.x, spawnPos.y, spawnPos.z, 24, 0.3D, 0.3D, 0.3D, 0.02D);
 		}
 
 		// Per-Item-class cooldown: intentionally blocks cycling multiple daggers within one summon.

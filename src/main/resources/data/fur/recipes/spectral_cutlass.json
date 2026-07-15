@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "X",
+        "E",
+        "S"
+    ],
+    "key": {
+        "X": {
+            "item": "fur:ectoplasm_ingot"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "fur:spectral_cutlass"
+    }
+}

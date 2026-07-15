@@ -34,7 +34,7 @@ import com.Fishmod.fur.item.MoltenMeatItem;
 import com.Fishmod.fur.item.ParasiteRawItem;
 import com.Fishmod.fur.item.SalamanderBucketItem;
 import com.Fishmod.fur.item.SkeletonKingCrownItem;
-import com.Fishmod.fur.item.SpectralDaggerItem;
+import com.Fishmod.fur.item.SpectralCutlassItem;
 import com.Fishmod.fur.item.SporecallerItem;
 import com.Fishmod.fur.item.UndergroveHeartItem;
 import com.Fishmod.fur.item.UndyingHeartItem;
@@ -122,7 +122,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> FISSION_REAGENT = DEF_REG.register("fission_reagent", () -> new Item(new Item.Properties().craftRemainder(CURSEWEAVE_CLOTH.get())));
 	public static final RegistryObject<Item> FOUL_BRISTLE = DEF_REG.register("foul_bristle", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> FOUL_HIDE = DEF_REG.register("foul_hide", () -> new Item(new Item.Properties()));
-	// Shot type (DeathCoil) is part of the un-ported FORSAKEN entity; firing is deferred (see PLACEHOLDERS #11), so shot is null for now.
 	public static final RegistryObject<Item> FORSAKEN_STAFF = DEF_REG.register("forsaken_staff", () -> new FURRangedItem(null, () -> FUREntityRegistry.DEATHCOIL.get(), new Item.Properties().durability(32)));
 	public static final RegistryObject<Item> FROZEN_GRIP = DEF_REG.register("frozen_grip", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD, true));
 	public static final RegistryObject<Item> FROZEN_THIGH = DEF_REG.register("frozen_thigh", () -> new FrozenThighItem(new Item.Properties().stacksTo(1).durability(64).food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4*20, 4), 0.6F).build())));
@@ -198,6 +197,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SOULFORGED_HAMMER = DEF_REG.register("soulforged_hammer", () -> new MoltenHammerItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.NETHERITE, 4, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
 	public static final RegistryObject<Item> SOULFORGED_HEART = DEF_REG.register("soulforged_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
 	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SPECTRAL_CUTLASS = DEF_REG.register("spectral_cutlass", () -> new SpectralCutlassItem(new Item.Properties().fireResistant(), FURItemTier.SPECTRAL, 2, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
 	public static final RegistryObject<Item> SPORE_GEL = DEF_REG.register("spore_gel", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.2F).alwaysEat().build()), 1));
 	public static final RegistryObject<Item> SPORECALLER = DEF_REG.register("sporecaller", () -> new SporecallerItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.SPORE_GEL, true));
 	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
@@ -218,14 +218,12 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> WETA_JAW = DEF_REG.register("weta_jaw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> WISP_ASHES = DEF_REG.register("wisp_ashes", () -> new Item(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> WISP_IN_A_BOTTLE = DEF_REG.register("wisp_in_a_bottle", () -> new EntityBucketItem(FUREntityRegistry.WISP::get, Items.GLASS_BOTTLE, new Item.Properties().stacksTo(1)));
-	public static final RegistryObject<Item> SPECTRAL_DAGGER = DEF_REG.register("spectral_dagger", () -> new SpectralDaggerItem(new Item.Properties().rarity(Rarity.COMMON).fireResistant(), FURItemTier.SPECTRAL, -1, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
 
 	/*
 	public static final RegistryObject<Item> SWINEMASK = new SwineArmorItem(EquipmentSlotType.HEAD, (new Item.Properties())).setRegistryName("fur:swinearmor_helmet");
 	public static final RegistryObject<Item> SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties())).setRegistryName("fur:swinearmor_chestplate");
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
-	public static final RegistryObject<Item> DREAMCATCHER = new DreamCatcherItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1).durability(120)).setRegistryName("fur:dreamcatcher");
 	public static final RegistryObject<Item> STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("fur:stained_kings_crown");
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
 	*/

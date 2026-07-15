@@ -9,10 +9,10 @@ import com.Fishmod.fur.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.fur.entities.ai.FloatingMoveControl;
 import com.Fishmod.fur.entities.ai.FloatingMoveRandomGoal;
 import com.Fishmod.fur.entities.ai.FlyerFollowOwnerGoal;
-import com.Fishmod.fur.entities.misc.SpectralDaggerItemEntity;
+import com.Fishmod.fur.entities.misc.SpectralCutlassItemEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
-import com.Fishmod.fur.item.SpectralDaggerItem;
+import com.Fishmod.fur.item.SpectralCutlassItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,6 +35,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -62,7 +64,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * A flying phantom blade summoned by the {@link SpectralDaggerItem}. Fights alongside its owner for
+ * A flying phantom blade summoned by the {@link SpectralCutlassItem}. Fights alongside its owner for
  * {@link #lifeTicks} ticks, carrying the real dagger {@link ItemStack} in its main hand so that
  * enchantments (Sharpness/Smite/Fire Aspect/Knockback/Looting) and item damage apply automatically
  * through {@link #doHurtTarget(Entity)}.
@@ -72,28 +74,35 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * <ul>
  *   <li><b>Killed by an attack</b> (a {@link LivingEntity} is the damage source's entity — melee,
  *       arrows, creeper explosions): the dagger drops at the death location as a floating, glowing
- *       {@link SpectralDaggerItemEntity}.</li>
+ *       {@link SpectralCutlassItemEntity}.</li>
  *   <li><b>Everything else</b> (lifetime expiry, environmental death, /kill, void, owner
  *       logout/death/dimension change, any destroying {@code remove()}): the dagger returns to the
  *       owner's inventory, or drops at the owner's position if that isn't possible.</li>
  * </ul>
  */
-public class SpectralDaggerEntity extends FURTameableEntity implements ICharging, GeoEntity {
+public class SpectralCutlassEntity extends FURTameableEntity implements ICharging, GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("spectral_dagger.model.idle");
-	private static final RawAnimation DASH = RawAnimation.begin().thenPlay("spectral_dagger.model.dash");
-	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("spectral_dagger.model.attack");
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("spectral_cutlass.model.idle");
+	private static final RawAnimation DASH = RawAnimation.begin().thenPlay("spectral_cutlass.model.dash");
+	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("spectral_cutlass.model.attack");
 
 	/** ~4 seconds: the client-side expiry pulse window (see PLACEHOLDER.md, deferred to Phase 2). */
 	public static final int EXPIRY_WARNING_TICKS = 80;
 
 	public boolean isCharging = false;
-	private int lifeTicks = SpectralDaggerItem.SUMMON_DURATION;
+	private int lifeTicks = SpectralCutlassItem.SUMMON_DURATION;
 	private int attackTimer = 0;
 	/** Guards the return/drop so it fires exactly once across die()/remove()/expiry paths. */
 	private boolean itemReturned = false;
+	/**
+	 * Locked in at summon time from the summoner's creative flag. When true the blade neither drops nor
+	 * returns its carried copy on death/expiry/removal — the creative player kept the original, so there
+	 * is nothing to give back (vanilla creative convention, e.g. the Loyalty trident). Persisted in NBT
+	 * so a mid-summon gamemode switch (or the owner being offline at cleanup) cannot change the outcome.
+	 */
+	private boolean fromCreative = false;
 
-	public SpectralDaggerEntity(EntityType<? extends SpectralDaggerEntity> type, Level level) {
+	public SpectralCutlassEntity(EntityType<? extends SpectralCutlassEntity> type, Level level) {
 		super(type, level);
 		this.moveControl = new FloatingMoveControl(this);
 		this.setNoGravity(true);
@@ -107,6 +116,30 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 				.add(Attributes.MAX_HEALTH, 16.0D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
 				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+	}
+
+	/** Each level of Unbreaking on the summoning item adds this fraction of base max-health (MULTIPLY_BASE). */
+	private static final double HEALTH_PER_UNBREAKING_LEVEL = 0.5D;
+	private static final UUID UNBREAKING_HEALTH_UUID = UUID.fromString("A1E6C3D2-9B4F-4E7A-8C21-3F5D7B9E0A11");
+
+	/**
+	 * Scales the blade's max health proportionally with the summoning item's Unbreaking (耐久) level:
+	 * +{@value #HEALTH_PER_UNBREAKING_LEVEL} of base health per level via a MULTIPLY_BASE modifier. Applied
+	 * once at summon; the permanent modifier persists across reloads. Callers should
+	 * {@code setHealth(getMaxHealth())} afterwards to fill the widened bar.
+	 */
+	public void applyUnbreakingHealthBonus(int level) {
+		AttributeInstance maxHealth = this.getAttribute(Attributes.MAX_HEALTH);
+		if (maxHealth == null) {
+			return;
+		}
+		if (maxHealth.getModifier(UNBREAKING_HEALTH_UUID) != null) {
+			maxHealth.removeModifier(UNBREAKING_HEALTH_UUID);
+		}
+		if (level > 0) {
+			maxHealth.addPermanentModifier(new AttributeModifier(UNBREAKING_HEALTH_UUID, "Unbreaking health bonus",
+					HEALTH_PER_UNBREAKING_LEVEL * level, AttributeModifier.Operation.MULTIPLY_BASE));
+		}
 	}
 
 	@Override
@@ -167,6 +200,11 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 		this.lifeTicks = ticks;
 	}
 
+	/** Locks in whether this summon came from a creative player (no return/drop, no durability spend). */
+	public void setFromCreative(boolean value) {
+		this.fromCreative = value;
+	}
+
 	public int getLifeTicks() {
 		return this.lifeTicks;
 	}
@@ -191,6 +229,7 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 
 		if (flag && !this.level().isClientSide()) {
 			this.level().broadcastEntityEvent(this, (byte) 40); // play the attack animation on clients
+			this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
 			ItemStack held = this.getMainHandItem();
 			if (!held.isEmpty() && held.isDamageableItem()) {
 				// ORDER MATTERS: check BEFORE draining. If this hit would reach the never-break
@@ -233,6 +272,26 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 		}
 
 		this.setNoGravity(true);
+
+		// Stay glued to the attack target's eye line for the whole engagement (not just the charge dash):
+		// each tick, smoothly track the target's eye Y whenever it has a living target. The blade is
+		// gravity-free and AI-driven, so this owns the vertical placement while XZ stays with the goals.
+		LivingEntity heightTarget = this.getTarget();
+		if (heightTarget != null && heightTarget.isAlive()) {
+			double desiredY = heightTarget.getEyeY();
+			double newY = this.getY() + (desiredY - this.getY()) * 0.3D;
+			this.setPos(this.getX(), newY, this.getZ());
+			Vec3 v = this.getDeltaMovement();
+			this.setDeltaMovement(v.x, v.y * 0.6D, v.z); // damp vertical drift so it settles at eye line
+
+			// Deal damage on real hitbox overlap. The goal-based range checks (EntityChargeAttackGoal /
+			// MeleeAttackGoal) compare feet-position distance, which stays large because the blade hovers
+			// at the target's eye line ~1.7 blocks above its feet — so they never fire and the two just
+			// push. doHurtTarget self-gates on attackTimer, so this can't double-hit.
+			if (this.getBoundingBox().inflate(0.2D).intersects(heightTarget.getBoundingBox())) {
+				this.doHurtTarget(heightTarget);
+			}
+		}
 
 		if (this.itemReturned) {
 			return;
@@ -281,16 +340,21 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 
 		Player owner = this.resolveOnlineOwner();
 		if (owner != null) {
-			boolean delivered = owner.isAlive() && owner.getInventory().add(stack);
-			if (!delivered) {
-				Vec3 p = owner.position();
-				this.spawnFloatingDagger(owner.level(), stack, p.x, p.y + 0.5D, p.z);
+			// Creative kept its item, so only skip giving one back — the chime + return particles still play.
+			if (!this.fromCreative) {
+				boolean delivered = owner.isAlive() && owner.getInventory().add(stack);
+				if (!delivered) {
+					Vec3 p = owner.position();
+					this.spawnFloatingDagger(owner.level(), stack, p.x, p.y + 0.5D, p.z);
+				}
 			}
 			owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8F, 0.6F);
 			this.spawnReturnParticles(owner);
 		} else {
-			// Owner offline/absent: drop where the blade is, so the item is never lost.
-			this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+			// Owner offline/absent: drop where the blade is, so the item is never lost (survival only).
+			if (!this.fromCreative) {
+				this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+			}
 			this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8F, 0.6F);
 		}
 	}
@@ -302,7 +366,10 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 			return;
 		}
 
-		this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+		// Creative drops nothing on death, but the break SFX + soul burst still play.
+		if (!this.fromCreative) {
+			this.spawnFloatingDagger(this.level(), stack, this.getX(), this.getY(), this.getZ());
+		}
 		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 0.9F, 0.8F);
 		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.VEX_DEATH, SoundSource.PLAYERS, 0.9F, 1.2F);
 		if (this.level() instanceof ServerLevel sl) {
@@ -314,7 +381,7 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 		if (level.isClientSide()) {
 			return;
 		}
-		SpectralDaggerItemEntity item = new SpectralDaggerItemEntity(FUREntityRegistry.SPECTRAL_DAGGER_ITEM.get(), level);
+		SpectralCutlassItemEntity item = new SpectralCutlassItemEntity(FUREntityRegistry.SPECTRAL_CUTLASS_ITEM.get(), level);
 		item.setPos(x, y, z);
 		item.setItem(stack);
 		item.setDeltaMovement(0.0D, 0.1D, 0.0D);
@@ -357,13 +424,15 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 		super.addAdditionalSaveData(tag);
 		tag.putInt("LifeTicks", this.lifeTicks);
 		tag.putBoolean("ItemReturned", this.itemReturned);
+		tag.putBoolean("FromCreative", this.fromCreative);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.lifeTicks = tag.contains("LifeTicks") ? tag.getInt("LifeTicks") : SpectralDaggerItem.SUMMON_DURATION;
+		this.lifeTicks = tag.contains("LifeTicks") ? tag.getInt("LifeTicks") : SpectralCutlassItem.SUMMON_DURATION;
 		this.itemReturned = tag.getBoolean("ItemReturned");
+		this.fromCreative = tag.getBoolean("FromCreative");
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
 	}
 
@@ -501,6 +570,6 @@ public class SpectralDaggerEntity extends FURTameableEntity implements ICharging
 	/** Convenience for the (placeholder) renderer to reference the item's own model. */
 	public ItemStack getDisplayStack() {
 		ItemStack held = this.getMainHandItem();
-		return held.isEmpty() ? new ItemStack(FURItemRegistry.SPECTRAL_DAGGER.get()) : held;
+		return held.isEmpty() ? new ItemStack(FURItemRegistry.SPECTRAL_CUTLASS.get()) : held;
 	}
 }

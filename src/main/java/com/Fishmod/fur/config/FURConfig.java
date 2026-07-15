@@ -207,7 +207,14 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_DamageCap;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spawn_AllowList;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Suicidal_Minion;
-	public static final ForgeConfigSpec.ConfigValue<Integer> DreamCatcher_dur;	
+	public static final ForgeConfigSpec.ConfigValue<Integer> DreamCatcher_dur;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Dreamcatcher_Enabled;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_HpBudgetPerStage;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_MaxMobsPerWave;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_ChargeRadius;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_SpawnRingMin;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_SpawnRingMax;
+	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Dreamcatcher_Blacklist;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Potion_Enable;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Enchantment_Enable;
 	public static final ForgeConfigSpec.ConfigValue<Integer> MootenHeart_Damage;
@@ -525,7 +532,18 @@ public final class FURConfig {
 		Fungal_Staff_Cooldown = BUILDER.comment("Ability cooldown of Fungal Staff [1-10000]").defineInRange("fungal staff cooldown", 60, 0, 10000);
 		Frozen_Grip_Cooldown = BUILDER.comment("Ability cooldown of Frozen Grip [1-10000]").defineInRange("frozen grip cooldown", 60, 0, 10000);
 		BUILDER.pop();
-		
+
+		BUILDER.push("Dreamcatcher");
+		Dreamcatcher_Enabled = BUILDER.comment("Master switch for the Dreamcatcher block (charging + nightmare summoning). [false/true]").define("dreamcatcher enabled", true);
+		Dreamcatcher_HpBudgetPerStage = BUILDER.comment("Base max-health budget granted per charge stage. Total wave budget = charge * this value [1-10000]").defineInRange("dreamcatcher hp budget per stage", 60, 1, 10000);
+		Dreamcatcher_MaxMobsPerWave = BUILDER.comment("Maximum number of nightmare mobs summoned in a single wave [1-64]").defineInRange("dreamcatcher max mobs per wave", 8, 1, 64);
+		Dreamcatcher_ChargeRadius = BUILDER.comment("Horizontal/vertical radius (blocks) around a sleeping player in which dreamcatchers gain charge [1-64]").defineInRange("dreamcatcher charge radius", 16, 1, 64);
+		Dreamcatcher_SpawnRingMin = BUILDER.comment("Minimum horizontal distance (blocks) from the block that nightmare mobs spawn [1-64]").defineInRange("dreamcatcher spawn ring min", 8, 1, 64);
+		Dreamcatcher_SpawnRingMax = BUILDER.comment("Maximum horizontal distance (blocks) from the block that nightmare mobs spawn [1-64]").defineInRange("dreamcatcher spawn ring max", 16, 1, 64);
+		Dreamcatcher_Blacklist = BUILDER.comment("Entity ids excluded from the dreamcatcher spawn pool (in addition to the forge:bosses tag). Ex. \\\"minecraft:warden\\\"").defineList("dreamcatcher entity blacklist",
+				Lists.newArrayList(), o -> o instanceof String);
+		BUILDER.pop();
+
 		BUILDER.push("Structure");
 		Generate_Cemetery = BUILDER.comment("Generate Cemetery in the Overworld. [false/true]").define("generate cemetery", true);
 		SpawnRate_Cemetery = BUILDER.comment("Spawn rate of Cemetery [1-10000]").defineInRange("cemetery should spawn", 2, 0, 10000);

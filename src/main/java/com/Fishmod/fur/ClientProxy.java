@@ -47,7 +47,7 @@ import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
 import com.Fishmod.fur.client.renderer.entity.DeathCoilRenderer;
-import com.Fishmod.fur.client.renderer.entity.SpectralDaggerRenderer;
+import com.Fishmod.fur.client.renderer.entity.SpectralCutlassRenderer;
 import com.Fishmod.fur.client.renderer.entity.WispRenderer;
 import com.Fishmod.fur.client.renderer.entity.WraithRenderer;
 import com.Fishmod.fur.client.renderer.item.FURArmorRenderProperties;
@@ -103,8 +103,8 @@ public class ClientProxy extends CommonProxy {
     	EntityRenderers.register(FUREntityRegistry.AVATON.get(), AvatonRenderer::new);  
     	EntityRenderers.register(FUREntityRegistry.WRAITH.get(), WraithRenderer::new); 
     	EntityRenderers.register(FUREntityRegistry.WISP.get(), WispRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_DAGGER.get(), SpectralDaggerRenderer::new);
-    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_DAGGER_ITEM.get(), ItemEntityRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_CUTLASS.get(), SpectralCutlassRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.SPECTRAL_CUTLASS_ITEM.get(), ItemEntityRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.UNBURIED.get(), UnburiedRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.MYCOSIS.get(), MycosisRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FRIGID.get(), UnburiedRenderer::new);
@@ -186,6 +186,7 @@ public class ClientProxy extends CommonProxy {
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.CORDY_SHROOM.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.VEIL_SHROOM.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.TOMBSTONE.get(), RenderType.cutout());
+    	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DREAMCATCHER.get(), RenderType.cutout());
     	ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.ECTOPLASM_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.DISEASED_HAY_BLOCK.get(), RenderType.solid());
         ItemBlockRenderTypes.setRenderLayer(FURBlockRegistry.SOUL_FURNACE.get(), RenderType.solid());

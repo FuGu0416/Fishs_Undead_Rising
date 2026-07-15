@@ -51,8 +51,8 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
         // A mix of wide-flat blobs and narrow-tall blobs ensures the cave cross-section
         // changes noticeably with height, eliminating the cylindrical appearance.
         // Blobs also have varied floor offsets so neither floor nor ceiling is flat.
-        int    blobCount    = 6 + random.nextInt(4);           // 6–9
-        double clusterSpread = 8.0 + random.nextDouble() * 8.0;
+        int    blobCount    = 10 + random.nextInt(5);          // 10–14 (more blobs → larger space)
+        double clusterSpread = 12.0 + random.nextDouble() * 10.0;
         for (int i = 0; i < blobCount; i++) {
             double angle = i * (Math.PI * 2.0 / blobCount) + random.nextDouble() * 1.2;
             double dist  = clusterSpread * (0.1 + random.nextDouble() * 0.9);
@@ -70,7 +70,11 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
                 bV = (4.0  + random.nextDouble() * 3.0) * vMult;  // short:  4–7
             }
 
-            int    blobFloor = floorY + random.nextInt(8);   // 0–7 floor variation
+            // Floor follows a smooth positional undulation (sine hills) plus a small
+            // random jitter, so neighbouring blobs sit at similar heights and the floor
+            // rolls gently instead of jumping randomly between blobs.
+            int    blobFloor = floorY + (int) Math.round(undulateFloor(bx, bz))
+                                      + random.nextInt(3);
             double bCy       = blobFloor + bV;
             carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
                 bx, bCy, bz, bH, bV, mask,
@@ -90,7 +94,8 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
             double nz     = cz + Math.sin(angle) * dist;
             double nH     = (3.0 + random.nextDouble() * 5.0) * hMult;  // narrow: 3–8
             double nV     = (7.0 + random.nextDouble() * 7.0) * vMult;  // tall:   7–14
-            int    nFloor = floorY + random.nextInt(6);
+            int    nFloor = floorY + (int) Math.round(undulateFloor(nx, nz))
+                                   + random.nextInt(3);
             double nCy    = nFloor + nV;
             carveEllipsoid(context, config, chunk, biomeAccessor, aquifer,
                 nx, nCy, nz, nH, nV, mask,
@@ -98,13 +103,14 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
         }
 
         // ── Satellite lobes ─────────────────────────────────────────────────────
-        int lobeCount = 4 + random.nextInt(3);
+        int lobeCount = 6 + random.nextInt(4);                 // 6–9 (more lobes → wider space)
         for (int i = 0; i < lobeCount; i++) {
             double angle     = i * (Math.PI * 2.0 / lobeCount) + random.nextDouble() * 0.5;
-            double dist      = 10.0 + random.nextDouble() * 12.0;
+            double dist      = 12.0 + random.nextDouble() * 14.0;
             double lx        = cx + Math.cos(angle) * dist;
             double lz        = cz + Math.sin(angle) * dist;
-            int    lobeFloor = floorY + random.nextInt(5) - 2;
+            int    lobeFloor = floorY + (int) Math.round(undulateFloor(lx, lz))
+                                      + random.nextInt(3) - 1;
             double lh        = (7.0 + random.nextDouble() * 7.0) * hMult;
             double lv        = (3.5 + random.nextDouble() * 3.0) * vMult;
             double lobeCy    = lobeFloor + lv;
@@ -114,5 +120,17 @@ public class FURLuminousGrottoCarver extends WorldCarver<CaveCarverConfiguration
         }
 
         return true;
+    }
+
+    /**
+     * Smooth, seamless floor-height offset as a function of world X/Z. A sum of
+     * low-frequency sine waves produces gentle rolling hills that stay continuous
+     * across chunk and blob boundaries, giving the grotto floor a natural undulation
+     * instead of a flat plane or randomly jagged steps.
+     */
+    private static double undulateFloor(double x, double z) {
+        return Math.sin(x * 0.05)       * 3.0
+             + Math.cos(z * 0.045)      * 2.5
+             + Math.sin((x + z) * 0.03) * 2.0;
     }
 }

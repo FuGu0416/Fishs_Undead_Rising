@@ -7,14 +7,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The floating, glowing dagger left behind when a {@link com.Fishmod.fur.entities.tameable.SpectralDaggerEntity}
+ * The floating, glowing dagger left behind when a {@link com.Fishmod.fur.entities.tameable.SpectralCutlassEntity}
  * dissipates or is slain. It ignores gravity, slowly descends until roughly a block above solid
  * ground, then hovers. It never despawns so the player's only copy can never be lost, and it is
  * fire-immune (the item itself is {@code fireResistant}). Standard vanilla pickup/merge still apply.
  */
-public class SpectralDaggerItemEntity extends ItemEntity {
+public class SpectralCutlassItemEntity extends ItemEntity {
 
-	public SpectralDaggerItemEntity(EntityType<? extends SpectralDaggerItemEntity> type, Level level) {
+	public SpectralCutlassItemEntity(EntityType<? extends SpectralCutlassItemEntity> type, Level level) {
 		super(type, level);
 		this.setNoGravity(true);
 		this.setGlowingTag(true);

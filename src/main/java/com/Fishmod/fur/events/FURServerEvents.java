@@ -1,7 +1,9 @@
 package com.Fishmod.fur.events;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.Fishmod.fur.config.FURConfig;
@@ -15,6 +17,7 @@ import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
+import com.Fishmod.fur.block.DreamcatcherBlock;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -69,6 +72,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.Tags;
@@ -486,56 +490,61 @@ public class FURServerEvents {
         }
     }
         
+    /**
+     * Per-block dedup so a dreamcatcher gains at most +1 charge per night even when several players sleep
+     * in range: maps block position to the game-day it was last charged. All sleepers wake on the same
+     * dawn tick, so an entry matching the current day means "already charged tonight". Pruned each wake.
+     */
+    private static final Map<BlockPos, Long> DREAMCATCHER_CHARGED_DAY = new HashMap<>();
+
+    /**
+     * Charges nearby dreamcatchers when a player has actually slept through the night. Forge fires
+     * {@code PlayerWakeUpEvent} with {@code updateLevel() == false} only for the server-initiated dawn
+     * wake (i.e. the night was skipped); a manual early exit reports {@code true} and is ignored here.
+     */
     @SubscribeEvent
     public void onEWakeup(PlayerWakeUpEvent event) {
-		/*ItemStack have_DreamCatcher = null;
-		Player player = event.getPlayer();
-		World world = event.getPlayer().level;
-		
-		if (!event.updateWorld() && player.level().getDifficulty() != Difficulty.PEACEFUL) {
-			for(int i = 0; i < 9 ; i++) {
-				if(player.inventory.getItem(i).getItem().equals(FURItemRegistry.DREAMCATCHER)) {
-					have_DreamCatcher = player.inventory.getItem(i);
-					break;
-				}
-			}
-			
-			if (ModList.get().isLoaded("curios") && have_DreamCatcher == null) {
-				have_DreamCatcher = CurioIntegration.findItem(FURItemRegistry.DREAMCATCHER, player);
-			}
-		}		
-		
-		if (world instanceof ServerLevel && have_DreamCatcher != null && have_DreamCatcher != ItemStack.EMPTY && !event.updateWorld() && player.level().getDifficulty() != Difficulty.PEACEFUL) {
-			MobSpawnInfo.Spawners Result = ((MobSpawnInfo.Spawners)WeightedRandom.getRandomItem(world.random, LootTableHandler.DREAMCATCHER_LIST));
-			System.out.println(Result);
-			Entity LivingEntity = Result.type.create(world);
-			int min  = Result.minCount;
-			int max  = Result.maxCount;
-			boolean has_spawn = false;
-			
-			if (LivingEntity instanceof CreatureEntity) {
-				for(int i = 0; i < new Random().nextInt(MathHelper.abs(max-min) + 1) + min; i++) {
-					double k1 = player.getX() + (world.random.nextDouble() * 32.0D) - 16.0D;
-					double l1 = player.getY() + (world.random.nextDouble() * 4.0D) - 2.0D;
-					double i2 = player.getZ() + (world.random.nextDouble() * 32.0D) - 16.0D;
-					BlockPos pos = SpawnUtil.getHeight(world, new BlockPos(k1, l1, i2));
-					
-					SpawnUtil.trySpawnEntity((EntityType<CreatureEntity>) Result.type, ((ServerLevel) world), pos);
-					
-					has_spawn = true;
-				}
-				
-				if (has_spawn && FURConfig.DreamCatcher_dur.get() > 0) {
-					world.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundCategory.BLOCKS, 1.0F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
-					
-					if (!player.isCreative()) {
-						have_DreamCatcher.hurtAndBreak(FURConfig.DreamCatcher_dur.get(), event.getEntity(), (entity) -> {
-			    			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);			    			
-			    		});
-					}
-				}
-			}            	
-		}*/
+        if (event.updateLevel()) {
+            return; // Player left the bed early — the night was not passed.
+        }
+        if (!FURConfig.Dreamcatcher_Enabled.get()) {
+            return;
+        }
+
+        Player player = event.getEntity();
+        if (!(player.level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        int radius = FURConfig.Dreamcatcher_ChargeRadius.get();
+        long day = level.getDayTime() / 24000L;
+        DREAMCATCHER_CHARGED_DAY.values().removeIf(charged -> charged < day);
+
+        BlockPos origin = player.blockPosition();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = -radius; dy <= radius; dy++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    cursor.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
+                    BlockState state = level.getBlockState(cursor);
+                    if (!(state.getBlock() instanceof DreamcatcherBlock)) {
+                        continue;
+                    }
+
+                    BlockPos pos = cursor.immutable();
+                    Long lastCharged = DREAMCATCHER_CHARGED_DAY.get(pos);
+                    if (lastCharged != null && lastCharged == day) {
+                        continue; // Already charged tonight by another sleeper.
+                    }
+                    DREAMCATCHER_CHARGED_DAY.put(pos, day);
+
+                    int charge = state.getValue(DreamcatcherBlock.CHARGE);
+                    if (charge < 5) {
+                        level.setBlock(pos, state.setValue(DreamcatcherBlock.CHARGE, charge + 1), 3);
+                    }
+                }
+            }
+        }
     }
     
     @SubscribeEvent

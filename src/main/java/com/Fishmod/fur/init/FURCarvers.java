@@ -27,7 +27,7 @@ public class FURCarvers {
         context.register(LUMINOUS_GROTTO,
             FURCarverRegistry.LUMINOUS_GROTTO.get().configured(
                 new CaveCarverConfiguration(
-                    0.35f,
+                    0.5f,
                     UniformHeight.of(VerticalAnchor.absolute(-56), VerticalAnchor.absolute(-24)),
                     ConstantFloat.of(0.5f),
                     VerticalAnchor.absolute(-54),

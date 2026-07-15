@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "///",
+        "/#/",
+        "YYY"
+    ],
+    "key": {
+        "/": {
+            "tag": "forge:rods/wooden"
+        },
+        "#": {
+            "item": "minecraft:cobweb"
+        },
+        "Y": {
+            "item": "fur:feather_black"
+        }
+    },
+    "result": {
+        "item": "fur:dreamcatcher"
+    }
+}
