@@ -786,7 +786,15 @@ public class FURServerEvents {
     	            20, 
     	            0.05f
     	        ));   		
-	        //rareTrades.add(new ItemsForEmeraldsTrade(FURItemRegistry.STAINED_KINGS_CROWN, 80, 1, 2, 30));
+    		// 1.16.5 charged 80 emeralds, which exceeds one stack and made the trade uncompletable;
+    		// capped to 64 so it fits the trade slot.
+    		rareTrades.add((trader, rand) -> new MerchantOffer(
+    	            new ItemStack(Items.EMERALD, 64),
+    	            new ItemStack(FURItemRegistry.STAINED_KINGS_CROWN.get(), 1),
+    	            2,
+    	            30,
+    	            0.05f
+    	        ));
     	}
     }
     

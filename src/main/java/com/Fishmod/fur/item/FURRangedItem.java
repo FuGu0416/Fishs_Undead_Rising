@@ -165,30 +165,6 @@ public class FURRangedItem extends CrossbowItem {
 	        			}
 	        	    }
 				}
-			/*} else if (this.shot.equals(FUREntityRegistry.DEATHCOIL)) {
-				DeathCoilEntity entitysnowball = (DeathCoilEntity) this.shot.create(level);
-        		entitysnowball.moveTo(player.getX() + lookVec.x * 1.0D, player.getY() + (double)(player.getBbHeight()),player.getZ() + lookVec.z * 1.0D);
-	            entitysnowball.shootFromRotation(player, player.xRot, player.yRot, 0.0F, 0.75F, 1.0F);
-	            entitysnowball.setOwner(player);
-	            
-				if (power_lvl > 0) {
-					((DeathCoilEntity) entitysnowball).setDamage(((DeathCoilEntity) entitysnowball).getDamage() * (1.0F + (power_lvl + 1) * 0.25F));
-				}
-				  
-				if (punch_lvl > 0) {
-					((DeathCoilEntity) entitysnowball).setKnockbackStrength(punch_lvl);
-				}
-				  
-				if (flame_lvl > 0) {
-					((DeathCoilEntity) entitysnowball).setSecondsOnFire(100);
-				}
-				
-	            level.addFreshEntity(entitysnowball);
-	            player.getItemInHand(hand).hurtAndBreak(1, player, (entity) -> {
-	    			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-	    		});
-				level.playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.SKELETONKING_SPELL_TOSS, SoundCategory.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 1.2F));
-				player.getCooldowns().addCooldown(this, 40 - (power_lvl * 2));*/
         	}
 	    }
 	}

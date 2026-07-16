@@ -1,6 +1,7 @@
 package com.Fishmod.fur.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class IllagerNoseItem extends ArmorItem {
 
@@ -33,6 +35,13 @@ public class IllagerNoseItem extends ArmorItem {
 	@Override
 	public boolean isValidRepairItem(ItemStack armour, ItemStack material) {
 		return false;
+	}
+
+	// Worn 3D nose model (IllagerNoseModel via FURArmorRenderProperties); the inventory icon
+	// stays the flat item/generated sprite.
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept((IClientItemExtensions) mod_LavaCow.PROXY.getArmorProperties());
 	}
 
 	@Override

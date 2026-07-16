@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "DYD",
+        "D#D",
+        "DDD"
+    ],
+    "key": {
+        "#": {
+            "item": "fur:stained_kings_crown"
+        },
+        "Y": {
+            "tag": "forge:gems/emerald"
+        },
+        "D": {
+            "item": "fur:hatred_shard"
+        }
+    },
+    "result": {
+        "item": "fur:cursed_kings_crown"
+    }
+}

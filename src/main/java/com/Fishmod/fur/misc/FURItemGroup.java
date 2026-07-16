@@ -160,6 +160,8 @@ public class FURItemGroup {
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_CHESTPLATE.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_LEGGINGS.get());
         		output.accept(FURItemRegistry.SOULFORGED_ARMOR_BOOTS.get());
+        		output.accept(FURItemRegistry.STAINED_KINGS_CROWN.get());
+        		output.accept(FURItemRegistry.CURSED_KINGS_CROWN.get());
         		output.accept(FURItemRegistry.SKELETONKING_CROWN.get());
 
         		// Smithing Template

@@ -27,6 +27,7 @@ import com.Fishmod.fur.item.GoldenHeartItem;
 import com.Fishmod.fur.item.IllagerNoseItem;
 import com.Fishmod.fur.item.InfusedBandageItem;
 import com.Fishmod.fur.item.BloatedGutItem;
+import com.Fishmod.fur.item.CrownItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 import com.Fishmod.fur.item.MoltenAxeItem;
 import com.Fishmod.fur.item.MoltenHammerItem;
@@ -96,6 +97,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CHITIN_ARMOR_LEGGINGS = DEF_REG.register("chitin_armor_leggings", () -> new ChitinArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
 	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> CURSED_KINGS_CROWN = DEF_REG.register("cursed_kings_crown", () -> new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1));
 	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> DISEASED_BREAD = DEF_REG.register("diseased_bread", () -> new DiseasedBreadItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).
 			effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 8*20, 0), 1.0F)
@@ -200,6 +202,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SPECTRAL_CUTLASS = DEF_REG.register("spectral_cutlass", () -> new SpectralCutlassItem(new Item.Properties().fireResistant(), FURItemTier.SPECTRAL, 2, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
 	public static final RegistryObject<Item> SPORE_GEL = DEF_REG.register("spore_gel", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.2F).alwaysEat().build()), 1));
 	public static final RegistryObject<Item> SPORECALLER = DEF_REG.register("sporecaller", () -> new SporecallerItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.SPORE_GEL, true));
+	public static final RegistryObject<Item> STAINED_KINGS_CROWN = DEF_REG.register("stained_kings_crown", () -> new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0));
 	public static final RegistryObject<Item> SWARMER_BUCKET = DEF_REG.register("swarmer_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.SWARMER.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> SWARMER_COOKED = DEF_REG.register("swarmer_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).build())));
 	public static final RegistryObject<Item> SWARMER_LAUNCHER = DEF_REG.register("swarmer_launcher", () -> new FURRangedItem(FURItemRegistry.SWARMER_RAW, () -> FUREntityRegistry.SWARMER_LAUNCHER.get(), new Item.Properties().durability(384)));
@@ -224,8 +227,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_CHESTPLATE = new SwineArmorItem(EquipmentSlotType.CHEST, (new Item.Properties())).setRegistryName("fur:swinearmor_chestplate");
 	public static final RegistryObject<Item> SWINEARMOR_LEGGINGS = new SwineArmorItem(EquipmentSlotType.LEGS, (new Item.Properties())).setRegistryName("fur:swinearmor_leggings");
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
-	public static final RegistryObject<Item> STAINED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 0).setRegistryName("fur:stained_kings_crown");
-	public static final RegistryObject<Item> CURSED_KINGS_CROWN = new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1).setRegistryName("fur:cursed_kings_crown");
 	*/
 	
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));

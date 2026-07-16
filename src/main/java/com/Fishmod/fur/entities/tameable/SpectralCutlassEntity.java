@@ -17,6 +17,9 @@ import com.Fishmod.fur.item.SpectralCutlassItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -86,8 +89,17 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 	private static final RawAnimation DASH = RawAnimation.begin().thenPlay("spectral_cutlass.model.dash");
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("spectral_cutlass.model.attack");
 
-	/** ~4 seconds: the client-side expiry pulse window (see PLACEHOLDER.md, deferred to Phase 2). */
+	/** ~4 seconds: the client-side expiry pulse window — the blade pulses translucent over its last {@value} ticks. */
 	public static final int EXPIRY_WARNING_TICKS = 80;
+
+	/**
+	 * Remaining lifetime, mirrored to the client so {@code SpectralCutlassRenderer} can pulse the blade's
+	 * transparency across the final {@link #EXPIRY_WARNING_TICKS}. The server-authoritative counter is the
+	 * {@link #lifeTicks} field; this synced value is only pushed once it enters the warning window, so there
+	 * is no per-tick packet traffic for the (much longer) rest of the summon.
+	 */
+	private static final EntityDataAccessor<Integer> DATA_LIFE_TICKS =
+			SynchedEntityData.defineId(SpectralCutlassEntity.class, EntityDataSerializers.INT);
 
 	public boolean isCharging = false;
 	private int lifeTicks = SpectralCutlassItem.SUMMON_DURATION;
@@ -107,6 +119,12 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 		this.moveControl = new FloatingMoveControl(this);
 		this.setNoGravity(true);
 		this.setPersistenceRequired();
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(DATA_LIFE_TICKS, SpectralCutlassItem.SUMMON_DURATION);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -198,6 +216,7 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 
 	public void setLifeTicks(int ticks) {
 		this.lifeTicks = ticks;
+		this.entityData.set(DATA_LIFE_TICKS, ticks);
 	}
 
 	/** Locks in whether this summon came from a creative player (no return/drop, no durability spend). */
@@ -205,8 +224,9 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 		this.fromCreative = value;
 	}
 
+	/** Remaining lifetime in ticks. Reads the synced value so it is valid on both sides (the client uses it for the expiry pulse). */
 	public int getLifeTicks() {
-		return this.lifeTicks;
+		return this.entityData.get(DATA_LIFE_TICKS);
 	}
 
 	// ------------------------------------------------------------------------------------------
@@ -304,7 +324,11 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 			return;
 		}
 
-		if (--this.lifeTicks <= 0) {
+		this.lifeTicks--;
+		if (this.lifeTicks <= EXPIRY_WARNING_TICKS) {
+			this.entityData.set(DATA_LIFE_TICKS, this.lifeTicks); // sync only inside the pulse window
+		}
+		if (this.lifeTicks <= 0) {
 			this.discard(); // expiry -> return path
 		}
 	}
@@ -431,6 +455,7 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		this.lifeTicks = tag.contains("LifeTicks") ? tag.getInt("LifeTicks") : SpectralCutlassItem.SUMMON_DURATION;
+		this.entityData.set(DATA_LIFE_TICKS, this.lifeTicks);
 		this.itemReturned = tag.getBoolean("ItemReturned");
 		this.fromCreative = tag.getBoolean("FromCreative");
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
@@ -526,7 +551,7 @@ public class SpectralCutlassEntity extends FURTameableEntity implements IChargin
 	}
 
 	// ------------------------------------------------------------------------------------------
-	// ICharging + GeckoLib (renderer/assets are placeholders for Phase 2 — see PLACEHOLDER.md)
+	// ICharging + GeckoLib (fully complete — see the Spectral Cutlass entry in PLACEHOLDERS.md "Resolved")
 	// ------------------------------------------------------------------------------------------
 
 	@Override

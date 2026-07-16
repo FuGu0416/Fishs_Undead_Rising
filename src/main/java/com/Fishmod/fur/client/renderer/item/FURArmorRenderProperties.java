@@ -2,10 +2,12 @@ package com.Fishmod.fur.client.renderer.item;
 
 import com.Fishmod.fur.client.layer.FURModelLayers;
 import com.Fishmod.fur.client.model.armor.FamineArmorModel;
+import com.Fishmod.fur.client.model.armor.IllagerNoseModel;
 import com.Fishmod.fur.client.model.armor.MoltenArmorModel;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
+import com.Fishmod.fur.item.IllagerNoseItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
 
 import net.minecraft.client.Minecraft;
@@ -20,6 +22,7 @@ public class FURArmorRenderProperties implements IClientItemExtensions {
 	private static boolean init;
 	public static MoltenArmorModel<LivingEntity> MOLTEN_ARMOR_MODEL;
 	public static FamineArmorModel<LivingEntity> FAMINE_ARMOR_MODEL;
+	public static IllagerNoseModel<LivingEntity> ILLAGER_NOSE_MODEL;
 	protected static HumanoidModel<LivingEntity> OUTER_ARMOR_MODEL;
 	protected static HumanoidModel<LivingEntity> INNER_ARMOR_MODEL;	
 	
@@ -27,6 +30,7 @@ public class FURArmorRenderProperties implements IClientItemExtensions {
         init = true;
         MOLTEN_ARMOR_MODEL = new MoltenArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(FURModelLayers.MOLTEN_ARMOR));
         FAMINE_ARMOR_MODEL = new FamineArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(FURModelLayers.FAMINE_ARMOR));
+        ILLAGER_NOSE_MODEL = new IllagerNoseModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(FURModelLayers.ILLAGER_NOSE));
         OUTER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
         INNER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));        
     }
@@ -61,6 +65,9 @@ public class FURArmorRenderProperties implements IClientItemExtensions {
         	} else {
         		return OUTER_ARMOR_MODEL;
         	}
+        } else if (itemStack.getItem() instanceof IllagerNoseItem) {
+        	// Helmet-only item: the 3D nose on the head bone (head/hat cubes are transparent).
+        	return ILLAGER_NOSE_MODEL;
         }
 
         return _default;
