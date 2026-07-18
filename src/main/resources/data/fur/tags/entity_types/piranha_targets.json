@@ -1,0 +1,8 @@
+{
+  "__comment": "all non-player targets of Piranha.",
+  "replace": false,
+  "values": [
+	"#fur:livestocks",
+	"minecraft:squid"
+  ]
+}

@@ -1,0 +1,231 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+        {
+            "name": "fur:skeleton_king_base",
+            "rolls": {
+                "min": 2,
+                "max": 3
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:bone",
+                    "weight": 50,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:gold_ingot",
+                    "weight": 25,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:iron_ingot",
+                    "weight": 15,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:hatred_shard",
+                    "weight": 15,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:skeleton_king_emblem",
+            "rolls": {
+                "min": 2,
+                "max": 3
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:emblem_of_king",
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:skeleton_king_crown",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:skeletonking_crown",
+                    "conditions": [
+                        {
+                            "condition": "minecraft:random_chance_with_looting",
+                            "chance": 1.0,
+                            "looting_multiplier": 0.0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:skeleton_king_equipment",
+            "rolls": 2,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:reapers_scythe",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:famine",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:sporecaller",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:war",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:dreamcatcher"
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:famine_armor_helmet",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:famine_armor_chestplate",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:beast_claw",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 5,
+                    "name": "fur:skeletonking_mace",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "weight": 1,
+                    "name": "fur:thorn_shooter",
+                    "functions": [
+                        {
+                            "function": "minecraft:enchant_randomly",
+                            "treasure": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

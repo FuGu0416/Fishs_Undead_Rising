@@ -1,0 +1,20 @@
+{
+  "type": "fur:cooking",
+  "ingredients": [
+    {
+		"tag": "forge:eggs"
+    },
+    {
+		"tag": "forge:eggs"
+    },
+    {
+		"item": "fur:plagued_porkchop"
+    }
+  ],
+  "container": { "item": "minecraft:bowl" },
+  "result": {
+    "item": "fur:green_bacon_and_eggs"
+  },
+  "experience": 0.35,
+  "time": 200
+}

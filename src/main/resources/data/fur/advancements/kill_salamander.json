@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:molten_alloy"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_salamander.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_salamander.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:salamander"
+		        }
+		      }
+        }
+    }
+}

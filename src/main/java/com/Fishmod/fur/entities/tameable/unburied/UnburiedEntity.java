@@ -190,9 +190,9 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	            }
 	        }
 	        
-	        if (this.tickCount % 10 == 0) {
+	        if (this.tickCount % 10 == 0 && !this.level().isClientSide()) {
 	            this.playSound(SoundEvents.SAND_BREAK, 1, 0.5F);
-	        }      
+	        }
         }
         
         if(this.isSmoking) {

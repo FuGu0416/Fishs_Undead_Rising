@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:undertaker_shovel"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_undertaker.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_undertaker.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:undertaker"
+		        }
+		      }
+        }
+    }
+}

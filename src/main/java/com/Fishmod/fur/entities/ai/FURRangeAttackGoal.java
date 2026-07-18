@@ -129,6 +129,17 @@ public class FURRangeAttackGoal<T extends Fireball> extends Goal {
         return this;
     }
 
+    /**
+     * 1.18+ only ticks goals every other game tick unless this returns true (vanilla
+     * RangedAttackGoal overrides it the same way). Without it the windup between the
+     * attack-animation entity event and the projectile launch — and the attack cooldown —
+     * run at double their configured length.
+     */
+    @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
 	/**
      * Returns whether the EntityAIBase should begin execution.
      */

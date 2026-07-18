@@ -61,7 +61,6 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -198,13 +197,6 @@ public class FURServerEvents {
     
     @SubscribeEvent
     public void onEntityDrop (LivingDropsEvent event) {
-    	/**
-         * Add bonus loot (Intestine) to various entities.
-         **/
-    	if (event.isRecentlyHit() && event.getEntity() instanceof AbstractIllager && event.getEntity().getRandom().nextFloat() < 0.01F * (float)FURConfig.General_IllagerNose.get()) {
-            event.getEntity().spawnAtLocation(FURItemRegistry.ILLAGER_NOSE.get(), 1);
-        }
-
     	if (event.getEntity().getTags().contains("FUR_noLoot")) {
     		event.setCanceled(true);
     	}

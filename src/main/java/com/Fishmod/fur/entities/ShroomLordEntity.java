@@ -258,8 +258,12 @@ public class ShroomLordEntity extends Monster implements GeoEntity {
             }
 
             this.mob.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            // The swing's reach is longer than the 1.5-block AoE below, so always hit the primary
+            // target the caller already validated in range — otherwise the stomp whiffs whenever
+            // the target backs out of the AoE mid-windup.
+            this.mob.doHurtTarget(target);
             for (LivingEntity victim : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(1.5D))) {
-                if (!this.mob.equals(victim) && !this.mob.isAlliedTo(victim)
+                if (!this.mob.equals(victim) && !victim.equals(target) && !this.mob.isAlliedTo(victim)
                         && !(victim instanceof TamableAnimal tamed && tamed.isOwnedBy(this.mob))) {
                     this.mob.doHurtTarget(victim);
                 }

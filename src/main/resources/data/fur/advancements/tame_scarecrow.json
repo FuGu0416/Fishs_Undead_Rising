@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:hay_block"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_scarecrow.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_scarecrow.description"
+        }
+    },
+    "parent": "fur:kill_scarecrow",
+    "criteria": {
+        "tamed_salamander": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:scarecrow"
+		        }
+		      }
+        }
+    }
+}

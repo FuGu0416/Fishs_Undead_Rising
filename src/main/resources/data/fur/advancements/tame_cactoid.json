@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:cactus_fruit"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_cactoid.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_cactoid.description"
+        }
+    },
+    "parent": "fur:kill_cactyrant",
+    "criteria": {
+        "tamed_cactoid": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:cactoid"
+		        }
+		      }
+        }
+    }
+}

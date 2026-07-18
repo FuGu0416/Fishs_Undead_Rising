@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:parasite_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_parasite.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_parasite.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:parasite"
+		        }
+		      }
+        }
+    }
+}

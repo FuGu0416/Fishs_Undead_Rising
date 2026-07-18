@@ -26,7 +26,7 @@ public class FURMeleeAttackGoal extends Goal {
     private long lastCanUseCheck;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
-    private int attackTimer = 0;
+    protected int attackTimer = 0;
     
 	public FURMeleeAttackGoal(PathfinderMob mobIn, double speedModifierIn, boolean followIfNotSeenIn, int attackIntervalIn) {
 		this.mob = mobIn;
@@ -42,6 +42,17 @@ public class FURMeleeAttackGoal extends Goal {
 		this.followingTargetEvenIfNotSeen = followIfNotSeenIn;
 		this.attackInterval = 20;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+	}
+
+	/**
+	 * 1.18+ only ticks goals every other game tick unless this returns true (vanilla
+	 * MeleeAttackGoal overrides it the same way). Without it the swing timer runs at half
+	 * speed, desyncing the hit frame from the entity-event-driven animation/sound and
+	 * doubling the effective attack interval.
+	 */
+	@Override
+	public boolean requiresUpdateEveryTick() {
+		return true;
 	}
 
 	public boolean canUse() {

@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:cursed_fabric"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_avaton.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_avaton.description"
+        }
+    },
+    "parent": "fur:kill_wraith",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:avaton"
+		        }
+		      }
+        }
+    }
+}

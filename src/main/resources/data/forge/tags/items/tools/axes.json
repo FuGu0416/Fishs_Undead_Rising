@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "fur:molten_axe"
-    //"fur:soulfireaxe"
+    "fur:molten_axe",
+    "fur:soulforged_axe"
   ]
 }

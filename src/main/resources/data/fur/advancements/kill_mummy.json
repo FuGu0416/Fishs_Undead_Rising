@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:infused_bandage"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_mummy.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_mummy.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:mummy"
+		        }
+		      }
+        }
+    }
+}

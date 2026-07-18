@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:famine_armor_helmet"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_wendigo.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_wendigo.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:wendigo"
+		        }
+		      }
+        }
+    }
+}

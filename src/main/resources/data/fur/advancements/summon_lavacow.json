@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:potion_of_mooten_lava"
+        },
+        "title": {
+            "translate": "advancements.fur.summon_lavacow.title"
+        },
+        "description": {
+            "translate": "advancements.fur.summon_lavacow.description"
+        }
+    },
+    "parent": "fur:get_potion_of_fission",
+    "criteria": {
+        "summon_lavacow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["fur:potion_of_mooten_lava"]
+                    }
+                ]
+            }
+        }
+    }
+}

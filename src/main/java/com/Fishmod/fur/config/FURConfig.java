@@ -225,8 +225,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades; 
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
-	public static final ForgeConfigSpec.ConfigValue<Integer> General_IllagerNose;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege; 
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege;
 	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ankh_Scepter_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Fungal_Staff_Cooldown;
@@ -526,7 +525,6 @@ public final class FURConfig {
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Midnight Mourne [1-10000]").defineInRange("midnight mourne cooldown", 60, 0, 10000);							
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
 		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
-		General_IllagerNose = BUILDER.comment("Set the drop rate of Illager Nose [0-100]").defineInRange("illager nose drop rate", 2, 0, 100);
 		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
 		Ankh_Scepter_Cooldown = BUILDER.comment("Ability cooldown of Ankh Scepter [1-10000]").defineInRange("ankh scepter cooldown", 60, 0, 10000);
 		Fungal_Staff_Cooldown = BUILDER.comment("Ability cooldown of Fungal Staff [1-10000]").defineInRange("fungal staff cooldown", 60, 0, 10000);

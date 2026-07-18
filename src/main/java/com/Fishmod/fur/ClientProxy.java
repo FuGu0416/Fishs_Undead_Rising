@@ -46,6 +46,8 @@ import com.Fishmod.fur.client.renderer.entity.AbstractUnburiedRenderer;
 import com.Fishmod.fur.client.renderer.entity.UndertakerRenderer;
 import com.Fishmod.fur.client.renderer.entity.WendigoRenderer;
 import com.Fishmod.fur.client.renderer.entity.WetaRenderer;
+import com.Fishmod.fur.client.renderer.entity.SandBurstRenderer;
+import com.Fishmod.fur.client.renderer.entity.SkeletonKingRenderer;
 import com.Fishmod.fur.client.renderer.entity.DeathCoilRenderer;
 import com.Fishmod.fur.client.renderer.entity.SpectralCutlassRenderer;
 import com.Fishmod.fur.client.renderer.entity.WispRenderer;
@@ -133,6 +135,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB.get(), BeelzebubRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA.get(), BeelzebubPupaRenderer::new);
         EntityRenderers.register(FUREntityRegistry.SHROOMLORD.get(), ShroomLordRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.SKELETONKING.get(), SkeletonKingRenderer::new);
 
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -144,6 +147,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.FANG_DAGGER.get(), FangDaggerRenderer::new);
         EntityRenderers.register(FUREntityRegistry.WAR_SMALL_FIREBALL.get(), manager -> new ThrownItemRenderer<>(manager, 0.75F, true));
         EntityRenderers.register(FUREntityRegistry.DEATHCOIL.get(), DeathCoilRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.SANDBURST.get(), SandBurstRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOLTEN_GLOB.get(), MoltenGlobRenderer::new);
         EntityRenderers.register(FUREntityRegistry.MOLTEN_POOL.get(), NoopRenderer::new);
         // Sludge Jet is purely particle-driven (the 1.16.5 sprite was rendered at zero scale).
@@ -163,16 +167,13 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.BONEWORM, manager -> new BoneWormRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.VOID_GLIDER, manager -> new VoidGliderRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));   
-        EntityRenderers.register(FUREntityRegistry.SKELETONKING, manager -> new SkeletonKingRenderer(manager));   
+        EntityRenderers.register(FUREntityRegistry.FORSAKEN, manager -> new ForsakenRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB, manager -> new BeelzebubRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA, manager -> new BeelzebubPupaRenderer(manager));
 
         EntityRenderers.register(FUREntityRegistry.ACIDJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         EntityRenderers.register(FUREntityRegistry.SLUDGEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn, 0.0F, false));
-        EntityRenderers.register(FUREntityRegistry.SANDBURST, manager -> new SandBurstRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.DEATHCOIL, manager -> new DeathCoilRenderer(manager));
-        EntityRenderers.register(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));        
+        EntityRenderers.register(FUREntityRegistry.FLAMEJET, manager -> new SpriteRenderer<>(manager, itemRendererIn));
         */
         
         /*

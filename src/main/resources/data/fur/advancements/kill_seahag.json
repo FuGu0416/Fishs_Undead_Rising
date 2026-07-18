@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:kelp"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_seahag.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_seahag.description"
+        }
+    },
+    "parent": "fur:kill_wraith",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:seahag"
+		        }
+		      }
+        }
+    }
+}

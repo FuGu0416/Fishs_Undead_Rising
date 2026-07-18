@@ -39,8 +39,10 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
             TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "wendigo_targets"));
     public static final TagKey<EntityType<?>> BEELZEBUB_TARGETS = 
     		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "beelzebub_targets"));
-    public static final TagKey<EntityType<?>> VESPA_TARGETS = 
+    public static final TagKey<EntityType<?>> VESPA_TARGETS =
     		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "vespa_targets"));
+    public static final TagKey<EntityType<?>> DROPS_ILLAGER_NOSE =
+    		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "drops_illager_nose"));
     
     public FUREntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, existingFileHelper);
@@ -61,6 +63,7 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         this.addWendigoTargetsTag();
         this.addVespaTargetsTag();
         this.addBeelzebubTargetsTag();
+        this.addDropsIllagerNoseTag();
     }
 
     // ── fur:fishes ───────────────────────────────────────────────────────────
@@ -222,5 +225,17 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
     private void addBeelzebubTargetsTag() {
         tag(BEELZEBUB_TARGETS)
                 .addTag(ZOMBIES);
+    }
+
+    // ── fur:drops_illager_nose ───────────────────────────────────────────────
+    // Deliberately not minecraft:raiders (that would include Ravager).
+    private void addDropsIllagerNoseTag() {
+        tag(DROPS_ILLAGER_NOSE)
+                .add(EntityType.PILLAGER)
+                .add(EntityType.VINDICATOR)
+                .add(EntityType.EVOKER)
+                .add(EntityType.ILLUSIONER)
+                .add(EntityType.WITCH)
+                .add(FUREntityRegistry.GRAVEROBBER.get());
     }
 }

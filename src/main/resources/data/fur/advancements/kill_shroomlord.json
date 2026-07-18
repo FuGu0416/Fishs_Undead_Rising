@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:spore_gel"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_shroomlord.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_shroomlord.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:shroomlord"
+		        }
+		      }
+        }
+    }
+}

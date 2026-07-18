@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "fur:golden_heart"
+    "fur:golden_heart",
+    "fur:mooten_heart",
+    "fur:soulforged_heart"
   ]
 }

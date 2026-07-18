@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "fur:mimic_claw_raw"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  },
+  "result": [
+    {
+      "item": "fur:chitin",
+      "count": 2
+    },
+    {
+      "item": "minecraft:bone_meal",
+      "count": 1,
+      "chance": 0.3
+    }
+  ]
+}

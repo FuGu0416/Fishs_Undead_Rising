@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:swarmer_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_zombiepiranha.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_zombiepiranha.description"
+        }
+    },
+    "parent": "fur:kill_piranha",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:swarmer"
+		        }
+		      }
+        }
+    }
+}

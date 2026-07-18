@@ -23,6 +23,12 @@ public class WispSwellGoal extends Goal {
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 	}
 
+	/** Vanilla SwellGoal requires every-tick updates so the swell direction never lags a tick. */
+	@Override
+	public boolean requiresUpdateEveryTick() {
+		return true;
+	}
+
 	@Override
 	public boolean canUse() {
 		LivingEntity livingTarget = this.wisp.getTarget();

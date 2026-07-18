@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:scarecrowhead_common"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_scarecrow.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_scarecrow.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:scarecrow"
+		        }
+		      }
+        }
+    }
+}

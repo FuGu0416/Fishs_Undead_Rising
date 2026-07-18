@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:mimic_claw_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_mimic.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_mimic.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:mimic"
+		        }
+		      }
+        }
+    }
+}

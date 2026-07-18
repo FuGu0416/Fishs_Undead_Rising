@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:molten_meat"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_salamander.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_salamander.description"
+        }
+    },
+    "parent": "fur:kill_salamander",
+    "criteria": {
+        "tamed_salamander": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:salamander"
+		        }
+		      }
+        }
+    }
+}

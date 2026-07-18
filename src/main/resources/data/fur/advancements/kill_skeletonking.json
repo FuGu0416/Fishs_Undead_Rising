@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:emblem_of_king"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_skeletonking.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_skeletonking.description"
+        },
+        "frame": "challenge"
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "fur:skeletonking"
+                }
+            }
+        }
+    }
+}

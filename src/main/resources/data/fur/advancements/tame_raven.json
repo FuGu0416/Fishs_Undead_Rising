@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:feather_black"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_raven.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_raven.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "tamed_raven": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:raven"
+		        }
+		      }
+        }
+    }
+}

@@ -173,7 +173,10 @@ public final class DreamcatcherLogic {
             double dist = ringMin + random.nextDouble() * (ringMax - ringMin);
             int x = blockPos.getX() + (int) Math.round(Math.cos(angle) * dist);
             int z = blockPos.getZ() + (int) Math.round(Math.sin(angle) * dist);
-            BlockPos ground = SpawnUtil.getHeight(level, new BlockPos(x, blockPos.getY(), z));
+            // Stay at the dreamcatcher's own altitude — trySpawnEntity already scans +-6 blocks in
+            // the column. The old SpawnUtil.getHeight jumped to the surface heightmap first, which
+            // sent every wave to the surface when the dreamcatcher hung in an underground base.
+            BlockPos ground = new BlockPos(x, blockPos.getY(), z);
 
             LivingEntity spawned = SpawnUtil.trySpawnEntity(livingType, level, ground);
             if (spawned != null) {

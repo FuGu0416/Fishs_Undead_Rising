@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:ptera_wing_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_ptera.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_ptera.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:ptera"
+		        }
+		      }
+        }
+    }
+}

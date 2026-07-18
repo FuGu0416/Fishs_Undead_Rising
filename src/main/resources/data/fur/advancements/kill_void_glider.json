@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:ectoplasm"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_void_glider.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_void_glider.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:void_glider"
+		        }
+		      }
+        }
+    }
+}

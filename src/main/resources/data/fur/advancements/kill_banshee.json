@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:shriek_cord"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_banshee.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_banshee.description"
+        }
+    },
+    "parent": "fur:kill_wraith",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:banshee"
+		        }
+		      }
+        }
+    }
+}

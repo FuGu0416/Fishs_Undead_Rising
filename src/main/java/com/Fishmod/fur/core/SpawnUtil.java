@@ -77,7 +77,7 @@ public class SpawnUtil {
 
     public static BlockPos getHeight(Level worldIn, BlockPos posIn) {
     	BlockPos pos = worldIn.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, posIn);
-    	
+
     	if (worldIn.dimensionType().hasCeiling()) {
     		do {
     			pos = pos.below();
@@ -86,6 +86,32 @@ public class SpawnUtil {
     		do {
     			pos = pos.below();
             } while (worldIn.getBlockState(pos).isAir() && pos.getY() > 0);
+    	}
+
+    	return pos;
+    }
+
+    /**
+     * Local ground near a position: climbs out of solid blocks (up to 8), then descends (up to 16)
+     * to the first spot resting on solid ground. Unlike {@link #getHeight}, which jumps to the
+     * surface heightmap, this stays at the caller's altitude — use it for effects/spawns that must
+     * land near an entity that may be underground or indoors. Returns the climbed position (or the
+     * input) when no ground is found within range.
+     */
+    public static BlockPos getLocalGround(Level worldIn, BlockPos from) {
+    	BlockPos pos = from;
+
+    	int steps = 0;
+    	while (steps++ < 8 && !worldIn.getBlockState(pos).canBeReplaced()) {
+    		pos = pos.above();
+    	}
+    	if (!worldIn.getBlockState(pos).canBeReplaced()) {
+    		return from;
+    	}
+
+    	steps = 0;
+    	while (steps++ < 16 && pos.getY() > worldIn.getMinBuildHeight() + 1 && worldIn.getBlockState(pos.below()).canBeReplaced()) {
+    		pos = pos.below();
     	}
 
     	return pos;

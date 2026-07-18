@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:piranha_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_piranha.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_piranha.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:piranha"
+		        }
+		      }
+        }
+    }
+}

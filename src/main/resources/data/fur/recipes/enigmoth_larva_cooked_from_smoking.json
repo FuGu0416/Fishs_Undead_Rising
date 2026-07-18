@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": [
+	{
+    	"item": "fur:enigmoth_larva_raw"
+	}
+  ],
+  "result": "fur:enigmoth_larva_cooked",
+  "experience": 0.35,
+  "cookingtime": 100
+}

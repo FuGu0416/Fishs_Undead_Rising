@@ -80,6 +80,13 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
 	ordering="AFTER"
 	side="BOTH"
 
+[[dependencies.fur]]
+	modId="farmersdelight"
+	mandatory=false
+	versionRange="[1.19,)"
+	ordering="AFTER"
+	side="BOTH"
+
 [[mixins]]
 config="mixins.fur.json"
 

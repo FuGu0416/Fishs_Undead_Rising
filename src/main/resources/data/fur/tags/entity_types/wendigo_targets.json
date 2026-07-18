@@ -1,0 +1,10 @@
+{
+  "__comment": "all non-player targets of Wendigo.",
+  "replace": false,
+  "values": [
+	"#fur:livestocks",
+	"#minecraft:raiders",
+	"minecraft:villager",
+	"minecraft:wandering_trader"
+  ]
+}

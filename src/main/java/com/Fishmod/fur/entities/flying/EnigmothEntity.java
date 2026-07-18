@@ -342,7 +342,7 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
     public void tick() {
     	super.tick();    
     	
-    	if (!this.isBaby() && !this.onGround() && this.tickCount % 60 == 0) {
+    	if (!this.isBaby() && !this.onGround() && this.tickCount % 60 == 0 && !this.level().isClientSide()) {
     		this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
     	}
     }

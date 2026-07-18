@@ -1,0 +1,68 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:vespa_dagger"
+        },
+        "title": {
+            "translate": "advancements.fur.entomophobia.title"
+        },
+        "description": {
+            "translate": "advancements.fur.entomophobia.description"
+        },
+        "frame": "challenge",
+	    "show_toast": true,
+	    "announce_to_chat": true,
+	    "hidden": false
+    },
+    "parent": "fur:kill_vespa",
+    "criteria": {
+		"fur:vespa": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:vespa"
+		        }
+		      }
+        },
+        "fur:weta": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:weta"
+		        }
+		      }
+        },
+        "fur:warpedfirefly": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:warpedfirefly"
+		        }
+		      }
+        },
+        "fur:scarab": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:scarab"
+		        }
+		      }
+        },
+        "fur:beelzebub": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:beelzebub"
+		        }
+		      }
+        },
+        "fur:enigmoth": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:enigmoth"
+		        }
+		      }
+        }
+    }
+}

@@ -202,7 +202,7 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
     public void tick() {
         super.tick();
 
-        if (!this.onGround() && this.tickCount % 20 == 0) {
+        if (!this.onGround() && this.tickCount % 20 == 0 && !this.level().isClientSide()) {
             this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
         }
 
@@ -220,7 +220,9 @@ public class VespaEntity extends RidableFlyingMobEntity implements GeoEntity {
                 }
             }
 
-            this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
+            if (!this.level().isClientSide()) {
+                this.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 2.0F);
+            }
         }
     }
 

@@ -19,6 +19,15 @@ public class EntityChargeAttackGoal extends Goal {
     }
 
     /**
+     * The contact check in tick() (distance < target width) can miss entirely if a fast
+     * charge crosses the hit window between the 1.18+ every-other-tick goal updates.
+     */
+    @Override
+    public boolean requiresUpdateEveryTick() {
+    	return true;
+    }
+
+    /**
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean canUse() {

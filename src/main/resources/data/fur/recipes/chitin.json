@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+		[
+	        {
+	            "item": "fur:vespa_carapace"
+	        },
+			{
+	            "item": "fur:mimic_claw_raw"
+	        }
+		]
+    ],
+    "result": {
+        "item": "fur:chitin",
+        "count": 2
+    }
+}

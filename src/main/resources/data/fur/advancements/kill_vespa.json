@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:vespa_carapace"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_vespa.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_vespa.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:vespa"
+		        }
+		      }
+        }
+    }
+}

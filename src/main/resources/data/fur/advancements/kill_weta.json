@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:chitin"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_weta.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_weta.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:weta"
+		        }
+		      }
+        }
+    }
+}

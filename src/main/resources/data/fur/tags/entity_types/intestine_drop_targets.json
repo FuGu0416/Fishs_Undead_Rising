@@ -1,0 +1,29 @@
+{
+  "__comment": "mobs that do not drop (or should drop) intestine.",
+  "replace": false,
+  "values": [
+	"#minecraft:skeletons",
+	"#fur:specters",
+	"#fur:fishes",
+	"minecraft:chicken",
+	"minecraft:squid",
+	"minecraft:snow_golem",
+	"minecraft:iron_golem",
+	"minecraft:skeleton_horse",
+	"minecraft:enderman",
+	"minecraft:silverfish",
+	"minecraft:endermite",
+	"minecraft:shulker",
+	"minecraft:blaze",
+	"minecraft:slime",
+	"minecraft:magma_cube",
+	"minecraft:ender_dragon",
+	"minecraft:wither",
+	"fur:shroomlord",
+	"fur:shroomling",
+	"fur:scarecrow",
+	"fur:parasite",
+	"fur:cactoid",
+	"fur:cactyrant"
+  ]
+}

@@ -225,6 +225,14 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         protected int spellWarmup;
         protected int spellCooldown;
 
+        // Keep the warmup in real ticks (1.18+ otherwise only ticks goals every other game
+        // tick). The mummies now rise at tick 20 of the 40-tick summon animation, vanilla
+        // evoker style (warmup < casting time), instead of at its very end.
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         public boolean canUse() {
             if (MummyLordEntity.this.getTarget() == null)
                 return false;

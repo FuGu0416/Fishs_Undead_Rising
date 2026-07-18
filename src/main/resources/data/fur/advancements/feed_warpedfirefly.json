@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:shroomlight"
+        },
+        "title": {
+            "translate": "advancements.fur.feed_warpedfirefly.title"
+        },
+        "description": {
+            "translate": "advancements.fur.feed_warpedfirefly.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "feed_warpedfirefly": {
+            "trigger": "minecraft:summoned_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:warpedfirefly"
+		        }
+		      }
+        }
+    }
+}

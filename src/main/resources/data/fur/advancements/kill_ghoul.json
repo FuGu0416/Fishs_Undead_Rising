@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:scythe_claw"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_ghoul.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_ghoul.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:ghoul"
+		        }
+		      }
+        }
+    }
+}

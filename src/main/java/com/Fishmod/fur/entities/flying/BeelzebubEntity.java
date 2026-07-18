@@ -191,7 +191,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity implements GeoEntity
     public void tick() {
         super.tick();
 
-        if (!this.onGround() && this.tickCount % 20 == 0) {
+        if (!this.onGround() && this.tickCount % 20 == 0 && !this.level().isClientSide()) {
             this.playSound(this.getFlyingSound(), 1.0F, 1.0F);
         }
 
@@ -436,12 +436,21 @@ public class BeelzebubEntity extends RidableFlyingMobEntity implements GeoEntity
         protected int spellWarmup;
         protected int spellCooldown;
 
+        // Keep the goal-side warmup in real ticks so it stays aligned with the entity-side
+        // spellTicks telegraph (1.18+ otherwise only ticks goals every other game tick).
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         public boolean canUse() {
             if (BeelzebubEntity.this.getTarget() == null) {
                 return false;
             } else if (BeelzebubEntity.this.isSpellcasting()
                     || BeelzebubEntity.this.getHealth() < BeelzebubEntity.this.getMaxHealth() * 0.4F
-                    || BeelzebubEntity.this.getY() < SpawnUtil.getHeight(BeelzebubEntity.this).getY() + 4.0D) {
+                    // "airborne, 4+ blocks above the ground below me" — the old surface-heightmap
+                    // getHeight made this always fail underground (it never cast in caves).
+                    || BeelzebubEntity.this.getY() < SpawnUtil.getLocalGround(BeelzebubEntity.this.level(), BeelzebubEntity.this.blockPosition()).getY() + 4.0D) {
                 return false;
             } else {
                 int i = BeelzebubEntity.this.level().getEntitiesOfClass(ParasiteEntity.class, BeelzebubEntity.this.getBoundingBox().inflate(16.0D)).size();

@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:frozen_thigh"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_zombiefrozen.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_zombiefrozen.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:frigid"
+		        }
+		      }
+        }
+    }
+}

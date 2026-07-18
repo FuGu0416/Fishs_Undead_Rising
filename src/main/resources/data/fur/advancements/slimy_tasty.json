@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:parasite_raw"
+        },
+        "title": {
+            "translate": "advancements.fur.slimy_tasty.title"
+        },
+        "description": {
+            "translate": "advancements.fur.slimy_tasty.description"
+        }
+    },
+    "parent": "fur:kill_parasite",
+    "criteria": {
+        "consume_parasite": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "items": ["fur:parasite_raw", "fur:parasite_cooked"]
+                }
+            }
+        }
+    }
+}

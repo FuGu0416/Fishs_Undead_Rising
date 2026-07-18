@@ -1,0 +1,40 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:saddle"
+        },
+        "title": {
+            "translate": "advancements.fur.tame_flying_mount.title"
+        },
+        "description": {
+            "translate": "advancements.fur.tame_flying_mount.description"
+        }
+    },
+    "parent": "fur:kill_vespa",
+    "criteria": {
+		"fur:vespa": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:vespa"
+		        }
+		      }
+        },
+        "fur:beelzebub": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:beelzebub"
+		        }
+		      }
+        },
+        "fur:enigmoth": {
+            "trigger": "minecraft:tame_animal",
+		    "conditions": {
+				"entity": {
+					"type": "fur:enigmoth"
+		        }
+		      }
+        }
+    }
+}

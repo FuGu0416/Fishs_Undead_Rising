@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:iron_shovel"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_graverobber.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_graverobber.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:graverobber"
+		        }
+		      }
+        }
+    }
+}
