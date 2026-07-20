@@ -1,8 +1,0 @@
-{
-  "__comment": "all non-player targets of Ptera.",
-  "replace": false,
-  "values": [
-	"#fur:fishes",
-    "minecraft:squid"
-  ]
-}

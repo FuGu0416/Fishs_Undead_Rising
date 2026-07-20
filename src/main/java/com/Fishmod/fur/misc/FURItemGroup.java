@@ -227,8 +227,9 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.GLIMMERCAP_BLOCK_CAP.get());
             	output.accept(FURBlockRegistry.LUMINOUS_MYCELIUM.get());
             	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
-            	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());           	
+            	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
+            	output.accept(FURBlockRegistry.INFESTED_SANDSTONE.get());
 
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })

@@ -2,8 +2,6 @@ package com.Fishmod.fur.client.renderer.entity;
 
 import com.Fishmod.fur.client.model.ScarabModel;
 import com.Fishmod.fur.entities.tameable.ScarabEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,10 +22,4 @@ public class ScarabRenderer extends GeoEntityRenderer<ScarabEntity> {
     public ResourceLocation getTextureLocation(ScarabEntity entity) {
     	return super.getTextureLocation(entity);
     }   
-    
-    @Override
-    protected void applyRotations(ScarabEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
-    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
-    	poseStack.scale(0.75F, 0.75F, 0.75F);  	
-	}
 }

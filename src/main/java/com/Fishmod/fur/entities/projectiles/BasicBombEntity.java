@@ -10,9 +10,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -127,17 +127,11 @@ public class BasicBombEntity extends ThrowableItemProjectile {
 	protected void onHit(HitResult result) {
 		super.onHit(result);
         if (!this.level().isClientSide()) {
-        	Wolf Dummy = EntityType.WOLF.create(this.level());
-        	
-        	if (this.getOwner() != null) {
-	        	Dummy.setTame(true);
-	        	Dummy.setOwnerUUID(this.getOwner().getUUID());
-        	}
-        	
-        	Dummy.setCustomName(this.getName());
-        	this.level().explode(Dummy, this.getX(), this.getY(), this.getZ(), this.radius, false, Level.ExplosionInteraction.NONE);
-        	Dummy.discard();
-        	this.level().playSound(null, this.blockPosition(), this.usedSound, SoundSource.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);   	
+        	// Direct entity = this bomb (so FURServerEvents can tell bombs apart by type);
+        	// causing entity = the thrower, so vanilla attributes kills to a player for XP drops.
+        	DamageSource damageSource = this.damageSources().explosion(this, this.getOwner());
+        	this.level().explode(this, damageSource, null, this.getX(), this.getY(), this.getZ(), this.radius, false, Level.ExplosionInteraction.NONE);
+        	this.level().playSound(null, this.blockPosition(), this.usedSound, SoundSource.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
         	this.discard();
         }
 	}

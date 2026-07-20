@@ -28,7 +28,7 @@ public class FURModelLayers {
         event.registerLayerDefinition(MOLTEN_ARMOR, () -> MoltenArmorModel.createArmorLayer(new CubeDeformation(0.75F)));
         event.registerLayerDefinition(FAMINE_ARMOR, () -> FamineArmorModel.createArmorLayer(new CubeDeformation(0.75F)));
         event.registerLayerDefinition(ILLAGER_NOSE, () -> IllagerNoseModel.createArmorLayer(new CubeDeformation(1.0F)));
-        event.registerLayerDefinition(SKELETONKING_CROWN, () -> SkeletonKingCrownModel.createArmorLayer(new CubeDeformation(1.0F)));
+        event.registerLayerDefinition(SKELETONKING_CROWN, () -> SkeletonKingCrownModel.createArmorLayer(new CubeDeformation(0.45F)));
         event.registerLayerDefinition(ModelScarecrowHead_common.LAYER_LOCATION, ModelScarecrowHead_common::createBodyLayer);
         event.registerLayerDefinition(ModelScarecrowHead_straw.LAYER_LOCATION, ModelScarecrowHead_straw::createBodyLayer);
         event.registerLayerDefinition(ModelScarecrowHead_plague.LAYER_LOCATION, ModelScarecrowHead_plague::createBodyLayer);

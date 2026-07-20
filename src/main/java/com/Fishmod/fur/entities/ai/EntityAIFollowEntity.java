@@ -35,6 +35,10 @@ public class EntityAIFollowEntity extends Goal {
     float minDist;
     private float oldWaterCost;
 
+    public UUID getOwnerId() {
+        return this.ownerID;
+    }
+
     public EntityAIFollowEntity(Mob tameableIn, UUID uniqueIDIn, double followSpeedIn, float minDistIn, float maxDistIn) {
         this.tameable = tameableIn;
         this.ownerID = uniqueIDIn;

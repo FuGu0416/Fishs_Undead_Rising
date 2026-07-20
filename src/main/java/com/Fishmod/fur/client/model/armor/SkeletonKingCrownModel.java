@@ -20,12 +20,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * sampled a transparent region). Pose and part visibility are copied from the vanilla armor
  * model by Forge's getGenericArmorModel, so no setupAnim override is needed (the 1.16.5
  * armor-stand special case is handled by that copy as well).
+ * <p>
+ * IMPORTANT: the 9x5x9 box dimensions here are load-bearing for more than just its own shape —
+ * CubeListBuilder auto-lays out each face's UV rectangle from texOffs(92, 23) based on the exact
+ * xSize/ySize/zSize passed to addBox, and the texture art at that offset was painted for that
+ * exact unwrap. Changing the addBox size (as a first attempt at shrinking the crown did) reflows
+ * that UV footprint onto the wrong region of the sheet and makes the crown sample blank/transparent
+ * pixels — i.e. it disappears rather than shrinks. The correct way to resize this cosmetically
+ * without touching UVs is a runtime scale on the baked ModelPart (see the constructor), which
+ * scales the rendered mesh around its own pivot without changing what texture region it reads.
  */
 @OnlyIn(Dist.CLIENT)
 public class SkeletonKingCrownModel<T extends LivingEntity> extends HumanoidModel<T> {
+	private static final float CROWN_SCALE = 1.0F;
 
 	public SkeletonKingCrownModel(ModelPart root) {
 		super(root);
+		ModelPart crown = root.getChild("head").getChild("crown");
+		crown.xScale = CROWN_SCALE;
+		crown.yScale = CROWN_SCALE;
+		crown.zScale = CROWN_SCALE;
 	}
 
 	public static LayerDefinition createArmorLayer(CubeDeformation deformation) {

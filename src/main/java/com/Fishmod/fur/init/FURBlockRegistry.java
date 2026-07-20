@@ -16,6 +16,7 @@ import com.Fishmod.fur.block.MycelialTendrilsBlock;
 import com.Fishmod.fur.block.EmberwickFungusBlock;
 import com.Fishmod.fur.block.MycelialVeinBlock;
 import com.Fishmod.fur.block.EnigmothEggBlock;
+import com.Fishmod.fur.block.InfestedSandstoneBlock;
 import com.Fishmod.fur.block.SalamanderEggBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
 import com.Fishmod.fur.block.SoulFurnaceBlock;
@@ -53,6 +54,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> GLOWSHROOM = registerBlocks("glowshroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 10)));
     public static final RegistryObject<Block> GLOWSHROOM_BLOCK_CAP = registerBlocks("glowshroom_block_cap", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 10).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> GLOWSHROOM_BLOCK_STEM = registerBlocks("glowshroom_block_stem", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> INFESTED_SANDSTONE = registerBlocks("infested_sandstone", () -> new InfestedSandstoneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.4F)));
 	public static final RegistryObject<Block> LUMINOUS_FILAMENT = registerBlocks("luminous_filament", () -> new LuminousFilamentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIAMOND).noCollission().instabreak().sound(SoundType.VINE).noOcclusion().offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> LUMINOUS_MYCELIUM = registerBlocks("luminous_mycelium", () -> new LuminousMyceliumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> MYCELIAL_MAT = registerBlocks("mycelial_mat", () -> new MycelialMatBlock(BlockBehaviour.Properties.of().mapColor(MapColor.LAPIS).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY)));

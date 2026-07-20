@@ -15,6 +15,7 @@ import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
+import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.block.DreamcatcherBlock;
@@ -28,6 +29,7 @@ import com.Fishmod.fur.item.VespaShieldItem;
 import com.Fishmod.fur.item.FamineArmorItem;
 import com.Fishmod.fur.item.GhostlyArmorItem;
 import com.Fishmod.fur.item.MoltenArmorItem;
+import com.Fishmod.fur.item.SkeletonKingCrownItem;
 import com.Fishmod.fur.worldgen.biome.FURBiomeSourceAccessor;
 import com.Fishmod.fur.worldgen.biome.FURMultiNoiseBiomeSourceAccessor;
 
@@ -35,7 +37,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -55,13 +56,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
@@ -384,15 +386,15 @@ public class FURServerEvents {
     		}
     	}
 
-    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getEntity() instanceof Wolf wolf) {
-    		if (Attacked.getMobType().equals(MobType.UNDEAD) && wolf.getName().equals(Component.translatable("entity.fur.holygrenade"))) {
+    	if (source.is(DamageTypeTags.IS_EXPLOSION) && source.getDirectEntity() instanceof BasicBombEntity bomb) {
+    		if (Attacked.getMobType().equals(MobType.UNDEAD) && bomb.getType().equals(FUREntityRegistry.HOLY_GRENADE.get())) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
-    		} else if (wolf.getName().equals(Component.translatable("entity.fur.ghostbomb"))) {
+    		} else if (bomb.getType().equals(FUREntityRegistry.GHOST_BOMB.get())) {
     			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
     			Attacked.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if (wolf.getName().equals(Component.translatable("entity.fur.sonicbomb"))) {
+    		} else if (bomb.getType().equals(FUREntityRegistry.SONIC_BOMB.get())) {
     			Attacked.addEffect(FUREffectRegistry.fear(4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else {
@@ -445,10 +447,6 @@ public class FURServerEvents {
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
     	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));*/
-    	
-    	if (event.getEntity() instanceof AbstractSkeleton skeleton && skeleton.getTags().contains("FUR_tameSkeleton")) {
-    		skeleton.removeTag("FUR_tameSkeleton");
-    	}
     	
     	if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
     		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (living) -> {
@@ -884,18 +882,66 @@ public class FURServerEvents {
         }
         
         // Passive
-        if (newTarget != null) {
-        	Boolean hasCrown = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN.get());
-        	
-    		if (ModList.get().isLoaded("curios") && !hasCrown) {
-    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN.get(), newTarget) != ItemStack.EMPTY);
-    		}
-    		
-        	if (entity instanceof AbstractSkeleton skeleton && hasCrown) {
-        		skeleton.setTarget(null);
-        	}
+        if (newTarget != null && entity instanceof PathfinderMob mob && SkeletonKingCrownItem.isEligible(mob) && SkeletonKingCrownItem.isWearingCrown(newTarget)) {
+        	mob.setTarget(null);
         }
-    } 
+    }
+
+    /**
+     * Drives the Skeleton King's Crown's escort effect from the governed mob's own tick rather than
+     * the wearer's armor tick, since armor ticking stops firing the moment the crown is removed and
+     * a removal needs to be noticed too. Every 20 ticks: a governed mob whose owner no longer wears
+     * the crown (offline, dead, unequipped — see {@link SkeletonKingCrownItem#getOwnerId}) is
+     * released back to its original AI; an ungoverned, eligible mob next to a wearer is placed under
+     * their command. No persisted flag is involved — {@link SkeletonKingCrownItem#getOwnerId} reads
+     * the goal selector directly, so this is fully self-correcting after a chunk reload with nothing
+     * left to desync. Eligibility ({@link SkeletonKingCrownItem#isEligible}) is data-driven off the
+     * vanilla {@code minecraft:skeletons} entity type tag (which this mod already extends with its
+     * own reskins), not a Java type check, so adding a future skeleton-family mob to that tag is
+     * enough to bring it under the crown's effect — no code change needed here.
+     */
+    @SubscribeEvent
+    public void onSkeletonGuardUpkeep(LivingTickEvent event) {
+    	if (!(event.getEntity() instanceof PathfinderMob mob) || !SkeletonKingCrownItem.isEligible(mob) || mob.level().isClientSide()) {
+    		return;
+    	}
+    	if (mob.tickCount % 20 != 0 || !(mob.level() instanceof ServerLevel serverLevel)) {
+    		return;
+    	}
+
+    	UUID ownerId = SkeletonKingCrownItem.getOwnerId(mob);
+
+    	if (ownerId != null) {
+    		LivingEntity owner = SpawnUtil.getEntityByUniqueId(ownerId, serverLevel);
+    		if (!(owner instanceof Player player) || !SkeletonKingCrownItem.isWearingCrown(player)) {
+    			SkeletonKingCrownItem.release(mob);
+    		}
+    		return;
+    	}
+
+    	if (!((mob.getNavigation() instanceof GroundPathNavigation) || (mob.getNavigation() instanceof FlyingPathNavigation))) {
+    		return;
+    	}
+
+    	Player nearestWearer = null;
+    	double nearestDistSqr = Double.MAX_VALUE;
+
+    	for (Player player : serverLevel.getEntitiesOfClass(Player.class, mob.getBoundingBox().inflate(16.0D))) {
+    		if (!SkeletonKingCrownItem.isWearingCrown(player)) {
+    			continue;
+    		}
+
+    		double distSqr = mob.distanceToSqr(player);
+    		if (distSqr < nearestDistSqr) {
+    			nearestDistSqr = distSqr;
+    			nearestWearer = player;
+    		}
+    	}
+
+    	if (nearestWearer != null) {
+    		SkeletonKingCrownItem.govern(mob, nearestWearer);
+    	}
+    }
     
     @SubscribeEvent
     public void onELiving(LivingTickEvent event) { 
