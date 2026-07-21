@@ -2,7 +2,8 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "#",
-        "D"
+        "D",
+        "X"
     ],
     "key": {
         "#": {
@@ -10,6 +11,9 @@
         },
         "D": {
             "item": "fur:fang_dagger"
+        },
+        "X": {
+            "item": "fur:vespa_carapace"
         }
     },
     "result": {

@@ -3,6 +3,7 @@ package com.Fishmod.fur.item;
 import java.util.function.Supplier;
 
 import com.Fishmod.fur.entities.projectiles.FangDaggerEntity;
+import com.Fishmod.fur.init.FUREnchantmentRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.sounds.SoundSource;
@@ -40,6 +41,7 @@ public class FangDaggerItem extends FURWeaponItem {
         	abstractarrowentity.bane_of_arthropods = stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
         	abstractarrowentity.smite = stack.getEnchantmentLevel(Enchantments.SMITE);
         	abstractarrowentity.corrosive = 0;//stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
+        	abstractarrowentity.bouncesRemaining = stack.getEnchantmentLevel(FUREnchantmentRegistry.RICOCHET.get());
         	abstractarrowentity.baseDamage = (int) this.getDamage();
         	abstractarrowentity.setRenderItem(stack.copy());
         			

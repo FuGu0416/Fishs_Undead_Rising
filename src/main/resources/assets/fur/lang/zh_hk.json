@@ -589,6 +589,9 @@
 	"enchantment.fur.dominion": "統御",
 	"enchantment.fur.dominion.desc": "增加召喚物的數量，但減少它們的最大生命值",
 	"enchantment.fur.dominion.description": "增加召喚物的數量，但減少它們的最大生命值",
+	"enchantment.fur.ricochet": "躍刃",
+	"enchantment.fur.ricochet.desc": "擲出的飛刀命中後會彈向附近的敵人，每次彈射傷害遞減",
+	"enchantment.fur.ricochet.description": "擲出的飛刀命中後會彈向附近的敵人，每次彈射傷害遞減",
 	
 	"effect.fur.corroded": "腐蝕",
 	"effect.fur.strong_corroded": "腐蝕 II",

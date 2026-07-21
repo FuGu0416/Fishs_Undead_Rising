@@ -589,7 +589,10 @@
 	"enchantment.fur.dominion": "Dominion",
 	"enchantment.fur.dominion.desc": "Increase the quantity of minions, but decrease their max health",
 	"enchantment.fur.dominion.description": "Increase the quantity of minions, but decrease their max health",
-	
+	"enchantment.fur.ricochet": "Ricochet",
+	"enchantment.fur.ricochet.desc": "Thrown daggers ricochet toward a nearby enemy on hit, dealing reduced damage with each bounce",
+	"enchantment.fur.ricochet.description": "Thrown daggers ricochet toward a nearby enemy on hit, dealing reduced damage with each bounce",
+
 	"effect.fur.corroded": "Corroded",
 	"effect.fur.strong_corroded": "Corroded II",
 	"effect.fur.long_corroded": "Corroded",

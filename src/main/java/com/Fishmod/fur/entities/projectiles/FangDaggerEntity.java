@@ -1,5 +1,6 @@
 package com.Fishmod.fur.entities.projectiles;
 
+import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -46,14 +47,25 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	public int smite = 0;
 	public int corrosive = 0;
 	public int baseDamage = 0;
-	
+	public int bouncesRemaining = 0;
+	/** Flat damage carried by ricochet-spawned daggers; < 0 means normal velocity-scaled damage. */
+	private float ricochetDamage = -1.0F;
+	/** Chained daggers spawn inside the previous victim's hitbox; skip colliding with it. */
+	private int ricochetIgnoreId = -1;
+
 	@SuppressWarnings("unchecked")
 	public FangDaggerEntity(EntityType<?> entityType, Level worldIn) {
 		super((EntityType<? extends FangDaggerEntity>) entityType, worldIn);
 	}
-	
+
 	public FangDaggerEntity(Level worldIn, LivingEntity shooter) {
 		super(FUREntityRegistry.FANG_DAGGER.get(), shooter, worldIn);
+	}
+
+	public FangDaggerEntity(Level worldIn, LivingEntity shooter, int bouncesRemaining, float ricochetDamage) {
+		super(FUREntityRegistry.FANG_DAGGER.get(), shooter, worldIn);
+		this.bouncesRemaining = bouncesRemaining;
+		this.ricochetDamage = ricochetDamage;
 	}
 
 	public FangDaggerEntity(Level worldIn, double posX, double posY, double posZ) {
@@ -90,11 +102,24 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 				+ (livingentity.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
     }
     
+	@Override
+	protected boolean canHitEntity(Entity target) {
+		return target.getId() != this.ricochetIgnoreId && super.canHitEntity(target);
+	}
+
 	protected void onHitEntity(EntityHitResult result) {
+		// Chained daggers arrive well inside the target's 20-tick invulnerability window with a
+		// lower (decayed) damage value, which LivingEntity#hurt would reject outright — clear the
+		// window so each bounce actually lands.
+		if (this.ricochetDamage >= 0.0F && result.getEntity() instanceof LivingEntity hitliving) {
+			hitliving.invulnerableTime = 0;
+		}
 		super.onHitEntity(result);
         Entity entity = result.getEntity();
         float f = (float)this.getDeltaMovement().length() * 0.67F;
-        int i = Mth.ceil(Mth.clamp((double)f * (this.baseDamage + this.getBonusDamage(entity)), 0.0D, (double)Integer.MAX_VALUE));
+        int i = this.ricochetDamage >= 0.0F
+        		? Mth.ceil(this.ricochetDamage)
+        		: Mth.ceil(Mth.clamp((double)f * (this.baseDamage + this.getBonusDamage(entity)), 0.0D, (double)Integer.MAX_VALUE));
 
         Entity entity1 = this.getOwner();
         DamageSource damagesource;
@@ -155,12 +180,22 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
         	   }
            }
 
+           if (!this.level().isClientSide) {
+        	   this.tryRicochet(entity, this.ricochetDamage >= 0.0F ? this.ricochetDamage : (float)i);
+           }
+
            this.playSound(this.getDefaultHitGroundSoundEvent(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
            if (this.getPierceLevel() <= 0) {
         	   this.discard();
            }
         } else {
            entity.setRemainingFireTicks(k);
+           // hurt() also fails when the vanilla arrow damage from super.onHitEntity already killed
+           // the target this impact (isDeadOrDying) — the chain must still continue from the corpse.
+           if (!this.level().isClientSide && this.tryRicochet(entity, this.ricochetDamage >= 0.0F ? this.ricochetDamage : (float)i)) {
+        	   this.discard();
+        	   return;
+           }
            this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
            this.setYRot(this.getYRot() + 180.0F);
            this.yRotO += 180.0F;
@@ -173,6 +208,59 @@ public class FangDaggerEntity extends AbstractArrow implements IEntityAdditional
 	
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return FURSoundRegistry.RANDOM_FANG_DAGGER_HIT.get();
+	}
+
+	/**
+	 * Ricochet enchantment: after a hit, chain a new dagger toward the nearest valid target.
+	 * Chained daggers carry a flat, pre-reduced damage value and never re-read the ItemStack's
+	 * enchantment level, so the chain always decays. Returns whether a chained dagger spawned.
+	 */
+	private boolean tryRicochet(Entity hitEntity, float dealtDamage) {
+		if (this.bouncesRemaining <= 0) return false;
+
+		float nextDamage = dealtDamage * 0.8F;
+		if (nextDamage < 1.0F) return false;
+
+		Entity owner = this.getOwner();
+		LivingEntity target = null;
+		double bestDistSqr = Double.MAX_VALUE;
+
+		for (LivingEntity candidate : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0D))) {
+			if (candidate == hitEntity || candidate == owner || !candidate.isAlive() || candidate.isSpectator() || !candidate.attackable()) continue;
+			if (candidate instanceof FURTameableEntity tameable && owner != null && tameable.getOwner() == owner) continue;
+
+			double distSqr = this.distanceToSqr(candidate);
+			if (distSqr < bestDistSqr) {
+				bestDistSqr = distSqr;
+				target = candidate;
+			}
+		}
+
+		if (target == null) return false;
+
+		FangDaggerEntity dagger;
+		if (owner instanceof LivingEntity livingowner) {
+			dagger = new FangDaggerEntity(this.level(), livingowner, this.bouncesRemaining - 1, nextDamage);
+		} else {
+			dagger = new FangDaggerEntity(this.level(), this.getX(), this.getY(), this.getZ());
+			dagger.bouncesRemaining = this.bouncesRemaining - 1;
+			dagger.ricochetDamage = nextDamage;
+		}
+
+		dagger.setPos(this.getX(), this.getY(), this.getZ());
+		dagger.shoot(target.getX() - this.getX(), target.getY(0.5D) - this.getY(), target.getZ() - this.getZ(), 1.6F, 0.0F);
+		// Vanilla AbstractArrow#onHitEntity deals its own velocity * getBaseDamage() hit before this
+		// class's flat ricochetDamage is applied; zero it so late (low-damage) bounces aren't
+		// overshadowed by the fixed vanilla portion and the decay sequence stays exact.
+		dagger.setBaseDamage(0.0D);
+		dagger.ricochetIgnoreId = hitEntity.getId();
+		dagger.fire_aspect = this.fire_aspect;
+		dagger.knockback = this.knockback;
+		dagger.corrosive = this.corrosive;
+		dagger.setRenderItem(this.getRenderItem());
+		dagger.pickup = AbstractArrow.Pickup.DISALLOWED;
+		this.level().addFreshEntity(dagger);
+		return true;
 	}
     
     public boolean isInGround() {
