@@ -36,7 +36,6 @@ import com.Fishmod.fur.worldgen.biome.FURMultiNoiseBiomeSourceAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -93,7 +92,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -804,14 +802,6 @@ public class FURServerEvents {
     }
     
     @SubscribeEvent
-    public void onPCritical(CriticalHitEvent event) {
-    	/*int CriticalBoostlvl = EnchantmentHelper.getItemEnchantmentLevel(FUREnchantmentRegistry.CRITICALBOOST, event.getPlayer().getMainHandItem());
-    	if (CriticalBoostlvl != 0 && event.getDamageModifier() > 1.0F) {
-    		event.setDamageModifier(event.getDamageModifier() + (CriticalBoostlvl * 0.15F));
-    	}*/
-    }
-    
-    @SubscribeEvent
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
     	
@@ -1113,23 +1103,18 @@ public class FURServerEvents {
 	    int Armor_Famine_lvl = 0;	    
 	    
 	    if (DirectAttacker != null) {
-	    	CompoundTag data = DirectAttacker.getPersistentData();
-	    	
 			for (ItemStack S : DirectAttacker.getArmorSlots()) {
 				if (S.getItem() instanceof FamineArmorItem) {
 					Armor_Famine_lvl++;
 				}
-			}		
-		
+			}
+
 			if (Armor_Famine_lvl >= 4 && DirectAttacker instanceof LivingEntity) {
 				event.setAmount(event.getAmount() + 2.0F);
 			}
-						
-			if (DirectAttacker instanceof FURTameableEntity tamable && 
-					data.contains("sharpness", Tag.TAG_INT) && 
-					data.contains("bane_of_arthropods", Tag.TAG_INT) && 
-					data.contains("smite", Tag.TAG_INT)) {
-				event.setAmount(event.getAmount() + tamable.getBonusDamage(Attacked, data.getInt("sharpness"), data.getInt("bane_of_arthropods"), data.getInt("smite")));	
+
+			if (DirectAttacker instanceof FURTameableEntity tamable) {
+				event.setAmount(event.getAmount() + tamable.getWeaponEnchants().getBonusDamage(Attacked));
 			}
 			
 	    	if (DirectAttacker instanceof LivingEntity living) {

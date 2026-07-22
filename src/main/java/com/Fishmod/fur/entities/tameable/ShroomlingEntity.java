@@ -97,15 +97,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	}
 
 	private int limitedLifeTicks;
-	private int fire_aspect;
-	private int sharpness;
-	private int knockback;
-	private int bane_of_arthropods;
-	private int smite;
-	private int lifesteal;
-	private int poisonous;
-	private int corrosive;
-	private int unbreaking;
 	private boolean isSmoking = false;
 	/** Server-side custom spore effect injected via the Sporecaller; overrides the table effect for the death burst. {@code null} when none is injected. */
 	@Nullable
@@ -234,16 +225,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     	}
     }
 
-    public float getBonusDamage(LivingEntity LivingEntityIn) {
-    	return (0.5f * this.sharpness + 0.5f)
-				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
-				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
-    }
-
-    public int getLifestealLevel() {
-    	return this.lifesteal;
-    }
-
     public int getSkin() {
         return this.entityData.get(SKIN_TYPE).intValue();
     }
@@ -319,22 +300,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 
         if (flag) {
             if(entityIn instanceof LivingEntity) {
-	            if(this.fire_aspect > 0)
-	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
-
-	            if(this.knockback > 0)
-	            	((LivingEntity)entityIn).knockback((float)this.knockback * 0.5F, (this.getX() - entityIn.getX())/this.distanceTo(entityIn), (this.getZ() - entityIn.getZ())/this.distanceTo(entityIn));
-
-	            if(this.bane_of_arthropods > 0 && (((LivingEntity) entityIn).getMobType().equals(MobType.ARTHROPOD))) {
-	                int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
-	                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
-	            }
-
-	            if(this.poisonous > 0)
-	    			((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, this.poisonous - 1));
-
-	            if(this.corrosive > 0)
-	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, this.corrosive - 1));
+	            this.weaponEnchants.applyOnHit(this, (LivingEntity)entityIn);
 
 	            // Summoned/tamed shroomlings deliver their carried spore effect to the target on hit
 	            // (instead of the wild death burst). buildSporeEffect() is null for spore-less /
@@ -448,16 +414,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         this.setSkin(compound.getInt("Variant"));
         // Set the raw saved index (don't clamp) so the "no spore effect" sentinel (-1) survives a reload.
         this.entityData.set(SPORE_EFFECT, compound.getInt("SporeEffect"));
-    	this.fire_aspect = compound.getInt("fire_aspect");
-    	this.sharpness = compound.getInt("sharpness");
-    	this.knockback = compound.getInt("knockback");
-    	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
-    	this.smite = compound.getInt("smite");
-    	this.lifesteal = compound.getInt("lifesteal");
-    	this.poisonous = compound.getInt("poisonous");
-    	this.corrosive = compound.getInt("corrosive");
-    	this.unbreaking = compound.getInt("unbreaking");
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get() + ((float)this.unbreaking * 2.0F));
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get() + ((float)this.weaponEnchants.getUnbreaking() * 2.0F));
     	if (compound.contains("CustomSporeEffect", Tag.TAG_COMPOUND)) {
     		this.customSporeEffect = MobEffectInstance.load(compound.getCompound("CustomSporeEffect"));
     	}
@@ -474,15 +431,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         compound.putInt("LifeTicks", this.limitedLifeTicks - this.tickCount);
         compound.putInt("Variant", getSkin());
         compound.putInt("SporeEffect", this.getSporeEffect());
-        compound.putInt("fire_aspect", this.fire_aspect);
-        compound.putInt("sharpness", this.sharpness);
-        compound.putInt("knockback", this.knockback);
-        compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
-        compound.putInt("smite", this.smite);
-        compound.putInt("lifesteal", this.lifesteal);
-        compound.putInt("poisonous", this.poisonous);
-        compound.putInt("corrosive", this.corrosive);
-        compound.putInt("unbreaking", this.unbreaking);
         compound.putInt("InjectedSporeColor", this.entityData.get(INJECTED_SPORE_COLOR));
         if (this.customSporeEffect != null) {
             compound.put("CustomSporeEffect", this.customSporeEffect.save(new CompoundTag()));

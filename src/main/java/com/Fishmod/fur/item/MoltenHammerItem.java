@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,12 +12,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
@@ -26,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
@@ -68,37 +65,21 @@ public class MoltenHammerItem extends FURWeaponItem {
 			particle1 = ParticleTypes.CAMPFIRE_COSY_SMOKE;
 		}
 		
-		int[] enchantment_list = new int[10];		
-		enchantment_list[0] = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
-		enchantment_list[1] = stack.getEnchantmentLevel(Enchantments.SHARPNESS);
-		enchantment_list[2] = stack.getEnchantmentLevel(Enchantments.KNOCKBACK);
-		enchantment_list[3] = stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
-		enchantment_list[4] = stack.getEnchantmentLevel(Enchantments.SMITE);
-		//enchantment_list[7] = stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
-		enchantment_list[8] = stack.getEnchantmentLevel(Enchantments.UNBREAKING);
-		//enchantment_list[9] = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION);
-		
+		int fire_aspect = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT);
+		int knockback = stack.getEnchantmentLevel(Enchantments.KNOCKBACK);
+
 		List<Entity> list = level.getEntities(player, player.getBoundingBox().inflate(radius));
 		for (Entity entity1 : list) {
 			if ((entity1 instanceof LivingEntity && !(entity1 instanceof TamableAnimal)) || (entity1 instanceof TamableAnimal && !((TamableAnimal)entity1).isOwnedBy(player)) || (entity1 instanceof Player && FURConfig.MoltenHammer_PVP.get())) {
-				entity1.setSecondsOnFire(2 * enchantment_list[0]);
-				entity1.hurt(entity1.damageSources().playerAttack(player) , damage + (enchantment_list[1] > 0 ? (0.5f * enchantment_list[1] + 0.5f) : 0.0f)
-						+ (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD) ? (float)enchantment_list[3] : 0)
-						+ (((LivingEntity) entity1).getMobType().equals(MobType.UNDEAD) ? (float)enchantment_list[4] : 0));
-				
-				if (enchantment_list[2] > 0)
-					((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)enchantment_list[2] * 0.5F, (player.getX() - entity1.getX())/player.distanceTo(entity1), (player.getZ() - entity1.getZ())/player.distanceTo(entity1)));
-				
-	            if (enchantment_list[3] > 0 && (((LivingEntity) entity1).getMobType().equals(MobType.ARTHROPOD))) {
-	                int i = 20 + level.random.nextInt(10 * enchantment_list[3]);
-	                ((LivingEntity)entity1).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
-	            }
-	            
-	            if (enchantment_list[6] > 0)
-	    			((LivingEntity)entity1).addEffect(new MobEffectInstance(MobEffects.POISON, 8*20, enchantment_list[6] - 1));
-	            
-	            if (enchantment_list[7] > 0)
-	            	((LivingEntity)entity1).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, enchantment_list[7] - 1));
+				entity1.setSecondsOnFire(2 * fire_aspect);
+				entity1.hurt(entity1.damageSources().playerAttack(player), damage + EnchantmentHelper.getDamageBonus(stack, ((LivingEntity) entity1).getMobType()));
+
+				if (knockback > 0)
+					((LivingEntity)entity1).setDeltaMovement(((LivingEntity)entity1).getDeltaMovement().add((float)knockback * 0.5F, (player.getX() - entity1.getX())/player.distanceTo(entity1), (player.getZ() - entity1.getZ())/player.distanceTo(entity1)));
+
+				// Post-attack enchantment procs (bane-of-arthropods slowdown, corrosive corrode, and
+				// any future doPostAttack enchantment) — same hook vanilla melee uses.
+				EnchantmentHelper.doPostDamageEffects(player, entity1);
 			}
 		}
 		

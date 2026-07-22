@@ -86,8 +86,8 @@ public class MummyEntity extends UnburiedEntity {
         if (super.doHurtTarget(par1Entity)) {       	
         	if (par1Entity instanceof LivingEntity) {          	
             	if (this.isTame()) {
-		            if (this.corrosive > 0) {
-		            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20, Math.max(1, this.corrosive - 1)));
+		            if (this.weaponEnchants.getCorrosive() > 0) {
+		            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20, Math.max(1, this.weaponEnchants.getCorrosive() - 1)));
 		            } else {
 		            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 2 * 20, 1));
 		            }

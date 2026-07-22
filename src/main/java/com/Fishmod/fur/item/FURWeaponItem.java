@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.core.WeaponEnchantments;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREffectRegistry;
@@ -46,7 +47,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
@@ -167,23 +167,16 @@ public class FURWeaponItem extends SwordItem {
 			FURTameableEntity entity = (FURTameableEntity)SpawnUtil.trySpawnEntity(entityIn, ((ServerLevel) level), blockpos);
 
 			if (entity != null) {
-				CompoundTag data = entity.getPersistentData();
-
-				data.putInt("fire_aspect",        stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT));
-				data.putInt("sharpness",          stack.getEnchantmentLevel(Enchantments.SHARPNESS));
-				data.putInt("knockback",          stack.getEnchantmentLevel(Enchantments.KNOCKBACK));
-				data.putInt("bane_of_arthropods", stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS));
-				data.putInt("smite",              stack.getEnchantmentLevel(Enchantments.SMITE));
-				data.putInt("unbreaking",         stack.getEnchantmentLevel(Enchantments.UNBREAKING));
-				data.putInt("corrosive",          0);
+				WeaponEnchantments enchants = WeaponEnchantments.fromStack(stack);
+				entity.getWeaponEnchants().copyFrom(enchants);
 
 				int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
 
 				entity.tame(player);
 				entity.setLimitedLife(limitLife);
 				entity.setSkin(skin);
-				if (dominion > 0 && entity.getAttribute(Attributes.MAX_HEALTH) != null) {
-					entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(entity.getMaxHealth() * ((10.0D - (double)dominion) / 10.0D));
+				if (entity.getAttribute(Attributes.MAX_HEALTH) != null) {
+					entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue((entity.getMaxHealth() + 2.0D * enchants.getUnbreaking()) * ((10.0D - (double)dominion) / 10.0D));
 				}
 				entity.setHealth(entity.getMaxHealth());
 

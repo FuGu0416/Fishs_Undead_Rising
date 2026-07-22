@@ -21,7 +21,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -73,13 +72,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ScarabEntity.class, EntityDataSerializers.INT);
 	private int attackTimer = 10;
 	private int limitedLifeTicks;
-	private int fire_aspect;
-	private int sharpness;
-	private int knockback;
-	private int bane_of_arthropods;
-	private int smite;
-	private int corrosive;
-	private int unbreaking;
 	private boolean isSmoking = false;
 
 	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
@@ -126,12 +118,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	if (limitedLifeTicksIn != 0) {
     		this.limitedLifeTicks = limitedLifeTicksIn;
     	}
-    }
-    
-    public float getBonusDamage(LivingEntity LivingEntityIn) {
-    	return (0.5f * this.sharpness + 0.5f)
-				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
-				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
     }
     
     public int getSkin() {
@@ -205,20 +191,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         	this.level().broadcastEntityEvent(this, (byte)40);
         	
             if(entityIn instanceof LivingEntity) {
-	            if(this.fire_aspect > 0)
-	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
-	            
-	            if(this.knockback > 0)
-	            	((LivingEntity)entityIn).knockback((float)this.knockback * 0.5F, (this.getX() - entityIn.getX())/this.distanceTo(entityIn), (this.getZ() - entityIn.getZ())/this.distanceTo(entityIn));
-	            
-	            if(this.bane_of_arthropods > 0 && (((LivingEntity) entityIn).getMobType().equals(MobType.ARTHROPOD))) {
-	                int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
-	                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
-	            }
-	            
-	            if(this.corrosive > 0)
-	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4*20, this.corrosive - 1));
-	            
+	            this.weaponEnchants.applyOnHit(this, (LivingEntity)entityIn);
+
             	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.SOILED.get(), 8 * 20, 1));
             }
         }
@@ -327,14 +301,7 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
        super.readAdditionalSaveData(compound);
         this.setLimitedLife(compound.getInt("LifeTicks"));
         this.setSkin(compound.getInt("Variant"));
-    	this.fire_aspect = compound.getInt("fire_aspect");
-    	this.sharpness = compound.getInt("sharpness");
-    	this.knockback = compound.getInt("knockback");
-    	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
-    	this.smite = compound.getInt("fire_aspect");
-    	this.corrosive = compound.getInt("corrosive");
-    	this.unbreaking = compound.getInt("unbreaking");
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get() + ((float)this.unbreaking * 2.0F));
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get() + ((float)this.weaponEnchants.getUnbreaking() * 2.0F));
     }
 
     /**
@@ -345,13 +312,6 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         super.addAdditionalSaveData(compound);
         compound.putInt("LifeTicks", this.limitedLifeTicks - this.tickCount);
         compound.putInt("Variant", getSkin());
-        compound.putInt("fire_aspect", this.fire_aspect);
-        compound.putInt("sharpness", this.sharpness);
-        compound.putInt("knockback", this.knockback);
-        compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
-        compound.putInt("smite", this.smite);
-        compound.putInt("corrosive", this.corrosive);
-        compound.putInt("unbreaking", this.unbreaking);
     }
 
     /**

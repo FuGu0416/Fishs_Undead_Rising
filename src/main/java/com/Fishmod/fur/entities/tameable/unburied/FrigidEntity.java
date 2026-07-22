@@ -76,8 +76,8 @@ public class FrigidEntity extends UnburiedEntity {
         	
         	if (this.isTame()) {
         		((LivingEntity)par1Entity).setTicksFrozen(Math.min(this.getTicksRequiredToFreeze(), frozen_ticks + 80));
-        		if (this.bane_of_arthropods > 0 && (((LivingEntity) par1Entity).getMobType().equals(MobType.ARTHROPOD))) {
-        			int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
+        		if (this.weaponEnchants.getBaneOfArthropods() > 0 && (((LivingEntity) par1Entity).getMobType().equals(MobType.ARTHROPOD))) {
+        			int i = 20 + this.random.nextInt(10 * this.weaponEnchants.getBaneOfArthropods());
 	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 4));
 	            } else {	            	
 	            	((LivingEntity)par1Entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2 * 20, 2));

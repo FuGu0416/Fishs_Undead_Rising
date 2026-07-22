@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
-import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.particles.BlockParticleOption;
@@ -22,8 +21,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -79,13 +76,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	
 	protected int spellTicks;
 	private int limitedLifeTicks;
-	private int fire_aspect;
-	private int sharpness;
-	private int knockback;
-	protected int bane_of_arthropods;
-	protected int smite;
-	protected int corrosive;
-	private int unbreaking;
 	private boolean isSmoking = false;
 	
 	public UnburiedEntity(EntityType<? extends UnburiedEntity> entityType, Level worldIn) {
@@ -136,12 +126,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     	if (limitedLifeTicksIn != 0) {
     		this.limitedLifeTicks = limitedLifeTicksIn;
     	}
-    }
-    
-    public float getBonusDamage(LivingEntity LivingEntityIn) {
-    	return (0.5f * this.sharpness + 0.5f)
-				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
-				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? (float)smite * 2.5f : 0);
     }
     
     public void setSpellcasting() {
@@ -285,19 +269,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	        this.level().broadcastEntityEvent(this, (byte)4);
 
             if(entityIn instanceof LivingEntity) {
-	            if (this.fire_aspect > 0)
-	            	entityIn.setSecondsOnFire((this.fire_aspect * 4) - 1);
-	            
-	            if (this.knockback > 0)
-	            	((LivingEntity)entityIn).knockback((float)this.knockback * 0.5F, (this.getX() - entityIn.getX())/this.distanceTo(entityIn), (this.getZ() - entityIn.getZ())/this.distanceTo(entityIn));
-	            
-	            if (this.bane_of_arthropods > 0 && (((LivingEntity) entityIn).getMobType().equals(MobType.ARTHROPOD))) {
-	                int i = 20 + this.random.nextInt(10 * bane_of_arthropods);
-	                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, i, 3));
-	            }
-	            
-	            if (this.corrosive > 0)
-	            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 4 * 20, this.corrosive - 1));
+	            this.weaponEnchants.applyOnHit(this, (LivingEntity)entityIn);
             }
             
             return true;
@@ -395,15 +367,8 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     public void readAdditionalSaveData(CompoundTag compound) {
        super.readAdditionalSaveData(compound);
         this.setLimitedLife(compound.getInt("LifeTicks"));
-    	this.fire_aspect = compound.getInt("fire_aspect");
-    	this.sharpness = compound.getInt("sharpness");
-    	this.knockback = compound.getInt("knockback");
-    	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
-    	this.smite = compound.getInt("fire_aspect");
-    	this.corrosive = compound.getInt("corrosive");
-    	this.unbreaking = compound.getInt("unbreaking");  
     	this.setSkin(compound.getInt("Variant"));
-    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D/*Modconfig.Unburied_Health*/ + ((float)this.unbreaking * 2.0F));
+    	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D/*Modconfig.Unburied_Health*/ + ((float)this.weaponEnchants.getUnbreaking() * 2.0F));
     }
 
     /**
@@ -413,13 +378,6 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("LifeTicks", this.limitedLifeTicks - this.tickCount);
-        compound.putInt("fire_aspect", this.fire_aspect);
-        compound.putInt("sharpness", this.sharpness);
-        compound.putInt("knockback", this.knockback);
-        compound.putInt("bane_of_arthropods", this.bane_of_arthropods);
-        compound.putInt("smite", this.smite);
-        compound.putInt("corrosive", this.corrosive);
-        compound.putInt("unbreaking", this.unbreaking);     
         compound.putInt("Variant", this.getSkin());
     }
 

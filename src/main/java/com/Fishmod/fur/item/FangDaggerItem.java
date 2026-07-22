@@ -40,7 +40,7 @@ public class FangDaggerItem extends FURWeaponItem {
         	abstractarrowentity.knockback = stack.getEnchantmentLevel(Enchantments.KNOCKBACK);
         	abstractarrowentity.bane_of_arthropods = stack.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS);
         	abstractarrowentity.smite = stack.getEnchantmentLevel(Enchantments.SMITE);
-        	abstractarrowentity.corrosive = 0;//stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE);
+        	abstractarrowentity.corrosive = stack.getEnchantmentLevel(FUREnchantmentRegistry.CORROSIVE.get());
         	abstractarrowentity.bouncesRemaining = stack.getEnchantmentLevel(FUREnchantmentRegistry.RICOCHET.get());
         	abstractarrowentity.baseDamage = (int) this.getDamage();
         	abstractarrowentity.setRenderItem(stack.copy());

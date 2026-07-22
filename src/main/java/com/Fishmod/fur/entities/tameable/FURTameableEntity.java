@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.core.WeaponEnchantments;
 import com.Fishmod.fur.item.FURStewItem;
 
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -48,7 +48,9 @@ public class FURTameableEntity extends TamableAnimal {
 	protected Goal wander;
 	protected Goal follow;
 	protected SitWhenOrderedToGoal aiSit;
-	
+	/** Weapon-enchantment levels inherited from the summoning weapon; empty (all zero) for wild/tamed-in-world mobs. */
+	protected final WeaponEnchantments weaponEnchants = new WeaponEnchantments();
+
 	public FURTameableEntity(EntityType<? extends FURTameableEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
 		this.setTame(false);
@@ -354,10 +356,8 @@ public class FURTameableEntity extends TamableAnimal {
         return false;
     }
     
-    public float getBonusDamage(LivingEntity LivingEntityIn, int sharpness, int bane_of_arthropods, int smite) {
-    	return (0.5F * sharpness + 0.5F)
-				+ (LivingEntityIn.getMobType().equals(MobType.ARTHROPOD) ? bane_of_arthropods * 2.5F : 0)
-				+ (LivingEntityIn.getMobType().equals(MobType.UNDEAD) ? smite * 2.5F : 0);
+    public WeaponEnchantments getWeaponEnchants() {
+    	return this.weaponEnchants;
     }
     
 	@Override
@@ -425,6 +425,7 @@ public class FURTameableEntity extends TamableAnimal {
     public void addAdditionalSaveData(CompoundTag compound) {
        super.addAdditionalSaveData(compound);
        compound.putByte("state", this.state.saveId);
+       this.weaponEnchants.save(compound);
     }
 
     /**
@@ -433,6 +434,7 @@ public class FURTameableEntity extends TamableAnimal {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
        super.readAdditionalSaveData(compound);
+       this.weaponEnchants.load(compound);
        switch(FURTameableEntity.State.byId(compound.getByte("state"))) {
 	       case SITTING:
 	       		this.doSitCommand(null);
