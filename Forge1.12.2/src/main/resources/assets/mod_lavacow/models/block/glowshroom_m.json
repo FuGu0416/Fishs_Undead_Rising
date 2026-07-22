@@ -2,6 +2,6 @@
 {
     "parent": "block/cross",
     "textures": {
-        "cross": "mod_lavacow:blocks/glowshroom_m"
+        "cross": "mod_lavacow:blocks/glowshroom2"
     }
 }

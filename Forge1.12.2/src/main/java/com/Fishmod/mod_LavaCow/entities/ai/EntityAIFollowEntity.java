@@ -32,6 +32,11 @@ public class EntityAIFollowEntity extends EntityAIBase
     float minDist;
     private float oldWaterCost;
 
+    public UUID getOwnerId()
+    {
+        return this.ownerID;
+    }
+
     public EntityAIFollowEntity(EntityLiving tameableIn, UUID uniqueIDIn, double followSpeedIn, float minDistIn, float maxDistIn)
     {
         this.tameable = tameableIn;

@@ -5,11 +5,11 @@
   "description": "${mod_description}",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://minecraft.curseforge.com/projects/fishs-undead-rising",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/fishs-undead-rising",
   "updateUrl": "",
   "authorList": ${mod_author},
   "credits": "Thanks to people and stuff.\n 1.12.2 Long Term Support & Backporting:\n [*] IcarussOne - Coding\n [*] ACGaming - Coding Help\n [*] xJon - Testing & Feedback",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }

@@ -14,13 +14,19 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class WorldGenGlowShroom extends WorldGenerator {
     private BlockGlowShroom glowshroom = Modblocks.GLOWSHROOM;
     private int spawnRate;
+    private int maxY = 70;
 
     public WorldGenGlowShroom() {
     }
 
     public boolean generate(BlockGlowShroom shroom, World worldIn, Random rand, BlockPos position, int spawnRate) {
+        return generate(shroom, worldIn, rand, position, spawnRate, 70);
+    }
+
+    public boolean generate(BlockGlowShroom shroom, World worldIn, Random rand, BlockPos position, int spawnRate, int maxY) {
         this.glowshroom = shroom;
         this.spawnRate = spawnRate;
+        this.maxY = maxY;
         return generate(worldIn, rand, position);
     }
 
@@ -29,7 +35,7 @@ public class WorldGenGlowShroom extends WorldGenerator {
         for (int i = 0; i < 64; ++i) {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-            if (blockpos.getY() >= 70 || rand.nextInt(100) >= this.spawnRate) {
+            if (blockpos.getY() >= this.maxY || rand.nextInt(100) >= this.spawnRate) {
                 continue;
             }
             if (!worldIn.isAirBlock(blockpos) || !glowshroom.canBlockStay(worldIn, blockpos, glowshroom.getDefaultState())) {

@@ -115,7 +115,7 @@ public class EntityScarab extends EntityFishTameable implements IAggressive {
     }
 
     public float getBonusDamage(EntityLivingBase entityLivingBaseIn) {
-        return (0.5f * this.sharpness + 0.5f)
+        return (this.sharpness > 0 ? 0.5f * this.sharpness + 0.5f : 0.0f)
                 + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.ARTHROPOD) ? (float) bane_of_arthropods * 2.5f : 0)
                 + (entityLivingBaseIn.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) ? (float) smite * 2.5f : 0);
     }
@@ -365,7 +365,7 @@ public class EntityScarab extends EntityFishTameable implements IAggressive {
         this.sharpness = compound.getInteger("sharpness");
         this.knockback = compound.getInteger("knockback");
         this.bane_of_arthropods = compound.getInteger("bane_of_arthropods");
-        this.smite = compound.getInteger("fire_aspect");
+        this.smite = compound.getInteger("smite");
         this.lifesteal = compound.getInteger("lifesteal");
         this.poisonous = compound.getInteger("poisonous");
         this.corrosive = compound.getInteger("corrosive");

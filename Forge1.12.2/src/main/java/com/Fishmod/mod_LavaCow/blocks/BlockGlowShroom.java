@@ -18,7 +18,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
@@ -66,13 +69,24 @@ public class BlockGlowShroom extends BlockMushroom{
 		super();
 		this.blockSoundType = SoundType.PLANT;
 		this.isGlowshroom = isGlowshroom;
-		this.setLightLevel(isGlowshroom? 1.0F : 0.0F);
+		this.setLightLevel(isGlowshroom? 10.0F / 15.0F : 0.0F);
 		this.setCreativeTab(mod_LavaCow.TAB_ITEMS);
     }
 	
     protected PropertyInteger getAgeProperty()
     {
         return AGE;
+    }
+
+    /**
+     * Glowshrooms render fullbright (1.12.2 equivalent of 1.20.1's emissive overlay quads)
+     * while only emitting light level 10, matching the 1.20.1 block.
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return this.isGlowshroom ? 0xF000F0 : super.getPackedLightmapCoords(state, source, pos);
     }
 		
 	@Override
@@ -128,7 +142,13 @@ public class BlockGlowShroom extends BlockMushroom{
             }
             else
             {
-            	return ((SpawnUtil.isDay(worldIn) && this.isGlowshroom) || worldIn.getLight(pos) < 10) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+            	// Issue #228: read stored chunk light directly -- World.getLight() goes through
+            	// Chunk.getLightSubtracted, which the Alfheim lighting engine flushes
+            	// synchronously; during chunk population that stalls worldgen.
+            	Chunk chunk = worldIn.getChunk(pos);
+            	int blockLight = chunk.getLightFor(EnumSkyBlock.BLOCK, pos);
+            	int skyLight = Math.max(0, chunk.getLightFor(EnumSkyBlock.SKY, pos) - worldIn.getSkylightSubtracted());
+            	return ((SpawnUtil.isDay(worldIn) && this.isGlowshroom) || Math.max(blockLight, skyLight) < 10) && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
             }
         }
         else

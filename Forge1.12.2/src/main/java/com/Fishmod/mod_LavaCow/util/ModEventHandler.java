@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -32,6 +33,7 @@ import com.Fishmod.mod_LavaCow.item.ItemFamineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemFelArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGhostlyArmor;
 import com.Fishmod.mod_LavaCow.item.ItemGoldenHeart;
+import com.Fishmod.mod_LavaCow.item.ItemSkeletonKingCrown;
 import com.Fishmod.mod_LavaCow.item.ItemSoulforgedArmor;
 import com.Fishmod.mod_LavaCow.item.ItemSwineArmor;
 import com.Fishmod.mod_LavaCow.item.ItemVespaShield;
@@ -511,7 +513,8 @@ public class ModEventHandler {
 
         if (Modconfig.pSpawnRate_Glowshroom > 0 && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) && world.provider.isSurfaceWorld() && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
             WorldGenGlowShroom gen = new WorldGenGlowShroom();
-            gen.generate(Modblocks.GLOWSHROOM, world, rand, world.getHeight(event.getChunkPos().getBlock(8, 0, 8)), Modconfig.pSpawnRate_Glowshroom);
+            // Underground-only (y < 32): seed the cluster in cave range instead of at the surface.
+            gen.generate(Modblocks.GLOWSHROOM, world, rand, event.getChunkPos().getBlock(8, 4 + rand.nextInt(24), 8), Modconfig.pSpawnRate_Glowshroom, 32);
         }
 
         if (Modconfig.pSpawnRate_Bloodtooth > 0 && BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER) && event.getType() == DecorateBiomeEvent.Decorate.EventType.SHROOM) {
@@ -698,10 +701,10 @@ public class ModEventHandler {
             event.setAmount(event.getAmount() * 0.5F);
         }
 
+        // Enchantment bonus damage is applied once in onEHurt (LivingHurtEvent); this handler
+        // only keeps the lifesteal healing so the bonus is not added a second time post-armor.
         if (event.getSource().getTrueSource() instanceof EntityLilSludge) {
             EntityLivingBase Owner = ((EntityLilSludge) event.getSource().getTrueSource()).getOwner();
-
-            event.setAmount(event.getAmount() + ((EntityLilSludge) event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
 
             if (Owner != null)
                 Owner.heal(event.getAmount() * ((EntityLilSludge) event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
@@ -710,16 +713,12 @@ public class ModEventHandler {
         if (event.getSource().getTrueSource() instanceof EntitySummonedZombie) {
             EntityLivingBase Owner = ((EntitySummonedZombie) event.getSource().getTrueSource()).getOwner();
 
-            event.setAmount(event.getAmount() + ((EntitySummonedZombie) event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
-
             if (Owner != null)
                 Owner.heal(event.getAmount() * ((EntitySummonedZombie) event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
         }
 
         if (event.getSource().getTrueSource() instanceof EntityScarab) {
             EntityLivingBase Owner = ((EntityScarab) event.getSource().getTrueSource()).getOwner();
-
-            event.setAmount(event.getAmount() + ((EntityScarab) event.getSource().getTrueSource()).getBonusDamage(event.getEntityLiving()));
 
             if (Owner != null)
                 Owner.heal(event.getAmount() * ((EntityScarab) event.getSource().getTrueSource()).getLifestealLevel() * 0.05f);
@@ -998,17 +997,69 @@ public class ModEventHandler {
         }
 
         // Passive
-        /*if (event.getTarget() != null) {
-        	Boolean hasCrown = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN);
-        	
-    		if (ModList.get().isLoaded("curios") && !hasCrown) {
-    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN, event.getTarget()) != ItemStack.EMPTY);
-    		}
-    		
-        	if (event.getEntity() instanceof AbstractSkeletonEntity && hasCrown) {
-        		((MobEntity) event.getEntityLiving()).setTarget(null);
-        	}
-        }*/
+        if (event.getTarget() != null && event.getEntityLiving() instanceof EntityCreature && ItemSkeletonKingCrown.isEligible((EntityCreature) event.getEntityLiving()) && ItemSkeletonKingCrown.isWearingCrown(event.getTarget())) {
+            ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
+        }
+    }
+
+    /**
+     * Drives the Skeleton King's Crown's escort effect from the governed mob's own tick rather than
+     * the wearer's armor tick, since armor ticking stops firing the moment the crown is removed and
+     * a removal needs to be noticed too. Every 20 ticks: a governed mob whose owner no longer wears
+     * the crown (offline, dead, unequipped -- see {@link ItemSkeletonKingCrown#getOwnerId}) is
+     * released back to its original AI; an ungoverned, eligible mob next to a wearer is placed under
+     * their command. No persisted flag is involved -- {@link ItemSkeletonKingCrown#getOwnerId} reads
+     * the AI task list directly, so this is fully self-correcting after a chunk reload with nothing
+     * left to desync. Eligibility ({@link ItemSkeletonKingCrown#isEligible}) covers vanilla
+     * AbstractSkeleton plus EntityBoneWorm; see that method's javadoc for why 1.12.2 can't do this
+     * as a data tag the way 1.20.1/1.16.5 do.
+     */
+    @SubscribeEvent
+    public void onSkeletonGuardUpkeep(LivingUpdateEvent event) {
+        if (!(event.getEntityLiving() instanceof EntityCreature) || event.getEntityLiving().world.isRemote) {
+            return;
+        }
+
+        EntityCreature skeleton = (EntityCreature) event.getEntityLiving();
+        if (!ItemSkeletonKingCrown.isEligible(skeleton)) {
+            return;
+        }
+        if (skeleton.ticksExisted % 20 != 0) {
+            return;
+        }
+
+        UUID ownerId = ItemSkeletonKingCrown.getOwnerId(skeleton);
+
+        if (ownerId != null) {
+            EntityLivingBase owner = SpawnUtil.getEntityByUniqueId(ownerId, skeleton.world);
+            if (!(owner instanceof EntityPlayer) || !ItemSkeletonKingCrown.isWearingCrown(owner)) {
+                ItemSkeletonKingCrown.release(skeleton);
+            }
+            return;
+        }
+
+        if (!ItemSkeletonKingCrown.canGovern(skeleton)) {
+            return;
+        }
+
+        EntityPlayer nearestWearer = null;
+        double nearestDistSqr = Double.MAX_VALUE;
+
+        for (EntityPlayer player : skeleton.world.getEntitiesWithinAABB(EntityPlayer.class, skeleton.getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
+            if (!ItemSkeletonKingCrown.isWearingCrown(player)) {
+                continue;
+            }
+
+            double distSqr = skeleton.getDistanceSq(player);
+            if (distSqr < nearestDistSqr) {
+                nearestDistSqr = distSqr;
+                nearestWearer = player;
+            }
+        }
+
+        if (nearestWearer != null) {
+            ItemSkeletonKingCrown.govern(skeleton, nearestWearer);
+        }
     }
 
     @SubscribeEvent
