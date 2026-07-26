@@ -66,7 +66,11 @@ public class FURTameableEntity extends TamableAnimal {
 	protected void registerGoals() {
     	this.wander = this.wanderGoal();
     	this.follow = this.followGoal();
-    	this.aiSit = new SitWhenOrderedToGoal(this);    	
+    	this.aiSit = new SitWhenOrderedToGoal(this);
+    	// Must be registered so it keeps re-stopping navigation every tick while sitting —
+    	// switchState's one-shot getNavigation().stop() alone isn't enough: other goals like
+    	// BreedGoal don't check isInSittingPose() and would otherwise walk a "sitting" pet.
+    	this.goalSelector.addGoal(1, this.aiSit);
     	this.goalSelector.addGoal(7, this.wander);
 	}
 	
@@ -259,7 +263,7 @@ public class FURTameableEntity extends TamableAnimal {
 	            }
 	
 	            return InteractionResult.CONSUME;
-	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && this.getUsedItemHand().equals(hand)) {  
+	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && hand == InteractionHand.MAIN_HAND) {
 	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty()) {
 	    			if (this.state.equals(FURTameableEntity.State.WANDERING)) {
 	    				if (this.canSitCondition()) {
@@ -284,32 +288,38 @@ public class FURTameableEntity extends TamableAnimal {
     }
     
     @Override
-    public void tame(Player player) {   	
+    public void tame(Player player) {
     	super.tame(player);
     	this.setPersistenceRequired();
-    	this.doSitCommand(null);
+    	// Goes straight to FOLLOWING — doSitCommand(null) here would just be
+    	// immediately overwritten by doFollowCommand's own goal churn.
     	this.doFollowCommand(null);
     }
     
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void tick() {
         super.tick();
-        
+
         if (!this.level().isClientSide && FURConfig.Suicidal_Minion.get() && (this.getOwner() != null && (!(this.getOwner() instanceof Player) && !this.getOwner().isAlive()))) {
         	this.addTag("FUR_noLoot");
         	this.kill();
         }
-    }      
-    
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
            return false;
         } else {
            Entity entity = source.getEntity();
            this.setOrderedToSit(false);
-           if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
+           // getEntity() is the indirect/causing entity (e.g. the skeleton that fired an arrow),
+           // never the projectile itself, so checking it for AbstractArrow was always false and
+           // never actually excluded arrow damage. getDirectEntity() is the projectile.
+           if (entity != null && !(entity instanceof Player) && !(source.getDirectEntity() instanceof AbstractArrow)) {
               amount = (amount + 1.0F) / 2.0F;
            }
 

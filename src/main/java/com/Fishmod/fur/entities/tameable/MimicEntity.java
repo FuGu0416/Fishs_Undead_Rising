@@ -40,6 +40,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -60,7 +61,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.PlayerEnderChestContainer;
@@ -136,9 +136,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
 	
     @Override
-    protected void registerGoals() {   	
+    protected void registerGoals() {
     	super.registerGoals();
-    	this.goalSelector.addGoal(1, this.aiSit);
+    	// aiSit is now registered by the base class's own registerGoals(); this used to
+    	// duplicate that registration (same Goal instance at the same priority).
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.applyEntityAI();
@@ -247,12 +248,16 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	return -1;
     }
     
+	@Override
 	public void setInSittingPose(boolean sitting) {
+		// Capture the pose before super changes it — comparing afterwards made both
+		// conditions unsatisfiable, so the hide_in/hide_out animations never fired.
+		boolean wasSitting = this.isInSittingPose();
 		super.setInSittingPose(sitting);
 
-		if (!this.isInSittingPose() && sitting) {
+		if (!wasSitting && sitting) {
 			this.level().broadcastEntityEvent(this, (byte)9);
-		} else if (this.isInSittingPose() && !sitting) {
+		} else if (wasSitting && !sitting) {
 			this.level().broadcastEntityEvent(this, (byte)10);
 		}
 	}
@@ -266,6 +271,17 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	    super.tick();
 
 	    if (this.level().isClientSide) return;
+
+	    // These must run in every state — DORMANT included (they used to sit behind the
+	    // dormant early-return, so hidden mimics never peeked and paused egg incubation).
+	    if (this.tickCount % 20 == 0) {
+	        this.tickEggIncubation();
+	    }
+
+		if ((state == MimicState.DORMANT || state == MimicState.TAME_IDLE) && !this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
+			this.level().broadcastEntityEvent(this, (byte)11);
+		}
+
 	    if (state == MimicState.DORMANT) {
 	    	return;
 	    }
@@ -275,7 +291,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	            this.enterAmbush();
 	        }
 	    }
-	    
+
 	    int skin = this.getSkin();
 	    if (--distanceCheckCooldown <= 0) {
 	        this.distanceCheckCooldown = 20;
@@ -285,21 +301,18 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	            this.returnToDormant();
 	        }
 
-		    if (skin != MimicModel.getVoidSkin() && this.getMainHandItem() != null) {
-		    	ItemStack stack = this.inventory.addItem(this.getMainHandItem());
-		    	
-		    	if (!stack.isEmpty()) {
-		    		this.spawnAtLocation(stack, 0.2F);
-		    	} else {
-		    		this.getMainHandItem().setCount(0);
+		    if (skin != MimicModel.getVoidSkin() && !this.getMainHandItem().isEmpty()) {
+		    	// addItem copies the stack, so always clear the hand afterwards — a partial fit
+		    	// used to leave the hand loaded and re-drop the leftover every cycle (item dup).
+		    	ItemStack leftover = this.inventory.addItem(this.getMainHandItem());
+		    	this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+
+		    	if (!leftover.isEmpty()) {
+		    		this.spawnAtLocation(leftover, 0.2F);
 		    	}
-		    }  
+		    }
 	    }
-		
-	    if (this.tickCount % 20 == 0) {
-	        this.tickEggIncubation();
-	    }
-	    
+
 		if (skin == MimicModel.getVoidSkin() && this.tickCount % 100 == 0) {
             for (int i = 0; i < 8; ++i) {
                 int j = this.random.nextInt(2) * 2 - 1;
@@ -312,10 +325,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
                 double d5 = (double)(this.random.nextFloat() * (float)k);
                 this.level().addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
             }
-		}
-		
-		if ((state == MimicState.DORMANT || state == MimicState.TAME_IDLE) && !this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
-			this.level().broadcastEntityEvent(this, (byte)11);
 		}
     }
 	
@@ -359,10 +368,16 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 
 	        if (time >= MIMIC_EGG_HATCH_TIME) {
 	        	this.inventory.removeItem(i, 1);
+	        	// Stacked eggs share this tag — restart incubation for the ones left behind,
+	        	// otherwise they cascade-hatch one per second off the inherited full timer.
+	        	ItemStack rest = this.inventory.getItem(i);
+	        	if (rest.is(FURItemRegistry.MIMIC_EGG.get())) {
+	        		rest.getOrCreateTag().putInt("HatchTime", 0);
+	        	}
 	        	if (this.level() instanceof ServerLevel server) {
 	        		super.spawnChildFromBreeding(server, this);
 	        	}
-	            return; 
+	            return;
 	        }
 	        
 	        tag.putInt("HatchTime", time);
@@ -382,7 +397,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public void travel(Vec3 travelVector) {
 		if (this.isInSittingPose()) {
-            this.setDeltaMovement(Vec3.ZERO);
+			// No walk input while planted, but keep gravity/friction so the mimic
+			// falls when its support block is removed instead of hovering.
+			super.travel(Vec3.ZERO);
 	    } else {
 			super.travel(travelVector);
 		}
@@ -399,7 +416,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     		this.triggerAmbush(null);
     	}
 		
-    	if (this.isTame() && entity != null && !(entity instanceof Player) && !(entity instanceof Arrow)) {
+    	// Damage buffer for tamed mimics — skipped whenever a player caused the damage,
+    	// directly or through any projectile (the old direct-entity Arrow check missed
+    	// spectral arrows, tridents and fireballs).
+    	if (this.isTame() && entity != null && !(source.getEntity() instanceof Player)) {
     		amount = (amount + 1.0F) / 2.0F;
     	}
 
@@ -436,17 +456,32 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         this.setSilent(false);
 
     	if (this.getSkin() == MimicModel.getVoidSkin()) {
-	       for (int i = 0; i < this.inventory.getContainerSize(); i++) {
-	    	   ItemStack is = this.inventory.getItem(i);
-
-	    	   if (!is.isEmpty()) {
-	    		   this.spawnAtLocation(is.copy(), 0.2F);
-	    		   is.shrink(is.getCount());
-	    	   }
-	       }
+    		this.dumpInventory();
     	}
-    	
+
     	this.setInSittingPose(false);
+    }
+
+    /** Drop the chest inventory's contents on the ground and empty it. */
+    private void dumpInventory() {
+    	for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+    		ItemStack is = this.inventory.getItem(i);
+
+    		if (!is.isEmpty()) {
+    			this.spawnAtLocation(is.copy(), 0.2F);
+    			is.shrink(is.getCount());
+    		}
+    	}
+    }
+
+    private void playSkinConversionEffects() {
+    	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
+    	for (int i = 0; i < 16; ++i) {
+    		double d0 = this.getRandom().nextGaussian() * 0.02D;
+    		double d1 = this.getRandom().nextGaussian() * 0.02D;
+    		double d2 = this.getRandom().nextGaussian() * 0.02D;
+    		this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (2.0D * this.getRandom().nextFloat() - 1.0D) * this.getBbWidth(), this.getY() + (this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (2.0D * this.getRandom().nextFloat() - 1.0D) * this.getBbWidth(), d0, d1, d2);
+    	}
     }
     
     @Override
@@ -456,7 +491,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         
         if (itemstack.getItem() instanceof SpawnEggItem) {
             return super.mobInteract(player, hand);
-        } else if (this.isTame() && this.getOwner().equals(player)) {
+        // isOwnedBy compares UUIDs — getOwner().equals(player) NPE'd when the owner
+        // was offline or in another dimension and someone else interacted.
+        } else if (this.isTame() && this.isOwnedBy(player)) {
         	if (player.isCrouching() && !(item instanceof BeastcallHornItem)) {
         		if (this.getSkin() == MimicModel.getVoidSkin()) {	
         			PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
@@ -472,45 +509,28 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
         	}
 
-            if (!itemstack.isEmpty()) {            	
-            	if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == Items.ENDER_EYE) {
-             	   if (!player.getAbilities().instabuild) {
-                        itemstack.shrink(1);
-             	   }
-             	   this.setSkin(MimicModel.getVoidSkin());
-             	   ItemStack is;
- 
-        	       for (int i = 0; i < this.inventory.getContainerSize();i++) {
-        	    	   is = this.inventory.getItem(i);
-        	    	   if (!is.isEmpty()) {
-	    					this.spawnAtLocation(is.copy(), 0.2F);
-	    					is.shrink(is.getCount());        	    		   
-        	    	   }
-        	       }
- 	       			
-        	       this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
-        	       for (int i = 0; i < 16; ++i) {
-        	    	   double d0 = this.getRandom().nextGaussian() * 0.02D;
-        	    	   double d1 = this.getRandom().nextGaussian() * 0.02D;
-        	    	   double d2 = this.getRandom().nextGaussian() * 0.02D;
- 		               this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
-        	       }
+            if (!itemstack.isEmpty()) {
+            	if (this.getSkin() != MimicModel.getVoidSkin() && item == Items.ENDER_EYE) {
+            		if (!player.getAbilities().instabuild) {
+            			itemstack.shrink(1);
+            		}
+            		this.setSkin(MimicModel.getVoidSkin());
+            		// Void mimics expose the owner's ender chest instead of their own
+            		// inventory — empty it first so nothing becomes unreachable.
+            		this.dumpInventory();
+            		this.playSkinConversionEffects();
 
-        	       return InteractionResult.SUCCESS;
-                } else if (this.isOwnedBy(player) && this.getSkin() != MimicModel.getVoidSkin() && item == FURItemRegistry.MOOTEN_HEART.get()) {
+            		return InteractionResult.sidedSuccess(this.level().isClientSide);
+                } else if (this.getSkin() != MimicModel.getNetherSkin() && this.getSkin() != MimicModel.getVoidSkin() && item == FURItemRegistry.MOOTEN_HEART.get()) {
                 	if (!player.getAbilities().instabuild) {
                 		itemstack.shrink(1);
                 	}
-					this.setSkin(6);
-					this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
-					for (int i = 0; i < 16; ++i) {
-					    double d0 = this.getRandom().nextGaussian() * 0.02D;
-					    double d1 = this.getRandom().nextGaussian() * 0.02D;
-					    double d2 = this.getRandom().nextGaussian() * 0.02D;
-					    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)(this.getRandom().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), this.getY() + (double)(this.getRandom().nextFloat() * this.getBbHeight()), this.getZ() + (double)(this.getRandom().nextFloat() * this.getBbWidth()) - (double)this.getBbWidth(), d0, d1, d2);
-					}
+                	// getNetherSkin(), not a hardcoded index — the old literal 6 pointed at the
+                	// void skin after the texture pool grew, clashing with the ender-eye path.
+                	this.setSkin(MimicModel.getNetherSkin());
+                	this.playSkinConversionEffects();
 
-  	       			return InteractionResult.SUCCESS;
+                	return InteractionResult.sidedSuccess(this.level().isClientSide);
                  }
             }
 
@@ -566,7 +586,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     }
     
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {   	
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnTypeIn, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {
+        entityLivingData = super.finalizeSpawn(worldIn, difficulty, spawnTypeIn, entityLivingData, tag);
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
@@ -593,8 +614,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         if (lootTable != null && this.level().getServer() != null) {
            LootTable loottable = this.level().getServer().getLootData().getLootTable(lootTable);
 
-           lootTable = null;
-           LootParams.Builder lootcontext$builder = (new LootParams.Builder((ServerLevel)this.level())).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.blockPosition())).withLuck(-5.0F);
+           LootParams.Builder lootcontext$builder =(new LootParams.Builder((ServerLevel)this.level())).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.blockPosition())).withLuck(-5.0F);
 
            loottable.fill(this.inventory, lootcontext$builder.create(LootContextParamSets.CHEST), lootTableSeed);
         }
@@ -653,6 +673,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     /**
      * Handler for {@link World#setEntityState}
      */
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 9) {
@@ -682,6 +703,17 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		this.inventory.fromTag(compound.getList("Items", 10));
 		this.setSkin(compound.getInt("Variant"));
 		this.setChestTexture(compound.getString("Chest"));
+
+		// Restore the state machine — without this a reloaded mimic reverts to the
+		// HOSTILE_ACTIVE field default while its NoAI/sitting flags say otherwise.
+		if (compound.contains("MimicState")) {
+			try {
+				this.state = MimicState.valueOf(compound.getString("MimicState"));
+			} catch (IllegalArgumentException e) {
+				this.state = this.isTame() ? MimicState.TAME_ACTIVE : MimicState.HOSTILE_ACTIVE;
+			}
+		}
+		this.stateTimer = compound.getInt("StateTimer");
     }
 
     /**
@@ -693,6 +725,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		compound.put("Items", this.inventory.createTag());
         compound.putInt("Variant", getSkin());
         compound.putString("Chest", getChestTexture());
+        compound.putString("MimicState", this.state.name());
+        compound.putInt("StateTimer", this.stateTimer);
     }
     
     @Override
@@ -756,6 +790,10 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
         this.setAge(6000);
         partner.setAge(6000);
+        // Vanilla resets love here too — without it the pair keeps re-breeding for the
+        // whole 600-tick love window and one feeding yields a stack of eggs.
+        this.resetLove();
+        partner.resetLove();
 
         ItemStack egg = new ItemStack(FURItemRegistry.MIMIC_EGG.get());
 
@@ -765,8 +803,6 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         } else if (partner instanceof MimicEntity mimic && mimic.inventory.canAddItem(egg)) {
         	mimic.inventory.addItem(egg);
         	level.playSound(null, this.blockPosition(), SoundEvents.SNIFFER_EGG_PLOP, SoundSource.NEUTRAL, 1.0F, 1.0F);
-        } else {
-        	this.setInLoveTime(0);
         }
 
         level.broadcastEntityEvent(this, (byte) 18);
@@ -775,14 +811,18 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     @Override
 	public MimicEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {
 		MimicEntity entity = FUREntityRegistry.MIMIC.get().create(worldIn);
+		// Bred babies skip finalizeSpawn, so apply the config attributes here
+		// (setTame(true) below swaps in the tamed set for owned offspring).
+		entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
+		entity.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
 		UUID uuid = this.getOwnerUUID();
 		if (uuid != null) {
 			entity.setOwnerUUID(uuid);
 			entity.setTame(true);
-			entity.setHealth(this.getMaxHealth());
 			entity.setSkin(this.getRandom().nextBoolean() ? this.getSkin() : ((MimicEntity)ageable).getSkin());
 			if (entity.getSkin() == MimicModel.getVoidSkin()) entity.setSkin(0);
 		}
+		entity.setHealth(entity.getMaxHealth());
 
 		return entity;
 	}
@@ -813,12 +853,14 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 			this.mimic = (MimicEntity) this.mob;
 		}
     	
+		@Override
 		public boolean canUse() {
 			if (this.mimic.state == MimicState.DORMANT || this.mimic.state == MimicState.TAME_IDLE || this.mimic.isInSittingPose() || this.mimic.getSkin() == MimicModel.getVoidSkin()) return false;
-			
+
 			return super.canUse();
 		}
-		
+
+		@Override
 		public void stop() {
 			if (this.targetEntity != null && this.targetEntity.isAlive()) {
 				this.mimic.level().broadcastEntityEvent(this.mimic, (byte)40);
@@ -827,15 +869,15 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 		}
     }
 
-    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> animState) {
     	if (this.state == MimicState.DORMANT || this.state == MimicState.TAME_IDLE || this.isInSittingPose()) {
-			state.getController().setAnimation(IDLE_HIDE);
-    	} else if (state.isMoving() || !this.getNavigation().isDone()) {
-            state.getController().setAnimation(WALK);
+			animState.getController().setAnimation(IDLE_HIDE);
+    	} else if (animState.isMoving() || !this.getNavigation().isDone()) {
+            animState.getController().setAnimation(WALK);
         } else {
-			state.getController().setAnimation(IDLE);
+			animState.getController().setAnimation(IDLE);
         }
-        
+
         return PlayState.CONTINUE;
     }
     

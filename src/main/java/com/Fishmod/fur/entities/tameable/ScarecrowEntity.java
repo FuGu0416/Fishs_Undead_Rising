@@ -152,7 +152,7 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     protected boolean isSunBurnTick() {
         if (this.level().isDay() && !this.level().isClientSide) {
            float f = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-           BlockPos blockpos = new BlockPos((int)this.getX(), (int)Math.round(this.getY()), (int)this.getZ());
+           BlockPos blockpos = BlockPos.containing(this.getX(), Math.round(this.getY()), this.getZ());
            if (this.getVehicle() instanceof Boat) blockpos = blockpos.above();
            return (f > 0.5F && this.level().canSeeSky(blockpos));
         }
@@ -180,17 +180,20 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     		--this.cleaveTimer;
     	}
     	
-    	if (!this.isTame()) {
+    	if (!this.level().isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick()) {
-    			this.doSitCommand(null);
+    			// guarded so the full switchState goal churn doesn't rerun every tick all day
+    			if (this.state != FURTameableEntity.State.SITTING) {
+    				this.doSitCommand(null);
+    			}
     		} else if (this.state != FURTameableEntity.State.WANDERING) {
-    			this.doFollowCommand(null);
     			this.doWanderCommand(null);
     		}
     	}
-        
-        // accelerate crop growing
-        if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
+
+        // accelerate crop growing (server only — the client must not mutate block states,
+        // and the cave-vines branch casts the level to ServerLevel)
+        if (!this.level().isClientSide && this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
         	BlockPos origin = this.blockPosition();
         	int x = origin.getX() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
 			int z = origin.getZ() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
@@ -268,16 +271,16 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	    		
             	if (!player.getAbilities().instabuild) {
             		itemstack.shrink(1);
-            	}	    		
-	    		
-	    		return InteractionResult.SUCCESS;
+            	}
+
+	    		return InteractionResult.sidedSuccess(this.level().isClientSide);
 	    	
 	    	} else if (player.isCrouching() && !this.getMainHandItem().isEmpty()
 	    			&& !(item instanceof BeastcallHornItem)) {
 	    		this.spawnAtLocation(this.getMainHandItem());
 	    		this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-	    		
-	    		return InteractionResult.SUCCESS;
+
+	    		return InteractionResult.sidedSuccess(this.level().isClientSide);
 	    		
 	    	}/* else if (!this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
 	    		for(Entity passenger : player.getPassengers()) {
@@ -313,10 +316,23 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     
     @Override
 	public void doFollowCommand(Player playerIn) {
+    	this.restoreIdleBehavior();
+        super.doFollowCommand(playerIn);
+    }
+
+    @Override
+	public void doWanderCommand(Player playerIn) {
+    	this.restoreIdleBehavior();
+        super.doWanderCommand(playerIn);
+    }
+
+    /** Undo doSitCommand: re-install the look goals (remove first so repeated commands can't stack copies) and unmute. */
+    private void restoreIdleBehavior() {
+        this.goalSelector.removeGoal(this.watch);
+        this.goalSelector.removeGoal(this.look);
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
-		this.setSilent(false);
-        super.doFollowCommand(playerIn);
+        this.setSilent(false);
     }
     
 	@Override
@@ -364,19 +380,19 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     	this.setHealth(this.getMaxHealth());
     	
     	// Only scarecrows that spawn in a biome where ravens occur (HAS_RAVEN) can come with a raven rider.
-    	if (this.random.nextFloat() < 0.05F && !this.level().isClientSide
+    	if (this.random.nextFloat() < 0.05F
     			&& worldIn.getBiome(this.blockPosition()).is(FURBiomeTagsProvider.HAS_RAVEN)) {
+    		// trySpawnEntity goes through EntityType.spawn, which already adds the raven to the world.
     		RavenEntity crowpet = SpawnUtil.trySpawnEntity(FUREntityRegistry.RAVEN.get(), worldIn.getLevel(), this.blockPosition());
     		if (crowpet != null) {
     			crowpet.startRiding(this, true);
-    			this.level().addFreshEntity(crowpet);
     		}
     	}
         
         if (spawnTypeIn == MobSpawnType.COMMAND || spawnTypeIn == MobSpawnType.SPAWN_EGG || spawnTypeIn == MobSpawnType.SPAWNER || spawnTypeIn == MobSpawnType.DISPENSER) {
-        	this.setSkin(Integer.valueOf(this.random.nextInt(3)));
-        } else {       
-        	this.setSkin(Integer.valueOf(this.random.nextInt(2)));
+        	this.setSkin(this.random.nextInt(3));
+        } else {
+        	this.setSkin(this.random.nextInt(2));
         }
         
         this.setLeftHanded(true);
@@ -407,6 +423,7 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     /**
      * Handler for {@link World#setEntityState}
      */
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
@@ -432,24 +449,26 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
      * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
      * use in wolves.
      */
+    // "Planted" checks use the synced sitting pose rather than isSilent() — the silent flag
+    // is only a sound-mute side effect and can be flipped by commands or other mods.
     @Override
     public int getMaxHeadXRot() {
-        return this.isSilent() ? 0 : super.getMaxHeadXRot();
+        return this.isInSittingPose() ? 0 : super.getMaxHeadXRot();
     }
 
     @Override
     public int getMaxHeadYRot() {
-        return this.isSilent() ? 0 : super.getMaxHeadYRot();
+        return this.isInSittingPose() ? 0 : super.getMaxHeadYRot();
     }
-    
+
     @Override
     public int getHeadRotSpeed() {
-        return this.isSilent() ? 0 : super.getHeadRotSpeed();
+        return this.isInSittingPose() ? 0 : super.getHeadRotSpeed();
 	}
-	
+
     @Override
     public void travel(Vec3 travelVector) {
-    	if (!this.isSilent() || !this.level().getBlockState(this.blockPosition().below()).isSolid()) {
+    	if (!this.isInSittingPose() || !this.level().getBlockState(this.blockPosition().below()).isSolid()) {
     		super.travel(travelVector);
     	}
     }
@@ -548,6 +567,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         
 		if (!this.getMainHandItem().isEmpty()) {
 			this.spawnAtLocation(this.getMainHandItem());
+			// Clear the slot so dropCustomDeathLoot can't roll a second copy of the same weapon.
+			this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 		}
 	}
    
@@ -556,18 +577,20 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
            super(mob, 1.0D, true);
         }
         
-        public boolean canUse() {
-        	return !this.mob.isSilent() && super.canUse();
-        }
-        
+        // No canUse override needed: FURMeleeAttackGoal already refuses while a
+        // TamableAnimal is in its sitting ("planted") pose.
+
+    	@Override
     	protected int atkTimerMax() {
     		return ATTACK_TIMER;
     	}
-    	
+
+    	@Override
     	protected int atkTimerHit() {
     		return ((ScarecrowEntity) this.mob).AttackStance == (byte) 4 ? 12 : 5;
     	}
-    	
+
+    	@Override
     	protected byte atkTimerEvent() {
     		ScarecrowEntity sc = (ScarecrowEntity) this.mob;
 	        if (sc.cleaveTimer == 0) {
@@ -581,22 +604,28 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     		return sc.AttackStance;
     	}
     	
+    	@Override
     	protected void dmgEvent(LivingEntity target) {
     		this.mob.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
     		ScarecrowEntity sc = (ScarecrowEntity) this.mob;
     		if (sc.AttackStance == (byte)4 || sc.AttackStance == (byte)5) {
     			super.dmgEvent(target);
-    		} else {               
+    		} else {
+    			// Cleave always lands on the primary target — the trigger reach (getAttackReachSqr)
+    			// exceeds the 2-block AoE box, so an edge-of-reach swipe would otherwise whiff it.
+    			super.dmgEvent(target);
     			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {
-                    if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
-                    	if (!(entitylivingbase instanceof TamableAnimal tamable && (tamable.isOwnedBy(this.mob) || tamable.isOwnedBy(tamable.getOwner())))) {
+                    if (!entitylivingbase.equals(target) && !this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
+                    	// Spare only pets that share this scarecrow's owner.
+                    	if (!(entitylivingbase instanceof TamableAnimal tamable && tamable.getOwnerUUID() != null && tamable.getOwnerUUID().equals(sc.getOwnerUUID()))) {
                     		super.dmgEvent(entitylivingbase);
                     	}
                     }
                 }
-    		}   		  		         
+    		}
     	}
-    	
+
+    	@Override
         protected double getAttackReachSqr(LivingEntity target) {
             return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + target.getBbWidth());
         }

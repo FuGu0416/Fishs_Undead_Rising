@@ -74,22 +74,34 @@ public class MessageMountSpecial {
 	public static void handle(MessageMountSpecial message, Supplier<NetworkEvent.Context> context) {
 		context.get().setPacketHandled(true);
 		Player player = context.get().getSender();
+		if (player == null) {
+			return;
+		}
 		Entity entity = player.level().getEntity(message.Id);
+		// The entity id is client-supplied — only accept the mount the sender is actually riding.
+		if (entity == null || player.getVehicle() != entity) {
+			return;
+		}
 		Vec3 lookVec = player.getLookAngle();
-		
-		if (entity instanceof SalamanderEntity) {
+
+		if (entity instanceof SalamanderEntity salamander) {
+			// Cooldown is authoritative here; the client-side check is just prediction.
+			if (!salamander.isBarrageReady()) {
+				return;
+			}
+			salamander.startBarrageCooldown();
 			// Ridden special: lob a single Molten Glob along the rider's aim. The glob carries the
 			// lizard's own gravity (yPower set in its EntityType ctor), so add a slight upward bias to
 			// the launch velocity to counter the early drop and keep it tracking the crosshair.
 			MoltenGlobEntity glob = FUREntityRegistry.MOLTEN_GLOB.get().create(entity.level());
 			glob.setOwner(entity);
-			glob.moveTo(message.posX + lookVec.x * 2.0D, message.posY + (double)(entity.getBbHeight() / 2.0F) + 1.5D, message.posZ + lookVec.z * 2.0D, entity.getYRot(), entity.getXRot());
+			glob.moveTo(salamander.getX() + lookVec.x * 2.0D, salamander.getY() + (double)(entity.getBbHeight() / 2.0F) + 1.5D, salamander.getZ() + lookVec.z * 2.0D, entity.getYRot(), entity.getXRot());
 			double speed = 1.5D;
 			glob.setDeltaMovement(lookVec.x * speed, lookVec.y * speed + 0.15D, lookVec.z * speed);
 			glob.setFlame(true);
 			entity.level().addFreshEntity(glob);
 	   	 	entity.level().broadcastEntityEvent(entity, (byte)72);
-	   	 	entity.level().playSound(null, message.posX, message.posY, message.posZ, FURSoundRegistry.SALAMANDER_ATTACK_RANGE.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
+	   	 	entity.level().playSound(null, salamander.getX(), salamander.getY(), salamander.getZ(), FURSoundRegistry.SALAMANDER_ATTACK_RANGE.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F));
 		} else if (entity instanceof VespaEntity vespa) {
 			vespa.abilityCooldown = vespa.abilityCooldown();
 			entity.level().broadcastEntityEvent(entity, (byte)4);					

@@ -128,6 +128,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setMaxUpStep(1.0F);
         this.xpReward = 20;
     }
 
@@ -142,16 +143,15 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @Override
     protected void registerGoals() {   	
     	super.registerGoals();
-    	if (this.isNymph()) {
-    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 8, 5, 2.5D, 1.0D, 2.5D).withWindup(9);
-    	} else {
-    		this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D).withWindup(13);
-    	}
-    	
+    	// GROWING_STAGE is still the -1 default when the constructor runs this, so no stage
+    	// branching here — setGrowingStage swaps in the stage-specific ranged goal (and re-adds
+    	// it at priority 4, which this must match so priorities don't shift after a stage change).
+    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D).withWindup(13);
+
     	this.goalSelector.addGoal(0, new FloatGoal(this));
     	this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-    	this.goalSelector.addGoal(2, this.range_atk);
-    	this.goalSelector.addGoal(3, new SalamanderEntity.AttackGoal(this));   	
+    	this.goalSelector.addGoal(3, new SalamanderEntity.AttackGoal(this));
+    	this.goalSelector.addGoal(4, this.range_atk);
     	this.goalSelector.addGoal(4, new LookatFurnaceGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -183,15 +183,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	return new FollowOwnerGoal(this, 1.5D, 6.0F, 2.0F, false);
     }
     
-    /**
-     * Gets how bright this entity is.
-     */
-	public float getBrightness() {
-		return 1.0F;
-	}
-	
     public static boolean checkSalamanderSpawnRules(EntityType<? extends SalamanderEntity> entityTypeIn, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
-    	return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, (ServerLevelAccessor) level, spawnType, pos, randomSource);        
+    	return FURTameableEntity.checkMonsterSpawnRules(entityTypeIn, level, spawnType, pos, randomSource);
     }
     
     /**
@@ -204,9 +197,9 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 
     protected ItemStack getFishBucket() {
     	ItemStack stack = new ItemStack(FURItemRegistry.SALAMANDER_BUCKET.get());
-        CompoundTag CompoundTag = new CompoundTag();
-        this.addAdditionalSaveData(CompoundTag);
-        stack.getOrCreateTag().put("SalamanderData", CompoundTag);
+        CompoundTag tag = new CompoundTag();
+        this.addAdditionalSaveData(tag);
+        stack.getOrCreateTag().put("SalamanderData", tag);
         
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -224,33 +217,23 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         	if (!player.isCreative()) {
         		itemstack.shrink(64);
         	}
-        	this.setSkin(0);      	
-        	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
-        	for (int i = 0; i < 16; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), d0, d1, d2);
-            }
-        	
+        	this.setSkin(0);
+        	this.playSkinConversionEffects();
+
         	return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } else if (this.isTame() && itemstack.getItem() == FURItemRegistry.ECTOPLASM.get() && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 0) {
+        } else if (this.isOwnedBy(player) && itemstack.getItem() == FURItemRegistry.ECTOPLASM.get() && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 0) {
         	if (!player.isCreative()) {
         		itemstack.shrink(64);
         	}
-        	this.setSkin(1);  	
-        	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
-        	for (int i = 0; i < 16; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (this.random.nextFloat() * this.getBbWidth()) - this.getBbWidth(), d0, d1, d2);
-            }
-        	
+        	this.setSkin(1);
+        	this.playSkinConversionEffects();
+
         	return InteractionResult.sidedSuccess(this.level().isClientSide);
         } else if (this.isTame() && this.isNymph() && itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
+            if (!player.isCreative()) {
+            	itemstack.shrink(1);
+            }
             ItemStack itemstack1 = this.getFishBucket();
             if (!this.level().isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, itemstack1);
@@ -278,7 +261,17 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         
         return super.mobInteract(player, hand);
     }
-    
+
+    private void playSkinConversionEffects() {
+    	this.playSound(SoundEvents.AMBIENT_CAVE.get(), 1.0F, 1.0F);
+    	for (int i = 0; i < 16; ++i) {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (2.0D * this.random.nextFloat() - 1.0D) * this.getBbWidth(), this.getY() + (this.random.nextFloat() * this.getBbHeight()), this.getZ() + (2.0D * this.random.nextFloat() - 1.0D) * this.getBbWidth(), d0, d1, d2);
+        }
+    }
+
     @Override
     protected boolean canTameCondition() {
     	return this.isBaby() && super.canTameCondition();
@@ -342,6 +335,15 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         LivingEntity controller = this.getControllingPassenger();
         return controller instanceof Player p && p.getUUID().equals(player.getUUID());
     }
+
+    /** Ridden-special cooldown. The server gates MessageMountSpecial on this too, so a modified client can't spam it. */
+    public boolean isBarrageReady() {
+    	return this.barrage_CD == 0;
+    }
+
+    public void startBarrageCooldown() {
+    	this.barrage_CD = 80;
+    }
     
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
@@ -371,8 +373,27 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 
 	    	int age = this.getAge();
 	    	int expectedStage = age < -16000 ? 0 : age < -8000 ? 1 : age < 0 ? 2 : 3;
-	    	if (this.getGrowingStage() != expectedStage)
+	    	int currentStage = this.getGrowingStage();
+	    	if (currentStage != expectedStage) {
 	    		this.setGrowingStage(expectedStage);
+	    		// Growing up raises MAX_HEALTH; top health up so the health fraction is kept.
+	    		// Healing lives here (natural growth only, currentStage -1 means fresh spawn/load)
+	    		// and not in the setter, because readAdditionalSaveData also calls the setter and
+	    		// would otherwise grant a free heal on every world reload.
+	    		if (currentStage >= 0 && expectedStage > currentStage) {
+	    			switch (expectedStage) {
+	    				case 1:
+	    					this.heal(this.getHealth() * (0.15F / 0.25F));
+	    					break;
+	    				case 2:
+	    					this.heal(this.getHealth() * 0.5F);
+	    					break;
+	    				default:
+	    					this.heal(this.getHealth() * 2.0F / 3.0F);
+	    					break;
+	    			}
+	    		}
+	    	}
 
 	    	// savedFurnacePos no longer valid — sitting check first (cheap); block state throttled to every 20 ticks
     		if (this.savedFurnacePos != null
@@ -404,11 +425,11 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 		    		this.setBoostingFurnace(true);
 		    		
 			        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
-			        	CompoundTag CompoundTag = furnaceTileEntity.saveWithoutMetadata();
-					      
-						if (CompoundTag.contains("BurnTime") && CompoundTag.getInt("BurnTime") <= 100) {
-							CompoundTag.putInt("BurnTime", 200);										
-							furnaceTileEntity.load(CompoundTag);
+			        	CompoundTag tag = furnaceTileEntity.saveWithoutMetadata();
+
+						if (tag.contains("BurnTime") && tag.getInt("BurnTime") <= 100) {
+							tag.putInt("BurnTime", 200);
+							furnaceTileEntity.load(tag);
 							furnaceTileEntity.setChanged();
 							this.level().setBlock(this.savedFurnacePos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
 						}	
@@ -429,7 +450,8 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         }
     }
     
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier) {
+    @Override
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
     	if (fallDistance > 1.0F) {
     		this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
     	}
@@ -438,10 +460,10 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	if (i <= 0) {
     		return false;
     	} else {
-    		this.hurt(this.damageSources().fall(), (float)i);
+    		this.hurt(source, (float)i);
     		if (this.isVehicle()) {
     			for(Entity entity : this.getIndirectPassengers()) {
-    				entity.hurt(this.damageSources().fall(), (float)i);
+    				entity.hurt(source, (float)i);
     			}
     		}
 
@@ -450,6 +472,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	}
 	}
 
+	@Override
 	protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
 		return (int) Math.ceil((fallDistance * 0.5F - 3.0F) * damageMultiplier);
 	}
@@ -457,11 +480,11 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     @OnlyIn(Dist.CLIENT)
     private void ClientControl() {
     	Minecraft game = Minecraft.getInstance();
-    	
-		if (this.barrage_CD == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player)) {
-			this.barrage_CD = 80;
+
+		if (this.isBarrageReady() && game.player != null && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player)) {
+			this.startBarrageCooldown();
 			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ()));
-		}	
+		}
     }
     
     @Override
@@ -473,10 +496,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         super.onSyncedDataUpdated(key);
 	}
     
-    public boolean isTame() {
-        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
-     }
-   
     /**
      * Growing Stage: Nymph -> Child-> Adult
      */
@@ -491,8 +510,12 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         switch(i) {
 	        case 0:
 		    	this.xpReward = 5;
-		    	this.avoid_entity = new AvoidEntityGoal<>(this, Player.class, 4.0F, 0.8D, 1.6D);
-		    	this.goalSelector.addGoal(3, this.avoid_entity);
+		    	// Only untamed nymphs fear players; a tamed one must not flee its owner
+		    	// (this runs again on world load, after the tame flag is already set).
+		    	if (!this.isTame()) {
+		    		this.avoid_entity = new AvoidEntityGoal<>(this, Player.class, 4.0F, 0.8D, 1.6D);
+		    		this.goalSelector.addGoal(3, this.avoid_entity);
+		    	}
 		    	this.goalSelector.removeGoal(this.range_atk);
 		    	this.range_atk = new FURRangeAttackGoal<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL.get(), 1, 5, 1.0D, 0.1D, 1.0D).withWindup(13);
 		    	this.goalSelector.addGoal(4, this.range_atk);
@@ -514,21 +537,16 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.40D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.65D);
-	    		
-	    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	        	break;
 	        case 2:
 	    		this.xpReward = 15;
 	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.60D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.75D);
-	    		
-	    		this.heal(this.getHealth() * 0.5F);
         		break;
         	default:
     			this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
-    			this.heal(this.getHealth() * 2.0F / 3.0F);
-    			
+
     	    	this.xpReward = 20;
     	    	
     	    	this.goalSelector.removeGoal(this.avoid_entity);
@@ -548,11 +566,12 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	return this.getGrowingStage() == 0;
     }
     
-    public void setTamed(boolean tamed) {
-    	if(tamed) {
+    @Override
+    public void setTame(boolean tamed) {
+    	if(tamed && this.avoid_entity != null) {
     		this.goalSelector.removeGoal(this.avoid_entity);
     	}
-    	
+
     	super.setTame(tamed);
     }
     
@@ -629,7 +648,6 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	            this.setRot(this.getYRot(), this.getXRot());
 	            this.yBodyRot = this.getYRot();
 	            this.yHeadRot = this.getYRot();
-	            this.setMaxUpStep(1.0F);
 	            float f = controller.xxa * 0.5F;
 	            float f1 = controller.zza;
 	

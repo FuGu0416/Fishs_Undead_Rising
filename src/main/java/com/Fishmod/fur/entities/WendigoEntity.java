@@ -31,7 +31,6 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
@@ -95,7 +94,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
 	
     @Override
     protected void registerGoals() {
-        if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
+        if (!FURConfig.SunScreen_Mode.get()) this.goalSelector.addGoal(1, new FleeSunGoal(this, 1.0D));
     	this.goalSelector.addGoal(2, new AIWendigoLeapAtTarget(this, 0.7F));
         this.goalSelector.addGoal(3, new AttackGoal(this)); 
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -226,50 +225,56 @@ public class WendigoEntity extends Monster implements GeoEntity {
  	   private final WendigoEntity leaper;
  	   /** The entity that the leaper is leaping towards. */
  	   private LivingEntity leapTarget;
+ 	   /** Vertical launch power for the leap. */
+ 	   private final float leapMotionY;
 
  	   public AIWendigoLeapAtTarget(WendigoEntity leapingEntity, float leapMotionYIn) {
  	      this.leaper = leapingEntity;
+ 	      this.leapMotionY = leapMotionYIn;
  	      this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
  	   }
- 	   
+
  	   /**
  	    * Returns whether the EntityAIBase should begin execution.
  	    */
+ 	   @Override
  	   public boolean canUse() {
  		   this.leapTarget = this.leaper.getTarget();
  	       if (this.leapTarget == null || this.leaper.jumpTimer > 0) {
  	    	   return false;
  	       } else {
  	    	   float d0 = this.leaper.distanceTo(this.leapTarget);
- 	    	   if (!(d0 < 12.0F) && !(d0 > 20.0F)) {
+ 	    	   if (d0 >= 12.0F && d0 <= 20.0F) {
     			   return this.leaper.onGround();
  	    	   } else {
  	    		   return false;
  	         }
  	      }
  	   }
- 	   
+
  	   /**
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
+ 	   @Override
  	   public boolean canContinueToUse() {
  		   return this.leaper.onGround() && this.leaper.jumpTimer >= (JUMP_TIMER - 6);
  	   }
- 	   
+
  	   /**
  	    * Keep ticking a continuous task that has already been started
  	    */
+ 	   @Override
  	   public void tick() {
  		   Vec3 vector3d1 = new Vec3(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
- 		   float d0 = this.leaper.distanceTo(this.leapTarget);	
+ 		   float d0 = this.leaper.distanceTo(this.leapTarget);
  		   this.leaper.getLookControl().setLookAt(this.leapTarget, 30.0F, 30.0F);
- 		  
+
  		   if (this.leaper.jumpTimer == (JUMP_TIMER - 6)) {
  	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
  	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
  	 		   }
 
- 	 		   this.leaper.setDeltaMovement(vector3d1.x, vector3d1.y + 0.3F + 0.1F * SpawnUtil.clamp(this.leapTarget.getEyeY() - this.leaper.getY(), 0, 2), vector3d1.z);
+ 	 		   this.leaper.setDeltaMovement(vector3d1.x, vector3d1.y + this.leapMotionY + 0.1F * SpawnUtil.clamp(this.leapTarget.getEyeY() - this.leaper.getY(), 0, 2), vector3d1.z);
  	 		   this.leaper.setPouncing(true);
  		   }
  	   }
@@ -277,23 +282,18 @@ public class WendigoEntity extends Monster implements GeoEntity {
  	   /**
  	    * Execute a one shot task or start executing a continuous task
  	    */
- 	   public void start() {		   
+ 	   @Override
+ 	   public void start() {
  		  Vec3 vector3d = this.leapTarget.position().subtract(this.leaper.position());
- 		     
+
            this.leaper.getNavigation().stop();
            this.leaper.setYHeadRot(-((float) Math.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI));
-           this.leaper.yBodyRot = this.leaper.getYHeadRot(); 
+           this.leaper.yBodyRot = this.leaper.getYHeadRot();
  		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK.get(), 0.75F, 0.8F);
- 		   
+
  		   this.leaper.jumpTimer = JUMP_TIMER;
  		   this.leaper.level().broadcastEntityEvent(this.leaper, (byte)7);
- 	   }  	
- 	   
-       /**
-        * Reset the task's internal state. Called when this task is interrupted by another one
-        */
-       public void resetTask() {
-       }
+ 	   }
     }
 
 	@Override
@@ -347,62 +347,64 @@ public class WendigoEntity extends Monster implements GeoEntity {
            super(mob, 1.25D, false, ATTACK_TIMER);
         }
 
+    	@Override
     	protected int atkTimerMax() {
     		return ATTACK_TIMER;
     	}
-    	
+
+    	@Override
     	protected int atkTimerHit() {
-    		if (((WendigoEntity) this.mob).getAttackStance() == (byte)4) { 
+    		if (((WendigoEntity) this.mob).getAttackStance() == (byte)4) {
     			return 6;
     		} else {
     			return 10;
     		}
     	}
-    	
+
+    	@Override
     	protected byte atkTimerEvent() {
             ((WendigoEntity)this.mob).AttackStance = (byte)(4 + this.mob.getRandom().nextInt(3));
     		return ((WendigoEntity)this.mob).AttackStance;
     	}
-    	
+
+    	@Override
     	protected void dmgEvent(LivingEntity target) {
     		this.mob.swing(InteractionHand.MAIN_HAND);
     		float f = (float)this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
     		float f1 = (float)this.mob.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
     		float f2 = this.mob.level().getCurrentDifficultyAt(this.mob.blockPosition()).getEffectiveDifficulty();
-    		
+
     		if (((WendigoEntity)this.mob).AttackStance == (byte)4) {
     			f *= 1.5F;
     		}
-    		
+
+			// Wendigo is hostile (not owner-capable), so unlike the tameable entities'
+			// AttackGoal there is no "same owner" pet to spare from this cleave.
 			for (LivingEntity entitylivingbase : this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(1.5D))) {
                 if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
-                	if (!(entitylivingbase instanceof TamableAnimal && ((TamableAnimal) entitylivingbase).isOwnedBy(this.mob))) {
-                		boolean flag = entitylivingbase.hurt(this.mob.damageSources().mobAttack(this.mob), f);
-                		            			            			
-                		if (flag) {
-                			if (entitylivingbase instanceof Player) {
-                				((Player) entitylivingbase).disableShield(true);
-                			}
-                			
-                			if (f1 > 0.0F && entitylivingbase instanceof LivingEntity) {
-                				((LivingEntity)entitylivingbase).knockback(f1 * 0.5F, (double)Math.sin(this.mob.getYRot() * ((float)Math.PI / 180F)), (double)(-Math.cos(this.mob.getYRot() * ((float)Math.PI / 180F))));
-                				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-                			}
+            		boolean flag = entitylivingbase.hurt(this.mob.damageSources().mobAttack(this.mob), f);
 
-                			this.mob.doEnchantDamageEffects(this.mob, entitylivingbase);
-                			this.mob.setLastHurtMob(entitylivingbase);
-                			
-                            if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
-                            	entitylivingbase.setSecondsOnFire(2 * (int)f2);
-                            }
-                            
-                            if (entitylivingbase instanceof LivingEntity) {
-                                ((LivingEntity)entitylivingbase).addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20 * (int)f2, 4));
-                            }
-                		}   		         
-                	}
+            		if (flag) {
+            			if (entitylivingbase instanceof Player playerTarget) {
+            				playerTarget.disableShield(true);
+            			}
+
+            			if (f1 > 0.0F) {
+            				entitylivingbase.knockback(f1 * 0.5F, (double)Math.sin(this.mob.getYRot() * ((float)Math.PI / 180F)), (double)(-Math.cos(this.mob.getYRot() * ((float)Math.PI / 180F))));
+            				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+            			}
+
+            			this.mob.doEnchantDamageEffects(this.mob, entitylivingbase);
+            			this.mob.setLastHurtMob(entitylivingbase);
+
+                        if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
+                        	entitylivingbase.setSecondsOnFire(2 * (int)f2);
+                        }
+
+                        entitylivingbase.addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20 * (int)f2, 4));
+            		}
                 }
-            }    		
+            }
 
 			this.mob.level().playSound((Player)null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, this.mob.getSoundSource(), 1.0F, 1.0F);           		
     	}
@@ -431,7 +433,7 @@ public class WendigoEntity extends Monster implements GeoEntity {
 		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
 				.triggerableAnim("attack_l", ATTACK_L)
 				.triggerableAnim("attack_r", ATTACK_R)
-				.triggerableAnim("attck_smash", ATTACK_SMASH));
+				.triggerableAnim("attack_smash", ATTACK_SMASH));
 	}
 
 	@Override

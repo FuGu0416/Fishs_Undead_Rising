@@ -1,6 +1,7 @@
 package com.Fishmod.fur.client.layer;
 
 import com.Fishmod.fur.block.FURShroomBlock;
+import com.Fishmod.fur.entities.tameable.unburied.MycosisEntity;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FURBlockRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,7 +31,8 @@ public class LayerMycosis extends GeoRenderLayer<UnburiedEntity> {
     @Override
     public void renderForBone(PoseStack poseStack, UnburiedEntity entity, GeoBone model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
     	if (!(model.getName().equals("helmet") || model.getName().equals("Body_chest"))) return;
-    	
+    	if (entity instanceof MycosisEntity mycosis && mycosis.isSheared()) return;
+
     	BlockState blockstate;
     	if (entity.getSkin() == 2) {
     		// Pick a Glowshroom variant (AGE_2 → glowshroom1/2/3) from the UUID mixed with the bone name,

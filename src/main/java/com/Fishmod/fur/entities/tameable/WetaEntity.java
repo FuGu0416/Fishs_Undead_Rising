@@ -50,7 +50,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -90,9 +89,9 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.ROTTEN_FLESH/*FURItemRegistry.PLAGUED_PORKCHOP*/), false));
-        //this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.GREEN_BACON_AND_EGGS), false));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));    
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.PLAGUED_PORKCHOP.get()), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemRegistry.GREEN_BACON_AND_EGGS.get()), false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(5, new EntityAIDestroyCrops(this, 1.1D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -135,36 +134,25 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     /**
      * Called when the entity is attacked.
      */
+    @Override
     public boolean hurt(DamageSource source, float amount) {
     	if(source.equals(damageSources().cactus()) || source.equals(damageSources().sweetBerryBush()))
     		return false;
     	return super.hurt(source, amount);
     }
-    
+
+    @Override
     protected float getJumpPower() {
         return 1.5F * super.getJumpPower();
     }
-    
-    @Override
-	public void doSitCommand(Player playerIn) {
-    	super.doSitCommand(playerIn);
-    }
-    
-    @Override
-	public void doWanderCommand(Player playerIn) {
-    	super.doWanderCommand(playerIn);
-    }
-        
-    @Override
-    protected void reassessTameGoals() {
-    	super.reassessTameGoals();
-    }
-    
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
-           	
-    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD.get() && this.getSkin() == 0) {
+
+    	// Wild-only corruption item — without the tame check anyone could permanently
+    	// ruin another player's already-tamed pet (skin 2 can never be tamed again).
+    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD.get() && this.getSkin() == 0 && !this.isTame()) {
     		if (!player.isCreative()) {
     			itemstack.shrink(1);
     		}
@@ -185,14 +173,15 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
         return super.mobInteract(player, hand);
     }
     
+    @Override
     public boolean doHurtTarget(Entity entityIn) {
         if (super.doHurtTarget(entityIn)) {
         	this.level().broadcastEntityEvent(this, (byte)4);
 
-            if(entityIn instanceof LivingEntity && this.getSkin() == 2) {	            
-            	((LivingEntity)entityIn).addEffect(new MobEffectInstance(FUREffectRegistry.SOILED.get(), 8 * 20, 1));
+            if (entityIn instanceof LivingEntity le && this.getSkin() == 2) {
+            	le.addEffect(new MobEffectInstance(FUREffectRegistry.SOILED.get(), 8 * 20, 1));
             }
-            
+
             return true;
         } else {
             return false;
@@ -205,24 +194,24 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
      */
     @Override
     public boolean isFood(ItemStack stack) {
-       return stack.getItem().equals(Items.ROTTEN_FLESH);//stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP) || stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS);
+       return stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP.get()) || stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS.get());
     }
 
     @Override
     protected boolean canTameCondition() {
     	return !this.isTame() && !this.isBaby() && this.getSkin() != 2;
     }
-    
-   /* @Override
+
+    @Override
     protected int TameRate(ItemStack stack) {
-    	if (stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP)) {
+    	if (stack.getItem().equals(FURItemRegistry.PLAGUED_PORKCHOP.get())) {
     		return 3;
-    	} else if (stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS)) {
+    	} else if (stack.getItem().equals(FURItemRegistry.GREEN_BACON_AND_EGGS.get())) {
     		return 1;
     	} else {
     		return super.TameRate(stack);
     	}
-    }*/
+    }
     
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
@@ -258,6 +247,7 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     /**
      * Handler for {@link World#setEntityState}
      */
+	@Override
 	@OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
     	if (id == 4) {
@@ -310,14 +300,21 @@ public class WetaEntity extends FURTameableEntity implements GeoEntity {
     	this.playSound(SoundEvents.SPIDER_STEP, 0.15F, 1.0F);
 	}
     
+	@Override
 	public WetaEntity getBreedOffspring(ServerLevel worldIn, AgeableMob ageable) {
 		WetaEntity entity = FUREntityRegistry.WETA.get().create(worldIn);
+		// Bred babies never go through finalizeSpawn (vanilla's spawnChildFromBreeding
+		// calls getBreedOffspring then addFreshEntity directly), so apply the config
+		// attributes here — otherwise the offspring keeps createAttributes()'s hardcoded
+		// defaults instead of FURConfig.Weta_Health/Weta_Attack.
+		entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Weta_Health.get());
+		entity.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Weta_Attack.get());
 		UUID uuid = this.getOwnerUUID();
 		if (uuid != null) {
 			entity.setOwnerUUID(uuid);
 			entity.setTame(true);
-			entity.setHealth(this.getMaxHealth());
 		}
+		entity.setHealth(entity.getMaxHealth());
 
 		return entity;
 	}
