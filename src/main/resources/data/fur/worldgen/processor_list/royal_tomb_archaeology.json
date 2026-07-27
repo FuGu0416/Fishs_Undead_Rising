@@ -1,0 +1,579 @@
+﻿{
+    "processors":  [
+                       {
+                           "processor_type":  "minecraft:rule",
+                           "rules":  [
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_block_match",
+                                                                     "block":  "minecraft:sand",
+                                                                     "probability":  0.15
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "position_predicate":  {
+                                                                        "predicate_type":  "minecraft:axis_aligned_linear_pos",
+                                                                        "axis":  "y",
+                                                                        "min_dist":  5,
+                                                                        "max_dist":  8,
+                                                                        "min_chance":  1.0,
+                                                                        "max_chance":  0.0
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:suspicious_sand",
+                                                                  "Properties":  {
+                                                                                     "dusted":  "0"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_loot",
+                                                                           "loot_table":  "fur:chests/royal_tomb_archaeology"
+                                                                       }
+                                         }
+                                     ]
+                       },
+                       {
+                           "processor_type":  "minecraft:rule",
+                           "rules":  [
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "north",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.2
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "north",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "north",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.25
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "north",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "north",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.334
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "north",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "north",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.5
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "north",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "north",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     }
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "north",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "south",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.2
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "south",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "south",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.25
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "south",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "south",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.334
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "south",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "south",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.5
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "south",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "south",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     }
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "south",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "west",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.2
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "west",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd",
+                                                                                                       "minecraft:arms_up_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "west",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.25
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "west",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd",
+                                                                                                       "minecraft:blade_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "west",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.334
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "west",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd",
+                                                                                                       "minecraft:danger_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:random_blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "west",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     },
+                                                                     "probability":  0.5
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "west",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd",
+                                                                                                       "minecraft:skull_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         },
+                                         {
+                                             "input_predicate":  {
+                                                                     "predicate_type":  "minecraft:blockstate_match",
+                                                                     "block_state":  {
+                                                                                         "Name":  "minecraft:decorated_pot",
+                                                                                         "Properties":  {
+                                                                                                            "cracked":  "false",
+                                                                                                            "facing":  "west",
+                                                                                                            "waterlogged":  "false"
+                                                                                                        }
+                                                                                     }
+                                                                 },
+                                             "location_predicate":  {
+                                                                        "predicate_type":  "minecraft:always_true"
+                                                                    },
+                                             "output_state":  {
+                                                                  "Name":  "minecraft:decorated_pot",
+                                                                  "Properties":  {
+                                                                                     "cracked":  "false",
+                                                                                     "facing":  "west",
+                                                                                     "waterlogged":  "false"
+                                                                                 }
+                                                              },
+                                             "block_entity_modifier":  {
+                                                                           "type":  "minecraft:append_static",
+                                                                           "data":  {
+                                                                                        "sherds":  [
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd",
+                                                                                                       "minecraft:snort_pottery_sherd"
+                                                                                                   ]
+                                                                                    }
+                                                                       }
+                                         }
+                                     ]
+                       }
+                   ]
+}

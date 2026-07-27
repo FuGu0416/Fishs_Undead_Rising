@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 500,
+    "separation": 250,
+    "salt": 20260727
+  },
+  "structures": [
+    {
+      "structure": "fur:royal_tomb",
+      "weight": 1
+    }
+  ]
+}

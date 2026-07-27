@@ -1,0 +1,20 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:gold_nugget", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:bone", "weight": 1 },
+        { "type": "minecraft:item", "name": "fur:cursed_fabric", "weight": 1 },
+        { "type": "minecraft:item", "name": "fur:chitin", "weight": 1 },
+        { "type": "minecraft:item", "name": "fur:sharp_fang", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:arms_up_pottery_sherd", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:blade_pottery_sherd", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:danger_pottery_sherd", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:skull_pottery_sherd", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:snort_pottery_sherd", "weight": 1 }
+      ]
+    }
+  ]
+}

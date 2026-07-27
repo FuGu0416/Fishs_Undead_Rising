@@ -79,6 +79,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 	public static final int ATTACK_TIMER = 15;
 	public static final int SPELL_TIMER = 20;
 	protected int spellTicks;
+	private int growTicks;
 	private WaterAvoidingRandomStrollGoal move;
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
@@ -176,7 +177,6 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     
     public void setGrowingStage(int i) {
         this.getEntityData().set(GROWING_STAGE, i);
-        this.refreshDimensions();
     }
 
     public int getHuggingCooldown() {
@@ -228,13 +228,14 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 	            this.setCamouflaging(false);
 	        }
 	        
+	        ++this.growTicks;
 	        int stage = this.getGrowingStage();
 	        if (stage != 2) {
-	        	if (this.tickCount > 20 * 60 * 20) {
+	        	if (this.growTicks > 20 * 60 * 20) {
 	        		this.setGrowingStage(2);
 	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
 	        		this.level().broadcastEntityEvent(this, (byte)14);
-	        	} else if (this.tickCount > 10 * 60 * 20 && stage != 1) {
+	        	} else if (this.growTicks > 10 * 60 * 20 && stage != 1) {
 	        		this.setGrowingStage(1);
 	        		this.playSound(SoundEvents.BEE_POLLINATE, 1.0F, 1.0F);
 	        		this.level().broadcastEntityEvent(this, (byte)14);
@@ -272,15 +273,14 @@ public class CactyrantEntity extends Monster implements GeoEntity {
         if (source.is(DamageTypes.THORNS)) {
         	return false;
         }
-        
-        if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && source.getDirectEntity() instanceof LivingEntity le) {
+
+        boolean hurt = source.is(DamageTypeTags.IS_FIRE) ? super.hurt(source, 2.0F * amount) : super.hurt(source, amount);
+
+        if (hurt && !source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && source.getDirectEntity() instanceof LivingEntity le) {
             le.hurt(this.damageSources().thorns(this), 2.0F);
         }
-               
-    	if(source.is(DamageTypeTags.IS_FIRE))
-    		return super.hurt(source, 2.0F * amount);
 
-    	return super.hurt(source, amount);
+    	return hurt;
     }
     
 	@Override
@@ -295,6 +295,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.spellTicks = compound.getInt("SpellTicks");
+        this.growTicks = compound.getInt("GrowTicks");
         this.setSkin(compound.getInt("Variant"));
         this.setGrowingStage(compound.getInt("GrowingStage"));
     }
@@ -306,6 +307,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpellTicks", this.spellTicks);
+        compound.putInt("GrowTicks", this.growTicks);
         compound.putInt("Variant", getSkin());
         compound.putInt("GrowingStage", this.getGrowingStage());
     }
@@ -325,9 +327,10 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     	}
 		
 		// grow fruit(10%) & flowing(40%) when spawned
-		if (this.random.nextDouble() < 0.1D) {
+		double growRoll = this.random.nextDouble();
+		if (growRoll < 0.1D) {
 			this.setGrowingStage(2);
-		} else if (this.random.nextDouble() < 0.5D) {
+		} else if (growRoll < 0.5D) {
 			this.setGrowingStage(1);
 		}
 		
@@ -514,10 +517,10 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     @Override
     public void die(DamageSource cause) {
        super.die(cause);
-       
-       int looting = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getDirectEntity(), cause);
-       int chance = this.random.nextInt(5) + this.random.nextInt(1 + looting);
-       if (!this.level().isClientSide() && this.getGrowingStage() == 2) {			
+
+       if (!this.level().isClientSide() && this.shouldDropLoot() && this.getGrowingStage() == 2) {
+			int looting = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getDirectEntity(), cause);
+			int chance = this.random.nextInt(5) + this.random.nextInt(1 + looting);
 			for (int amount = 0; amount <= chance; ++amount) {
 				this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get()), 0.0F);
 			}
@@ -556,11 +559,10 @@ public class CactyrantEntity extends Monster implements GeoEntity {
     		float f2 = this.mob.level().getCurrentDifficultyAt(this.mob.blockPosition()).getEffectiveDifficulty();
     		boolean flag = false;
     		CactyrantEntity cac = (CactyrantEntity) this.mob;
-    		LivingEntity mobTarget = this.mob.getTarget();
 
-    		if (!mobTarget.isBlocking()) {
-                if (!this.mob.isVehicle() && !mobTarget.isShiftKeyDown() && cac.getHuggingCooldown() == 0) {
-                	mobTarget.startRiding(this.mob, true);
+    		if (!target.isBlocking()) {
+                if (!this.mob.isVehicle() && !target.isShiftKeyDown() && cac.getHuggingCooldown() == 0) {
+                	target.startRiding(this.mob, true);
                 	cac.setHuggingCooldown(120);
                 } else if (!this.mob.isVehicle()) {
                 	flag = target.hurt(this.mob.damageSources().mobAttack(this.mob), f);

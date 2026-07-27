@@ -195,7 +195,6 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     		if (this.isSunBurnTick() && !this.isAggressive() && this.getLastHurtByMob() == null) {
     			this.doSitCommand(null);
     		} else if (this.state != FURTameableEntity.State.WANDERING) {
-    			this.doFollowCommand(null);
     			this.doWanderCommand(null);
     		}
     	}    	
@@ -225,9 +224,9 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     
     protected ItemStack getFishBucket() {
     	ItemStack stack = new ItemStack(FURItemRegistry.CACTOID_POT.get());
-        CompoundTag CompoundTag = new CompoundTag();
-        this.addAdditionalSaveData(CompoundTag);
-        stack.getOrCreateTag().put("CactoidData", CompoundTag);
+        CompoundTag compound = new CompoundTag();
+        this.addAdditionalSaveData(compound);
+        stack.getOrCreateTag().put("CactoidData", compound);
         stack.getOrCreateTag().putInt("BucketVariantTag", this.getSkin());
         
         if (this.hasCustomName()) {
@@ -257,7 +256,7 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
 
             this.discard();            
             return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } if (this.isTame() && this.getGrowingStage() == 2 && !(itemstack.getItem() instanceof BeastcallHornItem)) {
+        } else if (this.isTame() && this.getGrowingStage() == 2 && !(itemstack.getItem() instanceof BeastcallHornItem)) {
     		this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
     		this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get(), (this.getSkin() == 3) ? 2 : 1), 0.0F);    	    		
     		this.setGrowingStage(0);
@@ -304,16 +303,14 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
         if (source.is(DamageTypes.THORNS)) {
         	return false;
         }
-        
-        if (!source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !source.is(DamageTypes.THORNS) && source.getDirectEntity() instanceof LivingEntity) {
-            source.getDirectEntity().hurt(this.damageSources().thorns(this), 2.0F);
-        }
-        
-    	if (source.is(DamageTypeTags.IS_FIRE)) {
-    		return super.hurt(source, 2.0F * amount);
-    	}
 
-    	return super.hurt(source, amount);
+        boolean hurt = source.is(DamageTypeTags.IS_FIRE) ? super.hurt(source, 2.0F * amount) : super.hurt(source, amount);
+
+        if (hurt && !source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && source.getDirectEntity() instanceof LivingEntity le) {
+            le.hurt(this.damageSources().thorns(this), 2.0F);
+        }
+
+    	return hurt;
     }
 
     /**
@@ -451,8 +448,8 @@ public class CactoidEntity extends FURTameableEntity implements GeoEntity {
     @Override
     public void die(DamageSource cause) {
        super.die(cause);
-       
-       if(!this.level().isClientSide() && this.getGrowingStage() == 2) {			
+
+       if(!this.level().isClientSide() && this.shouldDropLoot() && this.getGrowingStage() == 2) {
 			this.spawnAtLocation(new ItemStack(FURItemRegistry.CACTUS_FRUIT.get()), 0.0F);
        }
     }
