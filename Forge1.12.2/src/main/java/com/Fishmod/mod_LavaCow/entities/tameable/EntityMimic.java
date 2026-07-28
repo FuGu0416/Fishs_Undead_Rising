@@ -93,7 +93,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
     protected void initEntityAI() {
         super.initEntityAI();
         this.enablePersistence();
-        this.tasks.addTask(1, this.aiSit);
+        // aiSit is now registered by EntityFishTameable.initEntityAI(); do not add it a second time here.
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -346,12 +346,15 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         Entity entity = source.getTrueSource();
+        Entity immediateEntity = source.getImmediateSource();
         this.setSitting(false);
         this.AggressiveTimer = 200;
         this.setSilent(false);
         this.setAIMoveSpeed(0.19F);
 
-        if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
+        // getTrueSource() is the responsible/indirect entity, so it is never the arrow itself;
+        // check the immediate source for that instead (same issue as EntityFishTameable#attackEntityFrom).
+        if (entity != null && !(entity instanceof EntityPlayer) && !(immediateEntity instanceof EntityArrow)) {
             amount = (amount + 1.0F) / 2.0F;
         }
 
@@ -389,16 +392,22 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
         if (this.getSkin() == this.getVoidSkin()) {
             this.setCanPickUpLoot(false);
-
-            for (ItemStack is : this.inventory) {
-                if (!is.isEmpty()) {
-                    this.entityDropItem(is.copy(), 0.2F);
-                    is.shrink(is.getCount());
-                }
-            }
+            this.dumpInventory();
         }
 
         this.setSitting(false);
+    }
+
+    /**
+     * Drops every non-empty stack currently held in this mimic's inventory into the world and empties the slot.
+     */
+    private void dumpInventory() {
+        for (ItemStack is : this.inventory) {
+            if (!is.isEmpty()) {
+                this.entityDropItem(is.copy(), 0.2F);
+                is.shrink(is.getCount());
+            }
+        }
     }
 
     public void doMimicChest(EnumFacing facing) {
@@ -412,7 +421,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
         if (itemstack.getItem() == Items.SPAWN_EGG) {
             return super.processInteract(player, hand);
-        } else if (this.isTamed() && this.getOwner().equals(player) && this.getOwner() != null) {
+        } else if (this.isTamed() && this.isOwner(player)) {
             if (player.isSneaking()) {
                 if (!this.world.isRemote) {
                     if (this.getSkin() == getVoidSkin()) {
@@ -444,13 +453,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
                     this.setSkin(getVoidSkin());
                     this.setCanPickUpLoot(false);
-
-                    for (ItemStack is : this.inventory) {
-                        if (!is.isEmpty()) {
-                            this.entityDropItem(is.copy(), 0.2F);
-                            is.shrink(is.getCount());
-                        }
-                    }
+                    this.dumpInventory();
 
                     this.playSound(SoundEvents.ENTITY_ENDEREYE_DEATH, 1.0F, 1.0F);
                     for (int i = 0; i < 16; ++i) {
@@ -505,6 +508,8 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
 
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData) {
+        entityLivingData = super.onInitialSpawn(difficulty, entityLivingData);
+
         if (this.isTamed()) {
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health * 2.0D);
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
@@ -742,9 +747,14 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
         if (uuid != null) {
             entity.setOwnerId(uuid);
             entity.setTamed(true);
-            entity.setHealth(this.getMaxHealth());
+            // setTamed(true) above only hardcodes generic tamed stats; apply this mod's config-driven
+            // attribute values directly here, the same way onInitialSpawn does for a naturally tamed one.
+            entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Mimic_Health * 2.0D);
+            entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            entity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Mimic_Attack * 0.5D);
+            entity.setHealth(entity.getMaxHealth());
             entity.setSkin(this.rand.nextBoolean() ? this.getSkin() : ((EntityMimic) ageable).getSkin());
-            if (entity.getSkin() == 3) entity.setSkin(0);
+            if (entity.getSkin() == getVoidSkin()) entity.setSkin(0);
         }
 
         return entity;

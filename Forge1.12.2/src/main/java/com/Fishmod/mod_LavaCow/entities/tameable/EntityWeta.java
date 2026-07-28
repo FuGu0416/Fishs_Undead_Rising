@@ -170,16 +170,6 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
     }
 
     @Override
-    protected void doSitCommand(EntityPlayer playerIn) {
-        super.doSitCommand(playerIn);
-    }
-
-    @Override
-    protected void doWanderCommand(EntityPlayer playerIn) {
-        super.doWanderCommand(playerIn);
-    }
-
-    @Override
     protected void setupTamedAI() {
     	super.setupTamedAI();
     	
@@ -407,7 +397,7 @@ public class EntityWeta extends EntityFishTameable implements IAggressive {
         if (uuid != null) {
             entity.setOwnerId(uuid);
             entity.setTamed(true);
-            entity.setHealth(this.getMaxHealth());
+            entity.setHealth(entity.getMaxHealth());
         }
 
         return entity;

@@ -182,9 +182,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
                         this.getAttackTarget().setFire(2 * (int) f);
                     }
 
-                    if (target instanceof EntityLivingBase) {
-                        ((EntityLivingBase) this.getAttackTarget()).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int) f, 4));
-                    }
+                    target.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 7 * 20 * (int) f, 4));
                 }
             }
         }
@@ -308,9 +306,14 @@ public class EntityWendigo extends EntityMob implements IAggressive {
          * The entity that the leaper is leaping towards.
          */
         private EntityLivingBase leapTarget;
+        /**
+         * The vertical launch power applied when the leap fires.
+         */
+        private final float leapMotionY;
 
         public AIWendigoLeapAtTarget(EntityLiving leapingEntity, float leapMotionYIn) {
             this.leaper = leapingEntity;
+            this.leapMotionY = leapMotionYIn;
             this.setMutexBits(5);
         }
 
@@ -323,7 +326,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
                 return false;
             } else {
                 float f = this.leaper.getDistance(this.leapTarget);
-                if (!(f < 12.0D) && !(f > 20.0D)) {
+                if (f >= 12.0D && f <= 20.0D) {
                     return this.leaper.onGround;
                 } else {
                     return false;
@@ -351,7 +354,7 @@ public class EntityWendigo extends EntityMob implements IAggressive {
                 }
 
                 this.leaper.motionX += vec3d1.x;
-                this.leaper.motionY += vec3d1.y + 0.3F + 0.1F * MathHelper.clamp(this.leapTarget.getEyeHeight() - this.leaper.posY, 0, 2);
+                this.leaper.motionY += vec3d1.y + this.leapMotionY + 0.1F * MathHelper.clamp(this.leapTarget.getEyeHeight() - this.leaper.posY, 0, 2);
                 this.leaper.motionZ += vec3d1.z;
                 ((EntityWendigo) this.leaper).setPouncing(true);
             }

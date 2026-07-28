@@ -276,7 +276,19 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
     public boolean isRidingPlayer(EntityPlayer player) {
         return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof EntityPlayer && this.getControllingPassenger().getUniqueID().equals(player.getUniqueID());
     }
-    
+
+    /**
+     * Server-side accessor so the ridden fireball-barrage packet handler can enforce the cooldown itself
+     * instead of trusting the client to only send the packet when it thinks the cooldown is over.
+     */
+    public boolean isBarrageOnCooldown() {
+        return this.barrage_CD > 0;
+    }
+
+    public void setBarrageCooldown(int ticks) {
+        this.barrage_CD = ticks;
+    }
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
@@ -306,16 +318,19 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 	    	} else if (this.growingAge < -8000) {
 	    		if (this.getGrowingStage() != 1) {
 		    		this.setGrowingStage(1);
+		    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	    		}
 	    	} else if (this.growingAge < 0) {
 	    		if (this.getGrowingStage() != 2) {
-		    		this.setGrowingStage(2);		    	
+		    		this.setGrowingStage(2);
+		    		this.heal(this.getHealth() * 0.5F);
 	    		}
-	    	} else {	    		
+	    	} else {
 	    		if (this.getGrowingStage() != 3) {
-	    			this.setGrowingStage(3);	    		
+	    			this.setGrowingStage(3);
+	    			this.heal(this.getHealth() * 2.0F / 3.0F);
 	    		}
-	    	}	    	
+	    	}
     	}	
     }
     
@@ -446,8 +461,12 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
         switch(i) {
 	        case 0:
 		    	this.experienceValue = 5;
-		    	this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
-		    	this.tasks.addTask(3, this.avoid_entity);
+		    	// Only untamed nymphs fear players; a tamed one must not flee its owner
+		    	// (this runs again on world load, after the tame flag is already set).
+		    	if (!this.isTamed()) {
+		    		this.avoid_entity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 4.0F, 0.8D, 1.6D);
+		    		this.tasks.addTask(3, this.avoid_entity);
+		    	}
 		    	this.tasks.removeTask(this.range_atk);
 		    	this.range_atk = new EntityFishAIAttackRange(this, EntityWarSmallFireball.class, 1, 2, 1.0D, 0.1D, 1.0D);
 		    	this.tasks.addTask(4, this.range_atk);
@@ -476,8 +495,6 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.65D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
-	    		
-	    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	        	break;
 	        case 2:
 	    		this.experienceValue = 15;
@@ -485,13 +502,10 @@ public class EntitySalamander extends EntityFishTameable implements IAggressive 
 	    		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Modconfig.Salamander_Attack * 0.75D);
 	    		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
-	    		
-	    		this.heal(this.getHealth() * 0.5F);
         		break;
         	default:
     			this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Modconfig.Salamander_Health);
-    			this.heal(this.getHealth() * 2.0F / 3.0F);
-    			
+
     	    	this.experienceValue = 20;
     	    	
     	    	this.tasks.removeTask(this.avoid_entity);

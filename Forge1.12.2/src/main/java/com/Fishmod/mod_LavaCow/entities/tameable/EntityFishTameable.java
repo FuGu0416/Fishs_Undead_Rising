@@ -61,6 +61,9 @@ public class EntityFishTameable extends EntityTameable {
         this.follow = this.followGoal();
         this.aiSit = new EntityAISit(this);
 
+        // Must outrank movement/breeding tasks (e.g. EntityAIMate) so a sitting pet
+        // keeps re-clearing its path instead of getting up to wander/breed.
+        this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(7, this.wander);
     }
 
@@ -211,7 +214,7 @@ public class EntityFishTameable extends EntityTameable {
                 }
 
                 return true;
-            } else if (this.isTamed() && this.isOwner(player) && this.isCommandable() && this.getActiveHand().equals(hand)) {
+            } else if (this.isTamed() && this.isOwner(player) && this.isCommandable() && hand == EnumHand.MAIN_HAND) {
                 if (!this.isBreedingItem(itemstack) && this.getPassengers().isEmpty()) {
                     if (this.state.equals(EntityFishTameable.State.WANDERING)) {
                         if (this.canSitCondition()) {
@@ -272,12 +275,15 @@ public class EntityFishTameable extends EntityTameable {
             return false;
         } else {
             Entity entity = source.getTrueSource();
+            Entity immediateEntity = source.getImmediateSource();
 
             if (this.aiSit != null) {
                 this.aiSit.setSitting(false);
             }
 
-            if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
+            // getTrueSource() is the responsible/indirect entity (e.g. the skeleton that fired the
+            // arrow), so it is never the arrow itself; check the immediate source for that instead.
+            if (entity != null && !(entity instanceof EntityPlayer) && !(immediateEntity instanceof EntityArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
