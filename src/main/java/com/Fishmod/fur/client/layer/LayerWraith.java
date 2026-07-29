@@ -17,7 +17,8 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerWraith<T extends WraithEntity> extends GeoRenderLayer<T> {
-	private final ResourceLocation TEXTURES = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/wraith/wraith.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/wraith/wraith.png");
+	private static final ResourceLocation TEXTURES_VARIANT1 = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/wraith/wraith1.png");
 
 	public LayerWraith(GeoRenderer<T> renderer) {
 		super(renderer);
@@ -26,8 +27,9 @@ public class LayerWraith<T extends WraithEntity> extends GeoRenderLayer<T> {
 	@Override
 	public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 		if (!animatable.isInvisible()) {
-			RenderType RenderType = net.minecraft.client.renderer.RenderType.entityTranslucent(TEXTURES);
-		
+			ResourceLocation texture = animatable.isVariant1() ? TEXTURES_VARIANT1 : TEXTURES;
+			RenderType RenderType = net.minecraft.client.renderer.RenderType.entityTranslucent(texture);
+
 			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, RenderType,
 								   bufferSource.getBuffer(RenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
 								   1.0F, 1.0F, 1.0F, animatable.getFadeIn(partialTick));

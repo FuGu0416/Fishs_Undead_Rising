@@ -620,6 +620,20 @@
 		"subtitle": "entity_wraith_death",
 		"sounds": [{"name": "fur:entity/wraith/death","stream": true}]
 	},
+
+	"wraith_ambient_variant1":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_ambient",
+		"sounds": [{"name": "minecraft:entity.evoker.ambient", "type": "event"}]
+	},
+
+	"wraith_attack_variant1":
+	{
+		"category": "hostile",
+		"subtitle": "entity_wraith_attack",
+		"sounds": [{"name": "minecraft:entity.pillager.celebrate", "type": "event"}]
+	},
 	
 	"scarab_ambient":
 	{

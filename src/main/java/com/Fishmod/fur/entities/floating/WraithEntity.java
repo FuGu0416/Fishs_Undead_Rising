@@ -56,6 +56,8 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("wraith.model.casting");
     
 	private static final EntityDataAccessor<Boolean> ISFADING = SynchedEntityData.defineId(WraithEntity.class, EntityDataSerializers.BOOLEAN);
+	/** Cosmetic model variant rolled once at spawn (see {@link #finalizeSpawn}) — 50/50, no stat/AI difference. */
+	private static final EntityDataAccessor<Boolean> VARIANT1 = SynchedEntityData.defineId(WraithEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final int SPELL_WARMUP_TIMER = 50;
 	public static final int SPELL_TIMER = 30;
     private float fadeProgress = SPELL_WARMUP_TIMER;
@@ -81,6 +83,19 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
         this.getEntityData().define(ISFADING, false);
+        this.getEntityData().define(VARIANT1, false);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+    	super.readAdditionalSaveData(compound);
+    	this.setVariant1(compound.getBoolean("Variant1"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+    	super.addAdditionalSaveData(compound);
+    	compound.putBoolean("Variant1", this.isVariant1());
     }
     
     @Nullable
@@ -103,6 +118,14 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
 
     public void setFading(boolean bool) {
         this.entityData.set(ISFADING, bool);
+    }
+
+    public boolean isVariant1() {
+        return this.entityData.get(VARIANT1);
+    }
+
+    public void setVariant1(boolean variant1) {
+        this.entityData.set(VARIANT1, variant1);
     }
 
     public float getFadeIn(float ageInTicks) {
@@ -132,7 +155,8 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Wraith_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Wraith_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+    	this.setVariant1(this.getRandom().nextBoolean());
+
     	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
     
@@ -254,21 +278,33 @@ public class WraithEntity extends FloatingMobEntity implements GeoEntity {
     
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.WRAITH_AMBIENT.get();
+        return this.isVariant1() ? FURSoundRegistry.WRAITH_AMBIENT_VARIANT1.get() : FURSoundRegistry.WRAITH_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        // Same for both variants by design - only the ambient/attack voice differs.
         return FURSoundRegistry.BANSHEE_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
+        // Same for both variants by design - only the ambient/attack voice differs.
         return FURSoundRegistry.WRAITH_DEATH.get();
     }
-    
+
     protected SoundEvent getSpellSound() {
-        return FURSoundRegistry.WRAITH_ATTACK.get();
+        return this.isVariant1() ? FURSoundRegistry.WRAITH_ATTACK_VARIANT1.get() : FURSoundRegistry.WRAITH_ATTACK.get();
+    }
+
+    /** variant1's voice is pitched down to read as deeper/more ghostly; no change for the original. */
+    @Override
+    public float getVoicePitch() {
+        if (this.isVariant1()) {
+            return 0.55F + (this.random.nextFloat() - this.random.nextFloat()) * 0.05F;
+        }
+
+        return super.getVoicePitch();
     }
     
     /**

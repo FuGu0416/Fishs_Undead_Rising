@@ -124,6 +124,10 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> WRAITH_AMBIENT = addSoundEvent("wraith_ambient");
 	public static final RegistryObject<SoundEvent> WRAITH_ATTACK = addSoundEvent("wraith_attack");
 	public static final RegistryObject<SoundEvent> WRAITH_DEATH = addSoundEvent("wraith_death");
+	/** wraith1 variant voice: reuses vanilla Evoker/Pillager audio (via sounds.json "event" aliasing)
+	 *  under our own subtitle keys, so it doesn't misleadingly show "Evoker mumbles" in subtitles. */
+	public static final RegistryObject<SoundEvent> WRAITH_AMBIENT_VARIANT1 = addSoundEvent("wraith_ambient_variant1");
+	public static final RegistryObject<SoundEvent> WRAITH_ATTACK_VARIANT1 = addSoundEvent("wraith_attack_variant1");
 	
 	public static final RegistryObject<SoundEvent> SCARAB_AMBIENT = addSoundEvent("scarab_ambient");
 	public static final RegistryObject<SoundEvent> SCARAB_HURT = addSoundEvent("scarab_hurt");

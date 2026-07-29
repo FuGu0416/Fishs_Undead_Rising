@@ -7,10 +7,15 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FURBlockTagsProvider;
 import com.Fishmod.fur.mod_LavaCow;
 import com.google.common.collect.Maps;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -18,6 +23,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,6 +43,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -48,6 +55,8 @@ import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -57,6 +66,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -79,11 +89,29 @@ public class GraveRobberEntity extends AbstractIllager {
 	/** Bartering loot table (emerald in offhand → traded item). */
 	private static final ResourceLocation TRADE_LOOT = new ResourceLocation(mod_LavaCow.MODID, "gameplay/graverobber_bartering");
 
+	/** Purely cosmetic "digging/opening" pose flag for {@link TombLootFlavorGoal} — kept separate
+	 *  from {@link #isUsingItem()} (used by {@link RetreatAndHealGoal}) since the two are unrelated. */
+	private static final EntityDataAccessor<Boolean> DATA_LOOTING_GESTURE = SynchedEntityData.defineId(GraveRobberEntity.class, EntityDataSerializers.BOOLEAN);
+
 	public int tradeTimer = 0;
 
 	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> entityType, Level level) {
 		super(entityType, level);
 		this.setCanPickUpLoot(true);
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(DATA_LOOTING_GESTURE, false);
+	}
+
+	public void setLootingGesture(boolean looting) {
+		this.entityData.set(DATA_LOOTING_GESTURE, looting);
+	}
+
+	public boolean isLootingGesture() {
+		return this.entityData.get(DATA_LOOTING_GESTURE);
 	}
 
 	@Override
@@ -100,9 +128,11 @@ public class GraveRobberEntity extends AbstractIllager {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(1, new GraveRobberEntity.RetreatAndHealGoal(this));
 		this.goalSelector.addGoal(2, new AbstractIllager.RaiderOpenDoorGoal(this));
 		this.goalSelector.addGoal(3, new Raider.HoldGroundAttackGoal(this, 10.0F));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(6, new GraveRobberEntity.TombLootFlavorGoal(this));
 		this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, Raider.class)).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
@@ -127,7 +157,16 @@ public class GraveRobberEntity extends AbstractIllager {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AbstractIllager.IllagerArmPose getArmPose() {
-		if (this.isAggressive()) {
+		if (this.isUsingItem()) {
+			// Reuses the existing raised-arm pose (already driven for the offhand trade item)
+			// so the potion drink doesn't need a dedicated animation state.
+			return AbstractIllager.IllagerArmPose.CROSSBOW_HOLD;
+		} else if (this.isLootingGesture()) {
+			// No GeckoLib/dedicated dig or open-pot animation exists for this vanilla-model
+			// illager, so the flavor-loot gesture reuses the crossbow-reload pose (hands working
+			// at chest height) for both suspicious_sand and decorated_pot targets.
+			return AbstractIllager.IllagerArmPose.CROSSBOW_CHARGE;
+		} else if (this.isAggressive()) {
 			return AbstractIllager.IllagerArmPose.ATTACKING;
 		} else if (!this.getOffhandItem().isEmpty()) {
 			return AbstractIllager.IllagerArmPose.CROSSBOW_HOLD;
@@ -210,6 +249,199 @@ public class GraveRobberEntity extends AbstractIllager {
 			return this.getTeam() == null && other.getTeam() == null;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * Self-preservation goal modeled on vanilla {@code Witch}'s potion-drinking logic:
+	 * below 50% health, retreat a short distance from the current target and drink a
+	 * Healing II potion, then resume normal AI. Unlike Witch (which drinks in place while
+	 * kiting at range), this also issues a one-off flee-position move since GraveRobber is
+	 * a melee illager with no ranged kiting goal to fall back on.
+	 *
+	 * <p>The actual effect application, item consumption, and completion timing are left to
+	 * vanilla's {@code Mob#startUsingItem}/{@code LivingEntity#completeUsingItem} machinery
+	 * (same path {@code PotionItem} uses) rather than reimplemented — for a non-player
+	 * {@code LivingEntity} that path already applies the potion's effects without shrinking
+	 * the stack or spawning a glass bottle. This goal restores the original mainhand item once
+	 * the drink completes.
+	 */
+	static class RetreatAndHealGoal extends Goal {
+		private static final float HEAL_HEALTH_THRESHOLD = 0.5F;
+		private static final int HEAL_COOLDOWN_TICKS = 100; // 5s, prevents an instant re-trigger loop
+		private static final int RETREAT_DISTANCE_XZ = 16;
+		private static final int RETREAT_DISTANCE_Y = 7;
+
+		private final GraveRobberEntity mob;
+		private ItemStack cachedMainHand = ItemStack.EMPTY;
+		private int nextHealTick;
+
+		public RetreatAndHealGoal(GraveRobberEntity entity) {
+			this.mob = entity;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			return this.mob.tickCount >= this.nextHealTick && this.mob.getHealth() < this.mob.getMaxHealth() * HEAL_HEALTH_THRESHOLD;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return this.mob.isUsingItem();
+		}
+
+		@Override
+		public void start() {
+			LivingEntity target = this.mob.getTarget();
+			Vec3 retreatPos = target == null ? null : DefaultRandomPos.getPosAway(this.mob, RETREAT_DISTANCE_XZ, RETREAT_DISTANCE_Y, target.position());
+			if (retreatPos != null) {
+				this.mob.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.0D);
+			}
+
+			this.cachedMainHand = this.mob.getMainHandItem().copy();
+			this.mob.setItemSlot(EquipmentSlot.MAINHAND, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING));
+			this.mob.startUsingItem(InteractionHand.MAIN_HAND);
+			if (!this.mob.isSilent()) {
+				this.mob.level().playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.WITCH_DRINK,
+						this.mob.getSoundSource(), 1.0F, 0.8F + this.mob.getRandom().nextFloat() * 0.4F);
+			}
+		}
+
+		@Override
+		public void stop() {
+			// Vanilla's completeUsingItem() already applied the potion's effects by this point;
+			// it leaves the (unconsumed) potion stack sitting in the mainhand, so restore equipment here.
+			this.mob.stopUsingItem();
+			this.mob.setItemSlot(EquipmentSlot.MAINHAND, this.cachedMainHand);
+			this.cachedMainHand = ItemStack.EMPTY;
+			this.nextHealTick = this.mob.tickCount + HEAL_COOLDOWN_TICKS;
+		}
+	}
+
+	/**
+	 * Purely cosmetic "rival looter" flavor: when idle (no combat target, not fleeing/drinking —
+	 * see {@link RetreatAndHealGoal}), walk to a nearby {@link FURBlockTagsProvider#TOMB_LOOT_FLAVOR}
+	 * block (suspicious sand / decorated pot) and mime digging/opening it for a few seconds.
+	 *
+	 * <p>Does not touch block state, spawn items, or write NBT to the target block — it only
+	 * flips {@link #isLootingGesture()} for the pose and plays a sound. Nothing here should ever
+	 * be relied on to grant loot; that stays entirely with the block's own vanilla behavior.
+	 */
+	static class TombLootFlavorGoal extends Goal {
+		private static final int SEARCH_RADIUS_XZ = 8;
+		private static final int SEARCH_RADIUS_Y = 4;
+		private static final int RESCAN_INTERVAL_TICKS = 20; // avoid rescanning the area every tick while idle
+		private static final int APPROACH_TIMEOUT_TICKS = 100; // give up if the target turns out unreachable
+		private static final int GESTURE_DURATION_TICKS = 80; // 4s
+		private static final int GESTURE_COOLDOWN_TICKS = 150; // 7.5s, avoids flickering between targets
+		private static final double INTERACT_RANGE_SQR = 3.0D * 3.0D;
+
+		private final GraveRobberEntity mob;
+		private BlockPos targetPos;
+		private boolean gestureStarted;
+		private int gestureTimer;
+		private int approachTimer;
+		private int nextScanTick;
+		private int nextTriggerTick;
+
+		public TombLootFlavorGoal(GraveRobberEntity entity) {
+			this.mob = entity;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			if (this.mob.getTarget() != null || this.mob.isUsingItem()) {
+				return false;
+			}
+			if (this.mob.tickCount < this.nextTriggerTick || this.mob.tickCount < this.nextScanTick) {
+				return false;
+			}
+
+			this.nextScanTick = this.mob.tickCount + RESCAN_INTERVAL_TICKS;
+			this.targetPos = this.findNearbyTombLootBlock();
+			return this.targetPos != null;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			if (this.mob.getTarget() != null || this.targetPos == null || this.approachTimer > APPROACH_TIMEOUT_TICKS) {
+				return false;
+			}
+			if (!this.mob.level().getBlockState(this.targetPos).is(FURBlockTagsProvider.TOMB_LOOT_FLAVOR)) {
+				return false;
+			}
+			return !this.gestureStarted || this.gestureTimer > 0;
+		}
+
+		@Override
+		public void start() {
+			this.gestureStarted = false;
+			this.gestureTimer = 0;
+			this.approachTimer = 0;
+		}
+
+		@Override
+		public void tick() {
+			this.mob.getLookControl().setLookAt(this.targetPos.getX() + 0.5D, this.targetPos.getY() + 0.5D, this.targetPos.getZ() + 0.5D);
+
+			if (this.gestureStarted) {
+				if (this.gestureTimer > 0) {
+					this.gestureTimer--;
+				}
+				return;
+			}
+
+			this.approachTimer++;
+			if (this.mob.distanceToSqr(this.targetPos.getX() + 0.5D, this.targetPos.getY() + 0.5D, this.targetPos.getZ() + 0.5D) > INTERACT_RANGE_SQR) {
+				if (this.mob.getNavigation().isDone()) {
+					this.mob.getNavigation().moveTo(this.targetPos.getX() + 0.5D, this.targetPos.getY(), this.targetPos.getZ() + 0.5D, 1.0D);
+				}
+			} else {
+				this.gestureStarted = true;
+				this.gestureTimer = GESTURE_DURATION_TICKS;
+				this.mob.getNavigation().stop();
+				this.mob.setLootingGesture(true);
+				this.mob.playSound(SoundEvents.BRUSH_GENERIC, 1.0F, 1.0F);
+			}
+		}
+
+		@Override
+		public void stop() {
+			if (this.gestureStarted) {
+				this.mob.playSound(SoundEvents.BRUSH_SAND_COMPLETED, 1.0F, 1.0F);
+			}
+
+			this.mob.setLootingGesture(false);
+			this.gestureStarted = false;
+			this.gestureTimer = 0;
+			this.targetPos = null;
+			this.nextTriggerTick = this.mob.tickCount + GESTURE_COOLDOWN_TICKS;
+		}
+
+		@Nullable
+		private BlockPos findNearbyTombLootBlock() {
+			BlockPos origin = this.mob.blockPosition();
+			BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+			BlockPos closest = null;
+			double closestDistSqr = Double.MAX_VALUE;
+
+			for (int dx = -SEARCH_RADIUS_XZ; dx <= SEARCH_RADIUS_XZ; dx++) {
+				for (int dz = -SEARCH_RADIUS_XZ; dz <= SEARCH_RADIUS_XZ; dz++) {
+					for (int dy = -SEARCH_RADIUS_Y; dy <= SEARCH_RADIUS_Y; dy++) {
+						cursor.setWithOffset(origin, dx, dy, dz);
+						double distSqr = cursor.distSqr(origin);
+						if (distSqr < closestDistSqr && distSqr <= (double) (SEARCH_RADIUS_XZ * SEARCH_RADIUS_XZ)
+								&& this.mob.level().getBlockState(cursor).is(FURBlockTagsProvider.TOMB_LOOT_FLAVOR)) {
+							closest = cursor.immutable();
+							closestDistSqr = distSqr;
+						}
+					}
+				}
+			}
+
+			return closest;
 		}
 	}
 

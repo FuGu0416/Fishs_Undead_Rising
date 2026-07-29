@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.StructureTagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.tags.TagKey;
@@ -22,6 +23,7 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));
     public static final TagKey<Structure> HAS_MUMMY_LORD = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy_lord"));
     public static final TagKey<Structure> HAS_MIMIC = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mimic"));
+    public static final ResourceKey<Structure> ROYAL_TOMB = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "royal_tomb"));
     
     public FURStructureTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
@@ -38,6 +40,7 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
         						   .addTag(StructureTags.VILLAGE)
         						   .add(BuiltinStructures.WOODLAND_MANSION)
         						   .add(BuiltinStructures.SHIPWRECK)
-        						   .addTag(StructureTags.OCEAN_RUIN);
+        						   .addTag(StructureTags.OCEAN_RUIN)
+        						   .add(ROYAL_TOMB);
     }
 }

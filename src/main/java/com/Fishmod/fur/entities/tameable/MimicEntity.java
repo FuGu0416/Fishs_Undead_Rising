@@ -6,11 +6,13 @@ import javax.annotation.Nullable;
 import com.Fishmod.fur.client.model.MimicModel;
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.data.providers.FURStructureTagsProvider;
 import com.Fishmod.fur.entities.ai.EntityAITargetItem;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.item.BeastcallHornItem;
 import com.Fishmod.fur.init.FURSoundRegistry;
+import com.Fishmod.fur.mod_LavaCow;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -111,6 +113,8 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(MimicEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> CHEST_TEXTURE = SynchedEntityData.defineId(MimicEntity.class, EntityDataSerializers.STRING);
     private static final MutableComponent CONTAINER_TITLE = Component.translatable("container.enderchest");
+    /** Same filler pool used by the Royal Tomb's other (non-treasure) chests. */
+    private static final ResourceLocation ROYAL_TOMB_CHEST_COMMON = new ResourceLocation(mod_LavaCow.MODID, "chests/royal_tomb_chest_common");
     public static ArrayList<String> TEXTURE_POOL = new ArrayList<String>(Arrays.asList(
             "textures/entity/chest/normal.png"
     ));
@@ -592,13 +596,25 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
     	
+    	boolean royalTomb = worldIn.getLevel().structureManager().getStructureWithPieceAt(this.blockPosition(), FURStructureTagsProvider.ROYAL_TOMB).isValid();
+
     	if (worldIn.getBiome(this.blockPosition()).containsTag(BiomeTags.IS_NETHER)) {
-    		this.setSkin(MimicModel.getNetherSkin()); 	 
+    		this.setSkin(MimicModel.getNetherSkin());
+    	} else if (royalTomb) {
+    		this.setSkin(MimicModel.getTombSkin());
     	} else {
     		this.setSkin(this.getRandom().nextInt(MimicModel.getTombSkin()));
     	}
-    	
-    	this.unpackLootTable(this.getSkin() == MimicModel.getNetherSkin() ? BuiltInLootTables.NETHER_BRIDGE : /*this.getSkin() == MimicModel.getTombSkin() ? LootTableHandler.DESERT_TOMB_CHEST : */BuiltInLootTables.SIMPLE_DUNGEON);
+
+    	ResourceLocation lootTable;
+    	if (this.getSkin() == MimicModel.getNetherSkin()) {
+    		lootTable = BuiltInLootTables.NETHER_BRIDGE;
+    	} else if (royalTomb) {
+    		lootTable = ROYAL_TOMB_CHEST_COMMON;
+    	} else {
+    		lootTable = BuiltInLootTables.SIMPLE_DUNGEON;
+    	}
+    	this.unpackLootTable(lootTable);
     	for (int i = 0; i < this.inventory.getContainerSize();i++) {
     		if (this.getRandom().nextFloat() >= 0.05F) {
     			this.inventory.removeItem(i, 3);

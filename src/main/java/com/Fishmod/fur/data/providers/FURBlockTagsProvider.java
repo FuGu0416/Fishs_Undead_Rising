@@ -26,6 +26,11 @@ public class FURBlockTagsProvider extends BlockTagsProvider {
      *  everything vanilla moss replaces, plus ores so they don't poke through the mat. */
     public static final TagKey<Block> MAT_REPLACEABLE = TagKey.create(Registries.BLOCK, new ResourceLocation(mod_LavaCow.MODID, "mat_replaceable"));
 
+    /** Blocks GraveRobberEntity's flavor-loot goal will walk to and mime digging/opening —
+     *  purely cosmetic, no block/NBT changes. Tagged (not hardcoded) so more block types
+     *  can be added later without touching the goal's code. */
+    public static final TagKey<Block> TOMB_LOOT_FLAVOR = TagKey.create(Registries.BLOCK, new ResourceLocation(mod_LavaCow.MODID, "tomb_loot_flavor"));
+
 	public FURBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
 	}
@@ -33,5 +38,6 @@ public class FURBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
     	this.tag(SALAMANDER_EGG_HATCH_BOOST).add(Blocks.MAGMA_BLOCK, FURBlockRegistry.SOUL_FURNACE.get());
     	this.tag(MAT_REPLACEABLE).addTag(BlockTags.MOSS_REPLACEABLE).addTag(Tags.Blocks.ORES);
+    	this.tag(TOMB_LOOT_FLAVOR).add(Blocks.SUSPICIOUS_SAND, Blocks.DECORATED_POT);
     }
 }

@@ -1,0 +1,270 @@
+{
+  "pools": [
+    {
+      "name": "fur:royal_tomb_chest_common",
+      "rolls": {
+        "min": 4,
+        "max": 6
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:rotten_flesh",
+          "weight": 30,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:bone",
+          "weight": 30,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "fur:ectoplasm",
+          "weight": 14,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "fur:parasite_raw",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{variant:1}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "fur:cursed_fabric",
+          "weight": 16,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "fur:chitin",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:sand",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:gold_ingot",
+          "weight": 25,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 7
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:emerald",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "fur:ancient_amber",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fur:royal_tomb_chest_common",
+      "rolls": {
+        "min": 1,
+        "max": 2
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:saddle",
+          "weight": 20
+        },
+        {
+          "type": "item",
+          "name": "minecraft:name_tag",
+          "weight": 20
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_horse_armor",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "fur:undying_heart",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "fur:acidic_heart",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "fur:ushabti",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "fur:fang_dagger",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "fur:soulforged_upgrade_smithing_template",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:book",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_pickaxe",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_sword",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_helmet",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_leggings",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_boots",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "fur:royal_tomb_chest_treasure",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "fur:stained_kings_crown"
+        }
+      ]
+    }
+  ]
+}
