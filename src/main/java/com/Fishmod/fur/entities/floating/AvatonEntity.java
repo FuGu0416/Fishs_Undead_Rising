@@ -197,10 +197,15 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
 
         protected void castSpell() {
             for (int i = 0; i < FURConfig.Avaton_Ability_Num.get(); ++i) {
-            	if (AvatonEntity.this.level() instanceof ServerLevel) {
+            	if (AvatonEntity.this.level() instanceof ServerLevel serverLevel) {
 	                BlockPos blockpos = AvatonEntity.this.blockPosition().offset(-2 + AvatonEntity.this.getRandom().nextInt(5), 1, -2 + AvatonEntity.this.getRandom().nextInt(5));
-	                WetaEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.WETA.get(), ((ServerLevel) AvatonEntity.this.level()), blockpos);
-	                
+	                // Avaton floats well above the terrain, so the default +-6 search window in
+	                // SpawnUtil.trySpawnEntity(entity, level, pos) often can't reach the actual ground
+	                // from here; the wider-range overload lets the search keep descending far enough
+	                // to land the Weta near Avaton instead of wherever a later randomized-offset retry
+	                // happens to find solid ground.
+	                WetaEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.WETA.get(), serverLevel, blockpos, 24);
+
 	                if (entity != null) {
 		                entity.setOwnerUUID(AvatonEntity.this.getUUID());                             
 		                
@@ -211,7 +216,7 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
 		                	double d0 = entity.getX() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
 		                	double d1 = entity.getY() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbHeight());
 		                	double d2 = entity.getZ() + (double)(AvatonEntity.this.getRandom().nextFloat() * entity.getBbWidth() * 2.0F) - (double)entity.getBbWidth();
-		                	((ServerLevel) AvatonEntity.this.level()).sendParticles(FURParticleRegistry.LOCUST_SWARM.get(), d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+		                	serverLevel.sendParticles(FURParticleRegistry.LOCUST_SWARM.get(), d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
 		                	
 		                }
 	                }

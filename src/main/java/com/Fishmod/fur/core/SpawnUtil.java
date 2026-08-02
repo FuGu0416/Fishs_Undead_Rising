@@ -157,28 +157,41 @@ public class SpawnUtil {
 	
     @Nullable
     public static <T extends LivingEntity> T trySpawnEntity(EntityType<T> entityIn, ServerLevel worldIn, BlockPos blockpos) {
+    	return trySpawnEntity(entityIn, worldIn, blockpos, 6);
+	}
+
+    /**
+     * Same as {@link #trySpawnEntity(EntityType, ServerLevel, BlockPos)}, but with the vertical
+     * search window widened past the default +-6 blocks. The default suits callers already near
+     * ground level (a dying entity, a block's own position); a caller that may be well above the
+     * terrain - a flying/floating summoner, say - needs a wider {@code verticalRange} or the search
+     * simply won't reach the ground near it and instead resolves to whatever solid ground a later
+     * randomized-offset retry happens to find, however far away that ends up being.
+     */
+    @Nullable
+    public static <T extends LivingEntity> T trySpawnEntity(EntityType<T> entityIn, ServerLevel worldIn, BlockPos blockpos, int verticalRange) {
     	for (int i = 0; i < 10; ++i) {
     		int d0 = (i == 0) ? 0 : (worldIn.random.nextInt(4) - 2);
     		int d1 = (i == 0) ? 0 : (worldIn.random.nextInt(4) - 2);
-    		BlockPos blockpos1 = findSpawnPositionInColumn(worldIn, blockpos, d0, d1);
+    		BlockPos blockpos1 = findSpawnPositionInColumn(worldIn, blockpos, d0, d1, verticalRange);
     		if (blockpos1 != null) {
     			return entityIn.spawn(worldIn, blockpos1.below(), MobSpawnType.MOB_SUMMONED);
     		}
     	}
-    	
+
     	return null;
 	}
 
 	@Nullable
-	private static BlockPos findSpawnPositionInColumn(ServerLevel worldIn, BlockPos pos, int xOffset, int zOffset) {
-		BlockPos blockpos = pos.offset(xOffset, 6, zOffset);
+	private static BlockPos findSpawnPositionInColumn(ServerLevel worldIn, BlockPos pos, int xOffset, int zOffset, int verticalRange) {
+		BlockPos blockpos = pos.offset(xOffset, verticalRange, zOffset);
 		BlockState blockstate = worldIn.getBlockState(blockpos);
-		
+
 		if (blockstate.liquid()) {
 			return blockpos;
 		}
 
-		for (int j = 6; j >= -6; --j) {
+		for (int j = verticalRange; j >= -verticalRange; --j) {
 			BlockPos blockpos1 = blockpos;
 			BlockState blockstate1 = blockstate;
 			blockpos = blockpos.below();

@@ -15,6 +15,7 @@ import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -64,7 +65,15 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     public static final int ATTACK_TIMER = 25;
     public static final int SPELL_TIMER  = 40;
 
+    /** How far this guard will wander/chase from {@link #homePos} - e.g. a structure-placed guard
+     *  (Royal Tomb) shouldn't leave its post to wander off or chase a target across the map. */
+    private static final int GUARD_RADIUS = 8;
+
     protected int spellTicks;
+    /** Anchor for {@link #restrictTo}; captured from wherever this entity first ticks (structure
+     *  placement, spawner, summon, etc.) and persisted, since Mob's restriction fields themselves
+     *  aren't saved to NBT - re-applied every tick so it survives chunk save/reload. */
+    private BlockPos homePos;
 
     public MummyLordEntity(EntityType<? extends MummyLordEntity> type, Level level) {
         super(type, level);
@@ -117,10 +126,15 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        
+
         if (this.spellTicks > 0) {
             --this.spellTicks;
         }
+
+        if (this.homePos == null) {
+            this.homePos = this.blockPosition();
+        }
+        this.restrictTo(this.homePos, GUARD_RADIUS);
     }
 
     @Nullable
@@ -155,12 +169,18 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("SpellTicks", this.spellTicks);
+        if (this.homePos != null) {
+            nbt.put("HomePos", NbtUtils.writeBlockPos(this.homePos));
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.spellTicks = nbt.getInt("SpellTicks");
+        if (nbt.contains("HomePos")) {
+            this.homePos = NbtUtils.readBlockPos(nbt.getCompound("HomePos"));
+        }
     }
 
     @Override

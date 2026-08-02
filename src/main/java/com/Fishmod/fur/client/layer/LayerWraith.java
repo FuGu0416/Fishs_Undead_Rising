@@ -27,7 +27,7 @@ public class LayerWraith<T extends WraithEntity> extends GeoRenderLayer<T> {
 	@Override
 	public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 		if (!animatable.isInvisible()) {
-			ResourceLocation texture = animatable.isVariant1() ? TEXTURES_VARIANT1 : TEXTURES;
+			ResourceLocation texture = animatable.getSkin() == 1 ? TEXTURES_VARIANT1 : TEXTURES;
 			RenderType RenderType = net.minecraft.client.renderer.RenderType.entityTranslucent(texture);
 
 			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, RenderType,

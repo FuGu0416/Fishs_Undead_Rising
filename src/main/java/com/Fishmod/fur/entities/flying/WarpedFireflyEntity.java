@@ -3,14 +3,11 @@ package com.Fishmod.fur.entities.flying;
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
+import com.Fishmod.fur.data.providers.FURItemTagsProvider;
 import com.Fishmod.fur.init.FURBlockRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
@@ -32,13 +29,11 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -61,13 +56,17 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  *       {@code FlyingMovementController}.</li>
  * </ul>
  *
- * <p>Gameplay is preserved: feeding it Glowstone Dust (8 min) or a Warped Fungus
- * (3 min) makes it emit light by stamping a temporary {@code GLOWING_AIR} block at
- * its position; it flees Enigmoths and is tempted by Warped Fungus.
+ * <p>Gameplay is preserved: feeding it an item from {@link FURItemTagsProvider#WARPED_FIREFLY_FOOD}
+ * (Glowstone Dust, Warped Fungus) spawns a one-shot light orb - a {@link FURBlockRegistry#GLOWING_AIR}
+ * block - at its position; feeding is on a 30s cooldown, independent of whether an earlier orb is
+ * still glowing. The orb's entire 60s lifetime (hold, fade, self-removal) is owned by
+ * {@code GlowingAirBlock} itself, not tracked by this entity. It flees Enigmoths and is tempted by
+ * Warped Fungus.
  */
 public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
-	private static final EntityDataAccessor<BlockPos> GLOWING_POS = SynchedEntityData.defineId(WarpedFireflyEntity.class, EntityDataSerializers.BLOCK_POS);
-	private int glowTimer = 0;
+	private static final int FEED_COOLDOWN_TICKS = 30 * 20;
+
+	private int feedCooldown = 0;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("warpedfirefly.idle");
@@ -96,12 +95,6 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(GLOWING_POS, BlockPos.ZERO);
-	}
-
-	@Override
 	public boolean removeWhenFarAway(double distance) {
 		return !this.isLeashed();
 	}
@@ -126,44 +119,22 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	public void tick() {
 		super.tick();
 
-		if (this.glowTimer > -6) {
-			--this.glowTimer;
-		}
-
-		if (!this.level().isClientSide() && this.glowTimer > -6) {
-			if (this.level().getBlockState(this.blockPosition()).isAir()) {
-				if (this.tickCount % 5 == 0 && this.level().getBlockState(this.getGlowingPos()).is(FURBlockRegistry.GLOWING_AIR.get())) {
-					this.level().setBlock(this.getGlowingPos(), Blocks.AIR.defaultBlockState(), 3);
-				}
-
-				if (this.tickCount % 5 == 0 && this.glowTimer > 0) {
-					this.level().setBlock(this.blockPosition(), FURBlockRegistry.GLOWING_AIR.get().defaultBlockState(), 3);
-					this.setGlowingPos(this.blockPosition());
-				}
-			}
+		if (!this.level().isClientSide() && this.feedCooldown > 0) {
+			--this.feedCooldown;
 		}
 	}
 
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		Item item = itemstack.getItem();
 		InteractionResult actionresulttype = super.mobInteract(player, hand);
-		if (this.glowTimer == -6) {
-			if (item.equals(Items.GLOWSTONE_DUST)) {
-				this.glowTimer = 8 * 60 * 20 + 6;
-				this.setPersistenceRequired();
-				if (player instanceof ServerPlayer) {
-					CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayer) player, this);
-				}
-			} else if (item.equals(Items.WARPED_FUNGUS)) {
-				this.glowTimer = 3 * 60 * 20 + 6;
-				this.setPersistenceRequired();
-				if (player instanceof ServerPlayer) {
-					CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayer) player, this);
-				}
-			} else {
-				return actionresulttype;
+
+		if (this.feedCooldown <= 0 && itemstack.is(FURItemTagsProvider.WARPED_FIREFLY_FOOD)) {
+			this.feedCooldown = FEED_COOLDOWN_TICKS;
+			this.setPersistenceRequired();
+
+			if (this.level().getBlockState(this.blockPosition()).isAir()) {
+				this.level().setBlock(this.blockPosition(), FURBlockRegistry.GLOWING_AIR.get().defaultBlockState(), 3);
 			}
 
 			if (!player.getAbilities().instabuild) {
@@ -171,11 +142,14 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 			}
 
 			this.playSound(SoundEvents.BEE_LOOP, 1.0F, 1.0F);
+			if (player instanceof ServerPlayer serverPlayer) {
+				CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, this);
+			}
 
 			return InteractionResult.SUCCESS;
-		} else {
-			return actionresulttype;
 		}
+
+		return actionresulttype;
 	}
 
 	@Override
@@ -192,28 +166,16 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, tag);
 	}
 
-	public BlockPos getGlowingPos() {
-		return this.getEntityData().get(GLOWING_POS);
-	}
-
-	public void setGlowingPos(BlockPos pos) {
-		this.getEntityData().set(GLOWING_POS, pos);
-	}
-
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.glowTimer = compound.getInt("glowTimer");
-		this.setGlowingPos(new BlockPos(compound.getInt("glowPosX"), compound.getInt("glowPosY"), compound.getInt("glowPosZ")));
+		this.feedCooldown = compound.getInt("feedCooldown");
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putInt("glowPosX", this.getGlowingPos().getX());
-		compound.putInt("glowPosY", this.getGlowingPos().getY());
-		compound.putInt("glowPosZ", this.getGlowingPos().getZ());
-		compound.putInt("glowTimer", this.glowTimer);
+		compound.putInt("feedCooldown", this.feedCooldown);
 	}
 
 	@Override

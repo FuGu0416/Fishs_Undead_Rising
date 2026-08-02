@@ -9,6 +9,7 @@ import com.Fishmod.fur.block.DreamcatcherBlock;
 import com.Fishmod.fur.block.FURHugeShroomBlock;
 import com.Fishmod.fur.block.FURShroomBlock;
 import com.Fishmod.fur.block.GlimmercapBlock;
+import com.Fishmod.fur.block.GlowingAirBlock;
 import com.Fishmod.fur.block.LuminousFilamentBlock;
 import com.Fishmod.fur.block.LuminousMyceliumBlock;
 import com.Fishmod.fur.block.MycelialMatBlock;
@@ -25,7 +26,6 @@ import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -50,7 +50,7 @@ public class FURBlockRegistry {
 	public static final RegistryObject<Block> GLIMMERCAP = registerBlocks("glimmercap", () -> new GlimmercapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY).lightLevel(state -> 3)));
     public static final RegistryObject<Block> GLIMMERCAP_BLOCK_CAP = registerBlocks("glimmercap_block_cap", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).strength(0.2F).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 10)));
 	public static final RegistryObject<Block> GLIMMERCAP_BLOCK_STEM = registerBlocks("glimmercap_block_stem", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> GLOWING_AIR = registerBlocks("glowing_air", () -> new AirBlock(BlockBehaviour.Properties.of().noCollission().air().lightLevel(state -> 15)));	
+	public static final RegistryObject<Block> GLOWING_AIR = registerBlocks("glowing_air", () -> new GlowingAirBlock(BlockBehaviour.Properties.of().noCollission().air().lightLevel(state -> state.getValue(GlowingAirBlock.LIGHT))));
 	public static final RegistryObject<Block> GLOWSHROOM = registerBlocks("glowshroom", () -> new FURShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel(state -> 10)));
     public static final RegistryObject<Block> GLOWSHROOM_BLOCK_CAP = registerBlocks("glowshroom_block_cap", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.2F).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 10).emissiveRendering((state, world, pos) -> true)));
 	public static final RegistryObject<Block> GLOWSHROOM_BLOCK_STEM = registerBlocks("glowshroom_block_stem", () -> new FURHugeShroomBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(SoundType.WOOD)));

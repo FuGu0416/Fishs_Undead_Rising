@@ -1,0 +1,20 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"graverobber.model.idle": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		}
+	}
+}

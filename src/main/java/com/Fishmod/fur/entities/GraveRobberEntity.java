@@ -1,5 +1,6 @@
 package com.Fishmod.fur.entities;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,12 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.data.providers.FURBlockTagsProvider;
+import com.Fishmod.fur.data.providers.FURStructureTagsProvider;
 import com.Fishmod.fur.mod_LavaCow;
 import com.google.common.collect.Maps;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,6 +32,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Marker;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -60,15 +64,32 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * Grave Robber — a raid-capable illager that wields an iron shovel and barters,
@@ -85,7 +106,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  *   <li>Bartering uses the modern {@link LootParams} API.</li>
  * </ul>
  */
-public class GraveRobberEntity extends AbstractIllager {
+public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+	// PLACEHOLDER: only "graverobber.model.idle" exists in graverobber.animation.json so far (a
+	// scarf/shirt scale nudge to avoid z-fighting, no real keyframes yet) - the rest are referenced
+	// here so the state machine is ready, but will just hold pose until their clips are authored.
+	// Priority mirrors the old getArmPose() branch order below (isUsingItem/offhand-held first, then
+	// looting gesture, then aggressive, then celebrating, with walk/idle folded in as the fallback).
+	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("graverobber.model.idle");
+	private static final RawAnimation WALK = RawAnimation.begin().thenPlay("graverobber.model.walk");
+	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("graverobber.model.attack");
+	private static final RawAnimation DIG = RawAnimation.begin().thenPlay("graverobber.model.dig");
+	private static final RawAnimation OFFER = RawAnimation.begin().thenPlay("graverobber.model.offer");
+	private static final RawAnimation CELEBRATE = RawAnimation.begin().thenPlay("graverobber.model.celebrate");
+
 	/** Bartering loot table (emerald in offhand → traded item). */
 	private static final ResourceLocation TRADE_LOOT = new ResourceLocation(mod_LavaCow.MODID, "gameplay/graverobber_bartering");
 
@@ -94,6 +129,12 @@ public class GraveRobberEntity extends AbstractIllager {
 	private static final EntityDataAccessor<Boolean> DATA_LOOTING_GESTURE = SynchedEntityData.defineId(GraveRobberEntity.class, EntityDataSerializers.BOOLEAN);
 
 	public int tradeTimer = 0;
+
+	/** Whether this robber has already placed its one flavor lantern (see {@link LightTombGoal}). */
+	private boolean hasPlacedLantern;
+
+	/** Whether this robber has already made its one push into the tomb's interior (see {@link EnterTombGoal}). */
+	private boolean hasEnteredTomb;
 
 	public GraveRobberEntity(EntityType<? extends GraveRobberEntity> entityType, Level level) {
 		super(entityType, level);
@@ -132,7 +173,9 @@ public class GraveRobberEntity extends AbstractIllager {
 		this.goalSelector.addGoal(2, new AbstractIllager.RaiderOpenDoorGoal(this));
 		this.goalSelector.addGoal(3, new Raider.HoldGroundAttackGoal(this, 10.0F));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(6, new GraveRobberEntity.TombLootFlavorGoal(this));
+		this.goalSelector.addGoal(5, new GraveRobberEntity.EnterTombGoal(this));
+		this.goalSelector.addGoal(6, new GraveRobberEntity.LightTombGoal(this));
+		this.goalSelector.addGoal(7, new GraveRobberEntity.TombLootFlavorGoal(this));
 		this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, Raider.class)).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
@@ -140,10 +183,10 @@ public class GraveRobberEntity extends AbstractIllager {
 		this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, true, false, (target) -> {
 			return this.getHealth() > this.getMaxHealth() * 0.5F && target.getMobType().equals(MobType.UNDEAD);
 		}));
-		this.goalSelector.addGoal(7, new GraveRobberEntity.TradeGoal(this));
-		this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.6D));
-		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
-		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+		this.goalSelector.addGoal(8, new GraveRobberEntity.TradeGoal(this));
+		this.goalSelector.addGoal(9, new RandomStrollGoal(this, 0.6D));
+		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+		this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -198,12 +241,16 @@ public class GraveRobberEntity extends AbstractIllager {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.tradeTimer = compound.getInt("tradeTimer");
+		this.hasPlacedLantern = compound.getBoolean("hasPlacedLantern");
+		this.hasEnteredTomb = compound.getBoolean("hasEnteredTomb");
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("tradeTimer", this.tradeTimer);
+		compound.putBoolean("hasPlacedLantern", this.hasPlacedLantern);
+		compound.putBoolean("hasEnteredTomb", this.hasEnteredTomb);
 	}
 
 	@Override
@@ -219,6 +266,15 @@ public class GraveRobberEntity extends AbstractIllager {
 		this.setHealth(this.getMaxHealth());
 
 		return ilivingentitydata;
+	}
+
+	// PatrollingMonster.finalizeSpawn() has a 6% chance to make any non-PATROL/EVENT/STRUCTURE spawn
+	// a "patrol leader" wearing an Ominous Banner (Raid.createIllagerBanner(), 2.0F drop chance) -
+	// harmless flavor for vanilla patrols, but not a look Grave Robbers should ever have (tomb-ambush
+	// or otherwise). Overriding this to false is the same pattern vanilla's own Witch uses to opt out.
+	@Override
+	public boolean canBeLeader() {
+		return false;
 	}
 
 	@Override
@@ -445,6 +501,287 @@ public class GraveRobberEntity extends AbstractIllager {
 		}
 	}
 
+	/**
+	 * One-time push into the tomb's interior: a robber that finds itself inside the
+	 * {@link FURStructureTagsProvider#ROYAL_TOMB} structure but still far from a designated interior
+	 * point (e.g. one just spawned by {@code FURServerEvents#onTombAmbush} at the entrance marker)
+	 * heads for that point before any other idle behaviour gets a chance to grab it - otherwise a
+	 * freshly-spawned robber never has a reason to leave the entrance, since
+	 * {@link LightTombGoal}/{@link TombLootFlavorGoal} only ever look a handful of blocks around
+	 * wherever it currently stands. Fires at most once per mob (see {@link #hasEnteredTomb}).
+	 *
+	 * <p>Targets a {@code fur:tomb_depths}-tagged {@link Marker} baked into the structure NBT (same
+	 * pattern as the {@code fur:tomb_entrance} marker {@code FURServerEvents#onTombAmbush} spawns at)
+	 * rather than the structure's bounding-box centre - the tomb's footprint is sprawling and
+	 * irregular (separate courtyards/wings), so the geometric centre of its axis-aligned bounding box
+	 * routinely lands in open sand between the actual built rooms, sending robbers wandering back out
+	 * of the tomb instead of into it. If no such marker exists in a given instance (not yet added, or
+	 * an older already-generated instance predating it), this goal simply never fires for it - no
+	 * fallback to the old bounding-box behaviour, since that is what caused the bug.
+	 *
+	 * <p>{@code Attributes.FOLLOW_RANGE} directly bounds vanilla pathfinding's search-region size,
+	 * node-visit budget, and max path length ({@link net.minecraft.world.entity.ai.navigation.PathNavigation#createPath}
+	 * scales all three off it) - the mob's normal 12-block follow range is nowhere near enough for a
+	 * route from a surface entrance down into a deep underground chamber, so this goal temporarily
+	 * boosts it for the duration of the push (same cache-and-restore pattern {@link TradeGoal} already
+	 * uses for movement speed), rather than raising the mob's base follow range permanently and
+	 * widening its combat detection range at all times.
+	 *
+	 * <p>If a {@code fur:tomb_depths}-tagged {@link Marker} is far from the entrance, a single long
+	 * {@code moveTo} call tends to path across open desert toward the target's raw direction rather
+	 * than through the tomb's actual (winding) interior corridors - the wide-open search region is
+	 * more inviting to A* than a long detour, even when that surface route is a dead end. An optional
+	 * {@code fur:tomb_waypoint}-tagged marker (e.g. placed at the top of the real staircase down)
+	 * breaks the journey into short, unambiguous hops that don't have that problem; if no waypoint
+	 * marker exists, this falls back to a single direct hop to the depths marker.
+	 */
+	static class EnterTombGoal extends Goal {
+		private static final int RESCAN_INTERVAL_TICKS = 20;
+		private static final double ARRIVE_DISTANCE_SQR = 6.0D * 6.0D;
+		private static final int TIMEOUT_TICKS = 400; // 20s
+		private static final double PATHFINDING_FOLLOW_RANGE = 48.0D; // wide enough to path entrance-to-depths
+
+		private final GraveRobberEntity mob;
+		private List<BlockPos> waypoints;
+		private int waypointIndex;
+		private double cachedFollowRange;
+		private int timer;
+		private int nextScanTick;
+
+		EnterTombGoal(GraveRobberEntity entity) {
+			this.mob = entity;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		}
+
+		@Override
+		public boolean canUse() {
+			if (this.mob.hasEnteredTomb || this.mob.getTarget() != null) {
+				return false;
+			}
+			if (this.mob.tickCount < this.nextScanTick) {
+				return false;
+			}
+			this.nextScanTick = this.mob.tickCount + RESCAN_INTERVAL_TICKS;
+
+			if (!(this.mob.level() instanceof ServerLevel serverLevel)) {
+				return false;
+			}
+			StructureStart structureStart = serverLevel.structureManager().getStructureWithPieceAt(this.mob.blockPosition(), FURStructureTagsProvider.ROYAL_TOMB);
+			if (!structureStart.isValid()) {
+				return false;
+			}
+
+			BoundingBox box = structureStart.getBoundingBox();
+			AABB searchArea = new AABB(box.minX(), box.minY(), box.minZ(), box.maxX() + 1, box.maxY() + 1, box.maxZ() + 1);
+			List<Marker> depths = serverLevel.getEntitiesOfClass(Marker.class, searchArea, marker -> marker.getTags().contains("fur:tomb_depths"));
+			if (depths.isEmpty()) {
+				this.mob.hasEnteredTomb = true; // no depths marker in this instance - nothing to push toward
+				return false;
+			}
+
+			BlockPos depthsPos = depths.get(0).blockPosition();
+			if (this.hasArrived(depthsPos)) {
+				this.mob.hasEnteredTomb = true; // already deep enough - e.g. spawned naturally inside
+				return false;
+			}
+
+			List<Marker> waypointMarkers = serverLevel.getEntitiesOfClass(Marker.class, searchArea, marker -> marker.getTags().contains("fur:tomb_waypoint"));
+			this.waypoints = new ArrayList<>();
+			if (!waypointMarkers.isEmpty()) {
+				this.waypoints.add(waypointMarkers.get(0).blockPosition());
+			}
+			this.waypoints.add(depthsPos);
+			this.waypointIndex = 0;
+			return true;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return !this.mob.hasEnteredTomb && this.mob.getTarget() == null && this.timer < TIMEOUT_TICKS;
+		}
+
+		@Override
+		public void start() {
+			this.timer = 0;
+			this.cachedFollowRange = this.mob.getAttribute(Attributes.FOLLOW_RANGE).getBaseValue();
+			this.mob.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(PATHFINDING_FOLLOW_RANGE);
+			this.moveToCurrentWaypoint();
+		}
+
+		@Override
+		public void tick() {
+			this.timer++;
+
+			BlockPos current = this.waypoints.get(this.waypointIndex);
+			if (this.hasArrived(current)) {
+				this.waypointIndex++;
+				if (this.waypointIndex >= this.waypoints.size()) {
+					this.mob.hasEnteredTomb = true;
+					return;
+				}
+				this.moveToCurrentWaypoint();
+				return;
+			}
+			if (this.mob.getNavigation().isDone()) {
+				this.moveToCurrentWaypoint();
+			}
+		}
+
+		@Override
+		public void stop() {
+			if (this.timer >= TIMEOUT_TICKS) {
+				this.mob.hasEnteredTomb = true; // couldn't get there - stop retrying and let idle AI take over
+			}
+			this.mob.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.cachedFollowRange);
+			this.mob.getNavigation().stop();
+			this.waypoints = null;
+		}
+
+		private void moveToCurrentWaypoint() {
+			BlockPos target = this.waypoints.get(this.waypointIndex);
+			this.mob.getNavigation().moveTo(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, 1.0D);
+		}
+
+		/** Uses the target's own Y (not the mob's current Y) so vertical distance actually counts -
+		 *  a robber stuck directly above/below a target must not read as "arrived". */
+		private boolean hasArrived(BlockPos target) {
+			return this.mob.distanceToSqr(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D) <= ARRIVE_DISTANCE_SQR;
+		}
+	}
+
+	/**
+	 * Purely cosmetic "let there be light" flavor: once inside the {@link FURStructureTagsProvider#ROYAL_TOMB}
+	 * structure and idle (no combat target, not drinking — same gate as {@link TombLootFlavorGoal}), a robber
+	 * scans for a nearby dark, air-filled spot with a sturdy floor or ceiling and places a single lantern
+	 * there, explaining how they can see what they're digging through in an otherwise pitch-black tomb.
+	 *
+	 * <p>Fires at most once per mob (see {@link #hasPlacedLantern}), so the number of lanterns a tomb ends
+	 * up with is naturally capped by how many robbers are actually in it, rather than growing unbounded.
+	 */
+	static class LightTombGoal extends Goal {
+		private static final int SEARCH_RADIUS_XZ = 8;
+		private static final int SEARCH_RADIUS_Y = 4;
+		private static final int RESCAN_INTERVAL_TICKS = 20; // avoid rescanning the area every tick while idle
+		private static final int APPROACH_TIMEOUT_TICKS = 100; // give up if the target turns out unreachable
+		private static final int LIGHT_THRESHOLD = 8; // vanilla mob spawn threshold is 0; this is "too dark to work by"
+		private static final double INTERACT_RANGE_SQR = 3.0D * 3.0D;
+
+		private final GraveRobberEntity mob;
+		private BlockPos targetPos;
+		private BlockState placementState;
+		private int approachTimer;
+		private int nextScanTick;
+
+		public LightTombGoal(GraveRobberEntity entity) {
+			this.mob = entity;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			if (this.mob.hasPlacedLantern || this.mob.getTarget() != null || this.mob.isUsingItem()) {
+				return false;
+			}
+			if (this.mob.tickCount < this.nextScanTick) {
+				return false;
+			}
+			this.nextScanTick = this.mob.tickCount + RESCAN_INTERVAL_TICKS;
+
+			if (!this.mob.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
+					|| !(this.mob.level() instanceof ServerLevel serverLevel)
+					|| !serverLevel.structureManager().getStructureWithPieceAt(this.mob.blockPosition(), FURStructureTagsProvider.ROYAL_TOMB).isValid()) {
+				return false;
+			}
+
+			this.targetPos = this.findDarkSpot();
+			return this.targetPos != null;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			if (this.mob.hasPlacedLantern || this.mob.getTarget() != null || this.targetPos == null || this.approachTimer > APPROACH_TIMEOUT_TICKS) {
+				return false;
+			}
+			return this.mob.level().getBlockState(this.targetPos).isAir();
+		}
+
+		@Override
+		public void start() {
+			this.approachTimer = 0;
+		}
+
+		@Override
+		public void tick() {
+			this.mob.getLookControl().setLookAt(this.targetPos.getX() + 0.5D, this.targetPos.getY() + 0.5D, this.targetPos.getZ() + 0.5D);
+			this.approachTimer++;
+
+			if (this.mob.distanceToSqr(this.targetPos.getX() + 0.5D, this.targetPos.getY() + 0.5D, this.targetPos.getZ() + 0.5D) > INTERACT_RANGE_SQR) {
+				if (this.mob.getNavigation().isDone()) {
+					this.mob.getNavigation().moveTo(this.targetPos.getX() + 0.5D, this.targetPos.getY(), this.targetPos.getZ() + 0.5D, 1.0D);
+				}
+				return;
+			}
+
+			this.mob.getNavigation().stop();
+			this.mob.level().setBlock(this.targetPos, this.placementState, 3);
+			SoundType soundType = this.placementState.getSoundType();
+			this.mob.playSound(soundType.getPlaceSound(), soundType.getVolume(), soundType.getPitch());
+			this.mob.hasPlacedLantern = true;
+		}
+
+		@Override
+		public void stop() {
+			this.targetPos = null;
+			this.placementState = null;
+		}
+
+		@Nullable
+		private BlockPos findDarkSpot() {
+			Level level = this.mob.level();
+			BlockPos origin = this.mob.blockPosition();
+			BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+			BlockPos closest = null;
+			double closestDistSqr = Double.MAX_VALUE;
+
+			for (int dx = -SEARCH_RADIUS_XZ; dx <= SEARCH_RADIUS_XZ; dx++) {
+				for (int dz = -SEARCH_RADIUS_XZ; dz <= SEARCH_RADIUS_XZ; dz++) {
+					for (int dy = -SEARCH_RADIUS_Y; dy <= SEARCH_RADIUS_Y; dy++) {
+						cursor.setWithOffset(origin, dx, dy, dz);
+						double distSqr = cursor.distSqr(origin);
+						if (distSqr >= closestDistSqr || distSqr > (double) (SEARCH_RADIUS_XZ * SEARCH_RADIUS_XZ)) {
+							continue;
+						}
+						if (!level.getBlockState(cursor).isAir() || level.getMaxLocalRawBrightness(cursor) >= LIGHT_THRESHOLD) {
+							continue;
+						}
+
+						BlockState lanternState = this.orientLantern(level, cursor);
+						if (lanternState == null) {
+							continue;
+						}
+
+						closest = cursor.immutable();
+						this.placementState = lanternState;
+						closestDistSqr = distSqr;
+					}
+				}
+			}
+
+			return closest;
+		}
+
+		@Nullable
+		private BlockState orientLantern(Level level, BlockPos pos) {
+			if (level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) {
+				return Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, false);
+			}
+			if (level.getBlockState(pos.above()).isFaceSturdy(level, pos.above(), Direction.DOWN)) {
+				return Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true);
+			}
+			return null;
+		}
+	}
+
 	static class TradeGoal extends Goal {
 		private final GraveRobberEntity mob;
 
@@ -544,5 +881,33 @@ public class GraveRobberEntity extends AbstractIllager {
 	@Override
 	public SoundEvent getCelebrateSound() {
 		return SoundEvents.VINDICATOR_CELEBRATE;
+	}
+
+	private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
+		if (this.isUsingItem() || !this.getOffhandItem().isEmpty()) {
+			state.getController().setAnimation(OFFER);
+		} else if (this.isLootingGesture()) {
+			state.getController().setAnimation(DIG);
+		} else if (this.isAggressive()) {
+			state.getController().setAnimation(ATTACK);
+		} else if (this.isCelebrating()) {
+			state.getController().setAnimation(CELEBRATE);
+		} else if (state.isMoving() || !this.getNavigation().isDone()) {
+			state.getController().setAnimation(WALK);
+		} else {
+			state.getController().setAnimation(IDLE);
+		}
+
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
 	}
 }

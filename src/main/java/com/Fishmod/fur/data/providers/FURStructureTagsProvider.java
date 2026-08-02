@@ -23,6 +23,7 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
     public static final TagKey<Structure> HAS_MUMMY = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy"));
     public static final TagKey<Structure> HAS_MUMMY_LORD = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mummy_lord"));
     public static final TagKey<Structure> HAS_MIMIC = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_mimic"));
+    public static final TagKey<Structure> HAS_SCARAB = TagKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "has_scarab"));
     public static final ResourceKey<Structure> ROYAL_TOMB = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(mod_LavaCow.MODID, "royal_tomb"));
     
     public FURStructureTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
@@ -42,5 +43,6 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
         						   .add(BuiltinStructures.SHIPWRECK)
         						   .addTag(StructureTags.OCEAN_RUIN)
         						   .add(ROYAL_TOMB);
+        this.tag(HAS_SCARAB).add(ROYAL_TOMB);
     }
 }

@@ -11,6 +11,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.core.VespaInfestation;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
+import com.Fishmod.fur.data.providers.FURStructureTagsProvider;
 import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
@@ -52,6 +53,7 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Marker;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -74,6 +76,8 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -847,7 +851,92 @@ public class FURServerEvents {
     		}
     	}
     }
-    
+
+    /**
+     * Per-instance state for {@link #onTombAmbush}, keyed by structure bounding-box centre.
+     * {@code TOMB_AMBUSH_ARMED_AT}/{@code TOMB_AMBUSH_ARMED_ENTRANCE} hold a pending ambush's fire
+     * time and spawn position - captured the moment the player passes the entrance marker, so the
+     * delayed spawn still lands at the entrance even if the player has since wandered off deeper
+     * into the tomb. {@code TOMB_AMBUSH_COOLDOWN_UNTIL} is set the moment an ambush arms (not when
+     * it fires), so a player camping the entrance can't re-arm a second batch while the first is
+     * still walking in. None of this is persisted across restarts - acceptable since this is
+     * ambience, not a one-shot reward.
+     */
+    private static final Map<BlockPos, Long> TOMB_AMBUSH_ARMED_AT = new HashMap<>();
+    private static final Map<BlockPos, BlockPos> TOMB_AMBUSH_ARMED_ENTRANCE = new HashMap<>();
+    private static final Map<BlockPos, Long> TOMB_AMBUSH_COOLDOWN_UNTIL = new HashMap<>();
+    private static final int TOMB_AMBUSH_DELAY_MIN_TICKS = 100; // 5s
+    private static final int TOMB_AMBUSH_DELAY_MAX_TICKS = 200; // 10s
+    private static final double TOMB_AMBUSH_TRIGGER_RADIUS_SQR = 6.0D * 6.0D; // "passing by" the marker
+    private static final long TOMB_AMBUSH_COOLDOWN_TICKS = 24000L; // 1 in-game day
+
+    /**
+     * Grave Robber reinforcements: once a player passes within a few blocks of a generated
+     * {@code royal_tomb} instance's baked-in {@code fur:tomb_entrance} marker (a
+     * {@code minecraft:marker} entity placed in the structure NBT at the entrance), arms a delayed
+     * ambush - 2-3 Grave Robbers spawn at that marker 5-10s later, flavor for "word got out
+     * someone's digging in the tomb" rather than an instant, obviously scripted pop-in.
+     */
+    @SubscribeEvent
+    public void onTombAmbush(final TickEvent.PlayerTickEvent event) {
+    	if (event.phase == TickEvent.Phase.START) {
+    		return;
+    	}
+
+    	Player player = event.player;
+    	if (!(player.level() instanceof ServerLevel serverLevel) || serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
+    		return;
+    	}
+    	if ((serverLevel.getGameTime() & 0x1FL) > 0L) {
+    		return;
+    	}
+
+    	StructureStart structureStart = serverLevel.structureManager().getStructureWithPieceAt(player.blockPosition(), FURStructureTagsProvider.ROYAL_TOMB);
+    	if (!structureStart.isValid()) {
+    		return;
+    	}
+
+    	BoundingBox box = structureStart.getBoundingBox();
+    	BlockPos key = box.getCenter();
+    	long now = serverLevel.getGameTime();
+
+    	Long armedAt = TOMB_AMBUSH_ARMED_AT.get(key);
+    	if (armedAt != null) {
+    		if (now >= armedAt) {
+    			TOMB_AMBUSH_ARMED_AT.remove(key);
+    			BlockPos entrancePos = TOMB_AMBUSH_ARMED_ENTRANCE.remove(key);
+    			if (serverLevel.random.nextFloat() < 0.5F) {
+    				int reinforcements = 2 + serverLevel.random.nextInt(4);
+    				for (int i = 0; i < reinforcements; i++) {
+    					SpawnUtil.trySpawnEntity(FUREntityRegistry.GRAVEROBBER.get(), serverLevel, entrancePos);
+    				}
+    			}
+    		}
+    		return; // already armed (or just fired) - don't re-arm this pass
+    	}
+
+    	Long cooldownUntil = TOMB_AMBUSH_COOLDOWN_UNTIL.get(key);
+    	if (cooldownUntil != null && now < cooldownUntil) {
+    		return;
+    	}
+
+    	AABB searchArea = new AABB(box.minX(), box.minY(), box.minZ(), box.maxX() + 1, box.maxY() + 1, box.maxZ() + 1);
+    	List<Marker> entrances = serverLevel.getEntitiesOfClass(Marker.class, searchArea, marker -> marker.getTags().contains("fur:tomb_entrance"));
+    	if (entrances.isEmpty()) {
+    		return;
+    	}
+
+    	Marker entrance = entrances.get(0);
+    	if (player.distanceToSqr(entrance) > TOMB_AMBUSH_TRIGGER_RADIUS_SQR) {
+    		return; // in the tomb, but hasn't passed the entrance yet
+    	}
+
+    	int delay = TOMB_AMBUSH_DELAY_MIN_TICKS + serverLevel.random.nextInt(TOMB_AMBUSH_DELAY_MAX_TICKS - TOMB_AMBUSH_DELAY_MIN_TICKS + 1);
+    	TOMB_AMBUSH_ARMED_AT.put(key, now + delay);
+    	TOMB_AMBUSH_ARMED_ENTRANCE.put(key, entrance.blockPosition());
+    	TOMB_AMBUSH_COOLDOWN_UNTIL.put(key, now + delay + TOMB_AMBUSH_COOLDOWN_TICKS);
+    }
+
     @SubscribeEvent
     public void onESetTarget(LivingChangeTargetEvent event) {    
         LivingEntity entity = event.getEntity();

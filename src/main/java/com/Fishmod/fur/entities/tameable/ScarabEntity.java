@@ -68,11 +68,16 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("scarab.model.walk");
     private static final RawAnimation FLY = RawAnimation.begin().thenPlay("scarab.model.fly");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("scarab.model.attack");
-    
+    // PLACEHOLDER: "scarab.model.dig" is not yet authored in scarab.animation.json - see PLACEHOLDERS.md.
+    private static final RawAnimation DIG = RawAnimation.begin().thenPlay("scarab.model.dig");
+
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ScarabEntity.class, EntityDataSerializers.INT);
+	private static final int DAY_SINK_TICKS = 20; // 1.0s placeholder dig animation before a wild scarab burrows away
 	private int attackTimer = 10;
 	private int limitedLifeTicks;
 	private boolean isSmoking = false;
+	private boolean isDigging = false;
+	private int daySinkTimer = -1;
 
 	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
@@ -168,18 +173,31 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     public void tick() {
 		super.tick();
-		
+
     	if (this.attackTimer > 0)
     		this.attackTimer--;
-    	
-    	if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {    		
+
+    	if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
             if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
-            }  
+            }
             this.level().broadcastEntityEvent(this, (byte)11);
             this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getVoicePitch());
             this.discard();
         }
+
+    	// Wild scarabs are neutral vermin, not daylight-proof - once the sun's up they dig back into
+    	// the sand and vanish rather than lingering around indefinitely. Owned pets are unaffected.
+    	if (!this.level().isClientSide() && this.getOwner() == null) {
+    		if (this.daySinkTimer < 0) {
+    			if (this.level().isDay() && this.getTarget() == null && this.level().canSeeSky(this.blockPosition())) {
+    				this.daySinkTimer = DAY_SINK_TICKS;
+    				this.level().broadcastEntityEvent(this, (byte)42);
+    			}
+    		} else if (--this.daySinkTimer <= 0) {
+    			this.discard();
+    		}
+    	}
 	}
 
 	@Override
@@ -214,13 +232,13 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
      */
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {        
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarab_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	
+
     	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
-    }	
+    }
     
 	@Override
     public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
@@ -244,6 +262,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
             this.attackTimer = 10;
         } else if (id == 11) {
             this.isSmoking = true;
+        } else if (id == 42) {
+            this.isDigging = true;
         } else {
             super.handleEntityEvent(id);
         }
@@ -328,7 +348,9 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-		if (this.onGround()) {
+		if (this.isDigging) {
+			state.getController().setAnimation(DIG);
+		} else if (this.onGround()) {
 			if (state.isMoving() || !this.getNavigation().isDone()) {
 				state.getController().setAnimation(WALK);
 			} else {

@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "fur:royal_tomb",
   "biomes": "#forge:is_desert",
   "step": "underground_structures",
   "spawn_overrides": {},

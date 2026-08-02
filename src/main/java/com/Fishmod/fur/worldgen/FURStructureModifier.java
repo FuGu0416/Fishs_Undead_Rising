@@ -35,6 +35,7 @@ public class FURStructureModifier {
         context.register(key("add_mummy"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY.get(), 40, 4, 8), FURStructureTagsProvider.HAS_MUMMY));
         context.register(key("add_mummy_lord"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY_LORD.get(), 10, 1, 2), FURStructureTagsProvider.HAS_MUMMY_LORD));
         context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 5, 1, 1), FURStructureTagsProvider.HAS_MIMIC));
+        context.register(key("add_scarab"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARAB.get(), 30, 2, 4), FURStructureTagsProvider.HAS_SCARAB));
     });
 
     public static void generateStructureModifiers(GatherDataEvent event)

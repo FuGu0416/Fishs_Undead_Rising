@@ -33,23 +33,23 @@ public class WraithModel extends GeoModel<WraithEntity> {
 
     @Override
     public ResourceLocation getTextureResource(WraithEntity object) {
-        return object.isVariant1() ? TEXTURES_VARIANT1 : TEXTURES;
+        return object.getSkin() == 1 ? TEXTURES_VARIANT1 : TEXTURES;
     }
 
     @Override
     public ResourceLocation getAnimationResource(WraithEntity animatable) {
-        return animatable.isVariant1() ? ANIMATIONS_VARIANT1 : ANIMATIONS;
+        return animatable.getSkin() == 1 ? ANIMATIONS_VARIANT1 : ANIMATIONS;
     }
 
 	@Override
 	public ResourceLocation getModelResource(WraithEntity animatable) {
-		return animatable.isVariant1() ? MODEL_VARIANT1 : MODEL;
+		return animatable.getSkin() == 1 ? MODEL_VARIANT1 : MODEL;
 	}
 
     @Override
     public void setCustomAnimations(WraithEntity animatable, long instanceId, AnimationState<WraithEntity> animationState) {
         // The two geo rigs use different bone casing: "Head" on the original, "head" on wraith1's.
-        CoreGeoBone head = getAnimationProcessor().getBone(animatable.isVariant1() ? "head" : "Head");
+        CoreGeoBone head = getAnimationProcessor().getBone(animatable.getSkin() == 1 ? "head" : "Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
