@@ -34,6 +34,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -69,7 +71,9 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	private int feedCooldown = 0;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("warpedfirefly.idle");
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("warpedfirefly.model.idle");
+	private static final RawAnimation FLY = RawAnimation.begin().thenLoop("warpedfirefly.model.fly");
+	private static final RawAnimation INTERACT = RawAnimation.begin().thenPlay("warpedfirefly.model.interact");
 
 	public WarpedFireflyEntity(EntityType<? extends WarpedFireflyEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
@@ -142,6 +146,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 			}
 
 			this.playSound(SoundEvents.BEE_LOOP, 1.0F, 1.0F);
+			this.level().broadcastEntityEvent(this, (byte) 7);
 			if (player instanceof ServerPlayer serverPlayer) {
 				CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, this);
 			}
@@ -198,16 +203,35 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 		return MobType.ARTHROPOD;
 	}
 
+	/**
+	 * Handler for {@link Level#setEntityState}
+	 */
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void handleEntityEvent(byte id) {
+		if (id == 7) {
+			this.triggerAnim("trigger_controller", "interact");
+		} else {
+			super.handleEntityEvent(id);
+		}
+	}
+
 	// ── GeckoLib ──────────────────────────────────────────────────────────────
 
 	private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-		state.getController().setAnimation(IDLE);
+		if (this.onGround()) {
+			state.getController().setAnimation(IDLE);
+		} else {
+			state.getController().setAnimation(FLY);
+		}
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("interact", INTERACT));
 	}
 
 	@Override

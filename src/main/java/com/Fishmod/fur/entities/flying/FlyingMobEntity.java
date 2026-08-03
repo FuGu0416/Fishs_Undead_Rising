@@ -707,6 +707,11 @@ public class FlyingMobEntity extends FURTameableEntity {
         private int blockedTicks = 0;
         private static final int BLOCKED_ESCALATE  = 10;
 
+        // Set while stepping aside for aiStep()'s grounded-ambient-rest handling (see the
+        // !isNoGravity() branch below), so the very next active tick can tell it just left that
+        // state and resync `velocity` before computing anything.
+        private boolean restingOnGround = false;
+
         // Pre-built probe directions: 8 horizontal angles x 3 Y tilts = 24 vectors.
         // Built once as unit vectors; scaled to current speed each tick.
         private static final double[][] PROBE_DIRS;
@@ -738,6 +743,7 @@ public class FlyingMobEntity extends FURTameableEntity {
             if (this.parentEntity.suspendAiMovement()) {
                 this.velocity = Vec3.ZERO;
                 this.operation = MoveControl.Operation.WAIT;
+                this.restingOnGround = false;
                 return;
             }
 
@@ -751,7 +757,34 @@ public class FlyingMobEntity extends FURTameableEntity {
                 this.parentEntity.setDeltaMovement(0.0D, this.parentEntity.onGround() ? vy : vy - 0.03D, 0.0D);
                 this.velocity = Vec3.ZERO;
                 this.operation = MoveControl.Operation.WAIT;
+                this.restingOnGround = false;
                 return;
+            }
+
+            // Grounded ambient rest: a wild (non-tame) flyer with no target settles onto the
+            // ground with gravity briefly re-enabled (see aiStep()'s land/hop toggle) until the
+            // next random hop. Stepping out of the way here instead of steering toward an airborne
+            // wanted position avoids fighting travel()'s forced -0.15D fall — without this, the
+            // mob would visibly skid/slide across the ground toward the target's X/Z every tick
+            // it's grounded. Leave `operation`/`velocity` untouched (don't reset to WAIT) so
+            // AIRandomFly's hasWanted() check still sees a pending target and doesn't re-pick
+            // every single tick; normal MOVE_TO handling resumes the instant gravity is disabled.
+            if (!this.parentEntity.isNoGravity()) {
+                this.restingOnGround = true;
+                return;
+            }
+
+            if (this.restingOnGround) {
+                // We just left grounded rest — most likely this exact tick's aiStep() rolled the
+                // random hop and added an upward boost straight into deltaMovement via
+                // setDeltaMovement() (aiStep() runs *after* this MoveControl's tick() within the
+                // same super.aiStep() call, so the boost isn't visible yet on the tick it's added).
+                // Our own `velocity` field is stale from before landing — resyncing it from the
+                // entity's actual current deltaMovement means the lerp below blends from the boost
+                // instead of silently overwriting it, which is why the mob used to look like it
+                // kept trying to hop up only to be immediately yanked back down.
+                this.velocity = this.parentEntity.getDeltaMovement();
+                this.restingOnGround = false;
             }
 
             if (this.operation != MoveControl.Operation.MOVE_TO) {
