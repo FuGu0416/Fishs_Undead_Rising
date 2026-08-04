@@ -32,11 +32,11 @@
 		        }
 		      }
         },
-        "fur:warpedfirefly": {
+        "fur:flarefly": {
             "trigger": "minecraft:player_killed_entity",
 		    "conditions": {
 				"entity": {
-					"type": "fur:warpedfirefly"
+					"type": "fur:flarefly"
 		        }
 		      }
         },

@@ -50,7 +50,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLING = registerKey("add_shroomling");
 	public static final ResourceKey<BiomeModifier> ADD_VOID_GLIDER = registerKey("add_void_glider");
-	public static final ResourceKey<BiomeModifier> ADD_WARPEDFIREFLY = registerKey("add_warpedfirefly");
+	public static final ResourceKey<BiomeModifier> ADD_FLAREFLY = registerKey("add_flarefly");
+	public static final ResourceKey<BiomeModifier> ADD_FLAREFLY_CAVES = registerKey("add_flarefly_caves");
 	public static final ResourceKey<BiomeModifier> ADD_GRAVEROBBER = registerKey("add_graverobber");
 	public static final ResourceKey<BiomeModifier> ADD_BEELZEBUB = registerKey("add_beelzebub");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLORD = registerKey("add_shroomlord");
@@ -126,8 +127,11 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
         addSpawn(context, ADD_VOID_GLIDER, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VOID_GLIDER.get(), 10, 1, 1));
-        addSpawn(context, ADD_WARPEDFIREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WARPEDFIREFLY.get(), 2, 4, 8));
+        addSpawn(context, ADD_FLAREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.FLAREFLY.get(), 2, 4, 8));
+        // Higher weight in Lush Caves / Luminous Undergrove than its original Warped Forest spawn.
+        addSpawn(context, ADD_FLAREFLY_CAVES, HolderSet.direct(biomes.getOrThrow(Biomes.LUSH_CAVES), biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.FLAREFLY.get(), 10, 4, 8));
         // 1.16.5 spawned the Grave Robber only at desert structures (pyramid / desert tomb) via
         // StructureSpawnListGatherEvent. Those structures aren't ported, so this approximates it with a
         // sparse ambient desert spawn (the Grave Robber also appears in raids as a Raider).

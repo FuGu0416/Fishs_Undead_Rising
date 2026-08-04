@@ -245,6 +245,7 @@ public class FURItemRegistry {
         spawnEgg("cactyrant", FUREntityRegistry.CACTYRANT, 0x649832, 0x426520);
         spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
         spawnEgg("enigmoth", FUREntityRegistry.ENIGMOTH, 0x0D0B11, 0xA675E9);
+        spawnEgg("flarefly", FUREntityRegistry.FLAREFLY, 0x0F9373, 0xFE8738);
         spawnEgg("foglet", FUREntityRegistry.FOGLET, 0xCBD3B9, 0x41352F);
         spawnEgg("frigid", FUREntityRegistry.FRIGID, 0xAFE0E2, 0x59484F);
         spawnEgg("ghoul", FUREntityRegistry.GHOUL, 0xA69087, 0xF7EDD9);
@@ -273,7 +274,6 @@ public class FURItemRegistry {
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
         spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
         spawnEgg("void_glider", FUREntityRegistry.VOID_GLIDER, 0x233A41, 0x7AFDFD);
-        spawnEgg("warpedfirefly", FUREntityRegistry.WARPEDFIREFLY, 0x0F9373, 0xFE8738);
         spawnEgg("wendigo", FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC);
         spawnEgg("wisp", FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1);
         spawnEgg("wraith", FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B);

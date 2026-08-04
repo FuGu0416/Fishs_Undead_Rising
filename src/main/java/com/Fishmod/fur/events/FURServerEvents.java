@@ -448,7 +448,7 @@ public class FURServerEvents {
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
     	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
-    		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));*/
+    		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), FlareflyEntity.class, 6.0F, 1.0D, 1.2D));*/
     	
     	if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
     		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (living) -> {

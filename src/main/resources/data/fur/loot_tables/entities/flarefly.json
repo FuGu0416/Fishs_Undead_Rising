@@ -2,7 +2,7 @@
     "type": "minecraft:entity",
     "pools": [
         {
-            "name": "fur:warpedfirefly",
+            "name": "fur:flarefly",
             "rolls": 1,
             "entries": [
                 {
@@ -36,7 +36,7 @@
                     "looting_multiplier": 0.1
                 }
             ],
-            "name": "fur:warpedfirefly_bonus",
+            "name": "fur:flarefly_bonus",
             "rolls": 1,
             "entries": [
                 {

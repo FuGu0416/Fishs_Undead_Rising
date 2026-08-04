@@ -4,19 +4,19 @@
             "item": "minecraft:shroomlight"
         },
         "title": {
-            "translate": "advancements.fur.feed_warpedfirefly.title"
+            "translate": "advancements.fur.feed_flarefly.title"
         },
         "description": {
-            "translate": "advancements.fur.feed_warpedfirefly.description"
+            "translate": "advancements.fur.feed_flarefly.description"
         }
     },
     "parent": "fur:root",
     "criteria": {
-        "feed_warpedfirefly": {
+        "feed_flarefly": {
             "trigger": "minecraft:summoned_entity",
 		    "conditions": {
 				"entity": {
-					"type": "fur:warpedfirefly"
+					"type": "fur:flarefly"
 		        }
 		      }
         }

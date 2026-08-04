@@ -139,7 +139,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Attack;
 
-	public static final ForgeConfigSpec.ConfigValue<Double> WarpedFirefly_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Flarefly_Health;
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Attack;
@@ -424,8 +424,8 @@ public final class FURConfig {
 		Cactoid_Attack = BUILDER.comment("Cactoid strength [1-1000]").defineInRange("cactoid attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
-		BUILDER.push("Warped Firefly");
-		WarpedFirefly_Health = BUILDER.comment("Maximum Warped Firefly health [1-1000]").defineInRange("warped firefly health", 10.0D, 1.0D, 1000.0D);
+		BUILDER.push("Flarefly");
+		Flarefly_Health = BUILDER.comment("Maximum Flarefly health [1-1000]").defineInRange("flarefly health", 10.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Imp");

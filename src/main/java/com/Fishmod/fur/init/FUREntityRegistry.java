@@ -29,7 +29,7 @@ import com.Fishmod.fur.entities.flying.FlyingMobEntity;
 import com.Fishmod.fur.entities.flying.VoidGliderEntity;
 import com.Fishmod.fur.entities.flying.PteraEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
-import com.Fishmod.fur.entities.flying.WarpedFireflyEntity;
+import com.Fishmod.fur.entities.flying.FlareflyEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.projectiles.CactusThornEntity;
 import com.Fishmod.fur.entities.projectiles.DeathCoilEntity;
@@ -89,6 +89,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<CactyrantEntity>> CACTYRANT = DEF_REG.register("cactyrant", () -> (EntityType<CactyrantEntity>) EntityType.Builder.of(CactyrantEntity::new, MobCategory.MONSTER).sized(1.3F, 2.8F).setTrackingRange(8).build("cactyrant"));
 	public static final RegistryObject<EntityType<CocoonEntity>> COCOON = DEF_REG.register("cocoon", () -> (EntityType<CocoonEntity>) EntityType.Builder.of(CocoonEntity::new, MobCategory.MONSTER).sized(0.8F, 1.0F).setTrackingRange(8).build("cocoon"));
 	public static final RegistryObject<EntityType<EnigmothEntity>> ENIGMOTH = DEF_REG.register("enigmoth", () -> (EntityType<EnigmothEntity>) EntityType.Builder.of(EnigmothEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).fireImmune().setTrackingRange(8).build("enigmoth"));
+	public static final RegistryObject<EntityType<FlareflyEntity>> FLAREFLY = DEF_REG.register("flarefly", () -> (EntityType<FlareflyEntity>) EntityType.Builder.of(FlareflyEntity::new, MobCategory.MONSTER).sized(0.7F, 0.6F).fireImmune().setTrackingRange(8).build("flarefly"));
 	public static final RegistryObject<EntityType<FogletEntity>> FOGLET = DEF_REG.register("foglet", () -> (EntityType<FogletEntity>) EntityType.Builder.of(FogletEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("foglet"));
 	public static final RegistryObject<EntityType<FrigidEntity>> FRIGID = DEF_REG.register("frigid", () -> (EntityType<FrigidEntity>) EntityType.Builder.of(FrigidEntity::new, MobCategory.MONSTER).sized(1.0F, 1.95F).setTrackingRange(8).build("frigid"));
 	public static final RegistryObject<EntityType<GhoulEntity>> GHOUL = DEF_REG.register("ghoul", () -> (EntityType<GhoulEntity>) EntityType.Builder.of(GhoulEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("ghoul"));
@@ -120,7 +121,6 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<UndertakerEntity>> UNDERTAKER = DEF_REG.register("undertaker", () -> (EntityType<UndertakerEntity>) EntityType.Builder.of(UndertakerEntity::new, MobCategory.MONSTER).sized(1.8F, 2.4F).setTrackingRange(8).build("undertaker"));
 	public static final RegistryObject<EntityType<VespaEntity>> VESPA = DEF_REG.register("vespa", () -> (EntityType<VespaEntity>) EntityType.Builder.of(VespaEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).setTrackingRange(8).build("vespa"));
 	public static final RegistryObject<EntityType<VoidGliderEntity>> VOID_GLIDER = DEF_REG.register("void_glider", () -> (EntityType<VoidGliderEntity>) EntityType.Builder.of(VoidGliderEntity::new, MobCategory.MONSTER).sized(1.6F, 0.25F).setTrackingRange(8).build("void_glider"));
-	public static final RegistryObject<EntityType<WarpedFireflyEntity>> WARPEDFIREFLY = DEF_REG.register("warpedfirefly", () -> (EntityType<WarpedFireflyEntity>) EntityType.Builder.of(WarpedFireflyEntity::new, MobCategory.MONSTER).sized(0.7F, 0.6F).fireImmune().setTrackingRange(8).build("warpedfirefly"));
 	public static final RegistryObject<EntityType<WendigoEntity>> WENDIGO = DEF_REG.register("wendigo", () -> (EntityType<WendigoEntity>) EntityType.Builder.of(WendigoEntity::new, MobCategory.MONSTER).sized(1.6F, 2.6F).setTrackingRange(8).build("wendigo"));
 	public static final RegistryObject<EntityType<WetaEntity>> WETA = DEF_REG.register("weta", () -> (EntityType<WetaEntity>) EntityType.Builder.of(WetaEntity::new, MobCategory.MONSTER).sized(0.8F, 0.5F).immuneTo(Blocks.SWEET_BERRY_BUSH, Blocks.CACTUS).setTrackingRange(8).build("scarecrow"));
 	public static final RegistryObject<EntityType<WispEntity>> WISP = DEF_REG.register("wisp", () -> (EntityType<WispEntity>) EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER).sized(0.525F, 0.525F).setTrackingRange(8).fireImmune().build("wisp"));
@@ -163,6 +163,7 @@ public class FUREntityRegistry {
         event.register(CACTOID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CactoidEntity::checkCactoidSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(CACTYRANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CactyrantEntity::checkCactyrantSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(ENIGMOTH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, EnigmothEntity::checkEnigmothSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(FLAREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(FOGLET.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, FogletEntity::checkFogletSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(FRIGID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, FrigidEntity::checkFrigidSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GHOUL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, GhoulEntity::checkGhoulSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
@@ -190,7 +191,6 @@ public class FUREntityRegistry {
         event.register(UNDERTAKER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, UndertakerEntity::checkUndertakerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(VESPA.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, VespaEntity::checkVespaSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(VOID_GLIDER.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, VoidGliderEntity::checkVoidGliderSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(WARPEDFIREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlyingMobEntity::checkFlyerSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WENDIGO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, WendigoEntity::checkWendigoSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WETA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WetaEntity::checkWetaSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(WISP.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, WispEntity::checkWispSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
@@ -214,6 +214,7 @@ public class FUREntityRegistry {
         event.put(CACTYRANT.get(), CactyrantEntity.createAttributes().build());
         event.put(COCOON.get(), CocoonEntity.createAttributes().build());
         event.put(ENIGMOTH.get(), EnigmothEntity.createAttributes().build());
+        event.put(FLAREFLY.get(), FlareflyEntity.createAttributes().build());
         event.put(FOGLET.get(), FogletEntity.createAttributesFoglet().build());
         event.put(FRIGID.get(), FrigidEntity.createAttributes().build());
         event.put(GHOUL.get(), GhoulEntity.createAttributes().build());
@@ -244,7 +245,6 @@ public class FUREntityRegistry {
         event.put(UNDERTAKER.get(), UndertakerEntity.createAttributes().build());
         event.put(VESPA.get(), VespaEntity.createAttributes().build());
         event.put(VOID_GLIDER.get(), VoidGliderEntity.createAttributes().build());
-        event.put(WARPEDFIREFLY.get(), WarpedFireflyEntity.createAttributes().build());
         event.put(WENDIGO.get(), WendigoEntity.createAttributes().build());
         event.put(WETA.get(), WetaEntity.createAttributes().build());
         event.put(WISP.get(), WispEntity.createAttributes().build());

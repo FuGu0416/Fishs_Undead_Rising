@@ -47,35 +47,35 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * Warped Firefly — a passive, leash-able cave flyer ported from MC 1.16.5.
+ * Flarefly — a passive, leash-able cave flyer ported from MC 1.16.5.
  *
  * <p>1.20.1 changes vs. the original:
  * <ul>
- *   <li>Rendered through GeckoLib instead of the hand-coded {@code WarpedFireflyModel}.</li>
+ *   <li>Rendered through GeckoLib instead of the hand-coded {@code FlareflyModel}.</li>
  *   <li>The bespoke {@code WanderGoal} was dropped in favour of the shared
  *       {@link FlyingMobEntity.AIRandomFly} (same as the Ghost Ray port).</li>
  *   <li>Movement now uses the base {@code FlyingMoveHelper} instead of a vanilla
  *       {@code FlyingMovementController}.</li>
  * </ul>
  *
- * <p>Gameplay is preserved: feeding it an item from {@link FURItemTagsProvider#WARPED_FIREFLY_FOOD}
+ * <p>Gameplay is preserved: feeding it an item from {@link FURItemTagsProvider#FLAREFLY_FOOD}
  * (Glowstone Dust, Warped Fungus) spawns a one-shot light orb - a {@link FURBlockRegistry#GLOWING_AIR}
  * block - at its position; feeding is on a 30s cooldown, independent of whether an earlier orb is
  * still glowing. The orb's entire 60s lifetime (hold, fade, self-removal) is owned by
  * {@code GlowingAirBlock} itself, not tracked by this entity. It flees Enigmoths and is tempted by
  * Warped Fungus.
  */
-public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
+public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 	private static final int FEED_COOLDOWN_TICKS = 30 * 20;
 
 	private int feedCooldown = 0;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("warpedfirefly.model.idle");
-	private static final RawAnimation FLY = RawAnimation.begin().thenLoop("warpedfirefly.model.fly");
-	private static final RawAnimation INTERACT = RawAnimation.begin().thenPlay("warpedfirefly.model.interact");
+	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("flarefly.model.idle");
+	private static final RawAnimation FLY = RawAnimation.begin().thenLoop("flarefly.model.fly");
+	private static final RawAnimation INTERACT = RawAnimation.begin().thenPlay("flarefly.model.interact");
 
-	public WarpedFireflyEntity(EntityType<? extends WarpedFireflyEntity> entityType, Level worldIn) {
+	public FlareflyEntity(EntityType<? extends FlareflyEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
 	}
 
@@ -90,7 +90,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		// Static defaults only (config can't be read at registration — it crashes datagen).
-		// The real WarpedFirefly_Health is applied in finalizeSpawn().
+		// The real Flarefly_Health is applied in finalizeSpawn().
 		return Mob.createMobAttributes()
 				.add(Attributes.MOVEMENT_SPEED, 0.6D)
 				.add(Attributes.MAX_HEALTH, 10.0D)
@@ -133,7 +133,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 		ItemStack itemstack = player.getItemInHand(hand);
 		InteractionResult actionresulttype = super.mobInteract(player, hand);
 
-		if (this.feedCooldown <= 0 && itemstack.is(FURItemTagsProvider.WARPED_FIREFLY_FOOD)) {
+		if (this.feedCooldown <= 0 && itemstack.is(FURItemTagsProvider.FLAREFLY_FOOD)) {
 			this.feedCooldown = FEED_COOLDOWN_TICKS;
 			this.setPersistenceRequired();
 
@@ -165,7 +165,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity implements GeoEntity {
 	@Override
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.WarpedFirefly_Health.get());
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Flarefly_Health.get());
 		this.setHealth(this.getMaxHealth());
 
 		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, tag);

@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 /**
- * Air that emits light, spawned by {@link com.Fishmod.fur.entities.flying.WarpedFireflyEntity}
+ * Air that emits light, spawned by {@link com.Fishmod.fur.entities.flying.FlareflyEntity}
  * as a one-shot "light orb" when fed. Fully self-contained: placing it schedules its own decay
  * timeline entirely on the block, which holds full brightness for the first 50s of its 60s life,
  * then steps {@link #LIGHT} down by 5 at the 50s/55s/60s marks and reverts to plain air on the

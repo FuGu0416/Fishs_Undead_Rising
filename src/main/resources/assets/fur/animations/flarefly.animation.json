@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"warpedfirefly.model.idle": {
+		"flarefly.model.idle": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -75,7 +75,7 @@
 				}
 			}
 		},
-		"warpedfirefly.model.fly": {
+		"flarefly.model.fly": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -149,7 +149,7 @@
 				}
 			}
 		},
-		"warpedfirefly.model.interact": {
+		"flarefly.model.interact": {
 			"animation_length": 1,
 			"bones": {
 				"base": {

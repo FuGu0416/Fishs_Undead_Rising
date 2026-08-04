@@ -118,7 +118,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new WispSwellGoal(this));
-		//this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
+		//this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, FlareflyEntity.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new EntityChargeAttackGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));  
         this.goalSelector.addGoal(8, new FloatingMoveRandomGoal(this));

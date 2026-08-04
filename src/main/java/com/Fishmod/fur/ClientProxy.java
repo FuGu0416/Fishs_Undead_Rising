@@ -32,7 +32,7 @@ import com.Fishmod.fur.client.renderer.entity.ParasiteRenderer;
 import com.Fishmod.fur.client.renderer.entity.PteraRenderer;
 import com.Fishmod.fur.client.renderer.entity.RavenRenderer;
 import com.Fishmod.fur.client.renderer.entity.VoidGliderRenderer;
-import com.Fishmod.fur.client.renderer.entity.WarpedFireflyRenderer;
+import com.Fishmod.fur.client.renderer.entity.FlareflyRenderer;
 import com.Fishmod.fur.client.renderer.entity.GraveRobberRenderer;
 import com.Fishmod.fur.client.renderer.entity.SalamanderRenderer;
 import com.Fishmod.fur.client.renderer.entity.ScarabRenderer;
@@ -130,7 +130,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.LAMPREY.get(), LampreyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.RAVEN.get(), RavenRenderer::new);
         EntityRenderers.register(FUREntityRegistry.VOID_GLIDER.get(), VoidGliderRenderer::new);
-        EntityRenderers.register(FUREntityRegistry.WARPEDFIREFLY.get(), WarpedFireflyRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.FLAREFLY.get(), FlareflyRenderer::new);
         EntityRenderers.register(FUREntityRegistry.GRAVEROBBER.get(), GraveRobberRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUB.get(), BeelzebubRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BEELZEBUBPUPA.get(), BeelzebubPupaRenderer::new);
