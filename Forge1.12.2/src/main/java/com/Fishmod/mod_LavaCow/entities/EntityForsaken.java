@@ -438,7 +438,9 @@ public class EntityForsaken extends AbstractSkeleton implements IEntityOwnable {
                 this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
             case 1:
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
+                if (this.getSkin() == 1) {
+                    this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
+                }
                 break;
             case 2:
             default:

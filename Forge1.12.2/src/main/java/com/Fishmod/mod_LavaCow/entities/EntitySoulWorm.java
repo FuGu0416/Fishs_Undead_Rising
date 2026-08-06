@@ -4,8 +4,6 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.entities.projectiles.EntityFlameJet;
-import com.Fishmod.mod_LavaCow.entities.projectiles.EntityKingsWrath;
-import com.Fishmod.mod_LavaCow.init.FishItems;
 import com.Fishmod.mod_LavaCow.init.ModMobEffects;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 
@@ -20,14 +18,10 @@ import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -90,16 +84,8 @@ public class EntitySoulWorm extends EntityBoneWorm {
 
     @Override
     public void spit(EntityLivingBase target) {
-        EntityThrowable throwable;
-        SoundEvent sound;
-
-        if (this.getSkin() == 1) {
-            throwable = new EntityKingsWrath(this.world, this);
-            sound = FishItems.ENTITY_SKELETONKING_SPELL_TOSS;
-        } else {
-            throwable = new EntityFlameJet(this.world, this);
-            sound = SoundEvents.ENTITY_BLAZE_SHOOT;
-        }
+        EntityThrowable throwable = new EntityFlameJet(this.world, this);
+        SoundEvent sound = SoundEvents.ENTITY_BLAZE_SHOOT;
 
         double d0 = target.posY + (double) target.getEyeHeight() - 1.100000023841858D;
         double d1 = target.posX - this.posX;
@@ -112,27 +98,6 @@ public class EntitySoulWorm extends EntityBoneWorm {
 
         if (target instanceof EntityPlayer)
             this.setRunning(100);
-    }
-
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    @Override
-    public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
-
-        if (!world.isRemote) {
-            if (cause.getTrueSource() instanceof EntityCreeper) {
-                EntityCreeper entitycreeper = (EntityCreeper) cause.getTrueSource();
-
-                if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
-                    entitycreeper.incrementDroppedSkulls();
-
-                    // Wither Skull
-                    this.entityDropItem(new ItemStack(Items.SKULL, 0, 0), 0.0F);
-                }
-            }
-        }
     }
 
     // Immune to Infested

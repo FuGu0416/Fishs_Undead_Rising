@@ -82,7 +82,8 @@ public class BlockGlowShroom extends BlockMushroom{
      * Glowshrooms render fullbright (1.12.2 equivalent of 1.20.1's emissive overlay quads)
      * while only emitting light level 10, matching the 1.20.1 block.
      */
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
+	@SideOnly(Side.CLIENT)
     @Override
     public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos)
     {

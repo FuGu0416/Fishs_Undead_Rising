@@ -9,8 +9,6 @@ import com.Fishmod.mod_LavaCow.mod_LavaCow;
 import com.Fishmod.mod_LavaCow.client.Modconfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
 import com.Fishmod.mod_LavaCow.entities.tameable.EntitySummonedZombie;
-import com.Fishmod.mod_LavaCow.init.FishItems;
-import com.Fishmod.mod_LavaCow.init.ModEnchantments;
 import com.Fishmod.mod_LavaCow.init.Modblocks;
 import com.Fishmod.mod_LavaCow.util.LootTableHandler;
 import net.minecraft.entity.Entity;
@@ -159,24 +157,6 @@ public class EntityZombieMushroom extends EntitySummonedZombie implements IAggre
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
         if (!world.isRemote) {
-            if (new Random().nextFloat() < 0.1F) {
-                int getVariant = this.getSkin();
-                switch (getVariant) {
-                    case 0:
-                        this.entityDropItem(new ItemStack(Modblocks.CORDY_SHROOM, 1), 0.0f);
-                        break;
-                    case 1:
-                        this.entityDropItem(new ItemStack(Modblocks.GLOWSHROOM, 1), 0.0f);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, cause.getTrueSource(), cause);
-            if (this.canDropLoot())
-                LootTableHandler.dropRareLoot(this, FishItems.POISONSPORE, Modconfig.ZombieMushroom_DropSpore, ModEnchantments.POISONOUS, 3, i);
-
             if (this.world.getDifficulty() == EnumDifficulty.HARD && !this.isBurning()) {
                 makeAreaOfEffectCloud(this);
             }
@@ -226,6 +206,12 @@ public class EntityZombieMushroom extends EntitySummonedZombie implements IAggre
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableHandler.ZOMBIEMUSHROOM;
+        switch (this.getSkin()) {
+            case 1:
+                return LootTableHandler.ZOMBIEMUSHROOM1;
+            case 0:
+            default:
+                return LootTableHandler.ZOMBIEMUSHROOM;
+        }
     }
 }

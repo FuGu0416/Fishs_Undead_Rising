@@ -426,7 +426,7 @@ public class Modconfig {
         ZombieMushroom_DropSpore = config.get(Configuration.CATEGORY_GENERAL, "drop poisonous spore", 2, "Set the drop rate of Poisonous Spore [0-100]", 0, 100).getInt(2);
 
         pSpawnRate_ZombieFrozen = config.get("Frigid", "frigid spawn rate", 20, "Set the spawn rate of Frigid [0-10000]", 0, 10000).getInt(20);
-        ZombieFrozen_Health = config.get("Frigid", "frigid health", 20.0D, "Maximum Frigid health [1-1000]", 1, 1000).getDouble(30.0D);
+        ZombieFrozen_Health = config.get("Frigid", "frigid health", 30.0D, "Maximum Frigid health [1-1000]", 1, 1000).getDouble(30.0D);
         ZombieFrozen_Attack = config.get("Frigid", "frigid attack", 3.0D, "Frigid strength [1-1000]", 1, 1000).getDouble(3.0D);
         ZombieFrozen_Lifespan = config.get("Frigid", "frigid lifespan", 120, "Summoned Frigid lifespan [1-10000]", 1, 10000).getInt(120);
 
@@ -479,7 +479,7 @@ public class Modconfig {
         Ptera_FlyingHeight_limit = config.get("Ptera", "ptera height limit", 16, "Set the height limit to X blocks above the ground for Pteras, 0 = Infinite [0-100]", 0, 100).getInt(16);
         Ptera_Ability_Spawn = config.getStringList("passenger list for ptera", "Ptera",
                 new String[]{
-                        "mod_lavacow:slothoman,40",
+                        "mod_lavacow:isnachi,40",
                         "mod_lavacow:mummy,40",
                         "minecraft:husk,40",
                         "minecraft:creeper,20",

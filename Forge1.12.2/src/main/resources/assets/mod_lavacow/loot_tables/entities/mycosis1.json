@@ -122,13 +122,13 @@
       ]
     },
     {
-      "name": "cordy_shroom",
+      "name": "glowshroom",
       "rolls": 1,
       "entries": [
         {
           "type": "item",
           "weight": 1,
-          "name": "mod_lavacow:cordy_shroom",
+          "name": "mod_lavacow:glowshroom",
           "conditions": [
             {
               "condition": "minecraft:random_chance_with_looting",

@@ -26,6 +26,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 public class LootTableHandler {
     public static ResourceLocation LAVACOW = null;
     public static ResourceLocation ZOMBIEMUSHROOM = null;
+    public static ResourceLocation ZOMBIEMUSHROOM1 = null;
     public static ResourceLocation PARASITE = null;
     public static ResourceLocation PARASITE1 = null;
     public static ResourceLocation PARASITE2 = null;
@@ -122,6 +123,7 @@ public class LootTableHandler {
     public static void addLootTable() {
         LAVACOW = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/moogma"));
         ZOMBIEMUSHROOM = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/mycosis"));
+        ZOMBIEMUSHROOM1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/mycosis1"));
         PARASITE = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite"));
         PARASITE1 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite_desert"));
         PARASITE2 = LootTableList.register(new ResourceLocation(mod_LavaCow.MODID, "entities/parasite_jungle"));

@@ -585,7 +585,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
     
     @Override
     public boolean canDropLoot() {
-    	return this.isBurning() || this.attackingPlayer != null;
+    	return !this.isBurning() || this.attackingPlayer != null;
     }
     
     protected void updateAITasks() {
