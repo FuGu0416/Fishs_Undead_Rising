@@ -4,10 +4,15 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.data.providers.FURItemTagsProvider;
+import com.Fishmod.fur.entities.ai.FlareflyPollinateGoal;
 import com.Fishmod.fur.init.FURBlockRegistry;
+import com.Fishmod.fur.init.FUREffectRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
@@ -34,6 +39,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -63,10 +69,18 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * block - at its position; feeding is on a 30s cooldown, independent of whether an earlier orb is
  * still glowing. The orb's entire 60s lifetime (hold, fade, self-removal) is owned by
  * {@code GlowingAirBlock} itself, not tracked by this entity. It flees Enigmoths and is tempted by
- * Warped Fungus.
+ * Warped Fungus. Being struck by a non-player attacker triggers the same light-orb flash, sharing
+ * feeding's 30s cooldown (so a hit right after feeding, or a flurry of hits, only ever produces one
+ * orb per cooldown window); the attacker is dazed with {@link FUREffectRegistry#FEAR} for 5s
+ * (repeatedly clearing its attack target for the duration) only when that flash actually fires - a
+ * hit landing while the cooldown is still up does neither.
  */
 public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 	private static final int FEED_COOLDOWN_TICKS = 30 * 20;
+	private static final int DAZZLE_FEAR_TICKS = 5 * 20;
+
+	/** 0 = default, 1 = Lush Caves variant (see {@link #finalizeSpawn}). Drives texture selection only. */
+	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(FlareflyEntity.class, EntityDataSerializers.INT);
 
 	private int feedCooldown = 0;
 
@@ -80,11 +94,26 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+	}
+
+	public int getSkin() {
+		return this.entityData.get(SKIN_TYPE).intValue();
+	}
+
+	public void setSkin(int skinType) {
+		this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
+	}
+
+	@Override
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, EnigmothEntity.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.WARPED_FUNGUS, Items.WARPED_FUNGUS_ON_A_STICK), false));
+		this.goalSelector.addGoal(5, new FlareflyPollinateGoal(this));
 		this.goalSelector.addGoal(8, new FlyingMobEntity.AIRandomFly(this, 1.0D));
 	}
 
@@ -158,6 +187,25 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 	}
 
 	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		boolean hurt = super.hurt(source, amount);
+
+		if (hurt && !this.level().isClientSide() && source.getEntity() instanceof Mob attacker
+				&& this.feedCooldown <= 0 && this.level().getBlockState(this.blockPosition()).isAir()) {
+			this.feedCooldown = FEED_COOLDOWN_TICKS;
+			this.level().setBlock(this.blockPosition(), FURBlockRegistry.GLOWING_AIR.get().defaultBlockState(), 3);
+
+			// Immediate daze, then FEAR keeps re-clearing the target every 10 ticks for the full
+			// duration so the attacker can't just re-acquire us (or anything else) mid-flash. Only
+			// fires alongside an actual orb flash - a hit that's on cooldown does neither.
+			attacker.setTarget(null);
+			attacker.addEffect(FUREffectRegistry.fear(DAZZLE_FEAR_TICKS, 0));
+		}
+
+		return hurt;
+	}
+
+	@Override
 	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return dimensions.height * 0.5F;
 	}
@@ -168,6 +216,12 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Flarefly_Health.get());
 		this.setHealth(this.getMaxHealth());
 
+		if (worldIn.getBiome(this.blockPosition()).is(Biomes.LUSH_CAVES)) {
+			this.setSkin(1);
+		} else {
+			this.setSkin(0);
+		}
+
 		return super.finalizeSpawn(worldIn, difficulty, reason, entityLivingData, tag);
 	}
 
@@ -175,12 +229,14 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.feedCooldown = compound.getInt("feedCooldown");
+		this.setSkin(compound.getInt("Variant"));
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("feedCooldown", this.feedCooldown);
+		compound.putInt("Variant", this.getSkin());
 	}
 
 	@Override

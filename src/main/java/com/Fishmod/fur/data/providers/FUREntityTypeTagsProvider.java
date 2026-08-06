@@ -286,9 +286,11 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
 
         // ── consolidated from formerly hand-authored data/minecraft/tags/entity_types/*.json ────
         tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)
-                .add(FUREntityRegistry.FRIGID.get());
+                .add(FUREntityRegistry.FRIGID.get())
+        		.add(FUREntityRegistry.WENDIGO.get());
         tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)
-                .add(FUREntityRegistry.FRIGID.get());
+                .add(FUREntityRegistry.FRIGID.get())
+        		.add(FUREntityRegistry.WENDIGO.get());
         // BONEWORM/FORSAKEN are commented out in FUREntityRegistry (unregistered), left out here too.
         tag(EntityTypeTags.SKELETONS)
                 .add(FUREntityRegistry.SKELETONKING.get());

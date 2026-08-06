@@ -167,8 +167,8 @@ public class ImpEntity extends FogletEntity {
         		if (entity1 instanceof LivingEntity livingentity) {                 
         			if (!livingentity.fireImmune()) {        				
         				if (livingentity.hurt(ImpEntity.this.damageSources().mobAttack(ImpEntity.this), (float) ImpEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
-        					livingentity.setRemainingFireTicks(4);
-        				}       							
+        					livingentity.setRemainingFireTicks(4 * 20);
+        				}
         			}
         		}
         	}

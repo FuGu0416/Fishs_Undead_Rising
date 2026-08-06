@@ -90,7 +90,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.WEAKNESS, 				10 * 20, 0),
 			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 			10 * 20, 0),
 			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED,			10 * 20, 0),
-			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.CORRODED.get(), 	10 * 20, 0),
+			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(MobEffects.NIGHT_VISION,			10 * 20, 0),
 			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.SPOREROT.get(), 	10 * 20, 0),
 			(java.util.function.Supplier<MobEffectInstance>) () -> new MobEffectInstance(FUREffectRegistry.FLOURISHED.get(),10 * 20, 0),
 		};
