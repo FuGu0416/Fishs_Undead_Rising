@@ -39,7 +39,6 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ChestContainer;
@@ -112,9 +111,8 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     }
 	
     @Override
-    protected void registerGoals() {   	
+    protected void registerGoals() {
     	super.registerGoals();
-    	this.goalSelector.addGoal(1, this.aiSit);
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.applyEntityAI();
@@ -328,7 +326,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
     @Override
     public void travel(Vector3d p_213352_1_) {
 		if (this.SitTimer > 0 && this.SitTimer < 20) {
-            this.setDeltaMovement(Vector3d.ZERO);
+            super.travel(Vector3d.ZERO);
 		} else
 			super.travel(p_213352_1_);
 	}
@@ -344,7 +342,10 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 		this.setSilent(false);
 		this.setSpeed(0.19F);
 		
-    	if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof ArrowEntity)) {
+    	// Check the indirect (causing) entity for Player, not the direct one - the direct source of a
+    	// player-fired arrow/trident/firework is the projectile itself, never the player, so checking
+    	// instanceof Player on the direct entity would miss all player-caused ranged damage.
+    	if (entity != null && !(source.getEntity() instanceof PlayerEntity)) {
     		amount = (amount + 1.0F) / 2.0F;
     	}
 
@@ -406,7 +407,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
         
         if (itemstack.getItem() instanceof SpawnEggItem) {
             return super.mobInteract(player, hand);
-        } else if (this.isTame() && this.getOwner().equals(player)) {
+        } else if (this.isTame() && this.isOwnedBy(player)) {
         	if (player.isCrouching()) {
         		if (!this.level.isClientSide()) {
         			if (this.getSkin() == getVoidSkin()) {	
@@ -490,13 +491,15 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
      }
     
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {   	
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {
+        entityLivingData = super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
+
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Mimic_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Mimic_Attack.get());
     	this.setHealth(this.getMaxHealth());
 
     	if (BiomeDictionary.getTypes(SpawnUtil.getRegistryKey(worldIn.getBiome(this.blockPosition()))).contains(Type.NETHER))
- 		   this.setSkin(6); 	 
+ 		   this.setSkin(6);
     	this.unpackLootTable(this.getSkin() == 6 ? LootTables.NETHER_BRIDGE : this.getSkin() == 7 ? LootTableHandler.DESERT_TOMB_CHEST : LootTables.SIMPLE_DUNGEON);
     	for (int i = 0; i < this.inventory.getContainerSize();i++) {
     		if (this.getRandom().nextFloat() >= 0.05F) {
@@ -699,7 +702,9 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 		if (uuid != null) {
 			entity.setOwnerUUID(uuid);
 			entity.setTame(true);
-			entity.setHealth(this.getMaxHealth());
+			// setTame(true) above already reapplies the config-driven attributes (tamed values),
+			// so read the health back from the child's own max health, not the parent's.
+			entity.setHealth(entity.getMaxHealth());
 			entity.setSkin(this.getRandom().nextBoolean() ? this.getSkin() : ((MimicEntity)ageable).getSkin());
 			if(entity.getSkin() == 3)entity.setSkin(0);
 		}

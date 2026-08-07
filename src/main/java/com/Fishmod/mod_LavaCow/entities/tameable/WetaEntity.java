@@ -148,7 +148,7 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
            	
-    	if (itemstack.getItem() == FURItemRegistry.DISEASED_BREAD && this.getSkin() == 0) {
+    	if (!this.isTame() && itemstack.getItem() == FURItemRegistry.DISEASED_BREAD && this.getSkin() == 0) {
     		if (!player.isCreative()) {
     			itemstack.shrink(1);
     		}
@@ -302,7 +302,11 @@ public class WetaEntity extends FURTameableEntity implements IAggressive {
 		if (uuid != null) {
 			entity.setOwnerUUID(uuid);
 			entity.setTame(true);
-			entity.setHealth(this.getMaxHealth());
+			// Unlike Mimic/Salamander, Weta's setTame() doesn't reapply config attributes on its own -
+			// bred offspring skip finalizeSpawn entirely, so do it explicitly here.
+			entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Weta_Health.get());
+			entity.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Weta_Attack.get());
+			entity.setHealth(entity.getMaxHealth());
 		}
 
 		return entity;

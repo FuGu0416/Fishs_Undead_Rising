@@ -114,7 +114,7 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     }
     
     public float getBonusDamage(LivingEntity LivingEntityIn) {
-    	return (0.5f * this.sharpness + 0.5f)
+    	return (this.sharpness > 0 ? 0.5f * this.sharpness + 0.5f : 0.0f)
 				+ (LivingEntityIn.getMobType().equals(CreatureAttribute.ARTHROPOD) ? (float)bane_of_arthropods * 2.5f : 0)
 				+ (LivingEntityIn.getMobType().equals(CreatureAttribute.UNDEAD) ? (float)smite * 2.5f : 0);
     }
@@ -328,7 +328,7 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
     	this.sharpness = compound.getInt("sharpness");
     	this.knockback = compound.getInt("knockback");
     	this.bane_of_arthropods = compound.getInt("bane_of_arthropods");
-    	this.smite = compound.getInt("fire_aspect");
+    	this.smite = compound.getInt("smite");
     	this.lifesteal = compound.getInt("lifesteal");
     	this.poisonous = compound.getInt("poisonous");
     	this.corrosive = compound.getInt("corrosive");

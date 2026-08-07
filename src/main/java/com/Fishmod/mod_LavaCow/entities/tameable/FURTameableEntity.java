@@ -60,7 +60,8 @@ public class FURTameableEntity extends TameableEntity {
 	protected void registerGoals() {
     	this.wander = this.wanderGoal();
     	this.follow = this.followGoal();
-    	this.aiSit = new SitGoal(this);    	
+    	this.aiSit = new SitGoal(this);
+    	this.goalSelector.addGoal(1, this.aiSit);
     	this.goalSelector.addGoal(7, this.wander);
 	}
 	
@@ -202,7 +203,7 @@ public class FURTameableEntity extends TameableEntity {
 	            }
 	
 	            return ActionResultType.CONSUME;
-	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && this.getUsedItemHand().equals(hand)) {  
+	    	} else if (this.isTame() && this.isOwnedBy(player) && this.isCommandable() && hand == Hand.MAIN_HAND) {
 	    		if (!this.isFood(itemstack) && this.getPassengers().isEmpty()) {
 	    			if (this.state.equals(FURTameableEntity.State.WANDERING)) {
 	    				if (this.canSitCondition()) {
@@ -227,16 +228,16 @@ public class FURTameableEntity extends TameableEntity {
     }
     
     @Override
-    public void tame(PlayerEntity player) {   	
+    public void tame(PlayerEntity player) {
     	super.tame(player);
     	this.setPersistenceRequired();
-    	this.doSitCommand(null);
     	this.doFollowCommand(null);
     }
-    
+
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void tick() {
         super.tick();
         
@@ -246,11 +247,12 @@ public class FURTameableEntity extends TameableEntity {
         }
     }      
     
+    @Override
     public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
         if (this.isInvulnerableTo(p_70097_1_)) {
            return false;
         } else {
-           Entity entity = p_70097_1_.getEntity();
+           Entity entity = p_70097_1_.getDirectEntity();
            this.setOrderedToSit(false);
            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
               p_70097_2_ = (p_70097_2_ + 1.0F) / 2.0F;

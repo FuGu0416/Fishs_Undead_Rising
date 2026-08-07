@@ -1,6 +1,7 @@
 package com.Fishmod.mod_LavaCow.entities.tameable;
 
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -161,15 +162,17 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
     	
     	if (!this.level.isClientSide && !this.isTame()) {
     		if (this.isSunBurnTick()) {
-    			this.doSitCommand(null);
+    			if (this.state != FURTameableEntity.State.SITTING) {
+    				this.doSitCommand(null);
+    			}
     		} else if (this.state != FURTameableEntity.State.WANDERING) {
     			this.doFollowCommand(null);
     			this.doWanderCommand(null);
     		}
     	}
-        
-        // accelerate crop growing
-        if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
+
+        // accelerate crop growing (server only - the client must not mutate block states)
+        if (!this.level.isClientSide && this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {
         	int x = this.blockPosition().getX() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;
 			int z = this.blockPosition().getZ() + this.getRandom().nextInt(RANGE * 2 + 1) - RANGE;   
 			
@@ -406,22 +409,22 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
      */
     @Override
     public int getMaxHeadXRot() {
-        return this.isSilent() ? 0 : super.getMaxHeadXRot();
+        return this.isInSittingPose() ? 0 : super.getMaxHeadXRot();
     }
 
     @Override
     public int getMaxHeadYRot() {
-        return this.isSilent() ? 0 : super.getMaxHeadYRot();
+        return this.isInSittingPose() ? 0 : super.getMaxHeadYRot();
     }
-    
+
     @Override
     public int getHeadRotSpeed() {
-        return this.isSilent() ? 0 : super.getHeadRotSpeed();
+        return this.isInSittingPose() ? 0 : super.getHeadRotSpeed();
 	}
-	
+
     @Override
     public void travel(Vector3d p_213352_1_) {
-    	if (!this.isSilent() || !this.level.getBlockState(this.blockPosition().below()).getMaterial().isSolidBlocking()) {
+    	if (!this.isInSittingPose() || !this.level.getBlockState(this.blockPosition().below()).getMaterial().isSolidBlocking()) {
     		super.travel(p_213352_1_);
     	}
     }
@@ -501,9 +504,10 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
     @Override
     protected void dropEquipment() {
     	super.dropEquipment();
-        
+
 		if (!this.getMainHandItem().isEmpty()) {
 			this.spawnAtLocation(this.getMainHandItem());
+			this.setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 		}
 	}
    
@@ -540,15 +544,20 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
     		
     		if (((ScarecrowEntity)this.mob).AttackStance == (byte)4) {
     			super.dmgEvent(target);
-    		} else {               
+    		} else {
+    			// Skip other pets sharing this (tamed) scarecrow's own owner, not pets "owned by the
+    			// scarecrow" itself (a scarecrow can never be an owner, so that check was always false).
+    			UUID scarecrowOwner = ((ScarecrowEntity) this.mob).getOwnerUUID();
     			for (LivingEntity entitylivingbase : this.mob.level.getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate(2.0D))) {
                     if (!this.mob.equals(entitylivingbase) && !this.mob.isAlliedTo(entitylivingbase)) {
-                    	if (!(entitylivingbase instanceof TameableEntity && ((TameableEntity) entitylivingbase).isOwnedBy(this.mob))) {
+                    	boolean isFriendlyPet = entitylivingbase instanceof TameableEntity && scarecrowOwner != null
+                    			&& scarecrowOwner.equals(((TameableEntity) entitylivingbase).getOwnerUUID());
+                    	if (!isFriendlyPet) {
                     		super.dmgEvent(entitylivingbase);
                     	}
                     }
                 }
-    		}   		  		         
+    		}
     	}
     	
         protected double getAttackReachSqr(LivingEntity p_179512_1_) {

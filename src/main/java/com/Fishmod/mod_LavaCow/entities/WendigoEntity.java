@@ -222,49 +222,55 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	   private final WendigoEntity leaper;
  	   /** The entity that the leaper is leaping towards. */
  	   private LivingEntity leapTarget;
+ 	   /** Vertical launch power applied on top of the horizontal leap velocity. */
+ 	   private final float leapMotionY;
 
  	   public AIWendigoLeapAtTarget(WendigoEntity leapingEntity, float leapMotionYIn) {
  	      this.leaper = leapingEntity;
+ 	      this.leapMotionY = leapMotionYIn;
  	      this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
  	   }
- 	   
+
  	   /**
  	    * Returns whether the EntityAIBase should begin execution.
  	    */
+ 	   @Override
  	   public boolean canUse() {
  		   this.leapTarget = this.leaper.getTarget();
  	       if (this.leapTarget == null || this.leaper.jumpTimer > 0) {
  	    	   return false;
  	       } else {
  	    	   float d0 = this.leaper.distanceTo(this.leapTarget);
- 	    	   if (!(d0 < 12.0F) && !(d0 > 20.0F)) {
+ 	    	   if (d0 >= 12.0F && d0 <= 20.0F) {
     			   return this.leaper.isOnGround();
  	    	   } else {
  	    		   return false;
  	         }
  	      }
  	   }
- 	   
+
  	   /**
  	    * Returns whether an in-progress EntityAIBase should continue executing
  	    */
+ 	   @Override
  	   public boolean canContinueToUse() {
  		   return this.leaper.isOnGround() && this.leaper.jumpTimer >= 235;
  	   }
- 	   
+
  	   /**
  	    * Keep ticking a continuous task that has already been started
  	    */
+ 	   @Override
  	   public void tick() {
  		   Vector3d vector3d1 = new Vector3d(this.leapTarget.getX() - this.leaper.getX(), 0.0D, this.leapTarget.getZ() - this.leaper.getZ());
- 		   float d0 = this.leaper.distanceTo(this.leapTarget);	
+ 		   float d0 = this.leaper.distanceTo(this.leapTarget);
 
  		   if (this.leaper.jumpTimer == 235) {
  	 		   if (vector3d1.lengthSqr() > 1.0E-7D) {
  	 			   vector3d1 = vector3d1.normalize().scale(Math.min(d0, 15) * 0.2F);
  	 		   }
 
- 	 		   this.leaper.setDeltaMovement(vector3d1.x, vector3d1.y + 0.3F + 0.1F * MathHelper.clamp(this.leapTarget.getEyeY() - this.leaper.getY(), 0, 2), vector3d1.z);
+ 	 		   this.leaper.setDeltaMovement(vector3d1.x, vector3d1.y + this.leapMotionY + 0.1F * MathHelper.clamp(this.leapTarget.getEyeY() - this.leaper.getY(), 0, 2), vector3d1.z);
  	 		   this.leaper.setPouncing(true);
  		   }
  	   }
@@ -272,22 +278,17 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
  	   /**
  	    * Execute a one shot task or start executing a continuous task
  	    */
- 	   public void start() {		   
+ 	   @Override
+ 	   public void start() {
  		   Vector3d vector3d = this.leapTarget.position().subtract(this.leaper.position());
- 		     
+
            this.leaper.getNavigation().stop();
            this.leaper.setYHeadRot(-((float) Math.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI));
-           this.leaper.yBodyRot = this.leaper.getYHeadRot(); 
+           this.leaper.yBodyRot = this.leaper.getYHeadRot();
  		   this.leaper.playSound(FURSoundRegistry.WENDIGO_ATTACK, 0.75F, 0.8F);
- 		   
+
  		   this.leaper.jumpTimer = 240;
- 	   }  	
- 	   
-       /**
-        * Reset the task's internal state. Called when this task is interrupted by another one
-        */
-       public void resetTask() {
-       }
+ 	   }
     }
 
 	@Override
@@ -369,22 +370,20 @@ public class WendigoEntity extends MonsterEntity implements IAggressive {
         	
     		boolean flag = target.hurt(DamageSource.mobAttack(this.mob), f);
     		if (flag) {
-    			if (f1 > 0.0F && target instanceof LivingEntity) {
-    				((LivingEntity)target).knockback(f1 * 0.5F, (double)MathHelper.sin(this.mob.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.mob.yRot * ((float)Math.PI / 180F))));
+    			if (f1 > 0.0F) {
+    				target.knockback(f1 * 0.5F, (double)MathHelper.sin(this.mob.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.mob.yRot * ((float)Math.PI / 180F))));
     				this.mob.setDeltaMovement(this.mob.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
     			}
 
     			this.mob.doEnchantDamageEffects(this.mob, target);
     			this.mob.setLastHurtMob(target);
-    			
+
                 if (this.mob.getMainHandItem().isEmpty() && this.mob.isOnFire() && this.mob.getRandom().nextFloat() < f2 * 0.3F) {
                 	target.setSecondsOnFire(2 * (int)f2);
                 }
-                
-                if (target instanceof LivingEntity) {
-                    ((LivingEntity)target).addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f2, 4));
-                }
-    		}   		         
+
+                target.addEffect(new EffectInstance(Effects.HUNGER, 7 * 20 * (int)f2, 4));
+    		}
     	}
 	}
 }

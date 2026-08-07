@@ -201,7 +201,7 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
             }
         	
         	return ActionResultType.sidedSuccess(this.level.isClientSide);
-        } else if (this.isTame() && itemstack.getItem() == FURItemRegistry.ECTOPLASM && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 0) {
+        } else if (this.isOwnedBy(player) && itemstack.getItem() == FURItemRegistry.ECTOPLASM && itemstack.getCount() >= 64 && this.isAlive() && this.getSkin() == 0) {
         	if (!player.isCreative()) {
         		itemstack.shrink(64);
         	}
@@ -332,20 +332,25 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     			}
     		}
 
+	    	// The stage-up heal below only runs here (natural aging in tick()), never from setGrowingStage()
+	    	// itself, so restoring a saved GrowingStage on world load doesn't grant a free heal.
 	    	if (this.getAge() < -16000) {
 	    		if (this.getGrowingStage() != 0)
 	    			this.setGrowingStage(0);
 	    	} else if (this.getAge() < -8000) {
 	    		if (this.getGrowingStage() != 1) {
 		    		this.setGrowingStage(1);
+		    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	    		}
 	    	} else if (this.getAge() < 0) {
 	    		if (this.getGrowingStage() != 2) {
-		    		this.setGrowingStage(2);		    	
+		    		this.setGrowingStage(2);
+		    		this.heal(this.getHealth() * 0.5F);
 	    		}
-	    	} else {	    		
+	    	} else {
 	    		if (this.getGrowingStage() != 3) {
-	    			this.setGrowingStage(3);	    		
+	    			this.setGrowingStage(3);
+	    			this.heal(this.getHealth() * 2.0F / 3.0F);
 	    		}
 	    	}
 	    	
@@ -439,7 +444,19 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	protected int calculateFallDamage(float p_225508_1_, float p_225508_2_) {
 		return MathHelper.ceil((p_225508_1_ * 0.5F - 3.0F) * p_225508_2_);
 	}
-    
+
+    /**
+     * Server-side accessor so MessageMountSpecial's handler can validate/enforce the ridden barrage
+     * attack's cooldown itself instead of trusting the client-tracked value.
+     */
+    public boolean isBarrageOnCooldown() {
+    	return this.barrage_CD > 0;
+    }
+
+    public void setBarrageCooldown(int cooldown) {
+    	this.barrage_CD = cooldown;
+    }
+
     @OnlyIn(Dist.CLIENT)
     private void ClientControl() {
     	Minecraft game = Minecraft.getInstance();
@@ -476,8 +493,12 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
         switch(i) {
 	        case 0:
 		    	this.xpReward = 5;
-		    	this.avoid_entity = new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.8D, 1.6D);
-		    	this.goalSelector.addGoal(3, this.avoid_entity);
+		    	// Only untamed nymphs fear players; a tamed one must not flee its owner
+		    	// (this runs again on world load, after the tame flag is already set).
+		    	if (!this.isTame()) {
+		    		this.avoid_entity = new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.8D, 1.6D);
+		    		this.goalSelector.addGoal(3, this.avoid_entity);
+		    	}
 		    	this.goalSelector.removeGoal(this.range_atk);
 		    	this.range_atk = new EntityFishAIAttackRange<WarSmallFireballEntity>(this, FUREntityRegistry.WAR_SMALL_FIREBALL, 1, 5, 1.0D, 0.1D, 1.0D);
 		    	this.goalSelector.addGoal(4, this.range_atk);
@@ -499,21 +520,16 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
 	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.40D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.65D);
-	    		
-	    		this.heal(this.getHealth() * (0.15F / 0.25F));
 	        	break;
 	        case 2:
 	    		this.xpReward = 15;
 	    		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get() * 0.60D);
 	    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	    		this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Salamander_Attack.get() * 0.75D);
-	    		
-	    		this.heal(this.getHealth() * 0.5F);
         		break;
         	default:
     			this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Salamander_Health.get());
-    			this.heal(this.getHealth() * 2.0F / 3.0F);
-    			
+
     	    	this.xpReward = 20;
     	    	
     	    	this.goalSelector.removeGoal(this.avoid_entity);
@@ -532,11 +548,12 @@ public class SalamanderEntity extends FURTameableEntity implements IAggressive, 
     	return this.getGrowingStage() == 0;
     }
     
-    public void setTamed(boolean tamed) {
+    @Override
+    public void setTame(boolean tamed) {
     	if(tamed) {
     		this.goalSelector.removeGoal(this.avoid_entity);
     	}
-    	
+
     	super.setTame(tamed);
     }
     

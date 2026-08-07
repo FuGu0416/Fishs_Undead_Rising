@@ -4,12 +4,13 @@ import com.Fishmod.mod_LavaCow.init.FUREntityRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -125,17 +126,11 @@ public class BasicBombEntity extends ProjectileItemEntity {
 	protected void onHit(RayTraceResult result) {
 		super.onHit(result);
         if (!this.level.isClientSide()) {
-        	WolfEntity Dummy = EntityType.WOLF.create(this.level);
-        	
-        	if (this.getOwner() != null) {
-	        	Dummy.setTame(true);
-	        	Dummy.setOwnerUUID(this.getOwner().getUUID());
-        	}
-        	
-        	Dummy.setCustomName(this.getName());
-        	this.level.explode(Dummy, this.getX(), this.getY(), this.getZ(), this.radius, false, Explosion.Mode.NONE);
-        	Dummy.remove();
-        	this.level.playSound(null, this.blockPosition(), this.usedSound, SoundCategory.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);   	
+        	// Direct entity = this bomb (so EventHandler can tell bombs apart by type);
+        	// owner entity = the thrower, so vanilla attributes kills to a player for XP drops.
+        	DamageSource damageSource = (new IndirectEntityDamageSource("explosion.player", this, this.getOwner())).setScalesWithDifficulty().setExplosion();
+        	this.level.explode(this, damageSource, null, this.getX(), this.getY(), this.getZ(), this.radius, false, Explosion.Mode.NONE);
+        	this.level.playSound(null, this.blockPosition(), this.usedSound, SoundCategory.BLOCKS, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
         	this.remove();
         }
 	}

@@ -102,11 +102,12 @@ public class MycosisEntity extends UnburiedEntity {
         	}         		
         }
         
-        if(this.tickCount % 10 == 0 && this.level.isClientSide);
-        	this.level.addParticle(new RedstoneParticleData(this.spore_color[this.getSkin()].x(), this.spore_color[this.getSkin()].y(), this.spore_color[this.getSkin()].z(), 0.6F), 
-        			this.getX() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 
-        			this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()), 
+        if (this.tickCount % 10 == 0 && this.level.isClientSide) {
+        	this.level.addParticle(new RedstoneParticleData(this.spore_color[this.getSkin()].x(), this.spore_color[this.getSkin()].y(), this.spore_color[this.getSkin()].z(), 0.6F),
+        			this.getX() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(),
+        			this.getY() + (double)(new Random().nextFloat() * this.getBbHeight()),
         			this.getZ() + (double)(new Random().nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(), 0.0D, 0.0D, 0.0D);
+        }
     }
     
     public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason p_213386_3_, @Nullable ILivingEntityData entityLivingData, @Nullable CompoundNBT p_213386_5_) {         

@@ -3,6 +3,7 @@ package com.Fishmod.mod_LavaCow.events;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import com.Fishmod.mod_LavaCow.config.FURConfig;
 import com.Fishmod.mod_LavaCow.core.SpawnUtil;
@@ -10,6 +11,7 @@ import com.Fishmod.mod_LavaCow.entities.GhoulEntity;
 import com.Fishmod.mod_LavaCow.entities.GraveRobberEntity;
 import com.Fishmod.mod_LavaCow.entities.ParasiteEntity;
 import com.Fishmod.mod_LavaCow.entities.WendigoEntity;
+import com.Fishmod.mod_LavaCow.entities.projectiles.BasicBombEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.VespaEntity;
 import com.Fishmod.mod_LavaCow.entities.flying.WarpedFireflyEntity;
 import com.Fishmod.mod_LavaCow.entities.tameable.LilSludgeEntity;
@@ -28,6 +30,7 @@ import com.Fishmod.mod_LavaCow.item.ChitinArmorItem;
 import com.Fishmod.mod_LavaCow.item.FamineArmorItem;
 import com.Fishmod.mod_LavaCow.item.FelArmorItem;
 import com.Fishmod.mod_LavaCow.item.GhostlyArmorItem;
+import com.Fishmod.mod_LavaCow.item.SkeletonKingCrownItem;
 import com.Fishmod.mod_LavaCow.item.SwineArmorItem;
 import com.Fishmod.mod_LavaCow.item.VespaShieldItem;
 import com.Fishmod.mod_LavaCow.misc.EmeraldForItemsTrade;
@@ -47,11 +50,9 @@ import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ChestContainer;
@@ -61,6 +62,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.FlyingPathNavigator;
+import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
@@ -75,7 +78,6 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.MobSpawnInfo;
@@ -434,21 +436,23 @@ public class EventHandler {
     		}
     	}
     	
-    	if (source.isExplosion() && source.getEntity() instanceof WolfEntity) {
-    		if (Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.holygrenade"))) {
+    	if (source.isExplosion() && source.getDirectEntity() instanceof BasicBombEntity) {
+    		BasicBombEntity bomb = (BasicBombEntity) source.getDirectEntity();
+
+    		if (Attacked.getMobType().equals(CreatureAttribute.UNDEAD) && bomb.getType().equals(FUREntityRegistry.HOLY_GRENADE)) {
     			event.setAmount(event.getAmount() * 0.45F);
     			Attacked.setSecondsOnFire(8);
-    		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.ghostbomb"))) {
+    		} else if (bomb.getType().equals(FUREntityRegistry.GHOSTBOMB)) {
     			Attacked.setDeltaMovement(0.0D, Attacked.getDeltaMovement().y, 0.0D);
     			Attacked.addEffect(new EffectInstance(Effects.LEVITATION, 20, 0));
     			event.setAmount(event.getAmount() * 0.20F);
-    		} else if (source.getEntity().getName().equals(new TranslationTextComponent("entity.mod_lavacow.sonicbomb"))) {
+    		} else if (bomb.getType().equals(FUREntityRegistry.SONICBOMB)) {
     			Attacked.addEffect(FUREffectRegistry.fear(4 * 20, 2));
     			event.setAmount(event.getAmount() * 0.33F);
     		} else {
     			event.setAmount(event.getAmount() * 0.15F);
     		}
-    	}   	
+    	}
     	
     	if (Attacked.hasEffect(FUREffectRegistry.CORRODED))
     		event.setAmount(event.getAmount() * (1.0F + 0.1F * (1 + Attacked.getEffect(FUREffectRegistry.CORRODED).getAmplifier())));
@@ -515,10 +519,6 @@ public class EventHandler {
 
     	if(event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
     		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), WarpedFireflyEntity.class, 6.0F, 1.0D, 1.2D));
-    	
-    	if(event.getEntity() != null && event.getEntity() instanceof AbstractSkeletonEntity && event.getEntity().getTags().contains("FUR_tameSkeleton")) {
-    		event.getEntity().removeTag("FUR_tameSkeleton");
-    	}
     	
     	if(event.getEntity() != null && event.getEntity() instanceof IronGolemEntity) {
     		((IronGolemEntity)event.getEntity()).targetSelector.addGoal(5, new NearestAttackableTargetGoal<>((IronGolemEntity)event.getEntity(), PlayerEntity.class, 0, true, false, (p_210136_0_) -> {
@@ -818,18 +818,72 @@ public class EventHandler {
         }
         
         // Passive
-        if (event.getTarget() != null) {
-        	Boolean hasCrown = event.getTarget().getItemBySlot(EquipmentSlotType.HEAD).getItem().equals(FURItemRegistry.SKELETONKING_CROWN);
-        	
-    		if (ModList.get().isLoaded("curios") && !hasCrown) {
-    			hasCrown = (CurioIntegration.findItem(FURItemRegistry.SKELETONKING_CROWN, event.getTarget()) != ItemStack.EMPTY);
-    		}
-    		
-        	if (event.getEntity() instanceof AbstractSkeletonEntity && hasCrown) {
-        		((MobEntity) event.getEntityLiving()).setTarget(null);
-        	}
+        if (event.getTarget() != null && event.getEntity() instanceof CreatureEntity && SkeletonKingCrownItem.isEligible((CreatureEntity) event.getEntity()) && SkeletonKingCrownItem.isWearingCrown(event.getTarget())) {
+        	((MobEntity) event.getEntityLiving()).setTarget(null);
         }
-    } 
+    }
+
+    /**
+     * Drives the Skeleton King's Crown's escort effect from the governed mob's own tick rather than
+     * the wearer's armor tick, since armor ticking stops firing the moment the crown is removed and
+     * a removal needs to be noticed too. Every 20 ticks: a governed mob whose owner no longer wears
+     * the crown (offline, dead, unequipped -- see {@link SkeletonKingCrownItem#getOwnerId}) is
+     * released back to its original AI; an ungoverned, eligible mob next to a wearer is placed under
+     * their command. No persisted flag is involved -- {@link SkeletonKingCrownItem#getOwnerId} reads
+     * the goal selector directly, so this is fully self-correcting after a chunk reload with nothing
+     * left to desync. Eligibility ({@link SkeletonKingCrownItem#isEligible}) is data-driven off the
+     * vanilla {@code minecraft:skeletons} entity type tag (which this mod already extends with its
+     * own reskins), not a Java type check, so adding a future skeleton-family mob to that tag is
+     * enough to bring it under the crown's effect -- no code change needed here.
+     */
+    @SubscribeEvent
+    public void onSkeletonGuardUpkeep(LivingUpdateEvent event) {
+    	if (!(event.getEntityLiving() instanceof CreatureEntity) || event.getEntityLiving().level.isClientSide()) {
+    		return;
+    	}
+
+    	CreatureEntity skeleton = (CreatureEntity) event.getEntityLiving();
+    	if (!SkeletonKingCrownItem.isEligible(skeleton)) {
+    		return;
+    	}
+    	if (skeleton.tickCount % 20 != 0 || !(skeleton.level instanceof ServerWorld)) {
+    		return;
+    	}
+    	ServerWorld serverWorld = (ServerWorld) skeleton.level;
+
+    	UUID ownerId = SkeletonKingCrownItem.getOwnerId(skeleton);
+
+    	if (ownerId != null) {
+    		LivingEntity owner = SpawnUtil.getEntityByUniqueId(ownerId, serverWorld);
+    		if (!(owner instanceof PlayerEntity) || !SkeletonKingCrownItem.isWearingCrown((PlayerEntity) owner)) {
+    			SkeletonKingCrownItem.release(skeleton);
+    		}
+    		return;
+    	}
+
+    	if (!((skeleton.getNavigation() instanceof GroundPathNavigator) || (skeleton.getNavigation() instanceof FlyingPathNavigator))) {
+    		return;
+    	}
+
+    	PlayerEntity nearestWearer = null;
+    	double nearestDistSqr = Double.MAX_VALUE;
+
+    	for (PlayerEntity player : serverWorld.getEntitiesOfClass(PlayerEntity.class, skeleton.getBoundingBox().inflate(16.0D))) {
+    		if (!SkeletonKingCrownItem.isWearingCrown(player)) {
+    			continue;
+    		}
+
+    		double distSqr = skeleton.distanceToSqr(player);
+    		if (distSqr < nearestDistSqr) {
+    			nearestDistSqr = distSqr;
+    			nearestWearer = player;
+    		}
+    	}
+
+    	if (nearestWearer != null) {
+    		SkeletonKingCrownItem.govern(skeleton, nearestWearer);
+    	}
+    }
     
     @SubscribeEvent
     public void onELiving(LivingUpdateEvent event) {

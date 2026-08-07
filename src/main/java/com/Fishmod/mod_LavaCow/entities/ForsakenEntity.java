@@ -9,6 +9,7 @@ import com.Fishmod.mod_LavaCow.entities.ai.EntityChargeAttackGoal;
 import com.Fishmod.mod_LavaCow.entities.projectiles.DeathCoilEntity;
 import com.Fishmod.mod_LavaCow.init.FUREffectRegistry;
 import com.Fishmod.mod_LavaCow.init.FURItemRegistry;
+import com.Fishmod.mod_LavaCow.item.SkeletonKingCrownItem;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -255,7 +256,7 @@ public class ForsakenEntity extends AbstractSkeletonEntity {
          } else if (super.isAlliedTo(p_184191_1_)) {
             return true;
          } else if (p_184191_1_ instanceof SkeletonKingEntity || p_184191_1_ instanceof ForsakenEntity) {
-            return !(this.getTags().contains("FUR_tameSkeleton"));
+            return SkeletonKingCrownItem.getOwnerId(this) == null;
          } else {
             return false;
          }    	
