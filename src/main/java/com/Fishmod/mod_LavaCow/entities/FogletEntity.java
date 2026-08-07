@@ -721,8 +721,8 @@ public class FogletEntity extends MonsterEntity implements IAggressive {
             		if (entity1 instanceof LivingEntity) {                 
             			if (!((LivingEntity)entity1).fireImmune()) {        				
             				if (((LivingEntity)entity1).hurt(DamageSource.mobAttack(FogletEntity.this).setMagic(), (float) FogletEntity.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.0F)) {
-            					((LivingEntity)entity1).setRemainingFireTicks(4);
-            				}       							
+            					((LivingEntity)entity1).setRemainingFireTicks(4 * 20);
+            				}
             			}
             		}
             	}
