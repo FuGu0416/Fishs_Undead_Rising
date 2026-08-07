@@ -289,7 +289,7 @@ public class BoneWormEntity extends MonsterEntity  implements IRangedAttackMob {
            CreeperEntity creeperentity = (CreeperEntity)entity;
            if (creeperentity.canDropMobsSkull()) {
               creeperentity.increaseDroppedSkulls();
-              this.spawnAtLocation(Items.SKELETON_SKULL);
+              this.spawnAtLocation(this.getSkin() == 1 ? Items.WITHER_SKELETON_SKULL : Items.SKELETON_SKULL);
            }
         }
 	}
