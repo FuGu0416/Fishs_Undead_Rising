@@ -25,9 +25,9 @@ displayName="Fish's Undead Rising" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://minecraft.curseforge.com/projects/fishs-undead-rising" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/fishs-undead-rising" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
+logoFile="logo.png" #optional
 # A text field displayed in the mod UI
 #credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
@@ -58,5 +58,11 @@ description='''Fill your world with all kinds of mobs, undead-related or not.'''
     modId="curios"
     mandatory=false
     versionRange="[4.1.0.0, 4.1.0.0)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.your_modid]]
+    modId="farmersdelight"
+    mandatory=false
+    versionRange="[1.16.5,)"
     ordering="NONE"
     side="BOTH"
