@@ -7,11 +7,11 @@ import com.Fishmod.mod_LavaCow.block.CactoidSproutBlock;
 import com.Fishmod.mod_LavaCow.block.DiseasedHayBlock;
 import com.Fishmod.mod_LavaCow.block.FURHugeShroomBlock;
 import com.Fishmod.mod_LavaCow.block.FURShroomBlock;
+import com.Fishmod.mod_LavaCow.block.GlowingAirBlock;
 import com.Fishmod.mod_LavaCow.block.ScarecrowHeadBlock;
 import com.Fishmod.mod_LavaCow.block.TombStoneBlock;
 
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.CarpetBlock;
 import net.minecraft.block.SoundType;
@@ -46,8 +46,8 @@ public class FURBlockRegistry {
 	public static final Block SCARECROWHEAD_STRAW = new ScarecrowHeadBlock(1, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_straw");
 	public static final Block SCARECROWHEAD_PLAGUE = new ScarecrowHeadBlock(2, AbstractBlock.Properties.of(Material.DECORATION).strength(1.0F).noCollission().noOcclusion().instabreak()).setRegistryName("mod_lavacow:scarecrowhead_plague");
 	public static final Block CACTOID_SPROUT = new CactoidSproutBlock(AbstractBlock.Properties.of(Material.PLANT).randomTicks().strength(0.4F).sound(SoundType.WOOL).noOcclusion()).setRegistryName("mod_lavacow:cactoid_sprout");
-	public static final Block GLOWING_AIR = new AirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((p_235417_0_) -> {
-	      return 15;
+	public static final Block GLOWING_AIR = new GlowingAirBlock(AbstractBlock.Properties.of(Material.AIR).noCollission().noDrops().air().lightLevel((state) -> {
+	      return state.getValue(GlowingAirBlock.LIGHT);
 	   })).setRegistryName("mod_lavacow:glowing_air");
 	public static final Block ECTOPLASM_BLOCK = new Block(AbstractBlock.Properties.of(Material.CLAY, MaterialColor.COLOR_CYAN).speedFactor(0.4F).noOcclusion().sound(SoundType.NETHER_BRICKS)).setRegistryName("mod_lavacow:ectoplasm_block");
 	public static final Block DISEASED_HAY_BLOCK = new DiseasedHayBlock(AbstractBlock.Properties.of(Material.GRASS, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS)).setRegistryName("mod_lavacow:diseased_hay_block");

@@ -4,13 +4,11 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.mod_LavaCow.block.GlowingAirBlock;
 import com.Fishmod.mod_LavaCow.config.FURConfig;
-import com.Fishmod.mod_LavaCow.init.FURBlockRegistry;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -34,9 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -50,10 +45,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * Ported to a self-contained {@link GlowingAirBlock} light orb - see that class's javadoc for why
+ * (this entity used to track a {@code glowTimer}/{@code GLOWING_POS} and poll every 5 ticks to
+ * place/clear the orb itself, which could leave a permanently-lit block behind if this entity died,
+ * despawned, unloaded, or changed dimension mid-glow).
+ */
 public class WarpedFireflyEntity extends FlyingMobEntity {
-	private static final DataParameter<BlockPos> GLOWING_POS = EntityDataManager.defineId(WarpedFireflyEntity.class, DataSerializers.BLOCK_POS);
-	private int glowTimer = 0;
-	
+	/** Glowstone Dust = tier 0 (8 min glow), Warped Fungus = tier 1 (3 min glow) - see {@link GlowingAirBlock#DURATION}. */
+	private int feedCooldown = 0;
+
 	public WarpedFireflyEntity(EntityType<? extends WarpedFireflyEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
 		this.moveControl = new FlyingMovementController(this, 20, true);
@@ -76,12 +77,6 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
         		.add(Attributes.FLYING_SPEED, 0.6D);
     }
    
-    @Override
-    protected void defineSynchedData() {
-    	super.defineSynchedData();
-    	this.getEntityData().define(GLOWING_POS, BlockPos.ZERO);
-    }
-    
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
 		return !this.isLeashed();
@@ -113,53 +108,42 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     public void tick() {
     	super.tick();
 
-        if (this.glowTimer > -6) {
-            --this.glowTimer;
+        if (!this.level.isClientSide() && this.feedCooldown > 0) {
+            --this.feedCooldown;
         }
-        
-    	if(!this.level.isClientSide() && this.glowTimer > -6) {
-    		Block blk = this.level.getBlockState(this.blockPosition()).getBlock();
-	    	if(blk.equals(Blocks.AIR) || blk.equals(Blocks.CAVE_AIR) || blk.equals(Blocks.VOID_AIR)) {
-		    	if(this.tickCount % 5 == 0 && this.level.getBlockState(this.getGlowingPos()).getBlock().equals(FURBlockRegistry.GLOWING_AIR)) {
-		    		this.level.setBlock(this.getGlowingPos(), Blocks.AIR.defaultBlockState(), 3);
-		    	}
-		    	
-		    	if(this.tickCount % 5 == 0 && this.glowTimer > 0) {
-		    		this.level.setBlock(this.blockPosition(), FURBlockRegistry.GLOWING_AIR.defaultBlockState(), 3);
-		    		this.setGlowingPos(this.blockPosition());
-		    	}
-	    	}	
-    	}
     }
-    
+
     @Override
     public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
     	ItemStack itemstack = player.getItemInHand(hand);
     	Item item = itemstack.getItem();
-    	ActionResultType actionresulttype = super.mobInteract(player, hand);  	
-    	if (this.glowTimer == -6) {   
+    	ActionResultType actionresulttype = super.mobInteract(player, hand);
+    	if (this.feedCooldown <= 0) {
+    		int durationTier;
     		if (item.equals(Items.GLOWSTONE_DUST)) {
-    			this.glowTimer = 8 * 60 * 20 + 6;
-    			this.setPersistenceRequired();
-    			if (player instanceof ServerPlayerEntity) {
-    				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
-    			}
+    			durationTier = 0;
+    			this.feedCooldown = 8 * 60 * 20;
     		} else if (item.equals(Items.WARPED_FUNGUS)) {
-    			this.glowTimer = 3 * 60 * 20 + 6;
-    			this.setPersistenceRequired();
-    			if (player instanceof ServerPlayerEntity) {
-    				CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
-    			}
+    			durationTier = 1;
+    			this.feedCooldown = 3 * 60 * 20;
     		} else {
     			return actionresulttype;
     		}
-    		
+    		this.setPersistenceRequired();
+    		if (player instanceof ServerPlayerEntity) {
+    			CriteriaTriggers.SUMMONED_ENTITY.trigger((ServerPlayerEntity)player, this);
+    		}
+
+    		if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir()) {
+    			GlowingAirBlock.spawn(this.level, this.blockPosition(), durationTier);
+    		}
+
     		if (!player.abilities.instabuild) {
                 itemstack.shrink(1);
-    		}        
-    		
+    		}
+
     		this.playSound(SoundEvents.BEE_LOOP, 1.0F, 1.0F);
-    		  		
+
     		return ActionResultType.SUCCESS;
     	} else {
     		return actionresulttype;
@@ -186,22 +170,13 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
     	return super.finalizeSpawn(worldIn, difficulty, p_213386_3_, entityLivingData, p_213386_5_);
     }
     
-    public BlockPos getGlowingPos() {
-    	return this.getEntityData().get(GLOWING_POS);
-    }
-
-    public void setGlowingPos(BlockPos pos) {
-    	this.getEntityData().set(GLOWING_POS, pos);
-    }
-
 	/**
 	* (abstract) Protected helper method to read subclass entity data from NBT.
 	*/
 	@Override
 	public void readAdditionalSaveData(CompoundNBT compound) {
        super.readAdditionalSaveData(compound);
-       this.glowTimer = compound.getInt("glowTimer");
-       this.setGlowingPos(new BlockPos(compound.getInt("glowPosX"), compound.getInt("glowPosY"), compound.getInt("glowPosZ")));
+       this.feedCooldown = compound.getInt("feedCooldown");
 	}
 
 	/**
@@ -210,10 +185,7 @@ public class WarpedFireflyEntity extends FlyingMobEntity {
 	@Override
 	public void addAdditionalSaveData(CompoundNBT compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putInt("glowPosX", this.getGlowingPos().getX());
-		compound.putInt("glowPosY", this.getGlowingPos().getY());
-		compound.putInt("glowPosZ", this.getGlowingPos().getZ());
-		compound.putInt("glowTimer", this.glowTimer);
+		compound.putInt("feedCooldown", this.feedCooldown);
 	}
 	
 	@Override
