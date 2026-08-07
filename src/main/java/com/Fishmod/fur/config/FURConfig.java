@@ -140,6 +140,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Double> Cactoid_Attack;
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Flarefly_Health;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Flarefly_Light_Duration;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Flarefly_Feed_Cooldown;
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Imp_Attack;
@@ -426,6 +428,8 @@ public final class FURConfig {
 		
 		BUILDER.push("Flarefly");
 		Flarefly_Health = BUILDER.comment("Maximum Flarefly health [1-1000]").defineInRange("flarefly health", 10.0D, 1.0D, 1000.0D);
+		Flarefly_Light_Duration = BUILDER.comment("Lifetime in seconds of the light orb spawned by feeding/hitting a Flarefly, from full brightness to fading out [15-10000]").defineInRange("flarefly light orb duration", 60, 15, 10000);
+		Flarefly_Feed_Cooldown = BUILDER.comment("Cooldown in seconds before a Flarefly can spawn another light orb (feeding or being hit) [1-10000]").defineInRange("flarefly feed cooldown", 30, 1, 10000);
 		BUILDER.pop();
 		
 		BUILDER.push("Imp");

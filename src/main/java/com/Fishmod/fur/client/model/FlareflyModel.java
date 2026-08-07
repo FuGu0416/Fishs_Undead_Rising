@@ -9,12 +9,17 @@ import software.bernie.geckolib.model.GeoModel;
 public class FlareflyModel extends GeoModel<FlareflyEntity> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/flarefly/flarefly.png");
 	private static final ResourceLocation TEXTURE_LUSH_CAVES = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/flarefly/flarefly1.png");
+	private static final ResourceLocation TEXTURE_UNDERGROVE = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/flarefly/flarefly2.png");
 	private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/flarefly.animation.json");
 	private static final ResourceLocation MODEL = new ResourceLocation(mod_LavaCow.MODID, "geo/flarefly.geo.json");
 
 	@Override
 	public ResourceLocation getTextureResource(FlareflyEntity object) {
-		return object.getSkin() == 1 ? TEXTURE_LUSH_CAVES : TEXTURE;
+		return switch (object.getSkin()) {
+			case 1 -> TEXTURE_LUSH_CAVES;
+			case 2 -> TEXTURE_UNDERGROVE;
+			default -> TEXTURE;
+		};
 	}
 
 	@Override
