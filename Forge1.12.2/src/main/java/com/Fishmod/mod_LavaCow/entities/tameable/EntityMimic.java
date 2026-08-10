@@ -87,6 +87,7 @@ public class EntityMimic extends EntityFishTameable implements IAggressive {
         this.canDropItems = true;
         this.setCanPickUpLoot(true);
         this.setTamed(false);
+        this.experienceValue = 10;
     }
 
     @Override

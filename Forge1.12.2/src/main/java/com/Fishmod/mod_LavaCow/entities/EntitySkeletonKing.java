@@ -72,7 +72,7 @@ public class EntitySkeletonKing extends EntityMob implements IAggressive {
         super(worldIn);
         this.setSize(1.25F, 3.1F);
         this.isImmuneToFire = true;
-        this.experienceValue = 80;
+        this.experienceValue = 50;
     }
 
     protected void initEntityAI() {

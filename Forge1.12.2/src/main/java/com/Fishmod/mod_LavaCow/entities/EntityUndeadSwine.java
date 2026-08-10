@@ -106,16 +106,23 @@ public class EntityUndeadSwine extends EntityMob {
         return SpawnUtil.isAllowedDimension(this.dimension) && super.getCanSpawnHere();
     }
 
+    /**
+     * While charging, tramples anything it collides with along the way - not just the entity it's actually
+     * chasing (that hit is handled separately by {@link EntityAIChargeAttack}) - with a lighter knockback than
+     * the charge's main impact. Its own rider is explicitly excluded so a jockeyed swine doesn't damage itself.
+     */
     @Override
     public void applyEntityCollision(Entity entityIn) {
         super.applyEntityCollision(entityIn);
 
-        if (entityIn instanceof EntityLivingBase) {
-            if (this.entityAICharge != null && this.entityAICharge.isCharging() && !((EntityLivingBase) entityIn).isOnSameTeam(this) && entityIn.isRidingOrBeingRiddenBy(this)) {
-                this.attackEntityAsMob(entityIn);
-
-                ((EntityLivingBase) entityIn).knockBack(entityIn, 2.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180.0F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180.0F))));
-            }
+        if (entityIn instanceof EntityLivingBase && this.entityAICharge != null && this.entityAICharge.isCharging()
+                && !this.isPassenger(entityIn) && !((EntityLivingBase) entityIn).isOnSameTeam(this)
+                && this.attackEntityAsMob(entityIn)) {
+            // Only knock back if the hit actually landed - applyEntityCollision has no cooldown of its own and
+            // fires every tick two bounding boxes overlap, so without this the target's own hurt-resistance
+            // window (which already prevents the damage itself from stacking) would still let the knockback
+            // reapply every single tick regardless.
+            ((EntityLivingBase) entityIn).knockBack(entityIn, 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180.0F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180.0F))));
         }
     }
 
@@ -152,14 +159,6 @@ public class EntityUndeadSwine extends EntityMob {
             float f = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
             if (this.getHeldItemMainhand().isEmpty() && this.isBurning() && this.rand.nextFloat() < f * 0.3F) {
                 entityIn.setFire(2 * (int) f);
-            }
-
-            if (entityIn instanceof EntityLivingBase) {
-                if (this.entityAICharge != null && this.entityAICharge.isCharging() && !((EntityLivingBase) entityIn).isOnSameTeam(this)) {
-                    this.attackEntityAsMob(entityIn);
-
-                    ((EntityLivingBase) entityIn).knockBack(entityIn, 2.0F * 0.5F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180.0F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180.0F))));
-                }
             }
         }
 

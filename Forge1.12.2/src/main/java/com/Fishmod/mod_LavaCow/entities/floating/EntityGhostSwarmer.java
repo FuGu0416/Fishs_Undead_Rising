@@ -49,6 +49,7 @@ public class EntityGhostSwarmer extends EntityTameableFloatingMob implements IAg
         super(worldIn);
         this.setSize(1.0F, 0.8F);
         this.limitedLifeTicks = -1;
+        this.experienceValue = 3;
     }
 
     protected void initEntityAI() {

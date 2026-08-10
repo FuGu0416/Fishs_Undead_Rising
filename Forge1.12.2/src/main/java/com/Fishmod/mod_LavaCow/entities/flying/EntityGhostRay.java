@@ -37,6 +37,7 @@ public class EntityGhostRay extends EntityFlyingMob {
         super(worldIn, Modconfig.GhostRay_FlyingHeight_limit);
         //this.setSize(3.2F, 0.5F);
         this.isImmuneToFire = true;
+        this.experienceValue = 1;
     }
 
     @Override

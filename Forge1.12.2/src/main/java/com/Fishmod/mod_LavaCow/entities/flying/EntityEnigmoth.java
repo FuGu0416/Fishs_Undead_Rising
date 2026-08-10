@@ -61,7 +61,7 @@ public class EntityEnigmoth extends EntityRideableFlyingMob {
 		super(worldIn, Modconfig.Enigmoth_FlyingHeight_limit);
 		this.setSize(1.6F, 1.0F);
 		this.isImmuneToFire = true;
-        this.experienceValue = 30;
+        this.experienceValue = 20;
 	}
 	
 	@Override

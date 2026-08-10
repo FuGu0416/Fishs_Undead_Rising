@@ -28,6 +28,7 @@ public class EntityVespaCocoon extends EntityFishTameable {
     public EntityVespaCocoon(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 1.0F);
+        this.experienceValue = 1;
     }
 
     @Override

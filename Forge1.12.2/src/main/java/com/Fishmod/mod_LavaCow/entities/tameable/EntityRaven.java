@@ -90,6 +90,7 @@ public class EntityRaven extends EntityFishTameable implements EntityFlying {
     public EntityRaven(World worldIn) {
         super(worldIn);
         this.setSize(0.5F, 0.9F);
+        this.experienceValue = 0;
         this.ridingCooldown = 30;
         this.moveHelper = new EntityFlyHelper(this);
         this.setCanPickUpLoot(true);

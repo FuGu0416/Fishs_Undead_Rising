@@ -58,7 +58,7 @@ public class EntityUndertaker extends EntityMob implements IAggressive {
     public EntityUndertaker(World worldIn) {
         super(worldIn);
         this.setSize(1.8F, 2.4F);
-        this.experienceValue = 12;
+        this.experienceValue = 10;
     }
 
     protected void initEntityAI() {

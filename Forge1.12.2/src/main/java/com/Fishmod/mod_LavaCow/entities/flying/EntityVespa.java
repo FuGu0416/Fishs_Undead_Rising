@@ -47,6 +47,7 @@ public class EntityVespa extends EntityRideableFlyingMob {
     public EntityVespa(World worldIn) {
         super(worldIn, Modconfig.Vespa_FlyingHeight_limit);
         this.setSize(1.6F, 1.0F);
+        this.experienceValue = 20;
     }
 
     @Override

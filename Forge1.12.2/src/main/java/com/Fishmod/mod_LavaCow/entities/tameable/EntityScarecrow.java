@@ -66,6 +66,7 @@ public class EntityScarecrow extends EntityFishTameable {
     public EntityScarecrow(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 3.0F);
+        this.experienceValue = 10;
     }
 
     protected void entityInit() {

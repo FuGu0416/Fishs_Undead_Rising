@@ -58,7 +58,7 @@ public class EntityCactyrant extends EntityMob implements IAggressive {
 	public EntityCactyrant(World world) {
         super(world);
         this.setSize(1.3F, 2.8F);
-        this.experienceValue = 12;
+        this.experienceValue = 20;
     }
 	
     @Override

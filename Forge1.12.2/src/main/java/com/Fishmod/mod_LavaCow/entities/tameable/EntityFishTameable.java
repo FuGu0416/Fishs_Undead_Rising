@@ -48,6 +48,7 @@ public class EntityFishTameable extends EntityTameable {
         super(worldIn);
         this.setTamed(false);
         this.canDespawn = true;
+        this.experienceValue = 5;
     }
 
     protected void entityInit() {
