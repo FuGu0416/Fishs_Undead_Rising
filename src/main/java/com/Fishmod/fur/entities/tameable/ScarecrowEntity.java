@@ -105,7 +105,8 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	private RandomLookAroundGoal look;
 	
 	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> entityType, Level worldIn) {
-        super(entityType, worldIn);        
+        super(entityType, worldIn);
+        this.xpReward = 10;
     }
 	
 	@Override

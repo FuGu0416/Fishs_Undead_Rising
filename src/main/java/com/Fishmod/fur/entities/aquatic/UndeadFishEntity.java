@@ -46,6 +46,7 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 	
 	public UndeadFishEntity(EntityType<? extends UndeadFishEntity> entityType, Level level) {
 		super(entityType, level);
+		this.xpReward = 0;
 	}
 	
 	@Override

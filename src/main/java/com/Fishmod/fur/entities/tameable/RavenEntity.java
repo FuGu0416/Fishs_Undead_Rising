@@ -132,6 +132,7 @@ public class RavenEntity extends FURTameableEntity implements FlyingAnimal, GeoE
 
     public RavenEntity(EntityType<? extends RavenEntity> type, Level level) {
         super(type, level);
+        this.xpReward = 0;
         this.ridingCooldown = 30;
         this.moveControl = new FlyingMoveControl(this, 10, false);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);

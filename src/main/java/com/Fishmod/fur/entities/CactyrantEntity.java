@@ -86,7 +86,7 @@ public class CactyrantEntity extends Monster implements GeoEntity {
 	
 	public CactyrantEntity(EntityType<? extends CactyrantEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
-		this.xpReward = 12;
+		this.xpReward = 20;
 	}
 	
     @Override

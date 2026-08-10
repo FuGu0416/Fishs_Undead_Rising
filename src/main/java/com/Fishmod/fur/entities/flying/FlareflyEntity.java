@@ -96,6 +96,7 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 
 	public FlareflyEntity(EntityType<? extends FlareflyEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
+		this.xpReward = 1;
 	}
 
 	@Override

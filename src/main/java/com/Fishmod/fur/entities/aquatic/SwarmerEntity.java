@@ -76,7 +76,8 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("swarmer.model.attacking");
     
     public SwarmerEntity(EntityType<? extends SwarmerEntity> entityType, Level worldIn) {
-        super(entityType, worldIn);   
+        super(entityType, worldIn);
+        this.xpReward = 0;
     }
     
 	@Override

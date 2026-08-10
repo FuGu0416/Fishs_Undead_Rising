@@ -48,6 +48,7 @@ public class CocoonEntity extends FURTameableEntity implements GeoEntity {
 	
 	public CocoonEntity(EntityType<? extends CocoonEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
+        this.xpReward = 1;
     }
 	
 	@Override

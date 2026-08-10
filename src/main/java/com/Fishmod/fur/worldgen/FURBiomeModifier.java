@@ -118,7 +118,7 @@ public class FURBiomeModifier {
         addSpawn(context, ADD_VESPA, biomes.getOrThrow(BiomeTags.IS_JUNGLE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
         addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 20, 4, 8));
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLING.get(), 40, 4, 8));
         // Vanilla cave ambient spawns also occur in the Luminous Undergrove, using the same
         // data as other cave biomes (Lush/Dripstone Caves): Bat + Glow Squid.
         addSpawn(context, ADD_LUMINOUS_BAT, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),

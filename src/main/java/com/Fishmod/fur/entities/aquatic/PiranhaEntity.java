@@ -33,7 +33,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 public class PiranhaEntity extends SwarmerEntity {
 	
     public PiranhaEntity(EntityType<? extends PiranhaEntity> entityType, Level worldIn) {
-        super(entityType, worldIn); 
+        super(entityType, worldIn);
+        this.xpReward = 0;
     }
     
     @Override

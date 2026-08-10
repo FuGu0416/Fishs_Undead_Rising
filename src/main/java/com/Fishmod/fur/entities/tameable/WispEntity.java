@@ -98,6 +98,7 @@ public class WispEntity extends FURTameableEntity implements ICharging, GeoEntit
 		super(type, level);
 		this.moveControl = new FloatingMoveControl(this);
 		this.setNoGravity(true);
+		this.xpReward = 1;
 	}
 
     /**

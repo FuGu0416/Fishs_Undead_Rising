@@ -92,6 +92,7 @@ public class VoidGliderEntity extends FlyingMobEntity implements GeoEntity {
 
 	public VoidGliderEntity(EntityType<? extends VoidGliderEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
+		this.xpReward = 1;
 	}
 
 	@Override

@@ -69,6 +69,7 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	
 	public PteraEntity(EntityType<? extends PteraEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
+		this.xpReward = 3;
 	}
 
     @Override

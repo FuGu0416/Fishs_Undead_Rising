@@ -82,6 +82,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity implements GeoEntity
     public BeelzebubEntity(EntityType<? extends BeelzebubEntity> type, Level world) {
         super(type, world);
         this.pheromoneTick = 0;
+        this.xpReward = 10;
     }
 
     @Override

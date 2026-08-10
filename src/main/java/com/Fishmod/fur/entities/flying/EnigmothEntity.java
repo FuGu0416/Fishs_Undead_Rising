@@ -97,7 +97,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
 	private static final int DUST_COOLDOWN_TIME = 6000; // 5 minutes
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> entityType, Level worldIn) {
-		super(entityType, worldIn);		
+		super(entityType, worldIn);
+		this.xpReward = 20;
 	}
 	
 	@Override

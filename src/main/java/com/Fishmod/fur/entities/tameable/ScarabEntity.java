@@ -82,6 +82,7 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
         this.limitedLifeTicks = -1;
+        this.xpReward = 3;
     }
 	
 	@Override

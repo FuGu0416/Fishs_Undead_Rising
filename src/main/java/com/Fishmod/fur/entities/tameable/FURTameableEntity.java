@@ -54,6 +54,7 @@ public class FURTameableEntity extends TamableAnimal {
 	public FURTameableEntity(EntityType<? extends FURTameableEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
 		this.setTame(false);
+		this.xpReward = 5;
 	}
 	
 	@Override

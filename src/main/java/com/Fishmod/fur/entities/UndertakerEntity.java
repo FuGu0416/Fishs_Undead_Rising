@@ -75,7 +75,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 	
 	public UndertakerEntity(EntityType<? extends UndertakerEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
-		this.xpReward = 12;
+		this.xpReward = 10;
 	}
 	
     @Override
