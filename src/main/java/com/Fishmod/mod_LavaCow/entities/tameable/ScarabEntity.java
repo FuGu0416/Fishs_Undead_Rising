@@ -72,6 +72,7 @@ public class ScarabEntity extends FURTameableEntity implements IAggressive {
 	public ScarabEntity(EntityType<? extends ScarabEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
         this.limitedLifeTicks = -1;
+        this.xpReward = 3;
     }
 	
 	@Override

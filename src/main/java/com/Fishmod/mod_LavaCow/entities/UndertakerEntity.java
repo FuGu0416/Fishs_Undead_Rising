@@ -62,7 +62,7 @@ public class UndertakerEntity extends MonsterEntity implements IAggressive {
 	
 	public UndertakerEntity(EntityType<? extends UndertakerEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		this.xpReward = 12;
+		this.xpReward = 10;
 	}
 	
     @Override

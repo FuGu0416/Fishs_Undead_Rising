@@ -84,6 +84,7 @@ public class ScarecrowEntity extends FURTameableEntity implements IAggressive {
 	
 	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
+        this.xpReward = 10;
     }
 	
 	@Override

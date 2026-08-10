@@ -75,7 +75,8 @@ public class EnigmothEntity extends RidableFlyingMobEntity {
 	private int skinFixedTick;
 	
 	public EnigmothEntity(EntityType<? extends EnigmothEntity> p_i48549_1_, World worldIn) {
-		super(p_i48549_1_, worldIn);		
+		super(p_i48549_1_, worldIn);
+		this.xpReward = 20;
 	}
 	
 	@Override

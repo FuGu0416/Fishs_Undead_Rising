@@ -258,7 +258,7 @@ public class FUREntityRegistry {
         event.put(WISP, WispEntity.createAttributes().build());
         event.put(GRAVEROBBER, GraveRobberEntity.createAttributes().build());
         event.put(GRAVEROBBERGHOST, GraveRobberGhostEntity.createAttributes().build());
-        event.put(WRAITH, SeaHagEntity.createAttributes().build());
+        event.put(WRAITH, WraithEntity.createAttributes().build());
         event.put(GHOSTSWARMER, GhostSwarmerEntity.createAttributes().build());
         event.put(SCARAB, ScarabEntity.createAttributes().build());
         event.put(BEELZEBUB, BeelzebubEntity.createAttributes().build());

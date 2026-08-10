@@ -32,6 +32,7 @@ public class VespaCocoonEntity extends FURTameableEntity {
 	
 	public VespaCocoonEntity(EntityType<? extends VespaCocoonEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
+        this.xpReward = 1;
     }
 	
 	@Override

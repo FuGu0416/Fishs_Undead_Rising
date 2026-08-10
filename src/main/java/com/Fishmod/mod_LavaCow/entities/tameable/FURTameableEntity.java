@@ -48,6 +48,7 @@ public class FURTameableEntity extends TameableEntity {
 	public FURTameableEntity(EntityType<? extends FURTameableEntity> p_i50240_1_, World worldIn) {
 		super(p_i50240_1_, worldIn);
 		this.setTame(false);
+		this.xpReward = 5;
 	}
 	
 	@Override

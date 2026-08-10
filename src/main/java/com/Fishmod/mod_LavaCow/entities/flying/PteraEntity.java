@@ -46,6 +46,7 @@ public class PteraEntity extends FlyingMobEntity {
 	
 	public PteraEntity(EntityType<? extends PteraEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+		this.xpReward = 3;
 	}
 
     @Override

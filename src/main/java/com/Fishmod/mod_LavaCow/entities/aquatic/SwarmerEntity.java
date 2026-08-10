@@ -60,7 +60,8 @@ public class SwarmerEntity extends AbstractGroupFishEntity {
 	private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.defineId(SwarmerEntity.class, DataSerializers.INT);
 	
     public SwarmerEntity(EntityType<? extends SwarmerEntity> p_i48549_1_, World worldIn) {
-        super(p_i48549_1_, worldIn);   
+        super(p_i48549_1_, worldIn);
+        this.xpReward = 0;
     }
     
 	@Override

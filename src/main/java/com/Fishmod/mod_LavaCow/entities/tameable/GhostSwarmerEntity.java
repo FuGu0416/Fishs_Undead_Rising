@@ -62,6 +62,7 @@ public class GhostSwarmerEntity extends FURTameableEntity implements IFlyingAnim
 	public GhostSwarmerEntity(EntityType<? extends GhostSwarmerEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
 	      this.moveControl = new FlyingMovementController(this, 20, true);
+	      this.xpReward = 3;
 	}
 	
     /**

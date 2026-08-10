@@ -293,7 +293,7 @@ public class FURWorldRegistry {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WISP, FURConfig.pSpawnRate_Wisp.get(), 4, 8));
 		}
 		
-		if (FURConfig.pSpawnRate_Banshee.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) && 
+		if (FURConfig.pSpawnRate_Wraith.get() > 0 && BiomeDictionary.getTypes(biomeKey).contains(Type.OVERWORLD) &&
 				(BiomeDictionary.getTypes(biomeKey).contains(Type.FOREST))) {
 			event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(FUREntityRegistry.WRAITH, FURConfig.pSpawnRate_Wraith.get(), 1, 2));
 		}

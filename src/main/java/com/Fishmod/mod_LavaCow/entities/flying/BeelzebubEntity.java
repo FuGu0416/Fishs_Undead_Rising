@@ -62,6 +62,7 @@ public class BeelzebubEntity extends RidableFlyingMobEntity {
 	public BeelzebubEntity(EntityType<? extends BeelzebubEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
 		pheromoneTick = 0;
+		this.xpReward = 10;
 	}
 	
 	@Override

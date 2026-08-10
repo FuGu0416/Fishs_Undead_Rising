@@ -106,7 +106,7 @@ public class MimicEntity extends FURTameableEntity implements IAggressive {
 	
 	public MimicEntity(EntityType<? extends MimicEntity> p_i48549_1_, World worldIn) {
         super(p_i48549_1_, worldIn);
-        this.inventory = new Inventory(27);       
+        this.inventory = new Inventory(27);
         this.setCanPickUpLoot(true);
     }
 	

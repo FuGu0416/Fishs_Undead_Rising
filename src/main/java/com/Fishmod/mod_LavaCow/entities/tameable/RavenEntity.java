@@ -104,6 +104,7 @@ public class RavenEntity extends FURTameableEntity implements IFlyingAnimal {
 	
 	public RavenEntity(EntityType<? extends RavenEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+        this.xpReward = 0;
         this.ridingCooldown = 30;
         this.moveControl = new FlyingMovementController(this, 10, false);
         this.setPathfindingMalus(PathNodeType.DANGER_FIRE, -1.0F);

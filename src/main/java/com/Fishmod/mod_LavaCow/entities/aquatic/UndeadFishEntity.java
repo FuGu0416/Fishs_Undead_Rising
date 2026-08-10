@@ -25,6 +25,7 @@ import net.minecraft.world.World;
 public class UndeadFishEntity extends AbstractGroupFishEntity {
 	public UndeadFishEntity(EntityType<? extends UndeadFishEntity> p_i50279_1_, World p_i50279_2_) {
 		super(p_i50279_1_, p_i50279_2_);
+		this.xpReward = 0;
 	}
 	
     public static boolean isDarkEnoughToSpawn(IServerWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {

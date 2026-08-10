@@ -39,7 +39,8 @@ public class PiranhaEntity extends SwarmerEntity {
 	
     public PiranhaEntity(EntityType<? extends PiranhaEntity> p_i48549_1_, World worldIn)
     {
-        super(p_i48549_1_, worldIn); 
+        super(p_i48549_1_, worldIn);
+        this.xpReward = 0;
     }
     
     @Override

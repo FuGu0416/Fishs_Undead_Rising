@@ -63,7 +63,7 @@ public class CactyrantEntity extends MonsterEntity implements IAggressive {
 	
 	public CactyrantEntity(EntityType<? extends CactyrantEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
-		this.xpReward = 12;
+		this.xpReward = 20;
 	}
 	
     @Override

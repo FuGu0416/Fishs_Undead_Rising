@@ -46,6 +46,7 @@ public class GhostRayEntity extends FlyingMobEntity {
 	
 	public GhostRayEntity(EntityType<? extends GhostRayEntity> p_i48549_1_, World worldIn) {
 		super(p_i48549_1_, worldIn);
+		this.xpReward = 1;
 	}
 	
 	@Override

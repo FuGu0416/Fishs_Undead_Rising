@@ -110,12 +110,20 @@ public class UndeadSwineEntity extends MonsterEntity implements IAggressive {
         return MonsterEntity.checkMonsterSpawnRules(p_223316_0_, (IServerWorld) p_223316_1_, p_223316_2_, p_223316_3_, p_223316_4_);//SpawnUtil.isAllowedDimension(this.dimension);
     }
     
+    /**
+     * While charging, tramples anything it collides with along the way (its own rider excluded) -
+     * see EntityChargeAttackGoal for the dedicated hit against the entity it's actually chasing.
+     */
     @Override
     public void push(Entity entityIn) {
     	super.push(entityIn);
-		if(this.entityAICharge != null && this.entityAICharge.isCharging() && !this.isAlliedTo(entityIn)) {
-			this.doHurtTarget(entityIn);
-			((LivingEntity)entityIn).knockback(2.0F * 0.5F, (double)MathHelper.sin(this.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.yRot * ((float)Math.PI / 180F))));
+		if(this.entityAICharge != null && this.entityAICharge.isCharging() && !this.hasPassenger(entityIn) && !this.isAlliedTo(entityIn)
+				&& this.doHurtTarget(entityIn)) {
+			// Only knock back if the hit actually landed - push() has no cooldown of its own and fires every
+			// tick two bounding boxes overlap, so without this the target's own hurt-resistance window (which
+			// already prevents the damage itself from stacking) would still let the knockback reapply every
+			// single tick regardless.
+			((LivingEntity)entityIn).knockback(0.5F, (double)MathHelper.sin(this.yRot * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.yRot * ((float)Math.PI / 180F))));
 		}
     }
     
