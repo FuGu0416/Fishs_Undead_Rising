@@ -41,7 +41,11 @@ public class InfestedSandstoneBlock extends Block {
 				scarab.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
 				scarab.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(scarab, Player.class, true));
 				level.addFreshEntity(scarab);
-				scarab.spawnAnim();
+				// This bypasses finalizeSpawn entirely (vanilla InfestedBlock ambush pattern), so
+				// nothing else triggers the burrow-up flourish for it - call it directly, which is
+				// safe here since the entity is already tracked by addFreshEntity above. Replaces the
+				// old generic vanilla spawnAnim() "poof" with the dedicated burrow-up animation.
+				scarab.startBurrowUp();
 			}
 		}
 	}
