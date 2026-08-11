@@ -2,6 +2,7 @@ package com.Fishmod.fur.client.renderer.entity;
 
 import com.Fishmod.fur.client.model.ParasiteModel;
 import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -53,7 +54,8 @@ public class ParasiteRenderer extends GeoEntityRenderer<ParasiteEntity> {
 					|| entityLiving.getVehicle() instanceof Zombie
 					|| entityLiving.getVehicle() instanceof AbstractVillager
 					|| entityLiving.getVehicle() instanceof AbstractIllager
-					|| entityLiving.getVehicle() instanceof AbstractSkeleton)) {
+					|| entityLiving.getVehicle() instanceof AbstractSkeleton
+					|| entityLiving.getVehicle() instanceof UnburiedEntity)) {
 				poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 			}
 		} else if (attached == Direction.UP) {

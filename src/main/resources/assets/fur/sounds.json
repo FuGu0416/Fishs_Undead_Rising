@@ -801,5 +801,26 @@
 		"category": "hostile",
 		"subtitle": "entity_ghoul_death",
 		"sounds": [{"name": "fur:entity/ghoul/death","stream": true}]
+	},
+
+	"mummy_lord_ambient":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mummy_lord_ambient",
+		"sounds": ["fur:entity/mummy_lord/ambient"]
+	},
+
+	"mummy_lord_hurt":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mummy_lord_hurt",
+		"sounds": ["fur:entity/mummy_lord/hurt0", "fur:entity/mummy_lord/hurt1"]
+	},
+
+	"mummy_lord_death":
+	{
+		"category": "hostile",
+		"subtitle": "entity_mummy_lord_death",
+		"sounds": [{"name": "fur:entity/mummy_lord/death","stream": true}]
 	}
 }

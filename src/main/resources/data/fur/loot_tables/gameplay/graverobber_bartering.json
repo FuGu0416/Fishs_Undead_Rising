@@ -51,6 +51,21 @@
 				},
 				{
 					"type": "minecraft:item",
+					"name": "fur:holy_water",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 3.0,
+								"max": 7.0,
+								"type": "minecraft:uniform"
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
 					"name": "minecraft:iron_ingot",
 					"weight": 10,
 					"functions": [
@@ -87,8 +102,8 @@
 						{
 							"function": "minecraft:set_count",
 							"count": {
-								"min": 3.0,
-								"max": 7.0,
+								"min": 1.0,
+								"max": 2.0,
 								"type": "minecraft:uniform"
 							}
 						}
@@ -132,7 +147,7 @@
 				{
 					"type": "minecraft:item",
 					"name": "minecraft:bone",
-					"weight": 60,
+					"weight": 40,
 					"functions": [
 						{
 							"function": "minecraft:set_count",

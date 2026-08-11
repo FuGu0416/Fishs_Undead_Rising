@@ -485,7 +485,11 @@
 	"entity_ghoul_ambient": "食尸鬼：哀嚎",
 	"entity_ghoul_death": "食尸鬼：死亡",
 	"entity_ghoul_hurt": "食尸鬼：受伤",
-		
+
+	"entity_mummy_lord_ambient": "木乃伊领主：哀嚎",
+	"entity_mummy_lord_death": "木乃伊领主：死亡",
+	"entity_mummy_lord_hurt": "木乃伊领主：受伤",
+
 	"item.fur.ankh_scepter.desc": "右键点击以召唤听命于玩家的木乃伊军团",
 	"item.fur.baobing.desc": "食用后可熄灭身上的火焰",
 	"item.fur.basic_bomb.desc": "投向目标地点，造成范围伤害",

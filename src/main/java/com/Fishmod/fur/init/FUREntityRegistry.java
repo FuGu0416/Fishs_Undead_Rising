@@ -25,7 +25,6 @@ import com.Fishmod.fur.entities.floating.SeaHagEntity;
 import com.Fishmod.fur.entities.floating.WraithEntity;
 import com.Fishmod.fur.entities.flying.BeelzebubEntity;
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
-import com.Fishmod.fur.entities.flying.FlyingMobEntity;
 import com.Fishmod.fur.entities.flying.VoidGliderEntity;
 import com.Fishmod.fur.entities.flying.PteraEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;

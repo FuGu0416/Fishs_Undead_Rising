@@ -485,6 +485,10 @@
 	"entity_ghoul_ambient": "食屍鬼哀嚎聲",
 	"entity_ghoul_death": "食屍鬼死亡",
 	"entity_ghoul_hurt": "食屍鬼受傷",
+
+	"entity_mummy_lord_ambient": "木乃伊領主哀嚎聲",
+	"entity_mummy_lord_death": "木乃伊領主死亡",
+	"entity_mummy_lord_hurt": "木乃伊領主受傷",
 						
 	"item.fur.ankh_scepter.desc": "右鍵點擊以召喚聽命於玩家的木乃伊軍團",
 	"item.fur.baobing.desc": "食用後可熄滅身上的火焰",

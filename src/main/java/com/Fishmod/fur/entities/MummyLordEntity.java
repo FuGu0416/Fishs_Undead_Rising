@@ -16,6 +16,9 @@ import com.Fishmod.fur.init.FURSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -69,6 +72,11 @@ public class MummyLordEntity extends Monster implements GeoEntity {
      *  (Royal Tomb) shouldn't leave its post to wander off or chase a target across the map. */
     private static final int GUARD_RADIUS = 8;
 
+    /** 0 = default, 1 = Royal Tomb variant (mummy_lord1.png, +50% max health). Only ever set via the
+     *  {@code Variant} tag baked into the Royal Tomb structure's guard entity - never rolled at spawn,
+     *  so this variant can't appear anywhere else. See {@link #setSkin}. */
+    private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(MummyLordEntity.class, EntityDataSerializers.INT);
+
     protected int spellTicks;
     /** Anchor for {@link #restrictTo}; captured from wherever this entity first ticks (structure
      *  placement, spawner, summon, etc.) and persisted, since Mob's restriction fields themselves
@@ -78,6 +86,26 @@ public class MummyLordEntity extends Monster implements GeoEntity {
     public MummyLordEntity(EntityType<? extends MummyLordEntity> type, Level level) {
         super(type, level);
         this.xpReward = 20;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+    }
+
+    public int getSkin() {
+        return this.entityData.get(SKIN_TYPE).intValue();
+    }
+
+    /** Setting skin 1 also bumps max health +50% over the configured baseline (idempotent - safe to
+     *  call on every NBT load, not just once). Current health isn't touched here; see
+     *  {@link #readAdditionalSaveData} for why the caller re-applies it afterward. */
+    public void setSkin(int skin) {
+        this.entityData.set(SKIN_TYPE, Integer.valueOf(skin));
+        if (skin == 1) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.MummyLord_Health.get() * 1.5D);
+        }
     }
 
     @Override
@@ -172,6 +200,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         if (this.homePos != null) {
             nbt.put("HomePos", NbtUtils.writeBlockPos(this.homePos));
         }
+        nbt.putInt("Variant", this.getSkin());
     }
 
     @Override
@@ -181,21 +210,31 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         if (nbt.contains("HomePos")) {
             this.homePos = NbtUtils.readBlockPos(nbt.getCompound("HomePos"));
         }
+        if (nbt.contains("Variant")) {
+            this.setSkin(nbt.getInt("Variant"));
+            // setSkin(1) raises max health *after* super.readAdditionalSaveData() already clamped
+            // "Health" to the old (lower) cap, so the structure-baked guard's saved 180 HP would
+            // otherwise get silently clamped down to 120. Re-apply the saved value now that the
+            // cap is correct - a no-op for skin 0 and for any already-consistent reload.
+            if (nbt.contains("Health")) {
+                this.setHealth(nbt.getFloat("Health"));
+            }
+        }
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return FURSoundRegistry.UNBURIED_AMBIENT.get();
+        return FURSoundRegistry.MUMMY_LORD_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return FURSoundRegistry.UNBURIED_HURT.get();
+        return FURSoundRegistry.MUMMY_LORD_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return FURSoundRegistry.UNBURIED_DEATH.get();
+        return FURSoundRegistry.MUMMY_LORD_DEATH.get();
     }
 
     protected SoundEvent getSpellSound() {

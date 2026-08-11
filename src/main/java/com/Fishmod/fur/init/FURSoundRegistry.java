@@ -158,7 +158,11 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> GHOUL_AMBIENT = addSoundEvent("ghoul_ambient");
 	public static final RegistryObject<SoundEvent> GHOUL_HURT = addSoundEvent("ghoul_hurt");
 	public static final RegistryObject<SoundEvent> GHOUL_DEATH = addSoundEvent("ghoul_death");
-	
+
+	public static final RegistryObject<SoundEvent> MUMMY_LORD_AMBIENT = addSoundEvent("mummy_lord_ambient");
+	public static final RegistryObject<SoundEvent> MUMMY_LORD_HURT = addSoundEvent("mummy_lord_hurt");
+	public static final RegistryObject<SoundEvent> MUMMY_LORD_DEATH = addSoundEvent("mummy_lord_death");
+
     private static RegistryObject<SoundEvent> addSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(mod_LavaCow.MODID, soundName)));
     }	

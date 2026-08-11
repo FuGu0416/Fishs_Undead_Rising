@@ -1,5 +1,7 @@
 package com.Fishmod.fur.entities.tameable.unburied;
 
+import java.util.EnumSet;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
@@ -31,6 +33,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -91,6 +94,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	
     protected void registerGoals() {
     	super.registerGoals();
+    	this.goalSelector.addGoal(1, new AIBirthing());
     	this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -204,8 +208,20 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 
         if (this.spellTicks > 0) {
             --this.spellTicks;
+
+            // The "birth" clip is authored `hold_on_last_frame` (see unburied.animation.json) so it
+            // freezes on its last pose once it finishes playing, rather than fading back out on its
+            // own - nothing was ever releasing that hold when the birth window ended normally (only
+            // #hurt's interrupt path did, via event 33), so a mob that finished rising without being
+            // hit stayed stuck showing that frozen pose forever afterward, no matter how much it then
+            // moved. Release it here the instant the (client-local, independently-ticking - see
+            // handleEntityEvent's id==32) copy of spellTicks reaches 0 on its own.
+            if (this.spellTicks == 0 && this.level().isClientSide()) {
+                this.getAnimatableInstanceCache().<UnburiedEntity>getManagerForId(this.getId())
+                        .stopTriggeredAnimation("trigger_controller", "birth");
+            }
         }
-        
+
         if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
             if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
@@ -297,6 +313,26 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     }    
     
     /**
+     * Taking real damage while rising cuts the birth animation short: the freeze goal
+     * ({@link AIBirthing}) reads {@link #isSpellcasting}, so zeroing spellTicks here lets it move/attack
+     * again immediately instead of waiting out the rest of {@link #SPELL_TIMER}. Event 33 tells the
+     * client to stop the triggered "birth" clip in step, rather than letting it play out to completion
+     * on its own.
+     */
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean wasBirthing = this.isSpellcasting();
+        boolean hurt = super.hurt(source, amount);
+
+        if (hurt && wasBirthing) {
+            this.spellTicks = 0;
+            this.level().broadcastEntityEvent(this, (byte) 33);
+        }
+
+        return hurt;
+    }
+
+    /**
      * Handler for {@link World#setEntityState}
      */
 	@OnlyIn(Dist.CLIENT)
@@ -304,6 +340,10 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     	if (id == 32) {
     		this.triggerAnim("trigger_controller", "birth");
         	this.spellTicks = SPELL_TIMER;
+        } else if (id == 33) {
+        	this.spellTicks = 0;
+        	this.getAnimatableInstanceCache().<UnburiedEntity>getManagerForId(this.getId())
+        			.stopTriggeredAnimation("trigger_controller", "birth");
         } else if (id == 4) {
         	this.triggerAnim("trigger_controller", "attack");
         } else if (id == 11) {
@@ -312,7 +352,28 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
             super.handleEntityEvent(id);
         }
     }
-   
+
+    /**
+     * Freezes movement/looking/jumping while {@link #isSpellcasting} (the birth-animation window) -
+     * same claim-the-flags-so-nothing-else-can-run trick as {@code SkeletonKingEntity.DoNothingGoal}.
+     * Priority 1 (above every other movement/attack/look goal) so none of them can start while this
+     * is active; ends the instant {@link #isSpellcasting} goes false, whether that's the timer running
+     * out or {@link #hurt} cutting it short.
+     */
+    class AIBirthing extends Goal {
+        public AIBirthing() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+        }
+
+        public boolean canUse() {
+            return UnburiedEntity.this.isSpellcasting();
+        }
+
+        public void start() {
+            UnburiedEntity.this.getNavigation().stop();
+        }
+    }
+
     class AICopyOwnerTarget extends TargetGoal {
     	private final TargetingConditions copyOwnerTargeting = TargetingConditions.forNonCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
     	private LivingEntity owner = UnburiedEntity.this.getOwner();

@@ -1,5 +1,7 @@
 package com.Fishmod.fur.entities.tameable;
 
+import java.util.EnumSet;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
@@ -8,6 +10,7 @@ import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -34,6 +37,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -68,16 +72,30 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     private static final RawAnimation WALK = RawAnimation.begin().thenPlay("scarab.model.walk");
     private static final RawAnimation FLY = RawAnimation.begin().thenPlay("scarab.model.fly");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("scarab.model.attack");
-    // PLACEHOLDER: "scarab.model.dig" is not yet authored in scarab.animation.json - see PLACEHOLDERS.md.
-    private static final RawAnimation DIG = RawAnimation.begin().thenPlay("scarab.model.dig");
+    private static final RawAnimation BURROW_UP = RawAnimation.begin().thenPlay("scarab.model.burrow_up");
+    private static final RawAnimation BURROW_DOWN = RawAnimation.begin().thenPlay("scarab.model.burrow_down");
 
 	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ScarabEntity.class, EntityDataSerializers.INT);
-	private static final int DAY_SINK_TICKS = 20; // 1.0s placeholder dig animation before a wild scarab burrows away
+	// scarab.model.burrow_down is only 10 ticks (0.5s), but "controller" (registerControllers below)
+	// has a 5-tick transition blend, and it spends that blending FROM idle/walk INTO burrow_down before
+	// the clip's own content is even visible - a raw 10-tick budget meant discard() fired right as the
+	// blend finished, so the scarab appeared to just vanish without ever visibly playing burrow_down.
+	// 5 (transition) + 10 (clip) so the clip is actually on screen for its full length before discard().
+	private static final int DAY_SINK_TICKS = 15;
+	// 0.5s, matching scarab.model.burrow_up's real length. Independently ticked down on both sides
+	// (server for the AIBurrowingUp freeze goal, client purely to know when to release the triggered
+	// animation's hold) - same non-networked-countdown design UnburiedEntity's spellTicks already uses.
+	private static final int BURROW_UP_TICKS = 10;
 	private int attackTimer = 10;
 	private int limitedLifeTicks;
 	private boolean isSmoking = false;
-	private boolean isDigging = false;
+	private boolean isBurrowingDown = false;
 	private int daySinkTimer = -1;
+	private int burrowUpTicks = 0;
+	// finalizeSpawn() runs before the entity is added/tracked in the level, so broadcastEntityEvent
+	// there wouldn't reliably reach anyone - set this instead and let tick() (which only ever runs on
+	// an already-tracked entity) fire the real trigger on its very first tick after spawning.
+	private boolean pendingBurrowUp = false;
 
 	public ScarabEntity(EntityType<? extends ScarabEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
@@ -93,6 +111,10 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	
     @Override
     protected void registerGoals() {
+    	// Priority 0 (above FloatGoal's JUMP-only claim) so a burrowing scarab (up on spawn, or down on
+    	// its daytime disappear) can't move/attack/look, but can still be kept from drowning if it
+    	// happens to be underwater.
+    	this.goalSelector.addGoal(0, new AIBurrowing());
     	this.goalSelector.addGoal(1, new FloatGoal(this));
     	// Scarabs are prey to ravens: flee on sight. High movement priority so fleeing wins over
     	// attacking/leaping even if a raven manages to hurt the scarab.
@@ -163,10 +185,28 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	            world.addParticle(enumparticletypes, d0, this.getBoundingBox().minY + (double)f1, d1, 0.0D, 0.05D, 0.0D);
 	        }
         }
-    	
+
+    	// Dust puffs while burrowing (both up on spawn and down on daytime disappear) - same
+    	// BlockParticleOption-from-the-ground-below trick as UnburiedEntity's birth particles, so it
+    	// reads as sand/dirt/whatever's actually underfoot rather than a hardcoded texture.
+    	if ((this.burrowUpTicks > 0 || this.isBurrowingDown) && this.level().isClientSide()) {
+    		BlockPos below = this.getOnPos().below();
+    		BlockState groundState = this.level().getBlockState(below);
+
+    		if (groundState.isSolidRender(this.level(), below)) {
+    			for (int i = 0; i < 4; i++) {
+    				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, groundState).setPos(below),
+    						this.getX() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(),
+    						this.getY() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(),
+    						this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double) this.getBbWidth(),
+    						this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+    			}
+    		}
+    	}
+
     	super.aiStep();
     }
-    
+
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
@@ -174,6 +214,25 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     public void tick() {
 		super.tick();
+
+    	if (this.pendingBurrowUp) {
+    		this.pendingBurrowUp = false;
+    		this.startBurrowUp();
+    	}
+
+    	if (this.burrowUpTicks > 0) {
+    		--this.burrowUpTicks;
+
+    		// scarab.model.burrow_up is authored `hold_on_last_frame` (same as Unburied's birth clip -
+    		// see that fix earlier), so it freezes on its last pose once it finishes playing unless
+    		// something releases the hold. #hurt's interrupt path (event 44) handles the cut-short
+    		// case; this handles the normal-completion case, client-side only, the instant this
+    		// (independently-ticking) copy of burrowUpTicks reaches 0 on its own.
+    		if (this.burrowUpTicks == 0 && this.level().isClientSide()) {
+    			this.getAnimatableInstanceCache().<ScarabEntity>getManagerForId(this.getId())
+    					.stopTriggeredAnimation("trigger_controller", "burrow_up");
+    		}
+    	}
 
     	if (this.attackTimer > 0)
     		this.attackTimer--;
@@ -189,9 +248,16 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 
     	// Wild scarabs are neutral vermin, not daylight-proof - once the sun's up they dig back into
     	// the sand and vanish rather than lingering around indefinitely. Owned pets are unaffected.
+    	// DAY_SINK_TICKS covers the controller's transition blend *and* burrow_down's real length -
+    	// see that field's own comment - so discard() lands right as the fully-blended-in clip finishes.
+    	// `burrowUpTicks <= 0` guard: without it, a scarab spawned in daylight (e.g. spawn egg) would
+    	// roll into this on the very same tick pendingBurrowUp fires burrow_up, starting burrow_down
+    	// (and the daySink discard countdown) while burrow_up is still playing - trigger_controller and
+    	// the main controller would then show both animations at once. Wait for burrow_up to actually
+    	// finish before this can even be considered.
     	if (!this.level().isClientSide() && this.getOwner() == null) {
     		if (this.daySinkTimer < 0) {
-    			if (this.level().isDay() && this.getTarget() == null && this.level().canSeeSky(this.blockPosition())) {
+    			if (this.burrowUpTicks <= 0 && this.level().isDay() && this.getTarget() == null && this.level().canSeeSky(this.blockPosition()) && this.getRandom().nextFloat() < 0.02F) {
     				this.daySinkTimer = DAY_SINK_TICKS;
     				this.level().broadcastEntityEvent(this, (byte)42);
     			}
@@ -199,6 +265,21 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     			this.discard();
     		}
     	}
+	}
+
+	/**
+	 * Starts the burrow-up spawn flourish: freezes movement/attack/look via {@link AIBurrowingUp} for
+	 * {@link #BURROW_UP_TICKS}, unless interrupted early by {@link #hurt}. Called from {@link #tick}
+	 * for every normal spawn path (see {@link #finalizeSpawn}/{@link #pendingBurrowUp}), and directly
+	 * by {@code InfestedSandstoneBlock} for its ambush spawn (which bypasses finalizeSpawn entirely but
+	 * calls this only after the entity is already added to the level, so broadcasting here is safe).
+	 */
+	public void startBurrowUp() {
+		this.burrowUpTicks = BURROW_UP_TICKS;
+
+		if (!this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 43);
+		}
 	}
 
 	@Override
@@ -237,23 +318,38 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Scarab_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Scarab_Attack.get());
     	this.setHealth(this.getMaxHealth());
+    	// Deferred to the entity's first tick - see #pendingBurrowUp for why.
+    	this.pendingBurrowUp = true;
 
     	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
     }
-    
+
 	@Override
     public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.6F;
     }
-	
+
 	/**
-	* Called when the entity is attacked.
+	* Called when the entity is attacked. Real damage taken while burrowing up interrupts that
+	* animation immediately, same as UnburiedEntity's birth animation.
 	*/
     @Override
-	public boolean hurt(DamageSource source, float amount) {      
-    	return source.is(DamageTypeTags.IS_FALL) ? false : super.hurt(source, amount);
-	}	
-	
+	public boolean hurt(DamageSource source, float amount) {
+    	if (source.is(DamageTypeTags.IS_FALL)) {
+    		return false;
+    	}
+
+    	boolean wasBurrowingUp = this.burrowUpTicks > 0;
+    	boolean hurt = super.hurt(source, amount);
+
+    	if (hurt && wasBurrowingUp) {
+    		this.burrowUpTicks = 0;
+    		this.level().broadcastEntityEvent(this, (byte) 44);
+    	}
+
+    	return hurt;
+	}
+
     /**
      * Handler for {@link World#setEntityState}
      */
@@ -264,12 +360,41 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         } else if (id == 11) {
             this.isSmoking = true;
         } else if (id == 42) {
-            this.isDigging = true;
+            this.isBurrowingDown = true;
+        } else if (id == 43) {
+        	this.burrowUpTicks = BURROW_UP_TICKS;
+        	this.triggerAnim("trigger_controller", "burrow_up");
+        } else if (id == 44) {
+        	this.burrowUpTicks = 0;
+        	this.getAnimatableInstanceCache().<ScarabEntity>getManagerForId(this.getId())
+        			.stopTriggeredAnimation("trigger_controller", "burrow_up");
         } else {
             super.handleEntityEvent(id);
         }
     }
-    
+
+    /**
+     * Freezes movement/looking while either burrowing window is active - {@link #burrowUpTicks} (spawn)
+     * or {@link #daySinkTimer} (daytime disappear, tracked server-side; {@link #isBurrowingDown} is the
+     * client-only mirror set by the entity-event handler, not usable here since goals only ever run
+     * server-side) - same claim-the-flags trick as {@code UnburiedEntity.AIBirthing}/
+     * {@code SkeletonKingEntity.DoNothingGoal}. Deliberately omits {@code JUMP} (unlike those two) so
+     * {@link FloatGoal}, one priority below, can still keep the scarab from drowning while frozen.
+     */
+    class AIBurrowing extends Goal {
+        public AIBurrowing() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            return ScarabEntity.this.burrowUpTicks > 0 || ScarabEntity.this.daySinkTimer >= 0;
+        }
+
+        public void start() {
+            ScarabEntity.this.getNavigation().stop();
+        }
+    }
+
     class AICopyOwnerTarget extends TargetGoal {
     	private final TargetingConditions copyOwnerTargeting = TargetingConditions.forNonCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
     	private LivingEntity owner = ScarabEntity.this.getOwner();
@@ -349,8 +474,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-		if (this.isDigging) {
-			state.getController().setAnimation(DIG);
+		if (this.isBurrowingDown) {
+			state.getController().setAnimation(BURROW_DOWN);
 		} else if (this.onGround()) {
 			if (state.isMoving() || !this.getNavigation().isDone()) {
 				state.getController().setAnimation(WALK);
@@ -360,14 +485,16 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
 		} else {
 			state.getController().setAnimation(FLY);
 		}
-        
+
         return PlayState.CONTINUE;
     }
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "controller", 5, this::predicate));
-		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP).triggerableAnim("attack", ATTACK));
+		controllers.add(new AnimationController<>(this, "trigger_controller", 5, state -> PlayState.STOP)
+				.triggerableAnim("attack", ATTACK)
+				.triggerableAnim("burrow_up", BURROW_UP));
 	}
 
 	@Override

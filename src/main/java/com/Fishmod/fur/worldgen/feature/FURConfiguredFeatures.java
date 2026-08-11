@@ -108,6 +108,16 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_CLUSTER_GLIMMERCAP =
             key("luminous_cluster_glimmercap");
 
+    /**
+     * Surface hint patch — reuses the LUMINOUS_CLUSTER composition (same class as the giant-mushroom
+     * clusters above) but with {@link #MYCELIAL_MAT_PATCH} as the "centerpiece" instead of a mushroom,
+     * so a small mat patch grows on the overworld surface directly above a Luminous Undergrove pocket,
+     * with the small vegetation clump seeded around it when the mat actually takes (same combo the
+     * Undergrove Heart item places by hand — see {@link com.Fishmod.fur.item.UndergroveHeartItem}).
+     */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROVE_SURFACE_HINT =
+            key("undergrove_surface_hint");
+
     /** Mycelial Mat ceiling patch — places mat on cave ceilings (no inner vegetation) */
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIAL_MAT_CEILING_PATCH =
             key("mycelial_mat_ceiling_patch");
@@ -418,6 +428,13 @@ public class FURConfiguredFeatures {
                 FURFeatureRegistry.LUMINOUS_CLUSTER.get(),
                 new com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration(
                         context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(GIANT_GLIMMERCAP),
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LUMINOUS_CLUSTER_PATCH_SMALL))));
+
+        // ── Surface hint patch (same LUMINOUS_CLUSTER composition, mat patch as centerpiece) ──
+        context.register(UNDERGROVE_SURFACE_HINT, new ConfiguredFeature<>(
+                FURFeatureRegistry.LUMINOUS_CLUSTER.get(),
+                new com.Fishmod.fur.worldgen.feature.LuminousClusterConfiguration(
+                        context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(MYCELIAL_MAT_PATCH),
                         context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(LUMINOUS_CLUSTER_PATCH_SMALL))));
     }
 

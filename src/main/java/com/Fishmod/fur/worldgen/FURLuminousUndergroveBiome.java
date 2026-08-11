@@ -91,6 +91,11 @@ public class FURLuminousUndergroveBiome {
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.LARGE_GLOW_SHROOM));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.GIANT_GLIMMERCAP));
 
+        // Surface: 20% chance per chunk of a small mat+cluster "hint" patch directly above this
+        // chunk's Luminous Undergrove pocket, so players notice the biome is down there. See
+        // FURPlacedFeatures.UNDERGROVE_SURFACE_HINT for why it has no BiomeFilter.
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatures.getOrThrow(FURPlacedFeatures.UNDERGROVE_SURFACE_HINT));
+
         // ── Visual effects ────────────────────────────────────────────────────
         BiomeSpecialEffects.Builder effectsBuilder = new BiomeSpecialEffects.Builder()
                 .fogColor(0x1A2B2B)

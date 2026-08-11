@@ -61,6 +61,8 @@ public class FURPlacedFeatures {
             key("large_glow_shroom");
     public static final ResourceKey<PlacedFeature> GIANT_GLIMMERCAP =
             key("giant_glimmercap");
+    public static final ResourceKey<PlacedFeature> UNDERGROVE_SURFACE_HINT =
+            key("undergrove_surface_hint");
     public static final ResourceKey<PlacedFeature> LAKE_WATER =
             key("lake_water");
     public static final ResourceKey<PlacedFeature> SMALL_POOL =
@@ -453,6 +455,24 @@ public class FURPlacedFeatures {
         // space between clusters is intentional. Floor vegetation is no longer a
         // standalone placed feature — it now grows as a clump around each giant mushroom
         // (see LARGE_GLOW_SHROOM / GIANT_GLIMMERCAP above, which place the cluster features).
+
+        // ── World: Undergrove surface hint patch ──────────────────────────────
+        // 20% chance per chunk (RarityFilter 1-in-5) to stamp the same mat+cluster combo the
+        // Undergrove Heart item places, but on the OVERWORLD SURFACE directly above wherever this
+        // chunk's Luminous Undergrove pocket is — a visible hint that the biome exists underground
+        // here. Deliberately has NO BiomeFilter: the surface position is essentially never actually
+        // inside Luminous Undergrove (a cave-only biome), so filtering by biome would always reject
+        // it. Registering this on the biome's own feature list already gates it correctly — it only
+        // ever runs for chunks where Luminous Undergrove is present somewhere underground, since
+        // that's the only time the biome's feature list executes at all.
+        context.register(UNDERGROVE_SURFACE_HINT,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.UNDERGROVE_SURFACE_HINT),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(5),
+                                InSquarePlacement.spread(),
+                                PlacementUtils.HEIGHTMAP_WORLD_SURFACE
+                        )));
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────

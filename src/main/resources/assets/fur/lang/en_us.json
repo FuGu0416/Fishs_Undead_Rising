@@ -486,7 +486,11 @@
 	"entity_ghoul_ambient": "Ghoul groans",
 	"entity_ghoul_death": "Ghoul dies",
 	"entity_ghoul_hurt": "Ghoul hurts",
-					
+
+	"entity_mummy_lord_ambient": "Mummy Lord groans",
+	"entity_mummy_lord_death": "Mummy Lord dies",
+	"entity_mummy_lord_hurt": "Mummy Lord hurts",
+
 	"item.fur.ankh_scepter.desc": "Right-click to summon an army of Mummy.",
 	"item.fur.baobing.desc": "Put out fire when eaten",
 	"item.fur.basic_bomb.desc": "Throw at target location and cause explosion.",

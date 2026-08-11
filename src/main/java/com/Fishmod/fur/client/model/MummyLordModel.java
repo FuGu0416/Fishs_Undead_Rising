@@ -15,13 +15,17 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
 public class MummyLordModel extends GeoModel<MummyLordEntity> {
-    private static final ResourceLocation TEXTURE	 = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/mummy_lord.png");
+    private static final ResourceLocation TEXTURE	 = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/mummy_lord/mummy_lord.png");
+    private static final ResourceLocation TEXTURE_ROYAL_TOMB = new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/mummy_lord/mummy_lord1.png");
     private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/mummy_lord.animation.json");
     private static final ResourceLocation MODEL      = new ResourceLocation(mod_LavaCow.MODID, "geo/mummy_lord.geo.json");
 
     @Override
     public ResourceLocation getTextureResource(MummyLordEntity object) {
-        return TEXTURE;
+        return switch (object.getSkin()) {
+            case 1 -> TEXTURE_ROYAL_TOMB;
+            default -> TEXTURE;
+        };
     }
 
     @Override
