@@ -57,6 +57,8 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLORD = registerKey("add_shroomlord");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_BAT = registerKey("add_luminous_bat");
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_GLOW_SQUID = registerKey("add_luminous_glow_squid");
+	public static final ResourceKey<BiomeModifier> ADD_BONEWORM = registerKey("add_boneworm");
+	public static final ResourceKey<BiomeModifier> ADD_BONEWORM_SOUL_SAND_VALLEY = registerKey("add_boneworm_soul_sand_valley");
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -145,6 +147,12 @@ public class FURBiomeModifier {
         // (alongside the Shroomling), not the original 1.16.5 swamp.
         addSpawn(context, ADD_SHROOMLORD, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLORD.get(), 15, 1, 2));
+        // 1.16.5 spawned the Boneworm in any sandy Overworld biome (rate 20), plus a sparser
+        // Soul Sand Valley spawn (rate 20/10 = 2) for the fire-immune Flame Jet skin.
+        addSpawn(context, ADD_BONEWORM, biomes.getOrThrow(Tags.Biomes.IS_SANDY),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.BONEWORM.get(), 20, 1, 2));
+        addSpawn(context, ADD_BONEWORM_SOUL_SAND_VALLEY, HolderSet.direct(biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.BONEWORM.get(), 2, 1, 2));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

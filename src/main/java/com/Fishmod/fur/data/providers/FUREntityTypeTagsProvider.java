@@ -266,8 +266,7 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(FUREntityRegistry.GHOUL_ARROW.get());
 
         // All other FUR projectile entities (excludes MOLTEN_POOL, which is an AreaEffectCloud, not
-        // a projectile). ACIDJET/FLAMEJET are commented out in FUREntityRegistry (unregistered), so
-        // they're left out here too - same as they were commented out in the old hand-authored file.
+        // a projectile).
         tag(EntityTypeTags.IMPACT_PROJECTILES)
                 .add(FUREntityRegistry.BASIC_BOMB.get())
                 .add(FUREntityRegistry.GHOST_BOMB.get())
@@ -282,7 +281,9 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(FUREntityRegistry.SLUDGEJET.get())
                 .add(FUREntityRegistry.SWARMER_LAUNCHER.get())
                 .add(FUREntityRegistry.WAR_SMALL_FIREBALL.get())
-                .add(FUREntityRegistry.DEATHCOIL.get());
+                .add(FUREntityRegistry.DEATHCOIL.get())
+                .add(FUREntityRegistry.ACIDJET.get())
+                .add(FUREntityRegistry.FLAMEJET.get());
 
         // ── consolidated from formerly hand-authored data/minecraft/tags/entity_types/*.json ────
         tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)
@@ -291,8 +292,9 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)
                 .add(FUREntityRegistry.FRIGID.get())
         		.add(FUREntityRegistry.WENDIGO.get());
-        // BONEWORM/FORSAKEN are commented out in FUREntityRegistry (unregistered), left out here too.
+        // FORSAKEN is commented out in FUREntityRegistry (unregistered), left out here too.
         tag(EntityTypeTags.SKELETONS)
-                .add(FUREntityRegistry.SKELETONKING.get());
+                .add(FUREntityRegistry.SKELETONKING.get())
+                .add(FUREntityRegistry.BONEWORM.get());
     }
 }

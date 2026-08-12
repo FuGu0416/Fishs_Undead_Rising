@@ -241,6 +241,7 @@ public class FURItemRegistry {
         spawnEgg("banshee", FUREntityRegistry.BANSHEE, 0xA2A78D, 0x34363A);
         spawnEgg("beelzebub", FUREntityRegistry.BEELZEBUB, 0x1D1B1C, 0xF4EBDE);
         spawnEgg("bone_trout", FUREntityRegistry.BONE_TROUT, 0xDFDDCB, 0xBBB8A0);
+        spawnEgg("boneworm", FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E);
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
         spawnEgg("cactyrant", FUREntityRegistry.CACTYRANT, 0x649832, 0x426520);
         spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
@@ -280,7 +281,6 @@ public class FURItemRegistry {
 
         /*
     	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
-    	spawnEgg(FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E, new Item.Properties()).setRegistryName("fur:spawn_egg_boneworm"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties()).setRegistryName("fur:spawn_egg_pingu"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties()).setRegistryName("fur:spawn_egg_forsaken"));
     	*/

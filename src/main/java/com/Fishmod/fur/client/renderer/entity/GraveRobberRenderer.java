@@ -21,8 +21,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 @OnlyIn(Dist.CLIENT)
 public class GraveRobberRenderer extends GeoEntityRenderer<GraveRobberEntity> {
-	private static final String RIGHT_ARM = "arm_r";
-	private static final String LEFT_ARM = "arm_l";
+	private static final String LEFT_HAND = "handle_l";
+	private static final String RIGHT_HAND = "handle_r";
 
 	protected ItemStack mainHandItem;
 	protected ItemStack offhandItem;
@@ -42,9 +42,14 @@ public class GraveRobberRenderer extends GeoEntityRenderer<GraveRobberEntity> {
 					return null;
 				}
 
+				// Grave Robber is always left-handed (GraveRobberEntity#isLeftHanded), so the main
+				// hand item goes on handle_l, not handle_r - same swap UndertakerRenderer does off
+				// its own isLeftHanded() check.
 				return switch (bone.getName()) {
-					case RIGHT_ARM -> GraveRobberRenderer.this.mainHandItem;
-					case LEFT_ARM -> GraveRobberRenderer.this.offhandItem;
+					case LEFT_HAND -> animatable.isLeftHanded() ?
+							GraveRobberRenderer.this.mainHandItem : GraveRobberRenderer.this.offhandItem;
+					case RIGHT_HAND -> animatable.isLeftHanded() ?
+							GraveRobberRenderer.this.offhandItem : GraveRobberRenderer.this.mainHandItem;
 					default -> null;
 				};
 			}
@@ -52,21 +57,9 @@ public class GraveRobberRenderer extends GeoEntityRenderer<GraveRobberEntity> {
 			@Override
 			protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, GraveRobberEntity animatable) {
 				return switch (bone.getName()) {
-					case RIGHT_ARM, LEFT_ARM -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+					case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
 					default -> ItemDisplayContext.NONE;
 				};
-			}
-
-			// PLACEHOLDER offset: arm_r/arm_l have no dedicated hand locator (unlike e.g.
-			// UndertakerModel's handle_l/handle_r), so this estimates the hand position by walking
-			// down the arm bone's own length (pivot sits near the shoulder, cube is 12 units tall) -
-			// needs a real visual check once the geo/animation are finished.
-			@Override
-			protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, GraveRobberEntity animatable,
-					MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-				poseStack.translate(0.0D, -0.625D, 0.0D);
-
-				super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
 			}
 		});
 	}

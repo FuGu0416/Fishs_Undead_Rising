@@ -1,0 +1,187 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"boneworm.model.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"mouth": {
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 360 ) * -0.1", "1 + math.cos(query.anim_time * 360 ) * -0.08", 1]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": [0, "-math.sin(query.anim_time * 360) * 10", 0]
+					}
+				},
+				"Seg2": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 360 + 90) * 12", 0]
+					},
+					"position": {
+						"vector": ["-math.cos(query.anim_time * 360) * 0.25", 0, 0]
+					}
+				},
+				"Seg3": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 360 + 180) * 12", 0]
+					}
+				},
+				"Seg4": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 360 + 270) * 12", 0]
+					}
+				},
+				"seg5": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 360 + 360) * 12", 0]
+					}
+				}
+			}
+		},
+		"boneworm.model.attack_windup": {
+			"animation_length": 1,
+			"bones": {
+				"Mandible2_2": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": [0, 0, 0.01]
+				},
+				"mouth": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1.2, 1.1, 1]
+						},
+						"0.75": {
+							"vector": [1, 0.4, 1]
+						},
+						"1.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"head": {
+					"scale": {
+						"0.0": {
+							"post": {
+								"vector": [1, 1, 1]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.2917": {
+							"post": {
+								"vector": [1, 1, 0.9]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.625": {
+							"post": {
+								"vector": [1, 1, 0.9]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.7083": {
+							"post": {
+								"vector": [1, 1, 1.2]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"1.0": {
+							"post": {
+								"vector": [1, 1, 1]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				}
+			}
+		},
+		"boneworm.model.bite": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"head": {
+					"rotation": {
+						"vector": [0, "-180 - math.cos(query.anim_time * 720) * 10", 0]
+					},
+					"position": {
+						"vector": [0, 0, -2.5]
+					},
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 1440) * -0.1", "1 + math.cos(query.anim_time * 1440) * -0.08", 1.2]
+					}
+				},
+				"Seg2": {
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 1440) * -0.1", "1 + math.cos(query.anim_time * 1440) * -0.08", 1]
+					}
+				},
+				"Seg3": {
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 1440-45) * -0.1", "1 + math.cos(query.anim_time * 1440-45) * -0.08", 1]
+					}
+				},
+				"Seg4": {
+					"rotation": {
+						"vector": [0, "-math.sin(query.anim_time * 720- 45) * 15", 0]
+					},
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 1440-45) * -0.1", "1 + math.cos(query.anim_time * 1440-45) * -0.08", 1]
+					}
+				},
+				"seg5": {
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 1440-90) * -0.1", "1 + math.cos(query.anim_time * 1440-90) * -0.08", 1]
+					}
+				}
+			}
+		},
+		"boneworm.model.walk": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"mouth": {
+					"scale": {
+						"vector": ["1 + math.sin(query.anim_time * 720 ) * -0.2", "1 + math.cos(query.anim_time * 720 ) * -0.16", 1]
+					}
+				},
+				"head": {
+					"rotation": {
+						"vector": [0, "-math.sin(query.anim_time * 720) * 10", "-90 + math.cos((query.anim_time - 0.8) * 720) * -12"]
+					},
+					"position": {
+						"vector": [0, -7, 0]
+					}
+				},
+				"Seg2": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 720 + 180) * 24", 0]
+					},
+					"position": {
+						"vector": ["-math.cos(query.anim_time * 360) * 0.25", 0, 0]
+					}
+				},
+				"Seg3": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 720 + 360) * 24", 0]
+					}
+				},
+				"Seg4": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 720 + 540) * 24", 0]
+					}
+				},
+				"seg5": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 720 + 720) * 24", 0]
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:acidic_heart"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_boneworm.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_boneworm.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+			    "conditions": {
+					"entity": {
+						"type": "fur:boneworm"
+			        }
+			      }
+        }
+    }
+}

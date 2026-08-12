@@ -1,0 +1,107 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+        {
+            "name": "fur:boneworm_base",
+            "rolls": 4,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:rotten_flesh",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:bone",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:boneworm_poison_spore",
+            "rolls": 1,
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance_with_looting",
+                    "chance": 0.05,
+                    "looting_multiplier": 0.02
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:poison_spore",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "fur:boneworm_acidic_heart",
+            "rolls": 1,
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance_with_looting",
+                    "chance": 0.05,
+                    "looting_multiplier": 0.02
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:acidic_heart",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "fur:boneworm_stained_crown",
+            "rolls": 1,
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance_with_looting",
+                    "chance": 0.02,
+                    "looting_multiplier": 0.01
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:stained_kings_crown",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

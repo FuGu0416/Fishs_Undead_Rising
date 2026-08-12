@@ -15,6 +15,96 @@
 					}
 				}
 			}
+		},
+		"graverobber.model.walk": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		},
+		"graverobber.model.celebrate": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		},
+		"graverobber.model.attack": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		},
+		"graverobber.model.drink": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		},
+		"graverobber.model.dig": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
+		},
+		"graverobber.model.offer": {
+			"loop": true,
+			"bones": {
+				"scarf": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				},
+				"shirt": {
+					"scale": {
+						"vector": [1.01, 1.01, 1.01]
+					}
+				}
+			}
 		}
 	}
 }

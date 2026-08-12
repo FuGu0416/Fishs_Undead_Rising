@@ -155,6 +155,15 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 		return this.entityData.get(DATA_LOOTING_GESTURE);
 	}
 
+	/** Grave Robber is always left-handed (maintainer-specified trait, not a per-instance roll like
+	 *  vanilla's random {@code setLeftHanded} chance) -
+	 *  {@link com.Fishmod.fur.client.renderer.entity.GraveRobberRenderer} uses this to decide which
+	 *  of the {@code handle_l}/{@code handle_r} bones gets the main-hand item. */
+	@Override
+	public boolean isLeftHanded() {
+		return true;
+	}
+
 	@Override
 	protected void customServerAiStep() {
 		if (!this.isNoAi() && GoalUtils.hasGroundPathNavigation(this)) {
