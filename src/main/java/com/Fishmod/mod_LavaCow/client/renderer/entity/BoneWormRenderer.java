@@ -44,8 +44,9 @@ public class BoneWormRenderer extends MobRenderer<BoneWormEntity, BoneWormModel<
      */
     @Override
     public void render(BoneWormEntity entity, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
-    	this.shadowRadius = entity.getLocationFix() > 3.0D ? 0.0F : 0.5F;
-    	if(entity.getLocationFix() < 1.5D)
+    	boolean hidden = entity.isHidden();
+    	this.shadowRadius = hidden ? 0.0F : 0.5F;
+    	if(!hidden)
     		super.render(entity, p_225623_2_, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_);
     }
     
