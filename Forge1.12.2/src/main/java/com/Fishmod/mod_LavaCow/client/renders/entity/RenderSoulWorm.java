@@ -28,15 +28,25 @@ public class RenderSoulWorm extends RenderLiving<EntitySoulWorm> {
 
     /**
      * Renders the desired {@code T} type Entity.
+     *
+     * <p>Fixed 2026-08-12 - same bug and same fix as {@code RenderBoneWorm#doRender}: this used to
+     * always call {@code super.doRender(...)} regardless of dig depth instead of hiding the model
+     * once {@link EntitySoulWorm#isHidden()} (inherited from {@code EntityBoneWorm}), the same
+     * check {@code attackEntityFrom} uses for invulnerability.
      */
     public void doRender(EntitySoulWorm entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        this.shadowSize = entity.getLocationFix() > 3.0D ? 0.0F : 0.5F;
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        boolean hidden = entity.isHidden();
+        this.shadowSize = hidden ? 0.0F : 0.5F;
+        if (!hidden)
+            super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
     @Override
     protected void preRenderCallback(EntitySoulWorm entity, float partialTickTime) {
-        GlStateManager.translate(0.0D, entity.getLocationFix(), 0.0D);
+        // Fixed 2026-08-12 - same sign bug and same fix as RenderBoneWorm#preRenderCallback: this
+        // was +locationFix (moving the model up as it dug in) instead of -locationFix (sinking it
+        // down, the direction that actually reads as "burrowing").
+        GlStateManager.translate(0.0D, -entity.getLocationFix(), 0.0D);
         GlStateManager.rotate(90.0F * (float) entity.getLocationFix(), 0.0F, 1.0F, 0.0F);
     }
 }

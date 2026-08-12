@@ -29,20 +29,26 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntitySoulWorm extends EntityBoneWorm {
-    public double LocationFix;
-    public int attackTimer[] = {0, 0};
-    public int diggingTimer[] = {0, 0};
+    // Note: this class used to re-declare its own LocationFix/attackTimer/diggingTimer fields
+    // here, shadowing EntityBoneWorm's - since every method that actually reads/writes them
+    // (onUpdate/onLivingUpdate/attackEntityFrom/handleStatusUpdate/etc.) is only ever defined in
+    // EntityBoneWorm and never overridden here, Java's static field resolution meant those methods
+    // always used EntityBoneWorm's own copies regardless of the runtime type, making the shadow
+    // fields dead - confirmed nothing in this file ever read/wrote them either. Removed 2026-08-12
+    // rather than carried forward, since EntityBoneWorm's LocationFix is now synced data rather
+    // than a plain field and keeping a same-named dead shadow around here would only mislead.
 
     public EntitySoulWorm(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 2.0F);
-        this.LocationFix = 0.0D;
         this.isImmuneToFire = true;
     }
 
     @Override
     protected void initEntityAI() {
-        this.range_atk = new EntityAIAttackRanged(this, 1.0D, 40, 60, 12.0F);
+        // BoneWormRangedAttackGoal (not the bare vanilla EntityAIAttackRanged) so this still
+        // refuses to telegraph attacks while isHidden() - see EntityBoneWorm's fix note.
+        this.range_atk = new BoneWormRangedAttackGoal(1.0D, 40, 60, 12.0F);
         this.avoid_player = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, 10.0F, 1.0D, 1.2D);
 
         this.tasks.addTask(0, this.range_atk);

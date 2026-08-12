@@ -50,8 +50,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
     private static final DataParameter<Boolean> UNDERGROUND = EntityDataManager.createKey(EntityBoneWorm.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> SKIN_TYPE = EntityDataManager.<Integer>createKey(EntityBoneWorm.class, DataSerializers.VARINT);
+    /** 0.0-3.5ish: how deep the worm has burrowed. Server-authoritative only (only ever written
+     *  from {@link #onUpdate()}'s {@code isServerWorld()} branch); synced so a freshly (re)tracked
+     *  client starts from the real current value instead of 0 - see the 2026-08-12 fix note above
+     *  {@link #attackEntityFrom}. */
+    private static final DataParameter<Float> LOCATION_FIX = EntityDataManager.<Float>createKey(EntityBoneWorm.class, DataSerializers.FLOAT);
     private boolean isAggressive = false;
-    public double LocationFix;
     public int attackTimer[] = {0, 0};
     public int diggingTimer[] = {0, 0};
     protected EntityAIAttackRanged range_atk;
@@ -61,11 +65,10 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
     public EntityBoneWorm(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 2.0F);
-        this.LocationFix = 0.0D;
     }
 
     protected void initEntityAI() {
-        this.range_atk = new EntityAIAttackRanged(this, 1.0D, 40, 60, 12.0F);
+        this.range_atk = new BoneWormRangedAttackGoal(1.0D, 40, 60, 12.0F);
         this.avoid_player = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, 10.0F, 1.0D, 1.2D);
 
         this.tasks.addTask(0, this.range_atk);
@@ -98,6 +101,7 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
         super.entityInit();
         this.getDataManager().register(UNDERGROUND, false);
         this.getDataManager().register(SKIN_TYPE, Integer.valueOf(0));
+        this.getDataManager().register(LOCATION_FIX, Float.valueOf(0.0F));
     }
 
     @Override
@@ -120,53 +124,47 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
     public void onUpdate() {
         super.onUpdate();
 
-        IBlockState state = world.getBlockState(new BlockPos(this.posX, this.posY, this.posZ).down());
+        BlockPos belowPos = new BlockPos(this.posX, this.posY, this.posZ).down();
+        IBlockState state = world.getBlockState(belowPos);
         int blockId = Block.getStateId(state);
+        boolean walkingOnSolid = this.isWalking() && state.isOpaqueCube();
 
         if (this.isWalking()) {
-            if (state.isOpaqueCube()) {
-                if (world.isRemote) {
-                    for (int i = 0; i < 4; i++)
-                        this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, blockId);
-                }
+            if (state.isOpaqueCube() && world.isRemote) {
+                this.spawnDigParticles(blockId, 0.02D);
             }
 
-            if (this.ticksExisted % 10 == 0) {
+            // Server-only: playSound() on the server already broadcasts to every tracking client,
+            // so calling it here too (unguarded, as before) doubled the crunch sound for anyone in
+            // range of their own worm.
+            if (!this.world.isRemote && this.ticksExisted % 10 == 0) {
                 this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 0.25F, 0.5F);
             }
         }
 
         if (this.isServerWorld()) {
-            if (this.LocationFix > 0 && !this.isUnderground() && !this.isDigging()) {
+            float locationFix = this.getRawLocationFix();
+
+            if (locationFix > 0 && !this.isUnderground() && !this.isDigging()) {
                 this.extinguish();
                 this.diggingTimer[0] = 30;
                 this.setUnderground(true);
                 this.world.setEntityState(this, (byte) 6);
                 this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
-                this.extinguish();
-            } else if (this.LocationFix <= 1.5D && this.isUnderground() && !this.isDigging()) {
+            } else if (locationFix <= 1.5D && this.isUnderground() && !this.isDigging()) {
                 this.diggingTimer[1] = 20;
                 this.setUnderground(false);
                 this.world.setEntityState(this, (byte) 7);
                 this.playSound(FishItems.ENTITY_BONEWORM_BURROW, 1.0F, 1.0F);
             }
-        }
 
-        if (this.isWalking() && state.isOpaqueCube()) {
-            if (this.LocationFix <= 3.5D) this.LocationFix += 0.125D;
-            if (world.isRemote)
-                for (int i = 0; i < 4; i++)
-                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, blockId);
-            this.setSize(this.width, Math.max(2.0F - (float) this.LocationFix, 0.5F));
-        } else if (this.LocationFix > 0.0D && state.isOpaqueCube()) {
-            this.LocationFix -= 0.125D;
-            if (world.isRemote)
-                for (int i = 0; i < 4; i++)
-                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, blockId);
-            this.setSize(this.width, Math.max(2.0F - (float) this.LocationFix, 0.5F));
-        }
+            if (walkingOnSolid) {
+                if (locationFix <= 3.5F)
+                    this.setLocationFix(locationFix + 0.125F);
+            } else if (locationFix > 0.0F && state.isOpaqueCube()) {
+                this.setLocationFix(locationFix - 0.125F);
+            }
 
-        if (!this.world.isRemote) {
             if (this.avoid_cooldown == 0) {
                 this.tasks.addTask(0, this.range_atk);
                 this.tasks.removeTask(this.avoid_player);
@@ -176,6 +174,31 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
             if (this.avoid_cooldown > 0)
                 this.avoid_cooldown--;
         }
+
+        // Both sides: keep the collision box in step with the (now-synced) dig depth. Unlike
+        // 1.16.5/1.20.1's equivalent call (whose return value was discarded there, a no-op),
+        // Entity#setSize in this version really does mutate width/height and recompute the AABB -
+        // it's a functioning mechanic here, not dead code, so it's kept (just moved out of the
+        // increment/decrement branches; setSize() already no-ops internally when the size hasn't
+        // actually changed, so calling it unconditionally each tick doesn't change behaviour).
+        this.setSize(this.width, Math.max(2.0F - (float) this.getLocationFix(), 0.5F));
+
+        // Client-only: same particle burst as before, fired identically from both the increment
+        // and decrement cases (this version duplicated it verbatim in both) - mirrored here off
+        // the now-synced locationFix rather than a locally-computed one, so it can't disagree with
+        // what the server is doing.
+        if (world.isRemote && state.isOpaqueCube() && (walkingOnSolid || this.getLocationFix() > 0.0D)) {
+            this.spawnDigParticles(blockId, 0.1D);
+        }
+    }
+
+    private void spawnDigParticles(int blockId, double yJitter) {
+        for (int i = 0; i < 4; i++)
+            this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+                    this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+                    this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+                    this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+                    this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * yJitter, this.rand.nextGaussian() * 0.02D, blockId);
     }
 
     /**
@@ -194,7 +217,13 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
             }
         }
 
-        if (this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget()) && this.getAttackTimer(0) == 7 && this.deathTime <= 0 && this.LocationFix == 0) {
+        // Server-only: spit() spawns a real projectile via spawnEntity and plays its launch sound -
+        // both already reach every tracking client on their own (the spawn packet, and the
+        // server's own playSound broadcast). Running this unguarded (as before) meant every shot's
+        // launch also ran client-side, producing a second, purely-local, server-unauthoritative
+        // "ghost" projectile alongside the real one, plus a doubled launch sound.
+        if (!this.world.isRemote && this.getAttackTarget() != null && this.getEntitySenses().canSee(this.getAttackTarget())
+                && this.getAttackTimer(0) == 7 && this.deathTime <= 0 && this.getLocationFix() == 0) {
             this.spit(this.getAttackTarget());
         }
 
@@ -219,17 +248,38 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public double getLocationFix() {
-        return this.LocationFix;
+        return this.getRawLocationFix();
+    }
+
+    private float getRawLocationFix() {
+        return this.dataManager.get(LOCATION_FIX).floatValue();
+    }
+
+    private void setLocationFix(float value) {
+        this.dataManager.set(LOCATION_FIX, Float.valueOf(value));
     }
 
     /**
-     * Called when the entity is attacked.
+     * True once the worm is far enough into its dig that the renderer stops drawing it at all -
+     * the single source of truth for both {@link #attackEntityFrom} and {@code RenderBoneWorm}, so
+     * the two can't drift apart the way they used to (the renderer never actually hid the model at
+     * all, only zeroed the shadow past 3.0, while this used a completely separate 3.0 threshold of
+     * its own for invulnerability - two independent, non-communicating checks).
+     */
+    public boolean isHidden() {
+        return this.getRawLocationFix() >= 1.5F;
+    }
+
+    /**
+     * Called when the entity is attacked. Untouchable while hidden, except for damage meant to
+     * bypass invulnerability (/kill, void) - this version has no BYPASSES_INVULNERABILITY tag
+     * system; OUT_OF_WORLD (which /kill also routes through here) is the direct equivalent, same
+     * fix as the newer versions' SkeletonKingEntity got for the same bug class.
      */
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (this.LocationFix > 3.0D) {
+        if (this.isHidden() && source != DamageSource.OUT_OF_WORLD) {
             return false;
         } else {
             return super.attackEntityFrom(source, amount);
@@ -445,5 +495,26 @@ public class EntityBoneWorm extends EntityMob implements IRangedAttackMob {
 
     @Override
     public void setSwingingArms(boolean swingingArms) {
+    }
+
+    /** Vanilla EntityAIAttackRanged has no idea this entity can go {@link #isHidden()} - without
+     *  this override it kept telegraphing (and wasting) attacks on its normal cooldown while fully
+     *  submerged. See the {@link #attackEntityFrom}/{@link #isHidden} fix note. Package-visible
+     *  (not private) so {@link EntitySoulWorm}, which builds its own goal list rather than calling
+     *  {@code super.initEntityAI()}, can still use it. */
+    class BoneWormRangedAttackGoal extends EntityAIAttackRanged {
+        BoneWormRangedAttackGoal(double movespeed, int attackIntervalMin, int maxAttackTime, float maxAttackDistance) {
+            super(EntityBoneWorm.this, movespeed, attackIntervalMin, maxAttackTime, maxAttackDistance);
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return !EntityBoneWorm.this.isHidden() && super.shouldExecute();
+        }
+
+        @Override
+        public boolean shouldContinueExecuting() {
+            return !EntityBoneWorm.this.isHidden() && super.shouldContinueExecuting();
+        }
     }
 }
