@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import com.Fishmod.fur.config.FURConfig;
@@ -59,6 +60,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -75,14 +77,19 @@ import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.PlayLevelSoundEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
@@ -91,8 +98,8 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
@@ -335,23 +342,12 @@ public class FURServerEvents {
     	LivingEntity Attacked = event.getEntity();
     	Entity Attacker = source.getDirectEntity();
     	float effectlevel = 1.0F;
-	    int Armor_Chitin_lvl = 0;
-	    
+
 	    if (event.getSource().is(DamageTypeTags.IS_FIRE) && event.getEntity().hasEffect(FUREffectRegistry.IMMOLATION.get())) {
 	    	event.setCanceled(true);
 	    	return;
 	    }
-	    		
-		for (ItemStack S : Attacked.getArmorSlots()) {
-			if (S.getItem() instanceof ChitinArmorItem) {
-				Armor_Chitin_lvl++;
-			}
-		}		
 
-		if ((Armor_Chitin_lvl >= 2) && source.is(DamageTypeTags.IS_FALL)) {
-			event.setAmount(event.getAmount() * 0.5F);
-		}
-    	
     	// Molten Armor full-set bonus: 50% fire damage reduction
     	if (source.is(DamageTypeTags.IS_FIRE)) {
     		event.setAmount(MoltenArmorItem.applyFireReduction(Attacked, event.getAmount()));
@@ -791,21 +787,6 @@ public class FURServerEvents {
     }
     
     @SubscribeEvent
-    public void onEJump(LivingJumpEvent event) {
-	    int Armor_Chitin_lvl = 0;
-	    
-		for (ItemStack S : event.getEntity().getArmorSlots()) {			
-			if(S.getItem() instanceof ChitinArmorItem) {
-				Armor_Chitin_lvl++;
-			}
-		}   
-		
-		if (Armor_Chitin_lvl >= 4) {
-			event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3 * 20, 0));
-		}
-    }
-    
-    @SubscribeEvent
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
     	
@@ -938,10 +919,23 @@ public class FURServerEvents {
     }
 
     @SubscribeEvent
-    public void onESetTarget(LivingChangeTargetEvent event) {    
+    public void onESetTarget(LivingChangeTargetEvent event) {
         LivingEntity entity = event.getEntity();
         LivingEntity newTarget = event.getNewTarget();
-        
+
+        // Chitin Armor 2-piece bonus: Arthropod mobs' effective target-detection range against the
+        // wearer is cut to 25% of normal, i.e. targeting is only allowed within a quarter of the
+        // mob's usual follow range. Event-driven — runs once per target-acquisition attempt, no
+        // per-tick polling.
+        if (newTarget instanceof Player player && entity instanceof Mob mob && mob.getMobType().equals(MobType.ARTHROPOD)
+        		&& ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.TWO_PIECE_THRESHOLD)) {
+        	double allowedRange = mob.getAttributeValue(Attributes.FOLLOW_RANGE) * ChitinArmorItem.DETECTION_RANGE_FACTOR;
+        	if (mob.distanceToSqr(player) > allowedRange * allowedRange) {
+        		event.setCanceled(true);
+        		return;
+        	}
+        }
+
     	// Neutral
         if (newTarget != null && entity.getLastHurtByMob() != newTarget) {
         	boolean hasNose = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get());
@@ -964,6 +958,87 @@ public class FURServerEvents {
         if (newTarget != null && entity instanceof PathfinderMob mob && SkeletonKingCrownItem.isEligible(mob) && SkeletonKingCrownItem.isWearingCrown(newTarget)) {
         	mob.setTarget(null);
         }
+    }
+
+    /**
+     * Chitin Armor 2-piece bonus: prevents Arthropod-type mobs (spiders, Parasites, ...) from mounting
+     * the wearer. Covers the Parasite's host-attachment mechanic and any future Arthropod mob using the
+     * same {@code startRiding()} approach. Event-driven — fires once per mount attempt, no continuous
+     * checking.
+     */
+    @SubscribeEvent
+    public void onEntityMount(EntityMountEvent event) {
+    	if (event.isMounting() && event.getEntityMounting() instanceof Mob mob && mob.getMobType().equals(MobType.ARTHROPOD)
+    			&& event.getEntityBeingMounted() instanceof Player player && ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.TWO_PIECE_THRESHOLD)) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /**
+     * Chitin Armor full-set bonus: the wearer takes no fall damage for falls up to
+     * {@link ChitinArmorItem#FALL_IMMUNITY_DISTANCE} blocks. Falls beyond that are calculated
+     * normally against the full distance, not merely reduced by the immune portion.
+     */
+    @SubscribeEvent
+    public void onEFall(LivingFallEvent event) {
+    	if (event.getEntity() instanceof Player player && event.getDistance() <= ChitinArmorItem.FALL_IMMUNITY_DISTANCE
+    			&& ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.FULLSET_THRESHOLD)) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /** Movement/locomotion GameEvents suppressed by the Chitin Armor full-set sneaking bonus. */
+    private static final Set<GameEvent> CHITIN_SUPPRESSED_VIBRATIONS = Set.of(
+    		GameEvent.STEP, GameEvent.SWIM, GameEvent.SPLASH, GameEvent.FLAP, GameEvent.ELYTRA_GLIDE, GameEvent.HIT_GROUND);
+
+    /**
+     * Chitin Armor full-set bonus: while sneaking, fully blocks the wearer's movement-related
+     * GameEvents (steps, swims, landings, ...) from reaching vibration listeners (Sculk Sensors,
+     * Wardens). This is separate from the footstep sound muting in {@link #onPlayLevelSound} —
+     * Wardens/Sculk Sensors listen to GameEvent vibrations, not SoundEvents, so silencing the sound
+     * alone would not hide the wearer from them. Vanilla already withholds most movement GameEvents
+     * while sneaking-and-grounded; this closes the remaining cases (mid-air, swimming, ...) with a
+     * full block rather than a partial reduction, unlike the detection-range dampening in
+     * {@link #onESetTarget}.
+     */
+    @SubscribeEvent
+    public void onVanillaGameEvent(VanillaGameEvent event) {
+    	if (!CHITIN_SUPPRESSED_VIBRATIONS.contains(event.getVanillaEvent())) {
+    		return;
+    	}
+
+    	if (event.getCause() instanceof Player player && player.isShiftKeyDown()
+    			&& ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.FULLSET_THRESHOLD)) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /**
+     * Chitin Armor full-set bonus: mutes the wearer's own footstep sounds while sneaking. Runs off
+     * {@link PlayLevelSoundEvent.AtPosition}, the path {@code Entity#playStepSound} broadcasts
+     * through, since footstep sounds carry no entity reference there — matched instead by exact
+     * position against currently-sneaking full-set wearers, and by sound identity
+     * ({@link ChitinArmorItem#isStepSound}) so unrelated self-sounds (hurt, eat, ...) broadcast
+     * through the same path are left untouched. Vibration suppression for the same sneaking bonus is
+     * handled separately in {@link #onVanillaGameEvent} — Sculk Sensors/Wardens don't listen to sound.
+     */
+    @SubscribeEvent
+    public void onPlayLevelSound(PlayLevelSoundEvent.AtPosition event) {
+    	if (event.getSound() == null || !ChitinArmorItem.isStepSound(event.getSound().value())) {
+    		return;
+    	}
+    	if (!(event.getLevel() instanceof ServerLevel serverLevel)) {
+    		return;
+    	}
+
+    	Vec3 pos = event.getPosition();
+    	for (Player player : serverLevel.players()) {
+    		if (player.isShiftKeyDown() && ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.FULLSET_THRESHOLD)
+    				&& player.position().distanceToSqr(pos) < 1.0E-6D) {
+    			event.setCanceled(true);
+    			return;
+    		}
+    	}
     }
 
     /**
