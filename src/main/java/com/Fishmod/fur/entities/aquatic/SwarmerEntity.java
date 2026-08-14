@@ -84,7 +84,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.getEntityData().define(DATA_FLAGS_ID, (byte)0);
-		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(1));
+		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(this.getType().equals(FUREntityRegistry.PIRANHA.get()) ? 0 : 1));
     }
     
     @Override

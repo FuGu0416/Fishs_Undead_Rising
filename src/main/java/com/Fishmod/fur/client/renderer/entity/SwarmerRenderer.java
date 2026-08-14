@@ -30,7 +30,11 @@ public class SwarmerRenderer extends GeoEntityRenderer<SwarmerEntity> {
         super.applyRotations(entityLiving, poseStack, ageInTicks, rotationYaw, partialTicks);
         float f = (float) (4.3F * Math.sin(0.6F * ageInTicks));
         poseStack.mulPose(Axis.YP.rotationDegrees(f));
-        
+
+        if (!entityLiving.isInWaterOrBubble() && !entityLiving.isAggressive() && entityLiving.tickCount > 0) {
+        	poseStack.mulPose(Axis.ZP.rotationDegrees(-90f));
+        }
+
         if (entityLiving instanceof PiranhaEntity) {
         	poseStack.scale(0.8F, 0.8F, 0.8F);
         }

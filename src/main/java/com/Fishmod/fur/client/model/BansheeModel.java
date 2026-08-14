@@ -43,7 +43,7 @@ public class BansheeModel extends GeoModel<BansheeEntity> {
 	
     @Override
     public void setCustomAnimations(BansheeEntity animatable, long instanceId, AnimationState<BansheeEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        CoreGeoBone head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

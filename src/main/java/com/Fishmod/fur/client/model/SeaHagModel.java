@@ -44,7 +44,7 @@ public class SeaHagModel extends GeoModel<SeaHagEntity> {
 	
     @Override
     public void setCustomAnimations(SeaHagEntity animatable, long instanceId, AnimationState<SeaHagEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        CoreGeoBone head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

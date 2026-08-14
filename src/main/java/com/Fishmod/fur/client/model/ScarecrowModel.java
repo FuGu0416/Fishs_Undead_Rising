@@ -76,21 +76,19 @@ public class ScarecrowModel extends GeoModel<ScarecrowEntity> {
 	    	        
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-        if (animationState.isCurrentAnimation(ScarecrowEntity.IDLE)) {
-	        if (head != null) {
-	            head.setRotX(-24.56F + (entityData.headPitch() * Mth.DEG_TO_RAD));
-	            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-	        }
-	        
-	        if (head1 != null) {
-	            head1.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
-	            head1.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-	        }
-	        
-	        if (head2 != null) {
-	            head2.setRotX(-62.0F + (entityData.headPitch() * Mth.DEG_TO_RAD));
-	            head2.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-	        }
+        if (head != null) {
+            head.setRotX(-24.56F + (entityData.headPitch() * Mth.DEG_TO_RAD));
+            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
+        }
+
+        if (head1 != null) {
+            head1.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+            head1.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
+        }
+
+        if (head2 != null) {
+            head2.setRotX(-62.0F + (entityData.headPitch() * Mth.DEG_TO_RAD));
+            head2.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }
         
         if ((animatable.hasItemInSlot(EquipmentSlot.MAINHAND) || animatable.hasItemInSlot(EquipmentSlot.OFFHAND))) {

@@ -35,7 +35,13 @@ public class FrigidEntity extends UnburiedEntity {
     public FrigidEntity(EntityType<? extends FrigidEntity> entityType, Level LevelIn) {
         super(entityType, LevelIn);
     }
-    
+
+    @Override
+    protected void defineSynchedData() {
+    	super.defineSynchedData();
+    	this.setSkin(3);
+    }
+
     @Override
     protected void registerGoals() {
     	super.registerGoals();

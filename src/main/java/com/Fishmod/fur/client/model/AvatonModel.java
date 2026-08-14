@@ -44,7 +44,7 @@ public class AvatonModel extends GeoModel<AvatonEntity> {
 	
     @Override
     public void setCustomAnimations(AvatonEntity animatable, long instanceId, AnimationState<AvatonEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        CoreGeoBone head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

@@ -208,7 +208,7 @@
 				},
 				"Swarmer": {
 					"rotation": {
-						"vector": [0, "math.cos(query.anim_time * 720) * -10", "-90 + math.cos((query.anim_time - 0.8) * 720) * -12"],
+						"vector": [0, "math.cos(query.anim_time * 720) * -10", "math.cos((query.anim_time - 0.8) * 720) * -12"],
 						"easing": "linear"
 					},
 					"position": {

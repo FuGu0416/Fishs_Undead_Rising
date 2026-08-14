@@ -31,11 +31,17 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ImpEntity extends FogletEntity {	
+public class ImpEntity extends FogletEntity {
 	public ImpEntity(EntityType<? extends ImpEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
     }
-	
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.setSkin(2);
+	}
+
 	@Override
     protected void registerGoals() {
 		super.registerGoals();

@@ -39,7 +39,7 @@ public class MummyEntity extends UnburiedEntity {
     @Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
+		this.entityData.define(SKIN_TYPE, Integer.valueOf(4));
 	}
     
     @Override

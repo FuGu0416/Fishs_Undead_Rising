@@ -58,6 +58,7 @@ public class MycosisEntity extends UnburiedEntity {
     protected void defineSynchedData() {
     	super.defineSynchedData();
     	this.entityData.define(SHEARED, Boolean.valueOf(false));
+    	this.setSkin(1);
     }
 
     public boolean isSheared() {

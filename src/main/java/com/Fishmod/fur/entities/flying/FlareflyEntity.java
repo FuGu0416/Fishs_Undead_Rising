@@ -40,7 +40,6 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -118,14 +117,12 @@ public class FlareflyEntity extends FlyingMobEntity implements GeoEntity {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, EnigmothEntity.class, 6.0F, 1.0D, 1.2D));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.WARPED_FUNGUS, Items.WARPED_FUNGUS_ON_A_STICK), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(FURItemTagsProvider.FLAREFLY_FOOD), false));
 		this.goalSelector.addGoal(5, new FlareflyPollinateGoal(this));
 		this.goalSelector.addGoal(8, new FlyingMobEntity.AIRandomFly(this, 1.0D));
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
-		// Static defaults only (config can't be read at registration — it crashes datagen).
-		// The real Flarefly_Health is applied in finalizeSpawn().
 		return Mob.createMobAttributes()
 				.add(Attributes.MOVEMENT_SPEED, 0.6D)
 				.add(Attributes.MAX_HEALTH, 10.0D)

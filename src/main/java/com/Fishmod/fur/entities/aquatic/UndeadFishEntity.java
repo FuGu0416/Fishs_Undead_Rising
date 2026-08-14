@@ -52,7 +52,7 @@ public class UndeadFishEntity extends AbstractSchoolingFish implements GeoEntity
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(0));
+		this.getEntityData().define(SKIN_TYPE, Integer.valueOf(this.getType().equals(FUREntityRegistry.MUMMIFIED_COD.get()) ? 1 : 0));
     }
 	
     public static boolean isDarkEnoughToSpawn(ServerLevelAccessor level, BlockPos pos, RandomSource random) {

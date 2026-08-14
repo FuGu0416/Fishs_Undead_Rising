@@ -33,11 +33,17 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class IsnachiEntity extends FogletEntity {	
+public class IsnachiEntity extends FogletEntity {
 	public IsnachiEntity(EntityType<? extends IsnachiEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
     }
-	
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.setSkin(1);
+	}
+
 	@Override
     protected void registerGoals() {
 		super.registerGoals();
