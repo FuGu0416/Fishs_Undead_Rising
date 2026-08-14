@@ -100,7 +100,7 @@ public class EntityAIDestroyCrops extends EntityAIBase {
             if (this.destroyTicks > 30) {
             	Block block = world.getBlockState(blockpos).getBlock();
             	
-            	if (this.entity.world.rand.nextDouble() < Modconfig.Weta_Harvest_Diseased_Wheat && this.entity instanceof EntityWeta && ((EntityWeta) this.entity).getSkin() == 2 && block.equals(Blocks.WHEAT)) {
+            	if (this.entity.world.rand.nextDouble() < Modconfig.Weta_Harvest_Diseased_Wheat && this.entity instanceof EntityWeta && ((EntityWeta) this.entity).getSkin() == 1 && block.equals(Blocks.WHEAT)) {
           	       if(!world.isRemote) {			
           				this.entity.entityDropItem(new ItemStack(FishItems.DISEASED_WHEAT), 0.0F);
           	       }
