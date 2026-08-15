@@ -63,8 +63,10 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.EMBLEM_OF_KING.get());            	           	
             	output.accept(FURItemRegistry.USHABTI.get());
             	output.accept(FURBlockRegistry.ENIGMOTH_EGG.get());
-            	output.accept(FURItemRegistry.MIMIC_EGG.get());           	
-            	
+            	output.accept(FURItemRegistry.MIMIC_EGG.get());
+            	output.accept(FURItemRegistry.HOLY_WATER.get());
+            	output.accept(FURItemRegistry.SHRIEK_CORD.get());
+
                 // Salamander Egg variants
                 for (int i = 0; i < 2; i++) {
                     ItemStack stack1 = new ItemStack(FURBlockRegistry.SALAMANDER_EGG.get());
@@ -102,6 +104,7 @@ public class FURItemGroup {
 
         		// Misc Equipment
         		output.accept(FURItemRegistry.BEASTCALL_HORN.get());
+        		output.accept(FURBlockRegistry.DREAMCATCHER.get());
         		
             	// Melee Weapon
             	output.accept(FURItemRegistry.FANG_DAGGER.get());            	          	
@@ -166,7 +169,11 @@ public class FURItemGroup {
 
         		// Smithing Template
         		output.accept(FURItemRegistry.SOULFORGED_UPGRADE_SMITHING_TEMPLATE.get());
-        		
+
+        		// Banner Pattern
+        		output.accept(FURItemRegistry.SKELETONKING_PATTERN.get());
+        		output.accept(FURItemRegistry.WENDIGO_PATTERN.get());
+
             	// Food
             	output.accept(FURItemRegistry.FROZEN_THIGH.get());    
             	output.accept(FURItemRegistry.CACTUS_FRUIT.get());
@@ -184,6 +191,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.MUMMIFIED_COD.get());
             	output.accept(FURItemRegistry.BONE_TROUT.get());
             	output.accept(FURItemRegistry.PLAGUED_PORKCHOP.get());
+            	output.accept(FURItemRegistry.SAUSAGE_ROLL.get());
 
                 // Raw Parasite variants
                 for (int i = 0; i < 4; i++) {
@@ -229,7 +237,7 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
             	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
-            	output.accept(FURBlockRegistry.INFESTED_SANDSTONE.get());
+            	output.accept(FURBlockRegistry.INFESTED_SANDSTONE.get());           	
 
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })
