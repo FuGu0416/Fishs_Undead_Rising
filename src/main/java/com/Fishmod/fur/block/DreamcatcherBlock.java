@@ -15,12 +15,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -35,9 +37,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * blockstate property {@link #CHARGE}). Right-clicking a charged dreamcatcher runs a 2-second windup and
  * then releases a budgeted wave of mobs drawn from the {@code fur:dreamcatcher_pool} tag (plain mobs,
  * targeted at the summoner). All charge lives in the blockstate — there is no BlockEntity — so breaking
- * it at any charge drops a fresh (uncharged) item via its loot table.
+ * it at any charge drops a fresh (uncharged) item via its loot table. It also faces the player at
+ * placement ({@link #FACING}), like a wall decoration, so its asymmetric model reads correctly from any side.
  */
-public class DreamcatcherBlock extends Block {
+public class DreamcatcherBlock extends HorizontalDirectionalBlock {
 
     public static final IntegerProperty CHARGE = IntegerProperty.create("charge", 0, 5);
 
@@ -48,12 +51,18 @@ public class DreamcatcherBlock extends Block {
 
     public DreamcatcherBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(CHARGE, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(CHARGE, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(CHARGE);
+        builder.add(FACING, CHARGE);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        // Faces the player, matching furnaces/chests: the front of the model looks back at whoever placed it.
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -189,7 +198,7 @@ public class DreamcatcherBlock extends Block {
             double x = pos.getX() + 0.3D + random.nextDouble() * 0.4D;
             double y = pos.getY() + 0.2D + random.nextDouble() * 0.6D;
             double z = pos.getZ() + 0.3D + random.nextDouble() * 0.4D;
-            level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, -0.01D, 0.0D);
+            level.addParticle(ParticleTypes.PORTAL, x, y, z, 0.0D, -0.01D, 0.0D);
             if (charge >= 3 && random.nextInt(2) == 0) {
                 level.addParticle(ParticleTypes.SOUL, x, y, z, 0.0D, 0.01D, 0.0D);
             }

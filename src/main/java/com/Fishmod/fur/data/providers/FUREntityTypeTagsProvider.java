@@ -45,7 +45,11 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
     		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "vespa_targets"));
     public static final TagKey<EntityType<?>> DROPS_ILLAGER_NOSE =
     		TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "drops_illager_nose"));
-    
+    public static final TagKey<EntityType<?>> SPECTERS =
+            TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "specters"));
+    public static final TagKey<EntityType<?>> DREAMCATCHER_POOL =
+            TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "dreamcatcher_pool"));
+
     public FUREntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, existingFileHelper);
     }
@@ -66,6 +70,8 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         this.addVespaTargetsTag();
         this.addBeelzebubTargetsTag();
         this.addDropsIllagerNoseTag();
+        this.addSpectersTag();
+        this.addDreamcatcherPoolTag();
         this.addVanillaAndForgeMemberships();
     }
 
@@ -240,6 +246,42 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(EntityType.ILLUSIONER)
                 .add(EntityType.WITCH)
                 .add(FUREntityRegistry.GRAVEROBBER.get());
+    }
+
+    // ── fur:specters ─────────────────────────────────────────────────────────
+    // All specter-flavored mobs.
+    private void addSpectersTag() {
+        tag(SPECTERS)
+                .add(EntityType.VEX)
+                .add(EntityType.GHAST)
+                .add(FUREntityRegistry.BANSHEE.get())
+                .add(FUREntityRegistry.AVATON.get())
+                .add(FUREntityRegistry.SEAHAG.get())
+                .add(FUREntityRegistry.WISP.get())
+                .add(FUREntityRegistry.WRAITH.get());
+    }
+
+    // ── fur:dreamcatcher_pool ────────────────────────────────────────────────
+    // Starting placeholder pool for the Dreamcatcher's summon wave (see DreamcatcherLogic); the FUR
+    // entries are optional (required(false)) so the tag still resolves if one is ever unregistered.
+    private void addDreamcatcherPoolTag() {
+        tag(DREAMCATCHER_POOL)
+		        .add(FUREntityRegistry.AVATON.get())
+		        .add(FUREntityRegistry.BANSHEE.get())
+		        .add(FUREntityRegistry.BEELZEBUB.get())
+		        .add(FUREntityRegistry.BONEWORM.get())
+		        .add(FUREntityRegistry.ENIGMOTH.get())
+		        .add(FUREntityRegistry.FOGLET.get())
+		        .add(FUREntityRegistry.FRIGID.get())
+		        .add(FUREntityRegistry.GHOUL.get())
+		        .add(FUREntityRegistry.MUMMY.get())
+		        .add(FUREntityRegistry.MYCOSIS.get())
+		        .add(FUREntityRegistry.SCARECROW.get())
+		        .add(FUREntityRegistry.SEAHAG.get())
+		        .add(FUREntityRegistry.UNDERTAKER.get())
+		        .add(FUREntityRegistry.VESPA.get())
+		        .add(FUREntityRegistry.WENDIGO.get())
+		        .add(FUREntityRegistry.WRAITH.get());
     }
 
     // ── vanilla / forge tag memberships ─────────────────────────────────────

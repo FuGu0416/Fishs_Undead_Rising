@@ -201,7 +201,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> FlyingHeight_limit;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_Damage;
 	public static final ForgeConfigSpec.ConfigValue<Integer> pScarecrow_PlagueDoctor;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DreamCatcher_spawn;
 	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeWand_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Shovel_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> SunScreen_Mode;
@@ -209,7 +208,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_DamageCap;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spawn_AllowList;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Suicidal_Minion;
-	public static final ForgeConfigSpec.ConfigValue<Integer> DreamCatcher_dur;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Dreamcatcher_Enabled;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_HpBudgetPerStage;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Dreamcatcher_MaxMobsPerWave;
@@ -510,21 +508,6 @@ public final class FURConfig {
 		GoldenHeart_GrantsRegeneration = BUILDER.comment("Enables the Regeneration effect of the Golden Heart. [false/true]").define("golden heart grants regeneration", true);
 		GoldenHeart_RepairsEquipment = BUILDER.comment("Allow the Golden Heart to repair worn equipment. [false/true]").define("golden heart repairs equipment", true);	
 		BoneSword_Damage = BUILDER.comment("Set the bonus damage of Bone Sword to X% [0-100]").defineInRange("bonesword bonus damage", 5, 0, 100);		
-		DreamCatcher_spawn = BUILDER.comment("Customize the Spawn list for the Dreamcatcher. Ex. \\\"mod_lavacow:foglet,40,1,2\\\" or \\\"mod_lavacow:vespa,20,1,1\\\"").defineList("spawn list for dreamcatcher", 
-				Lists.newArrayList(
-						"mod_lavacow:foglet,40,1,2",
-						"mod_lavacow:undeadswine,20,1,1",
-						"mod_lavacow:wendigo,20,1,1",
-						"mod_lavacow:shroomlord,20,1,1",
-						"mod_lavacow:vespa,20,1,1",
-						"mod_lavacow:scarecrow,20,1,1",
-						"mod_lavacow:boneworm,20,1,1",
-						"mod_lavacow:pingu,40,4,8",
-						"mod_lavacow:undertaker,20,1,1",
-						"mod_lavacow:banshee,20,1,1",
-						"mod_lavacow:avaton,20,1,1"), 
-				o -> o instanceof String);
-		DreamCatcher_dur = BUILDER.comment("The durability lost each time when the Dreamcatcher is triggered, 0 = Infinite [0-120]").defineInRange("dreamcatcher durability drop", 30, 0, 120);				
 		SludgeWand_Cooldown = BUILDER.comment("Ability cooldown of \\\"Pestilence\\\" [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Midnight Mourne [1-10000]").defineInRange("midnight mourne cooldown", 60, 0, 10000);							
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		

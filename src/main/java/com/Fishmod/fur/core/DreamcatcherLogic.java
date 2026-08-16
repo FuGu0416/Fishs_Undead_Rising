@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.Fishmod.fur.config.FURConfig;
-import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,9 +31,6 @@ import net.minecraftforge.registries.tags.ITag;
  * scheduled-tick summon can share it.
  */
 public final class DreamcatcherLogic {
-
-    public static final TagKey<EntityType<?>> POOL =
-            TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, new ResourceLocation(mod_LavaCow.MODID, "dreamcatcher_pool"));
 
     private DreamcatcherLogic() {}
 
@@ -80,7 +76,7 @@ public final class DreamcatcherLogic {
      */
     public static List<EntityType<?>> affordableCandidates(double budget) {
         List<EntityType<?>> out = new ArrayList<>();
-        ITag<EntityType<?>> pool = ForgeRegistries.ENTITY_TYPES.tags().getTag(POOL);
+        ITag<EntityType<?>> pool = ForgeRegistries.ENTITY_TYPES.tags().getTag(FUREntityTypeTagsProvider.DREAMCATCHER_POOL);
         ITag<EntityType<?>> bosses = ForgeRegistries.ENTITY_TYPES.tags().getTag(Tags.EntityTypes.BOSSES);
 
         for (EntityType<?> type : pool) {
@@ -140,7 +136,7 @@ public final class DreamcatcherLogic {
             attemptsLeft--;
 
             if (mob != null) {
-                if (target != null && mob instanceof Mob asMob) {
+                if (target != null && mob instanceof Mob asMob && !target.isCreative()) {
                     asMob.setTarget(target);
                 }
                 level.sendParticles(ParticleTypes.SOUL, mob.getX(), mob.getY() + mob.getBbHeight() * 0.5D, mob.getZ(),
@@ -179,9 +175,18 @@ public final class DreamcatcherLogic {
             BlockPos ground = new BlockPos(x, blockPos.getY(), z);
 
             LivingEntity spawned = SpawnUtil.trySpawnEntity(livingType, level, ground);
-            if (spawned != null) {
-                return spawned;
+            if (spawned == null) {
+                continue;
             }
+            // trySpawnEntity's ground search only checks a single block of headroom (air on solid
+            // ground), so a taller mob (e.g. Wendigo, 2.6 blocks) can land with its head embedded in
+            // a low ceiling and start taking suffocation damage. Verify the mob's actual bounding box
+            // is clear of blocks/entities/the world border before accepting the spot.
+            if (!level.noCollision(spawned)) {
+                spawned.discard();
+                continue;
+            }
+            return spawned;
         }
         return null;
     }
