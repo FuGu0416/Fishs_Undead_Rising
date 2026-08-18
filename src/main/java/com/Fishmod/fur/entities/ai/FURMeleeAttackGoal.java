@@ -139,7 +139,17 @@ public class FURMeleeAttackGoal extends Goal {
 
 	public void tick() {
 		LivingEntity livingentity = this.mob.getTarget();
-		
+
+		// canContinueToUse() checks this same field and should stop the goal before tick() ever sees a
+		// null target, but GoalSelector re-derives "is this goal still running" once per server tick and
+		// something else (the target dying/despawning/changing dimension, another mod, etc.) can still
+		// null the target out from under an already-running goal in that same window - crashed a live
+		// test with a Ghoul (NullPointerException in LookControl#setLookAt, unrelated to Ghostly Armor).
+		// Bail out rather than dereference a possibly-null target.
+		if (livingentity == null) {
+			return;
+		}
+
 		if (this.attackTimer > 0) {
 			this.attackTimer--;
 		}

@@ -1,6 +1,7 @@
 package com.Fishmod.fur.entities.projectiles;
 
 import com.Fishmod.fur.entities.tameable.SalamanderEntity;
+import com.Fishmod.fur.init.FURParticleRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
 import net.minecraft.core.BlockPos;
@@ -105,7 +106,7 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 	public void tick() {
 		if (this.level().isClientSide) {
 			boolean soul = this.isSoul();
-			this.level().addParticle(soul ? ParticleTypes.SOUL : ParticleTypes.LAVA, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(soul ? FURParticleRegistry.SPIRIT.get() : ParticleTypes.LAVA, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			this.level().addParticle(soul ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, this.getX(), this.getY() + 0.25D, this.getZ(), 0.0D, 0.0D, 0.0D);
 		}
 
@@ -170,7 +171,7 @@ public class MoltenGlobEntity extends EnchantableFireBallEntity {
 			Vec3 loc = result.getLocation();
 			serverLevel.playSound(null, loc.x, loc.y, loc.z, FURSoundRegistry.RANDOM_MOLTEN_GLOB_IMPACT.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
 			// Lava-splatter burst at the point of impact (the in-flight trail stops once the glob is discarded).
-			serverLevel.sendParticles(this.isSoul() ? ParticleTypes.SOUL : ParticleTypes.LAVA, loc.x, loc.y, loc.z, 12, 0.2D, 0.2D, 0.2D, 0.0D);
+			serverLevel.sendParticles(this.isSoul() ? FURParticleRegistry.SPIRIT.get() : ParticleTypes.LAVA, loc.x, loc.y, loc.z, 12, 0.2D, 0.2D, 0.2D, 0.0D);
 			this.spawnMoltenPool(loc);
 		}
 	}

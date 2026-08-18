@@ -566,7 +566,7 @@
 			}
 		},
 		"foglet.model.attacking": {
-			"loop": true,
+			"loop": false,
 			"animation_length": 1,
 			"bones": {
 				"head": {
@@ -760,7 +760,7 @@
 			}
 		},
 		"foglet.model.casting": {
-			"loop": true,
+			"loop": false,
 			"animation_length": 1.5,
 			"bones": {
 				"head": {

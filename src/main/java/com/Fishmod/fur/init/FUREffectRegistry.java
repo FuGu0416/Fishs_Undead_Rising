@@ -12,6 +12,7 @@ import com.Fishmod.fur.effect.EffectInfested;
 import com.Fishmod.fur.effect.EffectPossessed;
 import com.Fishmod.fur.effect.EffectSoiled;
 import com.Fishmod.fur.effect.EffectSoulSiphon;
+import com.Fishmod.fur.effect.EffectSpiritForm;
 import com.Fishmod.fur.effect.EffectSporerot;
 import com.Fishmod.fur.effect.EffectThorned;
 import com.Fishmod.fur.effect.EffectVenomous;
@@ -51,6 +52,7 @@ public class FUREffectRegistry {
 	public static final RegistryObject<MobEffect> POSSESSED = EFFECT_DEF_REG.register("possessed", ()-> new EffectPossessed().addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double)0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL).addAttributeModifier(Attributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, AttributeModifier.Operation.ADDITION));
 	public static final RegistryObject<MobEffect> SOUL_SIPHON = EFFECT_DEF_REG.register("soul_siphon", ()-> new EffectSoulSiphon());
 	public static final RegistryObject<MobEffect> SPOREROT = EFFECT_DEF_REG.register("sporerot", ()-> new EffectSporerot().addAttributeModifier(Attributes.MOVEMENT_SPEED, "0CAA59A6-6C88-4488-9518-CAC342D2D71B", (double)-0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+	public static final RegistryObject<MobEffect> SPIRIT_FORM = EFFECT_DEF_REG.register("spirit_form", ()-> new EffectSpiritForm());
 
 	/**
 	 * Builds a FEAR instance with the vanilla potion swirl hidden (ambient off, particles off, icon on).

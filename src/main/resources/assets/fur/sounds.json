@@ -754,6 +754,13 @@
 		"sounds": ["fur:random/molten_glob_impact0", "fur:random/molten_glob_impact1"]
 	},
 
+	"spirit_form_triggered":
+	{
+		"category": "neutral",
+		"subtitle": "spirit_form_triggered",
+		"sounds": ["fur:random/spirit_form_triggered"]
+	},
+
 	"random_beastcall_horn_blow":
 	{
 		"category": "neutral",

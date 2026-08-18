@@ -16,6 +16,7 @@ import com.Fishmod.fur.data.providers.FURStructureTagsProvider;
 import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
+import com.Fishmod.fur.entities.flying.FlareflyEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
@@ -25,6 +26,7 @@ import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
+import com.Fishmod.fur.init.FURSoundRegistry;
 import com.Fishmod.fur.integration.curios.CurioIntegration;
 import com.Fishmod.fur.item.ChitinArmorItem;
 import com.Fishmod.fur.item.VespaShieldItem;
@@ -52,6 +54,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Marker;
@@ -61,12 +64,14 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
@@ -92,6 +97,8 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -412,39 +419,63 @@ public class FURServerEvents {
             }
     	}
     	
-		int Armor_Ghostly_lvl = 0;
-		
-		for (ItemStack S : Attacked.getArmorSlots()) {
-			if (S.getItem() instanceof GhostlyArmorItem) {
-				Armor_Ghostly_lvl++;
-			}
-		}
-		
-		if (Armor_Ghostly_lvl >= 2) {
-			Attacked.heal(event.getAmount() * 0.2F);
-		}
-		
-		if (source.getEntity() instanceof LivingEntity attackerLiving && (attackerLiving.getHealth() < Attacked.getHealth())) {
-			Armor_Ghostly_lvl = 0;
+		if (Attacked instanceof Player ghostlyPlayer) {
+			// Ghostly Armor full-set spirit-form invulnerability and the 2-piece dodge are both handled
+			// in onEAttack (LivingAttackEvent), not here - see that method for why.
 
-			for (ItemStack S : attackerLiving.getArmorSlots()) {
-				if (S.getItem() instanceof GhostlyArmorItem) {
-					Armor_Ghostly_lvl++;
-				}
-			}
-			
-			if (Armor_Ghostly_lvl >= 4) {
-				event.setAmount(event.getAmount() * 1.2F);
+			// Ghostly Armor full-set bonus: a fatal hit is intercepted instead of killing the wearer -
+			// health is set to 1 and the wearer becomes a brief invulnerable spirit. Gated by its own
+			// cooldown so it can't trigger back-to-back.
+			if (!event.isCanceled() && GhostlyArmorItem.hasGhostlyPieces(ghostlyPlayer, GhostlyArmorItem.FULLSET_THRESHOLD)
+					&& event.getAmount() >= ghostlyPlayer.getHealth()
+					&& isGhostlyDeathPreventionReady(ghostlyPlayer)) {
+				event.setCanceled(true);
+				ghostlyPlayer.setHealth(1.0F);
+				triggerGhostlySpiritForm(ghostlyPlayer);
 			}
 		}
-    	
+
     	event.setAmount(event.getAmount() * effectlevel);
-    }    
+    }
+
+	/** Per-player cooldown for the Ghostly Armor full-set death-prevention bonus, keyed by game time (ticks). */
+	private static final Map<UUID, Long> GHOSTLY_DEATH_PREVENTION_READY_AT = new HashMap<>();
+
+	private static boolean isGhostlyDeathPreventionReady(Player player) {
+		Long readyAt = GHOSTLY_DEATH_PREVENTION_READY_AT.get(player.getUUID());
+		return readyAt == null || player.level().getGameTime() >= readyAt;
+	}
+
+	/**
+	 * Consumes the death-prevention cooldown and applies the "spirit form" state: a short window of
+	 * full invulnerability (enforced in {@link #onEDamage}), no attacking ({@link #onAttackEntity}) and
+	 * no item use ({@link #onActiveItemUseStart}/{@link #onRightClickItem}/{@link #onRightClickBlock}).
+	 * The translucent render + soul particles are driven client-side off the same synced effect.
+	 */
+	private static void triggerGhostlySpiritForm(Player player) {
+		GHOSTLY_DEATH_PREVENTION_READY_AT.put(player.getUUID(), player.level().getGameTime() + FURConfig.Ghostly_DeathPreventionCooldown.get() * 20L);
+		int durationTicks = (int) Math.round(FURConfig.Ghostly_SpiritFormDuration.get() * 20.0D);
+		player.addEffect(new MobEffectInstance(FUREffectRegistry.SPIRIT_FORM.get(), durationTicks, 0, false, false, false));
+		// Speed III for the same window - spirit form already ignores entity collision, this makes the
+		// "get clear of danger before it ends" escape window actually usable instead of just theoretical.
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, durationTicks, 2, false, true, true));
+		// Regeneration IV, same duration as spirit form/Speed III.
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, durationTicks, 3, false, true, true));
+		// Untarget immediately for anything already locked onto the player - onESetTarget only blocks
+		// *new* targeting attempts made while spirit form is active, it can't retroactively undo a
+		// setTarget() call from before this trigger fired (often the very attack that almost killed them).
+		if (player.level() instanceof ServerLevel serverLevel) {
+			for (Mob mob : serverLevel.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(64.0D), m -> m.getTarget() == player)) {
+				mob.setTarget(null);
+			}
+		}
+		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.SPIRIT_FORM_TRIGGERED.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+	}
     
 	@SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
-    	/*if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
-    		((HoglinEntity)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((HoglinEntity)event.getEntity()), FlareflyEntity.class, 6.0F, 1.0D, 1.2D));*/
+    	if (event.getEntity() != null && event.getEntity().getType().equals(EntityType.HOGLIN))
+    		((Hoglin)event.getEntity()).goalSelector.addGoal(3, new AvoidEntityGoal<>(((Hoglin)event.getEntity()), FlareflyEntity.class, 6.0F, 1.0D, 1.2D));
     	
     	if (event.getEntity() != null && event.getEntity() instanceof IronGolem golem) {
     		golem.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(golem, Player.class, 0, true, false, (living) -> {
@@ -456,6 +487,37 @@ public class FURServerEvents {
     
     @SubscribeEvent
     public void onEAttack(LivingAttackEvent event) {
+    	// Ghostly Armor - both the full-set spirit-form invulnerability and the 2-piece dodge are
+    	// deliberately hooked here rather than in onEDamage (LivingDamageEvent) - Forge gates the very
+    	// first line of LivingEntity#hurt() on this event (ForgeHooks.onLivingAttack), so canceling it
+    	// makes hurt() return false immediately, before any sound/knockback/hurt-animation runs.
+    	// Canceling at LivingDamageEvent only zeroes the health change; the hurt sound and the attacker's
+    	// hit-confirm sound/knockback are already decided from hurt()'s own local damage estimate by that
+    	// point and play regardless. Cancelling here also flips the attacker's swing outcome to a miss
+    	// (e.g. a player attacker gets SoundEvents.PLAYER_ATTACK_NODAMAGE instead of a hit sound).
+
+    	// Full-set: spirit form is 100% invulnerability to any damage source (not scoped to melee/
+    	// projectile like the dodge below - fall/fire/drowning/etc. should all be blocked too, matching
+    	// the original "full invulnerability" spec). No sound/particle here - the trigger already
+    	// announced itself, and this can fire every attack tick a mob still tries (even though
+    	// onESetTarget/the untarget sweep in triggerGhostlySpiritForm mean that should be rare).
+    	if (event.getEntity() instanceof Player spiritPlayer && spiritPlayer.hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
+    		event.setCanceled(true);
+    		return;
+    	}
+
+    	// 2-piece bonus: chance to fully negate an incoming hit. Melee + projectile only (same tag/type
+    	// check used elsewhere in this class) - fall damage, fire, drowning, magic, explosions etc.
+    	// aren't "hits" a dodge should be able to shrug off.
+    	DamageSource attackSource = event.getSource();
+    	boolean isMeleeOrProjectile = attackSource.is(DamageTypeTags.IS_PROJECTILE) || attackSource.is(DamageTypes.MOB_ATTACK)
+    			|| attackSource.is(DamageTypes.MOB_ATTACK_NO_AGGRO) || attackSource.is(DamageTypes.PLAYER_ATTACK);
+    	if (isMeleeOrProjectile && event.getEntity() instanceof Player player
+    			&& GhostlyArmorItem.hasGhostlyPieces(player, GhostlyArmorItem.TWO_PIECE_THRESHOLD)
+    			&& player.getRandom().nextInt(100) < FURConfig.Ghostly_DodgeChance.get()) {
+    		event.setCanceled(true);
+    		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), FURSoundRegistry.BANSHEE_HURT.get(), SoundSource.PLAYERS, 0.5F, 1.6F);
+    	}
     }
 
     /**
@@ -538,13 +600,18 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onActiveItemUseStart(LivingEntityUseItemEvent.Start event) {
 	    //int Armor_Swine_lvl = 0;
-    	
-    	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get()) && 
+
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get()) &&
     			!FUREffectRegistry.SOILED.get().getCurativeItems().contains(event.getItem()) &&
     			(event.getItem().isEdible() || event.getItem().getItem() instanceof PotionItem)) {
     		event.setCanceled(true);
     	}
-    			
+
+    	// Ghostly Armor spirit form: no eating/drinking/charged item use (bows, crossbows, ...) while active.
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
+    		event.setCanceled(true);
+    	}
+
 		/*for (ItemStack S : event.getEntity().getArmorSlots()) {
 			if (S.getItem() instanceof SwineArmorItem) {
 				Armor_Swine_lvl++;
@@ -936,6 +1003,15 @@ public class FURServerEvents {
         	}
         }
 
+        // Ghostly Armor full-set: spirit form makes the wearer untargetable, not just unhittable - refuse
+        // any new targeting attempt outright. Mobs that already had them targeted before spirit form
+        // started are cleared separately (triggerGhostlySpiritForm), since cancelling this event only
+        // blocks future setTarget() calls, not one already in effect.
+        if (newTarget instanceof Player spiritPlayer && spiritPlayer.hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
+        	event.setCanceled(true);
+        	return;
+        }
+
     	// Neutral
         if (newTarget != null && entity.getLastHurtByMob() != newTarget) {
         	boolean hasNose = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get());
@@ -970,6 +1046,34 @@ public class FURServerEvents {
     public void onEntityMount(EntityMountEvent event) {
     	if (event.isMounting() && event.getEntityMounting() instanceof Mob mob && mob.getMobType().equals(MobType.ARTHROPOD)
     			&& event.getEntityBeingMounted() instanceof Player player && ChitinArmorItem.hasChitinPieces(player, ChitinArmorItem.TWO_PIECE_THRESHOLD)) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /**
+     * Ghostly Armor spirit form: blocks the wearer's own melee attacks while active. Combined with the
+     * item-use blocks below (which cover bows/crossbows/tridents, since those are used via right-click),
+     * this covers "no player-initiated attacking of any kind" without needing a separate ranged-attack hook.
+     */
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /** Ghostly Armor spirit form: blocks right-click item use (eating, drinking, tool use, ...) while active. */
+    @SubscribeEvent
+    public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
+    		event.setCanceled(true);
+    	}
+    }
+
+    /** Ghostly Armor spirit form: blocks right-click block interaction (chests, doors, ...) while active. */
+    @SubscribeEvent
+    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+    	if (event.getEntity().hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
     		event.setCanceled(true);
     	}
     }
@@ -1118,6 +1222,7 @@ public class FURServerEvents {
 			double d2 = rng.nextGaussian() * 0.3D;
 			serverLevel.sendParticles(ParticleTypes.FLAME, living.getRandomX(1.0D), living.getRandomY() + living.getBbHeight() * 0.5D, living.getRandomZ(1.0D), 2, d0, d1, d2, 0.0D);
     	}
+
     }
 
     /**

@@ -10,10 +10,15 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FearParticle extends RisingParticle {
+/**
+ * The bespoke "soul wisp" particle discussed as a replacement for reusing vanilla {@code ParticleTypes.SOUL}
+ * everywhere - currently just a plain (untinted) rising wisp, mirroring {@link FearParticle}'s structure.
+ * Not wired into any effect yet (e.g. Ghostly Armor's dodge/spirit-form particles still use vanilla SOUL).
+ */
+public class SpiritParticle extends RisingParticle {
 	private final SpriteSet sprites;
 
-	private FearParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+	private SpiritParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
 		this.sprites = sprites;
 		this.scale(1.5F);
@@ -40,9 +45,9 @@ public class FearParticle extends RisingParticle {
 		}
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			FearParticle fearparticle = new FearParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
-			fearparticle.setAlpha(1.0F);
-			return fearparticle;
+			SpiritParticle spiritparticle = new SpiritParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
+			spiritparticle.setAlpha(1.0F);
+			return spiritparticle;
 		}
 	}
 }

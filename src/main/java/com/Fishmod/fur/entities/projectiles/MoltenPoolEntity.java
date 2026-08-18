@@ -3,6 +3,7 @@ package com.Fishmod.fur.entities.projectiles;
 import java.util.List;
 
 import com.Fishmod.fur.init.FUREntityRegistry;
+import com.Fishmod.fur.init.FURParticleRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -135,7 +136,7 @@ public class MoltenPoolEntity extends AreaEffectCloud {
 			double dist = Math.sqrt(this.random.nextDouble()) * radius;
 			double px = this.getX() + Math.cos(angle) * dist;
 			double pz = this.getZ() + Math.sin(angle) * dist;
-			this.level().addParticle(soul ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, px, this.getY() + 0.1D, pz, 0.0D, 0.02D, 0.0D);
+			this.level().addParticle(soul ? FURParticleRegistry.SPIRIT.get() : ParticleTypes.FLAME, px, this.getY() + 0.1D, pz, 0.0D, 0.02D, 0.0D);
 			if (this.random.nextInt(3) == 0) {
 				this.level().addParticle(ParticleTypes.LARGE_SMOKE, px, this.getY() + 0.2D, pz, 0.0D, 0.015D, 0.0D);
 			}

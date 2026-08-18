@@ -6,7 +6,12 @@
   "mixins": [
     "BiomeSourceMixin",
     "ChunkStatusMixin",
+    "EntityPushMixin",
     "MultiNoiseBiomeSourceMixin"
+  ],
+  "client": [
+    "HumanoidArmorLayerAlphaMixin",
+    "LivingEntityRendererAlphaMixin"
   ],
   "injectors": {
     "defaultRequire": 1

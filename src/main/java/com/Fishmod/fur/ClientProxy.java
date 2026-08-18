@@ -5,6 +5,7 @@ import com.Fishmod.fur.client.particle.MothScaleParticle;
 import com.Fishmod.fur.client.particle.FearParticle;
 import com.Fishmod.fur.client.particle.GastroAcidParticle;
 import com.Fishmod.fur.client.particle.LocustSwarmParticle;
+import com.Fishmod.fur.client.particle.SpiritParticle;
 import com.Fishmod.fur.client.renderer.FURItemRenderProperties;
 import com.Fishmod.fur.client.renderer.blockentity.ScarecrowHeadTileEntityRenderer;
 import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
@@ -239,6 +240,7 @@ public class ClientProxy extends CommonProxy {
 registry.registerSpriteSet(FURParticleRegistry.FEAR.get(), FearParticle.Factory::new);
 		registry.registerSpriteSet(FURParticleRegistry.BANSHEE_SHRIEK.get(), BansheeShriekParticle.Provider::new);
 		registry.registerSpriteSet(FURParticleRegistry.MOTH_SCALE.get(), MothScaleParticle.Provider::new);
+		registry.registerSpriteSet(FURParticleRegistry.SPIRIT.get(), SpiritParticle.Factory::new);
     }
     
     private void registerKeybinds(RegisterKeyMappingsEvent registry) {

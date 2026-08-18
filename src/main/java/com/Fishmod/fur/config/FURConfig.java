@@ -230,8 +230,11 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ankh_Scepter_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Fungal_Staff_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Frozen_Grip_Cooldown;
-	
-	static {		
+	public static final ForgeConfigSpec.ConfigValue<Integer> Ghostly_DodgeChance;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Ghostly_DeathPreventionCooldown;
+	public static final ForgeConfigSpec.ConfigValue<Double> Ghostly_SpiritFormDuration;
+
+	static {
 		BUILDER.push("Moogma");
 		Lavacow_Health = BUILDER.comment("Maximum Moogma health [1-1000]").defineInRange("moogma health", 10.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -527,6 +530,12 @@ public final class FURConfig {
 		Dreamcatcher_SpawnRingMax = BUILDER.comment("Maximum horizontal distance (blocks) from the block that nightmare mobs spawn [1-64]").defineInRange("dreamcatcher spawn ring max", 16, 1, 64);
 		Dreamcatcher_Blacklist = BUILDER.comment("Entity ids excluded from the dreamcatcher spawn pool (in addition to the forge:bosses tag). Ex. \\\"minecraft:warden\\\"").defineList("dreamcatcher entity blacklist",
 				Lists.newArrayList(), o -> o instanceof String);
+		BUILDER.pop();
+
+		BUILDER.push("Ghostly Armor");
+		Ghostly_DodgeChance = BUILDER.comment("2-piece bonus: chance for incoming damage to be fully negated (dodged) [0-100]").defineInRange("ghostly dodge chance", 8, 0, 100);
+		Ghostly_DeathPreventionCooldown = BUILDER.comment("Full-set bonus: cooldown in seconds before the death-prevention effect can trigger again [1-10000]").defineInRange("ghostly death prevention cooldown", 180, 1, 10000);
+		Ghostly_SpiritFormDuration = BUILDER.comment("Full-set bonus: duration in seconds of the invulnerable spirit form triggered by death prevention [0.5-300]").defineInRange("ghostly spirit form duration", 2.0D, 0.5D, 300.0D);
 		BUILDER.pop();
 
 		BUILDER.push("Structure");
