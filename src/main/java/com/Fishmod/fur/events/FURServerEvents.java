@@ -1,5 +1,6 @@
 package com.Fishmod.fur.events;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +14,17 @@ import com.Fishmod.fur.core.VespaInfestation;
 import com.Fishmod.fur.data.providers.FURBiomeTagsProvider;
 import com.Fishmod.fur.data.providers.FUREntityTypeTagsProvider;
 import com.Fishmod.fur.data.providers.FURStructureTagsProvider;
+import com.Fishmod.fur.entities.CactyrantEntity;
 import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ParasiteEntity;
 import com.Fishmod.fur.entities.flying.FlareflyEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.projectiles.BasicBombEntity;
+import com.Fishmod.fur.entities.tameable.CactoidEntity;
 import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
+import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.block.DreamcatcherBlock;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
@@ -48,6 +52,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -71,6 +76,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -1012,6 +1018,22 @@ public class FURServerEvents {
         	return;
         }
 
+        // Scarecrow/Cactoid/Mimic/Cactyrant disguise: while camouflaged (sitting pose for the first
+        // three, the separate isCamouflaging() flag for Cactyrant since it isn't a TamableAnimal), no
+        // unit may acquire them as a target - they read as an inanimate scarecrow/cactus/chest to any
+        // AI, not just to the player. Only blocks new targeting attempts, same scope as the Ghostly
+        // Armor spirit-form check above; a mob that already had one of these targeted before it
+        // disguised keeps that target (disguising only happens once nothing is currently after them).
+        if ((newTarget instanceof ScarecrowEntity || newTarget instanceof CactoidEntity || newTarget instanceof MimicEntity)
+        		&& ((TamableAnimal)newTarget).isInSittingPose()) {
+        	event.setCanceled(true);
+        	return;
+        }
+        if (newTarget instanceof CactyrantEntity cactyrant && cactyrant.isCamouflaging()) {
+        	event.setCanceled(true);
+        	return;
+        }
+
     	// Neutral
         if (newTarget != null && entity.getLastHurtByMob() != newTarget) {
         	boolean hasNose = newTarget.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(FURItemRegistry.ILLAGER_NOSE.get());
@@ -1076,6 +1098,59 @@ public class FURServerEvents {
     	if (event.getEntity().hasEffect(FUREffectRegistry.SPIRIT_FORM.get())) {
     		event.setCanceled(true);
     	}
+    }
+
+    /**
+     * {@code ZombieVillager#startConverting(UUID, int)} - vanilla only ever calls this from its own
+     * private {@code mobInteract}, for a Golden Apple. Reflected here so Holy Water can trigger the
+     * exact same conversion (same 60-100s timer range, same Strength buff/particles/sound/entity event)
+     * instead of reimplementing - and risking drifting from - that private logic.
+     */
+    private static final Method ZOMBIE_VILLAGER_START_CONVERTING;
+    static {
+    	try {
+    		ZOMBIE_VILLAGER_START_CONVERTING = ZombieVillager.class.getDeclaredMethod("startConverting", UUID.class, int.class);
+    		ZOMBIE_VILLAGER_START_CONVERTING.setAccessible(true);
+    	} catch (NoSuchMethodException e) {
+    		throw new ExceptionInInitializerError(e);
+    	}
+    }
+
+    /**
+     * Holy Water alone starts a Zombie Villager's conversion back into a Villager - no Weakness needed
+     * first, unlike the Golden Apple method. The timer/particles/sound/delay themselves still exactly
+     * match a Golden Apple cure (see {@link #ZOMBIE_VILLAGER_START_CONVERTING}); only the "must be
+     * weakened first" gate is skipped. Doesn't replace the Golden Apple method, just gives Holy Water
+     * its own, simpler one.
+     */
+    @SubscribeEvent
+    public void onEntityInteractHolyWater(PlayerInteractEvent.EntityInteract event) {
+    	ItemStack stack = event.getItemStack();
+    	if (!(event.getTarget() instanceof ZombieVillager zombieVillager) || !stack.is(FURItemRegistry.HOLY_WATER.get())) {
+    		return;
+    	}
+
+    	if (zombieVillager.isConverting()) {
+    		event.setCancellationResult(InteractionResult.CONSUME);
+    		event.setCanceled(true);
+    		return;
+    	}
+
+    	Player player = event.getEntity();
+    	if (!player.getAbilities().instabuild) {
+    		stack.shrink(1);
+    	}
+
+    	if (!event.getLevel().isClientSide()) {
+    		try {
+    			ZOMBIE_VILLAGER_START_CONVERTING.invoke(zombieVillager, player.getUUID(), zombieVillager.getRandom().nextInt(2401) + 3600);
+    		} catch (ReflectiveOperationException e) {
+    			throw new RuntimeException(e);
+    		}
+    	}
+
+    	event.setCancellationResult(InteractionResult.SUCCESS);
+    	event.setCanceled(true);
     }
 
     /**

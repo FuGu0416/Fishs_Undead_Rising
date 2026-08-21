@@ -69,8 +69,8 @@ public class UndertakerRenderer extends GeoEntityRenderer<UndertakerEntity> {
  					if (stack.getItem() instanceof ShieldItem)
  						poseStack.translate(0, 0.125, -0.25);
  					
- 					poseStack.scale(1.33F, 1.33F, 1.33F);
- 					poseStack.translate(0.0F, 0.15F, 0.0F);
+ 					poseStack.scale(1.5F, 1.5F, 1.5F);
+ 					poseStack.translate(0.0F, -0.15F, 0.0F);
  					
  				} else if (stack == UndertakerRenderer.this.offhandItem) {
  					poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
@@ -101,4 +101,10 @@ public class UndertakerRenderer extends GeoEntityRenderer<UndertakerEntity> {
 		this.mainHandItem = animatable.getMainHandItem();
 		this.offhandItem = animatable.getOffhandItem();
 	}
+	
+    @Override
+    protected void applyRotations(UndertakerEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
+		poseStack.scale(1.5F, 1.5F, 1.5F);
+	}   	
 }

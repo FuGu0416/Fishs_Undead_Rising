@@ -29,9 +29,9 @@ public class EnchantmentDominion extends Enchantment {
 				&& (stack.getItem().equals(FURItemRegistry.UNDERTAKER_SHOVEL.get())
 				|| stack.getItem().equals(FURItemRegistry.SPORECALLER.get())
 				|| stack.getItem().equals(FURItemRegistry.SCARAB_SCEPTER.get())
-				|| stack.getItem().equals(FURItemRegistry.ANKH_SCEPTER.get())
-				|| stack.getItem().equals(FURItemRegistry.FUNGAL_STAFF.get())
-				|| stack.getItem().equals(FURItemRegistry.FROZEN_GRIP.get()));
+				|| stack.getItem().equals(FURItemRegistry.SERE_SHOVEL.get())
+				|| stack.getItem().equals(FURItemRegistry.VIRULENT_SHOVEL.get())
+				|| stack.getItem().equals(FURItemRegistry.FRORE_SHOVEL.get()));
 	}
 
 	/**

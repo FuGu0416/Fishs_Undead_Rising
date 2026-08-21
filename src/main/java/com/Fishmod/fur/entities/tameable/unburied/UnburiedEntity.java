@@ -80,6 +80,8 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
 	protected int spellTicks;
 	private int limitedLifeTicks;
 	private boolean isSmoking = false;
+	/** See {@link #setPendingBirth()}. */
+	private boolean pendingBirth = false;
 	
 	public UnburiedEntity(EntityType<? extends UnburiedEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
@@ -135,6 +137,23 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
     public void setSpellcasting() {
     	this.spellTicks = SPELL_TIMER;
     	this.level().broadcastEntityEvent(this, (byte)32);
+    }
+
+    /**
+     * Callers that just spawned this entity (via {@code SpawnUtil.trySpawnEntity}, which already runs
+     * {@code EntityType#spawn} and so has already added it to the level/tracking) should call this
+     * instead of {@link #setSpellcasting} directly. Calling {@code setSpellcasting()} right after spawn
+     * broadcasts the "start birth" entity event before nearby clients are guaranteed to actually be
+     * tracking the entity yet, so it can be missed - the entity then renders one or more frames in its
+     * plain idle pose, fully visible at ground level, before the birth clip (and the entity actually
+     * being underground-clipped via {@link #travel}'s sink) ever kicks in. Deferring the real
+     * {@link #setSpellcasting} call to this entity's own first {@link #tick()} - which only ever runs on
+     * a later server tick than the one that added it - guarantees tracking has caught up first, the same
+     * fix already used for Scarab's analogous spawn-flourish race (see that entity's {@code
+     * pendingBurrowUp}).
+     */
+    public void setPendingBirth() {
+    	this.pendingBirth = true;
     }
     
     public boolean isSpellcasting() {
@@ -203,7 +222,15 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
      * use this to react to sunlight and start to burn.
      */
     @Override
-    public void tick() {        
+    public void tick() {
+        // Convert a deferred setPendingBirth() into the real setSpellcasting() before super.tick() runs
+        // any goals this tick, so AIBirthing already freezes movement/attack from this very tick onward -
+        // see setPendingBirth()'s javadoc for why this can't just happen immediately at spawn time.
+        if (this.pendingBirth) {
+            this.pendingBirth = false;
+            this.setSpellcasting();
+        }
+
     	super.tick();
 
         if (this.spellTicks > 0) {
@@ -223,7 +250,7 @@ public class UnburiedEntity extends FURTameableEntity implements GeoEntity {
         }
 
         if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
-            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
+            if (FURConfig.Show_Expire_Death_Message.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
             }        
             this.level().broadcastEntityEvent(this, (byte)11);

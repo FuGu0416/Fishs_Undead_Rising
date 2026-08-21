@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "fur:item/ankh_scepter"
+        "layer0": "fur:item/sere_shovel"
     }
 }

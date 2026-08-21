@@ -37,7 +37,6 @@ import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -74,7 +73,6 @@ public class SporecallerItem extends FURWeaponItem {
 
 		if (level instanceof ServerLevel) {
 			int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
-			int skin = stack.getEnchantmentLevel(Enchantments.FIRE_ASPECT) > 0 ? 1 : 0;
 			BlockPos blockpos = BlockPos.containing(player.getX() + player.getLookAngle().x, player.getY() + 0.2D, player.getZ() + player.getLookAngle().z);
 
 			List<MobEffectInstance> injected = getInjectedEffects(stack);
@@ -86,7 +84,7 @@ public class SporecallerItem extends FURWeaponItem {
 			}
 
 			for (int i = 0; i < 1 + dominion; i++) {
-				FURTameableEntity summoned = FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SHROOMLING.get(), FURConfig.Shroomling_Lifespan.get() * 20, skin);
+				FURTameableEntity summoned = FURWeaponItem.SummonMinion(player, stack, level, blockpos, FUREntityRegistry.SHROOMLING.get(), FURConfig.Shroomling_Lifespan.get() * 20);
 				if (summoned instanceof ShroomlingEntity shroomling) {
 					if (primary == null) {
 						// No injection: spore-less Shroomling (default bubble, no burst).
@@ -107,7 +105,7 @@ public class SporecallerItem extends FURWeaponItem {
 				double d0 = blockpos.getX() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
 				double d1 = blockpos.getY() + (player.getRandom().nextDouble() * 2.0D);
 				double d2 = blockpos.getZ() + (player.getRandom().nextDouble() * 2.0D) - 1.0D;
-				((ServerLevel) level).sendParticles(skin > 0 ? ParticleTypes.FLAME : ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
+				((ServerLevel) level).sendParticles(ParticleTypes.SPLASH, d0, d1, d2, 15, 0.0D, 0.0D, 0.0D, 0.0D);
 			}
 
 			stack.hurtAndBreak(8, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));

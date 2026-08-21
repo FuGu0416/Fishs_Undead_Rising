@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -71,11 +72,34 @@ public class UndertakerEntity extends Monster implements GeoEntity {
     
 	public static final int ATTACK_TIMER = 40;
 	public static final int SPELL_TIMER = 40;
+	/**
+	 * How long after freshly acquiring a target (from no target -> a target) Undertaker must fight with
+	 * melee alone before {@link AIUseSpell} is allowed to trigger its first cast. Without this, {@code
+	 * spellCooldown} defaults to 0 and the very first target lock instantly wins the goal-priority race
+	 * against {@link AttackGoal}, freezing Undertaker into a 2s cast animation - and its own attack swing
+	 * needs another 1.5s to land after that - before it can deal any damage at all, often losing it fights
+	 * against far weaker mobs that get several free hits in during that opening window. See {@link #setTarget}.
+	 */
+	public static final int OPENING_MELEE_GRACE_TICKS = 60;
 	protected int spellTicks;
-	
+	/** tickCount at which the current target was freshly acquired (no target -> a target); see {@link #setTarget}. */
+	private int combatStartTick = -1;
+
 	public UndertakerEntity(EntityType<? extends UndertakerEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
 		this.xpReward = 10;
+	}
+
+	/**
+	 * Marks when combat freshly starts (no target -> a target) so {@link AIUseSpell} can hold off its
+	 * first cast for {@link #OPENING_MELEE_GRACE_TICKS} - see that field's javadoc for why.
+	 */
+	@Override
+	public void setTarget(@Nullable LivingEntity target) {
+		if (target != null && this.getTarget() == null) {
+			this.combatStartTick = this.tickCount;
+		}
+		super.setTarget(target);
 	}
 	
     @Override
@@ -285,6 +309,8 @@ public class UndertakerEntity extends Monster implements GeoEntity {
                 return false;
             else if (UndertakerEntity.this.isSpellcasting() || !UndertakerEntity.this.hasLineOfSight(UndertakerEntity.this.getTarget()))
                 return false;
+            else if (UndertakerEntity.this.tickCount - UndertakerEntity.this.combatStartTick < OPENING_MELEE_GRACE_TICKS)
+            	return false;
             else {
                 int i = UndertakerEntity.this.level().getEntitiesOfClass(UnburiedEntity.class, UndertakerEntity.this.getBoundingBox().inflate(16.0D)).size();
             	return UndertakerEntity.this.tickCount >= this.spellCooldown && i < FURConfig.Undertaker_Ability_Max.get();
@@ -343,7 +369,7 @@ public class UndertakerEntity extends Monster implements GeoEntity {
 	
 	                if (entity != null) {
 		                entity.setOwnerUUID(UndertakerEntity.this.getUUID());
-		                entity.setSpellcasting();   		                
+		                entity.setPendingBirth();
 		                
 		                if (UndertakerEntity.this.getTarget() != null) {
 		                	entity.setTarget(UndertakerEntity.this.getTarget());

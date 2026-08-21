@@ -19,6 +19,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
@@ -44,11 +45,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FloatingMobEntity extends Monster implements ICharging {
 	protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(FloatingMobEntity.class, EntityDataSerializers.BYTE);
 	protected int spellTicks;
-	
+	/** See {@link com.Fishmod.fur.entities.UndertakerEntity#OPENING_MELEE_GRACE_TICKS} - same fix, same
+	 *  reasoning, shared here since Avaton/Sea Hag's own {@code AIUseSpell} goals follow the identical
+	 *  "spellCooldown defaults to 0, first target lock instantly wins over melee" pattern. */
+	public static final int OPENING_MELEE_GRACE_TICKS = 60;
+	/** tickCount at which the current target was freshly acquired (no target -> a target); see
+	 *  {@link #setTarget}. Protected so subclasses' own {@code AIUseSpell} goals can gate on it. */
+	protected int combatStartTick = -1;
+
 	public FloatingMobEntity(EntityType<? extends FloatingMobEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
         this.moveControl = new FloatingMoveControl(this);
     }
+
+	/** See {@link com.Fishmod.fur.entities.UndertakerEntity#setTarget} - same fix, same reasoning. */
+	@Override
+	public void setTarget(@Nullable LivingEntity target) {
+		if (target != null && this.getTarget() == null) {
+			this.combatStartTick = this.tickCount;
+		}
+		super.setTarget(target);
+	}
 	
     /**
      * Tries to move the entity towards the specified location.

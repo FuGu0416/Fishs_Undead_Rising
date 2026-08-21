@@ -51,7 +51,8 @@ public class FURItemTagsProvider extends ItemTagsProvider {
         		Items.GLOW_BERRIES,
         		FURBlockRegistry.EMBERWICK_FUNGUS.get().asItem(),
         		FURBlockRegistry.GLIMMERCAP.get().asItem(),
-        		FURBlockRegistry.GLOWSHROOM.get().asItem());
+        		FURBlockRegistry.GLOWSHROOM.get().asItem(),
+        		FURBlockRegistry.LUMINOUS_FILAMENT.get().asItem());
 
         this.tag(Tags.Items.INGOTS).add(
         		FURItemRegistry.ECTOPLASM_INGOT.get(),
@@ -136,7 +137,11 @@ public class FURItemTagsProvider extends ItemTagsProvider {
         this.tag(TOOLS_AXES).add(
         		FURItemRegistry.MOLTEN_AXE.get(),
         		FURItemRegistry.SOULFORGED_AXE.get());
-        this.tag(TOOLS_SHOVELS).add(FURItemRegistry.UNDERTAKER_SHOVEL.get());
+        this.tag(TOOLS_SHOVELS).add(
+        		FURItemRegistry.UNDERTAKER_SHOVEL.get(),
+        		FURItemRegistry.VIRULENT_SHOVEL.get(),
+        		FURItemRegistry.FRORE_SHOVEL.get(),
+        		FURItemRegistry.SERE_SHOVEL.get());
         this.tag(Tags.Items.TOOLS).addTag(TOOLS_AXES).addTag(TOOLS_SHOVELS);
     }
 }

@@ -225,11 +225,11 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades; 
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Messege;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Message;
 	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Ankh_Scepter_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Fungal_Staff_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Frozen_Grip_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Sere_Shovel_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Virulent_Shovel_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Frore_Shovel_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ghostly_DodgeChance;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Ghostly_DeathPreventionCooldown;
 	public static final ForgeConfigSpec.ConfigValue<Double> Ghostly_SpiritFormDuration;
@@ -298,7 +298,7 @@ public final class FURConfig {
 		BUILDER.pop();
 		
 		BUILDER.push("Shroomling");
-		Shroomling_Lifespan = BUILDER.comment("Shroomling lifespan [false/true]").defineInRange("shroomling lifespan", 60, 0, 10000);
+		Shroomling_Lifespan = BUILDER.comment("Shroomling lifespan [1-10000]").defineInRange("shroomling lifespan", 60, 0, 10000);
 		Shroomling_Health = BUILDER.comment("Maximum Shroomling health [1-1000]").defineInRange("shroomling health", 20.0D, 1.0D, 1000.0D);
 		Shroomling_Attack = BUILDER.comment("Shroomling strength [1-1000]").defineInRange("shroomling attack", 3.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -339,7 +339,7 @@ public final class FURConfig {
 		Piranha_Attack = BUILDER.comment("Piranha strength [1-1000]").defineInRange("piranha attack", 1.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
-		BUILDER.push("Osvermis");
+		BUILDER.push("OsVermis");
 		BoneWorm_Health = BUILDER.comment("Maximum OsVermis health [1-1000]").defineInRange("boneworm health", 32.0D, 1.0D, 1000.0D);
 		BoneWorm_Attack = BUILDER.comment("OsVermis strength [1-1000]").defineInRange("boneworm attack", 6.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -376,7 +376,7 @@ public final class FURConfig {
 		BUILDER.push("Weta");
 		Weta_Health = BUILDER.comment("Maximum Weta health [1-1000]").defineInRange("weta health", 12.0D, 1.0D, 1000.0D);
 		Weta_Attack = BUILDER.comment("Weta strength [1-1000]").defineInRange("weta attack", 1.0D, 1.0D, 1000.0D);
-		Weta_Harvest_Diseased_Wheat = BUILDER.comment("Chance of dropping Diseased Wheat [1-1000]").defineInRange("diseased wheat drop rate", 0.15D, 0.0D, 1.0D);
+		Weta_Harvest_Diseased_Wheat = BUILDER.comment("Chance of dropping Diseased Wheat [0.0-1.0]").defineInRange("diseased wheat drop rate", 0.15D, 0.0D, 1.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Avaton");
@@ -462,10 +462,10 @@ public final class FURConfig {
 		Wraith_Attack = BUILDER.comment("Wraith strength [1-1000]").defineInRange("wraith attack", 5.0D, 1.0D, 1000.0D);
 		BUILDER.pop();		
 
-		BUILDER.push("Amber Scarab");
-		Scarab_Lifespan = BUILDER.comment("Amber Scarab lifespan [1-10000]").defineInRange("amber scarab lifespan", 8, 0, 10000);
-		Scarab_Health = BUILDER.comment("Maximum Amber Scarab health [1-1000]").defineInRange("amber scarab health", 8.0D, 1.0D, 1000.0D);
-		Scarab_Attack = BUILDER.comment("Amber Scarab strength [1-1000]").defineInRange("amber scarab attack", 1.0D, 1.0D, 1000.0D);
+		BUILDER.push("Scarab");
+		Scarab_Lifespan = BUILDER.comment("Scarab lifespan [1-10000]").defineInRange("scarab lifespan", 8, 0, 10000);
+		Scarab_Health = BUILDER.comment("Maximum Scarab health [1-1000]").defineInRange("scarab health", 8.0D, 1.0D, 1000.0D);
+		Scarab_Attack = BUILDER.comment("Scarab strength [1-1000]").defineInRange("scarab attack", 1.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Beelzebub");
@@ -504,21 +504,21 @@ public final class FURConfig {
 		MoltenHammer_Cooldown = BUILDER.comment("Ability cooldown of Molten Hammer [1-10000]").defineInRange("molten hammer cooldown", 4, 0, 10000);
 		SoulFireHammer_Damage = BUILDER.comment("Area Damage of Soulforged Hammer [1-1000]").defineInRange("soulforged hammer attack", 10.0D, 1.0D, 1000.0D);
 		SoulFireHammer_Cooldown = BUILDER.comment("Ability cooldown of Soulforged Hammer [1-10000]").defineInRange("soulforged hammer cooldown", 4, 0, 10000);
-		Fission_ModEntity = BUILDER.comment("Allow Potion of Fission to be used on entites from other mods [false/true]").define("fission potion works on entities from other mods", false);
-		GoldenHeart_dur = BUILDER.comment("Set the chances of Golden Heart to drop 1 durability per tick , 0 = Infinite [0-100]").defineInRange("golden heart durability", 100, 0, 100);
-		GoldenHeart_bl = BUILDER.comment("BlackBanlist for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"mod_lavacow:moltenhammer\\\"").defineList("banlisted items from golden heart", 
+		Fission_ModEntity = BUILDER.comment("Allow Potion of Fission to be used on entities from other mods [false/true]").define("fission potion works on entities from other mods", false);
+		GoldenHeart_dur = BUILDER.comment("Set the chance of Golden Heart dropping 1 durability per tick, 0 = Infinite [0-100]").defineInRange("golden heart durability", 100, 0, 100);
+		GoldenHeart_bl = BUILDER.comment("Ban list for items that Golden Heart are unable to mend. Ex. \\\"minecraft:shears\\\" or \\\"fur:molten_hammer\\\"").defineList("banlisted items from golden heart",
 				Lists.newArrayList(), o -> o instanceof String);		
 		GoldenHeart_GrantsRegeneration = BUILDER.comment("Enables the Regeneration effect of the Golden Heart. [false/true]").define("golden heart grants regeneration", true);
 		GoldenHeart_RepairsEquipment = BUILDER.comment("Allow the Golden Heart to repair worn equipment. [false/true]").define("golden heart repairs equipment", true);	
 		BoneSword_Damage = BUILDER.comment("Set the bonus damage of Bone Sword to X% [0-100]").defineInRange("bonesword bonus damage", 5, 0, 100);		
 		SludgeWand_Cooldown = BUILDER.comment("Ability cooldown of \\\"Pestilence\\\" [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
-		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Midnight Mourne [1-10000]").defineInRange("midnight mourne cooldown", 60, 0, 10000);							
+		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Undertaker's Shovel [1-10000]").defineInRange("undertaker shovel cooldown", 60, 0, 10000);
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
 		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
 		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
-		Ankh_Scepter_Cooldown = BUILDER.comment("Ability cooldown of Ankh Scepter [1-10000]").defineInRange("ankh scepter cooldown", 60, 0, 10000);
-		Fungal_Staff_Cooldown = BUILDER.comment("Ability cooldown of Fungal Staff [1-10000]").defineInRange("fungal staff cooldown", 60, 0, 10000);
-		Frozen_Grip_Cooldown = BUILDER.comment("Ability cooldown of Frozen Grip [1-10000]").defineInRange("frozen grip cooldown", 60, 0, 10000);
+		Sere_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Sere Shovel [1-10000]").defineInRange("sere shovel cooldown", 60, 0, 10000);
+		Virulent_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Virulent Shovel [1-10000]").defineInRange("virulent shovel cooldown", 60, 0, 10000);
+		Frore_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Frore Shovel [1-10000]").defineInRange("frore shovel cooldown", 60, 0, 10000);
 		BUILDER.pop();
 
 		BUILDER.push("Dreamcatcher");
@@ -558,7 +558,7 @@ public final class FURConfig {
 		Suicidal_Minion = BUILDER.comment("Entities summoned by other mobs die when their summoner dies. [false/true]").define("suicidal", true);
 		BonusVillagerTrades = BUILDER.comment("Offers bonus Villager trades. [false/true]").define("bonus villager trades", true);
 		BonusWanderingTraderTrades = BUILDER.comment("Offers bonus Wandering Trader trades. [false/true]").define("bonus wandering trader trades", true); 
-		Show_Expire_Death_Messege = BUILDER.comment("Show custom death messege when summoned mobs expired. [false/true]").define("show summoned mobs death messege", true); 
+		Show_Expire_Death_Message = BUILDER.comment("Show custom death message when summoned mobs expired. [false/true]").define("show summoned mobs death message", true);
 		BUILDER.pop();
 		
 		SPEC = BUILDER.build();

@@ -178,10 +178,11 @@ public class SeaHagEntity extends FloatingMobEntity implements GeoEntity {
         	if (SeaHagEntity.this.isSpellcasting()) {
                 return false;
             } else {
-                int i = SeaHagEntity.this.level().getEntitiesOfClass(Pufferfish.class, SeaHagEntity.this.getBoundingBox().inflate(16.0D)).size();               
-            	return SeaHagEntity.this.tickCount >= this.spellCooldown 
-            			&& ((SeaHagEntity.this.getTarget() != null 
-            			&& Math.abs(SeaHagEntity.this.getY() - SeaHagEntity.this.getTarget().getY()) < 4.0D)) 
+                int i = SeaHagEntity.this.level().getEntitiesOfClass(Pufferfish.class, SeaHagEntity.this.getBoundingBox().inflate(16.0D)).size();
+            	return SeaHagEntity.this.tickCount >= this.spellCooldown
+            			&& ((SeaHagEntity.this.getTarget() != null
+            			&& Math.abs(SeaHagEntity.this.getY() - SeaHagEntity.this.getTarget().getY()) < 4.0D))
+            			&& SeaHagEntity.this.tickCount - SeaHagEntity.this.combatStartTick >= OPENING_MELEE_GRACE_TICKS
             			&& i < FURConfig.SeaHag_Ability_Max.get();
             }
         }

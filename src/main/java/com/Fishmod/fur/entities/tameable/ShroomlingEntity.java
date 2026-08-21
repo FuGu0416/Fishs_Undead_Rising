@@ -70,7 +70,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("shroomling.model.walk");
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("shroomling.model.attack_blend");
 
-	private static final EntityDataAccessor<Integer> SKIN_TYPE = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
 	/** Index into {@link #SPORE_EFFECTS} of the spore effect this shroomling carries. Synced so the client can tint the ambient particles. */
 	private static final EntityDataAccessor<Integer> SPORE_EFFECT = SynchedEntityData.defineId(ShroomlingEntity.class, EntityDataSerializers.INT);
 	/** Packed RGB colour of an injected custom spore effect, or {@code -1} when this shroomling uses its table effect. Synced so the bubble layer can tint to the injected potion. */
@@ -110,7 +109,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 	@Override
     protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(SKIN_TYPE, Integer.valueOf(0));
 		this.entityData.define(SPORE_EFFECT, Integer.valueOf(0));
 		this.entityData.define(INJECTED_SPORE_COLOR, Integer.valueOf(-1));
     }
@@ -225,14 +223,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     	}
     }
 
-    public int getSkin() {
-        return this.entityData.get(SKIN_TYPE).intValue();
-    }
-
-    public void setSkin(int skinType) {
-        this.entityData.set(SKIN_TYPE, Integer.valueOf(skinType));
-    }
-
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
         // Shroomlings are fungal creatures — immune to the Sporerot affliction.
@@ -285,7 +275,7 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
 		super.tick();
 
     	if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
-            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
+            if (FURConfig.Show_Expire_Death_Message.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
             }
         	this.level().broadcastEntityEvent(this, (byte)11);
@@ -336,7 +326,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Shroomling_Attack.get());
     	this.setHealth(this.getMaxHealth());
-    	this.setSkin(this.random.nextInt(2));
     	this.setSporeEffect(this.random.nextInt(SPORE_EFFECTS.length));
 
     	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
@@ -411,7 +400,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     public void readAdditionalSaveData(CompoundTag compound) {
        super.readAdditionalSaveData(compound);
         this.setLimitedLife(compound.getInt("LifeTicks"));
-        this.setSkin(compound.getInt("Variant"));
         // Set the raw saved index (don't clamp) so the "no spore effect" sentinel (-1) survives a reload.
         this.entityData.set(SPORE_EFFECT, compound.getInt("SporeEffect"));
     	this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(FURConfig.Shroomling_Health.get() + ((float)this.weaponEnchants.getUnbreaking() * 2.0F));
@@ -429,7 +417,6 @@ public class ShroomlingEntity extends FURTameableEntity implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("LifeTicks", this.limitedLifeTicks - this.tickCount);
-        compound.putInt("Variant", getSkin());
         compound.putInt("SporeEffect", this.getSporeEffect());
         compound.putInt("InjectedSporeColor", this.entityData.get(INJECTED_SPORE_COLOR));
         if (this.customSporeEffect != null) {

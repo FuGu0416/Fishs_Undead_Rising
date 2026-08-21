@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S#",
+    "DCD",
+    "#D#"
+  ],
+  "key": {
+    "#": {
+      "item": "fur:ectoplasm_ingot"
+    },
+    "D": {
+      "item": "fur:wisp_ashes"
+    },
+    "C": {
+      "item": "minecraft:bone_block"
+    },
+    "S": {
+      "item": "fur:undertaker_smithing_template"
+    }
+  },
+  "result": {
+    "count": 2,
+    "item": "fur:undertaker_smithing_template"
+  }
+}

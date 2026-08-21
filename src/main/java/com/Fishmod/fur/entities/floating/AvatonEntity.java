@@ -154,9 +154,13 @@ public class AvatonEntity extends FloatingMobEntity implements GeoEntity {
                 				farmlandnearby = true;
                 		}              
                 
-            	return AvatonEntity.this.tickCount >= this.spellCooldown 
-            			&& ((AvatonEntity.this.getTarget() != null 
-            			&& Math.abs(AvatonEntity.this.getY() - AvatonEntity.this.getTarget().getY()) < 4.0D) || farmlandnearby) 
+            	return AvatonEntity.this.tickCount >= this.spellCooldown
+            			&& ((AvatonEntity.this.getTarget() != null
+            			&& Math.abs(AvatonEntity.this.getY() - AvatonEntity.this.getTarget().getY()) < 4.0D
+            			// Combat-triggered casting only - don't let a freshly-aggro'd target instantly
+            			// freeze Avaton into a cast instead of fighting back; the farmland-triggered
+            			// idle summon below isn't combat, so it isn't gated on this.
+            			&& AvatonEntity.this.tickCount - AvatonEntity.this.combatStartTick >= OPENING_MELEE_GRACE_TICKS) || farmlandnearby)
             			&& i < FURConfig.Avaton_Ability_Max.get();
             }
         }

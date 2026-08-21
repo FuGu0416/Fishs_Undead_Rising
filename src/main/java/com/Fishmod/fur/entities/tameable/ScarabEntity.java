@@ -114,10 +114,8 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	// Priority 0 (above FloatGoal's JUMP-only claim) so a burrowing scarab (up on spawn, or down on
     	// its daytime disappear) can't move/attack/look, but can still be kept from drowning if it
     	// happens to be underwater.
-    	this.goalSelector.addGoal(0, new AIBurrowing());
+    	if (!FURConfig.SunScreen_Mode.get())this.goalSelector.addGoal(0, new AIBurrowing());
     	this.goalSelector.addGoal(1, new FloatGoal(this));
-    	// Scarabs are prey to ravens: flee on sight. High movement priority so fleeing wins over
-    	// attacking/leaping even if a raven manages to hurt the scarab.
     	this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, RavenEntity.class, 8.0F, 1.0D, 1.4D));
     	this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
     	this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
@@ -238,7 +236,7 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     		this.attackTimer--;
 
     	if (this.limitedLifeTicks >= 0 && this.tickCount >= this.limitedLifeTicks) {
-            if (FURConfig.Show_Expire_Death_Messege.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
+            if (FURConfig.Show_Expire_Death_Message.get() && !this.level().isClientSide() && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof Player) {
                 this.getOwner().sendSystemMessage(SpawnUtil.TimeupDeathMessage(this));
             }
             this.level().broadcastEntityEvent(this, (byte)11);

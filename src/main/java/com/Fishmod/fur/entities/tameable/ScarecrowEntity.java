@@ -1,5 +1,7 @@
 package com.Fishmod.fur.entities.tameable;
 
+import java.util.EnumSet;
+
 import javax.annotation.Nullable;
 
 import com.Fishmod.fur.mod_LavaCow;
@@ -45,6 +47,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -53,14 +56,12 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -100,9 +101,11 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 	private int cleaveTimer;
 	/** 4: Vertical 5: Horizontal*/
 	public byte AttackStance;
-	
+
 	private LookAtPlayerGoal watch;
 	private RandomLookAroundGoal look;
+	/** Set only while {@link CreepyGlanceGoal} is actively holding a look - see {@link #getMaxHeadXRot()}. */
+	private boolean glancing;
 	
 	public ScarecrowEntity(EntityType<? extends ScarecrowEntity> entityType, Level worldIn) {
         super(entityType, worldIn);
@@ -125,6 +128,10 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
         this.goalSelector.addGoal(2, new ScarecrowEntity.AttackGoal(this));
         this.goalSelector.addGoal(8, this.watch);
         this.goalSelector.addGoal(8, this.look);
+        // Not removed by doSitCommand like watch/look - it needs to keep running (and self-gates on
+        // isInSittingPose()) precisely while disguised, so it can occasionally interrupt the frozen
+        // pose with a brief creepy glance at a nearby player at night.
+        this.goalSelector.addGoal(9, new ScarecrowEntity.CreepyGlanceGoal(this));
         this.applyEntityAI();
     }
 
@@ -150,17 +157,6 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     }
     
     @Override
-    protected boolean isSunBurnTick() {
-        if (this.level().isDay() && !this.level().isClientSide) {
-           float f = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-           BlockPos blockpos = BlockPos.containing(this.getX(), Math.round(this.getY()), this.getZ());
-           if (this.getVehicle() instanceof Boat) blockpos = blockpos.above();
-           return (f > 0.5F && this.level().canSeeSky(blockpos));
-        }
-        return false;
-    }
-    
-    @Override
     public double getMyRidingOffset() {
         return -1.0D;
     }
@@ -181,9 +177,15 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
     		--this.cleaveTimer;
     	}
     	
+    	// Disguise (sitting, head frozen) is the default resting state at all times now, not just in
+    	// daylight - a wild Scarecrow looks like an inanimate prop until something is actually after
+    	// it. Target acquisition (targetSelector) still runs while sitting, so it can still notice
+    	// approaching players; getting a target is what wakes it (FURMeleeAttackGoal already refuses
+    	// to swing while isInSittingPose(), so waking is required before it can actually attack).
+    	// Losing the target (killed, fled out of range, ...) puts it back to sleep next tick.
     	if (!this.level().isClientSide && !this.isTame()) {
-    		if (this.isSunBurnTick()) {
-    			// guarded so the full switchState goal churn doesn't rerun every tick all day
+    		if (this.getTarget() == null) {
+    			// guarded so the full switchState goal churn doesn't rerun every tick while idle
     			if (this.state != FURTameableEntity.State.SITTING) {
     				this.doSitCommand(null);
     			}
@@ -452,19 +454,21 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
      */
     // "Planted" checks use the synced sitting pose rather than isSilent() — the silent flag
     // is only a sound-mute side effect and can be flipped by commands or other mods.
+    // The glancing exception lets CreepyGlanceGoal briefly turn the head while still disguised —
+    // everywhere else, sitting means frozen.
     @Override
     public int getMaxHeadXRot() {
-        return this.isInSittingPose() ? 0 : super.getMaxHeadXRot();
+        return (this.isInSittingPose() && !this.glancing) ? 0 : super.getMaxHeadXRot();
     }
 
     @Override
     public int getMaxHeadYRot() {
-        return this.isInSittingPose() ? 0 : super.getMaxHeadYRot();
+        return (this.isInSittingPose() && !this.glancing) ? 0 : super.getMaxHeadYRot();
     }
 
     @Override
     public int getHeadRotSpeed() {
-        return this.isInSittingPose() ? 0 : super.getHeadRotSpeed();
+        return (this.isInSittingPose() && !this.glancing) ? 0 : super.getHeadRotSpeed();
 	}
 
     @Override
@@ -631,6 +635,69 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
             return (double)(this.mob.getBbWidth() * 4.0F * this.mob.getBbWidth() * 4.0F + target.getBbWidth());
         }
 	}
+
+    /**
+     * Purely cosmetic: while disguised (sitting) at night, occasionally turns the head to track a
+     * nearby player for a few seconds before freezing again - a "is it actually just a prop?" moment.
+     * Does not acquire a target and does not wake the Scarecrow up; {@link #glancing} is the only
+     * thing it flips, which just lets {@link #getMaxHeadXRot()} briefly stop clamping head rotation
+     * to zero. Modeled after vanilla LookAtPlayerGoal, with sitting/night gating and the glancing flag
+     * added since that vanilla goal has neither and isn't otherwise reusable here (it's already removed
+     * from the goal selector for the whole time this entity is sitting, via doSitCommand).
+     */
+    static class CreepyGlanceGoal extends Goal {
+    	private static final float LOOK_DISTANCE = 10.0F;
+    	/** Rolled once per tick while eligible - low enough to feel rare/unsettling, not constant. */
+    	private static final float PROBABILITY = 0.001F;
+
+    	private final ScarecrowEntity scarecrow;
+    	private Player lookAt;
+    	private int lookTime;
+
+    	CreepyGlanceGoal(ScarecrowEntity scarecrow) {
+    		this.scarecrow = scarecrow;
+    		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+    	}
+
+    	private boolean eligible() {
+    		return this.scarecrow.isInSittingPose() && !this.scarecrow.level().isDay();
+    	}
+
+    	@Override
+    	public boolean canUse() {
+    		if (!this.eligible() || this.scarecrow.getRandom().nextFloat() >= PROBABILITY) {
+    			return false;
+    		}
+    		this.lookAt = this.scarecrow.level().getNearestPlayer(this.scarecrow, (double)LOOK_DISTANCE);
+    		return this.lookAt != null;
+    	}
+
+    	@Override
+    	public boolean canContinueToUse() {
+    		return this.eligible() && this.lookTime > 0 && this.lookAt != null && this.lookAt.isAlive()
+    				&& this.scarecrow.distanceToSqr(this.lookAt) <= (double)(LOOK_DISTANCE * LOOK_DISTANCE);
+    	}
+
+    	@Override
+    	public void start() {
+    		this.lookTime = 40 + this.scarecrow.getRandom().nextInt(60); // 2-5s
+    		this.scarecrow.glancing = true;
+    	}
+
+    	@Override
+    	public void stop() {
+    		this.lookAt = null;
+    		this.scarecrow.glancing = false;
+    	}
+
+    	@Override
+    	public void tick() {
+    		if (this.lookAt != null && this.lookAt.isAlive()) {
+    			this.scarecrow.getLookControl().setLookAt(this.lookAt, (float)this.scarecrow.getMaxHeadYRot(), (float)this.scarecrow.getMaxHeadXRot());
+    		}
+    		--this.lookTime;
+    	}
+    }
     
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
     	if (this.isInSittingPose()) {

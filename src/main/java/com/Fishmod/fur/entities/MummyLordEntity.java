@@ -26,6 +26,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -67,6 +68,10 @@ public class MummyLordEntity extends Monster implements GeoEntity {
 
     public static final int ATTACK_TIMER = 25;
     public static final int SPELL_TIMER  = 40;
+    /** See {@link UndertakerEntity#OPENING_MELEE_GRACE_TICKS} - same fix, same reasoning: without this,
+     *  the very first target lock instantly wins the goal-priority race against melee/ranged attacks and
+     *  freezes this guard into its cast animation before it can deal any damage at all. */
+    public static final int OPENING_MELEE_GRACE_TICKS = 60;
 
     /** How far this guard will wander/chase from {@link #homePos} - e.g. a structure-placed guard
      *  (Royal Tomb) shouldn't leave its post to wander off or chase a target across the map. */
@@ -82,10 +87,22 @@ public class MummyLordEntity extends Monster implements GeoEntity {
      *  placement, spawner, summon, etc.) and persisted, since Mob's restriction fields themselves
      *  aren't saved to NBT - re-applied every tick so it survives chunk save/reload. */
     private BlockPos homePos;
+    /** tickCount at which the current target was freshly acquired (no target -> a target); see
+     *  {@link #setTarget} and {@link #OPENING_MELEE_GRACE_TICKS}. */
+    private int combatStartTick = -1;
 
     public MummyLordEntity(EntityType<? extends MummyLordEntity> type, Level level) {
         super(type, level);
         this.xpReward = 20;
+    }
+
+    /** See {@link UndertakerEntity#setTarget} - same fix, same reasoning. */
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        if (target != null && this.getTarget() == null) {
+            this.combatStartTick = this.tickCount;
+        }
+        super.setTarget(target);
     }
 
     @Override
@@ -297,6 +314,8 @@ public class MummyLordEntity extends Monster implements GeoEntity {
                 return false;
             if (MummyLordEntity.this.isSpellcasting() || !MummyLordEntity.this.hasLineOfSight(MummyLordEntity.this.getTarget()))
                 return false;
+            if (MummyLordEntity.this.tickCount - MummyLordEntity.this.combatStartTick < OPENING_MELEE_GRACE_TICKS)
+                return false;
             int count = MummyLordEntity.this.level().getEntitiesOfClass(MummyEntity.class,
                     MummyLordEntity.this.getBoundingBox().inflate(16.0D)).size();
             return MummyLordEntity.this.tickCount >= this.spellCooldown && count < FURConfig.MummyLord_Ability_Max.get();
@@ -332,7 +351,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
                     MummyEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), server, blockpos);
                     if (entity != null) {
                         entity.setOwnerUUID(MummyLordEntity.this.getUUID());
-                        entity.setSpellcasting();
+                        entity.setPendingBirth();
 
                         if (MummyLordEntity.this.getTarget() != null) {
                             entity.setTarget(MummyLordEntity.this.getTarget());

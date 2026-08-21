@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "fur:item/frozen_grip"
+        "layer0": "fur:item/undertaker_smithing_template"
     }
 }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing_transform",
-  "template": { "item": "fur:soulforged_upgrade_smithing_template" },
+  "template": { "item": "fur:undertaker_smithing_template" },
   "base":     { "item": "fur:undertaker_shovel" },
   "addition": { "item": "fur:ushabti" },
-  "result":   { "item": "fur:ankh_scepter" }
+  "result":   { "item": "fur:sere_shovel" }
 }

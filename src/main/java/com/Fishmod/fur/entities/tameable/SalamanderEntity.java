@@ -25,6 +25,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,6 +36,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -152,7 +154,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
     	this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
     	this.goalSelector.addGoal(3, new SalamanderEntity.AttackGoal(this));
     	this.goalSelector.addGoal(4, this.range_atk);
-    	this.goalSelector.addGoal(4, new LookatFurnaceGoal(this));
+    	this.goalSelector.addGoal(4, new BoostFurnaceGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.applyEntityAI();
@@ -395,50 +397,7 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
 	    		}
 	    	}
 
-	    	// savedFurnacePos no longer valid — sitting check first (cheap); block state throttled to every 20 ticks
-    		if (this.savedFurnacePos != null
-    				&& (!this.isInSittingPose()
-    				|| (this.tickCount % 20 == 0
-    					&& (this.blockPosition().distSqr(this.savedFurnacePos) > (this.searchRange() * this.searchRange())
-    					|| !(this.level().getBlockState(this.savedFurnacePos).getBlock() instanceof AbstractFurnaceBlock))))) {
-    			this.savedFurnacePos = null;
-    			this.setBoostingFurnace(false);
-    		}
-	    	
-    		if (this.tickCount % 80 == 0 && this.isAlive() && this.isTame() && this.isInSittingPose()) {      			
-	    		// update savedFurnacePos
-	    		if (this.savedFurnacePos == null) {
-					int r = this.searchRange();
-					BlockPos center = this.blockPosition();
-					for (BlockPos p : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
-						if (this.level().getBlockState(p).getBlock() instanceof AbstractFurnaceBlock) {
-							this.savedFurnacePos = p.immutable();
-							break;
-						}
-					}
-	    		}
-	    		
-	    		// boost furnace
-	    		if (this.savedFurnacePos != null) {
-	    			AbstractFurnaceBlockEntity furnaceTileEntity = (AbstractFurnaceBlockEntity) this.level().getBlockEntity(this.savedFurnacePos);
-		    		BlockState blockstate = this.level().getBlockState(this.savedFurnacePos);
-		    		this.setBoostingFurnace(true);
-		    		
-			        if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
-			        	CompoundTag tag = furnaceTileEntity.saveWithoutMetadata();
-
-						if (tag.contains("BurnTime") && tag.getInt("BurnTime") <= 100) {
-							tag.putInt("BurnTime", 200);
-							furnaceTileEntity.load(tag);
-							furnaceTileEntity.setChanged();
-							this.level().setBlock(this.savedFurnacePos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
-						}	
-			        }
-	    		}
-	    	}	
     	}
-    	
-    	
     }
     
     @Override
@@ -846,34 +805,130 @@ public class SalamanderEntity extends FURTameableEntity implements Saddleable, R
         compound.putInt("Variant", getSkin());
     }
 	
-	public class LookatFurnaceGoal extends Goal {
+	/**
+	 * Owns the whole "help heat a nearby furnace while sitting" behavior - previously split between
+	 * raw code in {@link #tick()} (search/invalidate/boost, unconditional) and this class (look-at +
+	 * particles only, gated on savedFurnacePos already being set). Merged so the one eligibility
+	 * check lives in one place and stale-furnace cleanup can use the Goal lifecycle (stop()) instead
+	 * of a hand-rolled invalidation branch.
+	 */
+	public class BoostFurnaceGoal extends Goal {
 		private final SalamanderEntity mob;
 
-		public LookatFurnaceGoal(SalamanderEntity salamander) {
+		public BoostFurnaceGoal(SalamanderEntity salamander) {
 			this.mob = salamander;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 		}
 
-		public boolean canUse() {
-			return this.mob.isAlive() && this.mob.isTame() && this.mob.isInSittingPose() && this.mob.savedFurnacePos != null && !this.mob.isAggressive();
+		private boolean eligible() {
+			return this.mob.isAlive() && this.mob.isTame() && this.mob.isInSittingPose();
 		}
-		
+
+		public boolean canUse() {
+			return this.eligible();
+		}
+
+		public boolean canContinueToUse() {
+			return this.eligible();
+		}
+
+		/** Leaving sitting (or dying/losing tame status) drops the lock immediately - matches the old
+		 *  tick()-based invalidation's cheap "not sitting" fast path. */
+		public void stop() {
+			this.mob.savedFurnacePos = null;
+			this.mob.setBoostingFurnace(false);
+		}
+
 		public void tick() {
-			this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);	
-			
-            if (this.mob.level() instanceof ServerLevel serverLevel && this.mob.tickCount % 20 == 0) {
-            	BlockPos bp = this.mob.blockPosition();
-            	double d0 = this.mob.getLookControl().getWantedX() - (double) bp.getX();
-            	double d1 = this.mob.getLookControl().getWantedY() - (double) bp.getY();
-            	double d2 = this.mob.getLookControl().getWantedZ() - (double) bp.getZ();
-            	Vec3 dir = new Vec3(d0, d1, d2).normalize();
-            	double reach = (this.mob.getGrowingStage() + 1.0D) * 0.5D;
-            	serverLevel.sendParticles((this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME,
-            			(double) bp.getX() + 0.5D + dir.x * reach,
-            			(double) bp.getY() + (double)(this.mob.getBbHeight() * 0.2F),
-            			(double) bp.getZ() + 0.5D + dir.z * reach,
-            			15, 0.2D + dir.x * reach * 0.1D, 0.2D, 0.2D + dir.z * reach * 0.1D, 0.01D);
-            }
+			// stale-furnace check, throttled to every 20 ticks (block state read)
+			if (this.mob.savedFurnacePos != null && this.mob.tickCount % 20 == 0
+					&& (this.mob.blockPosition().distSqr(this.mob.savedFurnacePos) > (double)(this.mob.searchRange() * this.mob.searchRange())
+					|| !(this.mob.level().getBlockState(this.mob.savedFurnacePos).getBlock() instanceof AbstractFurnaceBlock))) {
+				this.mob.savedFurnacePos = null;
+				this.mob.setBoostingFurnace(false);
+			}
+
+			// search + boost, throttled to every 80 ticks. Unaffected by isAggressive() - unlike the
+			// look/particle flourish below, the actual heating help keeps working even mid-fight
+			// (matches the pre-refactor tick() behavior).
+			if (this.mob.tickCount % 80 == 0) {
+				if (this.mob.savedFurnacePos == null) {
+					int r = this.mob.searchRange();
+					BlockPos center = this.mob.blockPosition();
+					for (BlockPos p : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
+						if (this.mob.level().getBlockState(p).getBlock() instanceof AbstractFurnaceBlock) {
+							this.mob.savedFurnacePos = p.immutable();
+							break;
+						}
+					}
+				}
+
+				if (this.mob.savedFurnacePos != null) {
+					AbstractFurnaceBlockEntity furnaceTileEntity = (AbstractFurnaceBlockEntity) this.mob.level().getBlockEntity(this.mob.savedFurnacePos);
+					BlockState blockstate = this.mob.level().getBlockState(this.mob.savedFurnacePos);
+					this.mob.setBoostingFurnace(true);
+
+					if (furnaceTileEntity != null && !furnaceTileEntity.getItem(0).isEmpty()) {
+						CompoundTag tag = furnaceTileEntity.saveWithoutMetadata();
+
+						if (tag.contains("BurnTime") && tag.getInt("BurnTime") <= 100) {
+							tag.putInt("BurnTime", 200);
+							furnaceTileEntity.load(tag);
+							furnaceTileEntity.setChanged();
+							this.mob.level().setBlock(this.mob.savedFurnacePos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 3);
+						}
+					}
+				}
+			}
+
+			// cosmetic look-at + particles - suppressed while aggressive (matches the old
+			// LookatFurnaceGoal's canUse() gating), and only meaningful once a furnace is known.
+			if (this.mob.savedFurnacePos != null && !this.mob.isAggressive()) {
+				this.mob.getLookControl().setLookAt((double)this.mob.savedFurnacePos.getX() + 0.5D, this.mob.savedFurnacePos.getY(), (double)this.mob.savedFurnacePos.getZ() + 0.5D);
+
+	            if (this.mob.level() instanceof ServerLevel serverLevel && this.mob.tickCount % 20 == 0) {
+	            	this.fireParticlesAtFurnace(serverLevel);
+	            }
+			}
+		}
+
+		/**
+		 * Fires a short volley of particles from the Salamander's body toward the furnace - a
+		 * directional "shot" rather than a static puff. sendParticles only treats xOffset/yOffset/
+		 * zOffset as an actual velocity vector (times speed) when count == 0; with count > 0 they're
+		 * a random spawn-position spread instead, which is what the old puff-at-a-fixed-point version
+		 * used. Speed is scaled by distance since FLAME/SOUL_FIRE_FLAME particles (RisingParticle)
+		 * apply 0.96/tick friction and live roughly 12-44 ticks - empirically the particle travels
+		 * about 14x its initial per-tick speed over its lifetime, so dividing distance by ~14 keeps
+		 * the stream visually reaching the furnace across the mob's whole search-range growth curve.
+		 */
+		private void fireParticlesAtFurnace(ServerLevel serverLevel) {
+			double originX = this.mob.getX();
+			double originY = this.mob.getY() + (double)(this.mob.getBbHeight() * 0.5F);
+			double originZ = this.mob.getZ();
+
+			double dx = ((double)this.mob.savedFurnacePos.getX() + 0.5D) - originX;
+			double dy = ((double)this.mob.savedFurnacePos.getY() + 0.5D) - originY;
+			double dz = ((double)this.mob.savedFurnacePos.getZ() + 0.5D) - originZ;
+			double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+			if (distance < 1.0E-4D) {
+				return;
+			}
+
+			double speed = Mth.clamp(distance / 14.0D, 0.05D, 0.3D);
+			Vec3 dir = new Vec3(dx, dy, dz).scale(1.0D / distance);
+			SimpleParticleType particle = (this.mob.getSkin() == 0) ? ParticleTypes.FLAME : ParticleTypes.SOUL_FIRE_FLAME;
+
+			for (int i = 0; i < 6; i++) {
+				// count = 0 -> xOffset/yOffset/zOffset below are a real velocity vector (see
+				// ClientPacketListener#handleParticleEvent), not a random spread - each particle
+				// actually flies toward the furnace instead of jittering near the spawn point.
+				double spread = 0.15D;
+				double vx = dir.x * speed + (this.mob.getRandom().nextDouble() - 0.5D) * spread * speed;
+				double vy = dir.y * speed + (this.mob.getRandom().nextDouble() - 0.5D) * spread * speed;
+				double vz = dir.z * speed + (this.mob.getRandom().nextDouble() - 0.5D) * spread * speed;
+				serverLevel.sendParticles(particle, originX, originY, originZ, 0, vx, vy, vz, 1.0D);
+			}
 		}
 	}
 	

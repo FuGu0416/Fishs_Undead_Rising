@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "fur:item/fungal_staff"
+        "layer0": "fur:item/frore_shovel"
     }
 }

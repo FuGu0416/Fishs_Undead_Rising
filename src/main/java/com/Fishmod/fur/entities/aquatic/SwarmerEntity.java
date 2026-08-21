@@ -156,7 +156,7 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
 
         if (this.getTarget() != null) {
             if (attr.getModifier(SPEED_BOOST_UUID) == null) {
-                attr.addTransientModifier(new AttributeModifier(SPEED_BOOST_UUID, "Chasing speed", 1.5D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                attr.addTransientModifier(new AttributeModifier(SPEED_BOOST_UUID, "Chasing speed", 2.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         } else {
             attr.removeModifier(SPEED_BOOST_UUID);

@@ -86,6 +86,13 @@ public class FURItem extends Item {
         	living.removeEffect(FUREffectRegistry.SPOREROT.get());
         }
 
+        // Same "cures everything" role Milk Bucket has (vanilla special-cases MILK_BUCKET the same
+        // way in Player#eat), just themed as a blessed tonic - Holy Water is rare enough (Cleric/Grave
+        // Robber trades only) that a blanket cure is fine, no need to scope it to a curated list.
+        if (!level.isClientSide && stack.getItem().equals(FURItemRegistry.HOLY_WATER.get())) {
+        	living.removeAllEffects();
+        }
+
     	return super.finishUsingItem(stack, level, living);
     }
     
