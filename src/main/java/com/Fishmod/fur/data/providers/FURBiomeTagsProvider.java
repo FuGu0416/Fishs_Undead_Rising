@@ -34,6 +34,7 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     public static final TagKey<Biome> HAS_PTERA = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_ptera"));
     public static final TagKey<Biome> HAS_SCARECROW = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_scarecrow"));
     public static final TagKey<Biome> HAS_RAVEN = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_raven"));
+    public static final TagKey<Biome> HAS_GRAVEYARD = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_graveyard"));
 
     public FURBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
@@ -67,5 +68,14 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.HAS_VILLAGE_PLAINS)
                 .add(Biomes.FLOWER_FOREST)
                 .add(Biomes.CHERRY_GROVE);
+        // Grass-predominant overworld surface biomes: forest + plains + savanna + taiga families,
+        // explicitly excluding jungle (none of the tags above pull it in anyway, but excluded
+        // outright to guarantee that stays true if any of them ever change).
+        this.tag(HAS_GRAVEYARD)
+                .addTag(BiomeTags.IS_FOREST)
+                .addTag(Tags.Biomes.IS_PLAINS)
+                .addTag(BiomeTags.IS_SAVANNA)
+                .addTag(BiomeTags.IS_TAIGA)
+                .remove(BiomeTags.IS_JUNGLE);
     }
 }

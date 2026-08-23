@@ -378,12 +378,39 @@ public class EnigmothEntity extends RidableFlyingMobEntity implements GeoEntity 
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(FURConfig.Enigmoth_Attack.get() * (this.isBaby() ? 0.25F : 1.0F));
     	this.setHealth(this.getMaxHealth());
  
-    	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS)) 
-    			&& (spawnType != MobSpawnType.SPAWN_EGG && spawnType != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)) {    
-		    this.setBaby(true);   		
+    	if ((worldIn.getBiome(this.blockPosition()).is(Biomes.END_HIGHLANDS) || worldIn.getBiome(this.blockPosition()).is(Biomes.END_MIDLANDS))
+    			&& (spawnType != MobSpawnType.SPAWN_EGG && spawnType != MobSpawnType.MOB_SUMMONED) && (this.level().getRandom().nextFloat() <= 0.8F)
+    			&& this.hasGroundBelowForBaby()) {
+		    this.setBaby(true);
     	}
-    	
+
     	return super.finalizeSpawn(worldIn, difficulty, spawnType, livingdata, tag);
+    }
+
+    /** How far below a spawn position to scan for solid ground before allowing it to roll a baby. */
+    private static final int BABY_GROUND_SCAN = 32;
+
+    /**
+     * A baby (larva/"Parasite") is a ground crawler - {@link #wanderGoal()} gives it a
+     * {@link WaterAvoidingRandomStrollGoal} instead of flight, and gravity is forced back on for it
+     * (see the {@code isBaby()} check further down this class). Adults naturally spawn with
+     * {@code SpawnPlacements.Type.NO_RESTRICTIONS} (needed so they can spawn mid-air), so a spawn
+     * position can legitimately be hovering over a void gap between End islands with nothing below it
+     * at all - fine for a flier, fatal for a baby that immediately falls once it can't fly. Scanning
+     * straight down (rather than {@code getHeightmapPos}, which silently returns the world's bottom -
+     * and so a false "ground found" - for a column with nothing in it at all) confirms real ground is
+     * actually there before letting {@link #finalizeSpawn} turn this spawn into a baby.
+     */
+    private boolean hasGroundBelowForBaby() {
+    	BlockPos pos = this.blockPosition();
+    	int minY = Math.max(this.level().getMinBuildHeight(), pos.getY() - BABY_GROUND_SCAN);
+    	BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
+    	for (int y = pos.getY() - 1; y >= minY; y--) {
+    		if (!this.level().isEmptyBlock(mp.set(pos.getX(), y, pos.getZ()))) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
       
     public int getSkin() {

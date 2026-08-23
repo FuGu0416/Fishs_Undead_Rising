@@ -439,13 +439,6 @@
 		"sounds": ["fur:entity/void_glider/ambient"]
 	},
 
-	"void_glider_hurt":
-	{
-		"category": "neutral",
-		"subtitle": "entity_void_glider_hurt",
-		"sounds": ["fur:entity/void_glider/hurt0","fur:entity/void_glider/hurt1"]
-	},
-
 	"void_glider_death":
 	{
 		"category": "neutral",

@@ -36,6 +36,13 @@ public class FURStructureModifier {
         context.register(key("add_mummy_lord"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMY_LORD.get(), 10, 1, 2), FURStructureTagsProvider.HAS_MUMMY_LORD));
         context.register(key("add_mimic"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.MIMIC.get(), 5, 1, 1), FURStructureTagsProvider.HAS_MIMIC));
         context.register(key("add_scarab"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.SCARAB.get(), 30, 2, 4), FURStructureTagsProvider.HAS_SCARAB));
+        // Moved from ambient overworld-hostile biome spawning (FURBiomeModifier) to graveyard-only;
+        // same weight/count as their old ADD_GHOUL/ADD_UNDERTAKER/ADD_WRAITH entries.
+        context.register(key("add_ghoul"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOUL.get(), 40, 4, 8), FURStructureTagsProvider.HAS_GHOUL));
+        context.register(key("add_undertaker"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.UNDERTAKER.get(), 8, 1, 1), FURStructureTagsProvider.HAS_UNDERTAKER));
+        context.register(key("add_wraith"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 20, 2, 4), FURStructureTagsProvider.HAS_WRAITH));
+        // Additive, not a replacement - Raven keeps its ambient FURBiomeModifier.ADD_RAVEN spawning too.
+        context.register(key("add_raven"), addStructureSpawns(new MobSpawnSettings.SpawnerData(FUREntityRegistry.RAVEN.get(), 8, 2, 4), FURStructureTagsProvider.HAS_RAVEN));
     });
 
     public static void generateStructureModifiers(GatherDataEvent event)

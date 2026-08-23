@@ -275,7 +275,7 @@ public class FURItemRegistry {
         spawnEgg("unburied", FUREntityRegistry.UNBURIED, 0xD4D9BA, 0x292C32);
         spawnEgg("undertaker", FUREntityRegistry.UNDERTAKER, 0x3c424b, 0xA3AC93);
         spawnEgg("vespa", FUREntityRegistry.VESPA, 0x85E214, 0xDA3119);
-        spawnEgg("void_glider", FUREntityRegistry.VOID_GLIDER, 0x233A41, 0x7AFDFD);
+        spawnEgg("void_glider", FUREntityRegistry.VOID_GLIDER, 0x150822, 0xC872E7);
         spawnEgg("wendigo", FUREntityRegistry.WENDIGO, 0x30180C, 0xFFFAEC);
         spawnEgg("wisp", FUREntityRegistry.WISP, 0xD4D3D2, 0x46FEF1);
         spawnEgg("wraith", FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B);

@@ -204,7 +204,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> SludgeWand_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Undertaker_Shovel_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> SunScreen_Mode;
-	public static final ForgeConfigSpec.ConfigValue<Integer> SpawnRate_Cemetery;
 	public static final ForgeConfigSpec.ConfigValue<Integer> BoneSword_DamageCap;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spawn_AllowList;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Suicidal_Minion;
@@ -218,13 +217,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Potion_Enable;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Enchantment_Enable;
 	public static final ForgeConfigSpec.ConfigValue<Integer> MootenHeart_Damage;
-	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Spawn_Cemetery_AllowList;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Cemetery_SpawnRate; 
-	public static final ForgeConfigSpec.ConfigValue<Integer> SpawnRate_Desert_Tomb; 
-	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusVillagerTrades; 
-	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades; 
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Cemetery;
-	public static final ForgeConfigSpec.ConfigValue<Boolean> Generate_Desert_Tomb; 
+	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusVillagerTrades;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Message;
 	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Sere_Shovel_Cooldown;
@@ -538,16 +532,6 @@ public final class FURConfig {
 		Ghostly_SpiritFormDuration = BUILDER.comment("Full-set bonus: duration in seconds of the invulnerable spirit form triggered by death prevention [0.5-300]").defineInRange("ghostly spirit form duration", 2.0D, 0.5D, 300.0D);
 		BUILDER.pop();
 
-		BUILDER.push("Structure");
-		Generate_Cemetery = BUILDER.comment("Generate Cemetery in the Overworld. [false/true]").define("generate cemetery", true);
-		SpawnRate_Cemetery = BUILDER.comment("Spawn rate of Cemetery [1-10000]").defineInRange("cemetery should spawn", 2, 0, 10000);
-		Spawn_Cemetery_AllowList = BUILDER.comment("Cemetery are only allowed to spawn in these dimensions' IDs").defineList("cemetery spawn allow dimensions", 
-				Lists.newArrayList(Level.OVERWORLD.location().toString()), o -> o instanceof String);
-		Cemetery_SpawnRate = BUILDER.comment("Cemetery spawns Unburied occasionally. [0-100]").defineInRange("cemetery spawns unburied", 40, 0, 100);	
-		Generate_Desert_Tomb = BUILDER.comment("Generate Desert Tomb in the Overworld. [false/true]").define("generate desert tomb", true);
-		SpawnRate_Desert_Tomb = BUILDER.comment("Spawn rate of Desert Tomb [1-1000]").defineInRange("desert tomb should spawn", 500, 0, 1000);
-		BUILDER.pop();
-		
 		BUILDER.push("General");
 		FlyingHeight_limit = BUILDER.comment("Set the height limit to X blocks above the ground for flyers, 0 = Infinite [0-100]").defineInRange("flying height limit", 16, 0, 100);		
 		Potion_Enable = BUILDER.comment("Adding new brewing recipe (existing property will be preserved). [false/true]").define("enable brewing recipe", true);

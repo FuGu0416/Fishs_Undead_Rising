@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 8,
+    "salt": 20260823
+  },
+  "structures": [
+    {
+      "structure": "fur:graveyard",
+      "weight": 1
+    }
+  ]
+}

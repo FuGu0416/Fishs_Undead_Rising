@@ -108,7 +108,23 @@ public class SmallPoolFeature extends Feature<NoneFeatureConfiguration> {
             for (int dz = -radius; dz <= radius; dz++) {
                 if (!inPool[dx + radius][dz + radius]) continue;
                 BlockPos localFloor = localFloors[dx + radius][dz + radius];
-                if (localFloor == null) continue;
+
+                if (localFloor == null) {
+                    // No floor found within the +-2 vertical search (e.g. this cell overhangs a cave
+                    // ledge/cliff edge). Left untouched, this side of the pool would have nothing
+                    // containing it - an exposed, unsupported water face that never gets a neighbor
+                    // update to start flowing, since nothing here ever changes the untouched cliff cell
+                    // afterward. Wall it off with mud up to the waterline instead, mirroring
+                    // GrottoStreamFeature's bank-walling for the same situation, so every placed pool is
+                    // fully contained rather than partial.
+                    for (int y = waterY - depth; y <= waterY; y++) {
+                        BlockPos wall = new BlockPos(floor.getX() + dx, y, floor.getZ() + dz);
+                        if (!level.getBlockState(wall).isSolid()) {
+                            level.setBlock(wall, Blocks.MUD.defaultBlockState(), 3);
+                        }
+                    }
+                    continue;
+                }
 
                 // d² bowl curve: gives a flat water centre with mud banks rising
                 // smoothly toward the pool edge and into higher surrounding terrain.

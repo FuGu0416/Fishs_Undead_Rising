@@ -1,7 +1,7 @@
 {
   "pools": [
     {
-      "name": "fur:cemetery_chest",
+      "name": "fur:graveyard_chest",
       "rolls": {
         "min": 6,
         "max": 10

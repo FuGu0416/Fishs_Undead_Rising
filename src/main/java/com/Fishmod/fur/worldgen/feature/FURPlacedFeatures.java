@@ -457,19 +457,19 @@ public class FURPlacedFeatures {
         // (see LARGE_GLOW_SHROOM / GIANT_GLIMMERCAP above, which place the cluster features).
 
         // ── World: Undergrove surface hint patch ──────────────────────────────
-        // 20% chance per chunk (RarityFilter 1-in-5) to stamp the same mat+cluster combo the
-        // Undergrove Heart item places, but on the OVERWORLD SURFACE directly above wherever this
-        // chunk's Luminous Undergrove pocket is — a visible hint that the biome exists underground
-        // here. Deliberately has NO BiomeFilter: the surface position is essentially never actually
-        // inside Luminous Undergrove (a cave-only biome), so filtering by biome would always reject
-        // it. Registering this on the biome's own feature list already gates it correctly — it only
-        // ever runs for chunks where Luminous Undergrove is present somewhere underground, since
-        // that's the only time the biome's feature list executes at all.
+        // 2% chance per chunk (RarityFilter 1-in-50 - 10% of the original 1-in-5/20%) to stamp the
+        // same mat+cluster combo the Undergrove Heart item places, but on the OVERWORLD SURFACE
+        // directly above wherever this chunk's Luminous Undergrove pocket is — a visible hint that
+        // the biome exists underground here. Deliberately has NO BiomeFilter: the surface position is
+        // essentially never actually inside Luminous Undergrove (a cave-only biome), so filtering by
+        // biome would always reject it. Registering this on the biome's own feature list already
+        // gates it correctly — it only ever runs for chunks where Luminous Undergrove is present
+        // somewhere underground, since that's the only time the biome's feature list executes at all.
         context.register(UNDERGROVE_SURFACE_HINT,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.UNDERGROVE_SURFACE_HINT),
                         List.of(
-                                RarityFilter.onAverageOnceEvery(5),
+                                RarityFilter.onAverageOnceEvery(50),
                                 InSquarePlacement.spread(),
                                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE
                         )));

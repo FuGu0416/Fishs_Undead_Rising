@@ -91,7 +91,7 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> UNDERTAKER_DEATH = addSoundEvent("undertaker_death");
 	
 	public static final RegistryObject<SoundEvent> VOID_GLIDER_AMBIENT = addSoundEvent("void_glider_ambient");
-	public static final RegistryObject<SoundEvent> VOID_GLIDER_HURT = addSoundEvent("void_glider_hurt");
+	// No VOID_GLIDER_HURT - matches 1.16.5 Ghost Ray, which used BANSHEE_HURT for its own hurt sound.
 	public static final RegistryObject<SoundEvent> VOID_GLIDER_DEATH = addSoundEvent("void_glider_death");
 	
 	public static final RegistryObject<SoundEvent> BANSHEE_AMBIENT = addSoundEvent("banshee_ambient");

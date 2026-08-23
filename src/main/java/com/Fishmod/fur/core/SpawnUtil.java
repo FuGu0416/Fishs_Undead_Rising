@@ -49,15 +49,6 @@ public class SpawnUtil {
 		return false;
 	}
 	
-	public static boolean isAllowedDimensionCemetery(String dimensionIn) {
-		for(String i : FURConfig.Spawn_Cemetery_AllowList.get()) {
-			if(i.equalsIgnoreCase(dimensionIn))
-				return true;
-		}
-		
-		return false;
-	}
-	
 	/* Used to determine the relative height */
     public static BlockPos getHeight(Entity entityIn) {
     	BlockPos pos = entityIn.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, entityIn.blockPosition());

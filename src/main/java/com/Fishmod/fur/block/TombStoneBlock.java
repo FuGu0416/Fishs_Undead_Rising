@@ -2,7 +2,6 @@ package com.Fishmod.fur.block;
 
 import javax.annotation.Nullable;
 
-import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.entities.tameable.unburied.UnburiedEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
@@ -76,7 +75,7 @@ public class TombStoneBlock extends Block implements SimpleWaterloggedBlock {
     	Direction enumfacing = state.getValue(FACING);
         int i = worldIn.getEntitiesOfClass(UnburiedEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(8.0D)).size();
         
-    	if(i < 3 && rand.nextInt(100) < FURConfig.Cemetery_SpawnRate.get() && !worldIn.isDay() && worldIn.getDifficulty() != Difficulty.PEACEFUL) {           
+    	if(i < 3 && !worldIn.isDay() && worldIn.getDifficulty() != Difficulty.PEACEFUL) {
 	        UnburiedEntity entityunburied = FUREntityRegistry.UNBURIED.get().create(worldIn);
 	        	        
 			switch(enumfacing) {

@@ -426,7 +426,6 @@
 
 	"entity_void_glider_ambient": "Void Glider sings",
 	"entity_void_glider_death": "Void Glider dies",
-	"entity_void_glider_hurt": "Void Glider hurts",
 
 	"entity_banshee_ambient": "Banshee whispers",
 	"entity_banshee_attack": "Banshee shrieks",

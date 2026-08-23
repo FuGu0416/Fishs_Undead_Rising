@@ -163,6 +163,18 @@ public class FURWeaponItem extends SwordItem {
     }
 	
 	/**
+	 * Puts every unburied-summoning shovel on cooldown at once, so a player carrying more than one
+	 * of them can't sidestep a single shovel's cooldown by switching to the next and summoning
+	 * another batch of unburied variants right away.
+	 */
+	private static void applyShovelCooldown(Player player, int ticks) {
+		player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), ticks);
+		player.getCooldowns().addCooldown(FURItemRegistry.SERE_SHOVEL.get(), ticks);
+		player.getCooldowns().addCooldown(FURItemRegistry.VIRULENT_SHOVEL.get(), ticks);
+		player.getCooldowns().addCooldown(FURItemRegistry.FRORE_SHOVEL.get(), ticks);
+	}
+
+	/**
 	 * {@code trySpawnEntity} spawns via vanilla {@code EntityType#spawn}, which already runs the
 	 * entity's own {@code finalizeSpawn()} - so whatever skin/variant it picks for itself is left alone
 	 * here rather than forced to some fixed value.
@@ -229,7 +241,7 @@ public class FURWeaponItem extends SwordItem {
             stack.hurtAndBreak(63, player, (entity) -> {
                 entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            player.getCooldowns().addCooldown(FURItemRegistry.UNDERTAKER_SHOVEL.get(), FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
+            FURWeaponItem.applyShovelCooldown(player, FURConfig.Undertaker_Shovel_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }
@@ -260,7 +272,7 @@ public class FURWeaponItem extends SwordItem {
             stack.hurtAndBreak(63, player, (entity) -> {
                 entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            player.getCooldowns().addCooldown(FURItemRegistry.SERE_SHOVEL.get(), FURConfig.Sere_Shovel_Cooldown.get() * 20);
+            FURWeaponItem.applyShovelCooldown(player, FURConfig.Sere_Shovel_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }
@@ -275,7 +287,7 @@ public class FURWeaponItem extends SwordItem {
             stack.hurtAndBreak(63, player, (entity) -> {
                 entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            player.getCooldowns().addCooldown(FURItemRegistry.VIRULENT_SHOVEL.get(), FURConfig.Virulent_Shovel_Cooldown.get() * 20);
+            FURWeaponItem.applyShovelCooldown(player, FURConfig.Virulent_Shovel_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }
@@ -290,7 +302,7 @@ public class FURWeaponItem extends SwordItem {
             stack.hurtAndBreak(63, player, (entity) -> {
                 entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            player.getCooldowns().addCooldown(FURItemRegistry.FRORE_SHOVEL.get(), FURConfig.Frore_Shovel_Cooldown.get() * 20);
+            FURWeaponItem.applyShovelCooldown(player, FURConfig.Frore_Shovel_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }

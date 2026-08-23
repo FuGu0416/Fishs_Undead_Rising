@@ -34,11 +34,9 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_RAVEN = registerKey("add_raven");
 	public static final ResourceKey<BiomeModifier> ADD_WETA = registerKey("add_weta");
 	public static final ResourceKey<BiomeModifier> ADD_AVATON = registerKey("add_avaton");
-	public static final ResourceKey<BiomeModifier> ADD_WRAITH = registerKey("add_wraith");
 	public static final ResourceKey<BiomeModifier> ADD_WISP = registerKey("add_wisp");
 	public static final ResourceKey<BiomeModifier> ADD_MYCOSIS = registerKey("add_mycosis");
 	public static final ResourceKey<BiomeModifier> ADD_FRIGID = registerKey("add_frigid");
-	public static final ResourceKey<BiomeModifier> ADD_UNDERTAKER = registerKey("add_undertaker");
 	public static final ResourceKey<BiomeModifier> ADD_BANSHEE = registerKey("add_banshee");
 	public static final ResourceKey<BiomeModifier> ADD_CACTOID = registerKey("add_cactoid");
 	public static final ResourceKey<BiomeModifier> ADD_PTERA = registerKey("add_ptera");
@@ -46,7 +44,6 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_ENIGMOTH = registerKey("add_enigmoth");
 	public static final ResourceKey<BiomeModifier> ADD_BONE_TROUT = registerKey("add_bone_trout");
 	public static final ResourceKey<BiomeModifier> ADD_MUMMIFIED_COD = registerKey("add_mummified_cod");
-	public static final ResourceKey<BiomeModifier> ADD_GHOUL = registerKey("add_ghoul");
 	public static final ResourceKey<BiomeModifier> ADD_VESPA = registerKey("add_vespa");
 	public static final ResourceKey<BiomeModifier> ADD_SHROOMLING = registerKey("add_shroomling");
 	public static final ResourceKey<BiomeModifier> ADD_VOID_GLIDER = registerKey("add_void_glider");
@@ -91,17 +88,13 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WETA.get(), 30, 4, 8)); 
         addSpawn(context, ADD_AVATON, biomes.getOrThrow(BiomeTags.IS_SAVANNA),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.AVATON.get(), 20, 1, 2));   
-        addSpawn(context, ADD_WRAITH, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.WRAITH.get(), 20, 2, 4));
         addSpawn(context, ADD_WISP, HolderSet.direct(biomes.getOrThrow(Biomes.NETHER_WASTES), biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY), biomes.getOrThrow(Biomes.BASALT_DELTAS)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.WISP.get(), 10, 4, 8));
         addSpawn(context, ADD_MYCOSIS, biomes.getOrThrow(FURBiomeTagsProvider.HAS_MYCOSIS),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.MYCOSIS.get(), 40, 8, 16)); 
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.MYCOSIS.get(), 40, 4, 8));
         addSpawn(context, ADD_FRIGID, biomes.getOrThrow(BiomeTags.SPAWNS_SNOW_FOXES),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.FRIGID.get(), 20, 8, 16)); 
-        addSpawn(context, ADD_UNDERTAKER, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.UNDERTAKER.get(), 8, 1, 1)); 
-        addSpawn(context, ADD_BANSHEE, biomes.getOrThrow(FURBiomeTagsProvider.HAS_BANSHEE), 
+        addSpawn(context, ADD_BANSHEE, biomes.getOrThrow(FURBiomeTagsProvider.HAS_BANSHEE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BANSHEE.get(), 20, 1, 2)); 
         addSpawn(context, ADD_CACTOID, biomes.getOrThrow(FURBiomeTagsProvider.HAS_CACTOID),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.CACTOID.get(), 10, 4, 8));  
@@ -115,8 +108,6 @@ public class FURBiomeModifier {
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BONE_TROUT.get(), 1, 3, 6));
         addSpawn(context, ADD_MUMMIFIED_COD, biomes.getOrThrow(Tags.Biomes.IS_DESERT),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.MUMMIFIED_COD.get(), 1, 3, 6));
-        addSpawn(context, ADD_GHOUL, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.GHOUL.get(), 40, 4, 8));
         addSpawn(context, ADD_VESPA, biomes.getOrThrow(BiomeTags.IS_JUNGLE),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.VESPA.get(), 20, 2, 4));
         addSpawn(context, ADD_SHROOMLING, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
@@ -128,7 +119,7 @@ public class FURBiomeModifier {
         addSpawn(context, ADD_LUMINOUS_GLOW_SQUID, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
         addSpawn(context, ADD_VOID_GLIDER, HolderSet.direct(biomes.getOrThrow(Biomes.THE_END), biomes.getOrThrow(Biomes.END_HIGHLANDS), biomes.getOrThrow(Biomes.END_MIDLANDS), biomes.getOrThrow(Biomes.END_BARRENS), biomes.getOrThrow(Biomes.SMALL_END_ISLANDS)),
-                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VOID_GLIDER.get(), 10, 1, 1));
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.VOID_GLIDER.get(), 1, 1, 1));
         addSpawn(context, ADD_FLAREFLY, HolderSet.direct(biomes.getOrThrow(Biomes.WARPED_FOREST)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.FLAREFLY.get(), 2, 4, 8));
         // Higher weight in Lush Caves / Luminous Undergrove than its original Warped Forest spawn.

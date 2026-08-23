@@ -139,7 +139,20 @@ public class PteraEntity extends FlyingMobEntity implements GeoEntity {
 	public LivingEntity getControllingPassenger() {
 		return null;
 	}
-	
+
+	/**
+	 * Ptera never has a player-steered passenger (see {@link #getControllingPassenger} above, always null) -
+	 * the grabbed cargo mob riding it (see {@link #finalizeSpawn}) is prey, not a driver. Left at the
+	 * {@link FlyingMobEntity} default ({@code isVehicle()}), a Ptera that spawns already holding cargo would
+	 * have {@code AIRandomFly} refuse to run and {@code FlyingMoveHelper} zero its velocity every tick from
+	 * the moment it spawns - frozen in place forever, since nothing ever actually takes over travel() for
+	 * it the way a player-ridden mount would.
+	 */
+	@Override
+	protected boolean suspendAiMovement() {
+		return false;
+	}
+
 	@Override
     public void tick() {
     	super.tick();

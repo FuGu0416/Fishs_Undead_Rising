@@ -1,46 +1,137 @@
 {
-	"__comment": "PLACEHOLDER geo. The 1.16.5 Void Glider used a hand-coded Java model (VoidGliderModel) that cannot be auto-converted to GeckoLib. This is a rough manta-ray stand-in (flat body + two wings + tail) mapped onto the ported 128x128 void_glider texture. Replace with a Blockbench export of geometry.void_glider. See PLACEHOLDERS.md item 4.",
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.void_glider",
+				"identifier": "geometry.unknown",
 				"texture_width": 128,
-				"texture_height": 128,
-				"visible_bounds_width": 4,
-				"visible_bounds_height": 2,
-				"visible_bounds_offset": [0, 0, 0]
+				"texture_height": 64,
+				"visible_bounds_width": 6,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
 			},
 			"bones": [
 				{
-					"name": "body",
-					"pivot": [0, 0, 0],
+					"name": "root",
+					"pivot": [0, 0, -7]
+				},
+				{
+					"name": "Body_Base",
+					"parent": "root",
+					"pivot": [0.11007, 2.5, -8.375],
 					"cubes": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12], "uv": [0, 0]}
+						{"origin": [-5, 0, -15], "size": [10, 4, 15], "uv": [1, 0]}
 					]
 				},
 				{
-					"name": "wing_right",
-					"parent": "body",
-					"pivot": [-6, 0, 0],
+					"name": "Body1",
+					"parent": "Body_Base",
+					"pivot": [0, 2, 1],
 					"cubes": [
-						{"origin": [-14, 0, -4], "size": [8, 1, 8], "uv": [0, 14]}
+						{"origin": [-4, 0, 0], "size": [8, 3, 10], "uv": [36, 0]}
 					]
 				},
 				{
-					"name": "wing_left",
-					"parent": "body",
-					"pivot": [6, 0, 0],
+					"name": "wing1_r0",
+					"parent": "Body1",
+					"pivot": [5, 2, 5],
 					"cubes": [
-						{"origin": [6, 0, -4], "size": [8, 1, 8], "uv": [0, 24]}
+						{"origin": [4, 0.5, 0], "size": [5, 2, 9], "inflate": 0.02, "uv": [0, 32]}
 					]
 				},
 				{
-					"name": "tail",
-					"parent": "body",
-					"pivot": [0, 0, 6],
+					"name": "wing1_r1",
+					"parent": "wing1_r0",
+					"pivot": [10, 2, 5.8],
 					"cubes": [
-						{"origin": [-1, 0, 6], "size": [2, 1, 10], "uv": [0, 34]}
+						{"origin": [9, 1, 0.8], "size": [7, 1, 7], "uv": [19, 32]}
+					]
+				},
+				{
+					"name": "wing1_l0",
+					"parent": "Body1",
+					"pivot": [-5, 2, 5],
+					"cubes": [
+						{"origin": [-9, 0.5, 0], "size": [5, 2, 9], "inflate": 0.02, "uv": [0, 32], "mirror": true}
+					]
+				},
+				{
+					"name": "wing1_l1",
+					"parent": "wing1_l0",
+					"pivot": [-10, 2, 5.8],
+					"cubes": [
+						{"origin": [-16, 1, 0.8], "size": [7, 1, 7], "uv": [19, 32], "mirror": true}
+					]
+				},
+				{
+					"name": "Tail0",
+					"parent": "Body1",
+					"pivot": [0, 2, 10],
+					"cubes": [
+						{"origin": [-0.5, 1.5, 9.5], "size": [1, 1, 8], "uv": [62, 0]}
+					]
+				},
+				{
+					"name": "Tail1",
+					"parent": "Tail0",
+					"pivot": [0, 3, 17],
+					"cubes": [
+						{"origin": [-0.5, 1.5, 17], "size": [1, 1, 8], "uv": [80, 0]}
+					]
+				},
+				{
+					"name": "Tail2",
+					"parent": "Tail1",
+					"pivot": [0, 3, 17]
+				},
+				{
+					"name": "wing0_r0",
+					"parent": "Body_Base",
+					"pivot": [6, 2, -7],
+					"cubes": [
+						{"origin": [4, 0.5, -12], "size": [7, 2, 11], "inflate": 0.02, "uv": [0, 19]}
+					]
+				},
+				{
+					"name": "wing0_r1",
+					"parent": "wing0_r0",
+					"pivot": [11, 2, -6.2],
+					"cubes": [
+						{"origin": [10, 1, -11.2], "size": [9, 1, 9], "uv": [25, 19]}
+					]
+				},
+				{
+					"name": "wing0_l0",
+					"parent": "Body_Base",
+					"pivot": [-5, 2, -7],
+					"cubes": [
+						{"origin": [-11, 0.5, -12], "size": [7, 2, 11], "inflate": 0.02, "uv": [0, 19], "mirror": true}
+					]
+				},
+				{
+					"name": "wing0_l1",
+					"parent": "wing0_l0",
+					"pivot": [-10, 2, -6.2],
+					"cubes": [
+						{"origin": [-19, 1, -11.2], "size": [9, 1, 9], "uv": [25, 19], "mirror": true}
+					]
+				},
+				{
+					"name": "Fin_l",
+					"parent": "Body_Base",
+					"pivot": [-3.5, 2, -15],
+					"rotation": [0, 0, -90],
+					"cubes": [
+						{"origin": [-4.5, 1.5, -21], "size": [2, 1, 6], "uv": [0, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "Fin_r",
+					"parent": "Body_Base",
+					"pivot": [3.5, 2, -15],
+					"rotation": [0, 0, 90],
+					"cubes": [
+						{"origin": [2.5, 1.5, -21], "size": [2, 1, 6], "uv": [0, 0]}
 					]
 				}
 			]

@@ -3,7 +3,6 @@ package com.Fishmod.fur.block;
 import org.joml.Vector3f;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -69,16 +68,24 @@ public class MycelialVeinBlock extends CarpetBlock {
      * of everything flashing on at once. Terminates naturally - it only ever wakes phase-0 neighbors, so
      * it can't ping back into a tile that's already lit (or chain-react instantly, since each hop is
      * staggered by its own scheduled tick).
+     *
+     * <p>Covers all 8 surrounding tiles, not just the 4 orthogonal ones - a carpet-like block laid on a
+     * diagonal-stepped patch (e.g. covering a stairs-shaped floor) can have two veins only touching
+     * corner-to-corner (x+1,z+1 etc.) with no orthogonally-adjacent tile between them, and the wave
+     * should still cross that gap instead of stopping dead at the diagonal seam.
      */
     private void activate(ServerLevel level, BlockPos pos, BlockState state) {
         level.setBlock(pos, state.setValue(PHASE, 1), 3);
         level.scheduleTick(pos, this, 10);
 
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos neighborPos = pos.relative(direction);
-            BlockState neighborState = level.getBlockState(neighborPos);
-            if (neighborState.is(this) && neighborState.getValue(PHASE) == 0) {
-                level.scheduleTick(neighborPos, this, 6 + level.random.nextInt(4));
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (dx == 0 && dz == 0) continue;
+                BlockPos neighborPos = pos.offset(dx, 0, dz);
+                BlockState neighborState = level.getBlockState(neighborPos);
+                if (neighborState.is(this) && neighborState.getValue(PHASE) == 0) {
+                    level.scheduleTick(neighborPos, this, 6 + level.random.nextInt(4));
+                }
             }
         }
     }

@@ -8,8 +8,8 @@
 	"item.fur.bloated_gut": "腫脹肥腸",
 	"item.fur.bone_stew": "大骨燉湯",
 	"item.fur.bone_sword": "骸骨大劍",
-	"item.fur.bone_trout": "骷髏鱒",
-	"item.fur.bone_trout_bucket": "骷髏鱒桶",
+	"item.fur.bone_trout": "骸鱒",
+	"item.fur.bone_trout_bucket": "骸鱒桶",
 	"item.fur.cactoid_pot": "幼人掌盆栽",
 	"item.fur.cactus_fruit": "仙人掌果",
 	"item.fur.cactus_thorn": "仙人掌刺",
@@ -191,7 +191,7 @@
 	"item.fur.spawn_egg_beelzebub": "魔王蠅生怪蛋",
 	"item.fur.spawn_egg_enigmoth": "謎影蛾生怪蛋",
 	"item.fur.spawn_egg_mummified_cod": "木乃伊魚生怪蛋",
-	"item.fur.spawn_egg_bone_trout": "骷髏鱒生怪蛋",
+	"item.fur.spawn_egg_bone_trout": "骸鱒生怪蛋",
 	"item.fur.spawn_egg_lamprey": "七鰓鰻生怪蛋",
 	"item.fur.spawn_egg_ghoul": "食屍鬼生怪蛋",
 		
@@ -278,7 +278,7 @@
 	"entity.fur.banshee": "報喪女妖",
 	"entity.fur.beelzebub": "魔王蠅",
 	"entity.fur.beelzebubpupa": "魔王蠅蛹",
-	"entity.fur.bone_trout": "骷髏鱒",
+	"entity.fur.bone_trout": "骸鱒",
 	"entity.fur.boneworm": "蟄髑",
 	"entity.fur.cactoid": "幼人掌",
 	"entity.fur.cactyrant": "暴君掌",
@@ -425,7 +425,6 @@
 
 	"entity_void_glider_ambient": "虛空浮翼歌唱聲",
 	"entity_void_glider_death": "虛空浮翼死亡",
-	"entity_void_glider_hurt": "虛空浮翼受傷",
 
 	"entity_banshee_ambient": "報喪女妖低語聲",
 	"entity_banshee_attack": "報喪女妖尖叫",

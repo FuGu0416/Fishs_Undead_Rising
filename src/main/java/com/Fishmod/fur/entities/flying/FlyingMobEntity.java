@@ -1,5 +1,7 @@
 package com.Fishmod.fur.entities.flying;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
@@ -294,11 +296,52 @@ public class FlyingMobEntity extends FURTameableEntity {
         return this.isBaby() ? super.onClimbable() : false;
     }
     
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {         
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityLivingData, @Nullable CompoundTag tag) {
     	if (!this.isBaby()) {
-    		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));       
+    		this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.5D, 0.0D));
     	}
+
+    	if (spawnType == MobSpawnType.NATURAL && !this.isBaby() && this.level().dimension() == Level.END) {
+    		int targetY = END_MIN_SPAWN_Y + this.random.nextInt(END_MAX_SPAWN_Y - END_MIN_SPAWN_Y + 1);
+    		if (this.getY() < targetY) {
+    			this.raiseToMinimumSpawnHeight(worldIn, targetY);
+    		}
+    	}
+
         return super.finalizeSpawn(worldIn, difficulty, spawnType, entityLivingData, tag);
+    }
+
+    /**
+     * Absolute floor for a flying mob's natural spawn height in the End, randomized per spawn within
+     * [{@link #END_MIN_SPAWN_Y}, {@link #END_MAX_SPAWN_Y}]. Vanilla's
+     * {@code NaturalSpawner.getRandomPosWithin} rolls each spawn attempt's Y uniformly between the
+     * dimension's min build height (0 in the End) and the column's surface height, once per chunk, before
+     * any per-species spawn-rule predicate ever runs - those predicates can only accept/reject the
+     * already-chosen Y, not move it, so low rolls (e.g. ~27, out over a void gap with no island anywhere
+     * below to reject against) routinely pass. Enforcing a floor has to happen after spawn, once the
+     * entity has a real position to nudge. Applies to every End-spawning flyer via this shared base class.
+     */
+    private static final int END_MIN_SPAWN_Y = 65;
+    private static final int END_MAX_SPAWN_Y = 70;
+
+    /** Lifts the entity straight up toward {@code targetY}, stopping just below the first solid block it meets. */
+    private void raiseToMinimumSpawnHeight(ServerLevelAccessor world, int targetY) {
+    	int x = Mth.floor(this.getX());
+    	int z = Mth.floor(this.getZ());
+    	int startY = Mth.floor(this.getY());
+    	BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
+
+    	int clearY = startY;
+    	for (int y = startY + 1; y <= targetY; y++) {
+    		if (!world.getBlockState(mp.set(x, y, z)).isAir()) {
+    			break;
+    		}
+    		clearY = y;
+    	}
+
+    	if (clearY > startY) {
+    		this.setPos(this.getX(), clearY, this.getZ());
+    	}
     }
 
     static class AIRandomFly extends Goal {
@@ -323,10 +366,14 @@ public class FlyingMobEntity extends FURTameableEntity {
         private int repickCooldown = 0;
         private static final int REPICK_FAIL_COOLDOWN = 10;
 
-        // Ground Y cache (~5 sec refresh)
+        // Ground Y cache (~5 sec refresh). cachedGroundY starts at NaN, meaning "not yet scanned";
+        // once scanned, NO_GROUND is the distinct sentinel for "scan reached the bottom of the
+        // world without finding a block" (i.e. true void below, no island at this x/z) - kept
+        // apart from NaN so that result is still cached instead of forcing a rescan every tick.
         private double cachedGroundY = Double.NaN;
         private int groundYCacheTimer = 0;
         private static final int GROUND_Y_CACHE_INTERVAL = 100;
+        private static final double NO_GROUND = Double.NEGATIVE_INFINITY;
 
         // Ceiling Y cache (~3 sec refresh)
         private double cachedCeilingY = Double.NaN;
@@ -335,6 +382,16 @@ public class FlyingMobEntity extends FURTameableEntity {
 
         // Reusable mutable position for clearance / lava checks
         private final BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
+
+        // Trail of recent positions, sampled periodically, used by escape()'s Phase 2.5 to retreat
+        // back out along the entity's own path when boxed in somewhere Phase 1/2 can't find a way out
+        // of - e.g. tangled inside a Chorus Plant thicket, whose irregular branches can block all 24 of
+        // Phase 2's straight probe rays at once. Anywhere on this trail was open air moments ago,
+        // making it a far more reliable fallback than a blind random pick.
+        private static final int TRAIL_SAMPLE_INTERVAL = 4; // ticks between samples
+        private static final int TRAIL_LENGTH = 10;         // ~40 ticks / 2s of trail
+        private final Deque<Vec3> trail = new ArrayDeque<>();
+        private int trailTimer = 0;
 
         public AIRandomFly(FlyingMobEntity entity, double speed) {
             this.parentEntity = entity;
@@ -365,6 +422,8 @@ public class FlyingMobEntity extends FURTameableEntity {
             this.lastPos = this.parentEntity.position();
             this.stuckTicks = 0;
             this.repickCooldown = 0;
+            this.trail.clear();
+            this.trailTimer = 0;
             this.pickNewTarget();
         }
 
@@ -379,6 +438,15 @@ public class FlyingMobEntity extends FURTameableEntity {
                 this.stuckTicks = 0;
             }
             this.lastPos = current;
+
+            // Sample the trail escape()'s Phase 2.5 retreats along
+            if (++this.trailTimer >= TRAIL_SAMPLE_INTERVAL) {
+                this.trailTimer = 0;
+                if (this.trail.size() >= TRAIL_LENGTH) {
+                    this.trail.pollFirst();
+                }
+                this.trail.addLast(current);
+            }
 
             if (this.stuckTicks > STUCK_THRESHOLD) {
                 this.escape(current);
@@ -407,7 +475,7 @@ public class FlyingMobEntity extends FURTameableEntity {
         // ── Escape when stuck ────────────────────────────────────────────────
 
         /**
-         * Three-phase escape strategy:
+         * Four-phase escape strategy:
          *
          * Phase 1 — Upward burst: if there is open sky directly above, bypass
          *   MoveControl entirely and inject an upward deltaMovement impulse.
@@ -418,13 +486,26 @@ public class FlyingMobEntity extends FURTameableEntity {
          *   samples along the path. Commit to the best-scoring direction via
          *   MoveControl if its score exceeds the minimum threshold.
          *
-         * Phase 3 — Hard velocity reset: if both phases fail (fully boxed in),
-         *   zero out deltaMovement and set a very short random nearby target so
-         *   FlyingMoveHelper starts fresh without carrying the old stuck velocity.
+         * Phase 2.5 — Trail retreat: if every straight probe ray is blocked (an
+         *   irregular obstacle like a Chorus Plant thicket can wall off all 24 at
+         *   once from the inside), back out along the entity's own recent trail
+         *   instead - anywhere it stood a moment ago was open air then.
+         *
+         * Phase 3 — Hard velocity reset: if all of the above fail (fully boxed
+         *   in with no usable trail), zero out deltaMovement and try a handful of
+         *   short random nearby targets, each validated for clearance before being
+         *   committed, so FlyingMoveHelper starts fresh without carrying the old
+         *   stuck velocity into another guaranteed dead end.
          */
         private void escape(Vec3 current) {
             BlockPos origin = this.parentEntity.blockPosition();
             double groundY  = this.getGroundY(origin);
+            if (groundY == NO_GROUND) {
+                // Over the void, nothing below within world bounds - fall back to a value
+                // relative to the entity's current altitude instead of leaving this at
+                // NO_GROUND's -Infinity, which would send every escape candidate straight down.
+                groundY = current.y - 20.0D;
+            }
             double ceilingY = this.getCeilingY(origin);
             double midY     = (groundY + ceilingY) / 2.0D;
             Level  level    = this.parentEntity.level();
@@ -485,14 +566,42 @@ public class FlyingMobEntity extends FURTameableEntity {
                 return;
             }
 
+            // ── Phase 2.5: retreat along the entity's own recent trail ───────
+            // Oldest first: prefer backing out as far as the trail goes, maximizing distance from
+            // whatever trapped it rather than settling for the nearest recorded point, which may
+            // still be tangled in the same thicket.
+            for (Vec3 trailPos : this.trail) {
+                if (this.hasClearanceAt(trailPos) && this.countSafeSamples(current, trailPos, 8) >= 4) {
+                    this.parentEntity.getMoveControl().setWantedPosition(
+                            trailPos.x, trailPos.y, trailPos.z, this.speed);
+                    return;
+                }
+            }
+
             // ── Phase 3: hard velocity reset ─────────────────────────────────
-            // Completely boxed in. Zero out velocity so the entity stops fighting
-            // the walls, then pick a random near target 2 blocks away so that the
-            // MoveControl operation is reset to MOVE_TO on the next evaluation.
+            // Completely boxed in with no usable trail (e.g. it spawned inside the obstruction).
+            // Zero out velocity so it stops fighting the walls, then try a handful of short random
+            // offsets - each validated with hasClearanceAt before being committed, instead of
+            // trusting a single blind guess, which previously could commit to the exact same dead
+            // end every time stuckTicks next crossed the threshold and leave the mob permanently
+            // stuck.
             this.parentEntity.setDeltaMovement(Vec3.ZERO);
-            double rx = current.x + (this.parentEntity.random.nextDouble() - 0.5D) * 2.0D;
-            double rz = current.z + (this.parentEntity.random.nextDouble() - 0.5D) * 2.0D;
-            this.parentEntity.getMoveControl().setWantedPosition(rx, midY, rz, this.speed);
+            for (int attempt = 0; attempt < 8; attempt++) {
+                double angle = this.parentEntity.random.nextDouble() * Math.PI * 2.0D;
+                double dist  = 1.0D + this.parentEntity.random.nextDouble() * 1.5D;
+                Vec3 candidate = new Vec3(
+                        current.x + Math.cos(angle) * dist,
+                        Mth.clamp(midY, groundY + 1.5D, ceilingY - 1.0D),
+                        current.z + Math.sin(angle) * dist);
+
+                if (this.hasClearanceAt(candidate)) {
+                    this.parentEntity.getMoveControl().setWantedPosition(
+                            candidate.x, candidate.y, candidate.z, this.speed);
+                    return;
+                }
+            }
+            // Every attempt was still blocked: leave velocity at zero rather than committing to
+            // another unchecked dead end - the next stuck cycle will try again.
         }
 
         // ── Target selection ─────────────────────────────────────────────────
@@ -540,16 +649,28 @@ public class FlyingMobEntity extends FURTameableEntity {
         @Nullable
         private Vec3 findAirPosition() {
             Vec3 view = this.parentEntity.getViewVector(0.0F);
-            Vec3 pos = HoverRandomPos.getPos(
+
+            // AirAndWaterRandomPos first: it picks freely within +/-verticalRange of the entity's
+            // CURRENT altitude with no ground-proximity requirement, which is what a mob that should
+            // actually soar wants. HoverRandomPos (below) looks like the general-purpose flying
+            // picker but isn't - per vanilla's own FlyingPathNavigation.isStableDestination(), the
+            // intermediate point it walks toward must itself be a *solid, standable* block before it
+            // ever gets lifted "1-3 blocks above solid ground"; if that HoverRandomPos candidate had
+            // been tried first (as it originally was here) it succeeds almost any time solid terrain
+            // is within range - i.e. constantly while over an island - which is why gliders kept
+            // getting pulled down to skim 1-3 blocks above the ground instead of cruising. Vanilla
+            // uses HoverRandomPos for things that are meant to hug a surface (e.g. Vex); it's kept
+            // here only as a last-resort fallback for the rare case open-air picking fails outright.
+            Vec3 pos = AirAndWaterRandomPos.getPos(
                     this.parentEntity, this.horizontalRange, this.verticalRange,
-                    view.x, view.z, (float) Math.PI / 2F, 3, 1);
+                    -2, view.x, view.y, view.z);
 
             if (pos != null)
                 return pos;
 
-            return AirAndWaterRandomPos.getPos(
+            return HoverRandomPos.getPos(
                     this.parentEntity, this.horizontalRange, this.verticalRange,
-                    -2, view.x, view.y, view.z);
+                    view.x, view.z, (float) Math.PI / 2F, 3, 1);
         }
 
         // ── Height safety ────────────────────────────────────────────────────
@@ -560,10 +681,23 @@ public class FlyingMobEntity extends FURTameableEntity {
             double groundY  = this.getGroundY(origin);
             double ceilingY = this.getCeilingY(origin);
 
-            double minY = groundY + 2.0D;
-            double maxY = limit > 0
-                    ? Math.min(groundY + limit, ceilingY - 1.0D)
-                    : ceilingY - 1.0D;
+            double minY;
+            double maxY;
+            if (groundY == NO_GROUND) {
+                // Nothing below within the whole world height - flying over the void between
+                // floating islands (the common case in the End). There's no "ground" to measure
+                // FlyingHeight_limit against here, so don't apply it: doing so previously fell
+                // through to groundY == world-bottom, dragging every random-fly target down toward
+                // minBuildHeight + limit and making the mob sink toward the void floor the entire
+                // time it crossed a gap between islands. Just stay clear of the ceiling instead.
+                minY = this.parentEntity.level().getMinBuildHeight() + 8.0D;
+                maxY = ceilingY - 1.0D;
+            } else {
+                minY = groundY + 2.0D;
+                maxY = limit > 0
+                        ? Math.min(groundY + limit, ceilingY - 1.0D)
+                        : ceilingY - 1.0D;
+            }
 
             if (maxY < minY) maxY = minY;
 
@@ -676,7 +810,7 @@ public class FlyingMobEntity extends FURTameableEntity {
                 if (!this.parentEntity.level().isEmptyBlock(check))
                     return check.getY() + 1.0D;
             }
-            return minY;
+            return NO_GROUND;
         }
 
         private double scanCeilingY(BlockPos origin) {
