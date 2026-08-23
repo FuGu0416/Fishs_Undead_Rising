@@ -92,8 +92,8 @@
             "conditions":[
                 {
                     "condition":"random_chance_with_looting",
-                    "chance":0.05,
-                    "looting_multiplier":0.02
+                    "chance":0.15,
+                    "looting_multiplier":0.05
                 }
             ],
             "name":"fur:scarecrow",

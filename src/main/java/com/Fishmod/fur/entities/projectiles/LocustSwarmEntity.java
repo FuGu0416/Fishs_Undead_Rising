@@ -1,21 +1,16 @@
 package com.Fishmod.fur.entities.projectiles;
 
-import com.Fishmod.fur.config.FURConfig;
-import com.Fishmod.fur.core.SpawnUtil;
-import com.Fishmod.fur.entities.tameable.ScarabEntity;
-import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURParticleRegistry;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
@@ -127,9 +122,7 @@ public class LocustSwarmEntity extends Fireball {
                 this.doEnchantDamageEffects(owner, target);
             }
 
-            int count = 2 + this.random.nextInt(2);
-            for (int i = 0; i < count; i++)
-                this.spawnScarab(BlockPos.containing(result.getLocation()), owner);
+            this.makeLocustCloud(result.getLocation(), owner);
         }
     }
 
@@ -137,23 +130,27 @@ public class LocustSwarmEntity extends Fireball {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!this.level().isClientSide && this.getOwner() instanceof LivingEntity owner) {
-            int count = 2 + this.random.nextInt(2);
-            for (int i = 0; i < count; i++)
-                this.spawnScarab(result.getBlockPos(), owner);
+            this.makeLocustCloud(Vec3.atCenterOf(result.getBlockPos()), owner);
         }
     }
 
-    private void spawnScarab(BlockPos pos, LivingEntity owner) {
-        ScarabEntity scarab = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARAB.get(), (ServerLevel) this.level(), pos);
-        if (scarab != null) {
-            scarab.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-            scarab.setHealth(scarab.getMaxHealth());
-            scarab.setLimitedLife(FURConfig.Scarab_Lifespan.get() * 20);
-            scarab.setOwnerUUID(owner.getUUID());
+    /**
+     * Leaves a lingering swarm of locusts (visually {@link FURParticleRegistry#LOCUST_SWARM}) at the
+     * impact point instead of the old "hatch a couple of Scarabs" behavior - anything that stays inside
+     * takes real, repeated damage (vanilla's instant-damage effect, reapplied on the cloud's normal
+     * interval) rather than being a one-off summon.
+     */
+    private void makeLocustCloud(Vec3 pos, LivingEntity owner) {
+        if (!(this.level() instanceof ServerLevel serverLevel))
+            return;
 
-            if (owner instanceof Mob mob && mob.getTarget() != null)
-                scarab.setTarget(mob.getTarget());
-        }
+        AreaEffectCloud cloud = new AreaEffectCloud(serverLevel, pos.x, pos.y, pos.z);
+        cloud.setOwner(owner);
+        cloud.setParticle(FURParticleRegistry.LOCUST_SWARM.get());
+        cloud.setRadius(3.0F);
+        cloud.setDuration(80);
+        cloud.addEffect(new MobEffectInstance(MobEffects.HARM, 1));
+        serverLevel.addFreshEntity(cloud);
     }
 
     @Override

@@ -118,7 +118,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.SOULFORGED_AXE.get());
             	output.accept(FURItemRegistry.SOULFORGED_HAMMER.get());            	
             	output.accept(FURItemRegistry.SPORECALLER.get());
-            	output.accept(FURItemRegistry.SCARAB_SCEPTER.get());
+            	output.accept(FURItemRegistry.PESTILENCE.get());
             	output.accept(FURItemRegistry.UNDERTAKER_SHOVEL.get());
             	output.accept(FURItemRegistry.FRORE_SHOVEL.get());
             	output.accept(FURItemRegistry.SERE_SHOVEL.get());

@@ -556,7 +556,7 @@
 						}
 					}
 				},
-				"scepter": {
+				"scepter_old": {
 					"rotation": {
 						"0.0": {
 							"post": {

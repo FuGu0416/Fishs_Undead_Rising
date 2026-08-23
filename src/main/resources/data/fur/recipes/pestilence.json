@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "CAC",
+        "CGC",
+        " X "
+    ],
+    "key": {
+        "A": {
+            "item": "fur:ancient_amber"
+        },
+        "C": {
+            "item": "fur:chitin"
+        },
+        "G": {
+            "item": "minecraft:gold_ingot"
+        },
+        "X": {
+            "tag": "forge:rods/wooden"
+        }
+    },
+    "result": {
+        "item": "fur:pestilence"
+    }
+}

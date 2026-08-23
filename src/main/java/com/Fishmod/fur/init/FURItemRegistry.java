@@ -167,6 +167,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> MUMMIFIED_COD_BUCKET = DEF_REG.register("mummified_cod_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.MUMMIFIED_COD.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> PARASITE_COOKED = DEF_REG.register("parasite_cooked", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).build())));
 	public static final RegistryObject<Item> PARASITE_RAW = DEF_REG.register("parasite_raw", () -> new ParasiteRawItem(new Item.Properties()));
+	public static final RegistryObject<Item> PESTILENCE = DEF_REG.register("pestilence", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.CHITIN, true));
 	public static final RegistryObject<Item> PHEROMONE_GLAND = DEF_REG.register("pheromone_gland", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(FUREffectRegistry.CHARMING_PHEROMONE.get(), 60 * 20, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1), 1.0F).build())));
 	public static final RegistryObject<Item> PIGBOARHIDE = DEF_REG.register("pigboarhide", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> PIRANHA_BUCKET = DEF_REG.register("piranha_bucket", () -> new MobBucketItem(() -> FUREntityRegistry.PIRANHA.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
@@ -182,7 +183,6 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> REAPERS_SCYTHE = DEF_REG.register("reapers_scythe", () -> new FURWeaponItem(new Item.Properties(), Tiers.DIAMOND, 8, -3.1F, 1.0D, FURItemRegistry.SCYTHE_CLAW, true));
 	public static final RegistryObject<Item> SALAMANDER_BUCKET = DEF_REG.register("salamander_bucket", () -> new SalamanderBucketItem(() -> FUREntityRegistry.SALAMANDER.get(), () -> Fluids.LAVA, (new Item.Properties()).stacksTo(1).craftRemainder(Items.BUCKET)));
 	public static final RegistryObject<Item> SAUSAGE_ROLL = DEF_REG.register("sausage_roll", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build())));
-	public static final RegistryObject<Item> SCARAB_SCEPTER = DEF_REG.register("scarab_scepter", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.RARE), Tiers.GOLD, -2, -3.3F, 0.0D, FURItemRegistry.ANCIENT_AMBER, true));
 	public static final RegistryObject<Item> SCYTHE_CLAW = DEF_REG.register("scythe_claw", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SERE_SHOVEL = DEF_REG.register("sere_shovel", () -> new FURWeaponItem(new Item.Properties().rarity(Rarity.EPIC), Tiers.IRON, 2, -3.0F, 0.0D, FURItemRegistry.HATRED_SHARD, true));
 	public static final RegistryObject<Item> SHARP_FANG = DEF_REG.register("sharp_fang", () -> new Item(new Item.Properties()));

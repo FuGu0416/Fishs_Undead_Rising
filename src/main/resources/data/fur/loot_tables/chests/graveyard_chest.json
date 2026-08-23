@@ -108,33 +108,111 @@
         },
         {
           "type": "item",
-          "name": "minecraft:iron_pickaxe",
+          "name": "fur:holy_water",
           "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "fur:ghoul_claw",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "fur:undertaker_shovel",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_pickaxe",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:iron_sword",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:iron_chestplate",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:iron_helmet",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:iron_leggings",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:iron_boots",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         }
       ]
     }

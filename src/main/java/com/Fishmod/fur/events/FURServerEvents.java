@@ -1,6 +1,5 @@
 package com.Fishmod.fur.events;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1101,27 +1100,23 @@ public class FURServerEvents {
     }
 
     /**
-     * {@code ZombieVillager#startConverting(UUID, int)} - vanilla only ever calls this from its own
-     * private {@code mobInteract}, for a Golden Apple. Reflected here so Holy Water can trigger the
-     * exact same conversion (same 60-100s timer range, same Strength buff/particles/sound/entity event)
-     * instead of reimplementing - and risking drifting from - that private logic.
-     */
-    private static final Method ZOMBIE_VILLAGER_START_CONVERTING;
-    static {
-    	try {
-    		ZOMBIE_VILLAGER_START_CONVERTING = ZombieVillager.class.getDeclaredMethod("startConverting", UUID.class, int.class);
-    		ZOMBIE_VILLAGER_START_CONVERTING.setAccessible(true);
-    	} catch (NoSuchMethodException e) {
-    		throw new ExceptionInInitializerError(e);
-    	}
-    }
-
-    /**
      * Holy Water alone starts a Zombie Villager's conversion back into a Villager - no Weakness needed
      * first, unlike the Golden Apple method. The timer/particles/sound/delay themselves still exactly
-     * match a Golden Apple cure (see {@link #ZOMBIE_VILLAGER_START_CONVERTING}); only the "must be
-     * weakened first" gate is skipped. Doesn't replace the Golden Apple method, just gives Holy Water
-     * its own, simpler one.
+     * match a Golden Apple cure; only the "must be weakened first" gate is skipped. Doesn't replace the
+     * Golden Apple method, just gives Holy Water its own, simpler one.
+     *
+     * <p>{@code ZombieVillager#startConverting(UUID, int)} - the vanilla method that actually starts it -
+     * is private, only ever called from vanilla's own {@code mobInteract} (Golden Apple) and from
+     * {@code readAdditionalSaveData} when it finds a saved "ConversionTime" tag (loading a
+     * mid-conversion zombie villager back in). The latter is public on {@code ZombieVillager} (widened
+     * from the supertype's {@code protected abstract}), so calling it directly with a "ConversionTime"/
+     * "ConversionPlayer" tag reaches the exact same private logic - reflection isn't needed at all. Round-
+     * tripping through {@link net.minecraft.world.entity.Entity#saveWithoutId} first (rather than handing
+     * it a bare tag with just those two keys) matters: unlike {@code Entity#load}, this method doesn't
+     * touch position/rotation, but {@code LivingEntity#readAdditionalSaveData} does unconditionally reset
+     * a few fields (AbsorptionAmount, HurtTime, DeathTime, HurtByTimestamp) to their tag value with no
+     * "if contains" guard - reusing its own just-saved tag means those round-trip back to what they
+     * already were instead of getting zeroed out.
      */
     @SubscribeEvent
     public void onEntityInteractHolyWater(PlayerInteractEvent.EntityInteract event) {
@@ -1142,11 +1137,10 @@ public class FURServerEvents {
     	}
 
     	if (!event.getLevel().isClientSide()) {
-    		try {
-    			ZOMBIE_VILLAGER_START_CONVERTING.invoke(zombieVillager, player.getUUID(), zombieVillager.getRandom().nextInt(2401) + 3600);
-    		} catch (ReflectiveOperationException e) {
-    			throw new RuntimeException(e);
-    		}
+    		CompoundTag tag = zombieVillager.saveWithoutId(new CompoundTag());
+    		tag.putInt("ConversionTime", zombieVillager.getRandom().nextInt(2401) + 3600);
+    		tag.putUUID("ConversionPlayer", player.getUUID());
+    		zombieVillager.readAdditionalSaveData(tag);
     	}
 
     	event.setCancellationResult(InteractionResult.SUCCESS);

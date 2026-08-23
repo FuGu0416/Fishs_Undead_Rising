@@ -246,7 +246,7 @@ public class FURWeaponItem extends SwordItem {
             return InteractionResultHolder.pass(stack);
         }
 
-        if (stack.getItem() == FURItemRegistry.SCARAB_SCEPTER.get() && level instanceof ServerLevel) {
+        if (stack.getItem() == FURItemRegistry.PESTILENCE.get() && level instanceof ServerLevel) {
             int dominion = stack.getEnchantmentLevel(FUREnchantmentRegistry.DOMINION.get());
             Vec3 lookVec = player.getLookAngle();
             for (int i = 0; i < 4 + dominion; ++i) {
@@ -257,7 +257,7 @@ public class FURWeaponItem extends SwordItem {
             stack.hurtAndBreak(8, player, (entity) -> {
                 entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
-            player.getCooldowns().addCooldown(FURItemRegistry.SCARAB_SCEPTER.get(), FURConfig.ScarabScepter_Cooldown.get() * 20);
+            player.getCooldowns().addCooldown(FURItemRegistry.PESTILENCE.get(), FURConfig.Pestilence_Cooldown.get() * 20);
 
             return InteractionResultHolder.pass(stack);
         }

@@ -220,7 +220,7 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusVillagerTrades;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Message;
-	public static final ForgeConfigSpec.ConfigValue<Integer> ScarabScepter_Cooldown;
+	public static final ForgeConfigSpec.ConfigValue<Integer> Pestilence_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Sere_Shovel_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Virulent_Shovel_Cooldown;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Frore_Shovel_Cooldown;
@@ -405,9 +405,9 @@ public final class FURConfig {
 		BUILDER.push("Mummy Lord");
 		MummyLord_Health = BUILDER.comment("Maximum Mummy Lord health [1-1000]").defineInRange("mummy lord health", 120.0D, 1.0D, 1000.0D);
 		MummyLord_Attack = BUILDER.comment("Mummy Lord strength [1-1000]").defineInRange("mummy lord attack", 10.0D, 1.0D, 1000.0D);
-		MummyLord_Ability_Num = BUILDER.comment("Set the number of Mummies summoned per cast [0-100]").defineInRange("mummy lord summon number", 2, 0, 100);
-		MummyLord_Ability_Max = BUILDER.comment("Set the max number of Mummies that can be summoned [0-100]").defineInRange("mummy lord summon max", 4, 0, 100);
-		MummyLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Mummies in seconds [0-100]").defineInRange("mummy lord summon cooldown", 20, 0, 100);
+		MummyLord_Ability_Num = BUILDER.comment("Set the number of Scarabs summoned per cast [0-100]").defineInRange("mummy lord scarab summon number", 12, 0, 100);
+		MummyLord_Ability_Max = BUILDER.comment("Set the max number of Scarabs that can be summoned [0-100]").defineInRange("mummy lord scarab summon max", 24, 0, 100);
+		MummyLord_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Scarabs in seconds [0-100]").defineInRange("mummy lord scarab summon cooldown", 20, 0, 100);
 		BUILDER.pop();
 
 		BUILDER.push("Cactyrant");
@@ -457,7 +457,7 @@ public final class FURConfig {
 		BUILDER.pop();		
 
 		BUILDER.push("Scarab");
-		Scarab_Lifespan = BUILDER.comment("Scarab lifespan [1-10000]").defineInRange("scarab lifespan", 8, 0, 10000);
+		Scarab_Lifespan = BUILDER.comment("Scarab lifespan [1-10000]").defineInRange("scarab lifespan", 60, 0, 10000);
 		Scarab_Health = BUILDER.comment("Maximum Scarab health [1-1000]").defineInRange("scarab health", 8.0D, 1.0D, 1000.0D);
 		Scarab_Attack = BUILDER.comment("Scarab strength [1-1000]").defineInRange("scarab attack", 1.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
@@ -509,7 +509,7 @@ public final class FURConfig {
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Undertaker's Shovel [1-10000]").defineInRange("undertaker shovel cooldown", 60, 0, 10000);
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
 		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
-		ScarabScepter_Cooldown = BUILDER.comment("Ability cooldown of Scarab Scepter [1-10000]").defineInRange("scarab scepter cooldown", 60, 0, 10000);
+		Pestilence_Cooldown = BUILDER.comment("Ability cooldown of Pestilence [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Sere_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Sere Shovel [1-10000]").defineInRange("sere shovel cooldown", 60, 0, 10000);
 		Virulent_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Virulent Shovel [1-10000]").defineInRange("virulent shovel cooldown", 60, 0, 10000);
 		Frore_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Frore Shovel [1-10000]").defineInRange("frore shovel cooldown", 60, 0, 10000);

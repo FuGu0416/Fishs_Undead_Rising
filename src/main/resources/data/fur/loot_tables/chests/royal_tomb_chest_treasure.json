@@ -37,6 +37,20 @@
         },
         {
           "type": "item",
+          "name": "fur:mummified_cod",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
           "name": "fur:ectoplasm",
           "weight": 14,
           "functions": [
@@ -227,32 +241,86 @@
         {
           "type": "item",
           "name": "minecraft:golden_pickaxe",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:golden_sword",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:golden_chestplate",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:golden_helmet",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:golden_leggings",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         },
         {
           "type": "item",
           "name": "minecraft:golden_boots",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "min": 0.0,
+                "max": 0.9
+              }
+            }
+          ]
         }
       ]
     },

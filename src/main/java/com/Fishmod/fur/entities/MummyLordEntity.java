@@ -9,7 +9,7 @@ import com.Fishmod.fur.core.SpawnUtil;
 import com.Fishmod.fur.entities.ai.FURMeleeAttackGoal;
 import com.Fishmod.fur.entities.ai.FURRangeAttackGoal;
 import com.Fishmod.fur.entities.projectiles.LocustSwarmEntity;
-import com.Fishmod.fur.entities.tameable.unburied.MummyEntity;
+import com.Fishmod.fur.entities.tameable.ScarabEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -68,10 +68,13 @@ public class MummyLordEntity extends Monster implements GeoEntity {
 
     public static final int ATTACK_TIMER = 25;
     public static final int SPELL_TIMER  = 40;
-    /** See {@link UndertakerEntity#OPENING_MELEE_GRACE_TICKS} - same fix, same reasoning: without this,
-     *  the very first target lock instantly wins the goal-priority race against melee/ranged attacks and
-     *  freezes this guard into its cast animation before it can deal any damage at all. */
-    public static final int OPENING_MELEE_GRACE_TICKS = 60;
+    /** The Scarab-summon ability (see {@link AIUseSummonSpell}) only becomes usable this many ticks after
+     *  combat starts - originally a short (60-tick) "let melee happen first" grace period like
+     *  {@link UndertakerEntity#OPENING_MELEE_GRACE_TICKS} (without it, the very first target lock instantly
+     *  wins the goal-priority race against melee/ranged attacks and freezes this guard into its cast
+     *  animation before it can deal any damage at all), now widened to a full 8 seconds specifically for
+     *  the swarm-of-12-scarabs summon so it can't fire the instant a fight begins. */
+    public static final int SUMMON_DELAY_TICKS = 8 * 20;
 
     /** How far this guard will wander/chase from {@link #homePos} - e.g. a structure-placed guard
      *  (Royal Tomb) shouldn't leave its post to wander off or chase a target across the map. */
@@ -88,7 +91,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
      *  aren't saved to NBT - re-applied every tick so it survives chunk save/reload. */
     private BlockPos homePos;
     /** tickCount at which the current target was freshly acquired (no target -> a target); see
-     *  {@link #setTarget} and {@link #OPENING_MELEE_GRACE_TICKS}. */
+     *  {@link #setTarget} and {@link #SUMMON_DELAY_TICKS}. */
     private int combatStartTick = -1;
 
     public MummyLordEntity(EntityType<? extends MummyLordEntity> type, Level level) {
@@ -302,7 +305,7 @@ public class MummyLordEntity extends Monster implements GeoEntity {
         protected int spellCooldown;
 
         // Keep the warmup in real ticks (1.18+ otherwise only ticks goals every other game
-        // tick). The mummies now rise at tick 20 of the 40-tick summon animation, vanilla
+        // tick). The scarabs now rise at tick 20 of the 40-tick summon animation, vanilla
         // evoker style (warmup < casting time), instead of at its very end.
         @Override
         public boolean requiresUpdateEveryTick() {
@@ -314,9 +317,9 @@ public class MummyLordEntity extends Monster implements GeoEntity {
                 return false;
             if (MummyLordEntity.this.isSpellcasting() || !MummyLordEntity.this.hasLineOfSight(MummyLordEntity.this.getTarget()))
                 return false;
-            if (MummyLordEntity.this.tickCount - MummyLordEntity.this.combatStartTick < OPENING_MELEE_GRACE_TICKS)
+            if (MummyLordEntity.this.tickCount - MummyLordEntity.this.combatStartTick < SUMMON_DELAY_TICKS)
                 return false;
-            int count = MummyLordEntity.this.level().getEntitiesOfClass(MummyEntity.class,
+            int count = MummyLordEntity.this.level().getEntitiesOfClass(ScarabEntity.class,
                     MummyLordEntity.this.getBoundingBox().inflate(16.0D)).size();
             return MummyLordEntity.this.tickCount >= this.spellCooldown && count < FURConfig.MummyLord_Ability_Max.get();
         }
@@ -348,10 +351,9 @@ public class MummyLordEntity extends Monster implements GeoEntity {
                         -6 + MummyLordEntity.this.getRandom().nextInt(12), 0,
                         -6 + MummyLordEntity.this.getRandom().nextInt(12)
                     );
-                    MummyEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.MUMMY.get(), server, blockpos);
+                    ScarabEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.SCARAB.get(), server, blockpos);
                     if (entity != null) {
                         entity.setOwnerUUID(MummyLordEntity.this.getUUID());
-                        entity.setPendingBirth();
 
                         if (MummyLordEntity.this.getTarget() != null) {
                             entity.setTarget(MummyLordEntity.this.getTarget());

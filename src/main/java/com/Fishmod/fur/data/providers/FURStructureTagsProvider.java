@@ -37,8 +37,8 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
 
     protected void addTags(HolderLookup.@NotNull Provider lookupProvider) {
         this.tag(HAS_SEAHAG).addTag(StructureTags.SHIPWRECK).addTag(StructureTags.OCEAN_RUIN);
-        this.tag(HAS_MUMMY).add(BuiltinStructures.DESERT_PYRAMID);
-        this.tag(HAS_MUMMY_LORD).add(BuiltinStructures.DESERT_PYRAMID);
+        this.tag(HAS_MUMMY).add(BuiltinStructures.DESERT_PYRAMID).add(ROYAL_TOMB);
+        this.tag(HAS_MUMMY_LORD).add(BuiltinStructures.DESERT_PYRAMID).add(ROYAL_TOMB);
         this.tag(HAS_MIMIC).add(BuiltinStructures.JUNGLE_TEMPLE)
         						   .add(BuiltinStructures.MINESHAFT)
         						   .add(BuiltinStructures.FORTRESS)
@@ -49,13 +49,9 @@ public class FURStructureTagsProvider extends StructureTagsProvider {
         						   .addTag(StructureTags.OCEAN_RUIN)
         						   .add(ROYAL_TOMB);
         this.tag(HAS_SCARAB).add(ROYAL_TOMB);
-        // Ghoul/Undertaker/Wraith moved from ambient overworld-hostile biome spawning to
-        // graveyard-only (see FURBiomeModifier - their old ADD_* entries were removed there).
-        this.tag(HAS_GHOUL).add(GRAVEYARD);
+        this.tag(HAS_GHOUL).add(GRAVEYARD).add(ROYAL_TOMB);
         this.tag(HAS_UNDERTAKER).add(GRAVEYARD);
         this.tag(HAS_WRAITH).add(GRAVEYARD);
-        // Raven also spawns in the graveyard, on top of (not instead of) its existing ambient
-        // forest/taiga/plains-village biome spawning.
         this.tag(HAS_RAVEN).add(GRAVEYARD);
     }
 }
