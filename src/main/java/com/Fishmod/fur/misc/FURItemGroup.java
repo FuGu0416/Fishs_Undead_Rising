@@ -172,6 +172,7 @@ public class FURItemGroup {
         		output.accept(FURItemRegistry.UNDERTAKER_SMITHING_TEMPLATE.get());
 
         		// Banner Pattern
+        		output.accept(FURItemRegistry.MUMMY_LORD_PATTERN.get());
         		output.accept(FURItemRegistry.SKELETONKING_PATTERN.get());
         		output.accept(FURItemRegistry.WENDIGO_PATTERN.get());
 

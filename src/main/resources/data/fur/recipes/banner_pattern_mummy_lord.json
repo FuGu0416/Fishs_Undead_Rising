@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:paper"
+		},
+		{
+			"item": "fur:ushabti"
+		}
+  	],
+  	"result": {
+    	"item": "fur:banner_pattern_mummy_lord"
+  	}
+}

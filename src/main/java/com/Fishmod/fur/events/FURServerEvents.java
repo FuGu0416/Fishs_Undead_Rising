@@ -363,26 +363,6 @@ public class FURServerEvents {
     	// Molten Armor full-set bonus: 50% fire damage reduction
     	if (source.is(DamageTypeTags.IS_FIRE)) {
     		event.setAmount(MoltenArmorItem.applyFireReduction(Attacked, event.getAmount()));
-
-    		if (Attacked instanceof Player player && !Attacked.fireImmune()) {
-    			boolean have_Heart = false;
-
-    			for (int i = 0; i < 9; i++) {
-    				if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.MOOTEN_HEART.get())
-    						|| player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
-    					have_Heart = true;
-    				}
-    			}
-
-    			if (ModList.get().isLoaded("curios") && !have_Heart) {
-    				have_Heart = (CurioIntegration.findItem(FURItemRegistry.MOOTEN_HEART.get(), Attacked) != ItemStack.EMPTY);
-    				have_Heart |= (CurioIntegration.findItem(FURItemRegistry.SOULFORGED_HEART.get(), Attacked) != ItemStack.EMPTY);
-    			}
-
-    			if (have_Heart) {
-    				effectlevel -= (float)FURConfig.MootenHeart_Damage.get() / 100.0F;
-    			}
-    		}
     	}
 
     	// Molten Armor 2-piece bonus: retaliation burn on attacker
@@ -861,26 +841,7 @@ public class FURServerEvents {
     @SubscribeEvent
     public void onEHeal(LivingHealEvent event) {
     	float effectlevel = 1.0F;
-    	
-    	if (event.getEntity() instanceof Player player) {
-    		boolean have_Heart = false;
 
-    		for (int i = 0; i < 9 ; i++) {
-    			if (player.getInventory().getItem(i).getItem().equals(FURItemRegistry.SOULFORGED_HEART.get())) {
-					have_Heart = true;
-    			}
-    		}
-    		
-    		if (ModList.get().isLoaded("curios") && !have_Heart) {
-    			have_Heart = (CurioIntegration.findItem(FURItemRegistry.SOULFORGED_HEART.get(), event.getEntity()) != ItemStack.EMPTY);
-    		}
-    		
-    		if (have_Heart) {
-    			effectlevel += 0.25F;
-    		}
-    			
-    	}
-    	
     	if (event.getEntity().hasEffect(FUREffectRegistry.SOILED.get())) {
     		effectlevel -= 0.25F * (1 + event.getEntity().getEffect(FUREffectRegistry.SOILED.get()).getAmplifier());
     	}  

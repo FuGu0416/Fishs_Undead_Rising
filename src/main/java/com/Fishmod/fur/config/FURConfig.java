@@ -216,7 +216,6 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> Dreamcatcher_Blacklist;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Potion_Enable;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Enchantment_Enable;
-	public static final ForgeConfigSpec.ConfigValue<Integer> MootenHeart_Damage;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusVillagerTrades;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> BonusWanderingTraderTrades;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Show_Expire_Death_Message;
@@ -508,7 +507,6 @@ public final class FURConfig {
 		SludgeWand_Cooldown = BUILDER.comment("Ability cooldown of \\\"Pestilence\\\" [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Undertaker_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Undertaker's Shovel [1-10000]").defineInRange("undertaker shovel cooldown", 60, 0, 10000);
 		BoneSword_DamageCap = BUILDER.comment("Set the bonus damage cap of Bone Sword [0-10000]").defineInRange("bonesword bonus damage cap", 10000, 0, 10000);		
-		MootenHeart_Damage = BUILDER.comment("Set the fire damage reduction of Molten Heart to X% [0-10000]").defineInRange("molten heart damage reduction", 20, 0, 10000);	
 		Pestilence_Cooldown = BUILDER.comment("Ability cooldown of Pestilence [1-10000]").defineInRange("pestilence cooldown", 60, 0, 10000);
 		Sere_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Sere Shovel [1-10000]").defineInRange("sere shovel cooldown", 60, 0, 10000);
 		Virulent_Shovel_Cooldown = BUILDER.comment("Ability cooldown of Virulent Shovel [1-10000]").defineInRange("virulent shovel cooldown", 60, 0, 10000);

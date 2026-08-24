@@ -285,25 +285,25 @@ public class ScarecrowEntity extends FURTameableEntity implements GeoEntity {
 
 	    		return InteractionResult.sidedSuccess(this.level().isClientSide);
 	    		
-	    	}/* else if (!this.isVehicle() && player.hasPassenger(RavenEntity.class)) {
-	    		for(Entity passenger : player.getPassengers()) {
+	    	} else if (!this.isVehicle() && player.getPassengers().stream().anyMatch(RavenEntity.class::isInstance)) {
+	    		for (Entity passenger : player.getPassengers()) {
 	    			if (passenger instanceof RavenEntity) {
-	    	    		passenger.removeVehicle();
+	    	    		passenger.stopRiding();
 	    	    		passenger.startRiding(this, true);
 	    			}
 	    		}
-	  		
-	    		return InteractionResult.SUCCESS;
-	    		
-	    	} else if (this.isVehicle() && this.hasPassenger(RavenEntity.class)) {
-	    		for(Entity passenger : this.getPassengers()) {
+
+	    		return InteractionResult.sidedSuccess(this.level().isClientSide);
+
+	    	} else if (this.isVehicle() && this.getPassengers().stream().anyMatch(RavenEntity.class::isInstance)) {
+	    		for (Entity passenger : this.getPassengers()) {
 	    			if (passenger instanceof RavenEntity) {
-	    	    		passenger.removeVehicle();
+	    	    		passenger.stopRiding();
 	    			}
 	    		}
-	    		
-	    		return InteractionResult.SUCCESS;
-	    	}*/
+
+	    		return InteractionResult.sidedSuccess(this.level().isClientSide);
+	    	}
     	}
 
     	return super.mobInteract(player, hand); 	

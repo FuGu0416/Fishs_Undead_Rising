@@ -196,7 +196,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SOULFORGED_ARMOR_LEGGINGS = DEF_REG.register("soulforged_armor_leggings", () -> new MoltenArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.EPIC).fireResistant()));
 	public static final RegistryObject<Item> SOULFORGED_AXE = DEF_REG.register("soulforged_axe", () -> new MoltenAxeItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.NETHERITE, 5.0F, -3.0F, FURItemRegistry.ECTOPLASM_INGOT, ParticleTypes.SOUL_FIRE_FLAME));
 	public static final RegistryObject<Item> SOULFORGED_HAMMER = DEF_REG.register("soulforged_hammer", () -> new MoltenHammerItem(new Item.Properties().rarity(Rarity.EPIC).fireResistant(), Tiers.NETHERITE, 4, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
-	public static final RegistryObject<Item> SOULFORGED_HEART = DEF_REG.register("soulforged_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 1));
+	public static final RegistryObject<Item> SOULFORGED_HEART = DEF_REG.register("soulforged_heart", () -> new FURItem(new Item.Properties().rarity(Rarity.RARE), 0, UseAnim.NONE, 0));
 	public static final RegistryObject<Item> SOULFORGED_UPGRADE_SMITHING_TEMPLATE = DEF_REG.register("soulforged_upgrade_smithing_template", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> SPECTRAL_CUTLASS = DEF_REG.register("spectral_cutlass", () -> new SpectralCutlassItem(new Item.Properties().fireResistant(), FURItemTier.SPECTRAL, 2, -2.4F, 0.0D, FURItemRegistry.ECTOPLASM_INGOT, true));
 	public static final RegistryObject<Item> SPORE_GEL = DEF_REG.register("spore_gel", () -> new FURItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.2F).alwaysEat().build()), 1));
@@ -230,9 +230,11 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> SWINEARMOR_BOOTS = new SwineArmorItem(EquipmentSlotType.FEET, (new Item.Properties())).setRegistryName("fur:swinearmor_boots");
 	*/
 	
+    public static final RegistryObject<BannerPattern> PATTERN_MUMMY_LORD = BANNER_DEF_REG.register("mummy_lord", () -> new BannerPattern("mummy_lord"));
     public static final RegistryObject<BannerPattern> PATTERN_SKELETONKING = BANNER_DEF_REG.register("skeletonking", () -> new BannerPattern("skeletonking"));
     public static final RegistryObject<BannerPattern> PATTERN_WENDIGO = BANNER_DEF_REG.register("wendigo", () -> new BannerPattern("wendigo"));
-		
+
+    public static final RegistryObject<Item> MUMMY_LORD_PATTERN = DEF_REG.register("banner_pattern_mummy_lord", () -> new BannerPatternItem(FURBannerPatternTagsProvider.PATTERN_MUMMY_LORD, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SKELETONKING_PATTERN = DEF_REG.register("banner_pattern_skeletonking", () -> new BannerPatternItem(FURBannerPatternTagsProvider.PATTERN_SKELETONKING, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> WENDIGO_PATTERN = DEF_REG.register("banner_pattern_wendigo", () -> new BannerPatternItem(FURBannerPatternTagsProvider.PATTERN_WENDIGO, new Item.Properties().stacksTo(1)));
     
