@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:emberwick_fungus"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:cooking/glowshroom_stew",
+      "fur:orange_dye_from_emberwick_fungus"
+    ]
+  }
+}

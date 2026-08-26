@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:ectoplasm_ingot"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:ectoplasm_block",
+      "fur:ghostly_armor_boots",
+      "fur:ghostly_armor_chestplate",
+      "fur:ghostly_armor_helmet",
+      "fur:ghostly_armor_leggings",
+      "fur:soulforged_heart",
+      "fur:spectral_cutlass",
+      "fur:undertaker_smithing_template",
+      "fur:soulforged_upgrade_smithing_template"
+    ]
+  }
+}

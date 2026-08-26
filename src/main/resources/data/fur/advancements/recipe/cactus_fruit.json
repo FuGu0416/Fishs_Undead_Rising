@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:cactus_fruit"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:magenta_dye_from_cactus_fruit",
+      "fur:baobing"
+    ]
+  }
+}

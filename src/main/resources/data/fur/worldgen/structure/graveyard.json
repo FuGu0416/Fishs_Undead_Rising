@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "fur:graveyard",
   "biomes": "#fur:has_graveyard",
   "step": "surface_structures",
   "spawn_overrides": {},

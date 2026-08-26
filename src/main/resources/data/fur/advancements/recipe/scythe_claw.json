@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:scythe_claw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:banner_pattern_wendigo",
+      "fur:beast_claw",
+      "fur:reapers_scythe",
+      "fur:famine_armor_boots",
+      "fur:famine_armor_chestplate",
+      "fur:famine_armor_leggings",
+      "fur:famine"
+    ]
+  }
+}

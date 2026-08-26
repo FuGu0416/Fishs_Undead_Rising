@@ -120,9 +120,7 @@ public class FURItem extends Item {
 			SpawnUtil.addFoodEffectTooltip(stack, tooltip, 1.0F);
 		}
 
-		if (stack.getItem().equals(FURItemRegistry.MOOTEN_HEART.get())) {
-			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW).append(Component.translatable("item.fur.potion_of_mooten_lava").withStyle(ChatFormatting.YELLOW)));
-		} else if(stack.getItem().equals(FURItemRegistry.MIMIC_EGG.get()) && stack.hasTag()) {
+		if (stack.getItem().equals(FURItemRegistry.MIMIC_EGG.get()) && stack.hasTag()) {
 			tooltip.add(Component.translatable((stack.getOrCreateTag().getInt("HatchTime") * 100 / MimicEntity.MIMIC_EGG_HATCH_TIME) + "%").withStyle(ChatFormatting.DARK_GRAY));
 		} else if (this.Tooltip == 1) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));

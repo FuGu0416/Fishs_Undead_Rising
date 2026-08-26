@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:chitin"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:chitin_armor_boots",
+      "fur:chitin_armor_chestplate",
+      "fur:chitin_armor_helmet",
+      "fur:chitin_armor_leggings",
+      "fur:basic_bomb",
+      "fur:leather",
+      "fur:weta_hoe",
+      "fur:bonemeal_from_chitin",
+      "fur:pestilence"
+    ]
+  }
+}

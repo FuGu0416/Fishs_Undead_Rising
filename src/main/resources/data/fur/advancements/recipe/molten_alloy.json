@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:molten_alloy"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:molten_armor_boots",
+      "fur:molten_armor_chestplate",
+      "fur:molten_armor_helmet",
+      "fur:molten_armor_leggings",
+      "fur:molten_axe",
+      "fur:molten_hammer",
+      "fur:mooten_heart",
+      "fur:soulforged_upgrade_smithing_template",
+      "fur:war"
+    ]
+  }
+}

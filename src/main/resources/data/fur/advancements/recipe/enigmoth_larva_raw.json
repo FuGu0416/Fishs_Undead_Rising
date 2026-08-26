@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:enigmoth_larva_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:enigmoth_larva_cooked_from_campfire_cooking",
+      "fur:enigmoth_larva_cooked_from_smoking",
+      "fur:enigmoth_larva_cooked"
+    ]
+  }
+}

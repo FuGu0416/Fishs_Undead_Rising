@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:ptera_wing_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:ptera_wing_cooked_from_campfire_cooking",
+      "fur:ptera_wing_cooked_from_smoking",
+      "fur:ptera_wing_cooked"
+    ]
+  }
+}

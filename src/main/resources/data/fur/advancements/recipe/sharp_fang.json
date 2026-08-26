@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:sharp_fang"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:beastcall_horn",
+      "fur:bonemeal_from_sharp_fang",
+      "fur:fang_dagger",
+      "fur:famine_armor_helmet",
+      "fur:bone_sword",
+      "fur:fang_arrow"
+    ]
+  }
+}

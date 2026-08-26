@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:swarmer_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:swarmer_launcher",
+      "fur:swarmer_cooked_from_campfire_cooking",
+      "fur:swarmer_cooked_from_smoking",
+      "fur:swarmer_cooked"
+    ]
+  }
+}

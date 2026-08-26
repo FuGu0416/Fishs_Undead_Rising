@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:soulforged_heart"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:ghostly_armor_chestplate",
+      "fur:soulforged_axe_smithing",
+      "fur:soulforged_hammer_smithing",
+      "fur:soulforged_armor_boots_smithing",
+      "fur:soulforged_armor_chestplate_smithing",
+      "fur:soulforged_armor_helmet_smithing",
+      "fur:soulforged_armor_leggings_smithing"
+    ]
+  }
+}

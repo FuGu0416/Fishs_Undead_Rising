@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:piranha_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:piranha_item_cooked_from_campfire_cooking",
+      "fur:piranha_item_cooked_from_smoking",
+      "fur:piranha_item_cooked"
+    ]
+  }
+}

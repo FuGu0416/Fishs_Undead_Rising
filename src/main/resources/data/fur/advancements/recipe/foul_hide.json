@@ -1,0 +1,24 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:foul_hide"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:foul_bristle",
+      "fur:famine_armor_boots",
+      "fur:famine_armor_chestplate",
+      "fur:famine_armor_helmet",
+      "fur:famine_armor_leggings"
+    ]
+  }
+}

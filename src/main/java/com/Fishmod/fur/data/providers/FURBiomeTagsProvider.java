@@ -35,6 +35,9 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     public static final TagKey<Biome> HAS_SCARECROW = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_scarecrow"));
     public static final TagKey<Biome> HAS_RAVEN = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_raven"));
     public static final TagKey<Biome> HAS_GRAVEYARD = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_graveyard"));
+    // Vanilla structure-eligibility tag, not a FUR-namespaced tag - adding to it (replace:false by
+    // default) appends our biome onto vanilla's existing mineshaft biome list rather than replacing it.
+    public static final TagKey<Biome> HAS_STRUCTURE_MINESHAFT = TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "has_structure/mineshaft"));
 
     public FURBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, mod_LavaCow.MODID, existingFileHelper);
@@ -77,5 +80,8 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.IS_SAVANNA)
                 .addTag(BiomeTags.IS_TAIGA)
                 .remove(BiomeTags.IS_JUNGLE);
+        // Luminous Undergrove is thematically closest to vanilla's Dripstone Caves/Lush Caves, both of
+        // which are already in this tag - was simply never opted in when the biome was added.
+        this.tag(HAS_STRUCTURE_MINESHAFT).add(FURBiomesRegistry.LUMINOUS_UNDERGROVE);
     }
 }

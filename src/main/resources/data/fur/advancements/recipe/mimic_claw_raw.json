@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:mimic_claw_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:chitin",
+      "fur:mimic_claw_cooked_from_campfire_cooking",
+      "fur:mimic_claw_cooked_from_smoking",
+      "fur:mimic_claw_cooked"
+    ]
+  }
+}

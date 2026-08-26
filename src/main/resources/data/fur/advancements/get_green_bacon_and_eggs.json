@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:green_bacon_and_eggs"
+        },
+        "title": {
+            "translate": "advancements.fur.get_green_bacon_and_eggs.title"
+        },
+        "description": {
+            "translate": "advancements.fur.get_green_bacon_and_eggs.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "get_green_bacon_and_eggs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["fur:green_bacon_and_eggs"]
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:hatred_shard"
+        },
+        "title": {
+            "translate": "advancements.fur.get_hatred_shard.title"
+        },
+        "description": {
+            "translate": "advancements.fur.get_hatred_shard.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "get_hatred_shard": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["fur:hatred_shard"]
+                    }
+                ]
+            }
+        }
+    }
+}

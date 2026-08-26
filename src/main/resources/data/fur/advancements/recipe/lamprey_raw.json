@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:lamprey_raw"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:cooking/lamprey_kabayaki",
+      "fur:lamprey_cooked_from_campfire_cooking",
+      "fur:lamprey_cooked_from_smoking",
+      "fur:lamprey_cooked"
+    ]
+  }
+}

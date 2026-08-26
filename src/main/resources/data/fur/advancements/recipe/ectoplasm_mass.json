@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:ectoplasm_mass"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:ectoplasm",
+      "fur:soul_sand",
+      "fur:soul_soil",
+      "fur:ghost_bomb",
+      "fur:ectoplasm_ingot_from_blasting",
+      "fur:ectoplasm_ingot_from_smelting"
+    ]
+  }
+}

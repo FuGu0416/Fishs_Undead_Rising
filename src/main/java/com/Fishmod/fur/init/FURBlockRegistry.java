@@ -22,6 +22,7 @@ import com.Fishmod.fur.block.SalamanderEggBlock;
 import com.Fishmod.fur.block.ScarecrowHeadBlock;
 import com.Fishmod.fur.block.SoulFurnaceBlock;
 import com.Fishmod.fur.block.TombStoneBlock;
+import com.Fishmod.fur.item.DreamcatcherItem;
 import com.Fishmod.fur.item.ScarecrowHeadItem;
 
 import net.minecraft.world.item.BlockItem;
@@ -74,6 +75,8 @@ public class FURBlockRegistry {
         	FURItemRegistry.DEF_REG.register(name, () -> new ScarecrowHeadItem(blockObj.get(), new Item.Properties()));
         } else if (name.contains("salamander_egg")) {
         	FURItemRegistry.DEF_REG.register(name, () -> new BlockItem(blockObj.get(), new Item.Properties().fireResistant()));
+        } else if (name.equals("dreamcatcher")) {
+        	FURItemRegistry.DEF_REG.register(name, () -> new DreamcatcherItem(blockObj.get(), new Item.Properties()));
         } else {
         	FURItemRegistry.DEF_REG.register(name, () -> new BlockItem(blockObj.get(), new Item.Properties()));
         }

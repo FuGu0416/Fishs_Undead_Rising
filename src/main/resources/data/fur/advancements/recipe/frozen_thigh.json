@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:frozen_thigh"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:frozen_thigh_to_rotten_flesh_from_campfire_cooking",
+      "fur:frozen_thigh_to_rotten_flesh_from_smoking",
+      "fur:frozen_thigh_to_rotten_flesh",
+      "fur:frore_shovel_smithing"
+    ]
+  }
+}

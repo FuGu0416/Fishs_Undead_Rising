@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:curseweave_cloth"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:infused_bandage",
+      "fur:book",
+      "fur:cooking/fission_reagent",
+      "fur:cooking/mooten_reagent"
+    ]
+  }
+}

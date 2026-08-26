@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:undying_heart"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:mooten_heart",
+      "fur:golden_heart",
+      "fur:reapers_scythe",
+      "fur:cooking/fission_reagent"
+    ]
+  }
+}

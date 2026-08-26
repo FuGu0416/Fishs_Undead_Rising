@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fur:undertaker_smithing_template"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "fur:frore_shovel_smithing",
+      "fur:sere_shovel_smithing",
+      "fur:virulent_shovel_smithing",
+      "fur:undertaker_smithing_template"
+    ]
+  }
+}
