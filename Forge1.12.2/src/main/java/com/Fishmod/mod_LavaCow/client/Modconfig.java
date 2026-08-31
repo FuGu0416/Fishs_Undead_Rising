@@ -776,7 +776,7 @@ public class Modconfig {
 
         GoldenHeart_dur = config.get(Configuration.CATEGORY_GENERAL, "golden heart durability", 250, "Set the durability of Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(250);
         GoldenHeart_dur_drop = config.get(Configuration.CATEGORY_GENERAL, "golden heart durability drop", 100, "Set the chance for Golden Heart to drop 1 durability per tick, 0 = Infinite [0-100]", 0, 100).getInt(100);
-        GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "BlackBanlist for items that the Golden Heart is unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
+        GoldenHeart_bl = config.getStringList("banlisted items from golden heart", Configuration.CATEGORY_GENERAL, new String[0], "Ban list for items that the Golden Heart is unable to mend. Ex. \"minecraft:shears\" or \"mod_lavacow:moltenhammer\"");
         GoldenHeart_BookEnchantability = config.get(Configuration.CATEGORY_GENERAL, "golden heart book enchantability", false, "Should the Golden Heart be enchantable with enchanted books? [false/true]").getBoolean(false);
         GoldenHeart_GrantsRegeneration = config.get(Configuration.CATEGORY_GENERAL, "golden heart grants regeneration", true, "Enables the Regeneration effect of the Golden Heart. [false/true]").getBoolean(true);
         GoldenHeart_Regeneration_Amount = config.get(Configuration.CATEGORY_GENERAL, "golden heart regeneration amount", 8, "Amount of seconds of Regeneration applied by the Golden Heart, 0 = Infinite [0-10000]", 0, 10000).getInt(8);

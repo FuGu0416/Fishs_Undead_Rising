@@ -79,7 +79,15 @@ public class EntityFlyingMob extends EntityFishTameable {
     }
 
     protected void doSitCommand(EntityPlayer playerIn) {
-        if (SpawnUtil.getHeight(this).getY() > 0 || this.isChild()) {
+        // playerIn is null when this is invoked from EntityFishTameable#readEntityFromNBT
+        // while a chunk is still being loaded synchronously (AnvilChunkLoader -> Entity#readFromNBT).
+        // SpawnUtil.getHeight() calls World#getChunk() on this entity's own position, which is
+        // not registered as loaded yet at that point; ChunkProviderServer then re-issues a
+        // synchronous load for the same chunk, which reads this same entity again and calls
+        // back into doSitCommand -- infinite recursion -> StackOverflowError (issue #230).
+        // Skip the ground scan on NBT restore: NoGravity is already persisted by vanilla, so
+        // there is nothing to recompute here.
+        if (playerIn != null && (SpawnUtil.getHeight(this).getY() > 0 || this.isChild())) {
             this.setNoGravity(false);
         }
 

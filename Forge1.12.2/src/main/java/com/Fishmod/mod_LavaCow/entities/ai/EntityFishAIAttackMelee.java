@@ -134,6 +134,16 @@ public class EntityFishAIAttackMelee extends EntityAIBase {
      */
     public void updateTask() {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+
+        // shouldContinueExecuting() null-checks this same field and should stop the task before
+        // updateTask() runs again, but the target can still go null between that check and this call
+        // within the same server tick (target dies/despawns/etc.) - bail out rather than crash. Same fix
+        // applied to the 1.20.1 port after it crashed a live test (NullPointerException in
+        // LookControl#setLookAt).
+        if (entitylivingbase == null) {
+            return;
+        }
+
         this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
         double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
         --this.delayCounter;
