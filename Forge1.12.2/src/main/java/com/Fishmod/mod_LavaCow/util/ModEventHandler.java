@@ -964,8 +964,10 @@ public class ModEventHandler {
                 ((AbstractSkeleton) event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((AbstractSkeleton) event.getEntity()), EntityPlayer.class, 10, true, false, new Predicate<Entity>() {
                     public boolean apply(@Nullable Entity p_apply_1_) {
                         if (p_apply_1_ instanceof EntityPlayer) {
-                            EntityPlayer target = (EntityPlayer) p_apply_1_;
-                            return !(target.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.SKELETONKING_CROWN));
+                            // Dual-slot check (vanilla HEAD armor + Baubles HEAD slot) now lives in
+                            // ItemSkeletonKingCrown#isWearingCrown -- reused here instead of
+                            // duplicating the Baubles-aware logic.
+                            return !ItemSkeletonKingCrown.isWearingCrown((EntityPlayer) p_apply_1_);
                         }
 
                         return true;

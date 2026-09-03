@@ -38,8 +38,12 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import baubles.api.IBauble;
 
 /**
  * Governance of nearby skeletons is a live aura, not a one-time conversion: it is driven entirely
@@ -54,7 +58,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * lists -- the original always-hostile AI (sun avoidance, wolf avoidance, wandering, melee/bow
  * attack, ...) is left completely untouched. Ported from the 1.20.1/1.16.5 redesign.
  */
-public class ItemSkeletonKingCrown extends ItemArmor {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
+public class ItemSkeletonKingCrown extends ItemArmor implements IBauble {
     /**
      * Vanilla target tasks stripped from a governed skeleton, keyed by the skeleton itself so they
      * can be restored verbatim (same instances, same priorities) on release. WeakHashMap so entries
@@ -126,10 +131,18 @@ public class ItemSkeletonKingCrown extends ItemArmor {
     }
 
     /**
-     * Whether the given entity currently has this crown on the head slot.
+     * Whether the given entity currently wears this crown -- the vanilla HEAD armor slot, or (for
+     * players, with Baubles installed) the Baubles HEAD bauble slot. Same dual-slot idiom
+     * ModEventHandler#onESetTarget already uses for the Illager Nose disguise check.
      */
     public static boolean isWearingCrown(EntityLivingBase entity) {
-        return entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.SKELETONKING_CROWN);
+        if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem().equals(FishItems.SKELETONKING_CROWN)) {
+            return true;
+        }
+        if (entity instanceof EntityPlayer && Loader.isModLoaded("baubles")) {
+            return baubles.api.BaublesApi.isBaubleEquipped((EntityPlayer) entity, FishItems.SKELETONKING_CROWN) != -1;
+        }
+        return false;
     }
 
     /**
@@ -210,6 +223,34 @@ public class ItemSkeletonKingCrown extends ItemArmor {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
         list.add(TextFormatting.YELLOW + I18n.format("tootip.mod_lavacow.skeletonking_crown"));
+    }
+
+    /**
+     * Baubles support: the crown can be worn in the Baubles HEAD slot (in addition to the vanilla
+     * head armor slot), same as the Illager Nose. {@link #isWearingCrown} already checks both slots,
+     * so governance works identically regardless of which one the wearer uses.
+     */
+    @Override
+    @Optional.Method(modid = "baubles")
+    public baubles.api.BaubleType getBaubleType(ItemStack stack) {
+        return baubles.api.BaubleType.HEAD;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "baubles")
+    public void onWornTick(ItemStack stack, EntityLivingBase entity) {
     }
 
 }
