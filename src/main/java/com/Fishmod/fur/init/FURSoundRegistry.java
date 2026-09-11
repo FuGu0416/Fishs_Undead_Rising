@@ -20,10 +20,10 @@ public class FURSoundRegistry {
 	public static final RegistryObject<SoundEvent> FOGLET_HURT = addSoundEvent("foglet_hurt");
 	public static final RegistryObject<SoundEvent> FOGLET_DEATH = addSoundEvent("foglet_death");
 	
-	public static final RegistryObject<SoundEvent> UNDEADSWINE_ATTACK = addSoundEvent("undeadswine_attack");
-	public static final RegistryObject<SoundEvent> UNDEADSWINE_CHARGE = addSoundEvent("undeadswine_charge");
-	public static final RegistryObject<SoundEvent> UNDEADSWINE_HURT = addSoundEvent("undeadswine_hurt");
-	public static final RegistryObject<SoundEvent> UNDEADSWINE_DEATH = addSoundEvent("undeadswine_death");
+	public static final RegistryObject<SoundEvent> CADAVOAR_ATTACK = addSoundEvent("cadavoar_attack");
+	public static final RegistryObject<SoundEvent> CADAVOAR_CHARGE = addSoundEvent("cadavoar_charge");
+	public static final RegistryObject<SoundEvent> CADAVOAR_HURT = addSoundEvent("cadavoar_hurt");
+	public static final RegistryObject<SoundEvent> CADAVOAR_DEATH = addSoundEvent("cadavoar_death");
 	
 	public static final RegistryObject<SoundEvent> SALAMANDER_AMBIENT = addSoundEvent("salamander_ambient");
 	public static final RegistryObject<SoundEvent> SALAMANDER_ATTACK = addSoundEvent("salamander_attack");

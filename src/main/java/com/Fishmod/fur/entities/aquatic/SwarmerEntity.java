@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -51,6 +52,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
@@ -137,7 +139,21 @@ public class SwarmerEntity extends AbstractSchoolingFish implements GeoEntity {
     public static boolean checkSwarmerSpawnRules(EntityType<? extends SwarmerEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return isDarkEnoughToSpawn(level, pos, random) && WaterAnimal.checkSurfaceWaterAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getDifficulty() != Difficulty.PEACEFUL;
     }
-    
+
+    /**
+     * Same water/darkness/difficulty checks as {@link #checkSwarmerSpawnRules}, but without
+     * {@link WaterAnimal#checkSurfaceWaterAnimalSpawnRules}'s near-surface Y-range (sea level - 13 to
+     * sea level) — that range excludes deep cave pools entirely (Carrion Hollow's are y -56~-24).
+     * Registered as an OR alternative alongside the original rule (see FUREntityRegistry), so Swarmer/
+     * Lamprey's existing surface-water spawning elsewhere is unaffected.
+     */
+    public static boolean checkDeepWaterSpawnRules(EntityType<? extends SwarmerEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return isDarkEnoughToSpawn(level, pos, random)
+                && level.getFluidState(pos.below()).is(FluidTags.WATER)
+                && level.getBlockState(pos.above()).is(Blocks.WATER)
+                && level.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
     public int getMaxSchoolSize() {
         return 12;
     }

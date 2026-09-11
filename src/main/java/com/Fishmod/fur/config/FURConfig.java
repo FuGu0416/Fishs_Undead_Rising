@@ -23,8 +23,8 @@ public final class FURConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> Parasite_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> Parasite_Pickup;
 	
-	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Health;
-	public static final ForgeConfigSpec.ConfigValue<Double> UndeadSwine_Attack;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cadavoar_Health;
+	public static final ForgeConfigSpec.ConfigValue<Double> Cadavoar_Attack;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> Mycosis_Lifespan;
 	public static final ForgeConfigSpec.ConfigValue<Double> Mycosis_Health;
@@ -168,11 +168,8 @@ public final class FURConfig {
 
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Attack;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Num;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Max;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Cooldown;
-	public static final ForgeConfigSpec.ConfigValue<Integer> Beelzebub_Ability_Cooldown_Mount;
-	
+	public static final ForgeConfigSpec.ConfigValue<Double> Beelzebub_Grab_Size;
+
 	public static final ForgeConfigSpec.ConfigValue<Double> Enigmoth_Health;
 	public static final ForgeConfigSpec.ConfigValue<Double> Enigmoth_Attack;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Enigmoth_Ability_Cooldown;
@@ -246,9 +243,9 @@ public final class FURConfig {
 		Parasite_Pickup = BUILDER.comment("You can pick up parasites by right clicking them with an empty main hand while sneaking [false/true]").define("parasite pickup", true);
 		BUILDER.pop();
 		
-		BUILDER.push("Undead Swine");
-		UndeadSwine_Health = BUILDER.comment("Maximum Undead Swine health [1-1000]").defineInRange("undeadswine health", 50.0D, 1.0D, 1000.0D);
-		UndeadSwine_Attack = BUILDER.comment("Undead Swine strength [1-1000]").defineInRange("undeadswine attack", 4.0D, 1.0D, 1000.0D);
+		BUILDER.push("Cadavoar");
+		Cadavoar_Health = BUILDER.comment("Maximum Cadavoar health [1-1000]").defineInRange("cadavoar health", 50.0D, 1.0D, 1000.0D);
+		Cadavoar_Attack = BUILDER.comment("Cadavoar strength [1-1000]").defineInRange("cadavoar attack", 4.0D, 1.0D, 1000.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Mycosis");
@@ -464,10 +461,7 @@ public final class FURConfig {
 		BUILDER.push("Beelzebub");
 		Beelzebub_Health = BUILDER.comment("Maximum Beelzebub health [1-1000]").defineInRange("beelzebub health", 40.0D, 1.0D, 1000.0D);
 		Beelzebub_Attack = BUILDER.comment("Beelzebub strength [1-1000]").defineInRange("beelzebub attack", 5.0D, 1.0D, 1000.0D);
-		Beelzebub_Ability_Num = BUILDER.comment("Set the number of Parasite summoned per cast [0-100]").defineInRange("beelzebub summon number", 3, 0, 100);
-		Beelzebub_Ability_Max = BUILDER.comment("Set the max number of Parasite summoned [0-100]").defineInRange("beelzebub summon max", 12, 0, 100);
-		Beelzebub_Ability_Cooldown = BUILDER.comment("Set the cooldown of summoning Parasite [0-100]").defineInRange("beelzebub summon cooldown", 11, 0, 100);
-		Beelzebub_Ability_Cooldown_Mount = BUILDER.comment("Set the cooldown of summoning Parasite when mounted [0-100]").defineInRange("mounted beelzebub summon cooldown", 8, 0, 100);
+		Beelzebub_Grab_Size = BUILDER.comment("Maximum width/height (blocks) of a creature Beelzebub can grab/devour [0.5-8]").defineInRange("beelzebub grab size", 2.0D, 0.5D, 8.0D);
 		BUILDER.pop();
 		
 		BUILDER.push("Enigmoth");

@@ -50,6 +50,25 @@ public class BeelzebubModel extends GeoModel<BeelzebubEntity> {
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
             head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }
+
+        // 1.16.5's harvestable "swollen gland" cue: BeelzebubModel#renderToBuffer re-rendered UAbdomen1
+        // (cascading to UAbdomen2/UAbdomen3) a second time at a 1.05/1.3/1.05 scale with a small
+        // (0, -0.2, -0.05) block-space nudge, on both the base texture pass and the gland-glow layer
+        // pass since both went through the same renderToBuffer call. GeckoLib has no such per-call
+        // double-render, so this scales the abdomen bone itself instead -- one pose, inherited by every
+        // render-layer pass (see LayerBeelzebubGland) exactly like 1.16.5's shared renderToBuffer did.
+        // The nudge is converted from 1.16.5's raw block-space PoseStack.translate to GeckoLib's
+        // pixel-space bone position (x16): (-3.2, -0.8) on Y/Z.
+        CoreGeoBone abdomen = getAnimationProcessor().getBone("UAbdomen1");
+        if (abdomen != null) {
+            if (animatable.canHarvest()) {
+                abdomen.updateScale(1.05F, 1.3F, 1.05F);
+                abdomen.setPosY(abdomen.getPosY() - 3.2F);
+                abdomen.setPosZ(abdomen.getPosZ() - 0.8F);
+            } else {
+                abdomen.updateScale(1.0F, 1.0F, 1.0F);
+            }
+        }
     }
 
     @Nullable

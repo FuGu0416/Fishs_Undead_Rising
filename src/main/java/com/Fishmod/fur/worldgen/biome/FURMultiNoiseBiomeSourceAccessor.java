@@ -10,4 +10,6 @@ public interface FURMultiNoiseBiomeSourceAccessor {
     void fur_setDimension(ResourceKey<Level> dimension);
     void fur_setLuminousHolder(Holder<Biome> holder);
     Holder<Biome> fur_getLuminousHolder();
+    void fur_setCarrionHollowHolder(Holder<Biome> holder);
+    Holder<Biome> fur_getCarrionHollowHolder();
 }

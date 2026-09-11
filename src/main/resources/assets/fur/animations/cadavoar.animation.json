@@ -1,0 +1,80 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"cadavoar.model.idle": {
+			"loop": true,
+			"animation_length": 3,
+			"bones": {
+				"Jaw": {
+					"rotation": {
+						"vector": ["21 + math.sin(query.anim_time * 120) * -8.5", 0, 0]
+					}
+				},
+				"Head": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time * 120) * -0.3", 0]
+					}
+				}
+			}
+		},
+		"cadavoar.model.walk": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"Jaw": {
+					"rotation": {
+						"vector": ["21 + math.sin(query.anim_time * 120) * -8.5", 0, 0]
+					}
+				},
+				"Leg_front_r_1": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 360) * 40", 0, 0]
+					}
+				},
+				"Leg_hind_l_1": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 360) * 40", 0, 0]
+					}
+				},
+				"Leg_front_l_1": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 360 + 180) * 40", 0, 0]
+					}
+				},
+				"Leg_hind_r_1": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time * 360 + 180) * 40", 0, 0]
+					}
+				}
+			}
+		},
+		"cadavoar.model.attack": {
+			"loop": false,
+			"animation_length": 0.5,
+			"bones": {
+				"Head": {
+					"rotation": {
+						"0.0": {
+							"post": {
+								"vector": [39.13, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.5": {
+							"post": {
+								"vector": [-18.27, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"Snout": {
+					"rotation": {
+						"vector": [-13.04, 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

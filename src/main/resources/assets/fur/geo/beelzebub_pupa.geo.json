@@ -1,0 +1,52 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.beelzebubpupa",
+				"texture_width": 128,
+				"texture_height": 64,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "base",
+					"pivot": [0, 4, -8.5],
+					"cubes": [
+						{"origin": [-4, 0, -12.5], "size": [8, 8, 8], "uv": [36, 12]}
+					]
+				},
+				{
+					"name": "seg3",
+					"pivot": [0, 3, 22.5],
+					"cubes": [
+						{"origin": [-3, 0, 19.5], "size": [6, 6, 6], "uv": [0, 38]}
+					]
+				},
+				{
+					"name": "seg2",
+					"pivot": [0, 5, 15.5],
+					"cubes": [
+						{"origin": [-5, 0, 11.5], "size": [10, 10, 8], "uv": [32, 30]}
+					]
+				},
+				{
+					"name": "seg1",
+					"pivot": [0, 6, 7.5],
+					"cubes": [
+						{"origin": [-7, 0, 3.5], "size": [14, 12, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "seg0",
+					"pivot": [0, 5, -0.5],
+					"cubes": [
+						{"origin": [-6, 0, -4.5], "size": [12, 10, 8], "uv": [0, 20]}
+					]
+				}
+			]
+		}
+	]
+}

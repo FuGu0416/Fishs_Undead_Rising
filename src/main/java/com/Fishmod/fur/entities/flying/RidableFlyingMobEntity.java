@@ -127,7 +127,21 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     public int abilityCooldown() {
     	return 0;
     }
-    
+
+    /**
+     * Whether the MOUNT_SPECIAL key must be freshly pressed (not merely held) each time the ability
+     * fires. Default false preserves the original hold-to-repeat feel used by e.g. Salamander/Vespa's
+     * fire-while-held abilities -- {@code abilityCooldown()} alone throttles those to a sane repeat
+     * rate. Override true for a manual toggle-style ability (Beelzebub's grab/release) where
+     * {@code isDown()} would keep re-firing every {@code abilityCooldown()} ticks for as long as the
+     * key is held, immediately undoing what the previous fire just did (grab, then release ~0.5s
+     * later, then grab again...) well before anything -- including its trigger animation -- is
+     * perceptible.
+     */
+    protected boolean abilityRequiresFreshPress() {
+    	return false;
+    }
+
     @Override
     public void tick() {
     	super.tick();
@@ -169,7 +183,14 @@ public class RidableFlyingMobEntity extends FlyingMobEntity implements Saddleabl
     protected void ClientControl() {
     	Minecraft game = Minecraft.getInstance();
     	
-		if (this.abilityCooldown == 0 && FURKeybindRegistry.MOUNT_SPECIAL.isDown() && this.isRidingPlayer(game.player) && this.getLandTimer() <= 10) {
+		// consumeClick() must run every tick regardless of the other conditions below so a press
+		// during cooldown/landing is actually consumed rather than left queued to fire the instant
+		// those conditions clear.
+		boolean abilityKeyTriggered = this.abilityRequiresFreshPress()
+				? FURKeybindRegistry.MOUNT_SPECIAL.consumeClick()
+				: FURKeybindRegistry.MOUNT_SPECIAL.isDown();
+
+		if (this.abilityCooldown == 0 && abilityKeyTriggered && this.isRidingPlayer(game.player) && this.getLandTimer() <= 10) {
 			this.abilityCooldown = this.abilityCooldown();
 			mod_LavaCow.NETWORK.sendToServer(new MessageMountSpecial(this.getId(), this.getX(), this.getY(), this.getZ(), this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z));
 		}

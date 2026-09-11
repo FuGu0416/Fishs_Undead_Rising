@@ -1,0 +1,92 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+        {
+            "name": "fur:cadavoar_base",
+            "rolls": 4,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:pigboarhide",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:plagued_porkchop",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:sharp_fang",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "minecraft:looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fur:cadavoar_undying_heart",
+            "rolls": 1,
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance_with_looting",
+                    "chance": 0.05,
+                    "looting_multiplier": 0.02
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "fur:undying_heart",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

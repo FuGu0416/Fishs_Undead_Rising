@@ -19,6 +19,7 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
     private long fur_worldSeed;
     private ResourceKey<Level> fur_dimension;
     private Holder<Biome> fur_luminousHolder;
+    private Holder<Biome> fur_carrionHollowHolder;
 
     // Jittered-grid / Voronoi-cell patch placement.
     // Each cell is 32 biome quarts (128 blocks) per side.
@@ -32,6 +33,12 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
     private static final long RARITY    = 4L;           // 1 in 4 cells has a patch
     private static final int  RADIUS_SQ = 64;           // 8-quart radius = 32-block radius
 
+    // Per-biome salts decorrelate the two patch grids from each other — without this,
+    // Luminous Undergrove and Carrion Hollow would always host their patches in the exact
+    // same cells (harmless since their climate zones don't overlap, but pointless coupling).
+    private static final long LUMINOUS_SALT      = 0L;
+    private static final long CARRION_HOLLOW_SALT = 0x9E3779B97F4A7C15L;
+
     @Inject(
         at = @At("HEAD"),
         method = "getNoiseBiome(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;",
@@ -39,7 +46,7 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
     )
     private void fur_getNoiseBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir) {
         if (fur_dimension != Level.OVERWORLD) return;
-        if (fur_luminousHolder == null) return;
+        if (fur_luminousHolder == null && fur_carrionHollowHolder == null) return;
 
         Climate.TargetPoint target = sampler.sample(x, y, z);
         float depth           = Climate.unquantizeCoord(target.depth());
@@ -47,20 +54,33 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
         float humidity        = Climate.unquantizeCoord(target.humidity());
         float continentalness = Climate.unquantizeCoord(target.continentalness());
 
-        if (depth < 0.4F || depth > 0.9F)             return;
-        if (temperature < 0.2F || temperature > 0.9F) return;
-        if (humidity < 0.1F)                           return;
-        if (continentalness < -0.19F)                  return;
+        // Both zones require the same "deep cave" depth/continentalness band; temperature
+        // is what keeps them mutually exclusive (Luminous Undergrove: warm/humid,
+        // Carrion Hollow: cold/dry), so a cell can never satisfy both at once.
+        if (depth < 0.4F || depth > 0.9F) return;
+        if (continentalness < -0.19F)     return;
 
-        if (!isInPatch(fur_worldSeed, x, z)) return;
+        if (fur_luminousHolder != null
+                && temperature >= 0.2F && temperature <= 0.9F
+                && humidity >= 0.1F
+                && isInPatch(fur_worldSeed, x, z, LUMINOUS_SALT)) {
+            cir.setReturnValue(fur_luminousHolder);
+            return;
+        }
 
-        cir.setReturnValue(fur_luminousHolder);
+        if (fur_carrionHollowHolder != null
+                && temperature >= -1.0F && temperature < 0.2F
+                && humidity >= -1.0F && humidity < 0.1F
+                && isInPatch(fur_worldSeed, x, z, CARRION_HOLLOW_SALT)) {
+            cir.setReturnValue(fur_carrionHollowHolder);
+        }
     }
 
-    // Returns true if (x, z) falls within a Luminous Undergrove patch.
+    // Returns true if (x, z) falls within a patch of this salt's grid.
     // Checks the owning cell and all 8 neighbors so patches whose centers sit
     // near a cell boundary are never clipped.
-    private static boolean isInPatch(long seed, int x, int z) {
+    private static boolean isInPatch(long seed, int x, int z, long salt) {
+        seed ^= salt;
         int cellX = Math.floorDiv(x, CELL_SIZE);
         int cellZ = Math.floorDiv(z, CELL_SIZE);
         for (int dx = -1; dx <= 1; dx++) {
@@ -99,4 +119,10 @@ public class MultiNoiseBiomeSourceMixin implements FURMultiNoiseBiomeSourceAcces
 
     @Override
     public Holder<Biome> fur_getLuminousHolder() { return this.fur_luminousHolder; }
+
+    @Override
+    public void fur_setCarrionHollowHolder(Holder<Biome> holder) { this.fur_carrionHollowHolder = holder; }
+
+    @Override
+    public Holder<Biome> fur_getCarrionHollowHolder() { return this.fur_carrionHollowHolder; }
 }

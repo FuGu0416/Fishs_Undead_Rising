@@ -48,32 +48,32 @@
 		"sounds": [{"name": "fur:entity/foglet/death","stream": true}]
 	},
 	
-	"undeadswine_attack":
+	"cadavoar_attack":
 	{
 		"category": "hostile",
-		"subtitle": "entity_undeadswine_attack",
-		"sounds": [{"name": "fur:entity/undeadswine/attack","stream": true}]
+		"subtitle": "entity_cadavoar_attack",
+		"sounds": [{"name": "fur:entity/cadavoar/attack","stream": true}]
 	},
-	
-	"undeadswine_charge":
+
+	"cadavoar_charge":
 	{
 		"category": "hostile",
-		"subtitle": "entity_undeadswine_charge",
-		"sounds": [{"name": "fur:entity/undeadswine/charge","stream": true}]
+		"subtitle": "entity_cadavoar_charge",
+		"sounds": [{"name": "fur:entity/cadavoar/charge","stream": true}]
 	},
-	
-	"undeadswine_hurt":
+
+	"cadavoar_hurt":
 	{
 		"category": "hostile",
-		"subtitle": "entity_undeadswine_hurt",
-		"sounds": [{"name": "fur:entity/undeadswine/hurt","stream": true}]
+		"subtitle": "entity_cadavoar_hurt",
+		"sounds": [{"name": "fur:entity/cadavoar/hurt","stream": true}]
 	},
-	
-	"undeadswine_death":
+
+	"cadavoar_death":
 	{
 		"category": "hostile",
-		"subtitle": "entity_undeadswine_death",
-		"sounds": [{"name": "fur:entity/undeadswine/death","stream": true}]
+		"subtitle": "entity_cadavoar_death",
+		"sounds": [{"name": "fur:entity/cadavoar/death","stream": true}]
 	},
 	
 	"salamander_ambient":

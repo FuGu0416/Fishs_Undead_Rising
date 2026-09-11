@@ -142,6 +142,16 @@ public class FURConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
             key("spring_water");
 
+    /** Carrion Hollow floor mud blanket (PLACEHOLDER block) — vanilla VEGETATION_PATCH,
+     *  same recipe as {@link #MYCELIAL_MAT_PATCH_BONEMEAL} but targeting mud with no
+     *  companion plant. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CARRION_MUD_FLOOR =
+            key("carrion_mud_floor");
+
+    /** Carrion Hollow nether-fossil bone piles */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CARRION_FOSSIL =
+            key("carrion_fossil");
+
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
@@ -391,6 +401,33 @@ public class FURConfiguredFeatures {
                                 Blocks.DEEPSLATE, Blocks.CALCITE, Blocks.TUFF, Blocks.GRAVEL
                         )
                 )));
+
+        // ── Carrion Hollow: floor mud blanket (PLACEHOLDER block) ─────────────
+        // Vanilla VEGETATION_PATCH, same shape as MYCELIAL_MAT_PATCH_BONEMEAL: replaces
+        // MAT_REPLACEABLE floor blocks with mud. vegetationChance is 0 (mud has no companion
+        // plant); the inner feature reference is never actually invoked, same convention as
+        // MYCELIAL_MAT_PATCH_BONEMEAL's unused-at-zero-chance inner feature.
+        context.register(CARRION_MUD_FLOOR, new ConfiguredFeature<>(
+                Feature.VEGETATION_PATCH,
+                new VegetationPatchConfiguration(
+                        com.Fishmod.fur.data.providers.FURBlockTagsProvider.MAT_REPLACEABLE,
+                        BlockStateProvider.simple(Blocks.MUD),
+                        context.lookup(Registries.PLACED_FEATURE)
+                                .getOrThrow(FURPlacedFeatures.MIXED_FLOOR_INNER),
+                        CaveSurface.FLOOR,
+                        ConstantInt.of(1),
+                        0.6F,
+                        5,
+                        0.0F,
+                        UniformInt.of(3, 6),
+                        0.8F
+                )));
+
+        // ── Carrion Hollow: nether-fossil bone piles ──────────────────────────
+        context.register(CARRION_FOSSIL, new ConfiguredFeature<>(
+                FURFeatureRegistry.CARRION_FOSSIL.get(),
+                NoneFeatureConfiguration.INSTANCE
+        ));
 
         // ── Vegetation clumps (the patch around each giant mushroom) ──────────
         // Tight RandomPatch clumps of mixed plants (cyan glowshroom + purple glimmercap

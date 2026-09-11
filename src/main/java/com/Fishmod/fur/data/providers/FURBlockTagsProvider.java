@@ -47,7 +47,8 @@ public class FURBlockTagsProvider extends BlockTagsProvider {
     	this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
     			FURBlockRegistry.SOUL_FURNACE.get(),
     			FURBlockRegistry.TOMBSTONE.get(),
-    			FURBlockRegistry.INFESTED_SANDSTONE.get());
+    			FURBlockRegistry.INFESTED_SANDSTONE.get(),
+    			FURBlockRegistry.INFESTED_RED_SANDSTONE.get());
 
     	// Block-side counterpart of forge:storage_blocks (see FURItemTagsProvider for the item side) -
     	// ectoplasm_block is a standard 3x3 ectoplasm_ingot <-> block storage relationship.

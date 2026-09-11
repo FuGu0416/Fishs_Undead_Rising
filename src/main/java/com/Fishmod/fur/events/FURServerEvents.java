@@ -25,6 +25,8 @@ import com.Fishmod.fur.entities.tameable.FURTameableEntity;
 import com.Fishmod.fur.entities.tameable.MimicEntity;
 import com.Fishmod.fur.entities.tameable.ScarecrowEntity;
 import com.Fishmod.fur.block.DreamcatcherBlock;
+import com.Fishmod.fur.block.InfestedBlock;
+import com.Fishmod.fur.block.InfestedFallingBlock;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FUREntityRegistry;
 import com.Fishmod.fur.init.FURItemRegistry;
@@ -74,6 +76,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.monster.hoglin.Hoglin;
@@ -122,6 +125,7 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -346,8 +350,44 @@ public class FURServerEvents {
 		if (Armor_Famine_lvl >= 4) {
 			player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 7 * 20, 9));
 		}
-    }    
-    
+    }
+
+    /**
+     * Infested Sand/Red Sand: while one is falling (real sand-like gravity, see
+     * {@link InfestedFallingBlock}), touching any other entity mid-air bursts it into wild Scarabs
+     * immediately instead of waiting for it to land. Vanilla has no hook for "a falling block
+     * touched an entity" - {@link InfestedFallingBlock#FALLING_UUIDS} is this mod's own tracking of
+     * which currently-live FallingBlockEntity instances are one of ours, polled here every tick
+     * (the emptiness check makes this free whenever nothing of this type is currently falling,
+     * which is nearly always). Landing on solid ground without touching anything first is instead
+     * handled by {@link InfestedFallingBlock#onLand}.
+     */
+    @SubscribeEvent
+    public void onInfestedFallingBlockTick(TickEvent.LevelTickEvent event) {
+    	if (event.phase == TickEvent.Phase.START || event.side != LogicalSide.SERVER
+    			|| InfestedFallingBlock.FALLING_UUIDS.isEmpty() || !(event.level instanceof ServerLevel serverLevel)) {
+    		return;
+    	}
+
+    	for (UUID uuid : new ArrayList<>(InfestedFallingBlock.FALLING_UUIDS)) {
+    		Entity entity = serverLevel.getEntity(uuid);
+    		if (entity == null) {
+    			continue; // Not in this dimension (or already gone) - another dimension's pass, or a
+    			          // cleanup already done by InfestedFallingBlock itself, will resolve it.
+    		}
+    		if (!(entity instanceof FallingBlockEntity fallingBlock) || !fallingBlock.isAlive()) {
+    			InfestedFallingBlock.FALLING_UUIDS.remove(uuid);
+    			continue;
+    		}
+
+    		if (!serverLevel.getEntities(fallingBlock, fallingBlock.getBoundingBox(), e -> e != fallingBlock).isEmpty()) {
+    			InfestedFallingBlock.FALLING_UUIDS.remove(uuid);
+    			InfestedBlock.spawnScarabs(serverLevel, fallingBlock.blockPosition());
+    			fallingBlock.discard();
+    		}
+    	}
+    }
+
     @SubscribeEvent
     public void onEDamage(LivingDamageEvent event) {
     	DamageSource source = event.getSource();

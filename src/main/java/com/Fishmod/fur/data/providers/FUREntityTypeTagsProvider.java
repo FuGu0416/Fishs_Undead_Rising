@@ -211,8 +211,9 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(FUREntityRegistry.UNBURIED.get())
                 .add(FUREntityRegistry.WETA.get())
                 .add(FUREntityRegistry.MUMMY.get())
-             // .add(FUREntityRegistry.GRAVEROBBER.get())
-        		.add(FUREntityRegistry.SCARAB.get());
+                .add(FUREntityRegistry.GRAVEROBBER.get())
+        		.add(FUREntityRegistry.SCARAB.get())
+        		.add(FUREntityRegistry.CADAVOAR.get());
     }
 
     // ── fur:wendigo_targets ──────────────────────────────────────────────────

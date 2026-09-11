@@ -1,6 +1,7 @@
 package com.Fishmod.fur.init;
 
 import com.Fishmod.fur.mod_LavaCow;
+import com.Fishmod.fur.worldgen.feature.CarrionFossilFeature;
 import com.Fishmod.fur.worldgen.feature.CaveFloorSmootherFeature;
 import com.Fishmod.fur.worldgen.feature.GiantGlimmercapFeature;
 import com.Fishmod.fur.worldgen.feature.GrottoStreamFeature;
@@ -42,4 +43,9 @@ public class FURFeatureRegistry {
 	// Luminous Undergrove floor flora "focal point" clusters.
 	public static final RegistryObject<Feature<LuminousClusterConfiguration>> LUMINOUS_CLUSTER = DEF_REG.register("luminous_cluster",
 			() -> new LuminousClusterFeature(LuminousClusterConfiguration.CODEC));
+
+	// Carrion Hollow — places a vanilla nether-fossil bone pile without the sea-level
+	// restriction baked into the real minecraft:nether_fossil structure.
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> CARRION_FOSSIL = DEF_REG.register("carrion_fossil",
+			() -> new CarrionFossilFeature(NoneFeatureConfiguration.CODEC));
 }

@@ -194,6 +194,7 @@ public class FURItemGroup {
             	output.accept(FURItemRegistry.BONE_TROUT.get());
             	output.accept(FURItemRegistry.PLAGUED_PORKCHOP.get());
             	output.accept(FURItemRegistry.SAUSAGE_ROLL.get());
+            	output.accept(FURItemRegistry.CRABCAKE.get());
 
                 // Raw Parasite variants
                 for (int i = 0; i < 4; i++) {
@@ -238,7 +239,10 @@ public class FURItemGroup {
             	output.accept(FURBlockRegistry.MYCELIAL_MAT.get());
             	output.accept(FURBlockRegistry.MYCELIAL_VEIL.get());
             	output.accept(FURBlockRegistry.TOMBSTONE.get());
-            	output.accept(FURBlockRegistry.INFESTED_SANDSTONE.get());           	
+            	output.accept(FURBlockRegistry.INFESTED_SANDSTONE.get());
+            	output.accept(FURBlockRegistry.INFESTED_SAND.get());
+            	output.accept(FURBlockRegistry.INFESTED_RED_SAND.get());
+            	output.accept(FURBlockRegistry.INFESTED_RED_SANDSTONE.get());
 
             	FURItemRegistry.creativeTabSpawnEggMap.forEach((spawnEgg -> output.accept(spawnEgg.get())));
             })

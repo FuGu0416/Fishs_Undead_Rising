@@ -95,6 +95,7 @@ public class FURItemRegistry {
 	public static final RegistryObject<Item> CHITIN_ARMOR_HELMET = DEF_REG.register("chitin_armor_helmet", () -> new ChitinArmorItem(ArmorItem.Type.HELMET, new Item.Properties()));
 	public static final RegistryObject<Item> CHITIN_ARMOR_LEGGINGS = DEF_REG.register("chitin_armor_leggings", () -> new ChitinArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final RegistryObject<Item> COMBUSTIVE_GLAND = DEF_REG.register("combustive_gland", () -> new FURItem(new Item.Properties().fireResistant()));
+	public static final RegistryObject<Item> CRABCAKE = DEF_REG.register("crabcake", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1.0F).build())));
 	public static final RegistryObject<Item> CURSED_FABRIC = DEF_REG.register("cursed_fabric", () -> new Item(new Item.Properties()));
 	public static final RegistryObject<Item> CURSED_KINGS_CROWN = DEF_REG.register("cursed_kings_crown", () -> new CrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1), 1));
 	public static final RegistryObject<Item> CURSEWEAVE_CLOTH = DEF_REG.register("curseweave_cloth", () -> new Item(new Item.Properties()));
@@ -245,6 +246,7 @@ public class FURItemRegistry {
         spawnEgg("boneworm", FUREntityRegistry.BONEWORM, 0x989898, 0x410E0E);
         spawnEgg("cactoid", FUREntityRegistry.CACTOID, 0x649832, 0xFFF25F);
         spawnEgg("cactyrant", FUREntityRegistry.CACTYRANT, 0x649832, 0x426520);
+        spawnEgg("cadavoar", FUREntityRegistry.CADAVOAR, 0x8A9B8A, 0x3E5C5A);
         spawnEgg("weta", FUREntityRegistry.WETA, 0x845336, 0xEACAA7);
         spawnEgg("enigmoth", FUREntityRegistry.ENIGMOTH, 0x0D0B11, 0xA675E9);
         spawnEgg("flarefly", FUREntityRegistry.FLAREFLY, 0x0F9373, 0xFE8738);
@@ -282,7 +284,6 @@ public class FURItemRegistry {
         spawnEgg("wraith", FUREntityRegistry.WRAITH, 0x2DE6FD, 0x00353B);
 
         /*
-    	spawnEgg(FUREntityRegistry.UNDEADSWINE, 0x8A9B8A, 0x3E5C5A, new Item.Properties()).setRegistryName("fur:spawn_egg_undeadswine"));
     	spawnEgg(FUREntityRegistry.PINGU, 0x77A9FF, 0x797979, new Item.Properties()).setRegistryName("fur:spawn_egg_pingu"));
     	spawnEgg(FUREntityRegistry.FORSAKEN, 12698049, 4802889, new Item.Properties()).setRegistryName("fur:spawn_egg_forsaken"));
     	*/

@@ -7,6 +7,7 @@ import com.Fishmod.fur.mod_LavaCow;
 import com.Fishmod.fur.init.FURBiomesRegistry;
 import com.Fishmod.fur.init.FURCarvers;
 import com.Fishmod.fur.worldgen.FURBiomeModifier;
+import com.Fishmod.fur.worldgen.FURCarrionHollowBiome;
 import com.Fishmod.fur.worldgen.FURLuminousUndergroveBiome;
 import com.Fishmod.fur.worldgen.feature.FURConfiguredFeatures;
 import com.Fishmod.fur.worldgen.feature.FURPlacedFeatures;
@@ -37,6 +38,10 @@ public class FURDatapackBuiltinEntriesProvider extends DatapackBuiltinEntriesPro
                 context.register(
                         FURBiomesRegistry.LUMINOUS_UNDERGROVE,
                         FURLuminousUndergroveBiome.luminousUndergrove(placedFeatures, worldCarvers)
+                );
+                context.register(
+                        FURBiomesRegistry.CARRION_HOLLOW,
+                        FURCarrionHollowBiome.carrionHollow(placedFeatures, worldCarvers)
                 );
             });
 

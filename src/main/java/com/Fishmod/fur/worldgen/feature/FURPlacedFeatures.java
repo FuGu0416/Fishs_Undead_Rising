@@ -74,6 +74,31 @@ public class FURPlacedFeatures {
     public static final ResourceKey<PlacedFeature> CAVE_FLOOR_SMOOTHER =
             key("cave_floor_smoother");
 
+    // Carrion Hollow
+    public static final ResourceKey<PlacedFeature> CARRION_MUD_FLOOR =
+            key("carrion_mud_floor");
+    public static final ResourceKey<PlacedFeature> CARRION_FOSSIL =
+            key("carrion_fossil");
+
+    // ── Grotto-scale room heuristic ──────────────────────────────────────────
+    // Vanilla's carving mask merges every carver registered to the AIR step, so a
+    // PlacementModifier has no way to ask "did FURLuminousGrottoCarver dig this air, or
+    // one of the default cave/canyon carvers?". This approximates it geometrically instead:
+    // the grotto's blob ellipsoids are ~4-14 blocks tall at their thickest (nooks up to 14,
+    // wide-flat lobes down to ~4-7 - see FURLuminousGrottoCarver), while the vanilla cave/
+    // canyon carvers layered into this biome alongside it produce mostly narrow, low-ceiling
+    // tunnels. Requiring several blocks of open headroom above the floor lets giant mushrooms
+    // take root in grotto rooms while filtering out most default-carver tunnel floors.
+    private static final int GROTTO_ROOM_HEADROOM = 4;
+
+    private static BlockPredicate minHeadroomAbove(int extraAirBlocks) {
+        BlockPredicate[] checks = new BlockPredicate[extraAirBlocks];
+        for (int i = 0; i < extraAirBlocks; i++) {
+            checks[i] = BlockPredicate.matchesBlocks(new BlockPos(0, i + 1, 0), Blocks.AIR);
+        }
+        return BlockPredicate.allOf(checks);
+    }
+
     // ── Bootstrap ─────────────────────────────────────────────────────────────
 
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
@@ -278,11 +303,15 @@ public class FURPlacedFeatures {
         // ── World: Large Glow Shroom cluster ──────────────────────────────────
         // Places the glow-shroom CLUSTER (mushroom + a vegetation clump around it), not a
         // bare mushroom, so every giant glow shroom comes with its own patch of plants.
+        //
+        // Count raised 144 -> 400 to push visual density toward warped-forest-style huge
+        // fungus stands, offset by the new headroom filter below (see minHeadroomAbove) so
+        // the extra attempts land in grotto rooms rather than thickening every cave tunnel.
         context.register(LARGE_GLOW_SHROOM,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLOWSHROOM),
                         List.of(
-                                CountPlacement.of(144),
+                                CountPlacement.of(400),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -300,9 +329,11 @@ public class FURPlacedFeatures {
                                         32),
                                 RandomOffsetPlacement.vertical(ConstantInt.of(1)),
                                 BlockPredicateFilter.forPredicate(
-                                        BlockPredicate.matchesBlocks(
-                                                new BlockPos(0, -1, 0),
-                                                FURBlockRegistry.MYCELIAL_MAT.get())),
+                                        BlockPredicate.allOf(
+                                                BlockPredicate.matchesBlocks(
+                                                        new BlockPos(0, -1, 0),
+                                                        FURBlockRegistry.MYCELIAL_MAT.get()),
+                                                minHeadroomAbove(GROTTO_ROOM_HEADROOM))),
                                 BiomeFilter.biome()
                         )));
 
@@ -313,7 +344,7 @@ public class FURPlacedFeatures {
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLIMMERCAP),
                         List.of(
-                                CountPlacement.of(144),
+                                CountPlacement.of(400),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -331,9 +362,11 @@ public class FURPlacedFeatures {
                                         32),
                                 RandomOffsetPlacement.vertical(ConstantInt.of(1)),
                                 BlockPredicateFilter.forPredicate(
-                                        BlockPredicate.matchesBlocks(
-                                                new BlockPos(0, -1, 0),
-                                                FURBlockRegistry.MYCELIAL_MAT.get())),
+                                        BlockPredicate.allOf(
+                                                BlockPredicate.matchesBlocks(
+                                                        new BlockPos(0, -1, 0),
+                                                        FURBlockRegistry.MYCELIAL_MAT.get()),
+                                                minHeadroomAbove(GROTTO_ROOM_HEADROOM))),
                                 BiomeFilter.biome()
                         )));
 
@@ -472,6 +505,61 @@ public class FURPlacedFeatures {
                                 RarityFilter.onAverageOnceEvery(50),
                                 InSquarePlacement.spread(),
                                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE
+                        )));
+
+        // ── World: Carrion Hollow floor mud blanket ───────────────────────────
+        // Same dense floor-scanning placement as MYCELIAL_MAT_PATCH (count 255) so the mud
+        // blankets the floor just as thoroughly as the mycelial mat does in Luminous Undergrove.
+        context.register(CARRION_MUD_FLOOR,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.CARRION_MUD_FLOOR),
+                        List.of(
+                                CountPlacement.of(255),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BiomeFilter.biome()
+                        )));
+
+        // ── World: Carrion Hollow nether-fossil bone piles ────────────────────
+        // 2 attempts per chunk, each kept 1-in-6 on average (~5-6 fossils per Carrion Hollow
+        // pocket) — a bone-heavy floor, not just a rare treat.
+        context.register(CARRION_FOSSIL,
+                new PlacedFeature(
+                        features.getOrThrow(FURConfiguredFeatures.CARRION_FOSSIL),
+                        List.of(
+                                CountPlacement.of(2),
+                                RarityFilter.onAverageOnceEvery(6),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.absolute(-64),
+                                        VerticalAnchor.absolute(128)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.UP,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        32),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BiomeFilter.biome()
                         )));
     }
 

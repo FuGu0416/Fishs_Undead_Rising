@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.Fishmod.fur.config.FURConfig;
 import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.init.FURBlockRegistry;
 import com.Fishmod.fur.init.FUREffectRegistry;
 import com.Fishmod.fur.init.FURSoundRegistry;
 
@@ -53,6 +54,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -245,9 +248,12 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
         }
 
     	// Wild scarabs are neutral vermin, not daylight-proof - once the sun's up they dig back into
-    	// the sand and vanish rather than lingering around indefinitely. Owned pets are unaffected.
-    	// DAY_SINK_TICKS covers the controller's transition blend *and* burrow_down's real length -
-    	// see that field's own comment - so discard() lands right as the fully-blended-in clip finishes.
+    	// the ground and vanish rather than lingering around indefinitely. Owned pets are unaffected.
+    	// Only triggers while standing on sand/sandstone/red sand/red sandstone (see
+    	// #getInfestedReplacement) - elsewhere there's no ground to convincingly burrow into and no
+    	// infested block to leave behind. DAY_SINK_TICKS covers the controller's transition blend *and*
+    	// burrow_down's real length - see that field's own comment - so discard() lands right as the
+    	// fully-blended-in clip finishes.
     	// `burrowUpTicks <= 0` guard: without it, a scarab spawned in daylight (e.g. spawn egg) would
     	// roll into this on the very same tick pendingBurrowUp fires burrow_up, starting burrow_down
     	// (and the daySink discard countdown) while burrow_up is still playing - trigger_controller and
@@ -255,21 +261,51 @@ public class ScarabEntity extends FURTameableEntity implements GeoEntity {
     	// finish before this can even be considered.
     	if (!this.level().isClientSide() && this.getOwner() == null) {
     		if (this.daySinkTimer < 0) {
-    			if (this.burrowUpTicks <= 0 && this.level().isDay() && this.getTarget() == null && this.level().canSeeSky(this.blockPosition()) && this.getRandom().nextFloat() < 0.02F) {
+    			if (this.burrowUpTicks <= 0 && this.level().isDay() && this.getTarget() == null && this.level().canSeeSky(this.blockPosition())
+    					&& getInfestedReplacement(this.level().getBlockState(this.getOnPos().below()).getBlock()) != null
+    					&& this.getRandom().nextFloat() < 0.02F) {
     				this.daySinkTimer = DAY_SINK_TICKS;
     				this.level().broadcastEntityEvent(this, (byte)42);
     			}
     		} else if (--this.daySinkTimer <= 0) {
+    			// Re-checked rather than reusing the block seen when the countdown started - the ground
+    			// may have changed (mined, exploded, etc.) during the burrow_down animation.
+    			BlockPos below = this.getOnPos().below();
+    			Block infested = getInfestedReplacement(this.level().getBlockState(below).getBlock());
+    			if (infested != null) {
+    				this.level().setBlockAndUpdate(below, infested.defaultBlockState());
+    			}
     			this.discard();
     		}
     	}
 	}
 
 	/**
+	 * Maps the block a wild scarab is standing on to the disguised "infested" block it leaves
+	 * behind when it burrows in for the day (see {@link #tick}), or {@code null} if that block
+	 * isn't one scarabs can burrow into. Only the four base sand/sandstone blocks count - smooth,
+	 * cut, chiseled, etc. variants are intentionally not included.
+	 */
+	@Nullable
+	private static Block getInfestedReplacement(Block groundBlock) {
+		if (groundBlock == Blocks.SAND) {
+			return FURBlockRegistry.INFESTED_SAND.get();
+		} else if (groundBlock == Blocks.RED_SAND) {
+			return FURBlockRegistry.INFESTED_RED_SAND.get();
+		} else if (groundBlock == Blocks.SANDSTONE) {
+			return FURBlockRegistry.INFESTED_SANDSTONE.get();
+		} else if (groundBlock == Blocks.RED_SANDSTONE) {
+			return FURBlockRegistry.INFESTED_RED_SANDSTONE.get();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Starts the burrow-up spawn flourish: freezes movement/attack/look via {@link AIBurrowingUp} for
 	 * {@link #BURROW_UP_TICKS}, unless interrupted early by {@link #hurt}. Called from {@link #tick}
 	 * for every normal spawn path (see {@link #finalizeSpawn}/{@link #pendingBurrowUp}), and directly
-	 * by {@code InfestedSandstoneBlock} for its ambush spawn (which bypasses finalizeSpawn entirely but
+	 * by {@code InfestedBlock} for its ambush spawn (which bypasses finalizeSpawn entirely but
 	 * calls this only after the entity is already added to the level, so broadcasting here is safe).
 	 */
 	public void startBurrowUp() {

@@ -10,6 +10,7 @@ import net.minecraft.world.level.biome.Biome;
 public class FURBiomesRegistry {
 
     public static final ResourceKey<Biome> LUMINOUS_UNDERGROVE = register("luminous_undergrove");
+    public static final ResourceKey<Biome> CARRION_HOLLOW = register("carrion_hollow");
 
     // ── Helper ────────────────────────────────────────────────────────────────
 

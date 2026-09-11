@@ -1,0 +1,20 @@
+{
+  "type": "fur:cooking",
+  "ingredients": [
+    {
+      "item": "fur:mimic_claw_raw"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "tag": "forge:milk"
+    }
+  ],
+  "result": {
+    "item": "fur:crabcake",
+    "count": 2
+  },
+  "experience": 0.35,
+  "time": 200
+}

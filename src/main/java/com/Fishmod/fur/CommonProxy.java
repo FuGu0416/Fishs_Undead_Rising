@@ -1,5 +1,6 @@
 package com.Fishmod.fur;
 
+import com.Fishmod.fur.message.MessageBeelzebubBite;
 import com.Fishmod.fur.message.MessageMountSpecial;
 
 import net.minecraft.world.entity.player.Player;
@@ -47,6 +48,11 @@ public class CommonProxy {
         .encoder(MessageMountSpecial::serialize)
         .decoder(MessageMountSpecial::deserialize)
         .consumerMainThread(MessageMountSpecial::handle)
+        .add();
+    	mod_LavaCow.NETWORK.messageBuilder(MessageBeelzebubBite.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+        .encoder(MessageBeelzebubBite::serialize)
+        .decoder(MessageBeelzebubBite::deserialize)
+        .consumerMainThread(MessageBeelzebubBite::handle)
         .add();
     }
 }

@@ -3,6 +3,7 @@ package com.Fishmod.fur.message;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import com.Fishmod.fur.entities.flying.BeelzebubEntity;
 import com.Fishmod.fur.entities.flying.EnigmothEntity;
 import com.Fishmod.fur.entities.flying.VespaEntity;
 import com.Fishmod.fur.entities.projectiles.MoltenGlobEntity;
@@ -105,12 +106,24 @@ public class MessageMountSpecial {
 		} else if (entity instanceof VespaEntity vespa) {
 			vespa.abilityCooldown = vespa.abilityCooldown();
 			entity.level().broadcastEntityEvent(entity, (byte)4);					
-		}/* else if (entity instanceof BeelzebubEntity) {
-			((BeelzebubEntity) entity).abilityCooldown = ((BeelzebubEntity) entity).abilityCooldown();
-			((BeelzebubEntity) entity).castSpell(FURConfig.Beelzebub_Ability_Num.get());
-			entity.playSound(((BeelzebubEntity) entity).getSpellSound(), 0.175F, 1.0F);
-			entity.level.broadcastEntityEvent(entity, (byte)10);					
-		}*/ else if (entity instanceof EnigmothEntity) {
+		} else if (entity instanceof BeelzebubEntity beelzebub) {
+			// MOUNT_SPECIAL toggles the grab: release whatever is currently held, or otherwise try to
+			// grab whatever is directly in front of Beelzebub. The client-side debounce is just
+			// abilityCooldown() (see BeelzebubEntity) -- there's no separate server-side cooldown here.
+			LivingEntity grabbed = beelzebub.getGrabbedPrey();
+			if (grabbed != null) {
+				grabbed.stopRiding();
+			} else {
+				// grab_blend plays on every grab attempt, whether or not anything ends up caught -- per
+				// maintainer request, an empty snap still needs the same visual feedback a successful one
+				// gets. Same clip the wild AIWildDevourGoal latch-on uses either way. Whether anything was
+				// actually caught isn't decided here: the snap in the clip doesn't close until partway
+				// through, so BeelzebubEntity#startGrabCheck() re-checks findGrabTarget() at that later
+				// moment instead (see resolveGrabAttempt()) rather than whatever was in range right now.
+				beelzebub.level().broadcastEntityEvent(beelzebub, (byte) 12);
+				beelzebub.startGrabCheck();
+			}
+		} else if (entity instanceof EnigmothEntity) {
 	   	 	// The ridden mount's server-side velocity is forced to zero (RidableFlyingMobEntity.travel zeroes
 	   	 	// it off the controlling client), so use the real flight velocity captured client-side in the packet.
 	   	 	Vec3 mountMotion = new Vec3(message.motionX, message.motionY, message.motionZ);

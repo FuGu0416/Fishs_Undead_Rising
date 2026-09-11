@@ -17,9 +17,9 @@ public class BeelzebubPupaModel extends GeoModel<CocoonEntity> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(mod_LavaCow.MODID, "textures/mobs/beelzebub/beelzebub_pupa.png");
 
-    private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/beelzebubpupa.animation.json");
+    private static final ResourceLocation ANIMATIONS = new ResourceLocation(mod_LavaCow.MODID, "animations/beelzebub_pupa.animation.json");
 
-    private static final ResourceLocation MODEL = new ResourceLocation(mod_LavaCow.MODID, "geo/beelzebubpupa.geo.json");
+    private static final ResourceLocation MODEL = new ResourceLocation(mod_LavaCow.MODID, "geo/beelzebub_pupa.geo.json");
 
     @Override
     public ResourceLocation getTextureResource(CocoonEntity object) {

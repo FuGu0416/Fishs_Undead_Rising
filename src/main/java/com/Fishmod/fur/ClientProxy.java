@@ -12,6 +12,7 @@ import com.Fishmod.fur.client.renderer.entity.AvatonRenderer;
 import com.Fishmod.fur.client.renderer.entity.BansheeRenderer;
 import com.Fishmod.fur.client.renderer.entity.BoneWormRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactoidRenderer;
+import com.Fishmod.fur.client.renderer.entity.CadavoarRenderer;
 import com.Fishmod.fur.client.renderer.entity.ShroomlingRenderer;
 import com.Fishmod.fur.client.renderer.entity.ShroomLordRenderer;
 import com.Fishmod.fur.client.renderer.entity.CactusThornRenderer;
@@ -139,6 +140,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(FUREntityRegistry.SHROOMLORD.get(), ShroomLordRenderer::new);
         EntityRenderers.register(FUREntityRegistry.SKELETONKING.get(), SkeletonKingRenderer::new);
         EntityRenderers.register(FUREntityRegistry.BONEWORM.get(), BoneWormRenderer::new);
+        EntityRenderers.register(FUREntityRegistry.CADAVOAR.get(), CadavoarRenderer::new);
 
     	EntityRenderers.register(FUREntityRegistry.CACTUS_THORN.get(), CactusThornRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.BASIC_BOMB.get(), ThrownItemRenderer::new);
@@ -167,7 +169,6 @@ public class ClientProxy extends CommonProxy {
     	BlockEntityRenderers.register(FURBlockEntityRegistry.SCARECROWHEAD_PLAGUE.get(), manager -> new ScarecrowHeadTileEntityRenderer<>(2, manager));
         
     	/*ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
-        EntityRenderers.register(FUREntityRegistry.UNDEADSWINE, manager -> new UndeadSwineRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.SHROOMLORD, manager -> new ShroomLordRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.LILSLUDGE, manager -> new LilSludgeRenderer(manager));
         EntityRenderers.register(FUREntityRegistry.PINGU, manager -> new PinguRenderer(manager));

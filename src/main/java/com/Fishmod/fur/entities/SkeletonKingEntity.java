@@ -233,6 +233,15 @@ public class SkeletonKingEntity extends Monster implements GeoEntity {
             }
         }
 
+        // Ported from 1.12.2: out of combat and not at full health regenerates fast, so
+        // disengaging barely slows the King down — unless the last player to hit him is in
+        // creative mode, matching 1.12.2's "creative mode won't trigger quick regeneration".
+        if (this.getTarget() == null && this.getHealth() < this.getMaxHealth()
+                && !(this.lastHurtByPlayer != null && this.lastHurtByPlayer.isCreative())
+                && this.tickCount % 20 == 0) {
+            this.heal(this.getMaxHealth() * 0.2F);
+        }
+
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
     }
 
@@ -266,6 +275,14 @@ public class SkeletonKingEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        // Drown/Cactus/Lightning ported from 1.12.2; Sweet Berry Bush added on top at the user's
+        // request (1.12.2 doesn't immunize it). All outright immune regardless of the
+        // invulnerability window below.
+        if (source.is(DamageTypes.DROWN) || source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH)
+                || source.is(DamageTypes.LIGHTNING_BOLT)) {
+            return false;
+        }
+
         // BYPASSES_INVULNERABILITY covers both the void and /kill (GENERIC_KILL) — the 1.16.5
         // OUT_OF_WORLD check was split into two damage types in 1.20.1 (vanilla WitherBoss idiom).
         if (this.getInvulnerableTicks() > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {

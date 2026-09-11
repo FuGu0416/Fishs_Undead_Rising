@@ -41,11 +41,18 @@ public class ChunkStatusMixin {
         if (!(chunkGenerator.getBiomeSource() instanceof FURMultiNoiseBiomeSourceAccessor accessor)) return;
         accessor.fur_setWorldSeed(serverLevel.getSeed());
         accessor.fur_setDimension(serverLevel.dimension());
-        // Populate the luminous holder once per biome source instance
-        if (serverLevel.dimension() == Level.OVERWORLD && accessor.fur_getLuminousHolder() == null) {
-            serverLevel.registryAccess().registry(Registries.BIOME).ifPresent(reg ->
-                reg.getHolder(FURBiomesRegistry.LUMINOUS_UNDERGROVE).ifPresent(accessor::fur_setLuminousHolder)
-            );
+        // Populate the patch-biome holders once per biome source instance
+        if (serverLevel.dimension() == Level.OVERWORLD) {
+            if (accessor.fur_getLuminousHolder() == null) {
+                serverLevel.registryAccess().registry(Registries.BIOME).ifPresent(reg ->
+                    reg.getHolder(FURBiomesRegistry.LUMINOUS_UNDERGROVE).ifPresent(accessor::fur_setLuminousHolder)
+                );
+            }
+            if (accessor.fur_getCarrionHollowHolder() == null) {
+                serverLevel.registryAccess().registry(Registries.BIOME).ifPresent(reg ->
+                    reg.getHolder(FURBiomesRegistry.CARRION_HOLLOW).ifPresent(accessor::fur_setCarrionHollowHolder)
+                );
+            }
         }
     }
 }

@@ -56,6 +56,10 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_LUMINOUS_GLOW_SQUID = registerKey("add_luminous_glow_squid");
 	public static final ResourceKey<BiomeModifier> ADD_BONEWORM = registerKey("add_boneworm");
 	public static final ResourceKey<BiomeModifier> ADD_BONEWORM_SOUL_SAND_VALLEY = registerKey("add_boneworm_soul_sand_valley");
+	public static final ResourceKey<BiomeModifier> ADD_CADAVOAR = registerKey("add_cadavoar");
+	public static final ResourceKey<BiomeModifier> ADD_LAMPREY = registerKey("add_lamprey");
+	public static final ResourceKey<BiomeModifier> ADD_SKELETON_CARRION_HOLLOW = registerKey("add_skeleton_carrion_hollow");
+	public static final ResourceKey<BiomeModifier> ADD_SPIDER_CARRION_HOLLOW = registerKey("add_spider_carrion_hollow");
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -130,20 +134,35 @@ public class FURBiomeModifier {
         // sparse ambient desert spawn (the Grave Robber also appears in raids as a Raider).
         addSpawn(context, ADD_GRAVEROBBER, biomes.getOrThrow(Tags.Biomes.IS_DESERT),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.GRAVEROBBER.get(), 8, 1, 1));
-        // 1.16.5 spawned the Beelzebub across all non-Mushroom Overworld biomes (rate 2). Approximated
-        // here by the hostile-overworld biome tag at a low weight.
-        addSpawn(context, ADD_BEELZEBUB, biomes.getOrThrow(FURBiomeTagsProvider.IS_OVERWORLD_HOSTILE),
+        // Exclusive to Carrion Hollow (was IS_OVERWORLD_HOSTILE, approximating 1.16.5's
+        // spawn-everywhere-but-Mushroom rate 2).
+        addSpawn(context, ADD_BEELZEBUB, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BEELZEBUB.get(), 2, 1, 2));
         // Re-themed as the Shroomlord: it now spawns in the Luminous Undergrove cave biome
         // (alongside the Shroomling), not the original 1.16.5 swamp.
         addSpawn(context, ADD_SHROOMLORD, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.LUMINOUS_UNDERGROVE)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.SHROOMLORD.get(), 15, 1, 2));
-        // 1.16.5 spawned the Boneworm in any sandy Overworld biome (rate 20), plus a sparser
-        // Soul Sand Valley spawn (rate 20/10 = 2) for the fire-immune Flame Jet skin.
-        addSpawn(context, ADD_BONEWORM, biomes.getOrThrow(Tags.Biomes.IS_SANDY),
+        // Exclusive to Carrion Hollow (was any sandy Overworld biome, rate 20).
+        addSpawn(context, ADD_BONEWORM, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BONEWORM.get(), 20, 1, 2));
+        // Restored: the Soul Sand Valley spawn is what naturally triggers the fire-immune "Flame Jet"
+        // skin (BoneWormEntity#finalizeSpawn sets it when spawned in Biomes.SOUL_SAND_VALLEY).
         addSpawn(context, ADD_BONEWORM_SOUL_SAND_VALLEY, HolderSet.direct(biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.BONEWORM.get(), 2, 1, 2));
+        // Exclusive to Carrion Hollow (was any forest Overworld biome, rate 15, group 4-8).
+        addSpawn(context, ADD_CADAVOAR, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.CADAVOAR.get(), 15, 4, 8));
+        // Lamprey didn't spawn naturally anywhere before; added here as a Carrion Hollow water-pool
+        // ambient (see SwarmerEntity#checkDeepWaterSpawnRules for why it can actually reach these
+        // pools despite being far below the Overworld's usual near-sea-level water-mob band).
+        addSpawn(context, ADD_LAMPREY, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.LAMPREY.get(), 10, 2, 4));
+        // Vanilla Skeleton/Spider added on top of the biome's own exclusive mobs, at modest weights so
+        // they season the population rather than drown it out.
+        addSpawn(context, ADD_SKELETON_CARRION_HOLLOW, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
+                new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 30, 2, 4));
+        addSpawn(context, ADD_SPIDER_CARRION_HOLLOW, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
+                new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 25, 1, 3));
     }
 
     private static void addSpawn(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> resourceName, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData... spawns) {

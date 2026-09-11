@@ -1,0 +1,52 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"cocoon.model.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"base": {
+					"scale": {
+						"vector": [
+							"1 + math.cos(query.anim_time * 180-45) * 0.05",
+							"1 + math.cos(query.anim_time * 180-45) * 0.05",
+							"1 + math.cos(query.anim_time * 180-45) * 0.05"
+						]
+					}
+				},
+				"seg0": {
+					"scale": {
+						"vector": ["1 + math.cos(query.anim_time * 180) * 0.05", "1 + math.cos(query.anim_time * 180) * 0.05", "1 + math.cos(query.anim_time * 180) * 0.05"]
+					}
+				},
+				"seg1": {
+					"scale": {
+						"vector": [
+							"1 + math.cos(query.anim_time * 180-90) * 0.05",
+							"1 + math.cos(query.anim_time * 180-90) * 0.05",
+							"1 + math.cos(query.anim_time * 180-90) * 0.05"
+						]
+					}
+				},
+				"seg2": {
+					"scale": {
+						"vector": [
+							"1 + math.cos(query.anim_time * 180-135) * 0.05",
+							"1 + math.cos(query.anim_time * 180-135) * 0.05",
+							"1 + math.cos(query.anim_time * 180-135) * 0.05"
+						]
+					}
+				},
+				"seg3": {
+					"scale": {
+						"vector": [
+							"1 + math.cos(query.anim_time * 180-180) * 0.05",
+							"1 + math.cos(query.anim_time * 180-180) * 0.05",
+							"1 + math.cos(query.anim_time * 180-180) * 0.05"
+						]
+					}
+				}
+			}
+		}
+	}
+}
