@@ -28,10 +28,11 @@ public class MimicRenderer extends GeoEntityRenderer<MimicEntity> {
     @Override
     protected void applyRotations(MimicEntity entity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
     	super.applyRotations(entity, poseStack, ageInTicks, rotationYaw, partialTicks);
-    	if (entity.isBaby()) {
-        	poseStack.scale(0.5F, 0.5F, 0.5F);
-        }    	
-    	
+    	// The old placeholder-era 0.5x shrink (for when babies just rendered the adult model scaled
+    	// down) is gone now that mimic_spawn.geo.json is a real, dedicated baby model already
+    	// authored at its own correct size (e.g. its body cube is ~4x4x5 vs the adult's 14x10x14) -
+    	// scaling it down again would render it far too small.
+
     	if (entity.isInSittingPose()) {
     		this.shadowRadius = 0.0F;
     	} else {

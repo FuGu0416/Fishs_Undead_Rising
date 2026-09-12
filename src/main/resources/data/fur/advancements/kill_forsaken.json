@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "fur:forsaken_staff"
+        },
+        "title": {
+            "translate": "advancements.fur.kill_forsaken.title"
+        },
+        "description": {
+            "translate": "advancements.fur.kill_forsaken.description"
+        }
+    },
+    "parent": "fur:root",
+    "criteria": {
+        "killed": {
+            "trigger": "minecraft:player_killed_entity",
+		    "conditions": {
+				"entity": {
+					"type": "fur:forsaken"
+		        }
+		      }
+        }
+    }
+}

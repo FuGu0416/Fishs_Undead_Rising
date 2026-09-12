@@ -25,6 +25,7 @@ import com.Fishmod.fur.client.renderer.entity.EnigmothRenderer;
 import com.Fishmod.fur.client.renderer.entity.VespaRenderer;
 import com.Fishmod.fur.client.renderer.entity.FURArrowRenderer;
 import com.Fishmod.fur.client.renderer.entity.FogletRenderer;
+import com.Fishmod.fur.client.renderer.entity.ForsakenRenderer;
 import com.Fishmod.fur.client.renderer.entity.GhoulRenderer;
 import com.Fishmod.fur.client.renderer.entity.LampreyRenderer;
 import com.Fishmod.fur.client.renderer.entity.LavaCowRenderer;
@@ -96,6 +97,7 @@ public class ClientProxy extends CommonProxy {
     public void clientInit() {
     	EntityRenderers.register(FUREntityRegistry.LAVACOW.get(), LavaCowRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.FOGLET.get(), FogletRenderer::new);
+    	EntityRenderers.register(FUREntityRegistry.FORSAKEN.get(), ForsakenRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.ISNACHI.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.IMP.get(), FogletRenderer::new);
     	EntityRenderers.register(FUREntityRegistry.SEAHAG.get(), SeaHagRenderer::new);

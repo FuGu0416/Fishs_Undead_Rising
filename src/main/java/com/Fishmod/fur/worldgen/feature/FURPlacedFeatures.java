@@ -304,14 +304,20 @@ public class FURPlacedFeatures {
         // Places the glow-shroom CLUSTER (mushroom + a vegetation clump around it), not a
         // bare mushroom, so every giant glow shroom comes with its own patch of plants.
         //
-        // Count raised 144 -> 400 to push visual density toward warped-forest-style huge
-        // fungus stands, offset by the new headroom filter below (see minHeadroomAbove) so
-        // the extra attempts land in grotto rooms rather than thickening every cave tunnel.
+        // Count raised 144 -> 256 to push visual density toward warped-forest-style huge fungus
+        // stands, offset by the new headroom filter below (see minHeadroomAbove) so the extra
+        // attempts land in grotto rooms rather than thickening every cave tunnel. 256 is the actual
+        // ceiling, not a round number of choice - CountPlacement's IntProvider codec caps at 256;
+        // an earlier 400 here parsed and wrote fine out of runData (a silent per-element skip, not
+        // a hard datagen failure) but left LARGE_GLOW_SHROOM's placed_feature JSON never actually
+        // written, which only surfaces as a hard "Unbound values in registry ... [fur:large_glow_
+        // shroom]" crash the moment a world is actually loaded (registry freezing requires every
+        // registered key to resolve). See the matching note on GIANT_GLIMMERCAP below.
         context.register(LARGE_GLOW_SHROOM,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLOWSHROOM),
                         List.of(
-                                CountPlacement.of(400),
+                                CountPlacement.of(256),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),
@@ -340,11 +346,14 @@ public class FURPlacedFeatures {
         // ── World: Giant Glimmercap cluster ───────────────────────────────────
         // Same placement strategy as the glow shroom, and likewise places the glimmercap
         // CLUSTER (mushroom + vegetation clump) so every giant glimmercap has its patch.
+        // Count capped at 256 - see the note on LARGE_GLOW_SHROOM above (CountPlacement's
+        // IntProvider codec ceiling, not a stylistic choice; 400 here left this placed_feature
+        // unwritten too, the second half of the same load-time registry crash).
         context.register(GIANT_GLIMMERCAP,
                 new PlacedFeature(
                         features.getOrThrow(FURConfiguredFeatures.LUMINOUS_CLUSTER_GLIMMERCAP),
                         List.of(
-                                CountPlacement.of(400),
+                                CountPlacement.of(256),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
                                         VerticalAnchor.absolute(-64),

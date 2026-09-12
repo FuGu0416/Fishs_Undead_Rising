@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.Fishmod.fur.core.SpawnUtil;
+import com.Fishmod.fur.entities.ForsakenEntity;
 import com.Fishmod.fur.entities.SkeletonKingEntity;
 import com.Fishmod.fur.init.FUREntityRegistry;
 
@@ -17,6 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -108,8 +111,7 @@ public class SandBurstEntity extends Entity {
         } else if (--this.warmupDelayTicks < 0) {
             if (this.warmupDelayTicks == -8) {
                 for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
-                    // 1.16.5 also spared the (un-ported) ForsakenEntity: `|| livingentity instanceof ForsakenEntity`
-                    if (!(livingentity instanceof SkeletonKingEntity))
+                    if (!(livingentity instanceof SkeletonKingEntity) && !(livingentity instanceof ForsakenEntity))
                         this.dealDamageTo(livingentity);
                 }
             }
@@ -120,9 +122,8 @@ public class SandBurstEntity extends Entity {
             }
 
             if (--this.lifeTicks < 0) {
-                /* Deferred with the FORSAKEN port — 30% chance for an expiring burst to raise a
-                 * Sand Wraith (Forsaken) that inherits the caster's target. Un-comment when
-                 * FUREntityRegistry.FORSAKEN lands. See PLACEHOLDERS.md.
+                // 30% chance for an expiring burst to raise a Sand Wraith (Forsaken) that inherits the
+                // caster's target - restored now that FUREntityRegistry.FORSAKEN exists.
                 if (this.random.nextFloat() < 0.3F && this.level() instanceof ServerLevel server) {
                     ForsakenEntity entity = SpawnUtil.trySpawnEntity(FUREntityRegistry.FORSAKEN.get(), server, this.blockPosition());
 
@@ -136,7 +137,6 @@ public class SandBurstEntity extends Entity {
                         }
                     }
                 }
-                */
 
                 this.discard();
             }

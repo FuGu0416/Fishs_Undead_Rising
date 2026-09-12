@@ -7,10 +7,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class PteraRenderer extends GeoEntityRenderer<PteraEntity> {
+public class PteraRenderer extends FlyingMobRenderer<PteraEntity> {
 	
     public PteraRenderer(EntityRendererProvider.Context rendermanagerIn) {
     	super(rendermanagerIn, new PteraModel());

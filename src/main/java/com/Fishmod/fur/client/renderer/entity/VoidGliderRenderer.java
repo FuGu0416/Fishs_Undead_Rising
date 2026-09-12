@@ -8,11 +8,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 @OnlyIn(Dist.CLIENT)
-public class VoidGliderRenderer extends GeoEntityRenderer<VoidGliderEntity> {
+public class VoidGliderRenderer extends FlyingMobRenderer<VoidGliderEntity> {
 
     public VoidGliderRenderer(EntityRendererProvider.Context rendermanagerIn) {
     	super(rendermanagerIn, new VoidGliderModel());

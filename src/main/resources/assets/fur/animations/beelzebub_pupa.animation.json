@@ -6,44 +6,37 @@
 			"animation_length": 2,
 			"bones": {
 				"base": {
-					"scale": {
-						"vector": [
-							"1 + math.cos(query.anim_time * 180-45) * 0.05",
-							"1 + math.cos(query.anim_time * 180-45) * 0.05",
-							"1 + math.cos(query.anim_time * 180-45) * 0.05"
-						]
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180) * 5", 0]
 					}
 				},
 				"seg0": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180-90) * 5", "math.cos(query.anim_time * 180-90) * 3"]
+					},
 					"scale": {
-						"vector": ["1 + math.cos(query.anim_time * 180) * 0.05", "1 + math.cos(query.anim_time * 180) * 0.05", "1 + math.cos(query.anim_time * 180) * 0.05"]
+						"vector": ["1 + math.sin(query.anim_time * 360-90) * 0.05", "1 + math.sin(query.anim_time * 360-180) * 0.05", 1]
 					}
 				},
 				"seg1": {
-					"scale": {
-						"vector": [
-							"1 + math.cos(query.anim_time * 180-90) * 0.05",
-							"1 + math.cos(query.anim_time * 180-90) * 0.05",
-							"1 + math.cos(query.anim_time * 180-90) * 0.05"
-						]
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180) * -10", 0]
 					}
 				},
 				"seg2": {
+					"rotation": {
+						"vector": [0, 0, "math.cos(query.anim_time * 180) * 3"]
+					},
 					"scale": {
-						"vector": [
-							"1 + math.cos(query.anim_time * 180-135) * 0.05",
-							"1 + math.cos(query.anim_time * 180-135) * 0.05",
-							"1 + math.cos(query.anim_time * 180-135) * 0.05"
-						]
+						"vector": ["1 + math.sin(query.anim_time * 360) * 0.05", "1 + math.sin(query.anim_time * 360-90) * 0.05", 1]
 					}
 				},
 				"seg3": {
+					"rotation": {
+						"vector": [0, "-math.cos(query.anim_time * 180+90) * -5", "math.cos(query.anim_time * 180+90) * 3"]
+					},
 					"scale": {
-						"vector": [
-							"1 + math.cos(query.anim_time * 180-180) * 0.05",
-							"1 + math.cos(query.anim_time * 180-180) * 0.05",
-							"1 + math.cos(query.anim_time * 180-180) * 0.05"
-						]
+						"vector": ["1 + math.sin(query.anim_time * 360+90) * 0.05", "1 + math.sin(query.anim_time * 360+180) * 0.05", 1]
 					}
 				}
 			}

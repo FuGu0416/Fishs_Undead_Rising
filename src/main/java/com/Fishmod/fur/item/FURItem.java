@@ -121,7 +121,12 @@ public class FURItem extends Item {
 		}
 
 		if (stack.getItem().equals(FURItemRegistry.MIMIC_EGG.get()) && stack.hasTag()) {
-			tooltip.add(Component.translatable((stack.getOrCreateTag().getInt("HatchTime") * 100 / MimicEntity.MIMIC_EGG_HATCH_TIME) + "%").withStyle(ChatFormatting.DARK_GRAY));
+			// HatchTime can keep counting past MIMIC_EGG_HATCH_TIME while the egg is fully
+			// incubated but waiting on a flower_pot to actually hatch (see
+			// MimicEntity#tickEggIncubation) - clamp the displayed percentage so a long wait
+			// doesn't show e.g. 140%.
+			int percent = Math.min(100, stack.getOrCreateTag().getInt("HatchTime") * 100 / MimicEntity.MIMIC_EGG_HATCH_TIME);
+			tooltip.add(Component.translatable(percent + "%").withStyle(ChatFormatting.DARK_GRAY));
 		} else if (this.Tooltip == 1) {
 			tooltip.add(Component.translatable(this.getDescriptionId() +  ".desc").withStyle(ChatFormatting.YELLOW));
 		}

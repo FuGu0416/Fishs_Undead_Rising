@@ -1,0 +1,17 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"forsaken.model.idle": {
+			"loop": true,
+			"animation_length": 1.0
+		},
+		"forsaken.model.walk": {
+			"loop": true,
+			"animation_length": 1.0
+		},
+		"forsaken.model.attack": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5
+		}
+	}
+}

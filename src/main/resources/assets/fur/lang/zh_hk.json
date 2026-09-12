@@ -849,6 +849,7 @@
 						
 	"message.fur.beastcall_horn.bound": "已綁定 %s",
 	"message.fur.beastcall_horn.cleared": "已解除綁定",
+	"message.fur.beastcall_horn.mounted": "騎乘中無法召喚 %s",
 	"message.fur.beastcall_horn.none": "附近沒有可綁定的寵物",
 	"message.fur.beastcall_horn.notfound": "綁定的寵物太遠或不在此維度",
 	"message.fur.beastcall_horn.override": "已綁定其他寵物，潛行+右鍵以覆蓋",

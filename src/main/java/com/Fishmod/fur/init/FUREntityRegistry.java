@@ -5,6 +5,7 @@ import com.Fishmod.fur.entities.BoneWormEntity;
 import com.Fishmod.fur.entities.CactyrantEntity;
 import com.Fishmod.fur.entities.CadavoarEntity;
 import com.Fishmod.fur.entities.FogletEntity;
+import com.Fishmod.fur.entities.ForsakenEntity;
 import com.Fishmod.fur.entities.GhoulEntity;
 import com.Fishmod.fur.entities.GraveRobberEntity;
 import com.Fishmod.fur.entities.ImpEntity;
@@ -96,6 +97,7 @@ public class FUREntityRegistry {
 	public static final RegistryObject<EntityType<EnigmothEntity>> ENIGMOTH = DEF_REG.register("enigmoth", () -> (EntityType<EnigmothEntity>) EntityType.Builder.of(EnigmothEntity::new, MobCategory.MONSTER).sized(1.6F, 1.0F).fireImmune().setTrackingRange(8).build("enigmoth"));
 	public static final RegistryObject<EntityType<FlareflyEntity>> FLAREFLY = DEF_REG.register("flarefly", () -> (EntityType<FlareflyEntity>) EntityType.Builder.of(FlareflyEntity::new, MobCategory.MONSTER).sized(0.7F, 0.6F).fireImmune().setTrackingRange(8).build("flarefly"));
 	public static final RegistryObject<EntityType<FogletEntity>> FOGLET = DEF_REG.register("foglet", () -> (EntityType<FogletEntity>) EntityType.Builder.of(FogletEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("foglet"));
+	public static final RegistryObject<EntityType<ForsakenEntity>> FORSAKEN = DEF_REG.register("forsaken", () -> (EntityType<ForsakenEntity>) EntityType.Builder.of(ForsakenEntity::new, MobCategory.MONSTER).sized(0.6F, 1.99F).fireImmune().setTrackingRange(8).build("forsaken"));
 	public static final RegistryObject<EntityType<FrigidEntity>> FRIGID = DEF_REG.register("frigid", () -> (EntityType<FrigidEntity>) EntityType.Builder.of(FrigidEntity::new, MobCategory.MONSTER).sized(1.0F, 1.95F).setTrackingRange(8).build("frigid"));
 	public static final RegistryObject<EntityType<GhoulEntity>> GHOUL = DEF_REG.register("ghoul", () -> (EntityType<GhoulEntity>) EntityType.Builder.of(GhoulEntity::new, MobCategory.MONSTER).sized(0.6F, 1.2F).setTrackingRange(8).build("ghoul"));
 	public static final RegistryObject<EntityType<GraveRobberEntity>> GRAVEROBBER = DEF_REG.register("graverobber", () -> (EntityType<GraveRobberEntity>) EntityType.Builder.of(GraveRobberEntity::new, MobCategory.MONSTER).sized(0.6F, 1.95F).setTrackingRange(8).build("graverobber"));
@@ -153,7 +155,6 @@ public class FUREntityRegistry {
 
 	/*
 	public static final EntityType<PinguEntity> PINGU = registerEntity(EntityType.Builder.of(PinguEntity::new, EntityClassification.MONSTER).sized(0.5F, 0.8F), "pingu");
-	public static final EntityType<ForsakenEntity> FORSAKEN = registerEntity(EntityType.Builder.of(ForsakenEntity::new, EntityClassification.MONSTER).sized(0.6F, 1.99F).fireImmune(), "forsaken");
 	*/
 	
     @SubscribeEvent
@@ -169,6 +170,7 @@ public class FUREntityRegistry {
         event.register(ENIGMOTH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, EnigmothEntity::checkEnigmothSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(FLAREFLY.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlareflyEntity::checkFlareflySpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(FOGLET.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, FogletEntity::checkFogletSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(FORSAKEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(FRIGID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, FrigidEntity::checkFrigidSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GHOUL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, GhoulEntity::checkGhoulSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
         event.register(GRAVEROBBER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
@@ -206,7 +208,7 @@ public class FUREntityRegistry {
 
         /*
         event.register(PINGU.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PinguEntity::checkPinguSpawnRules);
-        event.register(FORSAKEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ForsakenEntity::checkForsakenSpawnRules);*/
+        */
     }
 
     @SubscribeEvent
@@ -224,6 +226,7 @@ public class FUREntityRegistry {
         event.put(ENIGMOTH.get(), EnigmothEntity.createAttributes().build());
         event.put(FLAREFLY.get(), FlareflyEntity.createAttributes().build());
         event.put(FOGLET.get(), FogletEntity.createAttributesFoglet().build());
+        event.put(FORSAKEN.get(), ForsakenEntity.createAttributes().build());
         event.put(FRIGID.get(), FrigidEntity.createAttributes().build());
         event.put(GHOUL.get(), GhoulEntity.createAttributes().build());
         event.put(GRAVEROBBER.get(), GraveRobberEntity.createAttributes().build());
@@ -260,7 +263,6 @@ public class FUREntityRegistry {
 
         /*
         event.put(PINGU, PinguEntity.createAttributes().build());
-        event.put(FORSAKEN, ForsakenEntity.createAttributes().build());
         */
     }
 }

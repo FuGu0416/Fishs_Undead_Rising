@@ -109,15 +109,19 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-	// PLACEHOLDER: only "graverobber.model.idle" exists in graverobber.animation.json so far (a
-	// scarf/shirt scale nudge to avoid z-fighting, no real keyframes yet) - the rest are referenced
-	// here so the state machine is ready, but will just hold pose until their clips are authored.
-	// Priority mirrors the old getArmPose() branch order below (isUsingItem/offhand-held first, then
-	// looting gesture, then aggressive, then celebrating, with walk/idle folded in as the fallback).
+	// Real keyframes now exist for all of these in graverobber.animation.json (maintainer-supplied).
+	// idle/walk/celebrate/dig2 loop (see their "loop": true in the JSON); attack/drink/offer play once
+	// (drink has no "loop" key at all, attack/offer are "hold_on_last_frame") - none of that needs to be
+	// mirrored here with .thenLoop()/.thenPlayAndHold(), since a bare .thenPlay() already defers to
+	// whatever loop type the clip itself declares (same convention FogletEntity's IDLE/WALK use).
+	// graverobber.model.dig (distinct from dig2) is authored but intentionally unused here - it was an
+	// earlier draft of the looting-gesture clip, superseded by dig2; left in the JSON in case it's
+	// wanted for something else later.
 	private static final RawAnimation IDLE = RawAnimation.begin().thenPlay("graverobber.model.idle");
 	private static final RawAnimation WALK = RawAnimation.begin().thenPlay("graverobber.model.walk");
 	private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("graverobber.model.attack");
-	private static final RawAnimation DIG = RawAnimation.begin().thenPlay("graverobber.model.dig");
+	private static final RawAnimation DRINK = RawAnimation.begin().thenPlay("graverobber.model.drink");
+	private static final RawAnimation DIG2 = RawAnimation.begin().thenPlay("graverobber.model.dig2");
 	private static final RawAnimation OFFER = RawAnimation.begin().thenPlay("graverobber.model.offer");
 	private static final RawAnimation CELEBRATE = RawAnimation.begin().thenPlay("graverobber.model.celebrate");
 
@@ -127,6 +131,14 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 	/** Purely cosmetic "digging/opening" pose flag for {@link TombLootFlavorGoal} — kept separate
 	 *  from {@link #isUsingItem()} (used by {@link RetreatAndHealGoal}) since the two are unrelated. */
 	private static final EntityDataAccessor<Boolean> DATA_LOOTING_GESTURE = SynchedEntityData.defineId(GraveRobberEntity.class, EntityDataSerializers.BOOLEAN);
+
+	/** Ticks left in the one-shot "offer" flourish played right after picking up the bartering emerald
+	 *  (see {@link #pickUpItem(ItemEntity)}); counts down in {@link #customServerAiStep()}. A synced
+	 *  countdown rather than a boolean since, unlike {@link #DATA_LOOTING_GESTURE} (toggled for as long
+	 *  as a Goal is running), nothing else naturally marks when this brief gesture should end. */
+	private static final EntityDataAccessor<Integer> DATA_OFFER_GESTURE_TICKS = SynchedEntityData.defineId(GraveRobberEntity.class, EntityDataSerializers.INT);
+	/** Matches graverobber.model.offer's animation_length (0.75s) in graverobber.animation.json. */
+	private static final int OFFER_GESTURE_DURATION_TICKS = 15;
 
 	public int tradeTimer = 0;
 
@@ -145,6 +157,7 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(DATA_LOOTING_GESTURE, false);
+		this.entityData.define(DATA_OFFER_GESTURE_TICKS, 0);
 	}
 
 	public void setLootingGesture(boolean looting) {
@@ -155,13 +168,8 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 		return this.entityData.get(DATA_LOOTING_GESTURE);
 	}
 
-	/** Grave Robber is always left-handed (maintainer-specified trait, not a per-instance roll like
-	 *  vanilla's random {@code setLeftHanded} chance) -
-	 *  {@link com.Fishmod.fur.client.renderer.entity.GraveRobberRenderer} uses this to decide which
-	 *  of the {@code handle_l}/{@code handle_r} bones gets the main-hand item. */
-	@Override
-	public boolean isLeftHanded() {
-		return true;
+	public boolean isOfferGesture() {
+		return this.entityData.get(DATA_OFFER_GESTURE_TICKS) > 0;
 	}
 
 	@Override
@@ -169,6 +177,11 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 		if (!this.isNoAi() && GoalUtils.hasGroundPathNavigation(this)) {
 			boolean flag = ((ServerLevel) this.level()).isRaided(this.blockPosition());
 			((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(flag);
+		}
+
+		int offerTicks = this.entityData.get(DATA_OFFER_GESTURE_TICKS);
+		if (offerTicks > 0) {
+			this.entityData.set(DATA_OFFER_GESTURE_TICKS, offerTicks - 1);
 		}
 
 		super.customServerAiStep();
@@ -206,25 +219,14 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 				.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
+	// AbstractIllager declares getArmPose() abstract for vanilla IllagerModel/IllagerRenderer's benefit,
+	// but rendering has gone through GeoEntityRenderer/predicate() exclusively since the 2026-08-13
+	// GeckoLib conversion - nothing reads this return value anymore. Kept as a trivial stub only to
+	// satisfy the override; do not add new gesture logic here, add it to predicate() instead.
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AbstractIllager.IllagerArmPose getArmPose() {
-		if (this.isUsingItem()) {
-			// Reuses the existing raised-arm pose (already driven for the offhand trade item)
-			// so the potion drink doesn't need a dedicated animation state.
-			return AbstractIllager.IllagerArmPose.CROSSBOW_HOLD;
-		} else if (this.isLootingGesture()) {
-			// No GeckoLib/dedicated dig or open-pot animation exists for this vanilla-model
-			// illager, so the flavor-loot gesture reuses the crossbow-reload pose (hands working
-			// at chest height) for both suspicious_sand and decorated_pot targets.
-			return AbstractIllager.IllagerArmPose.CROSSBOW_CHARGE;
-		} else if (this.isAggressive()) {
-			return AbstractIllager.IllagerArmPose.ATTACKING;
-		} else if (!this.getOffhandItem().isEmpty()) {
-			return AbstractIllager.IllagerArmPose.CROSSBOW_HOLD;
-		} else {
-			return this.isCelebrating() ? AbstractIllager.IllagerArmPose.CELEBRATING : AbstractIllager.IllagerArmPose.CROSSED;
-		}
+		return AbstractIllager.IllagerArmPose.CROSSED;
 	}
 
 	@Override
@@ -244,6 +246,7 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 		this.setGuaranteedDrop(EquipmentSlot.OFFHAND);
 		this.take(stack, stack.getItem().getCount());
 		stack.discard();
+		this.entityData.set(DATA_OFFER_GESTURE_TICKS, OFFER_GESTURE_DURATION_TICKS);
 	}
 
 	@Override
@@ -893,10 +896,14 @@ public class GraveRobberEntity extends AbstractIllager implements GeoEntity {
 	}
 
 	private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> state) {
-		if (this.isUsingItem() || !this.getOffhandItem().isEmpty()) {
+		if (this.isOfferGesture()) {
+			// Brief post-pickup flourish (see pickUpItem()) - checked first so it can't be starved by
+			// combat/looting/drink states that happen to overlap the same tick.
 			state.getController().setAnimation(OFFER);
+		} else if (this.isUsingItem()) {
+			state.getController().setAnimation(DRINK);
 		} else if (this.isLootingGesture()) {
-			state.getController().setAnimation(DIG);
+			state.getController().setAnimation(DIG2);
 		} else if (this.isAggressive()) {
 			state.getController().setAnimation(ATTACK);
 		} else if (this.isCelebrating()) {

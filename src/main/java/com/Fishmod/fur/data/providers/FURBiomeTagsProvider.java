@@ -35,6 +35,7 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
     public static final TagKey<Biome> HAS_SCARECROW = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_scarecrow"));
     public static final TagKey<Biome> HAS_RAVEN = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_raven"));
     public static final TagKey<Biome> HAS_GRAVEYARD = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_graveyard"));
+    public static final TagKey<Biome> HAS_FORSAKEN = TagKey.create(Registries.BIOME, new ResourceLocation(mod_LavaCow.MODID, "has_forsaken"));
     // Vanilla structure-eligibility tag, not a FUR-namespaced tag - adding to it (replace:false by
     // default) appends our biome onto vanilla's existing mineshaft biome list rather than replacing it.
     public static final TagKey<Biome> HAS_STRUCTURE_MINESHAFT = TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "has_structure/mineshaft"));
@@ -49,6 +50,7 @@ public class FURBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(HAS_PIRANHA).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE);
         this.tag(HAS_SWARMER).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE).add(Biomes.LUKEWARM_OCEAN).add(Biomes.DEEP_LUKEWARM_OCEAN).add(Biomes.DEEP_DARK).add(FURBiomesRegistry.CARRION_HOLLOW);
         this.tag(HAS_CACTYRANT).addTag(Tags.Biomes.IS_DESERT).addTag(BiomeTags.IS_BADLANDS).add(Biomes.SOUL_SAND_VALLEY);
+        this.tag(HAS_FORSAKEN).addTag(Tags.Biomes.IS_SANDY);
         this.tag(HAS_WETA).addTag(BiomeTags.IS_SAVANNA).add(Biomes.LUSH_CAVES).add(Biomes.DRIPSTONE_CAVES).add(FURBiomesRegistry.CARRION_HOLLOW);
         this.tag(HAS_MYCOSIS).addTag(Tags.Biomes.IS_SWAMP).addTag(BiomeTags.IS_JUNGLE).add(FURBiomesRegistry.LUMINOUS_UNDERGROVE);
         this.tag(IS_OVERWORLD_HOSTILE).addTag(BiomeTags.IS_OVERWORLD).remove(Tags.Biomes.IS_MUSHROOM);

@@ -849,6 +849,7 @@
 						
 	"message.fur.beastcall_horn.bound": "Bound to %s",
 	"message.fur.beastcall_horn.cleared": "Binding cleared",
+	"message.fur.beastcall_horn.mounted": "Can't summon %s while riding it",
 	"message.fur.beastcall_horn.none": "No nearby pet to bind",
 	"message.fur.beastcall_horn.notfound": "The bound pet is too far away or in another dimension",
 	"message.fur.beastcall_horn.override": "Already bound to another pet — sneak + use to override",

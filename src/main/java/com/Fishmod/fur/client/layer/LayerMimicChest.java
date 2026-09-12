@@ -36,6 +36,14 @@ public class LayerMimicChest<T extends MimicEntity> extends GeoRenderLayer<T> {
     
     @Override
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        // Adult-only: this re-renders the whole baked model again with a real vanilla chest
+        // texture, so the disguise reads as an actual chest. mimic_spawn's geo has no chest-shaped
+        // parts and its UVs were authored for mimic_spawn.png, not the vanilla chest layout - drawn
+        // this way it just looks like the baby is wearing the wrong texture.
+        if (animatable.isBaby()) {
+            return;
+        }
+
         if (animatable.getSkin() == MimicModel.getVoidSkin()) {
             this.textureLocation = TEXTURE_CHEST_ENDER;
         } else if (this.xmasTextures) {

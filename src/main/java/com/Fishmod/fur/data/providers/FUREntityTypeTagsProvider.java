@@ -335,9 +335,9 @@ public class FUREntityTypeTagsProvider extends ForgeEntityTypeTagsProvider {
         tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)
                 .add(FUREntityRegistry.FRIGID.get())
         		.add(FUREntityRegistry.WENDIGO.get());
-        // FORSAKEN is commented out in FUREntityRegistry (unregistered), left out here too.
         tag(EntityTypeTags.SKELETONS)
                 .add(FUREntityRegistry.SKELETONKING.get())
-                .add(FUREntityRegistry.BONEWORM.get());
+                .add(FUREntityRegistry.BONEWORM.get())
+                .add(FUREntityRegistry.FORSAKEN.get());
     }
 }

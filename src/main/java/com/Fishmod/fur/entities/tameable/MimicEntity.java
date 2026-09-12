@@ -75,6 +75,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -282,6 +283,13 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        this.tickEggIncubation();
 	    }
 
+	    // Baby form: growth is gated on chest contact, not the normal AgeableMob timer - see
+	    // setAge(int) and checkGrowthContact(). MimicState doesn't apply to babies (they don't
+	    // disguise as furniture), so this runs independently of the state machine below.
+	    if (this.isBaby() && this.tickCount % 5 == 0) {
+	        this.checkGrowthContact();
+	    }
+
 		if ((state == MimicState.DORMANT || state == MimicState.TAME_IDLE) && !this.isAggressive() && this.tickCount % 100 == 0 && this.getRandom().nextInt(5) == 0) {
 			this.level().broadcastEntityEvent(this, (byte)11);
 		}
@@ -371,27 +379,85 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
 	        time++;
 
 	        if (time >= MIMIC_EGG_HATCH_TIME) {
-	        	this.inventory.removeItem(i, 1);
-	        	// Stacked eggs share this tag — restart incubation for the ones left behind,
-	        	// otherwise they cascade-hatch one per second off the inherited full timer.
-	        	ItemStack rest = this.inventory.getItem(i);
-	        	if (rest.is(FURItemRegistry.MIMIC_EGG.get())) {
-	        		rest.getOrCreateTag().putInt("HatchTime", 0);
+	        	// Hatching needs one flower_pot per egg - the pot is the egg's "nest", handed back
+	        	// later when the resulting baby grows up (see growToAdult()). Fully incubated but no
+	        	// spare pot yet: fall through to save the timer as-is and keep re-checking every
+	        	// pass instead of resetting, so topping up the inventory hatches it right away.
+	        	int potSlot = this.containsItem(Items.FLOWER_POT);
+	        	if (potSlot >= 0) {
+		        	this.inventory.removeItem(potSlot, 1);
+		        	this.inventory.removeItem(i, 1);
+		        	// Stacked eggs share this tag — restart incubation for the ones left behind,
+		        	// otherwise they cascade-hatch one per second off the inherited full timer.
+		        	ItemStack rest = this.inventory.getItem(i);
+		        	if (rest.is(FURItemRegistry.MIMIC_EGG.get())) {
+		        		rest.getOrCreateTag().putInt("HatchTime", 0);
+		        	}
+		        	if (this.level() instanceof ServerLevel server) {
+		        		super.spawnChildFromBreeding(server, this);
+		        	}
+		            return;
 	        	}
-	        	if (this.level() instanceof ServerLevel server) {
-	        		super.spawnChildFromBreeding(server, this);
-	        	}
-	            return;
 	        }
-	        
+
 	        tag.putInt("HatchTime", time);
 	    }
 	}
 	
+	/**
+	 * Natural time-based aging (and vanilla's feed-to-speed-up-growth, e.g. {@code Animal}'s default
+	 * baby-feeding path) is disabled here - Mimic babies only grow up via the flower-pot/empty-chest
+	 * contact mechanic ({@link #checkGrowthContact()} / {@link #growToAdult()}), which calls
+	 * {@code setAge(0)} directly. Any other attempt to drift the age toward 0 over time is clamped
+	 * straight back to the baby sentinel instead of being allowed through.
+	 */
+	@Override
+	public void setAge(int age) {
+		super.setAge(age < 0 ? AgeableMob.BABY_START_AGE : age);
+	}
+
+	/** Baby-only: checks for contact with an empty chest (dropped item or placed block) and, if
+	 *  found, consumes it and grows up. Called periodically from {@link #tick()}. */
+	private void checkGrowthContact() {
+		AABB box = this.getBoundingBox().inflate(0.1D);
+
+		for (ItemEntity itemEntity : this.level().getEntitiesOfClass(ItemEntity.class, box)) {
+			ItemStack stack = itemEntity.getItem();
+			if (stack.is(Items.CHEST) && isChestStackEmpty(stack)) {
+				itemEntity.discard();
+				this.growToAdult();
+				return;
+			}
+		}
+
+		BlockPos origin = this.blockPosition();
+		for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-1, -1, -1), origin.offset(1, 1, 1))) {
+			if (this.level().getBlockState(pos).is(Blocks.CHEST)
+					&& box.intersects(new AABB(pos))
+					&& this.level().getBlockEntity(pos) instanceof ChestBlockEntity chest
+					&& chest.isEmpty()) {
+				this.level().removeBlock(pos, false);
+				this.growToAdult();
+				return;
+			}
+		}
+	}
+
+	/** True if a dropped {@code minecraft:chest} item stack has no items saved in its BlockEntityTag. */
+	private static boolean isChestStackEmpty(ItemStack stack) {
+		CompoundTag blockEntityTag = stack.getTagElement("BlockEntityTag");
+		return blockEntityTag == null || blockEntityTag.getList("Items", 10).isEmpty();
+	}
+
+	private void growToAdult() {
+		this.setAge(0);
+		this.spawnAtLocation(new ItemStack(Items.FLOWER_POT), 0.2F);
+	}
+
 	@Override
 	public boolean canPickUpLoot() {
-		return this.getSkin() != MimicModel.getVoidSkin();
-	}	
+		return !this.isBaby() && this.getSkin() != MimicModel.getVoidSkin();
+	}
 	
 	@Override
 	protected float getWaterSlowDown() {
@@ -498,7 +564,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
         // isOwnedBy compares UUIDs — getOwner().equals(player) NPE'd when the owner
         // was offline or in another dimension and someone else interacted.
         } else if (this.isTame() && this.isOwnedBy(player)) {
-        	if (player.isCrouching() && !(item instanceof BeastcallHornItem)) {
+        	// Babies can't be opened - they have no inventory GUI of their own yet (see
+        	// canPickUpLoot() and TargetItemGoal, which also lock them out of picking anything up).
+        	if (player.isCrouching() && !(item instanceof BeastcallHornItem) && !this.isBaby()) {
         		if (this.getSkin() == MimicModel.getVoidSkin()) {	
         			PlayerEnderChestContainer enderchestinventory = player.getEnderChestInventory();
 					player.openMenu(new SimpleMenuProvider((containerId, playerInventory, menuPlayer) -> {
@@ -513,7 +581,9 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
         	}
 
-            if (!itemstack.isEmpty()) {
+            // Babies can't be converted to the nether/void skins either - those items should just
+            // pass through to the fallback interaction below (e.g. feeding) until it grows up.
+            if (!itemstack.isEmpty() && !this.isBaby()) {
             	if (this.getSkin() != MimicModel.getVoidSkin() && item == Items.ENDER_EYE) {
             		if (!player.getAbilities().instabuild) {
             			itemstack.shrink(1);
@@ -871,7 +941,7 @@ public class MimicEntity extends FURTameableEntity implements GeoEntity {
     	
 		@Override
 		public boolean canUse() {
-			if (this.mimic.state == MimicState.DORMANT || this.mimic.state == MimicState.TAME_IDLE || this.mimic.isInSittingPose() || this.mimic.getSkin() == MimicModel.getVoidSkin()) return false;
+			if (this.mimic.isBaby() || this.mimic.state == MimicState.DORMANT || this.mimic.state == MimicState.TAME_IDLE || this.mimic.isInSittingPose() || this.mimic.getSkin() == MimicModel.getVoidSkin()) return false;
 
 			return super.canUse();
 		}

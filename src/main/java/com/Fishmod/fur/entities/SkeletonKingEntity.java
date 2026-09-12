@@ -117,8 +117,11 @@ public class SkeletonKingEntity extends Monster implements GeoEntity {
     }
 
     protected void applyEntityAI() {
-        // 1.16.5 also alerted the (un-ported) Sand Wraiths: `.setAlertOthers(ForsakenEntity.class)`
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        // ForsakenEntity.class here is inert - HurtByTargetGoal#alertOthers only ever scans for
+        // entities of this.mob's own exact class (SkeletonKingEntity), so an exclusion filter naming an
+        // unrelated class can never match anything. Restored verbatim from 1.16.5 anyway (same no-op
+        // there) rather than dropping the argument, since removing it wouldn't change behaviour either.
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ForsakenEntity.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -265,8 +268,7 @@ public class SkeletonKingEntity extends Monster implements GeoEntity {
             return true;
         } else if (super.isAlliedTo(entity)) {
             return true;
-        // 1.16.5 also allied with the (un-ported) Sand Wraith: `|| entity instanceof ForsakenEntity`
-        } else if (entity instanceof SkeletonKingEntity) {
+        } else if (entity instanceof SkeletonKingEntity || entity instanceof ForsakenEntity) {
             return true;
         } else {
             return false;

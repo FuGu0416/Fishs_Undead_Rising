@@ -48,7 +48,25 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FlyingMobEntity extends FURTameableEntity {
 	private int hoverTimer;
 	private int landTimer;
-	
+
+	// ── Banked-turn visual roll ──────────────────────────────────────────────
+	// Client-only, derived each tick from how fast this.getYRot() is actually changing (which
+	// FlyingMoveHelper now turns gradually toward a new heading — see MAX_TURN_RATE there — instead
+	// of snapping straight to it). No networking needed: yRot/yRotO are already synced/interpolated
+	// for every entity, so each client can compute the same bank angle independently, the same trick
+	// vanilla's Boat uses for its own turn roll.
+	private float bankAngle;
+	private static final float BANK_FACTOR = 2.0F;
+	private static final float MAX_BANK_ANGLE = 35.0F;
+	private static final float BANK_SMOOTHING = 0.15F;
+
+	/** Current visual bank/roll angle in degrees (positive/negative meaning is whatever
+	 *  {@link com.Fishmod.fur.client.renderer.entity.FlyingMobRenderer} interprets it as — flip
+	 *  {@link #BANK_FACTOR}'s sign if a mob banks the wrong way). Always 0 server-side. */
+	public float getBankAngle() {
+		return this.bankAngle;
+	}
+
 	public FlyingMobEntity(EntityType<? extends FlyingMobEntity> entityType, Level worldIn) {
 		super(entityType, worldIn);
 		this.moveControl = new FlyingMobEntity.FlyingMoveHelper(this);
@@ -93,6 +111,17 @@ public class FlyingMobEntity extends FURTameableEntity {
 	@Override
     public void aiStep() {
 		super.aiStep();
+
+		if (this.level().isClientSide) {
+			// yRot has already moved this tick (server-set value arrived via the normal entity-sync
+			// packet, or - while ridden - RidableFlyingMobEntity's own steering set it directly), so
+			// the delta against yRotO is this tick's real turn rate. Smoothed with a simple lerp
+			// rather than read raw, so the roll eases in/out instead of snapping to 0 the instant a
+			// turn ends (yRot stops changing dead the tick a turn completes; the roll shouldn't).
+			float yawDelta = Mth.wrapDegrees(this.getYRot() - this.yRotO);
+			float targetBank = Mth.clamp(-yawDelta * BANK_FACTOR, -MAX_BANK_ANGLE, MAX_BANK_ANGLE);
+			this.bankAngle += (targetBank - this.bankAngle) * BANK_SMOOTHING;
+		}
 
 		if (!this.level().isClientSide && !this.isBaby()) {
 	    	if (this.onGround()) {
@@ -836,6 +865,12 @@ public class FlyingMobEntity extends FURTameableEntity {
         private static final double ACCELERATION   = 0.15D;
         private static final double DRAG           = 0.90D;
         private static final double MAX_Y_SPEED    = 0.3D;
+        // Degrees/tick the flight heading is allowed to turn toward a new target direction - the
+        // actual "gradual path correction" (previously desiredVelocity, direction and all, was
+        // lerped straight at ACCELERATION's 15%/tick, which could swing the nose most of the way
+        // around within 2-3 ticks for a sharp turn). Horizontal (yaw) only; vertical speed still
+        // adjusts freely below, "向左向右" being the reported case.
+        private static final float MAX_TURN_RATE   = 6.0F;
 
         // Consecutive blocked ticks — used to escalate avoidance strength
         private int blockedTicks = 0;
@@ -954,7 +989,25 @@ public class FlyingMobEntity extends FURTameableEntity {
                     side.scale((this.parentEntity.random.nextDouble() - 0.5D) * 0.03D)
             ).normalize();
 
-            Vec3 desiredVelocity = desiredDirection.scale(
+            // Turn-rate-limited heading: steer the horizontal (yaw) component of the flight
+            // direction toward desiredDirection by at most MAX_TURN_RATE this tick, instead of
+            // letting the lerp below swing the whole vector - direction included - straight at
+            // desiredDirection. "Current heading" is read back off this.velocity itself (falling
+            // back to the entity's own yaw if nearly stationary) rather than a separately tracked
+            // field, so it self-corrects even if something else nudges velocity between ticks.
+            double horizSpeed = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.z * this.velocity.z);
+            float currentYawDeg = horizSpeed > 1.0E-4D
+                    ? (float) (Mth.atan2(this.velocity.z, this.velocity.x) * (180D / Math.PI)) - 90.0F
+                    : this.mob.getYRot();
+            float desiredYawDeg = (float) (Mth.atan2(desiredDirection.z, desiredDirection.x) * (180D / Math.PI)) - 90.0F;
+            float steeredYawDeg = this.rotlerp(currentYawDeg, desiredYawDeg, MAX_TURN_RATE);
+
+            double headingRad = Math.toRadians((double) steeredYawDeg + 90.0D);
+            double desiredHorizLen = Math.sqrt(desiredDirection.x * desiredDirection.x + desiredDirection.z * desiredDirection.z);
+            Vec3 steeredDirection = new Vec3(Math.cos(headingRad) * desiredHorizLen, desiredDirection.y, Math.sin(headingRad) * desiredHorizLen);
+            steeredDirection = steeredDirection.lengthSqr() > 1.0E-6D ? steeredDirection.normalize() : desiredDirection;
+
+            Vec3 desiredVelocity = steeredDirection.scale(
                     0.4D * this.parentEntity.getAttributeValue(Attributes.FLYING_SPEED));
 
             this.velocity = this.velocity.lerp(desiredVelocity, ACCELERATION);
@@ -1017,9 +1070,13 @@ public class FlyingMobEntity extends FURTameableEntity {
 
             this.parentEntity.setDeltaMovement(this.velocity);
 
-            // Smooth yaw rotation
+            // Yaw just mirrors the already turn-rate-limited velocity heading directly (see
+            // MAX_TURN_RATE above) - no second independent smoothing pass needed here anymore, so
+            // the model's nose always points exactly where it's actually flying, the way a real
+            // bird/plane's does. This is also what FlyingMobEntity#getBankAngle's client-side roll
+            // is derived from (via consecutive yRot samples), so it stays in sync automatically.
             float yaw = (float)(Mth.atan2(this.velocity.z, this.velocity.x) * (180F / Math.PI)) - 90.0F;
-            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yaw, 10.0F));
+            this.mob.setYRot(yaw);
         }
 
         private boolean isPathClear(Vec3 movement) {

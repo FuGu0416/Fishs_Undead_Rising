@@ -114,10 +114,17 @@ public class BeastcallHornItem extends Item {
         if (bound != null) {
             Entity entity = ((ServerLevel) level).getEntity(bound);
             if (entity instanceof TamableAnimal pet && pet.isAlive() && pet.isOwnedBy(player)) {
-                summonToSide(pet, player, level);
-                player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.summon", pet.getDisplayName()), true);
-                playHorn(player, FURSoundRegistry.RANDOM_BEASTCALL_HORN_BLOW.get(), 1.0F);
-                player.getCooldowns().addCooldown(this, 40);
+                // Being ridden (by the player or anyone else) rules out the teleport-and-sit:
+                // moveTo() would drag its rider along and doSitCommand() would strand the pet's
+                // AI in SITTING under them, with no dismount to show anything happened.
+                if (pet.isVehicle()) {
+                    player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.mounted", pet.getDisplayName()), true);
+                } else {
+                    summonToSide(pet, player, level);
+                    player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.summon", pet.getDisplayName()), true);
+                    playHorn(player, FURSoundRegistry.RANDOM_BEASTCALL_HORN_BLOW.get(), 1.0F);
+                    player.getCooldowns().addCooldown(this, 40);
+                }
             } else {
                 player.displayClientMessage(Component.translatable("message.fur.beastcall_horn.notfound"), true);
             }

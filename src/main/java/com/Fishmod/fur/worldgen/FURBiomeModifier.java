@@ -60,6 +60,7 @@ public class FURBiomeModifier {
 	public static final ResourceKey<BiomeModifier> ADD_LAMPREY = registerKey("add_lamprey");
 	public static final ResourceKey<BiomeModifier> ADD_SKELETON_CARRION_HOLLOW = registerKey("add_skeleton_carrion_hollow");
 	public static final ResourceKey<BiomeModifier> ADD_SPIDER_CARRION_HOLLOW = registerKey("add_spider_carrion_hollow");
+	public static final ResourceKey<BiomeModifier> ADD_FORSAKEN = registerKey("add_forsaken");
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(mod_LavaCow.MODID, name));
@@ -157,6 +158,10 @@ public class FURBiomeModifier {
         // pools despite being far below the Overworld's usual near-sea-level water-mob band).
         addSpawn(context, ADD_LAMPREY, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),
                 new MobSpawnSettings.SpawnerData(FUREntityRegistry.LAMPREY.get(), 10, 2, 4));
+        // Matches 1.16.5's default spawn-rate config value (10) and group size (4-8); overworld sandy
+        // biomes (was BiomeDictionary.Type.SANDY).
+        addSpawn(context, ADD_FORSAKEN, biomes.getOrThrow(FURBiomeTagsProvider.HAS_FORSAKEN),
+                new MobSpawnSettings.SpawnerData(FUREntityRegistry.FORSAKEN.get(), 10, 4, 8));
         // Vanilla Skeleton/Spider added on top of the biome's own exclusive mobs, at modest weights so
         // they season the population rather than drown it out.
         addSpawn(context, ADD_SKELETON_CARRION_HOLLOW, HolderSet.direct(biomes.getOrThrow(FURBiomesRegistry.CARRION_HOLLOW)),

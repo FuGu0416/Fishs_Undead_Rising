@@ -10,10 +10,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class BeelzebubRenderer extends GeoEntityRenderer<BeelzebubEntity> {
+public class BeelzebubRenderer extends FlyingMobRenderer<BeelzebubEntity> {
 
     public BeelzebubRenderer(EntityRendererProvider.Context rendermanagerIn) {
         super(rendermanagerIn, new BeelzebubModel());
